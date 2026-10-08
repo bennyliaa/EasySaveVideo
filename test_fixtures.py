@@ -6,7 +6,7 @@ import urllib.request
 import urllib.error
 from http.server import ThreadingHTTPServer
 from pathlib import Path
-from fixtures import ROOT, build, score, FixtureHandler
+from fixtures import ROOT, build, build_recovery, score, FixtureHandler
 
 
 class FrameworkTest(unittest.TestCase):
@@ -31,6 +31,20 @@ class FrameworkTest(unittest.TestCase):
 
     def test_unrun_is_not_pass(self):
         self.assertEqual(100, score(self.manifest, [])["unrun"])
+
+    def test_recovery_has_frozen_origins_and_deleted_target_negatives(self):
+        recovery = json.loads((ROOT / "corpus" / "recovery" / "manifest.json").read_text())
+        self.assertEqual(80, len(recovery["cases"]))
+        self.assertEqual(20, len({c["original_id"] for c in recovery["cases"]}))
+        original_hashes = {c["id"]: c["sha256"] for c in self.manifest["cases"]}
+        for case in recovery["cases"]:
+            self.assertEqual(original_hashes[case["original_id"]], case["original_sha256"])
+            data = (ROOT / "corpus" / case["path"].lstrip("/")).read_bytes()
+            self.assertEqual(case["sha256"], hashlib.sha256(data).hexdigest())
+            if case["mutation"] == "target-deleted":
+                self.assertEqual("negative", case["label"])
+                self.assertNotIn(b"<video", data)
+        self.assertEqual(recovery, build_recovery(ROOT / "corpus" / "recovery", self.manifest))
 
     def test_failures_never_confirm_video(self):
         for status in ["cancelled", "timeout", "error", "denied", "rate_limited", "unavailable"]:
@@ -58,6 +72,12 @@ class FrameworkTest(unittest.TestCase):
         result = score(self.manifest, [{"id": "negative-00", "status": "success",
                                        "prediction": "positive", "evidence": "verified_media"}])
         self.assertEqual(1, result["false_positive"])
+
+    def test_missing_extraction_measurement_remains_unknown(self):
+        result = score(self.manifest, [{"id": "static-00", "status": "success",
+                                       "prediction": "positive", "evidence": "verified_media"}])
+        self.assertIsNone(result["resource_extraction_rate"])
+        self.assertEqual(0, result["extraction_measurement_coverage"])
 
     def test_loopback_http_success_and_denial(self):
         with ThreadingHTTPServer(("127.0.0.1", 0), FixtureHandler) as server:

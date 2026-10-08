@@ -1,6 +1,6 @@
 package com.easysavevideo.validation.contract
 
-/** Integration contract draft; not yet compiled or wired into the recovered ESV app. */
+/** Independently compiled contract; not yet wired into the recovered ESV app. */
 data class EngineId(val value: String)
 enum class Capability { STATIC_HTML, DYNAMIC_DOM, LOCAL_ADAPTATION }
 enum class EvidenceLevel { UNKNOWN, CANDIDATE, VERIFIED_MEDIA }
@@ -34,6 +34,7 @@ data class VerificationResult(
     val mediaUrls: List<String> = emptyList(),
     val requestsConsumed: Int = 0,
     val bytesConsumed: Long = 0,
+    val resourceUsageKnown: Boolean = true,
     val reason: String? = null
 )
 interface VerificationCancellation { fun isCancelled(): Boolean }

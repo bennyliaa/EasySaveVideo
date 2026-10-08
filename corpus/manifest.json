@@ -12,7 +12,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "ca4625414d27035575c59876ee0ddbbf57cf74aea2be0196f9451b0cf4c51538",
+      "sha256": "a06b6e6ef4257ba17f7a7a14101910797a414bd06ff0cd3e69f83154e4f8c1d0",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -23,7 +23,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "ff11952fd917817a269e3afa7c7d4db9526b4773b526b69c310330d986e85f20",
+      "sha256": "fd0401e68fadfd0dd4c27ca42c94447b59b697da77aa811563cf4737d702e5ab",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -34,7 +34,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "07fe6f7fd46e1eb871a700add00ecd0233f860e102c24b62f6984f414788b493",
+      "sha256": "1743b676c83a89cea5a2c9386822b4f2acaff7679612eccecee8cebe188577f9",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -45,7 +45,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "527ba8c32b391527093183d69569af0dc4c59dd2c14b0366b13b3e7ed6cba5d7",
+      "sha256": "37dfae72c808bada7ab9240e604a1887c7ec3ecad24d22c2754c70281b3a0fa5",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -56,7 +56,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "cb76abae18167f4cc2edaf56b658e0c74de969b7fc9399dbf37c13640a3bf274",
+      "sha256": "b4a724293e8bef61dfdd3943e0aef804e4abe93d400b1a399a378332c29b2c20",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -67,7 +67,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "7c7287605ed59ae5dcfa87c97c7b0096554b48936e645a50ff1a00af66567151",
+      "sha256": "8d765baf6b2caa756723c542d823f966fdcae6108e444ac4a3602bdb6f0685b7",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -78,7 +78,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "abe40f7d38390fd1254716d6427efe6a8b7b320807497dbf54b0d7732621d373",
+      "sha256": "011e5dca1cc97b0072ff050ecf1ca7d7a79e51343a79a3a7b1033ec203e3ba9b",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -89,7 +89,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "837f36fc20203ba6385949e345bffac722fb1e897e6b6e96028a6fda6f95b2e3",
+      "sha256": "23f8b897477a1cbdb64e9141b07e226a7b174db9dd864886f9af78b6f429588b",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -100,7 +100,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "59ce99c89b5c0b62b1756be7def7cfc949f815ce2bf705a8f6c8fd34493c90f7",
+      "sha256": "8ca50052d725ae3e8a31357b692ac114702eafc1bdcd54627bbed3a06aff37ae",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -111,7 +111,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "419447af3472634c454a5f87387a04d39fb4d722b162fddd47ba175049b922e9",
+      "sha256": "6c8178a796b7b34c454d9937358bd16e2b5b84c4e234d2b1e76d16f05f1615fb",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -122,7 +122,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "6851a7aa6c8da2a1f11e296b6b226875d13a70f3ff264cc06ca2cf69be5f587d",
+      "sha256": "b08946483b7533122b1ae13b9ca94348755d33573af68e3c8d293a0094234798",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -133,7 +133,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "ecd7f939375104ee86aeea5f5155b07ea3528d32e42fd77e3a1d4d166c8cd987",
+      "sha256": "15e4ea8e3e5e5c67998786fa12bbd77ed05dc32d4c3fd765f14e50e0ae900e25",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -144,7 +144,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "5c0a787951ab1e31375723f80078bb6951fdc74d2d8cb2b54f0fd202d23f860e",
+      "sha256": "073c2184426b8b6b79e686d7d30da6f1a01ac15c6cd3e54bc010bbe9a251aadb",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -155,7 +155,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "5ba3f1ba67e8f4f48595a1e37ddc673c13cb1b9530be66ccf1b6d2b78f1d140c",
+      "sha256": "47bc1794e7d50e84a93aa3047a24415dfb2db8f7fca8561180d6b90e04baa66c",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -166,7 +166,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "66444322fc4fccfe094aca86eac599a7a2441924ded2ae52c15c18af39b528ca",
+      "sha256": "1957fa5d674462b2658407128842605d1277d058bdfef20f886f4b214c6a4a77",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -177,7 +177,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "dbfce302efbe1efda3da253707e367367db4b66c266761a9f6f414be47e5332b",
+      "sha256": "b210130fa8358cc32d8f0ba4181888acbc730fa3f36d08fd05be7986e97c6ba0",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -188,7 +188,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "c6bd785c82e9e1a7fad474c0ff52454b30bd4ba1951dd9458c36d67c95cd233f",
+      "sha256": "1f32a7f6731a2b69ecf3fcb98572bb1103cac304b4890a87c084abfcc76a80d6",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -199,7 +199,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "0b711f70fe2f17d8080bbbe0212e1dcfdf5b67dd8365141256ce8c2435bdb355",
+      "sha256": "83506064c73d7559e6d081467915c41db312babcf7bd04573ba21a6ebb223c5c",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -210,7 +210,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "956abc3f1ce3c58aeed07a42c0669364f4099b34ec32621e747f4224d8de704d",
+      "sha256": "28419499eeca606f43d8a03c36a4456846bdeea7f3aef5bfbbc061221b690ab9",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -221,7 +221,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "10a58e5125628c0b85ba68b6fc1a6465753cfa84f39e467adad910f3d3b3651a",
+      "sha256": "37559f5d06f1991ee16bce262bfbf85c11cf29f50170b165506e5a80099a29f5",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -232,7 +232,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "adea479ea4bf129728a7fe66a79c976f9f3f8bbd080bde864091bc698451bb75",
+      "sha256": "72b555856cd44ae228678e928ac846b9ddce3914c35b3b6912f88c8d9f040e7c",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -243,7 +243,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "f4e17928ac6aff3eec1695d616e59054c819cc86816f8a629f5f35807aabdc6a",
+      "sha256": "35fcbf2ad6de4ae1b5eec3b668ddaa3ef97db11fb79a3297bcc5f2cddd82f2c3",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -254,7 +254,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "67a837de640cdb202b3704197bb1a8c8fe86e81276d50771d4024119eeb6a3a9",
+      "sha256": "0355ac3ce1b7e72383bdd3ae8c2e952a61b7c15791c624f970c430f6b3ff5819",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -265,7 +265,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "248511548db8090cee6860cd19764f8c7fdda9c1133a848ff97ef3fbbeefad99",
+      "sha256": "94f074f2cf1013ac58be092ecf45aa9d54fc87642bcb422c5200fa043b343069",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {
@@ -276,7 +276,7 @@
       "expected_status": 200,
       "media_identity": "media.mp4",
       "resource_extractable": true,
-      "sha256": "cb0a52b325f5fcf7d3da24de70af0c28bb890e208f5c25b715f0231e24da9fee",
+      "sha256": "dd98ed3da6a76908d646ee60314d4d6092d50de5fef680fa3d738870c6a932c3",
       "label_basis": "authored local synthetic fixture; independent of A/B outputs"
     },
     {

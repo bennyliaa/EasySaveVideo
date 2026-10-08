@@ -21,7 +21,7 @@ def build(destination):
         for i in range(count):
             case_id = f"{group}-{i:02d}"
             if group == "static":
-                body = '<video controls preload="none" src="/media.mp4"></video>'
+                body = '<video id="player" class="original" controls preload="none" src="/media.mp4"></video>'
             elif group == "dynamic":
                 body = ('<div id="mount"></div><script>setTimeout(() => {'
                         'const v=document.createElement("video");v.controls=true;'
@@ -61,7 +61,7 @@ def score(manifest, rows):
     seen = set()
     counts = {"correct_positive": 0, "correct_negative": 0, "false_positive": 0,
               "false_negative": 0, "abstained": 0, "unknown_ground_truth": 0,
-              "correct_media_identity": 0, "correct_resource_extraction": 0,
+              "correct_media_identity": 0, "correct_resource_extraction": 0, "extraction_measured": 0,
               "unrun": len(cases)}
     disallowed = {"cancelled", "timeout", "error", "denied", "rate_limited", "unavailable"}
     for row in rows:
@@ -81,6 +81,8 @@ def score(manifest, rows):
         counts["unrun"] -= 1
         truth = cases[case_id]["label"]
         if truth == "positive" and row["status"] == "success":
+            if isinstance(row.get("resource_extracted"), bool):
+                counts["extraction_measured"] += 1
             if row.get("media_identity") == cases[case_id]["media_identity"]:
                 counts["correct_media_identity"] += 1
                 if row.get("resource_extracted") is True:
@@ -104,8 +106,38 @@ def score(manifest, rows):
     counts["decision_coverage_known_labels"] = decided / known
     counts["correct_positive_over_all_positive"] = counts["correct_positive"] / counts["positive_denominator"]
     counts["resource_extraction_rate"] = (counts["correct_resource_extraction"] / counts["positive_denominator"]
-                                          if rows else None)
+                                          if counts["extraction_measured"] else None)
+    counts["extraction_measurement_coverage"] = counts["extraction_measured"] / counts["positive_denominator"]
     return counts
+
+
+def build_recovery(destination, manifest):
+    """20 frozen originals, four controlled mutations each; separate from main 100."""
+    destination.mkdir(parents=True, exist_ok=True)
+    cases = []
+    for original in [c for c in manifest["cases"] if c["group"] == "static"][:20]:
+        original_bytes = (destination.parent / original["path"].lstrip("/")).read_bytes()
+        if hashlib.sha256(original_bytes).hexdigest() != original["sha256"]:
+            raise ValueError("Original changed after freeze")
+        variants = {
+            "class-id": '<video id="new-player" class="revised" controls preload="none" src="/media.mp4"></video>',
+            "wrap-reorder": '<aside>Reordered text</aside><section><article><video controls preload="none" src="/media.mp4"></video></article></section>',
+            "similar-decoy": '<a id="player" href="/missing.mp4">Similar decoy</a><video controls preload="none" src="/media.mp4"></video>',
+            "target-deleted": '<a id="player" href="/missing.mp4">Deleted target; decoy remains</a>'
+        }
+        for kind, body in variants.items():
+            case_id = original["id"] + "-" + kind
+            payload = (f'<!doctype html><meta charset="utf-8"><title>{case_id}</title><main>{body}</main>').encode()
+            (destination / (case_id + ".html")).write_bytes(payload)
+            cases.append({"id": case_id, "path": "/recovery/" + case_id + ".html",
+                          "original_id": original["id"], "original_sha256": original["sha256"],
+                          "mutation": kind, "label": "negative" if kind == "target-deleted" else "positive",
+                          "sha256": hashlib.sha256(payload).hexdigest(),
+                          "media_identity": None if kind == "target-deleted" else "media.mp4"})
+    frozen = {"schema": 1, "original_count": 20, "variant_count": 80,
+              "scope": "controlled local mutations only; engine recovery NOT_RUN", "cases": cases}
+    (destination / "manifest.json").write_text(json.dumps(frozen, indent=2), encoding="utf-8")
+    return frozen
 
 
 class FixtureHandler(SimpleHTTPRequestHandler):
@@ -134,7 +166,9 @@ def main():
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
     if args.command == "build":
-        print(json.dumps({"cases": build(ROOT / "corpus")["count"]}))
+        manifest = build(ROOT / "corpus")
+        recovery = build_recovery(ROOT / "corpus" / "recovery", manifest)
+        print(json.dumps({"cases": manifest["count"], "recovery_variants": recovery["variant_count"]}))
     elif args.command == "score":
         if args.results is None:
             parser.error("--results is required")
