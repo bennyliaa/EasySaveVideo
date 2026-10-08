@@ -1,0 +1,22 @@
+test_candidate_is_not_confirmation (test_fixtures.FrameworkTest.test_candidate_is_not_confirmation) ... ok
+test_corpus_integrity (test_fixtures.FrameworkTest.test_corpus_integrity) ... ok
+test_duplicate_is_rejected (test_fixtures.FrameworkTest.test_duplicate_is_rejected) ... ok
+test_exact_same_100_unique_independently_labelled_cases (test_fixtures.FrameworkTest.test_exact_same_100_unique_independently_labelled_cases) ... ok
+test_failures_never_confirm_video (test_fixtures.FrameworkTest.test_failures_never_confirm_video) ... ok
+test_false_positive_is_counted (test_fixtures.FrameworkTest.test_false_positive_is_counted) ... ok
+test_loopback_http_success_and_denial (test_fixtures.FrameworkTest.test_loopback_http_success_and_denial) ... 127.0.0.1 - - [09/Oct/2026 03:02:09] "GET /static-00.html HTTP/1.1" 200 -
+127.0.0.1 - - [09/Oct/2026 03:02:09] code 403, message Forbidden
+127.0.0.1 - - [09/Oct/2026 03:02:09] "GET /unknown-00.html HTTP/1.1" 403 -
+127.0.0.1 - - [09/Oct/2026 03:02:09] code 403, message Forbidden
+127.0.0.1 - - [09/Oct/2026 03:02:09] "GET / HTTP/1.1" 403 -
+127.0.0.1 - - [09/Oct/2026 03:02:09] code 403, message Forbidden
+127.0.0.1 - - [09/Oct/2026 03:02:09] "GET /static-00.html HTTP/1.1" 403 -
+ok
+test_rebuild_is_deterministic (test_fixtures.FrameworkTest.test_rebuild_is_deterministic) ... ok
+test_unknown_labels_not_used_as_accuracy (test_fixtures.FrameworkTest.test_unknown_labels_not_used_as_accuracy) ... ok
+test_unrun_is_not_pass (test_fixtures.FrameworkTest.test_unrun_is_not_pass) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 1.316s
+
+OK
