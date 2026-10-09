@@ -40,11 +40,13 @@ class FrozenCorpusHostTest {
                 val start=System.nanoTime();val result=engine.verify(request,op);val elapsed=(System.nanoTime()-start)/1_000_000
                 assertTrue(engine.isPhysicallyIdle());assertNotEquals(EngineOutcome.ERROR,result.outcome)
                 engine.close()
-                rows+="$id\t$label\t${result.verdict}\t${result.outcome}\t${result.evidence}\t$hash\t$elapsed"
+                val declared=LocalHtmlEvidenceParser().parse(body,request.candidate.pageUrl)?.sourceCandidate
+                val declaredFixtureIdentity=declared?.let {java.net.URI(it).path == "/media.mp4"} ?: false
+                rows+="$id\t$label\t${result.verdict}\t${result.outcome}\t${result.evidence}\t$hash\t$elapsed\t$declaredFixtureIdentity\tfalse\tfalse"
             }
         } finally {server.stop(0)}
         val output=Path.of("build/reports/frozen-static-b-host.tsv");Files.createDirectories(output.parent)
-        Files.writeString(output,"id\tindependent_label\tverdict\toutcome\tevidence\tbody_sha256\thost_elapsed_ms\n"+rows.joinToString("\n")+"\n")
+        Files.writeString(output,"id\tindependent_label\tverdict\toutcome\tevidence\tbody_sha256\thost_elapsed_ms\tdeclared_fixture_identity_match\tengine_resource_extraction_verified\tplayback_verified\n"+rows.joinToString("\n")+"\n")
         assertEquals(100,rows.size);assertEquals(100,calls.get())
     }
 }

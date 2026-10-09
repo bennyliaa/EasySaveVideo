@@ -1,0 +1,27 @@
+{
+  "scope": "Offline contract diagnosis of same frozen bytes using actual Scrapling Selector; no corpus/policy changes",
+  "cases": 100,
+  "public_cases": 0,
+  "reasons": {
+    "PRIMARY_MARKER_REQUIRED_ABSENT": 25,
+    "METADATA_ONLY_NOT_VIDEO_EVIDENCE": 15,
+    "NO_INITIAL_VIDEO_AND_NO_ADMITTED_XHR_RULE": 20,
+    "EMBEDDED_FRAME_NOT_SUPPORTED_BY_ADAPTER": 10,
+    "NO_VIDEO_EVIDENCE_ABSTAIN_NOT_NEGATIVE_PROOF": 20,
+    "AUTHORED_403_THEN_SOURCE_REFUSAL": 10
+  },
+  "outcomes": {
+    "INSUFFICIENT": 90,
+    "REJECTED": 10
+  },
+  "timeout_busy_identity_protocol_or_unavailable_results": 0,
+  "fixture_constructor_admission_cases": 100,
+  "running_shell_default_source_admission": 0,
+  "running_shell_used_for_benchmark": false,
+  "dynamic_corpus_contract_coverage": {
+    "dynamic_cases": 20,
+    "xhr_rules_present": 0,
+    "chromium_execution_on_these_cases": 0
+  },
+  "interpretation": "Adapter admission/evidence coverage limits; not general Scrapling library inability and not complete dynamic A/B acceptance"
+}

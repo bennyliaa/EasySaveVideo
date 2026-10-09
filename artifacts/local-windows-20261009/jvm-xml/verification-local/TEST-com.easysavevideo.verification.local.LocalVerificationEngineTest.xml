@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.easysavevideo.verification.local.LocalVerificationEngineTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-09T19:30:33.155Z" hostname="LZF" time="0.059">
+<testsuite name="com.easysavevideo.verification.local.LocalVerificationEngineTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-09T19:39:44.867Z" hostname="LZF" time="0.059">
   <properties/>
-  <testcase name="rateLimitDenialAndRedirectNeverConfirm" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.015"/>
+  <testcase name="rateLimitDenialAndRedirectNeverConfirm" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.016"/>
   <testcase name="dynamicInjectionRequiresPermission" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.008"/>
   <testcase name="unknownCannotBecomeVideo" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.005"/>
-  <testcase name="actualOkHttpJsoupPositiveAndBudgetReservation" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.004"/>
+  <testcase name="actualOkHttpJsoupPositiveAndBudgetReservation" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.005"/>
   <testcase name="cancelAndExpiredDoNoIo" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.003"/>
   <testcase name="bodyLimitNeverConfirms" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.005"/>
-  <testcase name="publicEngineCannotFetchLoopback" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.003"/>
+  <testcase name="publicEngineCannotFetchLoopback" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.002"/>
   <testcase name="refusalStopsSameSourceWithoutAnotherRequest" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.005"/>
   <testcase name="zeroAdmissionDoesNoIo" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.002"/>
   <testcase name="closedEngineCannotRestart" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.002"/>
-  <testcase name="captchaStopsSourceAndNeverPromotesVideo" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.005"/>
+  <testcase name="captchaStopsSourceAndNeverPromotesVideo" classname="com.easysavevideo.verification.local.LocalVerificationEngineTest" time="0.004"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

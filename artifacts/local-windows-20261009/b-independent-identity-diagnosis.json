@@ -1,0 +1,20 @@
+{
+  "scope": "Same100 frozen local fixtures; static JVM B only, public0",
+  "independent_positive_denominator": 70,
+  "independent_negative_denominator": 20,
+  "independent_unknown_denominator": 10,
+  "page_evidence_true_positive": 25,
+  "page_evidence_false_positive": 0,
+  "page_evidence_precision": 1.0,
+  "page_evidence_over_all_positive": 0.35714285714285715,
+  "known_label_decision_coverage": 0.2777777777777778,
+  "declared_resource_reference_matches_independent_fixture": 25,
+  "declared_reference_over_all_positive": 0.35714285714285715,
+  "owned_synthetic_media_frozen_hash_verified": true,
+  "runtime_media_content_identity_verification": "NOT_RUN",
+  "engine_resource_extraction_verification": "NOT_IMPLEMENTED_NOT_MEASURED",
+  "playback_verification": "NOT_RUN",
+  "rights_verification": "NOT_RUN",
+  "metadata_only_promoted": false,
+  "interpretation": "Declared source references, not verified media identity or extractability. 25/100 is not a success rate."
+}
