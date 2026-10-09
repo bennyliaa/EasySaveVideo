@@ -141,7 +141,7 @@ class Request:
             raise ValueError('OUTCOME')
         if outcome != 'PAGE_EVIDENCE':
             evidence, title, thumbnail, duration = 'NONE', None, None, None
-        elif evidence not in {'HTML_VIDEO', 'DYNAMIC_VIDEO_XHR'}:
+        elif evidence not in {'HTML_VIDEO', 'DYNAMIC_VIDEO_XHR', 'DYNAMIC_VIDEO_DOM'}:
             raise ValueError('EVIDENCE')
         return {'version': 1, 'requestId': self.requestId, 'generation': self.generation,
                 'candidateUrl': self.candidateUrl, 'outcome': outcome, 'pageUrl': self.candidateUrl,
@@ -160,8 +160,8 @@ def encode_result(request, result):
     if result['outcome'] not in OUTCOMES:
         raise InvalidRequest('RESULT_OUTCOME')
     if result['outcome'] == 'PAGE_EVIDENCE':
-        if (result['evidence'] not in {'HTML_VIDEO', 'DYNAMIC_VIDEO_XHR'}
-                or result['evidence'] == 'DYNAMIC_VIDEO_XHR' and not request.dynamicAllowed):
+        if (result['evidence'] not in {'HTML_VIDEO', 'DYNAMIC_VIDEO_XHR', 'DYNAMIC_VIDEO_DOM'}
+                or result['evidence'] in {'DYNAMIC_VIDEO_XHR', 'DYNAMIC_VIDEO_DOM'} and not request.dynamicAllowed):
             raise InvalidRequest('RESULT_EVIDENCE')
         title = result['title']
         if title is not None and not valid_title(title):

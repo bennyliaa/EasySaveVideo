@@ -6,7 +6,7 @@ from esv_verify.service import VerificationService
 from esv_verify.capability import FixtureCapability,FixtureRule
 from esv_verify.protocol import Request
 class FrozenMarkerControlTests(unittest.TestCase):
-    def test_same_frozen_page_marker_is_decisive_not_identity_budget_or_admission(self):
+    def test_ordinary_page_no_longer_requires_marker(self):
         root=pathlib.Path('../ab-validation-20261008/corpus');manifest=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
         case=next(x for x in manifest['cases'] if x['id']=='static-00')
         original=(root/case['path'].lstrip('/')).read_bytes();assert hashlib.sha256(original).hexdigest()==case['sha256']
@@ -26,8 +26,8 @@ class FrozenMarkerControlTests(unittest.TestCase):
                 result=service.verify(request);outcomes.append(result['outcome'])
                 self.assertEqual(request.requestId,result['requestId']);self.assertEqual(request.generation,result['generation'])
                 self.assertFalse(service._windows.runners[0].poisoned)
-            self.assertEqual(['INSUFFICIENT','PAGE_EVIDENCE'],outcomes);self.assertEqual(list(bodies),calls)
+            self.assertEqual(['PAGE_EVIDENCE','PAGE_EVIDENCE'],outcomes);self.assertEqual(list(bodies),calls)
             self.assertEqual(case['sha256'],hashlib.sha256((root/case['path'].lstrip('/')).read_bytes()).hexdigest())
-            pathlib.Path('artifacts/local-windows-20261009/a-marker-control.json').write_text(json.dumps({'scope':'separate paired diagnostic controls, not part of benchmark','actual_real_scrapling_workers':2,'original_frozen_hash':case['sha256'],'original_untouched':True,'same_admission_protocol_budget':True,'outcomes':outcomes,'production_gate_changed':False},indent=2)+'\n',encoding='utf-8')
+            pathlib.Path('artifacts/local-windows-20261009/ordinary-marker-control.json').write_text(json.dumps({'scope':'separate paired diagnostic controls, not part of benchmark','actual_real_scrapling_workers':2,'original_frozen_hash':case['sha256'],'original_untouched':True,'same_admission_protocol_budget':True,'outcomes':outcomes,'production_gate_changed':True},indent=2)+'\n',encoding='utf-8')
         finally:service.close();server.shutdown();server.server_close();thread.join(1)
 if __name__=='__main__':unittest.main()

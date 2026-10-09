@@ -109,19 +109,65 @@ def metadata(selector, video):
     return title, public_thumbnail(video.attrib.get('poster')), duration
 
 
+def structured_declaration(selector, request):
+    """Bounded JSON-LD candidate declaration, never a positive video verdict.
+
+    No recursive schema interpreter, remote contexts, identity or media fetch.
+    Only a single top-level VideoObject with one safe contentUrl is supported.
+    """
+    scripts = selector.css('script[type="application/ld+json"]')
+    if len(scripts) != 1:
+        return None
+    raw = (scripts[0]._root.text or '').encode('utf-8')
+    if len(raw) > MAX_XHR:
+        return None
+    try:
+        data = strict_json(raw)
+        if not isinstance(data, dict) or data.get('@type') != 'VideoObject':
+            return None
+        source = data.get('contentUrl')
+        if (not isinstance(source, str) or not source or source != source.strip()
+                or '\\' in source or '#' in source or any(ord(c) <= 32 for c in source)):
+            return None
+        resolved = urljoin(request.candidateUrl, source)
+        page_url(resolved)
+        return resolved if resolved != request.candidateUrl else None
+    except (InvalidRequest, UnicodeError):
+        return None
+
+
 def static_evidence(selector, request):
     video = one_primary_video(selector)
-    if video is None or video.attrib.get('data-esv-primary') != 'true':
+    if video is None or selector.css('iframe,object,embed'):
         return None
+    explicit = video.attrib.get('data-esv-primary') == 'true'
+    node = video._root
+    main = selector.css('main')[0]._root
+    children = [child for child in main if child.tag not in {'h1', 'script'}]
+    direct = ('controls' in video.attrib and len(children) == 1 and
+              (children[0] is node or children[0].tag == 'div' and
+               len(children[0]) == 1 and children[0][0] is node))
+    if not explicit and not direct:
+        return None
+    for ancestor in [node, *node.iterancestors()]:
+        attrs = ancestor.attrib
+        style = re.sub(r'\s+', '', attrs.get('style', '').lower())
+        intent_tokens = set(re.split(r'[^a-z0-9]+', (attrs.get('id', '') + ' ' + attrs.get('class', '')).lower()))
+        if (ancestor.tag == 'svg' or not explicit and ancestor.tag in {'article', 'aside'}
+                or intent_tokens.intersection({'ad', 'ads', 'advert', 'advertisement', 'sponsored'})
+                or 'hidden' in attrs or attrs.get('aria-hidden', '').lower() == 'true'
+                or 'display:none' in style or 'visibility:hidden' in style):
+            return None
     sources = list(video.css('source::attr(src)').getall())
     if video.attrib.get('src'):
         sources.append(video.attrib['src'])
-    if not sources or len(sources) > 8:
+    sources = list(dict.fromkeys(sources))
+    if len(sources) != 1:
         return None
     try:
         for source in sources:
             if (not source or source != source.strip() or any(ord(c) <= 32 or 127 <= ord(c) <= 159 for c in source)
-                    or source.startswith(('#', 'data:', 'blob:'))):
+                    or '\\' in source or source.startswith(('#', 'data:', 'blob:'))):
                 return None
             if ':' in source.split('/', 1)[0]:
                 page_url(source)
@@ -129,6 +175,8 @@ def static_evidence(selector, request):
             if resolved == request.candidateUrl:
                 return None
             page_url(resolved)
+            if '#' in resolved:
+                return None
     except InvalidRequest:
         return None
     title, thumbnail, duration = metadata(selector, video)
@@ -148,7 +196,7 @@ def browser_options(capability, rule, deadline):
     return dict(headless=True, google_search=False, dns_over_https=False, proxy=None,
         proxy_rotator=None, cookies=[], real_chrome=False, cdp_url=None, user_data_dir='',
         max_pages=1, timeout=max(1, int(remaining(deadline) * 1000)), retries=1, wait=0,
-        network_idle=False, capture_xhr='^' + re.escape((capability.logical_origin or capability.origin) + rule.api_path) + '$',
+        network_idle=False, capture_xhr=('^' + re.escape((capability.logical_origin or capability.origin) + rule.api_path) + '$') if rule.api_path else '^$',
         selector_config={'huge_tree': False, 'adaptive': False}, executable_path=str(executable),
         additional_args={'ignore_https_errors': False, 'permissions': [], 'accept_downloads': False,
             'service_workers': 'block', 'bypass_csp': False, 'chromium_sandbox': True,
@@ -161,8 +209,8 @@ def browser_options(capability, rule, deadline):
 def dynamic_evidence(html, request, capability, rule, deadline):
     from scrapling.fetchers import DynamicFetcher
     page_url_value = request.candidateUrl
-    api_url = (capability.logical_origin or capability.origin) + rule.api_path
-    physical_api_url = capability.origin + rule.api_path
+    api_url = (capability.logical_origin or capability.origin) + rule.api_path if rule.api_path else None
+    physical_api_url = capability.origin + rule.api_path if rule.api_path else None
     blocked = False
     counts = {'document': 0, 'api': 0}
     setup_ready = False
@@ -180,7 +228,7 @@ def dynamic_evidence(html, request, capability, rule, deadline):
                 if counts['document'] != 1:
                     raise Rejected()
                 body, content_type = html, 'text/html'
-            elif req.url == api_url and req.resource_type in {'xhr', 'fetch'} and req.frame == req.frame.page.main_frame:
+            elif api_url is not None and req.url == api_url and req.resource_type in {'xhr', 'fetch'} and req.frame == req.frame.page.main_frame:
                 counts['api'] += 1
                 if counts['api'] != 1:
                     raise Rejected()
@@ -191,7 +239,7 @@ def dynamic_evidence(html, request, capability, rule, deadline):
                 raise Rejected()
             # The browser does not use continue_() or fetch() and cannot reach a server.
             route.fulfill(status=200, content_type=content_type, body=body,
-                headers={'Content-Security-Policy': "default-src 'none'; script-src 'unsafe-inline'; connect-src " + api_url + "; img-src 'none'; media-src 'none'; frame-src 'none'; worker-src 'none'; form-action 'none'; base-uri 'none'",
+                headers={'Content-Security-Policy': "default-src 'none'; script-src 'unsafe-inline'; connect-src " + (api_url or "'none'") + "; img-src 'none'; media-src 'none'; frame-src 'none'; worker-src 'none'; form-action 'none'; base-uri 'none'",
                          'Cache-Control': 'no-store'})
         except Exception:
             blocked = True
@@ -231,10 +279,18 @@ def dynamic_evidence(html, request, capability, rule, deadline):
 
     options = browser_options(capability, rule, deadline)
     response = DynamicFetcher.fetch(page_url_value, **options, page_setup=setup,
-        page_action=inspect_dom, wait_selector='main[data-ready="true"]')
+        page_action=inspect_dom, wait_selector='main video[controls]' if rule.dynamic_dom else 'main[data-ready="true"]')
     remaining(deadline)
     if not setup_ready or blocked or response.url != page_url_value or response.history or len(response.body) > MAX_DOM:
         raise Rejected()
+    if rule.dynamic_dom:
+        if counts != {'document': 1, 'api': 0}:
+            return request.result('INSUFFICIENT')
+        result = static_evidence(response, request)
+        if result is None:
+            return request.result('INSUFFICIENT')
+        result['evidence'] = 'DYNAMIC_VIDEO_DOM'
+        return result
     video = one_primary_video(response)
     captured = [entry for entry in response.captured_xhr if entry.url == api_url and entry.status == 200]
     if (video is None or counts != {'document': 1, 'api': 1} or len(captured) != 1
@@ -266,11 +322,12 @@ def verify(request, capability, deadline):
         html, content_type = read_fixture(physical_url, {physical_url}, MAX_HTML, deadline)
         if content_type != 'text/html':
             raise Rejected()
+        html.decode('utf-8', errors='strict')
         selector = Selector(html, url=request.candidateUrl, huge_tree=False, adaptive=False)
         result = static_evidence(selector, request)
         if result is not None:
             return result
-        if not request.dynamicAllowed or rule.api_path is None:
+        if not request.dynamicAllowed or rule.api_path is None and not rule.dynamic_dom:
             return request.result('INSUFFICIENT')
         return dynamic_evidence(html, request, capability, rule, deadline)
     except Rejected:

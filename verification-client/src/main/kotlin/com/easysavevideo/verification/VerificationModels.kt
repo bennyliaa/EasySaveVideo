@@ -23,7 +23,7 @@ class VerificationFailure(val code: VerificationError) : RuntimeException(code.n
 enum class VerificationOutcome {
     PAGE_EVIDENCE, INSUFFICIENT, UNSUPPORTED, REJECTED, TIMEOUT, CANCELLED, BUSY, UNAVAILABLE,
 }
-enum class VerificationEvidence { HTML_VIDEO, DYNAMIC_VIDEO_XHR, NONE }
+enum class VerificationEvidence { HTML_VIDEO, DYNAMIC_VIDEO_XHR, DYNAMIC_VIDEO_DOM, NONE }
 
 /** Only the validated response supplies metadata. This is never a playback or rights assertion. */
 class VerificationResult internal constructor(
@@ -40,7 +40,7 @@ class VerificationResult internal constructor(
     val playbackVerified: Boolean get() = false
     val downloadable: Boolean get() = false
     fun toRaw(): RawVideoResult? = if (outcome == VerificationOutcome.PAGE_EVIDENCE &&
-        evidence in setOf(VerificationEvidence.HTML_VIDEO, VerificationEvidence.DYNAMIC_VIDEO_XHR))
+        evidence in setOf(VerificationEvidence.HTML_VIDEO, VerificationEvidence.DYNAMIC_VIDEO_XHR, VerificationEvidence.DYNAMIC_VIDEO_DOM))
         RawVideoResult(pageUrl = pageUrl, videoConfirmed = true, title = title,
             thumbnailUrl = thumbnailUrl, durationMs = durationMs) else null
     override fun toString(): String = "VerificationResult(outcome=$outcome, evidence=$evidence, metadata=[redacted])"

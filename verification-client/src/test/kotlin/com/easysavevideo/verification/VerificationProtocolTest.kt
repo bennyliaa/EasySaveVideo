@@ -45,6 +45,13 @@ class VerificationProtocolTest {
         protocolFails { parse(json) }
         assertEquals(VerificationEvidence.DYNAMIC_VIDEO_XHR, parse(json, true).evidence)
     }
+    @Test fun domEvidenceRequiresClientOptInAndDoesNotVerifyPlayback() {
+        val json = responseJson(evidence = "DYNAMIC_VIDEO_DOM")
+        protocolFails { parse(json) }
+        val result = parse(json, true)
+        assertEquals(VerificationEvidence.DYNAMIC_VIDEO_DOM, result.evidence)
+        assertFalse(result.playbackVerified); assertFalse(result.downloadable)
+    }
     @Test fun everyIdentityMismatchIsRejected() {
         for (key in listOf("requestId", "generation", "candidateUrl", "pageUrl"))
             protocolFails { parse(mutate(key, Json.Str("mismatch"))) }

@@ -39,7 +39,7 @@ internal object VerificationProtocol {
             if (it == Json.Nil) null else it.longOrNull()?.takeIf { value -> value in 1..86_400_000 } ?: invalidResponse()
         }
         if (outcome == VerificationOutcome.PAGE_EVIDENCE) {
-            if (evidence == VerificationEvidence.NONE || evidence == VerificationEvidence.DYNAMIC_VIDEO_XHR && !dynamicAllowed)
+            if (evidence == VerificationEvidence.NONE || evidence in setOf(VerificationEvidence.DYNAMIC_VIDEO_XHR, VerificationEvidence.DYNAMIC_VIDEO_DOM) && !dynamicAllowed)
                 invalidResponse()
         } else if (evidence != VerificationEvidence.NONE || title != null || thumbnail != null || duration != null) invalidResponse()
         check()

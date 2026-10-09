@@ -1,0 +1,57 @@
+{
+  "frozen_count": 100,
+  "all_100_labels_and_hashes_verified": true,
+  "A_outcomes": {
+    "PAGE_EVIDENCE": 45,
+    "INSUFFICIENT": 45,
+    "REJECTED": 10
+  },
+  "A_evidence": {
+    "HTML_VIDEO": 25,
+    "NONE": 55,
+    "DYNAMIC_VIDEO_DOM": 20
+  },
+  "B_host_static_verdicts": {
+    "UNKNOWN": 75,
+    "VIDEO": 25
+  },
+  "structured_candidate_count": 15,
+  "A_component_recovery_verdicts": {
+    "VIDEO": 20,
+    "UNKNOWN": 60
+  },
+  "JVM": [
+    {
+      "module": "discovery",
+      "tests": 249,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "verification-client",
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "verification-local",
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "windows_tests_passed": 18,
+  "real_selector_tests_passed": 3,
+  "phone_cpu_ram_energy_network_time": "NOT_MEASURED",
+  "Android_WebView": "NOT_RUN",
+  "public_sources": 0,
+  "media_identity_extraction_playback_rights": "NOT_VERIFIED",
+  "host_elapsed_sum_ms_A": 63936,
+  "host_elapsed_sum_ms_B_static": 556,
+  "timing_comparison": "NOT_ACCEPTED: A process/browser and B host JVM are different execution environments and budgets; no phone or engine speed ranking",
+  "A_per_request_budget_ms": 10000,
+  "B_static_network_budget_ms": 1500
+}

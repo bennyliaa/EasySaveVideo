@@ -1,0 +1,15 @@
+.D:\CodexProjects\EasySaveVideo\Scrapling_Service\.venv\Lib\site-packages\lxml\html\__init__.py:1891: DeprecationWarning: The 'strip_cdata' option of HTMLParser() has never done anything and will eventually be removed.
+  super().__init__(**kwargs)
+.F
+======================================================================
+FAIL: test_structured_declaration_is_only_a_candidate (__main__.OrdinaryEvidenceTests.test_structured_declaration_is_only_a_candidate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\CodexProjects\EasySaveVideo\esv-source-12f97d43-20261009\verification-service\tests\ordinary_evidence_tests.py", line 13, in test_structured_declaration_is_only_a_candidate
+    self.assertEqual('https://fixture.example.org/media.mp4',structured_declaration(selector,request))
+AssertionError: 'https://fixture.example.org/media.mp4' != None
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.005s
+
+FAILED (failures=1)

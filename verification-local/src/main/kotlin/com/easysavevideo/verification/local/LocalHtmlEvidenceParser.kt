@@ -33,6 +33,11 @@ class LocalHtmlEvidenceParser {
                 it.tagName()=="div" && it.children().size==1 && it.child(0)===video
             })
         if (!explicit && !directPlayer) return null
+        val adTokens=setOf("ad","ads","advert","advertisement","sponsored")
+        if ((listOf(video)+video.parents()).any {
+            (it.id()+" "+it.className()).lowercase(java.util.Locale.ROOT)
+                .split(Regex("[^a-z0-9]+")).any(adTokens::contains)
+        }) return null
         if (video.parents().any {it.tagName()=="svg" || (!explicit && it.tagName() in setOf("article","aside")) || it.hasAttr("hidden") ||
             it.attr("aria-hidden").equals("true",true)}) return null
         if ((listOf(video)+video.parents()).any {

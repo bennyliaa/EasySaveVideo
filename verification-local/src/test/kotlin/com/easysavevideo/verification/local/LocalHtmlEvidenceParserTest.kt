@@ -17,6 +17,10 @@ class LocalHtmlEvidenceParserTest {
         assertNull(parse("<main><div style='display: none'><video controls src='/owned.mp4'></video></div></main>"))
         assertNull(parse("<main><p>Competing article</p><video controls src='/incidental.mp4'></video></main>"))
     }
+    @Test fun explicitlyAdMarkedPlayerAbstainsEvenWithPrimaryMarker() {
+        assertNull(parse("<main class='sponsored'><video controls src='/ad.mp4'></video></main>"))
+        assertNull(parse("<main><video data-esv-primary='true' class='ad' src='/ad.mp4'></video></main>"))
+    }
     @Test fun realJsoupPrimaryVideoEvidenceNotPlaybackOrDownload() {
         val evidence=parse("<main><h1>Owned fixture</h1><video data-esv-primary='true' src='/media.mp4'></video></main>")!!
         assertEquals("https://fixture.example.org/media.mp4",evidence.sourceCandidate)

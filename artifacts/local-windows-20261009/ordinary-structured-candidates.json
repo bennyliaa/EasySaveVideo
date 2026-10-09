@@ -1,0 +1,502 @@
+[
+  {
+    "id": "static-00",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-01",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-02",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-03",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-04",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-05",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-06",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-07",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-08",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-09",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-10",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-11",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-12",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-13",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-14",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-15",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-16",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-17",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-18",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-19",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-20",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-21",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-22",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-23",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "static-24",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-00",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-01",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-02",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-03",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-04",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-05",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-06",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-07",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-08",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-09",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-10",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-11",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-12",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-13",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "metadata-14",
+    "candidate_declaration": true,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-00",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-01",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-02",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-03",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-04",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-05",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-06",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-07",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-08",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-09",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-10",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-11",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-12",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-13",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-14",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-15",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-16",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-17",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-18",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "dynamic-19",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "embedded-00",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "embedded-01",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "embedded-02",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "embedded-03",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "embedded-04",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "embedded-05",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "embedded-06",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "embedded-07",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "embedded-08",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "embedded-09",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-00",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-01",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-02",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-03",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-04",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-05",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-06",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-07",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-08",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-09",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-10",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-11",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-12",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-13",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-14",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-15",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-16",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-17",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-18",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "negative-19",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "unknown-00",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "unknown-01",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "unknown-02",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "unknown-03",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "unknown-04",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "unknown-05",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "unknown-06",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "unknown-07",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "unknown-08",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  },
+  {
+    "id": "unknown-09",
+    "candidate_declaration": false,
+    "video_confirmed_from_declaration": false
+  }
+]

@@ -9,6 +9,7 @@ class FixtureRule:
     page_path: str
     api_path: str | None = None
     video_id: str | None = None
+    dynamic_dom: bool = False
 
 
 @dataclass(frozen=True)
@@ -29,6 +30,8 @@ class FixtureCapability:
         if not 1 <= len(self.rules) <= 64 or len({rule.page_path for rule in self.rules}) != len(self.rules):
             raise ValueError('FIXTURE_RULES')
         for rule in self.rules:
+            if type(rule.dynamic_dom) is not bool or rule.dynamic_dom and rule.api_path is not None:
+                raise ValueError('FIXTURE_DYNAMIC_MODE')
             for path in (rule.page_path, rule.api_path):
                 if path is not None and not re.fullmatch(r'/[A-Za-z0-9_./-]{1,128}', path):
                     raise ValueError('FIXTURE_PATH')

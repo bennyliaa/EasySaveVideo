@@ -1,0 +1,2 @@
+[2026-10-10 03:49:41] INFO: Fetched (200) <GET https://fixture.example.org/dynamic-00.html> (referer: None)
+{'version': 1, 'requestId': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'generation': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'candidateUrl': 'https://fixture.example.org/dynamic-00.html', 'outcome': 'PAGE_EVIDENCE', 'pageUrl': 'https://fixture.example.org/dynamic-00.html', 'evidence': 'DYNAMIC_VIDEO_DOM', 'title': None, 'thumbnailUrl': None, 'durationMs': None, 'playbackVerified': False, 'downloadable': False}

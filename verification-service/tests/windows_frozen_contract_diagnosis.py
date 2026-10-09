@@ -1,4 +1,6 @@
-"""Diagnose frozen A contract, without changing originals, policy or recorded benchmark."""
+"""Historical marker-only diagnosis: run from d1d23f4e, not the ordinary-page adapter.
+Original evidence is retained; this script intentionally asserts the old policy.
+"""
 import collections,csv,hashlib,json,pathlib,sys,time
 sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]))
 from scrapling import Selector

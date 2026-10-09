@@ -1,0 +1,29 @@
+.........Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'esv_verify'
+E.E.....
+======================================================================
+ERROR: test_clean_process_imports_no_optional_runtime (test_service.DefaultServiceTests.test_clean_process_imports_no_optional_runtime)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\CodexProjects\EasySaveVideo\esv-source-12f97d43-20261009\verification-service/tests\test_service.py", line 87, in test_clean_process_imports_no_optional_runtime
+    subprocess.run([sys.executable, '-c', 'from esv_verify.server import Server; import sys; assert not any(n.startswith(("scrapling", "playwright", "curl_cffi")) for n in sys.modules)'], check=True, timeout=5)
+  File "D:\Program Files\FreeCAD 1.1\bin\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['D:\\CodexProjects\\EasySaveVideo\\Scrapling_Service\\.venv\\Scripts\\python.exe', '-c', 'from esv_verify.server import Server; import sys; assert not any(n.startswith(("scrapling", "playwright", "curl_cffi")) for n in sys.modules)']' returned non-zero exit status 1.
+
+======================================================================
+ERROR: test_no_cli_or_environment_fixture_switch (test_service.DefaultServiceTests.test_no_cli_or_environment_fixture_switch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\CodexProjects\EasySaveVideo\esv-source-12f97d43-20261009\verification-service/tests\test_service.py", line 89, in test_no_cli_or_environment_fixture_switch
+    output = subprocess.run([sys.executable, '-m', 'esv_verify', '--help'], check=True, capture_output=True, text=True, timeout=5)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Program Files\FreeCAD 1.1\bin\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['D:\\CodexProjects\\EasySaveVideo\\Scrapling_Service\\.venv\\Scripts\\python.exe', '-m', 'esv_verify', '--help']' returned non-zero exit status 1.
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.252s
+
+FAILED (errors=2)

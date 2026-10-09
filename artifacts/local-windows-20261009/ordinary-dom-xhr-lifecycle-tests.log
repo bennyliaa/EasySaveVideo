@@ -1,0 +1,24 @@
+.F
+======================================================================
+FAIL: test_real_scrapling_chromium_sandbox_windows_job (__main__.WindowsRealDynamicTests.test_real_scrapling_chromium_sandbox_windows_job)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\CodexProjects\EasySaveVideo\esv-source-12f97d43-20261009\verification-service\tests\windows_ordinary_dynamic_tests.py", line 33, in test_real_scrapling_chromium_sandbox_windows_job
+    self.assertEqual(['/page','/api'],DynamicHandler.paths)
+AssertionError: Lists differ: ['/page', '/api'] != ['/dom', '/dom', '/page', '/api']
+
+First differing element 0:
+'/page'
+'/dom'
+
+Second list contains 2 additional elements.
+First extra element 2:
+'/page'
+
+- ['/page', '/api']
++ ['/dom', '/dom', '/page', '/api']
+
+----------------------------------------------------------------------
+Ran 2 tests in 4.785s
+
+FAILED (failures=1)

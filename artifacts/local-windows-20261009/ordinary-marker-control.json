@@ -1,0 +1,12 @@
+{
+  "scope": "separate paired diagnostic controls, not part of benchmark",
+  "actual_real_scrapling_workers": 2,
+  "original_frozen_hash": "a06b6e6ef4257ba17f7a7a14101910797a414bd06ff0cd3e69f83154e4f8c1d0",
+  "original_untouched": true,
+  "same_admission_protocol_budget": true,
+  "outcomes": [
+    "PAGE_EVIDENCE",
+    "PAGE_EVIDENCE"
+  ],
+  "production_gate_changed": true
+}

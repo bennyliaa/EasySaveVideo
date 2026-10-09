@@ -1,0 +1,7 @@
+.D:\CodexProjects\EasySaveVideo\Scrapling_Service\.venv\Lib\site-packages\lxml\html\__init__.py:1891: DeprecationWarning: The 'strip_cdata' option of HTMLParser() has never done anything and will eventually be removed.
+  super().__init__(**kwargs)
+..
+----------------------------------------------------------------------
+Ran 3 tests in 0.004s
+
+OK

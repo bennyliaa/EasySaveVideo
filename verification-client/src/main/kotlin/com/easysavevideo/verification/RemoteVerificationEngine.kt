@@ -29,7 +29,7 @@ class RemoteVerificationEngine(private val client: (Long, Boolean) -> Verificati
         }
         val evidence = when(response.evidence) {
             VerificationEvidence.HTML_VIDEO -> EngineEvidence.HTML_VIDEO
-            VerificationEvidence.DYNAMIC_VIDEO_XHR -> EngineEvidence.DYNAMIC_VIDEO
+            VerificationEvidence.DYNAMIC_VIDEO_XHR, VerificationEvidence.DYNAMIC_VIDEO_DOM -> EngineEvidence.DYNAMIC_VIDEO
             VerificationEvidence.NONE -> EngineEvidence.NONE
         }
         return EngineResult(request.requestId,request.generation,id,outcome,evidence,response.toRaw(),1,32768)

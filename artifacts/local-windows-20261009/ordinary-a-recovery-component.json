@@ -1,0 +1,565 @@
+{
+  "scope": "actual Selector component only; full recovery engine NOT_RUN",
+  "records": [
+    {
+      "id": "static-00-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-00-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-00-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-00-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-01-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-01-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-01-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-01-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-02-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-02-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-02-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-02-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-03-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-03-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-03-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-03-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-04-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-04-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-04-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-04-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-05-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-05-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-05-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-05-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-06-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-06-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-06-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-06-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-07-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-07-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-07-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-07-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-08-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-08-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-08-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-08-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-09-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-09-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-09-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-09-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-10-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-10-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-10-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-10-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-11-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-11-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-11-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-11-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-12-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-12-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-12-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-12-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-13-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-13-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-13-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-13-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-14-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-14-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-14-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-14-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-15-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-15-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-15-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-15-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-16-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-16-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-16-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-16-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-17-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-17-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-17-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-17-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-18-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-18-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-18-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-18-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-19-class-id",
+      "label": "positive",
+      "mutation": "class-id",
+      "verdict": "VIDEO",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-19-wrap-reorder",
+      "label": "positive",
+      "mutation": "wrap-reorder",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-19-similar-decoy",
+      "label": "positive",
+      "mutation": "similar-decoy",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    },
+    {
+      "id": "static-19-target-deleted",
+      "label": "negative",
+      "mutation": "target-deleted",
+      "verdict": "UNKNOWN",
+      "body_hash_verified": true
+    }
+  ]
+}
