@@ -1,0 +1,56 @@
+{
+  "com.easysavevideo.commons.maintenance.RepositoryCommonsMaintenanceTest": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "com.easysavevideo.commons.maintenance.ProviderRepositoryTest": {
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "com.easysavevideo.commons.CommonsProtocolTest": {
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "com.easysavevideo.commons.maintenance.ProviderPackageTest": {
+    "tests": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "com.easysavevideo.commons.CommonsMetadataProviderTest": {
+    "tests": 21,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "com.easysavevideo.commons.CommonsProviderRuntimeTest": {
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "com.easysavevideo.commons.maintenance.ProviderUpdateRuntimeTest": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "com.easysavevideo.commons.CommonsDiscoveryBridgeTest": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "com.easysavevideo.commons.CommonsMaintenanceIntegrationTest": {
+    "tests": 12,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

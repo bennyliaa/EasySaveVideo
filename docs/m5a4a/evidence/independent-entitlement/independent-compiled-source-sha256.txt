@@ -1,0 +1,11 @@
+e799805a62e896735e8758ef8f3d309ad8be597af1efe08232997149f2c8bb71  core-model/src/main/kotlin/com/easysavevideo/core/model/Browser.kt
+468f9b270f559990728e268eb067e3b377cd7623739d99b3004ed5ef89e89410  core-model/src/main/kotlin/com/easysavevideo/core/model/Entitlements.kt
+a190425ada84d33155e4b02081e87608b7568b98c75ead9c41b2555084f29bd0  core-model/src/main/kotlin/com/easysavevideo/core/model/Errors.kt
+910bbf009885fa86e1c347256a003c224ed1257d5f1aef6012bd6de289768a5f  core-model/src/main/kotlin/com/easysavevideo/core/model/Operations.kt
+d81e07445067d5b5e8e3f30c726f5e789e689be9cb033f9142e5d0b8c36b50b5  core-model/src/main/kotlin/com/easysavevideo/core/model/Recovery.kt
+d6f7aef7e84b42be4d72708e1d096b27fd1f52c5b863bdff8e06674952b385a2  core-model/src/main/kotlin/com/easysavevideo/core/model/Settings.kt
+486284cbb4a676c89638b61b8dad1142583671ea625acae178d3585208d8a241  core-domain/src/main/kotlin/com/easysavevideo/core/domain/EntitlementManager.kt
+2b09c72fc330a77b4cd78968dabd56d42ff7a1a393c38a71ae7f35b09c4fe7ad  app/src/main/kotlin/com/easysavevideo/app/entitlements/ProductMapping.kt
+f72dceaa477d42af22bfe31236df71cd5ae0b244d3f8df42de37a7c73595fe55  docs/m10a/evidence/IndependentEntitlementReviewTest.kt
+1f1d575b031826749d82d4780c59d3e1ccddab0ab39f0ff37174f9e7598ad16a  docs/m5a4a/evidence/run-independent-entitlement-review.sh
+bdea87cc91d1eb51c7ad1f0845ed916046a48ddfc64d34cae94846e75cca6265  docs/m7c/evidence/independent-final-toolchain-sha256.txt

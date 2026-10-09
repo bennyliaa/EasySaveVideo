@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.save.storage.SaveRecordCodecTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-06T17:55:03.892Z" hostname="723dfa57d2fa" time="0.015">
+  <properties/>
+  <testcase name="streamConstraintsRoundTripAsTechnicalNumbersOnly" classname="com.easysavevideo.app.save.storage.SaveRecordCodecTest" time="0.007"/>
+  <testcase name="malformedDurableStreamCannotFallBackToDirectValidationOnRecovery" classname="com.easysavevideo.app.save.storage.SaveRecordCodecTest" time="0.001"/>
+  <testcase name="truncationUnknownSchemaAndTrailingBytesFailClosed" classname="com.easysavevideo.app.save.storage.SaveRecordCodecTest" time="0.002"/>
+  <testcase name="verificationAndCommitReceiptRoundTrip" classname="com.easysavevideo.app.save.storage.SaveRecordCodecTest" time="0.001"/>
+  <testcase name="oldV1TransferVerificationAndReceiptSurviveChangedWireBoundary" classname="com.easysavevideo.app.save.storage.SaveRecordCodecTest" time="0.002"/>
+  <testcase name="oldVersionOneDirectRecordRemainsReadable" classname="com.easysavevideo.app.save.storage.SaveRecordCodecTest" time="0.0"/>
+  <testcase name="functionalRecoveryStateRoundTripsWithoutRequestCredentials" classname="com.easysavevideo.app.save.storage.SaveRecordCodecTest" time="0.001"/>
+  <testcase name="durableRecordCannotContainEphemeralRequestLease" classname="com.easysavevideo.app.save.storage.SaveRecordCodecTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

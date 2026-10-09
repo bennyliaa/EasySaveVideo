@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.save.StreamVideoTailStateTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:59.547Z" hostname="05582a867b99" time="0.004">
+  <properties/>
+  <testcase name="nearEndOutputAndConfigOnlyTailAreNotTerminalProof" classname="com.easysavevideo.app.save.StreamVideoTailStateTest" time="0.001"/>
+  <testcase name="emptyEosOnlyCompletesAfterEveryOutput" classname="com.easysavevideo.app.save.StreamVideoTailStateTest" time="0.0"/>
+  <testcase name="duplicateInputOutputAndRepeatedEosFail" classname="com.easysavevideo.app.save.StreamVideoTailStateTest" time="0.001"/>
+  <testcase name="outputCannotPrecedeItsQueuedInputOrArriveAfterTerminalProof" classname="com.easysavevideo.app.save.StreamVideoTailStateTest" time="0.0"/>
+  <testcase name="finalNonemptyOutputMayCarryEos" classname="com.easysavevideo.app.save.StreamVideoTailStateTest" time="0.0"/>
+  <testcase name="lostIntermediateGopOutputIsRejectedEvenIfFinalFrameAppears" classname="com.easysavevideo.app.save.StreamVideoTailStateTest" time="0.0"/>
+  <testcase name="corruptedPayloadMetadataOrWrongSeekIdentityFails" classname="com.easysavevideo.app.save.StreamVideoTailStateTest" time="0.001"/>
+  <testcase name="noProgressFailsAndOnlyRealProgressResetsBudget" classname="com.easysavevideo.app.save.StreamVideoTailStateTest" time="0.0"/>
+  <testcase name="missingLastAccessUnitAndEarlyEosFail" classname="com.easysavevideo.app.save.StreamVideoTailStateTest" time="0.0"/>
+  <testcase name="cancellationPoisonsEvidenceEvenIfCheckpointLaterRecovers" classname="com.easysavevideo.app.save.StreamVideoTailStateTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

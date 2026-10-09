@@ -1,0 +1,121 @@
+Compiled from "HandlerDispatcher.kt"
+public final class kotlinx.coroutines.android.AndroidDispatcherFactory implements kotlinx.coroutines.internal.MainDispatcherFactory {
+  public kotlinx.coroutines.android.AndroidDispatcherFactory();
+    descriptor: ()V
+
+  public kotlinx.coroutines.MainCoroutineDispatcher createDispatcher(java.util.List<? extends kotlinx.coroutines.internal.MainDispatcherFactory>);
+    descriptor: (Ljava/util/List;)Lkotlinx/coroutines/MainCoroutineDispatcher;
+
+  public java.lang.String hintOnError();
+    descriptor: ()Ljava/lang/String;
+
+  public int getLoadPriority();
+    descriptor: ()I
+}
+Compiled from "AndroidExceptionPreHandler.kt"
+public final class kotlinx.coroutines.android.AndroidExceptionPreHandler extends kotlin.coroutines.AbstractCoroutineContextElement implements kotlinx.coroutines.CoroutineExceptionHandler {
+  public kotlinx.coroutines.android.AndroidExceptionPreHandler();
+    descriptor: ()V
+
+  public void handleException(kotlin.coroutines.CoroutineContext, java.lang.Throwable);
+    descriptor: (Lkotlin/coroutines/CoroutineContext;Ljava/lang/Throwable;)V
+}
+Compiled from "HandlerDispatcher.kt"
+public final class kotlinx.coroutines.android.HandlerContext extends kotlinx.coroutines.android.HandlerDispatcher implements kotlinx.coroutines.Delay {
+  public kotlinx.coroutines.android.HandlerContext(android.os.Handler, java.lang.String);
+    descriptor: (Landroid/os/Handler;Ljava/lang/String;)V
+
+  public kotlinx.coroutines.android.HandlerContext(android.os.Handler, java.lang.String, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Landroid/os/Handler;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+  public kotlinx.coroutines.android.HandlerContext getImmediate();
+    descriptor: ()Lkotlinx/coroutines/android/HandlerContext;
+
+  public boolean isDispatchNeeded(kotlin.coroutines.CoroutineContext);
+    descriptor: (Lkotlin/coroutines/CoroutineContext;)Z
+
+  public void dispatch(kotlin.coroutines.CoroutineContext, java.lang.Runnable);
+    descriptor: (Lkotlin/coroutines/CoroutineContext;Ljava/lang/Runnable;)V
+
+  public void scheduleResumeAfterDelay(long, kotlinx.coroutines.CancellableContinuation<? super kotlin.Unit>);
+    descriptor: (JLkotlinx/coroutines/CancellableContinuation;)V
+
+  public kotlinx.coroutines.DisposableHandle invokeOnTimeout(long, java.lang.Runnable, kotlin.coroutines.CoroutineContext);
+    descriptor: (JLjava/lang/Runnable;Lkotlin/coroutines/CoroutineContext;)Lkotlinx/coroutines/DisposableHandle;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+
+  public kotlinx.coroutines.android.HandlerDispatcher getImmediate();
+    descriptor: ()Lkotlinx/coroutines/android/HandlerDispatcher;
+
+  public kotlinx.coroutines.MainCoroutineDispatcher getImmediate();
+    descriptor: ()Lkotlinx/coroutines/MainCoroutineDispatcher;
+}
+Compiled from "Runnable.kt"
+public final class kotlinx.coroutines.android.HandlerContext$scheduleResumeAfterDelay$$inlined$Runnable$1 implements java.lang.Runnable {
+  public kotlinx.coroutines.android.HandlerContext$scheduleResumeAfterDelay$$inlined$Runnable$1(kotlinx.coroutines.CancellableContinuation, kotlinx.coroutines.android.HandlerContext);
+    descriptor: (Lkotlinx/coroutines/CancellableContinuation;Lkotlinx/coroutines/android/HandlerContext;)V
+
+  public final void run();
+    descriptor: ()V
+}
+Compiled from "HandlerDispatcher.kt"
+public abstract class kotlinx.coroutines.android.HandlerDispatcher extends kotlinx.coroutines.MainCoroutineDispatcher implements kotlinx.coroutines.Delay {
+  public abstract kotlinx.coroutines.android.HandlerDispatcher getImmediate();
+    descriptor: ()Lkotlinx/coroutines/android/HandlerDispatcher;
+
+  public java.lang.Object delay(long, kotlin.coroutines.Continuation<? super kotlin.Unit>);
+    descriptor: (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public kotlinx.coroutines.DisposableHandle invokeOnTimeout(long, java.lang.Runnable, kotlin.coroutines.CoroutineContext);
+    descriptor: (JLjava/lang/Runnable;Lkotlin/coroutines/CoroutineContext;)Lkotlinx/coroutines/DisposableHandle;
+
+  public kotlinx.coroutines.android.HandlerDispatcher(kotlin.jvm.internal.DefaultConstructorMarker);
+    descriptor: (Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+Compiled from "HandlerDispatcher.kt"
+public final class kotlinx.coroutines.android.HandlerDispatcherKt {
+  public static final kotlinx.coroutines.android.HandlerDispatcher Main;
+    descriptor: Lkotlinx/coroutines/android/HandlerDispatcher;
+  public static final kotlinx.coroutines.android.HandlerDispatcher from(android.os.Handler, java.lang.String);
+    descriptor: (Landroid/os/Handler;Ljava/lang/String;)Lkotlinx/coroutines/android/HandlerDispatcher;
+
+  public static kotlinx.coroutines.android.HandlerDispatcher from$default(android.os.Handler, java.lang.String, int, java.lang.Object);
+    descriptor: (Landroid/os/Handler;Ljava/lang/String;ILjava/lang/Object;)Lkotlinx/coroutines/android/HandlerDispatcher;
+
+  public static final android.os.Handler asHandler(android.os.Looper, boolean);
+    descriptor: (Landroid/os/Looper;Z)Landroid/os/Handler;
+
+  public static void getMain$annotations();
+    descriptor: ()V
+
+  public static final java.lang.Object awaitFrame(kotlin.coroutines.Continuation<? super java.lang.Long>);
+    descriptor: (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static final kotlinx.coroutines.android.HandlerDispatcher from(android.os.Handler);
+    descriptor: (Landroid/os/Handler;)Lkotlinx/coroutines/android/HandlerDispatcher;
+
+  public static final java.lang.Object access$awaitFrameSlowPath(kotlin.coroutines.Continuation);
+    descriptor: (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+
+  public static final void access$postFrameCallback(android.view.Choreographer, kotlinx.coroutines.CancellableContinuation);
+    descriptor: (Landroid/view/Choreographer;Lkotlinx/coroutines/CancellableContinuation;)V
+
+  public static final void access$updateChoreographerAndPostFrameCallback(kotlinx.coroutines.CancellableContinuation);
+    descriptor: (Lkotlinx/coroutines/CancellableContinuation;)V
+}
+Compiled from "Runnable.kt"
+public final class kotlinx.coroutines.android.HandlerDispatcherKt$awaitFrameSlowPath$lambda$3$$inlined$Runnable$1 implements java.lang.Runnable {
+  public kotlinx.coroutines.android.HandlerDispatcherKt$awaitFrameSlowPath$lambda$3$$inlined$Runnable$1(kotlinx.coroutines.CancellableContinuation);
+    descriptor: (Lkotlinx/coroutines/CancellableContinuation;)V
+
+  public final void run();
+    descriptor: ()V
+}

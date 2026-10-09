@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.recording.RecordingSegmentContractsTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:30:24.725Z" hostname="05582a867b99" time="0.024">
+  <properties/>
+  <testcase name="timingCopiesObservedPresentationOrderAndDoesNotExposeMutableArrays" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.002"/>
+  <testcase name="sequenceRejectsMixedConfigurationSelectionSessionAndScope" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.004"/>
+  <testcase name="stopRetainsForVerificationAndCancelDiscardsOnlyAfterActualClose" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.001"/>
+  <testcase name="wholeSequenceBudgetsCannotBeBypassedUsingSeparateFiles" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.006"/>
+  <testcase name="closedEnvelopeRequiresExactTrackTimingAndNativeClosedExpectation" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.002"/>
+  <testcase name="maximumIsInitialSegmentPlus32ActualResumes" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.003"/>
+  <testcase name="cfrRequiresEveryObservedPhaseAndFinalEndpointRatherThanDeclaredOrAverageFps" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.0"/>
+  <testcase name="oldInFileResumeBoundaryCannotMasqueradeAsIndependentClosedSegment" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.001"/>
+  <testcase name="sequencePreservesExactOrderAndExcludesAllPauseTime" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.002"/>
+  <testcase name="timingRejectsEmptySingleDuplicateBackwardsAndUnobservedEnd" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.003"/>
+  <testcase name="independentTimingChecksAllSamplesAndLastEndpoint" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.0"/>
+  <testcase name="fullDisplayWithoutRegionStillForbidsStretchingPresetOutput" classname="com.easysavevideo.recording.RecordingSegmentContractsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

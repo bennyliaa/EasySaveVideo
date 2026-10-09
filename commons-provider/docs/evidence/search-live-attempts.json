@@ -1,0 +1,28 @@
+[
+  {
+    "observed_at_utc": "2026-10-06T17:07:54.639864+00:00",
+    "request_url": "https://commons.wikimedia.org/w/api.php?action=query&format=json&formatversion=2&generator=search&gsrsearch=%22Big+Buck+Bunny%22+filetype%3Avideo&gsrnamespace=6&gsrlimit=1&prop=videoinfo%7Cinfo&inprop=url&viprop=mime%7Cmediatype%7Csize%7Curl%7Cextmetadata&vilimit=1&viurlwidth=320&viextmetadatafilter=Artist%7CCredit%7CAttribution%7CLicenseShortName%7CLicenseUrl%7CUsageTerms%7CCopyrighted%7CAttributionRequired%7CNonFree%7CRestrictions%7CDeletionReason&maxlag=5",
+    "method": "GET",
+    "user_agent": "EasySaveVideo/0.3.0-m3a-dev (approved contact redacted)",
+    "redirects_followed": false,
+    "cookie_or_authorization_sent": false,
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "body_bytes": 3478,
+    "body_sha256": "4f174d74e770e3fcdc5df56adb6cd1a7bd1735bd0468e0ab54647aabe53af32e",
+    "result": "CAPTURED_JSON"
+  },
+  {
+    "observed_at_utc": "2026-10-06T17:07:59.018886+00:00",
+    "request_url": "https://commons.wikimedia.org/w/api.php?action=query&format=json&formatversion=2&generator=search&gsrsearch=%22Big+Buck+Bunny%22+filetype%3Avideo&gsrnamespace=6&gsrlimit=1&prop=videoinfo%7Cinfo&inprop=url&viprop=mime%7Cmediatype%7Csize%7Curl%7Cextmetadata&vilimit=1&viurlwidth=320&viextmetadatafilter=Artist%7CCredit%7CAttribution%7CLicenseShortName%7CLicenseUrl%7CUsageTerms%7CCopyrighted%7CAttributionRequired%7CNonFree%7CRestrictions%7CDeletionReason&maxlag=5&gsroffset=1&continue=gsroffset%7C%7C",
+    "method": "GET",
+    "user_agent": "EasySaveVideo/0.3.0-m3a-dev (approved contact redacted)",
+    "redirects_followed": false,
+    "cookie_or_authorization_sent": false,
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "body_bytes": 3054,
+    "body_sha256": "906450951431ffe141ec465fee50787517b3cd9c6b0f9d33f490fcf428a4f138",
+    "result": "CAPTURED_JSON"
+  }
+]

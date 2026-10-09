@@ -1,0 +1,14 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :auditResolve
+AUDIT candidateOnly: 26 artifacts, 30 components
+AUDIT combined: 75 artifacts, 96 components
+AUDIT baselineOnly: 56 artifacts, 77 components
+
+> Task :auditLockedBaseline
+STRICT BASELINE EXPERIMENT: 0 unresolved edges; selected versions separately inspected for downgrades
+
+BUILD SUCCESSFUL in 6s
+2 actionable tasks: 2 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.0/userguide/configuration_cache_enabling.html

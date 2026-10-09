@@ -1,0 +1,10 @@
+{
+  "ref": "refs/tags/v1.23.0",
+  "node_id": "REF_kwDOHXkKS7FyZWZzL3RhZ3MvdjEuMjMuMA",
+  "url": "https://api.github.com/repos/tink-crypto/tink-java/git/refs/tags/v1.23.0",
+  "object": {
+    "sha": "7d41a6435667e6ec543e49ac544ff599b72601c9",
+    "type": "tag",
+    "url": "https://api.github.com/repos/tink-crypto/tink-java/git/tags/7d41a6435667e6ec543e49ac544ff599b72601c9"
+  }
+}

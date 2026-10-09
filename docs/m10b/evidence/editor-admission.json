@@ -1,0 +1,12 @@
+{
+  "kind": "M10B_CURRENT_MEDIA_GUARDS_DISTRIBUTION_BUILD_EDITS_REVIEWED_SEPARATELY",
+  "existing_runtime_74_and_platform_manifest_unchanged": "PASS",
+  "Save_HLS_verifier_and_M4_control_timeline_sources_unchanged": "PASS",
+  "core_platform_boundary": "PASS",
+  "typed_editor_no_network_or_capture": "PASS",
+  "catalog_identity_and_owned_publication_source": "PASS",
+  "sole_storage_monitor_and_checked_v3_v4_v5_migration_source": "PASS",
+  "skinkit_limits_and_free_cancel_source": "PASS",
+  "native_codec_gpu_oem_and_device_acceptance": "NOT_RUN",
+  "vault": "DISABLED_UNCHANGED"
+}

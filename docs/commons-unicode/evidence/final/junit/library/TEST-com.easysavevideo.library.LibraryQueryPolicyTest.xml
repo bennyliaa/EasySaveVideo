@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.library.LibraryQueryPolicyTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:32:27.684Z" hostname="05582a867b99" time="0.02">
+  <properties/>
+  <testcase name="cursorBindsFolderSearchSortDirectionAndPageSize" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.009"/>
+  <testcase name="unknownDurationSortsLastInBothDirections" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.001"/>
+  <testcase name="everyPageIsBoundedAndOrderedWithStableIds" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.003"/>
+  <testcase name="ignoresStagingInvisibleLifecycleAndOtherFolders" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.0"/>
+  <testcase name="pageRejectsHiddenItemsAndWrongCatalogVersion" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.001"/>
+  <testcase name="forgedOversizedOffsetCannotOverflowOrAllocateAnOversizedPage" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.001"/>
+  <testcase name="searchUsesCanonicalLiteralSubstringNotWildcards" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.001"/>
+  <testcase name="canonicalEquivalentQueriesHaveSameFingerprint" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.002"/>
+  <testcase name="unsupportedAndOversizedPagesFailBeforeWork" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.001"/>
+  <testcase name="catalogMutationInvalidatesContinuationRatherThanSkippingOrDuplicating" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.001"/>
+  <testcase name="allSupportedSortsAndDirectionsWork" classname="com.easysavevideo.library.LibraryQueryPolicyTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,26 @@
+{
+  "jvm": {
+    "tests": 2175,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "debug": {
+      "Error": 0,
+      "Warning": 18,
+      "Hint": 7
+    },
+    "release": {
+      "Error": 0,
+      "Warning": 18,
+      "Hint": 7
+    }
+  },
+  "external_runtime_artifacts": 74,
+  "offline_compile_admission": "PASS",
+  "device": "NOT_RUN",
+  "live_endpoint": "NOT_RUN",
+  "M0_acceptance": false,
+  "two_layer_discovery_acceptance": false
+}

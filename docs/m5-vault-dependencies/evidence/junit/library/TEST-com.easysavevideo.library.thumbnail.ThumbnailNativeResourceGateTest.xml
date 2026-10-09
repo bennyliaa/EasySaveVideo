@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.library.thumbnail.ThumbnailNativeResourceGateTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-06T21:07:50.815Z" hostname="723dfa57d2fa" time="0.009">
+  <properties/>
+  <testcase name="thumbnailAndPreviewCannotOwnNativeResourcesTogether" classname="com.easysavevideo.library.thumbnail.ThumbnailNativeResourceGateTest" time="0.001"/>
+  <testcase name="staleReleaseCannotFreeAnotherOwnersResources" classname="com.easysavevideo.library.thumbnail.ThumbnailNativeResourceGateTest" time="0.0"/>
+  <testcase name="racingClaimsAdmitExactlyOneOwner" classname="com.easysavevideo.library.thumbnail.ThumbnailNativeResourceGateTest" time="0.008"/>
+  <testcase name="timeoutRetainsOwnerAndFencesFreshAdmissionEvenAfterLateActualRelease" classname="com.easysavevideo.library.thumbnail.ThumbnailNativeResourceGateTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

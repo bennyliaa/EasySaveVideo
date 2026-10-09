@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.recording.nativeregion.RegionSourceAdmissionTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:59.323Z" hostname="05582a867b99" time="0.004">
+  <properties/>
+  <testcase name="dynamicSourceFramesAdvanceWithoutReplacingFrozenPreviewOrItsSelectionIdentity" classname="com.easysavevideo.app.recording.nativeregion.RegionSourceAdmissionTest" time="0.003"/>
+  <testcase name="api34AndLaterWaitForActualMatchingCallbackBeforeAdmittingAnyFrame" classname="com.easysavevideo.app.recording.nativeregion.RegionSourceAdmissionTest" time="0.0"/>
+  <testcase name="anotherSupportedFullImageFlipStillInvalidatesTheExactFrozenSourceBinding" classname="com.easysavevideo.app.recording.nativeregion.RegionSourceAdmissionTest" time="0.0"/>
+  <testcase name="api31ActualDisplayAndLatchedSurfaceDoNotWaitForApi34Callback" classname="com.easysavevideo.app.recording.nativeregion.RegionSourceAdmissionTest" time="0.001"/>
+  <testcase name="api32ActualDisplayAndLatchedSurfaceDoNotWaitForApi34Callback" classname="com.easysavevideo.app.recording.nativeregion.RegionSourceAdmissionTest" time="0.0"/>
+  <testcase name="api33ActualDisplayAndLatchedSurfaceDoNotWaitForApi34Callback" classname="com.easysavevideo.app.recording.nativeregion.RegionSourceAdmissionTest" time="0.0"/>
+  <testcase name="rotationSizeInsetsVersionOrPlatformBranchMismatchRejectsStaleSelection" classname="com.easysavevideo.app.recording.nativeregion.RegionSourceAdmissionTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,58 @@
+[
+  {
+    "coordinate": "androidx.concurrent:concurrent-futures:1.1.0",
+    "class_count": 6,
+    "exit_code": 0,
+    "file": "javap/androidx.concurrent__concurrent-futures__1.1.0.txt",
+    "sha256": "ebc84e3bd82047542b54471561c4a6f271d3314e0bd0e18e64b14a8b84d3ab98"
+  },
+  {
+    "coordinate": "androidx.concurrent:concurrent-futures:1.2.0",
+    "class_count": 6,
+    "exit_code": 0,
+    "file": "javap/androidx.concurrent__concurrent-futures__1.2.0.txt",
+    "sha256": "ebc84e3bd82047542b54471561c4a6f271d3314e0bd0e18e64b14a8b84d3ab98"
+  },
+  {
+    "coordinate": "com.google.guava:listenablefuture:1.0",
+    "class_count": 1,
+    "exit_code": 0,
+    "file": "javap/com.google.guava__listenablefuture__1.0.txt",
+    "sha256": "16620268b7d09d81e4e465d9815940c23ae483a00d5ff8f618742985f204f6bf"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "class_count": 1,
+    "exit_code": 0,
+    "file": "javap/com.google.guava__guava__33.3.1-android.txt",
+    "sha256": "16620268b7d09d81e4e465d9815940c23ae483a00d5ff8f618742985f204f6bf"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3",
+    "class_count": 496,
+    "exit_code": 0,
+    "file": "javap/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.7.3.txt",
+    "sha256": "32b19f7d1915ef559498d54a6eff74a427f28d22f52a95591c35ad85467fdb6c"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "class_count": 484,
+    "exit_code": 0,
+    "file": "javap/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0.txt",
+    "sha256": "ca9d89a06eb864376ccda0fef0885b6189a07b2097b1a53ce7a7d226226348b4"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3",
+    "class_count": 7,
+    "exit_code": 0,
+    "file": "javap/org.jetbrains.kotlinx__kotlinx-coroutines-android__1.7.3.txt",
+    "sha256": "c40e2f50e6808f5931119cdf01eed8d3b91c2199167e83c8f064fc5dddbd595a"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0",
+    "class_count": 7,
+    "exit_code": 0,
+    "file": "javap/org.jetbrains.kotlinx__kotlinx-coroutines-android__1.9.0.txt",
+    "sha256": "94eb361fdee9eb481adfd044bf8c742eef64e2bf311be65eadab19346cced555"
+  }
+]

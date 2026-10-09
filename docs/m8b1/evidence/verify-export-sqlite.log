@@ -1,0 +1,19 @@
+test_blob_and_identity_bounds (__main__.Contracts.test_blob_and_identity_bounds) ... ok
+test_known_phases_only (__main__.Contracts.test_known_phases_only) ... ok
+test_no_target_without_durable_operation (__main__.Contracts.test_no_target_without_durable_operation) ... ok
+test_operation_and_nonce_not_reused (__main__.Contracts.test_operation_and_nonce_not_reused) ... ok
+test_pending_row_visible_to_crash_gap_reconciliation (__main__.Contracts.test_pending_row_visible_to_crash_gap_reconciliation) ... ok
+test_provider_is_capability_only_readonly_proxy (__main__.Contracts.test_provider_is_capability_only_readonly_proxy) ... ok
+test_review_pages_retain_all_unverified_warnings_after_reopen (__main__.Contracts.test_review_pages_retain_all_unverified_warnings_after_reopen) ... ok
+test_rotating_bounded_recovery_no_starvation (__main__.Contracts.test_rotating_bounded_recovery_no_starvation) ... ok
+test_saf_output_adoption_transaction_rolls_back (__main__.Contracts.test_saf_output_adoption_transaction_rolls_back) ... ok
+test_source_exact_authority_and_no_save_codec_edits_required (__main__.Contracts.test_source_exact_authority_and_no_save_codec_edits_required) ... ok
+test_terminal_rows_are_retained_but_not_recovered (__main__.Contracts.test_terminal_rows_are_retained_but_not_recovered) ... ok
+test_thousands_of_terminal_rows_do_not_block_active_admission (__main__.Contracts.test_thousands_of_terminal_rows_do_not_block_active_admission) ... ok
+test_uri_bounded_by_utf8_bytes (__main__.Contracts.test_uri_bounded_by_utf8_bytes) ... ok
+test_v2_upgrade_transaction_failure_retains_version (__main__.Contracts.test_v2_upgrade_transaction_failure_retains_version) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.011s
+
+OK

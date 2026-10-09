@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" tests="31" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:10.617Z" hostname="05582a867b99" time="0.781">
+  <properties/>
+  <testcase name="twelveMixedConclusiveObservationsSuspendWithoutQuarantine" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.426"/>
+  <testcase name="closeInsideACallbackBeforeTransactionCannotPublishOrCountAnObservation" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.004"/>
+  <testcase name="formatTwoCannotBeSilentlyResetOrMigrated" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.007"/>
+  <testcase name="tokenFromAnotherRepositoryOrProcessCannotContribute" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.006"/>
+  <testcase name="exactCurrentFallbackGrantCanRestoreOnlyTheSafeLastGood" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.018"/>
+  <testcase name="allMutatorsFenceCloseBeforePublishingAndKeepUnpublishedDiskStateClosed" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.052"/>
+  <testcase name="inconclusiveObservationsBreakBothStreaksWithoutBecomingStructuralEvidence" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.007"/>
+  <testcase name="policyChangeInvalidatesTokenAndStreakButNeverResetsExposureBudget" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.006"/>
+  <testcase name="firstSelfTestFailureCanPersistWithoutAnyPreviouslyAcceptedSignedAuthority" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.007"/>
+  <testcase name="revokedExpiredOrWrongDigestLastGoodNeverActivatesAfterStructuralRejection" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.042"/>
+  <testcase name="managementRollbackCannotActOnAuthorityChangedAfterConfirmation" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.011"/>
+  <testcase name="twentyFourHourWindowAndShorterPolicyExpiryStopWithoutAttributingNetworkFailure" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.003"/>
+  <testcase name="closeInsideLatePublicationCallbackCannotLeavePromotedStateAfterRestart" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.004"/>
+  <testcase name="failedFixedSelfTestIsDurablyIsolatedWithoutReplacingActiveOrHighWater" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.006"/>
+  <testcase name="fixedSelfTestCancellationDoesNotQuarantineOrPoisonTheStore" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.003"/>
+  <testcase name="twentyInconclusiveObservationsSuspendAndPolicyReplacementCannotRefillBudget" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.013"/>
+  <testcase name="aSingleOutstandingCapabilityCannotBeForgedOrReused" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.004"/>
+  <testcase name="probationCountersPersistButRestartNeverResumesUnconfirmedCandidate" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.01"/>
+  <testcase name="simultaneousDuplicateCompletionsCountOnlyOnce" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.007"/>
+  <testcase name="cancellationConsumesCapabilityWithoutCountingOrPoisoningBeforeTransaction" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.004"/>
+  <testcase name="isolationCapacityIsBoundedPermanentAndNeverEvictsSecurityHistory" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.067"/>
+  <testcase name="publicationAfterProbationDeadlineNeverPromotesEvenWithNoCallerDeadline" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.004"/>
+  <testcase name="callerCallbacksCannotReenterAnyMutationOrAllocateANestedObservation" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.022"/>
+  <testcase name="healthCounterChangesNotifyObserversWithoutRevokingUnchangedAuthority" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.005"/>
+  <testcase name="threeStructuralFailuresPersistIsolationAndStopWithoutAnExactFallbackGrant" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.006"/>
+  <testcase name="healthWriteFaultsAndLateCancellationRemainFailClosedAcrossRestart" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.014"/>
+  <testcase name="selfTestCannotActivateAnEnvelopeThatExpiresWhileTesting" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.002"/>
+  <testcase name="newerCandidateCannotReceiveAnOlderCandidatesCompletion" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.005"/>
+  <testcase name="policyExpiryCannotBeExtendedToRefillAnExistingProbationWindow" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.005"/>
+  <testcase name="closingFromFixedSelfTestCannotStartATransaction" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.002"/>
+  <testcase name="exactlyThreeConsecutiveFreshSuccessesPromoteWithoutChangingAuthority" classname="com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

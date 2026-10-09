@@ -1,0 +1,13 @@
+{
+  "kind": "STATIC_SOURCE_GUARDS_ONLY",
+  "baseline": "0d1bae2dbbb4212c5fc43b5ed536df447974a221",
+  "scope": "M7-A BUILTIN COMMONS PARAMETERS ONLY",
+  "runtime_dependencies": "EXACT74_UNCHANGED_INPUTS",
+  "free_library_and_entitlements": "UNCHANGED",
+  "package": "DECLARATIVE_FIXED_TARGET_BOUNDED",
+  "production_trust_roots": "EMPTY",
+  "remote_endpoint": "ABSENT",
+  "extraction_rules_and_other_providers": "NOT_IMPLEMENTED",
+  "android_storage_device": "NOT_RUN",
+  "vault": "DISABLED_UNCHANGED"
+}

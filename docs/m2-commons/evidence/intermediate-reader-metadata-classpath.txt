@@ -1,0 +1,15 @@
+warning: [options] system modules path not set in conjunction with -source 17
+1 warning
+TWO_SEGMENTS_FINAL_ONLY_AUD
+Exception in thread "main" java.lang.NoClassDefFoundError: kotlin/KotlinNothingValueException
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:423)
+	at java.base/java.lang.Class.forName(Class.java:414)
+	at ReaderProbe.validateRaw(ReaderProbe.java:193)
+	at ReaderProbe.compare(ReaderProbe.java:138)
+	at ReaderProbe.main(ReaderProbe.java:162)
+Caused by: java.lang.ClassNotFoundException: kotlin.KotlinNothingValueException
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	... 6 more

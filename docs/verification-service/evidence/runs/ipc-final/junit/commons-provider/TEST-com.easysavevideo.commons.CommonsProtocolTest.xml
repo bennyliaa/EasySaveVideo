@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.commons.CommonsProtocolTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:30:13.761Z" hostname="05582a867b99" time="0.035">
+  <properties/>
+  <testcase name="recordingsAreExactBytesFromThreeActualPublicResponses" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.001"/>
+  <testcase name="noResultsAndMissingDurationAreLegitimateStates" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.0"/>
+  <testcase name="malformedAndAmbiguousJsonFailsClosed" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.002"/>
+  <testcase name="htmlIsConvertedToPlainTextWithoutExecutingOrFollowingLinks" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.001"/>
+  <testcase name="unsafePageAndThumbnailAreNotExposed" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.005"/>
+  <testcase name="endpointPolicyIsExactHttpsHostPathAndNoCredentials" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.0"/>
+  <testcase name="malformedUtf16CannotCollapseDifferentQueriesIntoOneKey" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.001"/>
+  <testcase name="licenseLinksAreSafeDisplayOnlyAndDoNotAllowJavascriptOrUnknownHosts" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.0"/>
+  <testcase name="nonVideoNamespaceMimeAndMediaTypeDoNotProduceCandidates" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.006"/>
+  <testcase name="publicAddressCheckRejectsPrivateReservedAndTransitionRanges" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.0"/>
+  <testcase name="missingOrUnreliableRightsNeverBecomeDownloadPermission" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.004"/>
+  <testcase name="entityDecodedControlsUseTheSameSanitizerAsRawCharacters" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.001"/>
+  <testcase name="unknownOrInvalidDurationIsNullRatherThanZero" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.009"/>
+  <testcase name="onlyKnownRasterThumbnailHostsAndTrackingParametersAreAccepted" classname="com.easysavevideo.commons.CommonsProtocolTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

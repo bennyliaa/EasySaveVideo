@@ -1,0 +1,22 @@
+{
+  "jvm": {
+    "tests": 1905,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "debug": {
+      "Error": 0,
+      "Warning": 17,
+      "Hint": 6
+    },
+    "release": {
+      "Error": 0,
+      "Warning": 17,
+      "Hint": 6
+    }
+  },
+  "offline_compile_admission": "PASS",
+  "device": "NOT_RUN"
+}

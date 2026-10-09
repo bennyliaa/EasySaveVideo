@@ -1,0 +1,615 @@
+{
+  "coordinate": "androidx.media3:media3-decoder:1.11.1",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://dl.google.com/dl/android/maven2/androidx/media3/media3-decoder/1.11.1/",
+  "file_metadata": {
+    "media3-decoder-1.11.1.module": {
+      "sha256": "c516ad943296acd895a8125052bc73ec743e53b032c183d33744857c4fdfe7cf",
+      "bytes": 3264,
+      "path": "official-maven/androidx/media3/media3-decoder/1.11.1/media3-decoder-1.11.1.module"
+    },
+    "media3-decoder-1.11.1.pom": {
+      "sha256": "a0e4e32378b098da0399303e787d6b05ab3e928a38364ed54cbf6873516eb81f",
+      "bytes": 1721,
+      "path": "official-maven/androidx/media3/media3-decoder/1.11.1/media3-decoder-1.11.1.pom"
+    },
+    "media3-decoder-1.11.1.aar": {
+      "sha256": "c3bcd704959026e0d644b0260f9e682a2e26e7357c2cf82d990bcb323f800d49",
+      "bytes": 19422,
+      "path": "official-maven/androidx/media3/media3-decoder/1.11.1/media3-decoder-1.11.1.aar"
+    },
+    "media3-decoder-1.11.1-sources.jar": {
+      "sha256": "1570e072a3c4a8b9915f95bada24f0e4955e4fc4343d738adbb2794d9539d9c5",
+      "bytes": 19473,
+      "path": "official-maven/androidx/media3/media3-decoder/1.11.1/media3-decoder-1.11.1-sources.jar"
+    }
+  },
+  "pom_licenses": [
+    {
+      "name": "The Apache Software License, Version 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.txt",
+      "distribution": "repo"
+    }
+  ],
+  "source_headers": [
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/Buffer.java",
+      "sha256": "4fe66b2da0933fac18401bd5bf26a2e48b26a57831d607c400a78b2b9f096af9",
+      "bytes": 3137,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/CryptoConfig.java",
+      "sha256": "7ba442efaf5eaeb917aa014c53afa465e9f998995aa98b0f738a42c0e3df764b",
+      "bytes": 920,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/CryptoException.java",
+      "sha256": "28a77bd3ec0219fcbd07def45efbfbce7482f1b0a986f44f5fb1a84d183f1ed1",
+      "bytes": 1129,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2017 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/CryptoInfo.java",
+      "sha256": "c1a4bc388a422124bcc16603681f0f2b29473d6d660b185fa11c48d9cc03f9d8",
+      "bytes": 6128,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/Decoder.java",
+      "sha256": "4daf49a430007016cb33956c4ef4c4d8046d0f98a87c384e586c7b3bffc6c1f0",
+      "bytes": 3383,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/DecoderException.java",
+      "sha256": "4c271c5a2268e86e3b6511068d578d9eada3a639a64f639f83d71bd27a46dbed",
+      "bytes": 1481,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/DecoderInputBuffer.java",
+      "sha256": "e5f1d0624c97c492c734524cab140852fc75a0ccab420167d340e61f8482461a",
+      "bytes": 8884,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/DecoderOutputBuffer.java",
+      "sha256": "2f4b9b5b0b91b00ca69e8b952bd7a1a5d556559f582f7625f744e0408e82920c",
+      "bytes": 1789,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/SimpleDecoder.java",
+      "sha256": "0b97014f67e1cad29d276f661a7c584f9c1ff1b5389d6ffa95e5fe2d571ee7b2",
+      "bytes": 12549,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/SimpleDecoderOutputBuffer.java",
+      "sha256": "bf089cf9c8e966c1dd5d7d7c0337f0b26537d80e8c09c04b379597451c3bba4e",
+      "bytes": 2696,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/VideoDecoderOutputBuffer.java",
+      "sha256": "3b58ba8df4ebfd5de65ac0d949330d2a0e526b2b17c70058f6d0bcdf29d59f98",
+      "bytes": 7153,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2019 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/package-info.java",
+      "sha256": "5d05482b74834945d981da87bb7428af2115105e7538a6da9937221fa849ba85",
+      "bytes": 713,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2019 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    }
+  ],
+  "source_special_attributions": [
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/Buffer.java",
+      "sha256": "4fe66b2da0933fac18401bd5bf26a2e48b26a57831d607c400a78b2b9f096af9",
+      "bytes": 3137,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/CryptoConfig.java",
+      "sha256": "7ba442efaf5eaeb917aa014c53afa465e9f998995aa98b0f738a42c0e3df764b",
+      "bytes": 920,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/CryptoException.java",
+      "sha256": "28a77bd3ec0219fcbd07def45efbfbce7482f1b0a986f44f5fb1a84d183f1ed1",
+      "bytes": 1129,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2017 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/CryptoInfo.java",
+      "sha256": "c1a4bc388a422124bcc16603681f0f2b29473d6d660b185fa11c48d9cc03f9d8",
+      "bytes": 6128,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/Decoder.java",
+      "sha256": "4daf49a430007016cb33956c4ef4c4d8046d0f98a87c384e586c7b3bffc6c1f0",
+      "bytes": 3383,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/DecoderException.java",
+      "sha256": "4c271c5a2268e86e3b6511068d578d9eada3a639a64f639f83d71bd27a46dbed",
+      "bytes": 1481,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/DecoderInputBuffer.java",
+      "sha256": "e5f1d0624c97c492c734524cab140852fc75a0ccab420167d340e61f8482461a",
+      "bytes": 8884,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/DecoderOutputBuffer.java",
+      "sha256": "2f4b9b5b0b91b00ca69e8b952bd7a1a5d556559f582f7625f744e0408e82920c",
+      "bytes": 1789,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/SimpleDecoder.java",
+      "sha256": "0b97014f67e1cad29d276f661a7c584f9c1ff1b5389d6ffa95e5fe2d571ee7b2",
+      "bytes": 12549,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/SimpleDecoderOutputBuffer.java",
+      "sha256": "bf089cf9c8e966c1dd5d7d7c0337f0b26537d80e8c09c04b379597451c3bba4e",
+      "bytes": 2696,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/VideoDecoderOutputBuffer.java",
+      "sha256": "3b58ba8df4ebfd5de65ac0d949330d2a0e526b2b17c70058f6d0bcdf29d59f98",
+      "bytes": 7153,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2019 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 114,
+          "text": "* Resizes the buffer based on the given stride. Called via JNI after decoding completes."
+        }
+      ]
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/package-info.java",
+      "sha256": "5d05482b74834945d981da87bb7428af2115105e7538a6da9937221fa849ba85",
+      "bytes": 713,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2019 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    }
+  ],
+  "source_without_license_header": [],
+  "source_non_code_entries": [
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    }
+  ],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "media3-decoder-1.11.1.aar",
+      "entry": "R.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar",
+      "entry": "AndroidManifest.xml",
+      "sha256": "7f6a8983a58400dbe14e5d3c8af5ec807a853f1470e281eb0dc6a0a7c89bcc84",
+      "bytes": 837
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar",
+      "entry": "classes.jar",
+      "sha256": "284003cc12bf2999ea0c6014778a710ddef05427103f14682e0e7b769b35db2a",
+      "bytes": 20461
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/Buffer.class",
+      "sha256": "cedbeb1bc226fbb4811cf5e70841ce788a789855700666c6cd0433896f085fab",
+      "bytes": 1480
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/CryptoConfig.class",
+      "sha256": "092ff45bb958d90a95dfcb19ca0bd8cdc61e48e3295a4afd831659afdb0b93a6",
+      "bytes": 215
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/CryptoException.class",
+      "sha256": "f6396d355fd9ed6be7800843925a84aacc67f61e788fd2cea0fc361748b315af",
+      "bytes": 549
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/CryptoInfo$1.class",
+      "sha256": "2b8584725db80a6d9ea794fd239999a5041a6786a982abc664b6455c50e59743",
+      "bytes": 226
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/CryptoInfo$PatternHolderV24.class",
+      "sha256": "1f121537ff496cefb3d2cfb4566f00468e8079e8e2d30a17bff3801a948ded1e",
+      "bytes": 1611
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/CryptoInfo.class",
+      "sha256": "537b2ddd19216a609cdebb223e38facef8597498cc66dff07b024bc13551ba51",
+      "bytes": 2362
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/Decoder$Callback.class",
+      "sha256": "12ae4a9b9c3712e787200edcd8a9dd6d3699c06fc1d4961afb532993d18e8439",
+      "bytes": 280
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/Decoder.class",
+      "sha256": "6349babe77b8f306c4fbf93bc9ec10c94b38921deb5e48b182dbc214563029ac",
+      "bytes": 1329
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/DecoderException.class",
+      "sha256": "1d4d01c1f252c767175ee2368ee7b4abd2cdbd4610fb6ea7643f0e6e22f05294",
+      "bytes": 861
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/DecoderInputBuffer$BufferReplacementMode.class",
+      "sha256": "dd3ec3427bfbfb6d86dafcc3f9f8d64c6abd0813ebdb5f44bb39ca54cfc772be",
+      "bytes": 579
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/DecoderInputBuffer$InsufficientCapacityException.class",
+      "sha256": "2418ecc1725b100e1954c6676c0dd85550ddd8209368ba3458186ff6a8133f06",
+      "bytes": 928
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/DecoderInputBuffer.class",
+      "sha256": "e1b61d330d5ec0504b8bbde0d499069fa823b6bb463a2d96021eb7c620f29963",
+      "bytes": 3447
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/DecoderOutputBuffer$Owner.class",
+      "sha256": "a9424153011977f5618d66b57d19d652378a73c53a3b8fdf5b162fc2b85bfa85",
+      "bytes": 425
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/DecoderOutputBuffer.class",
+      "sha256": "517d8474c09658332f07c4382b1d91cd83d68d032efd7955d0f5c29cecd49d79",
+      "bytes": 818
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/SimpleDecoder$1.class",
+      "sha256": "85ba846022ece635b6c7b0b6dd979e2c9e4dfc34df69ae69cd6d54b43105811c",
+      "bytes": 967
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/SimpleDecoder.class",
+      "sha256": "e6e9ea7c9e0dcd513ddaad930e2f80edbfdd8dcdd65bcf8ee6bae533d6966bb8",
+      "bytes": 10755
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/SimpleDecoderOutputBuffer.class",
+      "sha256": "c771762d8535a29fe507e1b78f484be30c3c212f5ab535ef181cecc2af6e0864",
+      "bytes": 2467
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/VideoDecoderOutputBuffer.class",
+      "sha256": "7c91d1892729c60f74f459708f0ee152410ad3a9d6df7923a0b0aae493376400",
+      "bytes": 4377
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/decoder/package-info.class",
+      "sha256": "428823f0068fa6a1d129070f32863a80f773bdea45f540df721b13425016e0c8",
+      "bytes": 214
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar",
+      "entry": "annotations.zip",
+      "sha256": "6f4b54ca4384224e54c5c088605b1e280e47425c6311e5c17791d76cbe1e516c",
+      "bytes": 476
+    },
+    {
+      "archive": "media3-decoder-1.11.1.aar",
+      "entry": "META-INF/com/android/build/gradle/aar-metadata.properties",
+      "sha256": "08ee81351e24d5fb98490f59522c587e5fbaf50b7794a721d6fb021a08368cc6",
+      "bytes": 157
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/Buffer.java",
+      "sha256": "4fe66b2da0933fac18401bd5bf26a2e48b26a57831d607c400a78b2b9f096af9",
+      "bytes": 3137
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/CryptoConfig.java",
+      "sha256": "7ba442efaf5eaeb917aa014c53afa465e9f998995aa98b0f738a42c0e3df764b",
+      "bytes": 920
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/CryptoException.java",
+      "sha256": "28a77bd3ec0219fcbd07def45efbfbce7482f1b0a986f44f5fb1a84d183f1ed1",
+      "bytes": 1129
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/CryptoInfo.java",
+      "sha256": "c1a4bc388a422124bcc16603681f0f2b29473d6d660b185fa11c48d9cc03f9d8",
+      "bytes": 6128
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/Decoder.java",
+      "sha256": "4daf49a430007016cb33956c4ef4c4d8046d0f98a87c384e586c7b3bffc6c1f0",
+      "bytes": 3383
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/DecoderException.java",
+      "sha256": "4c271c5a2268e86e3b6511068d578d9eada3a639a64f639f83d71bd27a46dbed",
+      "bytes": 1481
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/DecoderInputBuffer.java",
+      "sha256": "e5f1d0624c97c492c734524cab140852fc75a0ccab420167d340e61f8482461a",
+      "bytes": 8884
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/DecoderOutputBuffer.java",
+      "sha256": "2f4b9b5b0b91b00ca69e8b952bd7a1a5d556559f582f7625f744e0408e82920c",
+      "bytes": 1789
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/SimpleDecoder.java",
+      "sha256": "0b97014f67e1cad29d276f661a7c584f9c1ff1b5389d6ffa95e5fe2d571ee7b2",
+      "bytes": 12549
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/SimpleDecoderOutputBuffer.java",
+      "sha256": "bf089cf9c8e966c1dd5d7d7c0337f0b26537d80e8c09c04b379597451c3bba4e",
+      "bytes": 2696
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/VideoDecoderOutputBuffer.java",
+      "sha256": "3b58ba8df4ebfd5de65ac0d949330d2a0e526b2b17c70058f6d0bcdf29d59f98",
+      "bytes": 7153
+    },
+    {
+      "archive": "media3-decoder-1.11.1-sources.jar",
+      "entry": "androidx/media3/decoder/package-info.java",
+      "sha256": "5d05482b74834945d981da87bb7428af2115105e7538a6da9937221fa849ba85",
+      "bytes": 713
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": null,
+  "source_status": "PRESENT",
+  "published_hash_checks": [
+    {
+      "variant": "releaseVariantReleaseApiPublication",
+      "file": "media3-decoder-1.11.1.aar",
+      "sha256_published": "c3bcd704959026e0d644b0260f9e682a2e26e7357c2cf82d990bcb323f800d49",
+      "sha256_actual": "c3bcd704959026e0d644b0260f9e682a2e26e7357c2cf82d990bcb323f800d49",
+      "matches": true
+    },
+    {
+      "variant": "releaseVariantReleaseRuntimePublication",
+      "file": "media3-decoder-1.11.1.aar",
+      "sha256_published": "c3bcd704959026e0d644b0260f9e682a2e26e7357c2cf82d990bcb323f800d49",
+      "sha256_actual": "c3bcd704959026e0d644b0260f9e682a2e26e7357c2cf82d990bcb323f800d49",
+      "matches": true
+    },
+    {
+      "variant": "releaseVariantReleaseSourcePublication",
+      "file": "media3-decoder-1.11.1-sources.jar",
+      "sha256_published": "1570e072a3c4a8b9915f95bada24f0e4955e4fc4343d738adbb2794d9539d9c5",
+      "sha256_actual": "1570e072a3c4a8b9915f95bada24f0e4955e4fc4343d738adbb2794d9539d9c5",
+      "matches": true
+    }
+  ]
+}

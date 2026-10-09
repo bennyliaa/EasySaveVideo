@@ -1,0 +1,15 @@
+{
+  "observed_at_utc": "2026-10-06T17:05:55.614418+00:00",
+  "request_url": "https://commons.wikimedia.org/w/api.php?action=query&format=json&formatversion=2&prop=videoinfo%7Cinfo&inprop=url&titles=File%3ABig+Buck+Bunny+4K.webm&viprop=mime%7Cmediatype%7Csize%7Curl%7Cextmetadata&vilimit=1&viurlwidth=320&viextmetadatafilter=Artist%7CCredit%7CAttribution%7CLicenseShortName%7CLicenseUrl%7CUsageTerms%7CCopyrighted%7CAttributionRequired%7CNonFree%7CRestrictions%7CDeletionReason&maxlag=5",
+  "method": "GET",
+  "user_agent": "EasySaveVideo/0.3.0-m3a-dev (approved contact redacted)",
+  "cookie_or_authorization_sent": false,
+  "maximum_body_bytes": 2097152,
+  "redirects_followed": false,
+  "status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "retry_after": null,
+  "body_bytes": 3416,
+  "body_sha256": "084ca46cc974272f8f9b4f0682667e950974de87216990c797794eadaec70add",
+  "result": "CAPTURED_JSON"
+}

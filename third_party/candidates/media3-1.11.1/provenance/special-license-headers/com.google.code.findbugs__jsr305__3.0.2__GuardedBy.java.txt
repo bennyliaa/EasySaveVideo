@@ -1,0 +1,8 @@
+1: /*
+2:  * Copyright (c) 2005 Brian Goetz
+3:  * Released under the Creative Commons Attribution License
+4:  *   (http://creativecommons.org/licenses/by/2.5)
+5:  * Official home: http://www.jcip.net
+6:  */
+7: package javax.annotation.concurrent;
+8: 

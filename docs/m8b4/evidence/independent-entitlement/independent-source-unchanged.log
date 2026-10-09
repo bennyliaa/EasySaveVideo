@@ -1,0 +1,11 @@
+core-model/src/main/kotlin/com/easysavevideo/core/model/Browser.kt: OK
+core-model/src/main/kotlin/com/easysavevideo/core/model/Entitlements.kt: OK
+core-model/src/main/kotlin/com/easysavevideo/core/model/Errors.kt: OK
+core-model/src/main/kotlin/com/easysavevideo/core/model/Operations.kt: OK
+core-model/src/main/kotlin/com/easysavevideo/core/model/Recovery.kt: OK
+core-model/src/main/kotlin/com/easysavevideo/core/model/Settings.kt: OK
+core-domain/src/main/kotlin/com/easysavevideo/core/domain/EntitlementManager.kt: OK
+app/src/main/kotlin/com/easysavevideo/app/entitlements/ProductMapping.kt: OK
+docs/m10a/evidence/IndependentEntitlementReviewTest.kt: OK
+docs/m8b4/evidence/run-independent-entitlement-review.sh: OK
+docs/m7c/evidence/independent-final-toolchain-sha256.txt: OK

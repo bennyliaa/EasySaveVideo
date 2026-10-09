@@ -1,0 +1,10 @@
+{
+  "debug": {
+    "external_artifacts": 74,
+    "same_coordinates_filenames_sha256_as_M7B": true
+  },
+  "release": {
+    "external_artifacts": 74,
+    "same_coordinates_filenames_sha256_as_M7B": true
+  }
+}

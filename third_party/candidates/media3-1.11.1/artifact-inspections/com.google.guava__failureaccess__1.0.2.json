@@ -1,0 +1,147 @@
+{
+  "coordinate": "com.google.guava:failureaccess:1.0.2",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.2/",
+  "file_metadata": {
+    "failureaccess-1.0.2.pom": {
+      "sha256": "19ebc6f4bdb4edbb3d07b6ee994f846b54ef295582a9b5634719ffa9f31d03b2",
+      "bytes": 3339,
+      "path": "official-maven/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.pom"
+    },
+    "failureaccess-1.0.2.jar": {
+      "sha256": "8a8f81cf9b359e3f6dfa691a1e776985c061ef2f223c9b2c80753e1b458e8064",
+      "bytes": 4740,
+      "path": "official-maven/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar"
+    },
+    "failureaccess-1.0.2-sources.jar": {
+      "sha256": "dd3bfa5e2ec5bc5397efb2c3cef044c192313ff77089573667ff97a60c6978e0",
+      "bytes": 3489,
+      "path": "official-maven/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2-sources.jar"
+    }
+  },
+  "pom_licenses": [],
+  "source_headers": [
+    {
+      "archive": "failureaccess-1.0.2-sources.jar",
+      "entry": "com/google/common/util/concurrent/internal/InternalFutures.java",
+      "sha256": "e5b7d647e394134095d8b9ff473b510dc1c34324332a13af27ad8db9a490b091",
+      "bytes": 1761,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Guava Authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\"); you may not use this file except\n * in compliance with the License. You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software distributed under the License\n * is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express\n * or implied. See the License for the specific language governing permissions and limitations under\n * the License.\n */"
+    },
+    {
+      "archive": "failureaccess-1.0.2-sources.jar",
+      "entry": "com/google/common/util/concurrent/internal/InternalFutureFailureAccess.java",
+      "sha256": "745df6c9adaf5a144bf57e17d9222919a15a129c1174fcc04966093bf3b1ec32",
+      "bytes": 2309,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Guava Authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\"); you may not use this file except\n * in compliance with the License. You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software distributed under the License\n * is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express\n * or implied. See the License for the specific language governing permissions and limitations under\n * the License.\n */"
+    }
+  ],
+  "source_special_attributions": [
+    {
+      "archive": "failureaccess-1.0.2-sources.jar",
+      "entry": "com/google/common/util/concurrent/internal/InternalFutures.java",
+      "sha256": "e5b7d647e394134095d8b9ff473b510dc1c34324332a13af27ad8db9a490b091",
+      "bytes": 1761,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Guava Authors"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\"); you may not use this file except"
+        }
+      ]
+    },
+    {
+      "archive": "failureaccess-1.0.2-sources.jar",
+      "entry": "com/google/common/util/concurrent/internal/InternalFutureFailureAccess.java",
+      "sha256": "745df6c9adaf5a144bf57e17d9222919a15a129c1174fcc04966093bf3b1ec32",
+      "bytes": 2309,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Guava Authors"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\"); you may not use this file except"
+        }
+      ]
+    }
+  ],
+  "source_without_license_header": [],
+  "source_non_code_entries": [
+    {
+      "archive": "failureaccess-1.0.2-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "52d37326e23d5bbc4ed842861b765956d3ac965136c9872147f19226902a670f",
+      "bytes": 127
+    }
+  ],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "failureaccess-1.0.2.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "8e6824ca865cad41c5437d565e75bc33709fa0f402bad6c77f8d0688aed2905c",
+      "bytes": 1105
+    },
+    {
+      "archive": "failureaccess-1.0.2.jar",
+      "entry": "META-INF/maven/com.google.guava/failureaccess/pom.properties",
+      "sha256": "389f2d0561064720b73c834246ee3639a5da4ea00e355eb66ca73220f66498cb",
+      "bytes": 64
+    },
+    {
+      "archive": "failureaccess-1.0.2.jar",
+      "entry": "META-INF/maven/com.google.guava/failureaccess/pom.xml",
+      "sha256": "19ebc6f4bdb4edbb3d07b6ee994f846b54ef295582a9b5634719ffa9f31d03b2",
+      "bytes": 3339
+    },
+    {
+      "archive": "failureaccess-1.0.2.jar",
+      "entry": "com/google/common/util/concurrent/internal/InternalFutureFailureAccess.class",
+      "sha256": "7cc516005c59044d02f524e46c387257cd8198990ec9cdd6d4ae0361c5e7d4ab",
+      "bytes": 458
+    },
+    {
+      "archive": "failureaccess-1.0.2.jar",
+      "entry": "com/google/common/util/concurrent/internal/InternalFutures.class",
+      "sha256": "724b0b783205ec8628107f4c1794e56d64cd8fa43014bb7cc163951898e32331",
+      "bytes": 743
+    },
+    {
+      "archive": "failureaccess-1.0.2-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "52d37326e23d5bbc4ed842861b765956d3ac965136c9872147f19226902a670f",
+      "bytes": 127
+    },
+    {
+      "archive": "failureaccess-1.0.2-sources.jar",
+      "entry": "com/google/common/util/concurrent/internal/InternalFutures.java",
+      "sha256": "e5b7d647e394134095d8b9ff473b510dc1c34324332a13af27ad8db9a490b091",
+      "bytes": 1761
+    },
+    {
+      "archive": "failureaccess-1.0.2-sources.jar",
+      "entry": "com/google/common/util/concurrent/internal/InternalFutureFailureAccess.java",
+      "sha256": "745df6c9adaf5a144bf57e17d9222919a15a129c1174fcc04966093bf3b1ec32",
+      "bytes": 2309
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": {
+    "groupId": "com.google.guava",
+    "artifactId": "guava-parent",
+    "version": "26.0-android"
+  },
+  "source_status": "PRESENT"
+}

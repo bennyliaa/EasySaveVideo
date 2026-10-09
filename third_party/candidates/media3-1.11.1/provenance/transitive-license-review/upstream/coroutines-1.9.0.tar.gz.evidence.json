@@ -1,0 +1,8 @@
+{
+  "url": "https://codeload.github.com/Kotlin/kotlinx.coroutines/tar.gz/refs/tags/1.9.0",
+  "final_url": "https://codeload.github.com/Kotlin/kotlinx.coroutines/tar.gz/refs/tags/1.9.0",
+  "sha256": "67b46c86851bd63c3a2dcb50087189c61d6d2bdc3d9b594924a078f7f854612c",
+  "bytes": 7161811,
+  "retrieved_at_utc": "2026-10-06T16:59:02.265713+00:00",
+  "transport": "urllib default HTTPS certificate validation"
+}

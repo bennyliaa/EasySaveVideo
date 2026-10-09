@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.4.0">
+
+    <issue
+        id="OldTargetApi"
+        severity="Warning"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
+        category="Correctness"
+        priority="6"
+        summary="Target SDK attribute is not targeting latest version"
+        explanation="When your application or sdk runs on a version of Android that is more recent than your `targetSdk` specifies that it has been tested with, various compatibility modes kick in. This ensures that your application continues to work, but it may look out of place. For example, if the `targetSdk` is less than 14, your app may get an option button in the UI.&#xA;&#xA;To fix this issue, set the `targetSdk` to the highest available value. Then test your app to make sure everything works correctly. You may want to consult the compatibility notes to see what changes apply to each version you are adding support for: https://developer.android.com/reference/android/os/Build.VERSION_CODES.html as well as follow this guide:&#xA;https://developer.android.com/distribute/best-practices/develop/target-sdk.html"
+        url="https://developer.android.com/distribute/best-practices/develop/target-sdk.html"
+        urls="https://developer.android.com/distribute/best-practices/develop/target-sdk.html,https://developer.android.com/reference/android/os/Build.VERSION_CODES.html"
+        errorLine1="        targetSdk = 36"
+        errorLine2="        ~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/build.gradle.kts"
+            line="14"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        severity="Warning"
+        message="A newer version of `compileSdk` than 36 is available: 37"
+        category="Correctness"
+        priority="4"
+        summary="Obsolete Gradle Dependency"
+        explanation="This detector looks for usages of libraries where the version you are using is not the current stable release. Using older versions is fine, and there are cases where you deliberately want to stick with an older version. However, you may simply not be aware that a more recent version is available, and that is what this lint check helps find."
+        errorLine1="    compileSdk = 36"
+        errorLine2="    ~~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/build.gradle.kts"
+            line="9"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="StaticFieldLeak"
+        severity="Warning"
+        message="Do not place Android context classes in static fields (static reference to `LibraryShareOwner` which has field `context` pointing to `Context`); this is a memory leak"
+        category="Performance"
+        priority="6"
+        summary="Static Field Leaks"
+        explanation="A static field will leak contexts.&#xA;&#xA;Non-static inner classes have an implicit reference to their outer class. If that outer class is for example a `Fragment` or `Activity`, then this reference means that the long-running handler/loader/task will hold a reference to the activity which prevents it from getting garbage collected.&#xA;&#xA;Similarly, direct field references to activities and fragments from these longer running instances can cause leaks.&#xA;&#xA;ViewModel classes should never point to Views or non-application Contexts."
+        errorLine1="        @Volatile private var singleton: LibraryShareOwner? = null"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/library/share/LibraryShareOwner.kt"
+            line="332"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableLongStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    private var version by mutableStateOf(0L)"
+        errorLine2="                           ~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/AndroidLibraryThumbnails.kt"
+            line="59"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    var activeTaskCount by mutableStateOf(0); private set"
+        errorLine2="                           ~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt"
+            line="83"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    var retainedSessionCount by mutableStateOf(0); private set"
+        errorLine2="                                ~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/recording/AndroidSegmentRecordingRuntime.kt"
+            line="81"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableLongStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    var generation by remember(currentTheme) { mutableStateOf(currentTheme.provider.snapshot.generation) }"
+        errorLine2="                                               ~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/theme/EsvComposeTheme.kt"
+            line="129"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    var viewRevision by mutableStateOf(0); private set"
+        errorLine2="                        ~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt"
+            line="36"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableFloatStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    var aspectRatio by remember(identity) { mutableStateOf(16f / 9f) }"
+        errorLine2="                                            ~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/VerifiedMediaPreview.kt"
+            line="126"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="UsableSpace"
+        severity="Warning"
+        message="Consider also using `StorageManager#getAllocatableBytes` and `allocateBytes` which will consider clearable cached data"
+        category="Performance"
+        priority="3"
+        summary="Using getUsableSpace()"
+        explanation="When you need to allocate disk space for large files, consider using the new `allocateBytes(FileDescriptor, long)` API, which will automatically clear cached files belonging to other apps (as needed) to meet your request.&#xA;&#xA;When deciding if the device has enough disk space to hold your new data, call `getAllocatableBytes(UUID)` instead of using `getUsableSpace()`, since the former will consider any cached data that the system is willing to clear on your behalf.&#xA;&#xA;Note that these methods require API level 26. If your app is running on older devices, you will probably need to use both APIs, conditionally switching on `Build.VERSION.SDK_INT`. Lint only looks in the same compilation unit to see if you are already using both APIs, so if it warns even though you are already using the new API, consider moving the calls to the same file or suppressing the warning."
+        errorLine1="    fun availableBytes(): Long = (staging.usableSpace - 16L * 1024 * 1024).coerceAtLeast(0)"
+        errorLine2="                                          ~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/editor/storage/EditArtifactFiles.kt"
+            line="33"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="UsableSpace"
+        severity="Warning"
+        message="Consider also using `StorageManager#getAllocatableBytes` and `allocateBytes` which will consider clearable cached data"
+        category="Performance"
+        priority="3"
+        summary="Using getUsableSpace()"
+        explanation="When you need to allocate disk space for large files, consider using the new `allocateBytes(FileDescriptor, long)` API, which will automatically clear cached files belonging to other apps (as needed) to meet your request.&#xA;&#xA;When deciding if the device has enough disk space to hold your new data, call `getAllocatableBytes(UUID)` instead of using `getUsableSpace()`, since the former will consider any cached data that the system is willing to clear on your behalf.&#xA;&#xA;Note that these methods require API level 26. If your app is running on older devices, you will probably need to use both APIs, conditionally switching on `Build.VERSION.SDK_INT`. Lint only looks in the same compilation unit to see if you are already using both APIs, so if it warns even though you are already using the new API, consider moving the calls to the same file or suppressing the warning."
+        errorLine1="    private val freeSpace: (File) -> Long = { it.usableSpace },"
+        errorLine2="                                                 ~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/storage/PrivateCommitProtocol.kt"
+            line="60"
+            column="50"/>
+    </issue>
+
+    <issue
+        id="UsableSpace"
+        severity="Warning"
+        message="Consider also using `StorageManager#getAllocatableBytes` and `allocateBytes` which will consider clearable cached data"
+        category="Performance"
+        priority="3"
+        summary="Using getUsableSpace()"
+        explanation="When you need to allocate disk space for large files, consider using the new `allocateBytes(FileDescriptor, long)` API, which will automatically clear cached files belonging to other apps (as needed) to meet your request.&#xA;&#xA;When deciding if the device has enough disk space to hold your new data, call `getAllocatableBytes(UUID)` instead of using `getUsableSpace()`, since the former will consider any cached data that the system is willing to clear on your behalf.&#xA;&#xA;Note that these methods require API level 26. If your app is running on older devices, you will probably need to use both APIs, conditionally switching on `Build.VERSION.SDK_INT`. Lint only looks in the same compilation unit to see if you are already using both APIs, so if it warns even though you are already using the new API, consider moving the calls to the same file or suppressing the warning."
+        errorLine1="    private val freeSpace: (File) -> Long = { it.usableSpace },"
+        errorLine2="                                                 ~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/storage/PrivateCommitProtocol.kt"
+            line="60"
+            column="50"/>
+    </issue>
+
+    <issue
+        id="UsableSpace"
+        severity="Warning"
+        message="Consider also using `StorageManager#getAllocatableBytes` and `allocateBytes` which will consider clearable cached data"
+        category="Performance"
+        priority="3"
+        summary="Using getUsableSpace()"
+        explanation="When you need to allocate disk space for large files, consider using the new `allocateBytes(FileDescriptor, long)` API, which will automatically clear cached files belonging to other apps (as needed) to meet your request.&#xA;&#xA;When deciding if the device has enough disk space to hold your new data, call `getAllocatableBytes(UUID)` instead of using `getUsableSpace()`, since the former will consider any cached data that the system is willing to clear on your behalf.&#xA;&#xA;Note that these methods require API level 26. If your app is running on older devices, you will probably need to use both APIs, conditionally switching on `Build.VERSION.SDK_INT`. Lint only looks in the same compilation unit to see if you are already using both APIs, so if it warns even though you are already using the new API, consider moving the calls to the same file or suppressing the warning."
+        errorLine1="    fun bytesAvailable(): Long = (directory.usableSpace - 64L * 1024 * 1024).coerceAtLeast(0)"
+        errorLine2="                                            ~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/recording/segments/RecordedSegmentFiles.kt"
+            line="32"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        severity="Warning"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        category="Productivity"
+        priority="6"
+        summary="Use KTX extension function"
+        explanation="The Android KTX libraries decorates the Android platform SDK as well as various libraries with more convenient extension functions available from Kotlin, allowing you to use default parameters, named parameters, and more."
+        errorLine1="            check(appContext.getSharedPreferences(&quot;discovery_sources&quot;, Context.MODE_PRIVATE).edit()"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt"
+            line="203"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        severity="Warning"
+        message="Use the KTX extension function `String.toUri` instead?"
+        category="Productivity"
+        priority="6"
+        summary="Use KTX extension function"
+        explanation="The Android KTX libraries decorates the Android platform SDK as well as various libraries with more convenient extension functions available from Kotlin, allowing you to use default parameters, named parameters, and more."
+        errorLine1="        val authority = target.uri?.let { Uri.parse(it).authority } ?: return &quot;所选文件提供方&quot;"
+        errorLine2="                                          ~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidExportPort.kt"
+            line="56"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        severity="Warning"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        category="Productivity"
+        priority="6"
+        summary="Use KTX extension function"
+        explanation="The Android KTX libraries decorates the Android platform SDK as well as various libraries with more convenient extension functions available from Kotlin, allowing you to use default parameters, named parameters, and more."
+        errorLine1="        check(prefs.edit().putBoolean(&quot;restore_tabs&quot;, settings.browser.restoreTabs)"
+        errorLine2="              ~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/storage/AndroidStores.kt"
+            line="28"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        severity="Warning"
+        message="Use the KTX extension function `String.toUri` instead?"
+        category="Productivity"
+        priority="6"
+        summary="Use KTX extension function"
+        explanation="The Android KTX libraries decorates the Android platform SDK as well as various libraries with more convenient extension functions available from Kotlin, allowing you to use default parameters, named parameters, and more."
+        errorLine1="        try { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(address.value)).addCategory(Intent.CATEGORY_BROWSABLE)) }"
+        errorLine2="                                                       ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt"
+            line="436"
+            column="56"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        severity="Warning"
+        message="Use the KTX extension function `String.toUri` instead?"
+        category="Productivity"
+        priority="6"
+        summary="Use KTX extension function"
+        explanation="The Android KTX libraries decorates the Android platform SDK as well as various libraries with more convenient extension functions available from Kotlin, allowing you to use default parameters, named parameters, and more."
+        errorLine1="            val media = MediaItem.Builder().setUri(Uri.parse(EditorCatalogDataSource.address(index))).setMimeType(MimeTypes.VIDEO_MP4)"
+        errorLine2="                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/editor/engine/Media3EditorEngine.kt"
+            line="179"
+            column="52"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        severity="Warning"
+        message="Use the KTX extension function `String.toUri` instead?"
+        category="Productivity"
+        priority="6"
+        summary="Use KTX extension function"
+        explanation="The Android KTX libraries decorates the Android platform SDK as well as various libraries with more convenient extension functions available from Kotlin, allowing you to use default parameters, named parameters, and more."
+        errorLine1="                    val length = source.open(DataSpec(Uri.parse(LocalHlsAddress.segment(index))))"
+        errorLine2="                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/stream/Media3LocalHlsEngine.kt"
+            line="253"
+            column="55"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        severity="Warning"
+        message="Use the KTX extension function `String.toUri` instead?"
+        category="Productivity"
+        priority="6"
+        summary="Use KTX extension function"
+        explanation="The Android KTX libraries decorates the Android platform SDK as well as various libraries with more convenient extension functions available from Kotlin, allowing you to use default parameters, named parameters, and more."
+        errorLine1="                val item = EditedMediaItem.Builder(MediaItem.Builder().setUri(Uri.parse(LocalHlsAddress.PLAYLIST))"
+        errorLine2="                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/stream/Media3LocalHlsEngine.kt"
+            line="367"
+            column="79"/>
+    </issue>
+
+</issues>

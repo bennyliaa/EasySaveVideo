@@ -1,0 +1,9 @@
+library/src/main/kotlin/com/easysavevideo/library/LibraryModels.kt: OK
+library/src/main/kotlin/com/easysavevideo/library/LibraryPolicies.kt: OK
+library/src/main/kotlin/com/easysavevideo/library/export/ExportContracts.kt: OK
+library/src/main/kotlin/com/easysavevideo/library/export/ExportCoordinator.kt: OK
+library/src/main/kotlin/com/easysavevideo/library/destination/OrdinaryDestinationContracts.kt: OK
+library/src/main/kotlin/com/easysavevideo/library/destination/OrdinaryDestinationRouter.kt: OK
+app/src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationSelection.kt: OK
+docs/m5a4a/evidence/IndependentDestinationReviewTest.kt: OK
+docs/m8b4/evidence/run-independent-destination-review.sh: OK

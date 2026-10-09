@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.recording.RecordingControllerTest" tests="29" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:32:24.351Z" hostname="05582a867b99" time="0.028">
+  <properties/>
+  <testcase name="pauseAndConsentHaveIndependentDeadlines" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.008"/>
+  <testcase name="c02_deniedConsentNeverStartsCaptureAndDoesNotPromptAgain" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="lateRecordingCallbackCannotUndoPauseOrStop" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="c06_failedPreparationRequestsOneReleaseAndRetainsFence" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="thirtyThirdResumeSafelyStopsAndCancellationStillWins" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.002"/>
+  <testcase name="c05_snapshotContainsIntentionAndNoRestartedControllerRetainsConsent" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="c03_oldGenerationAndDuplicateConsentCannotCreateResources" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="noAudioChoiceDoesNotRequestAudioPermission" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="c10_pauseDoesNotBlockSystemStopOrCancellation" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="effectiveResumeObservationsCannotRegressOrExceedConfiguredCap" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="noObservedSampleCannotBeReportedAsRecording" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="generationMustIncreaseEvenAfterCancellation" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="permissionGrantedRequestsConsentExactlyOnce" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="c11_badAdapterProgressFailsBoundedlyWithOneRelease" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="userStopBeforeResumeLimitRequestHasNoSecondFinalizer" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="c13_timeoutDoesNotReleaseNativeLaneOrAcceptLateProduct" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="c12_sessionLimitStartsSeparateFinalizationWindow" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="c09_repeatedPauseResumeStopProduceNoRepeatedEffects" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="c04_startAndConsentRecheckEntitlement" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="pauseResumeGateDoesNotBlockSafetyCommands" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="c08_cancelWinsOverStopAndLateSuccess" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="wallClockStyleRegressionCannotAlterControllerState" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="c01_sameKeyIsIdempotentAndConflictingRequestRejected" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="changedActualProfileFailsWithoutSilentReconfiguration" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="resumeTimeoutDoesNotPretendSyncFrameWasReceived" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="finishedCaptureRequiresActualReleaseAndIsNotSavePublication" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="audioDeniedRequiresExplicitNewSilentRequest" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <testcase name="adapterActualStopReasonWinsUiAndSystemRaceWithoutWeakeningCancel" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.001"/>
+  <testcase name="c07_systemStopDuringPreparationFinalizesOnlyOnce" classname="com.easysavevideo.recording.RecordingControllerTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

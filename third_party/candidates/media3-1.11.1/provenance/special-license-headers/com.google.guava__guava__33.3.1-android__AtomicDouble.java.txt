@@ -1,0 +1,9 @@
+1: /*
+2:  * Written by Doug Lea and Martin Buchholz with assistance from
+3:  * members of JCP JSR-166 Expert Group and released to the public
+4:  * domain, as explained at
+5:  * http://creativecommons.org/publicdomain/zero/1.0/
+6:  */
+7: 
+8: /*
+9:  * Source:

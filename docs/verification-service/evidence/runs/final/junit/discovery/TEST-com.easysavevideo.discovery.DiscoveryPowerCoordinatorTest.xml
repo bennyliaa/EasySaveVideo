@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" tests="22" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:05.246Z" hostname="05582a867b99" time="0.037">
+  <properties/>
+  <testcase name="immediatePolicyFenceDoesNotClearIndependentLifecycleOrSaveRecordSuspension" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.003"/>
+  <testcase name="demandBeforeVisibilityIsDeferredButPowerChangeRetiresIt" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.0"/>
+  <testcase name="powerTransitionRetainsViewCursorHistoryAndStatisticsWithoutWritingStore" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.003"/>
+  <testcase name="pendingPowerFencePreventsDeferredMaterializationFromRenewingExhaustedAccounting" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.003"/>
+  <testcase name="sameSnapshotIsReadOnlyUnlessAnImmediateFenceWasIssued" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.001"/>
+  <testcase name="newerImmediateFenceSurvivesStaleApplyAndStaleApplyCannotReplaceNewerSignals" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.0"/>
+  <testcase name="unknownStartAndZeroSourcesNeverCreateNetworkDemand" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.0"/>
+  <testcase name="conservingWatermarkNeedsActualPageDemandBelowLowerBound" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.006"/>
+  <testcase name="staleSearchResumeCannotClearNewerImmediateSaveSuspension" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.001"/>
+  <testcase name="lifecycleAndPowerGenerationAcknowledgementsCannotClearEachOthersPendingFence" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.0"/>
+  <testcase name="powerChangesAfterExhaustionCannotRestartEvenThroughLifecycleAndTaskGates" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.004"/>
+  <testcase name="changedPolicyCancelsScheduledRetryAndItsLateFailureWithoutSchedulingAnotherTimer" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.001"/>
+  <testcase name="olderVisibilityApplyCannotReplaceNewerAppliedHiddenState" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.001"/>
+  <testcase name="rapidTightenRelaxAndPriorityVisibilityOverlapNeverRefundsOrInventsDemand" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.002"/>
+  <testcase name="conservativeExplicitRoundsRespectAttemptsIncludingRetriesAndStricterCallerCaps" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.0"/>
+  <testcase name="reviseAndRestoreRetainInjectedPolicyButNewCoordinatorDoesNotRestoreSignals" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.002"/>
+  <testcase name="serverCooldownSurvivesPolicyCancellationAndRelaxation" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.001"/>
+  <testcase name="enablingUnknownCancelsWithoutHealthPenaltyCursorCommitOrAutomaticRelaxation" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.002"/>
+  <testcase name="retainedPowerStatusIsAnImmutableSnapshotAndNeverMutatesOnRelaxation" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.001"/>
+  <testcase name="lifecycleAndMediaPriorityAloneResumeOnlyTheRemainingOriginalBudget" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.001"/>
+  <testcase name="immediatePowerFenceRollsBackBlockedCommitWithoutWaitingForCoordinatorLock" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.002"/>
+  <testcase name="immediatePowerFenceDuringProgressReadPreventsLaunchAndAccountingReservation" classname="com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

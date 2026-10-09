@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.library.export.ExportCoordinatorTest" tests="44" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:30:28.402Z" hostname="05582a867b99" time="0.045">
+  <properties/>
+  <testcase name="sameOperationReplaysWithoutDuplicatingOutputOrOpeningSource" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.008"/>
+  <testcase name="terminalHistoryBeyondOneThousandDoesNotConsumeActiveCapacityOrLoseReplay" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.002"/>
+  <testcase name="cancelAfterDurablePublishDecisionReportsTooLate" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="operationFingerprintRejectsChangedSourceAndGrant" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="recoveryBatchesAreBounded" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="blockedPublicationDoesNotBlockAnotherOperationsCancellation" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.002"/>
+  <testcase name="cleanupFailureRemainsRetryableWithoutRecreate" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.003"/>
+  <testcase name="cancellationAndCleanupSurviveNewCoordinatorInstance" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="unexpectedPublishedOutputWithoutVerifiedIntentIsNeverDeletedOrSucceeded" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="preadoptedSafDocumentIsCleanedWhenSourceCannotOpen" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="mediaStoreAndShareCannotTreatUnsupportedReadbackAsSuccess" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="preadoptedSafDocumentIsCleanedOnCancellationBeforeSourceOpen" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="recoveryOfAbsentCreationDoesNotInventSuccessOrCreateAgain" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="createdButUnrecordedJournalFailureCannotPretendAbsence" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="failedSafCleanupTruthfullyRetainsPartialOutput" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="uncertainPublishStillPendingCanBeCleanedWithoutSecondPublish" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="zeroProgressSourceIsBoundedFailure" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="destinationMustReachFullEof" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="concurrentSameOperationIsStatusReplayRatherThanSecondCreate" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="cancellationDuringUnsupportedSafReadbackStillCleans" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="sameLengthWrongSourceHashFails" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="crashAfterPublishIsRecoveredOnlyWithDurableVerifiedDecision" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="uncertainSafCleanupRemainsPendingAndCannotClaimRemoved" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="sourceMustReachRealEofNotJustExpectedLength" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="truncatedSourceFailsAndRemovesOnlyOwnedOutput" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="verifiedSafHasDistinctDestinationButNoSourceMutation" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="intentionalNewOperationCreatesNewOutput" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="unrelatedRecoveredOutputCannotBeUsedOrDeleted" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="safUnsupportedReadbackIsExplicitlyUnverifiedNotSuccess" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="extraSourceByteFailsEvenAfterExpectedCount" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="safVerifiedCommitRecoveryDoesNotDeleteBecauseProviderHasNoPendingFlag" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="everyUncertainDescriptorReleaseBlocksCleanupAndPublication" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="explicitUnverifiedSafCleanupRemovesOwnedCopyWithoutRewrite" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="durableCreateIntentIsWrittenBeforeExternalOutput" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="concurrentCancelDuringFinalReadbackCloseIsAcceptedBeforeUnblock" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.003"/>
+  <testcase name="createThenThrowNeedsReconciliationAndCannotDuplicate" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="exactSourceRevisionAndGenerationAreRequired" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="preStartCancellationCreatesNoSourceOrOutput" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="recoverPreparedDoesNotHoldCommitGateAcrossSourceOpening" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="destinationTruncationCorruptionAndTrailingBytesNeverPublish" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="throwingCloseAlsoRetainsOwnership" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="publishedOutcomePersistsEvenIfTerminalJournalWriteThrowsAfterCommit" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.0"/>
+  <testcase name="verifiedMediaStoreOrdersDurableIntentCopyCloseReadbackPublish" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.001"/>
+  <testcase name="cancellationAtEveryCancellableIoBoundaryPreventsPublish" classname="com.easysavevideo.library.export.ExportCoordinatorTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:57.592Z" hostname="05582a867b99" time="0.022">
+  <properties/>
+  <testcase name="capacityNoticeDisclosesActualLimitsNoAgeExpiryAndProtectedCurrentPages" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.004"/>
+  <testcase name="controlSnapshotsAreRedactedAndCannotAccidentallyExposeQueryIdentifiers" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.0"/>
+  <testcase name="statisticsAreLocalRecordCountsNotCompletionOrMediaCounts" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.006"/>
+  <testcase name="capturedProfileSessionRevisionAndControllerGenerationMustAllMatch" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.002"/>
+  <testcase name="malformedActionCannotCarryAnUnrelatedProvider" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.0"/>
+  <testcase name="providerResetUsesCapturedProfileAndExactlyOneProviderWithoutClearingHistory" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.003"/>
+  <testcase name="falseMutationHasFailureOutcomeAndNeverSuccessText" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.001"/>
+  <testcase name="readOnlyStatisticsOrControlRefreshCanNeverMaterializePagesEvenWithPendingDemand" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.0"/>
+  <testcase name="everyConfirmationDisclosesRetentionReappearanceAndMediaIndependence" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.001"/>
+  <testcase name="mutationExceptionCannotBeConvertedToSuccess" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.002"/>
+  <testcase name="currentClearUsesCapturedProfileAndAllClearUsesNullWithoutResettingProgress" classname="com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

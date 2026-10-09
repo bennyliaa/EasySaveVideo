@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "evidence": "STATIC_SOURCE_ONLY",
+  "integration": [
+    "generation-zero initialization",
+    "generation-before-flags lifecycle helper",
+    "release allowlist refusal",
+    "bounded coalesced drain",
+    "policy edits discard old pending page demand",
+    "debug controls explicit",
+    "native SAVED/PLAYED identity unchanged"
+  ],
+  "android_execution": "NOT_RUN",
+  "os_signals": "APP_LAYER_BRIDGE_DEVICE_NOT_RUN",
+  "energy_measurement": "NOT_RUN"
+}

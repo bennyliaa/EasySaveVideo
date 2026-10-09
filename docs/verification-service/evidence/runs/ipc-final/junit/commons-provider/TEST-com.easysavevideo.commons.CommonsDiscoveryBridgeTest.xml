@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.commons.CommonsDiscoveryBridgeTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:30:13.455Z" hostname="05582a867b99" time="0.133">
+  <properties/>
+  <testcase name="requiredSafeSearchRefusesBeforeAnyTransportCall" classname="com.easysavevideo.commons.CommonsDiscoveryBridgeTest" time="0.028"/>
+  <testcase name="malformedQueryDoesNotFetch" classname="com.easysavevideo.commons.CommonsDiscoveryBridgeTest" time="0.001"/>
+  <testcase name="rawContinuationIsReplayedAndUnknownDurationRemainsNull" classname="com.easysavevideo.commons.CommonsDiscoveryBridgeTest" time="0.062"/>
+  <testcase name="unrelatedNamespaceDoesNotFetchOrManufactureResults" classname="com.easysavevideo.commons.CommonsDiscoveryBridgeTest" time="0.001"/>
+  <testcase name="normalizedEquivalentQueriesReuseCompatibleCursorAndAllFiltersBindCache" classname="com.easysavevideo.commons.CommonsDiscoveryBridgeTest" time="0.013"/>
+  <testcase name="bridgePreservesEveryRightsFieldFromRecordedMetadata" classname="com.easysavevideo.commons.CommonsDiscoveryBridgeTest" time="0.016"/>
+  <testcase name="boundedDisplayTitleDoesNotSplitSurrogatesOrChangeSourceIdentity" classname="com.easysavevideo.commons.CommonsDiscoveryBridgeTest" time="0.002"/>
+  <testcase name="rateLimitRetryAtSurvivesBridgeExactly" classname="com.easysavevideo.commons.CommonsDiscoveryBridgeTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,51 @@
+{
+  "coordinate": "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/",
+  "file_metadata": {
+    "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom": {
+      "sha256": "18d4b1db26153d4e55079ce1f76bb1fe05cdb862ef9954a88cbcc4ff38b8679b",
+      "bytes": 2278,
+      "path": "official-maven/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom"
+    },
+    "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar": {
+      "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99",
+      "bytes": 2199,
+      "path": "official-maven/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"
+    }
+  },
+  "pom_licenses": [],
+  "source_headers": [],
+  "source_special_attributions": [],
+  "source_without_license_header": [],
+  "source_non_code_entries": [],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "261de46adefa0b980173ca8de48e924c2068d0f41390d01ff017958f8a2e3c7f",
+      "bytes": 108
+    },
+    {
+      "archive": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+      "entry": "META-INF/maven/com.google.guava/listenablefuture/pom.xml",
+      "sha256": "18d4b1db26153d4e55079ce1f76bb1fe05cdb862ef9954a88cbcc4ff38b8679b",
+      "bytes": 2278
+    },
+    {
+      "archive": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+      "entry": "META-INF/maven/com.google.guava/listenablefuture/pom.properties",
+      "sha256": "7443dcd4709998f62380c61303d600b29388bc7a931fa2021c44926a80cd6bdf",
+      "bytes": 134
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": {
+    "groupId": "com.google.guava",
+    "artifactId": "guava-parent",
+    "version": "26.0-android"
+  },
+  "source_status": "MISSING"
+}

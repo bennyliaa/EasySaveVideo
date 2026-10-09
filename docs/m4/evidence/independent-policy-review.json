@@ -1,0 +1,152 @@
+{
+  "reviewed_at_utc": "2026-10-06T19:26:50.484140+00:00",
+  "head": "548844f6f2fad50b2116bdaa2e034c7cc9d778ee",
+  "scope": "Read-only bounded RECORD policy B review: method-specific markers, cap32/33, selected GOP decoder proof and legacy recovery/publication gates. Lifecycle files reviewed only for relevant integration.",
+  "result": "No remaining source blocker identified after two owner fixes; requires build-owner final tests and explicit device validation.",
+  "resolved_findings": [
+    "Freeze and bound marker copy allocation, including size-change consistency.",
+    "Retain one decoder-output format signature across selected GOPs."
+  ],
+  "checks": {
+    "git_diff_check": "PASS",
+    "gradle": "NOT_RUN by reviewer",
+    "apk_device": "NOT_RUN",
+    "aac_sampling": "SOURCE_REVIEW_ONLY"
+  },
+  "files": [
+    {
+      "path": "recording/src/main/kotlin/com/easysavevideo/recording/RecordingModels.kt",
+      "sha256": "b2b1544f736c468648473ecc849af496c026f0fabe3e763986f48a272b32909d",
+      "bytes": 11702,
+      "lines": 249
+    },
+    {
+      "path": "recording/src/main/kotlin/com/easysavevideo/recording/RecordingController.kt",
+      "sha256": "8f232e23a7df4bd0a1bd5e162c09179de9f0c318d63494934ddc0c38d0af3831",
+      "bytes": 19428,
+      "lines": 305
+    },
+    {
+      "path": "recording/src/main/kotlin/com/easysavevideo/recording/RecordingTimeline.kt",
+      "sha256": "2fad8961de85519111451109b32bf5262d3dcde596a81329e417a92b73566d94",
+      "bytes": 7564,
+      "lines": 155
+    },
+    {
+      "path": "save/src/main/kotlin/com/easysavevideo/save/RecordingVerification.kt",
+      "sha256": "eca82e4eda926ae0b849f5da449414d9274b58ab4d044ec3590cf7afd4b223c6",
+      "bytes": 5615,
+      "lines": 94
+    },
+    {
+      "path": "save/src/main/kotlin/com/easysavevideo/save/SaveCoordinator.kt",
+      "sha256": "3e976e6b816bca803b0e4a85d821a78407eac0f88fe479648be9f90c6c05847e",
+      "bytes": 33986,
+      "lines": 489
+    },
+    {
+      "path": "save/src/main/kotlin/com/easysavevideo/save/SaveModels.kt",
+      "sha256": "13d36addcba452e2c79f61e871498ffa6fadeb2dfdc3794cd7ef78dfc22b6d67",
+      "bytes": 15537,
+      "lines": 276
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/recording/AndroidRecordingSession.kt",
+      "sha256": "af5a2df89c7ff9700d6c872ff63a81dc6d91140325da537f6340b17034de3e9f",
+      "bytes": 42864,
+      "lines": 796
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/recording/AndroidRecordSavePort.kt",
+      "sha256": "ca483be92618a40b55e0293d0150159d0c5df02294d9f8c28d038fdc6d3d685b",
+      "bytes": 14683,
+      "lines": 226
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt",
+      "sha256": "7d30a38208ef240e0b9bdc20a2f8d2c8cf9eb1b683c449b347e8e6c80820d859",
+      "bytes": 57699,
+      "lines": 889
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/RecordingVideoTailState.kt",
+      "sha256": "499ca05ab8754f2857259b1c637ebb4b703344726cf93d134d58493aa80cae73",
+      "bytes": 16794,
+      "lines": 328
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
+      "sha256": "7f7f066232e39df0807afed87a9d10b3721ec4a4950226216a26e2161fb28f72",
+      "bytes": 36224,
+      "lines": 583
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/SaveRecordCodec.kt",
+      "sha256": "5565abd85c7e0a3d21049fd381b57eeb617dc56c1ac2ba6fa032b005c9cf0d22",
+      "bytes": 15257,
+      "lines": 206
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/PrivateCommitProtocol.kt",
+      "sha256": "3b78adafbd870f1b25abba011f81dd370c1615598a394e9adea212afafe3b22b",
+      "bytes": 16863,
+      "lines": 310
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+      "sha256": "0ee953534710884b0e1ac2bec1d68bebe89d253841ccc7fa63c0445c0c3f3425",
+      "bytes": 22956,
+      "lines": 363
+    },
+    {
+      "path": "recording/src/test/kotlin/com/easysavevideo/recording/RecordingContractsTest.kt",
+      "sha256": "1518ebf12ce56becdbdc4f8e43e04d8f69f976a8081fe7c58d371d7ff0e47433",
+      "bytes": 14775,
+      "lines": 287
+    },
+    {
+      "path": "recording/src/test/kotlin/com/easysavevideo/recording/RecordingControllerTest.kt",
+      "sha256": "db661fda825cc2c0ce01adda7d4a8b40f642ca56f172593460b1627764e73058",
+      "bytes": 20494,
+      "lines": 381
+    },
+    {
+      "path": "save/src/test/kotlin/com/easysavevideo/save/RecordingCoordinatorTest.kt",
+      "sha256": "3573702c0381e9a2e846a5ac5c4eef1e47644cc076fb517ff05b8eeb69366902",
+      "bytes": 27559,
+      "lines": 395
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/recording/RecordingCaptureAccountingTest.kt",
+      "sha256": "28fb676103844f6a957e92c993c7c674eb4a2830fc47fb5929b69f94811e5290",
+      "bytes": 5654,
+      "lines": 117
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/save/RecordingVideoTailStateTest.kt",
+      "sha256": "356a435d3e0432a1114ac99a46ddcf697399bd61f3c5a5e318137ba3938499a6",
+      "bytes": 21280,
+      "lines": 350
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/SaveRecordCodecTest.kt",
+      "sha256": "be765628d1d221f05e6a3d81bebb9c2292b5a81e7d81717858e307cb3c983dba",
+      "bytes": 28291,
+      "lines": 386
+    },
+    {
+      "path": "docs/m4/ADR-M4-recording.md",
+      "sha256": "4416613c60a9a57057de6516d9e4fee43542d3239c498e969faf1ff447e652e7",
+      "bytes": 8260,
+      "lines": 55
+    },
+    {
+      "path": "docs/m4/COVERAGE_AND_DEVICE_GATES.md",
+      "sha256": "b5e7fb0c2adb8e83b4de6e03464a3f3626b0b09767a14d514c8e5e6d7dff92ee",
+      "bytes": 14174,
+      "lines": 83
+    }
+  ],
+  "production_rechecked_at_utc": "2026-10-06T19:27:09.181047+00:00",
+  "pending_owner_work": "Build owner aggregate; one legacy COMMITTING recovery test may be added after this test snapshot. Production snapshot stable."
+}

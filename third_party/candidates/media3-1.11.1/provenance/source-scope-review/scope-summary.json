@@ -1,0 +1,31 @@
+{
+  "fixed_media3_version": "1.11.1",
+  "fixed_upstream_commit": "8c6678b657ede1e7883fc164ef73ed483c7796c3",
+  "module_count": 11,
+  "java_kotlin_count": 1160,
+  "java_kotlin_explicit_apache_count": 1160,
+  "java_kotlin_exact_git_blob_matches": 1160,
+  "glsl_count": 19,
+  "glsl_explicit_apache_header_count": 17,
+  "glsl_headerless_provenance_traced_count": 2,
+  "glsl_exact_aar_matches": 19,
+  "xml_strings_count": 83,
+  "xml_strings_explicit_apache_header_count": 1,
+  "xml_strings_aar_semantic_matches": 83,
+  "compiled_class_count": 2577,
+  "native_or_vendored_binary_entries": [],
+  "source_license_assessment": "PERMITTED_WITH_OBLIGATIONS: Apache-2.0; scoped candidate assessment, not whole-graph adoption",
+  "actual_license_unknowns": [],
+  "translation_assessment": "PERMITTED_WITH_OBLIGATIONS: exact POM Apache declaration, official SCM and translation history, licensed base resources, fixed Git blob matches and all 83 AAR resource-value matches; no conflicting license or external ownership carve-out found",
+  "scope_limitations": [
+    "No independent contributor private contract or CLA ownership due diligence; not required by the stated artifact/source/embedded-asset admission threshold.",
+    "Four additional translation commit patch requests were rate-limited (HTTP 403); full official commit listing and exact fixed resource contents were already obtained."
+  ],
+  "outside_scope": [
+    "non-Media3 transitive dependencies",
+    "reproducible source-to-AAR binary build",
+    "codec/standards patents",
+    "media content rights",
+    "app integration or build"
+  ]
+}

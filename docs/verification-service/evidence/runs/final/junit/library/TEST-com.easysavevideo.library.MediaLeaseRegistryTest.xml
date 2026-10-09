@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.library.MediaLeaseRegistryTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:22.037Z" hostname="05582a867b99" time="0.065">
+  <properties/>
+  <testcase name="leaseDiagnosticsRedactItemAndOperationIds" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.001"/>
+  <testcase name="closeIsIdempotentAndOldCloseCannotReleaseNewOwner" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.001"/>
+  <testcase name="cancellationCanRemovePendingIntentButNeverActiveOwnership" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.0"/>
+  <testcase name="writersAreFifoAndSameOperationCannotAcquireTwice" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.0"/>
+  <testcase name="callbackFailureCannotCorruptReleaseOrMakeCloseRetryable" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.001"/>
+  <testcase name="blockedWriterIntentFencesNewReadersAndSurvivesRetry" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.0"/>
+  <testcase name="concurrentReadWriteStressMaintainsMutualExclusion" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.049"/>
+  <testcase name="abandonedReaderRemainsFencedWithoutTimeoutRevocation" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.001"/>
+  <testcase name="cancellingHeadAllowsNextPendingWriterToProceed" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.0"/>
+  <testcase name="concurrentDuplicateCloseCannotUnderflowReaderOrWriterCount" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.004"/>
+  <testcase name="multipleReadersCoexistButWriterIsExclusive" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.0"/>
+  <testcase name="writerOnOneItemDoesNotBlockAnotherItem" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.001"/>
+  <testcase name="concurrentReadersAllHoldOwnershipUntilTheirOwnClose" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.004"/>
+  <testcase name="availabilityHookRunsOnlyAfterSafeReleaseAndOutsideRegistryMonitor" classname="com.easysavevideo.library.MediaLeaseRegistryTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

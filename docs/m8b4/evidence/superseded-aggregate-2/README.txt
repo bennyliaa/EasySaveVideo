@@ -1,0 +1,1 @@
+Superseded second aggregate: all 87 strict offline Gradle tasks passed. Exact inherited folder-SQL membership still described the old A4a/folder scope and rejected new M8-B4 inputs. Current wrapper membership metadata is adapted to the complete M8-B4 snapshot without relaxing exact equality or changing SQL cases. The full aggregate is restarted after a successful SQL preflight.

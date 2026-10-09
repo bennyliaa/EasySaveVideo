@@ -1,0 +1,9 @@
+channelBytes=3
+enter depth=1 fdValid=true
+enter depth=2 fdValid=true
+exit depth=2 fdValid=true leaseReleased=false
+exit depth=1 fdValid=true leaseReleased=false
+closeFailure=RESOURCE_RELEASE_UNCONFIRMED
+enter depth=1 fdValid=true
+exit depth=1 fdValid=true leaseReleased=false
+CONFIRMED: reentrant channel close aborts outer FD close and retains lease

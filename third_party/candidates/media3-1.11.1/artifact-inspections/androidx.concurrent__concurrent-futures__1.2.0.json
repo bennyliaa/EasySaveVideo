@@ -1,0 +1,351 @@
+{
+  "coordinate": "androidx.concurrent:concurrent-futures:1.2.0",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://dl.google.com/dl/android/maven2/androidx/concurrent/concurrent-futures/1.2.0/",
+  "file_metadata": {
+    "concurrent-futures-1.2.0.module": {
+      "sha256": "afd7094d3a07422be2e991bc87048542ae9724a5c42bd54b5cae3029c7970a1d",
+      "bytes": 5448,
+      "path": "official-maven/androidx/concurrent/concurrent-futures/1.2.0/concurrent-futures-1.2.0.module"
+    },
+    "concurrent-futures-1.2.0.pom": {
+      "sha256": "6be9a98d6cd75a787eeae2a1a0a3440ebe1ab4639740df9ec028094ab59b622f",
+      "bytes": 2265,
+      "path": "official-maven/androidx/concurrent/concurrent-futures/1.2.0/concurrent-futures-1.2.0.pom"
+    },
+    "concurrent-futures-1.2.0.jar": {
+      "sha256": "4810315a798690b5d3bb40c92bcd41c045fd2c36bbfc50b27cbac3d6a0eda190",
+      "bytes": 26311,
+      "path": "official-maven/androidx/concurrent/concurrent-futures/1.2.0/concurrent-futures-1.2.0.jar"
+    },
+    "concurrent-futures-1.2.0-sources.jar": {
+      "sha256": "38b32cece3cce08eb0e3fb27595325f57e7a6272f085d74288f08417daf7b04f",
+      "bytes": 19788,
+      "path": "official-maven/androidx/concurrent/concurrent-futures/1.2.0/concurrent-futures-1.2.0-sources.jar"
+    }
+  },
+  "pom_licenses": [
+    {
+      "name": "The Apache Software License, Version 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.txt",
+      "distribution": "repo"
+    }
+  ],
+  "source_headers": [
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture.java",
+      "sha256": "a0d14f922afd545bb7f0bec8c69005881a08a6dfeea5a4a470cc8c8276d2f6e4",
+      "bytes": 52833,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/CallbackToFutureAdapter.java",
+      "sha256": "9c0d708fcce23746bf03add560fd7253a7f15052934bbadcf92466ed0f68725f",
+      "bytes": 13868,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/DirectExecutor.java",
+      "sha256": "c33afebc3d5a1e5bec73d38625aed6130e87f61530246f254ddc2f2484470c27",
+      "bytes": 1133,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/ResolvableFuture.java",
+      "sha256": "5348e591aa4c913e406115a0e0918c2bf30fb1e4b984d6164e07b1e9afa3928f",
+      "bytes": 2122,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    }
+  ],
+  "source_special_attributions": [
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture.java",
+      "sha256": "a0d14f922afd545bb7f0bec8c69005881a08a6dfeea5a4a470cc8c8276d2f6e4",
+      "bytes": 52833,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 98,
+          "text": "// based on synchronized. This will be a definite performance hit to those users."
+        },
+        {
+          "line": 792,
+          "text": "* Returns a value that satisfies the contract of the {@link #value} field based on the state of"
+        },
+        {
+          "line": 1090,
+          "text": "/** {@link AtomicHelper} based on {@link AtomicReferenceFieldUpdater}. */"
+        },
+        {
+          "line": 1138,
+          "text": "* {@link AtomicHelper} based on {@code synchronized} and volatile writes."
+        }
+      ]
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/CallbackToFutureAdapter.java",
+      "sha256": "9c0d708fcce23746bf03add560fd7253a7f15052934bbadcf92466ed0f68725f",
+      "bytes": 13868,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 73,
+          "text": "* detection based on garbage collection."
+        }
+      ]
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/DirectExecutor.java",
+      "sha256": "c33afebc3d5a1e5bec73d38625aed6130e87f61530246f254ddc2f2484470c27",
+      "bytes": 1133,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/ResolvableFuture.java",
+      "sha256": "5348e591aa4c913e406115a0e0918c2bf30fb1e4b984d6164e07b1e9afa3928f",
+      "bytes": 2122,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    }
+  ],
+  "source_without_license_header": [],
+  "source_non_code_entries": [
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    }
+  ],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture$1.class",
+      "sha256": "61821979ec5d58456bd3759b56cc18ddd257fa73bd11eb883369a0e42fff4893",
+      "bytes": 276
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture$AtomicHelper.class",
+      "sha256": "72e0c28aec65f600fbecb675b4f317dcbfb9b55cd8ed84f22afd2450b8149808",
+      "bytes": 2208
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture$Cancellation.class",
+      "sha256": "266c96b1e558605e13ca1952ae0bd46190dfa5da6fbe89e339b3910f7808fb37",
+      "bytes": 1041
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture$Failure$1.class",
+      "sha256": "49fcfba7a64a7944aa864c862021a0fab3fd580ae7c9d98dddfdaab8006c7418",
+      "bytes": 737
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture$Failure.class",
+      "sha256": "a621f1a4367b4caf3ac2ae18664183bf58b2467f603fe12083cd27329e9f310d",
+      "bytes": 951
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture$Listener.class",
+      "sha256": "d92ecfdfb53e6659fdf9590836027b357435e5ce8c657f50cf48334f88ff0ba0",
+      "bytes": 873
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture$SafeAtomicHelper.class",
+      "sha256": "c7c328fa22ad44569156cdcefe7330b2df5789c1a35dc4d25d6cec531b76c862",
+      "bytes": 5564
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture$SetFuture.class",
+      "sha256": "64023e0e7cece0ce62e12885960674f66908e2ea99f834f3a4c74ebb4dc04cda",
+      "bytes": 2033
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture$SynchronizedHelper.class",
+      "sha256": "fc55e8c330a59f26728d3cf44a8270e2ae88d89479cd680fc9758a11a862da63",
+      "bytes": 3421
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture$Waiter.class",
+      "sha256": "528e6c2f1df958f8187dac6d86d7e616014a6761a64d32932cfc3de08a985d59",
+      "bytes": 1723
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture.class",
+      "sha256": "93e0088401f4f15d0903e2b05d293a0187731beb1b5abebd23a5d408007701b0",
+      "bytes": 18621
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/CallbackToFutureAdapter$Completer.class",
+      "sha256": "ef4879ffe8e310f08370d3c45f8424a984777b7984213b6e5d399699c9593c8d",
+      "bytes": 3784
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/CallbackToFutureAdapter$FutureGarbageCollectedException.class",
+      "sha256": "c0956f78cc1e3b6a3ef3a20be72c2fa38293dade0fb347b05e782670879583d2",
+      "bytes": 706
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/CallbackToFutureAdapter$Resolver.class",
+      "sha256": "76f24bda25131beb508279f9a2b7617cd55c6ff3f04a611639a9acfa3672c983",
+      "bytes": 831
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/CallbackToFutureAdapter$SafeFuture$1.class",
+      "sha256": "49f3b6aed49726a06dc8784489b3f571c9cfd88927f4b0fa025a55431cf71479",
+      "bytes": 1859
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/CallbackToFutureAdapter$SafeFuture.class",
+      "sha256": "81edb8cd21746b391506c73ef3b79ade3e98c7ec31f7f42d743bf97797257e00",
+      "bytes": 3934
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/CallbackToFutureAdapter.class",
+      "sha256": "39f0f1b9fd6be3c6b651a341beade31eb753ea554d328a21ea0199cb84b5bddc",
+      "bytes": 2372
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/DirectExecutor.class",
+      "sha256": "e14f288f2b2064599828d9ff318b01f83e570e3867cfb7ddef1eb0f066411694",
+      "bytes": 1765
+    },
+    {
+      "archive": "concurrent-futures-1.2.0.jar",
+      "entry": "androidx/concurrent/futures/ResolvableFuture.class",
+      "sha256": "7c5fdad5849ee03838d9324bad01da8b779f87f47440fc126d656a5c272b8832",
+      "bytes": 1937
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/AbstractResolvableFuture.java",
+      "sha256": "a0d14f922afd545bb7f0bec8c69005881a08a6dfeea5a4a470cc8c8276d2f6e4",
+      "bytes": 52833
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/CallbackToFutureAdapter.java",
+      "sha256": "9c0d708fcce23746bf03add560fd7253a7f15052934bbadcf92466ed0f68725f",
+      "bytes": 13868
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/DirectExecutor.java",
+      "sha256": "c33afebc3d5a1e5bec73d38625aed6130e87f61530246f254ddc2f2484470c27",
+      "bytes": 1133
+    },
+    {
+      "archive": "concurrent-futures-1.2.0-sources.jar",
+      "entry": "androidx/concurrent/futures/ResolvableFuture.java",
+      "sha256": "5348e591aa4c913e406115a0e0918c2bf30fb1e4b984d6164e07b1e9afa3928f",
+      "bytes": 2122
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": null,
+  "source_status": "PRESENT",
+  "published_hash_checks": [
+    {
+      "variant": "apiElements",
+      "file": "concurrent-futures-1.2.0.jar",
+      "sha256_published": "4810315a798690b5d3bb40c92bcd41c045fd2c36bbfc50b27cbac3d6a0eda190",
+      "sha256_actual": "4810315a798690b5d3bb40c92bcd41c045fd2c36bbfc50b27cbac3d6a0eda190",
+      "matches": true
+    },
+    {
+      "variant": "runtimeElements",
+      "file": "concurrent-futures-1.2.0.jar",
+      "sha256_published": "4810315a798690b5d3bb40c92bcd41c045fd2c36bbfc50b27cbac3d6a0eda190",
+      "sha256_actual": "4810315a798690b5d3bb40c92bcd41c045fd2c36bbfc50b27cbac3d6a0eda190",
+      "matches": true
+    },
+    {
+      "variant": "sourcesElements",
+      "file": "concurrent-futures-1.2.0-sources.jar",
+      "sha256_published": "38b32cece3cce08eb0e3fb27595325f57e7a6272f085d74288f08417daf7b04f",
+      "sha256_actual": "38b32cece3cce08eb0e3fb27595325f57e7a6272f085d74288f08417daf7b04f",
+      "matches": true
+    }
+  ]
+}

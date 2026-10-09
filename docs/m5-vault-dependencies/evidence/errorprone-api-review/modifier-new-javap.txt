@@ -1,0 +1,201 @@
+Compiled from "Modifier.java"
+public final class com.google.errorprone.annotations.Modifier extends java.lang.Enum<com.google.errorprone.annotations.Modifier> {
+  public static final com.google.errorprone.annotations.Modifier PUBLIC;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier PROTECTED;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier PRIVATE;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier ABSTRACT;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier DEFAULT;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier STATIC;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier FINAL;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier TRANSIENT;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier VOLATILE;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier SYNCHRONIZED;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier NATIVE;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  public static final com.google.errorprone.annotations.Modifier STRICTFP;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+
+  private static final com.google.errorprone.annotations.Modifier[] $VALUES;
+    descriptor: [Lcom/google/errorprone/annotations/Modifier;
+
+  public static com.google.errorprone.annotations.Modifier[] values();
+    descriptor: ()[Lcom/google/errorprone/annotations/Modifier;
+    Code:
+       0: getstatic     #40                 // Field $VALUES:[Lcom/google/errorprone/annotations/Modifier;
+       3: invokevirtual #44                 // Method "[Lcom/google/errorprone/annotations/Modifier;".clone:()Ljava/lang/Object;
+       6: checkcast     #45                 // class "[Lcom/google/errorprone/annotations/Modifier;"
+       9: areturn
+
+  public static com.google.errorprone.annotations.Modifier valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lcom/google/errorprone/annotations/Modifier;
+    Code:
+       0: ldc           #1                  // class com/google/errorprone/annotations/Modifier
+       2: aload_0
+       3: invokestatic  #49                 // Method java/lang/Enum.valueOf:(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;
+       6: checkcast     #1                  // class com/google/errorprone/annotations/Modifier
+       9: areturn
+
+  private com.google.errorprone.annotations.Modifier();
+    descriptor: (Ljava/lang/String;I)V
+    Code:
+       0: aload_0
+       1: aload_1
+       2: iload_2
+       3: invokespecial #55                 // Method java/lang/Enum."<init>":(Ljava/lang/String;I)V
+       6: return
+
+  private static com.google.errorprone.annotations.Modifier[] $values();
+    descriptor: ()[Lcom/google/errorprone/annotations/Modifier;
+    Code:
+       0: bipush        12
+       2: anewarray     #1                  // class com/google/errorprone/annotations/Modifier
+       5: dup
+       6: iconst_0
+       7: getstatic     #3                  // Field PUBLIC:Lcom/google/errorprone/annotations/Modifier;
+      10: aastore
+      11: dup
+      12: iconst_1
+      13: getstatic     #7                  // Field PROTECTED:Lcom/google/errorprone/annotations/Modifier;
+      16: aastore
+      17: dup
+      18: iconst_2
+      19: getstatic     #10                 // Field PRIVATE:Lcom/google/errorprone/annotations/Modifier;
+      22: aastore
+      23: dup
+      24: iconst_3
+      25: getstatic     #13                 // Field ABSTRACT:Lcom/google/errorprone/annotations/Modifier;
+      28: aastore
+      29: dup
+      30: iconst_4
+      31: getstatic     #16                 // Field DEFAULT:Lcom/google/errorprone/annotations/Modifier;
+      34: aastore
+      35: dup
+      36: iconst_5
+      37: getstatic     #19                 // Field STATIC:Lcom/google/errorprone/annotations/Modifier;
+      40: aastore
+      41: dup
+      42: bipush        6
+      44: getstatic     #22                 // Field FINAL:Lcom/google/errorprone/annotations/Modifier;
+      47: aastore
+      48: dup
+      49: bipush        7
+      51: getstatic     #25                 // Field TRANSIENT:Lcom/google/errorprone/annotations/Modifier;
+      54: aastore
+      55: dup
+      56: bipush        8
+      58: getstatic     #28                 // Field VOLATILE:Lcom/google/errorprone/annotations/Modifier;
+      61: aastore
+      62: dup
+      63: bipush        9
+      65: getstatic     #31                 // Field SYNCHRONIZED:Lcom/google/errorprone/annotations/Modifier;
+      68: aastore
+      69: dup
+      70: bipush        10
+      72: getstatic     #34                 // Field NATIVE:Lcom/google/errorprone/annotations/Modifier;
+      75: aastore
+      76: dup
+      77: bipush        11
+      79: getstatic     #37                 // Field STRICTFP:Lcom/google/errorprone/annotations/Modifier;
+      82: aastore
+      83: areturn
+
+  static {};
+    descriptor: ()V
+    Code:
+       0: new           #1                  // class com/google/errorprone/annotations/Modifier
+       3: dup
+       4: ldc           #59                 // String PUBLIC
+       6: iconst_0
+       7: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+      10: putstatic     #3                  // Field PUBLIC:Lcom/google/errorprone/annotations/Modifier;
+      13: new           #1                  // class com/google/errorprone/annotations/Modifier
+      16: dup
+      17: ldc           #61                 // String PROTECTED
+      19: iconst_1
+      20: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+      23: putstatic     #7                  // Field PROTECTED:Lcom/google/errorprone/annotations/Modifier;
+      26: new           #1                  // class com/google/errorprone/annotations/Modifier
+      29: dup
+      30: ldc           #62                 // String PRIVATE
+      32: iconst_2
+      33: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+      36: putstatic     #10                 // Field PRIVATE:Lcom/google/errorprone/annotations/Modifier;
+      39: new           #1                  // class com/google/errorprone/annotations/Modifier
+      42: dup
+      43: ldc           #63                 // String ABSTRACT
+      45: iconst_3
+      46: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+      49: putstatic     #13                 // Field ABSTRACT:Lcom/google/errorprone/annotations/Modifier;
+      52: new           #1                  // class com/google/errorprone/annotations/Modifier
+      55: dup
+      56: ldc           #64                 // String DEFAULT
+      58: iconst_4
+      59: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+      62: putstatic     #16                 // Field DEFAULT:Lcom/google/errorprone/annotations/Modifier;
+      65: new           #1                  // class com/google/errorprone/annotations/Modifier
+      68: dup
+      69: ldc           #65                 // String STATIC
+      71: iconst_5
+      72: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+      75: putstatic     #19                 // Field STATIC:Lcom/google/errorprone/annotations/Modifier;
+      78: new           #1                  // class com/google/errorprone/annotations/Modifier
+      81: dup
+      82: ldc           #66                 // String FINAL
+      84: bipush        6
+      86: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+      89: putstatic     #22                 // Field FINAL:Lcom/google/errorprone/annotations/Modifier;
+      92: new           #1                  // class com/google/errorprone/annotations/Modifier
+      95: dup
+      96: ldc           #67                 // String TRANSIENT
+      98: bipush        7
+     100: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+     103: putstatic     #25                 // Field TRANSIENT:Lcom/google/errorprone/annotations/Modifier;
+     106: new           #1                  // class com/google/errorprone/annotations/Modifier
+     109: dup
+     110: ldc           #68                 // String VOLATILE
+     112: bipush        8
+     114: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+     117: putstatic     #28                 // Field VOLATILE:Lcom/google/errorprone/annotations/Modifier;
+     120: new           #1                  // class com/google/errorprone/annotations/Modifier
+     123: dup
+     124: ldc           #69                 // String SYNCHRONIZED
+     126: bipush        9
+     128: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+     131: putstatic     #31                 // Field SYNCHRONIZED:Lcom/google/errorprone/annotations/Modifier;
+     134: new           #1                  // class com/google/errorprone/annotations/Modifier
+     137: dup
+     138: ldc           #70                 // String NATIVE
+     140: bipush        10
+     142: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+     145: putstatic     #34                 // Field NATIVE:Lcom/google/errorprone/annotations/Modifier;
+     148: new           #1                  // class com/google/errorprone/annotations/Modifier
+     151: dup
+     152: ldc           #71                 // String STRICTFP
+     154: bipush        11
+     156: invokespecial #60                 // Method "<init>":(Ljava/lang/String;I)V
+     159: putstatic     #37                 // Field STRICTFP:Lcom/google/errorprone/annotations/Modifier;
+     162: invokestatic  #72                 // Method $values:()[Lcom/google/errorprone/annotations/Modifier;
+     165: putstatic     #40                 // Field $VALUES:[Lcom/google/errorprone/annotations/Modifier;
+     168: return
+}

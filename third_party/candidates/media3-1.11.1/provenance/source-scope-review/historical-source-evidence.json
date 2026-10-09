@@ -1,0 +1,38 @@
+[
+  {
+    "path": "historical-source/e41a966237528148590712048dc735dabfd344ca/OverlayShaderProgram.java",
+    "upstream_path": "libraries/effect/src/main/java/androidx/media3/effect/OverlayShaderProgram.java",
+    "url": "https://raw.githubusercontent.com/androidx/media/e41a966237528148590712048dc735dabfd344ca/libraries/effect/src/main/java/androidx/media3/effect/OverlayShaderProgram.java",
+    "sha256": "3c904cf5c048ba4774e1d29fc317ab8565dee5f39530d60aeea705414ad4b766",
+    "git_blob_sha1": "7c711e572a31677065fd33bd274e3e81e7df65f9",
+    "bytes": 15362,
+    "retrieved_at_utc": "2026-10-06T16:55:57.168788+00:00"
+  },
+  {
+    "path": "historical-source/3bb6cf212957391fddf26c977060300bb0b8ade0/fragment_shader_transformation_ultra_hdr_es3.glsl",
+    "upstream_path": "libraries/effect/src/main/assets/shaders/fragment_shader_transformation_ultra_hdr_es3.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/3bb6cf212957391fddf26c977060300bb0b8ade0/libraries/effect/src/main/assets/shaders/fragment_shader_transformation_ultra_hdr_es3.glsl",
+    "sha256": "8645165d621b2ac0089cd118bf27314aaa834b07250e781af2925a4866059ce5",
+    "git_blob_sha1": "d689901a96bb59444c3b3a1825c3d23eaf625d49",
+    "bytes": 9541,
+    "retrieved_at_utc": "2026-10-06T16:55:57.161064+00:00"
+  },
+  {
+    "path": "historical-source/1640becddd1b84d5be0d815e6f87b8454b5870c4/insert_overlay_fragment_shader_methods.glsl",
+    "upstream_path": "libraries/effect/src/main/assets/shaders/insert_overlay_fragment_shader_methods.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/1640becddd1b84d5be0d815e6f87b8454b5870c4/libraries/effect/src/main/assets/shaders/insert_overlay_fragment_shader_methods.glsl",
+    "sha256": "943e4effeebc2aca742572e6c215f642d6c340d1c9636a12679214b44524cbe9",
+    "git_blob_sha1": "ebc1260c3ee7073958cd771381abb72dd4c1b0a4",
+    "bytes": 895,
+    "retrieved_at_utc": "2026-10-06T16:55:57.055423+00:00"
+  },
+  {
+    "path": "historical-source/9622411b508684a02f8d6370f88e14b90eef3898/insert_ultra_hdr.glsl",
+    "upstream_path": "libraries/effect/src/main/assets/shaders/insert_ultra_hdr.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/9622411b508684a02f8d6370f88e14b90eef3898/libraries/effect/src/main/assets/shaders/insert_ultra_hdr.glsl",
+    "sha256": "e3925fff5d15ff61c656d8da0252705b3ab52d44d3b98ae400b7363cb49e4221",
+    "git_blob_sha1": "9455f8ed2444247c1ba9fa7f380880d48a58d1d1",
+    "bytes": 2828,
+    "retrieved_at_utc": "2026-10-06T16:55:57.098966+00:00"
+  }
+]

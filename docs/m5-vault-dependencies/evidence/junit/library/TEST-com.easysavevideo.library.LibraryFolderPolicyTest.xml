@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.library.LibraryFolderPolicyTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-06T21:07:50.542Z" hostname="723dfa57d2fa" time="0.057">
+  <properties/>
+  <testcase name="permitsMovingSubtreeToRootAndAcrossUnrelatedBranches" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.026"/>
+  <testcase name="moveAlsoChecksDestinationSiblingNames" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.001"/>
+  <testcase name="namesAreUniqueAmongSiblingsByCanonicalKey" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.001"/>
+  <testcase name="cannotMoveFolderIntoItselfOrAnyDescendant" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.001"/>
+  <testcase name="moveCountsWholeSubtreeHeight" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.005"/>
+  <testcase name="createHonorsDepthLimitExactly" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.001"/>
+  <testcase name="oversizedTreeIsHandledWithoutRecursiveStackGrowth" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.01"/>
+  <testcase name="corruptedCyclesAndMissingAncestorsFailClosed" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.001"/>
+  <testcase name="createHonorsFolderCountLimit" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.004"/>
+  <testcase name="duplicateIdsInSnapshotAreRejected" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.001"/>
+  <testcase name="rootIsNullAndOnlyRealFoldersCanMove" classname="com.easysavevideo.library.LibraryFolderPolicyTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

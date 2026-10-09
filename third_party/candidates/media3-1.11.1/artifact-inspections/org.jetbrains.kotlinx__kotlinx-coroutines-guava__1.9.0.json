@@ -1,0 +1,171 @@
+{
+  "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.9.0",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.9.0/",
+  "file_metadata": {
+    "kotlinx-coroutines-guava-1.9.0.module": {
+      "sha256": "3e0791a5731d1dda9e08588432d06a65b9175228b2a00355fb082c71a2b0f107",
+      "bytes": 3865,
+      "path": "official-maven/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.9.0/kotlinx-coroutines-guava-1.9.0.module"
+    },
+    "kotlinx-coroutines-guava-1.9.0.pom": {
+      "sha256": "3bb987bae11b2d61d3917ac1a7f732355e8b2d79a19581d35eb5085477176731",
+      "bytes": 2395,
+      "path": "official-maven/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.9.0/kotlinx-coroutines-guava-1.9.0.pom"
+    },
+    "kotlinx-coroutines-guava-1.9.0.jar": {
+      "sha256": "ca68323328a85a2df3c03429d5e7b124bc784f07fbace958399a5bba4118d7a0",
+      "bytes": 18010,
+      "path": "official-maven/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.9.0/kotlinx-coroutines-guava-1.9.0.jar"
+    },
+    "kotlinx-coroutines-guava-1.9.0-sources.jar": {
+      "sha256": "3ee3f24e5f0215db6f1643e18b41f9e02a2c74c671c6e377b4bf4d1d8b6364c8",
+      "bytes": 7526,
+      "path": "official-maven/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.9.0/kotlinx-coroutines-guava-1.9.0-sources.jar"
+    }
+  },
+  "pom_licenses": [
+    {
+      "name": "The Apache Software License, Version 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+      "distribution": "repo"
+    }
+  ],
+  "source_headers": [],
+  "source_special_attributions": [],
+  "source_without_license_header": [
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0-sources.jar",
+      "entry": "ListenableFuture.kt",
+      "sha256": "8be11e20352ae925da6cf6749e8db1227ab69e9b6129768742091c13147f15ea",
+      "bytes": 24292
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0-sources.jar",
+      "entry": "module-info.java",
+      "sha256": "fdb654b424b6886b6fdb57e2bfa12daf7c966b02889770f47a089e2ea04ed67b",
+      "bytes": 173
+    }
+  ],
+  "source_non_code_entries": [
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    }
+  ],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "f3e49dd130fa23515d8436c2881e0dafb5521b96ec5aed93f135474375fe19a8",
+      "bytes": 46
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "META-INF/kotlinx-coroutines-guava.kotlin_module",
+      "sha256": "1847f18b6a550c62b0368540298ab29bf86e0c5aa978d84496218e98d058e007",
+      "bytes": 72
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "kotlinx/coroutines/guava/ListenableFutureCoroutine.class",
+      "sha256": "7c80f8b8183ef53417414e276c3333866f45e60fb565045d9725aa4a8a187b6a",
+      "bytes": 1952
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "kotlinx/coroutines/guava/ListenableFutureKt$asDeferred$6.class",
+      "sha256": "dd4e10b20696530c74217ebb2c95f7f36c3be82c91f35f53a5f9e0c7991cab33",
+      "bytes": 7788
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "kotlinx/coroutines/guava/ToContinuation.class",
+      "sha256": "36c2a257fbad076185f9ba44ad78fefb8c2be1d3210a08744c5ca05fe1bc535c",
+      "bytes": 3325
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "kotlinx/coroutines/guava/JobListenableFuture.class",
+      "sha256": "05efd0505e500fa3d44826b82c5c844b5b65b6431db6f4f37db421f2e2a2802e",
+      "bytes": 6488
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "kotlinx/coroutines/guava/ListenableFutureKt$await$2$1.class",
+      "sha256": "72488ce0abb5c079325b1f9ee3953da3adde56573458eb6b2e137795b5fd2c37",
+      "bytes": 1600
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "kotlinx/coroutines/guava/Cancelled.class",
+      "sha256": "faa96313ea065ff6889698815040c35e97547f2c9bba8e5ea73db490b31af188",
+      "bytes": 879
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "kotlinx/coroutines/guava/ListenableFutureKt.class",
+      "sha256": "a9d8520335207c5c06a80698d2492111b23b94bfb1b069a7b6bbef6f1ea797c1",
+      "bytes": 11696
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "kotlinx/coroutines/guava/ListenableFutureKt$asDeferred$4.class",
+      "sha256": "44df5b8b48759893f028535bb3045cc3f47248a83b50eaa053d7a9c51de9b7a6",
+      "bytes": 3810
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "META-INF/versions/9/module-info.class",
+      "sha256": "4000270362b9285278db23bf98dec250cf63bd0d907253ddc129258cb92d2926",
+      "bytes": 288
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0.jar",
+      "entry": "META-INF/kotlinx_coroutines_guava.version",
+      "sha256": "7717cbf90c63a3b096008763a02066239916fa9916f98254d1aa3b2470830fcd",
+      "bytes": 5
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0-sources.jar",
+      "entry": "ListenableFuture.kt",
+      "sha256": "8be11e20352ae925da6cf6749e8db1227ab69e9b6129768742091c13147f15ea",
+      "bytes": 24292
+    },
+    {
+      "archive": "kotlinx-coroutines-guava-1.9.0-sources.jar",
+      "entry": "module-info.java",
+      "sha256": "fdb654b424b6886b6fdb57e2bfa12daf7c966b02889770f47a089e2ea04ed67b",
+      "bytes": 173
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": null,
+  "source_status": "PRESENT",
+  "published_hash_checks": [
+    {
+      "variant": "apiElements",
+      "file": "kotlinx-coroutines-guava-1.9.0.jar",
+      "sha256_published": "ca68323328a85a2df3c03429d5e7b124bc784f07fbace958399a5bba4118d7a0",
+      "sha256_actual": "ca68323328a85a2df3c03429d5e7b124bc784f07fbace958399a5bba4118d7a0",
+      "matches": true
+    },
+    {
+      "variant": "runtimeElements",
+      "file": "kotlinx-coroutines-guava-1.9.0.jar",
+      "sha256_published": "ca68323328a85a2df3c03429d5e7b124bc784f07fbace958399a5bba4118d7a0",
+      "sha256_actual": "ca68323328a85a2df3c03429d5e7b124bc784f07fbace958399a5bba4118d7a0",
+      "matches": true
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "scope": "OWNED_ISOLATED_FIXTURES_ONLY",
+  "tests": 48,
+  "failures": 0,
+  "errors": 2,
+  "skipped": 0,
+  "scrapling_version": "0.4.15",
+  "public_pages": "NOT_RUN",
+  "production_deployment": "NOT_RUN",
+  "runtime_distribution": "NOT_APPROVED"
+}

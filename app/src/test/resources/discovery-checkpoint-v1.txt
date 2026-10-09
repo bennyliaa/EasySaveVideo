@@ -1,0 +1,7 @@
+Frozen checkpoint v1 binary compatibility fixture.
+The field layout is the original v1 DiscoveryCheckpointCodec: magic/version, stamp/profile,
+filters, pool header, one legacy result with no attribution field, then one page.
+It is not a v2 payload with a changed version number.
+The previous compiled v1 codec decoded this fixture and re-encoded it byte-identically
+on 2026-10-06 before the new Android compile. The v2 reader test also asserts fields,
+empty legacy rights, and v2 re-encoding. No Android device verification is claimed.

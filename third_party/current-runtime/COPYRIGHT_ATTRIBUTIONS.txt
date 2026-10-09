@@ -1,0 +1,704 @@
+EasySaveVideo current fixed runtime component attributions
+
+Recovered on 2026-10-06 from the same exact official versions. This is a new recovery bundle, not a byte-identical restoration of the lost 73-file package. EasySaveVideo and user-owned SkinKit are not assigned an open-source license by this document.
+
+
+androidx.activity:activity-compose:1.10.1
+=========================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/activity/activity-compose/1.10.1/activity-compose-1.10.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/activity/activity-compose/1.10.1/activity-compose-1.10.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2021 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.activity:activity-ktx:1.10.1
+=====================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/activity/activity-ktx/1.10.1/activity-ktx-1.10.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/activity/activity-ktx/1.10.1/activity-ktx-1.10.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+No copyright-bearing code header in this published source archive; the exact official POM supplies the license declaration. No owner/year invented.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.activity:activity:1.10.1
+=================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/activity/activity/1.10.1/activity-1.10.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/activity/activity/1.10.1/activity-1.10.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2018 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright (C) 2020 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.annotation:annotation-experimental:1.4.1
+=================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/annotation/annotation-experimental/1.4.1/annotation-experimental-1.4.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/annotation/annotation-experimental/1.4.1/annotation-experimental-1.4.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.annotation:annotation-jvm:1.9.1
+========================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/annotation/annotation-jvm/1.9.1/annotation-jvm-1.9.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/annotation/annotation-jvm/1.9.1/annotation-jvm-1.9.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright (C) 2014 The Android Open Source Project
+Copyright (C) 2015 The Android Open Source Project
+Copyright (C) 2020 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright (C) 2022 The Android Open Source Project
+Copyright (C) 2016 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2013 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright (C) 2021 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.arch.core:core-common:2.2.0
+====================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/arch/core/core-common/2.2.0/core-common-2.2.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/arch/core/core-common/2.2.0/core-common-2.2.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2018 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.arch.core:core-runtime:2.2.0
+=====================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/arch/core/core-runtime/2.2.0/core-runtime-2.2.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/arch/core/core-runtime/2.2.0/core-runtime-2.2.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright (C) 2017 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.autofill:autofill:1.0.0
+================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/autofill/autofill/1.0.0/autofill-1.0.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/autofill/autofill/1.0.0/autofill-1.0.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2019 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.collection:collection-jvm:1.5.0
+========================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/collection/collection-jvm/1.5.0/collection-jvm-1.5.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/collection/collection-jvm/1.5.0/collection-jvm-1.5.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright (C) 2019 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.collection:collection-ktx:1.5.0
+========================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/collection/collection-ktx/1.5.0/collection-ktx-1.5.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/collection/collection-ktx/1.5.0/collection-ktx-1.5.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+No copyright-bearing code header in this published source archive; the exact official POM supplies the license declaration. No owner/year invented.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.compose.animation:animation-android:1.8.3
+==================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/animation/animation-android/1.8.3/animation-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/animation/animation-android/1.8.3/animation-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2020 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.compose.animation:animation-core-android:1.8.3
+=======================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/animation/animation-core-android/1.8.3/animation-core-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/animation/animation-core-android/1.8.3/animation-core-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2021 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.compose.foundation:foundation-android:1.8.3
+====================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/foundation/foundation-android/1.8.3/foundation-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/foundation/foundation-android/1.8.3/foundation-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2023 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2025 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.compose.foundation:foundation-layout-android:1.8.3
+===========================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/foundation/foundation-layout-android/1.8.3/foundation-layout-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/foundation/foundation-layout-android/1.8.3/foundation-layout-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2022 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.compose.runtime:runtime-android:1.8.3
+==============================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/runtime/runtime-android/1.8.3/runtime-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/runtime/runtime-android/1.8.3/runtime-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2024 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2016-2019 JetBrains s.r.o.
+Copyright 2016-2020 JetBrains s.r.o.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+Includes vendored JetBrains kotlinx.collections.immutable Apache-2.0 source headers.
+
+
+androidx.compose.runtime:runtime-saveable-android:1.8.3
+=======================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/runtime/runtime-saveable-android/1.8.3/runtime-saveable-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/runtime/runtime-saveable-android/1.8.3/runtime-saveable-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2021 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.compose.ui:ui-android:1.8.3
+====================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-android/1.8.3/ui-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-android/1.8.3/ui-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2024 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2025 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.compose.ui:ui-geometry-android:1.8.3
+=============================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-geometry-android/1.8.3/ui-geometry-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-geometry-android/1.8.3/ui-geometry-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.compose.ui:ui-graphics-android:1.8.3
+=============================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-graphics-android/1.8.3/ui-graphics-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-graphics-android/1.8.3/ui-graphics-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2020 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+FastFloatParser identifies adaptation from https://github.com/fastfloat/fast_float and https://github.com/lemire/fast_double_parser under Apache-2.0.
+
+
+androidx.compose.ui:ui-text-android:1.8.3
+=========================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-text-android/1.8.3/ui-text-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-text-android/1.8.3/ui-text-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2022 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.compose.ui:ui-unit-android:1.8.3
+=========================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-unit-android/1.8.3/ui-unit-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-unit-android/1.8.3/ui-unit-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2020 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.compose.ui:ui-util-android:1.8.3
+=========================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-util-android/1.8.3/ui-util-android-1.8.3.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-util-android/1.8.3/ui-util-android-1.8.3-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2020 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.concurrent:concurrent-futures:1.1.0
+============================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/concurrent/concurrent-futures/1.1.0/concurrent-futures-1.1.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/concurrent/concurrent-futures/1.1.0/concurrent-futures-1.1.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2018 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.core:core-ktx:1.13.1
+=============================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/core/core-ktx/1.13.1/core-ktx-1.13.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/core/core-ktx/1.13.1/core-ktx-1.13.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2018 The Android Open Source Project
+Copyright (C) 2019 The Android Open Source Project
+Copyright (C) 20188 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.core:core:1.13.1
+=========================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/core/core/1.13.1/core-1.13.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/core/core/1.13.1/core-1.13.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2018 The Android Open Source Project
+Copyright (C) 2011 The Android Open Source Project
+Copyright (C) 2014 The Android Open Source Project
+Copyright (C) 2012 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright (C) 2016 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright (C) 2015 The Android Open Source Project
+Copyright (C) 2018 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright (C) 2022 The Android Open Source Project
+Copyright (C) 2013 The Android Open Source Project
+Copyright (C) 2019 The Android Open Source Project
+Copyright 2015 The Android Open Source Project
+Copyright 2017 The Android Open Source Project
+Copyright (C) 2023 The Android Open Source Project
+Copyright (C) 2009 The Android Open Source Project
+Copyright (C) 2021 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.core:core-viewtree:1.0.0
+=================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/core/core-viewtree/1.0.0/core-viewtree-1.0.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/core/core-viewtree/1.0.0/core-viewtree-1.0.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2024 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.customview:customview-poolingcontainer:1.0.0
+=====================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/customview/customview-poolingcontainer/1.0.0/customview-poolingcontainer-1.0.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/customview/customview-poolingcontainer/1.0.0/customview-poolingcontainer-1.0.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2021 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.emoji2:emoji2:1.4.0
+============================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/emoji2/emoji2/1.4.0/emoji2-1.4.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/emoji2/emoji2/1.4.0/emoji2-1.4.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.graphics:graphics-path:1.0.1
+=====================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/graphics/graphics-path/1.0.1/graphics-path-1.0.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/graphics/graphics-path/1.0.1/graphics-path-1.0.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2022 The Android Open Source Project
+Copyright (C) 2006 The Android Open Source Project
+Copyright 2013 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+N1: Ten native implementation/header files at release-linked commit 8a05a22af450d589ef911d772a001a49dcb05b71 have Apache-2.0 headers. New recovery includes source-header/build evidence and a new static four-ABI ELF inspection with retained native-hash comparisons. Original ELF report files remain unavailable.
+
+
+androidx.interpolator:interpolator:1.0.0
+========================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/interpolator/interpolator/1.0.0/interpolator-1.0.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/interpolator/interpolator/1.0.0/interpolator-1.0.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2018 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.lifecycle:lifecycle-common-jvm:2.8.7
+=============================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common-jvm/2.8.7/lifecycle-common-jvm-2.8.7.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common-jvm/2.8.7/lifecycle-common-jvm-2.8.7-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.lifecycle:lifecycle-livedata-core:2.8.7
+================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-livedata-core/2.8.7/lifecycle-livedata-core-2.8.7.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-livedata-core/2.8.7/lifecycle-livedata-core-2.8.7-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.lifecycle:lifecycle-process:2.8.7
+==========================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-process/2.8.7/lifecycle-process-2.8.7.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-process/2.8.7/lifecycle-process-2.8.7-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.lifecycle:lifecycle-runtime-android:2.8.7
+==================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-android/2.8.7/lifecycle-runtime-android-2.8.7.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-android/2.8.7/lifecycle-runtime-android-2.8.7-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2024 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright (C) 2024 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7
+==========================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-compose-android/2.8.7/lifecycle-runtime-compose-android-2.8.7.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-compose-android/2.8.7/lifecycle-runtime-compose-android-2.8.7-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2024 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.7
+======================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-ktx-android/2.8.7/lifecycle-runtime-ktx-android-2.8.7.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-ktx-android/2.8.7/lifecycle-runtime-ktx-android-2.8.7-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+No copyright-bearing code header in this published source archive; the exact official POM supplies the license declaration. No owner/year invented.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.lifecycle:lifecycle-viewmodel-android:2.8.7
+====================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-android/2.8.7/lifecycle-viewmodel-android-2.8.7.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-android/2.8.7/lifecycle-viewmodel-android-2.8.7-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright (C) 2024 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2017 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7
+================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-ktx/2.8.7/lifecycle-viewmodel-ktx-2.8.7.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-ktx/2.8.7/lifecycle-viewmodel-ktx-2.8.7-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+No copyright-bearing code header in this published source archive; the exact official POM supplies the license declaration. No owner/year invented.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7
+=======================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-savedstate/2.8.7/lifecycle-viewmodel-savedstate-2.8.7.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-savedstate/2.8.7/lifecycle-viewmodel-savedstate-2.8.7-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2018 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.profileinstaller:profileinstaller:1.4.0
+================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.4.0/profileinstaller-1.4.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.4.0/profileinstaller-1.4.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2022 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright (C) 2021 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.savedstate:savedstate-ktx:1.2.1
+========================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/savedstate/savedstate-ktx/1.2.1/savedstate-ktx-1.2.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/savedstate/savedstate-ktx/1.2.1/savedstate-ktx-1.2.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2020 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.savedstate:savedstate:1.2.1
+====================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/savedstate/savedstate/1.2.1/savedstate-1.2.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/savedstate/savedstate/1.2.1/savedstate-1.2.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2019 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.startup:startup-runtime:1.1.1
+======================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/startup/startup-runtime/1.1.1/startup-runtime-1.1.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/startup/startup-runtime/1.1.1/startup-runtime-1.1.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2020 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.tracing:tracing:1.0.0
+==============================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.0.0/tracing-1.0.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.0.0/tracing-1.0.0-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2020 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+androidx.versionedparcelable:versionedparcelable:1.1.1
+======================================================
+Official POM: https://dl.google.com/dl/android/maven2/androidx/versionedparcelable/versionedparcelable/1.1.1/versionedparcelable-1.1.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/versionedparcelable/versionedparcelable/1.1.1/versionedparcelable-1.1.1-sources.jar
+License texts: licenses/Apache-2.0-AOSP.txt
+
+Copyright 2018 The Android Open Source Project
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+com.google.guava:listenablefuture:1.0
+=====================================
+Official POM: https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/1.0/listenablefuture-1.0.pom
+Official source archive: https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/1.0/listenablefuture-1.0-sources.jar
+License texts: licenses/Apache-2.0-ASF.txt
+
+Copyright (C) 2007 The Guava Authors
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+Leaf POM inherits Apache-2.0 from guava-parent:26.0-android; official source header corroborates the license.
+
+
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20
+==============================================
+Official POM: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.8.20/kotlin-stdlib-jdk7-1.8.20.pom
+Official source archive: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.8.20/kotlin-stdlib-jdk7-1.8.20-sources.jar
+License texts: licenses/Apache-2.0-Kotlin-1.8.20.txt
+
+No copyright-bearing code header in this published source archive; the exact official POM supplies the license declaration. No owner/year invented.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20
+==============================================
+Official POM: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.8.20/kotlin-stdlib-jdk8-1.8.20.pom
+Official source archive: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.8.20/kotlin-stdlib-jdk8-1.8.20-sources.jar
+License texts: licenses/Apache-2.0-Kotlin-1.8.20.txt
+
+No copyright-bearing code header in this published source archive; the exact official POM supplies the license declaration. No owner/year invented.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+org.jetbrains.kotlin:kotlin-stdlib:2.2.10
+=========================================
+Official POM: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/2.2.10/kotlin-stdlib-2.2.10.pom
+Official source archive: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/2.2.10/kotlin-stdlib-2.2.10-sources.jar
+License texts: licenses/Apache-2.0-Kotlin-2.2.10.txt, licenses/BSD-3-Clause-Kotlin-ThreeTenBP.txt, licenses/Boost-1.0-Kotlin.txt, licenses/Apache-2.0-Kotlin-GWT.txt, licenses/Apache-2.0-Kotlin-Guava.txt
+
+Copyright 2010-2025 JetBrains s.r.o. and Kotlin Programming Language contributors.
+Copyright 2010-2023 JetBrains s.r.o. and Kotlin Programming Language contributors.
+Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+Copyright 2010-2018 JetBrains s.r.o. and Kotlin Programming Language contributors.
+Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
+Copyright 2010-2022 JetBrains s.r.o. and Kotlin Programming Language contributors.
+Copyright 2010-2024 JetBrains s.r.o. and Kotlin Programming Language contributors.
+Copyright 2007 Google Inc.
+Copyright 2010-2019 JetBrains s.r.o. and Kotlin Programming Language contributors.
+Copyright 2010-2018 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license
+public const val copyright: Char = '\u00A9'
+Copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
+Copyright 2010-2015 JetBrains s.r.o.
+Copyright 2010-2016 JetBrains s.r.o.
+Copyright 2011 The Guava Authors
+Copyright 2010-2017 JetBrains s.r.o.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+K1: ThreeTenBP-derived kotlin/time/Instant.kt requires BSD-3-Clause copyright/terms/disclaimer in binary redistribution containing that code.
+K2: Boost-derived math functions: preserve Boost text in this evidence bundle; conservatively include with app, but do not misstate its machine-executable-object-code exception.
+K3: GWT/Guava Apache-derived portions retain their attribution. The Kotlin compiler-specific NOTICE is not an App runtime NOTICE.
+
+
+org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3
+======================================================
+Official POM: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.7.3/kotlinx-coroutines-android-1.7.3.pom
+Official source archive: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.7.3/kotlinx-coroutines-android-1.7.3-sources.jar
+License texts: licenses/Apache-2.0-Kotlinx-Coroutines-1.7.3.txt
+
+Copyright 2016-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3
+=======================================================
+Official POM: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.7.3/kotlinx-coroutines-core-jvm-1.7.3.pom
+Official source archive: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.7.3/kotlinx-coroutines-core-jvm-1.7.3-sources.jar
+License texts: licenses/Apache-2.0-Kotlinx-Coroutines-1.7.3.txt
+
+Copyright 2016-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2016-2023 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2016-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2016-2022 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+org.jetbrains:annotations:23.0.0
+================================
+Official POM: https://repo.maven.apache.org/maven2/org/jetbrains/annotations/23.0.0/annotations-23.0.0.pom
+Official source archive: https://repo.maven.apache.org/maven2/org/jetbrains/annotations/23.0.0/annotations-23.0.0-sources.jar
+License texts: licenses/Apache-2.0-JetBrains-Annotations-23.0.0.txt
+
+Copyright 2000-2021 JetBrains s.r.o.
+Copyright 2000-2020 JetBrains s.r.o.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+org.jspecify:jspecify:1.0.0
+===========================
+Official POM: https://repo.maven.apache.org/maven2/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.pom
+Official source archive: https://repo.maven.apache.org/maven2/org/jspecify/jspecify/1.0.0/jspecify-1.0.0-sources.jar
+License texts: licenses/Apache-2.0-JSpecify-1.0.0.txt
+
+Copyright 2022 The JSpecify Authors.
+Copyright 2018-2020 The JSpecify Authors.
+A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
+
+
+dev.skinkit:skinkit-contract:0.0.1
+User-owned local publication; existing UI reuse authorized. No public open-source license assigned. External distribution ownership record remains unresolved. See SKINKIT_RECOVERY_PROVENANCE.json.
+
+
+dev.skinkit:skinkit-default:0.0.1
+User-owned local publication; existing UI reuse authorized. No public open-source license assigned. External distribution ownership record remains unresolved. See SKINKIT_RECOVERY_PROVENANCE.json.

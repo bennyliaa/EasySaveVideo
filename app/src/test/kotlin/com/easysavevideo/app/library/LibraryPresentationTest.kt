@@ -1,0 +1,47 @@
+package com.easysavevideo.app.library
+
+import com.easysavevideo.library.*
+import org.junit.Assert.*
+import org.junit.Test
+
+class LibraryPresentationTest {
+    @Test fun boundedTextPreservesWholeSupplementaryCharactersAndUtf8Budget() {
+        assertEquals("a", boundedLibraryText("a😀b", 4))
+        assertEquals("a😀", boundedLibraryText("a😀b", 5))
+        assertEquals("中文", boundedLibraryText("中文abc", 6))
+        assertEquals("", boundedLibraryText("😀", 3))
+        assertEquals("", boundedLibraryText("anything", 0))
+        assertTrue(boundedLibraryText("😀".repeat(1_000), 512).toByteArray().size <= 512)
+    }
+
+    @Test fun invalidNamesAreRejectedWithoutSilentPathSanitizing() {
+        listOf("", " ", ".", "..", "a/b", "a\\b", "a\u0000b", "a\nb", "\uD800", "\uDC00", " name", "name ", "中".repeat(86)).forEach {
+            assertNotNull(libraryNameError(it))
+        }
+        assertNull(libraryNameError("电影 2026.mp4"))
+        assertNull(libraryNameError("Cafe\u0301"))
+        assertNull(libraryNameError("x".repeat(255)))
+    }
+
+    @Test fun metadataLabelsDoNotInventMissingDurationOrResolution() {
+        assertEquals("时长未知", libraryDuration(null))
+        assertEquals("00:00:00", libraryDuration(0))
+        assertEquals("01:02:03", libraryDuration(3_723_000))
+        assertEquals("0 B", libraryBytes(0))
+        assertEquals("1.0 KiB", libraryBytes(1_024))
+        assertEquals("2.00 GiB", libraryBytes(2L * 1_024 * 1_024 * 1_024))
+        val imported = MediaItem("one", 1, 1, null, "One", 0, MediaDateKind.IMPORTED, 0, null, null, null)
+        assertEquals("分辨率未知", libraryResolution(imported))
+        assertTrue(libraryDate(imported).startsWith("导入时间："))
+        assertTrue(libraryDate(imported.copy(dateKind = MediaDateKind.SAVED)).startsWith("保存时间："))
+    }
+
+    @Test fun allDomainErrorsHaveUserFacingCopyWithoutExceptionDetails() {
+        LibraryError.entries.forEach { error ->
+            val text = libraryErrorText(error)
+            assertTrue(text.isNotBlank())
+            assertFalse(text.contains("Exception"))
+            assertFalse(text.contains("/data/"))
+        }
+    }
+}

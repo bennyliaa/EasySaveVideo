@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.save.SaveCoordinatorTest" tests="31" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:22:14.632Z" hostname="723dfa57d2fa" time="0.219">
+  <properties/>
+  <testcase name="repeatedIdempotencyKeyDoesNotCreateOrExecuteAnotherTask" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.052"/>
+  <testcase name="automaticOriginAndUnboundedResourceBudgetAreRejected" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="queuedExecutionRacingBackgroundPauseNeverPublishesWaitingOverActivePort" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.078"/>
+  <testcase name="retryNeverRenewsAbsoluteDeadline" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.009"/>
+  <testcase name="freeDirectHasNoStoreOrEntitlementDependencyAndUnsupportedMethodsNeverExecute" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.01"/>
+  <testcase name="cancellationWaitsForPortExitAndRejectsItsLateSuccessfulResult" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="retriesAreBoundedAndCannotFallbackToAnotherMethod" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.001"/>
+  <testcase name="missingCommittedIndexCannotProduceSuccessAndPreservesForRecovery" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.0"/>
+  <testcase name="ordinaryResumeCannotRenewShortLivedSourceContext" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="snapshotRemainsNonblockingWhileDurableReadIsBlocked" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.004"/>
+  <testcase name="verifierHasNoDefaultPassAndLateValidationCannotCommit" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.001"/>
+  <testcase name="waitingUserHasExpiryAndExpiredOwnedStagingIsCleaned" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.001"/>
+  <testcase name="signedUrlPathAndQueryNeverEnterDurableRecords" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="missingOrContradictoryMediaEvidenceNeverCommits" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.007"/>
+  <testcase name="unconfirmedResourceReleasePreservesArtifactAndBlocksMoreWork" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="successRequiresVerificationFileAndIndexAndOnlyThenCommits" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.001"/>
+  <testcase name="nonretryableSecurityStorageAndAuthorizationFailuresAreClassified" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.003"/>
+  <testcase name="explicitCancelWinsOverAlreadyRequestedBackgroundPause" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="freshProcessNeedsUserReselectionForIncompleteTransferButNotCompletedArtifact" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="expireWaitingDoesNotDropLiveSourcesAndDoesCleanOnlyExpiredWaits" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="journalInvariantRejectsSuccessWithMismatchedArtifactIdentity" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.001"/>
+  <testcase name="checkpointIdentityCannotPersistRawUrlOrBearerText" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.001"/>
+  <testcase name="interruptedWorkRequiresReviewAndRepeatedRecoveryIsIdempotent" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.001"/>
+  <testcase name="finalJournalFailureDoesNotClaimSuccessAndRetryUsesSameCommittedArtifact" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.001"/>
+  <testcase name="observerFailureCannotChangeTaskResultAndTerminalStateCannotRevive" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="privateFunctionalValuesAreRedactedAndHttpsOnly" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.009"/>
+  <testcase name="credentialsAreNotPersistedAndAuthenticationNeedsFreshLease" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="networkByteReservationIsBoundedAcrossRetriesAndRestartClearsRangeHint" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.003"/>
+  <testcase name="cancellationDuringLongProvisionalCommitWinsBeforePublication" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.003"/>
+  <testcase name="finalPublishCasWinsOverCancellationArrivingAfterItsDecision" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.002"/>
+  <testcase name="queuedCancellationAndPauseNeverRunNetworkAndExpiryHasBoundedCleanup" classname="com.easysavevideo.save.SaveCoordinatorTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,281 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+Unable to initialize metrics, ensure /home/agent/.android is writable, details: /home/agent/.android/analytics.settings (No such file or directory)
+WARNING: platform-tools package is not installed.
+Add android.sync.suppressAgpWarnings=MISSING_SDK_PACKAGE to the gradle.properties file to suppress this warning.
+
+> Task :commons-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:compileKotlin UP-TO-DATE
+> Task :core-model:compileJava NO-SOURCE
+> Task :discovery:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:compileKotlin UP-TO-DATE
+> Task :discovery:compileJava NO-SOURCE
+> Task :commons-provider:compileKotlin UP-TO-DATE
+> Task :commons-provider:compileJava NO-SOURCE
+> Task :commons-provider:processResources NO-SOURCE
+> Task :commons-provider:classes UP-TO-DATE
+> Task :commons-provider:jar UP-TO-DATE
+> Task :commons-provider:processTestResources UP-TO-DATE
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar UP-TO-DATE
+> Task :discovery:processResources NO-SOURCE
+> Task :discovery:classes UP-TO-DATE
+> Task :discovery:jar UP-TO-DATE
+> Task :core-domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-domain:compileKotlin UP-TO-DATE
+> Task :core-domain:compileJava NO-SOURCE
+> Task :recording:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :recording:compileKotlin UP-TO-DATE
+> Task :recording:compileJava NO-SOURCE
+> Task :save:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :save:compileKotlin UP-TO-DATE
+> Task :save:compileJava NO-SOURCE
+> Task :save:processResources NO-SOURCE
+> Task :save:classes UP-TO-DATE
+> Task :save:jar UP-TO-DATE
+> Task :core-domain:processResources NO-SOURCE
+> Task :core-domain:classes UP-TO-DATE
+> Task :core-domain:jar UP-TO-DATE
+> Task :recording:processResources NO-SOURCE
+> Task :recording:classes UP-TO-DATE
+> Task :recording:jar UP-TO-DATE
+> Task :library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :library:compileKotlin UP-TO-DATE
+> Task :library:compileJava NO-SOURCE
+> Task :library:processResources NO-SOURCE
+> Task :library:classes UP-TO-DATE
+> Task :library:jar UP-TO-DATE
+> Task :hls:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :hls:compileKotlin UP-TO-DATE
+> Task :hls:compileJava NO-SOURCE
+> Task :hls:processResources NO-SOURCE
+> Task :hls:classes UP-TO-DATE
+> Task :hls:jar UP-TO-DATE
+> Task :ui-theme:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :ui-theme:compileKotlin UP-TO-DATE
+> Task :ui-theme:compileJava NO-SOURCE
+> Task :ui-theme:processResources NO-SOURCE
+> Task :ui-theme:classes UP-TO-DATE
+> Task :ui-theme:jar UP-TO-DATE
+
+> Task :app:verifyRuntimeAdmission
+License admission: exact 74 reviewed runtime artifacts verified for both variants
+
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:processDebugNavigationResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:generateDebugRFile UP-TO-DATE
+> Task :commons-provider:compileTestKotlin
+> Task :commons-provider:compileTestJava NO-SOURCE
+> Task :commons-provider:testClasses UP-TO-DATE
+
+> Task :commons-provider:test
+
+ProviderRepositoryTest > restoredExpiredStableEnvelopeStillAuthenticatesButDoesNotActivate FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > corruptedHighWaterCannotBeResetEvenIfFramingChecksumIsRecomputed FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > candidateFailurePreservesPreviousStableHistoryAndTrustedAnchor FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > notificationsAreOffLockBoundedAndUnchangedHealthDoesNotNotify FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > missingTruncatedOversizedAndUnknownFormatRecordsFailClosed FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > stableRollbackAndRestartNeverLowerHighWater FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > failedCandidateNeverReenablesExpiredLastGood FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > cancellationBeforeTransactionLeavesHealthyStateUntouched FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > everyInjectedAtomicFailureStaysDisabledAcrossRestart FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > onlyOneCandidateAndExactHealthPromotionPreservesAuthorityGeneration FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > danglingStateMarkersAndWrongFileTypesNeverBecomeFreshBundledState FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > stableManualRollbackRevalidatesExpiryWithoutReplacingCurrentHealthyPolicy FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+RepositoryCommonsMaintenanceTest > successfulMetadataPromotesExactCandidateWithoutCancellingItself FAILED
+    java.lang.AssertionError at RepositoryCommonsMaintenanceTest.kt:61
+
+RepositoryCommonsMaintenanceTest > threeRealSemanticFailuresQuarantineAndLeaveNoUnsignedFallback FAILED
+    java.lang.AssertionError at RepositoryCommonsMaintenanceTest.kt:111
+
+RepositoryCommonsMaintenanceTest > networkFluctuationDoesNotQuarantineAndSuccessStreakRestarts FAILED
+    java.lang.AssertionError at RepositoryCommonsMaintenanceTest.kt:131
+
+RepositorySecurityTest > inProcessObservationIsMonotonicAndNegativeClockFailsClosed FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > repositoryDisableDominatesHealthyCandidateRollbackAndLkg FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > revokedPackageKeyCannotReenterThroughNewPackageOrRollbackGrant FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > eachPolicyWriteCancellationFailsClosedBeforeAndAfterRestart FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > corruptPolicySignatureCannotBeHiddenByRecomputedStateChecksum FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > floorNeverDecreasesAndRejectsNewUnsafePackagesWithoutAdvancingPackageHighWater FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > concurrentPolicyAndPackageMutationsSerializeAndLatestRevocationWins FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > stableRollbackRequiresExactSignedTargetAndRetainsBothVersionAnchors FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > policyCancellationBeforeTransactionLeavesOldStablePolicyUnchanged FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > policyVersionCannotReplayOrEquivocateAndPackageVersionIsIndependent FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > grantForSameVersionDifferentEnvelopeCannotAuthorizeRollback FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > stablePackageDisableCannotRollbackToOldEnabledOrBundledWithOrWithoutGrant FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > newerPolicyMayWithdrawRollbackGrantButNeverItsSecurityRestrictions FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > boundedUpdateRuntimeCanInstallExplicitPolicyKindFromMemoryOnly FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > persistedClockLowerBoundSurvivesRestartAndDoesNotPermitMutationBehindIt FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > expiredTargetRemainsDisabledEvenWithValidGrant FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > floorAndRevocationAlwaysOverrideValidTargetGrant FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > revokedVersionPersistsAndCannotDisappearFromHigherPolicy FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > eachPolicyWriteFaultFailsClosedBeforeAndAfterRestart FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > legacyStateFormatFailsClosedWithoutMigrationOrReset FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > rejectedCandidateLkgNeedsGrantAndRevocationOverridesGrant FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > policyExpiryFailsClosedAndNewerValidPolicyCanRecoverWithoutReset FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+ProviderHealthRepositoryTest > twelveMixedConclusiveObservationsSuspendWithoutQuarantine FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > formatTwoCannotBeSilentlyResetOrMigrated FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > exactCurrentFallbackGrantCanRestoreOnlyTheSafeLastGood FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > inconclusiveObservationsBreakBothStreaksWithoutBecomingStructuralEvidence FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > policyChangeInvalidatesTokenAndStreakButNeverResetsExposureBudget FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > revokedExpiredOrWrongDigestLastGoodNeverActivatesAfterStructuralRejection FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > twentyFourHourWindowAndShorterPolicyExpiryStopWithoutAttributingNetworkFailure FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:33
+
+ProviderHealthRepositoryTest > failedFixedSelfTestIsDurablyIsolatedWithoutReplacingActiveOrHighWater FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > twentyInconclusiveObservationsSuspendAndPolicyReplacementCannotRefillBudget FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > aSingleOutstandingCapabilityCannotBeForgedOrReused FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > probationCountersPersistButRestartNeverResumesUnconfirmedCandidate FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > simultaneousDuplicateCompletionsCountOnlyOnce FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:122
+
+ProviderHealthRepositoryTest > publicationAfterProbationDeadlineNeverPromotesEvenWithNoCallerDeadline FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > healthCounterChangesNotifyObserversWithoutRevokingUnchangedAuthority FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > threeStructuralFailuresPersistIsolationAndStopWithoutAnExactFallbackGrant FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > healthWriteFaultsAndLateCancellationRemainFailClosedAcrossRestart FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:33
+
+ProviderHealthRepositoryTest > exactlyThreeConsecutiveFreshSuccessesPromoteWithoutChangingAuthority FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+> Task :app:compileDebugKotlin
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:407:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:411:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:413:15 'fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)} passing
+      in a {@link RequestMultiplePermissions} object for the {@link ActivityResultContract} and
+      handling the result in the {@link ActivityResultCallback#onActivityResult(Object) callback}.
+
+> Task :commons-provider:test
+
+217 tests completed, 54 failed
+
+> Task :commons-provider:test FAILED
+
+[Incubating] Problems report is available at: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':commons-provider:test'.
+> There were failing tests. See the report at: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/commons-provider/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 23s
+29 actionable tasks: 4 executed, 25 up-to-date

@@ -1,0 +1,62 @@
+{
+  "core-model": {
+    "tests": 0,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "core-domain": {
+    "tests": 32,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "ui-theme": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "discovery": {
+    "tests": 94,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "commons-provider": {
+    "tests": 48,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "save": {
+    "tests": 86,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "recording": {
+    "tests": 71,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "library": {
+    "tests": 130,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "hls": {
+    "tests": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "app": {
+    "tests": 420,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

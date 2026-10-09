@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/df6c1284d5ab/EasySaveVideo/docs/m8b4/evidence/inherited-folder-sqlite.py", line 590, in <module>
+    assert manifest['baseline'] == '046209b39d932f08910a8b79f33d4d02d6183ccd'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

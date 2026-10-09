@@ -1,0 +1,590 @@
+[
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/concurrent/LazyInit.class"
+    },
+    "class_name": "com/google/errorprone/annotations/concurrent/LazyInit",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "FINAL",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/ForOverride.class"
+    },
+    "class_name": "com/google/errorprone/annotations/ForOverride",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "PUBLIC",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/ForOverride.class"
+    },
+    "class_name": "com/google/errorprone/annotations/ForOverride",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "PRIVATE",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/ForOverride.class"
+    },
+    "class_name": "com/google/errorprone/annotations/ForOverride",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "STATIC",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/ForOverride.class"
+    },
+    "class_name": "com/google/errorprone/annotations/ForOverride",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "FINAL",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Var.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Var",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "FINAL",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "PUBLIC",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[3]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "PROTECTED",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[7]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "PRIVATE",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[10]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "ABSTRACT",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[13]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "DEFAULT",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[16]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "STATIC",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[19]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "FINAL",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[22]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "TRANSIENT",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[25]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "VOLATILE",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[28]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "SYNCHRONIZED",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[31]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "NATIVE",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[34]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "STRICTFP",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[37]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "$VALUES",
+    "descriptor": "[Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[40]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "method",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "<init>",
+    "descriptor": "(Ljava/lang/String;I)V",
+    "location": "constant_pool[60]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "scope": "candidate",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "method",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "$values",
+    "descriptor": "()[Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[72]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/ForOverride.class"
+    },
+    "class_name": "com/google/errorprone/annotations/ForOverride",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "PUBLIC",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/ForOverride.class"
+    },
+    "class_name": "com/google/errorprone/annotations/ForOverride",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "PRIVATE",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/ForOverride.class"
+    },
+    "class_name": "com/google/errorprone/annotations/ForOverride",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "STATIC",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/ForOverride.class"
+    },
+    "class_name": "com/google/errorprone/annotations/ForOverride",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "FINAL",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "PUBLIC",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[3]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "PROTECTED",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[7]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "PRIVATE",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[10]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "ABSTRACT",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[13]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "DEFAULT",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[16]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "STATIC",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[19]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "FINAL",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[22]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "TRANSIENT",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[25]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "VOLATILE",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[28]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "SYNCHRONIZED",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[31]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "NATIVE",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[34]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "STRICTFP",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[37]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "field",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "$VALUES",
+    "descriptor": "[Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[40]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "method",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "<init>",
+    "descriptor": "(Ljava/lang/String;I)V",
+    "location": "constant_pool[60]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Modifier.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "kind": "method",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "$values",
+    "descriptor": "()[Lcom/google/errorprone/annotations/Modifier;",
+    "location": "constant_pool[72]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/Var.class"
+    },
+    "class_name": "com/google/errorprone/annotations/Var",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "FINAL",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  },
+  {
+    "origin": {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+      "scope": "baseline",
+      "entry": "com/google/errorprone/annotations/concurrent/LazyInit.class"
+    },
+    "class_name": "com/google/errorprone/annotations/concurrent/LazyInit",
+    "kind": "annotation_enum",
+    "owner": "com/google/errorprone/annotations/Modifier",
+    "name": "FINAL",
+    "descriptor": "Lcom/google/errorprone/annotations/Modifier;",
+    "location": "class:RuntimeInvisibleAnnotations[0]:modifier[]",
+    "resolves": true
+  }
+]

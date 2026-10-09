@@ -1,0 +1,17 @@
+{
+  "gradle": "9.6.0",
+  "consumer_attributes": [
+    "java-runtime",
+    "library",
+    "android",
+    "androidJvm"
+  ],
+  "kotlin_matching_strategy": "Official KotlinPlatformType.Companion.setupAttributesMatchingStrategy from existing Kotlin Gradle plugin API 2.2.10",
+  "kotlin_gradle_plugin_api_sha256": "9411be7345c4161a97d39796041d3b4c5e9d70cea744404f181199256265bfb5",
+  "android_plugin_applied": false,
+  "android_tasks_run": false,
+  "manual_dependency_exclusions": false,
+  "metadata_rewritten": false,
+  "recommended_graph_has_forces_or_strict_overrides": false,
+  "separate_strict_experiment_is_not_recommended": true
+}

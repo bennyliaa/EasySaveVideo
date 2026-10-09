@@ -1,0 +1,242 @@
+{
+  "official_release_notes": "https://developer.android.com/jetpack/androidx/releases/graphics#graphics-path-1.0.1",
+  "release_linked_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+  "new_header_and_build_evidence": [
+    {
+      "source_path": "src/main/cpp/Conic.cpp",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/Conic.cpp?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/Conic.cpp?format=TEXT",
+      "sha256": "49b3da93aa43480cf9cd481590be48705cb9340c52e5d09635efbd0ece07be83",
+      "bytes": 5546,
+      "retrieved_at_utc": "2026-10-06T15:10:28.765057+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright 2022 The Android Open Source Project",
+        " * Copyright (C) 2006 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright 2022 The Android Open Source Project\n * Copyright (C) 2006 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *       http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": "49b3da93aa43480cf9cd481590be48705cb9340c52e5d09635efbd0ece07be83",
+      "matches_old_context_source_file_sha256": true
+    },
+    {
+      "source_path": "src/main/cpp/CMakeLists.txt",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/CMakeLists.txt?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/CMakeLists.txt?format=TEXT",
+      "sha256": "87a8967586e828d2b1cc6c5745d09f30466036bffbcd780b378c75239d90b173",
+      "bytes": 390,
+      "retrieved_at_utc": "2026-10-06T15:11:20.482047+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [],
+      "leading_license_comment": null,
+      "apache_header": false,
+      "compiled_cpp_filenames": [
+        "Conic.cpp",
+        "PathIterator.cpp",
+        "pathway.cpp"
+      ],
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": "87a8967586e828d2b1cc6c5745d09f30466036bffbcd780b378c75239d90b173",
+      "matches_old_context_source_file_sha256": true
+    },
+    {
+      "source_path": "src/main/cpp/PathIterator.h",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/PathIterator.h?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/PathIterator.h?format=TEXT",
+      "sha256": "a16e99b0273fb7205607eb0cf51fc7be518a55f3446a304f92ecab353e77be6f",
+      "bytes": 2181,
+      "retrieved_at_utc": "2026-10-06T15:10:28.708828+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright 2022 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *       http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": null,
+      "matches_old_context_source_file_sha256": null
+    },
+    {
+      "source_path": "src/main/cpp/pathway.cpp",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/pathway.cpp?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/pathway.cpp?format=TEXT",
+      "sha256": "4be68d6fdb6376e95560f7c49a79aa0cd97218d758cf11ea3230ac9124485800",
+      "bytes": 10200,
+      "retrieved_at_utc": "2026-10-06T15:11:20.324192+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright 2022 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *       http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": "4be68d6fdb6376e95560f7c49a79aa0cd97218d758cf11ea3230ac9124485800",
+      "matches_old_context_source_file_sha256": true
+    },
+    {
+      "source_path": "src/main/cpp/math/vec2.h",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/math/vec2.h?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/math/vec2.h?format=TEXT",
+      "sha256": "09e1a8eb3f8fdf9c1071500f1a4933f67caeb6d0f765d5c44ba968370de9fcb1",
+      "bytes": 3063,
+      "retrieved_at_utc": "2026-10-06T15:11:20.271777+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright 2013 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright 2013 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": "09e1a8eb3f8fdf9c1071500f1a4933f67caeb6d0f765d5c44ba968370de9fcb1",
+      "matches_old_context_source_file_sha256": true
+    },
+    {
+      "source_path": "src/main/cpp/Path.h",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/Path.h?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/Path.h?format=TEXT",
+      "sha256": "4ee841338063d8c6f71ff4c655ecf52559f6c6df9af79835388dae1ebcd8b982",
+      "bytes": 3376,
+      "retrieved_at_utc": "2026-10-06T15:10:28.708277+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright 2022 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *       http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": "4ee841338063d8c6f71ff4c655ecf52559f6c6df9af79835388dae1ebcd8b982",
+      "matches_old_context_source_file_sha256": true
+    },
+    {
+      "source_path": "src/main/cpp/math/TVecHelpers.h",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/math/TVecHelpers.h?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/math/TVecHelpers.h?format=TEXT",
+      "sha256": "1b0d6b06c5bbd6b438f9d8440ac78cf93fb8a713761badc59a4412b6457c1014",
+      "bytes": 19058,
+      "retrieved_at_utc": "2026-10-06T15:10:28.897171+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright 2013 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright 2013 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": "1b0d6b06c5bbd6b438f9d8440ac78cf93fb8a713761badc59a4412b6457c1014",
+      "matches_old_context_source_file_sha256": true
+    },
+    {
+      "source_path": "src/main/cpp/math/compiler.h",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/math/compiler.h?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/math/compiler.h?format=TEXT",
+      "sha256": "d53e85383580e5dbf81cbcb24426b0fe1bf419b4837540242dbdca3f1df4cf66",
+      "bytes": 3667,
+      "retrieved_at_utc": "2026-10-06T15:11:20.205207+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright (C) 2017 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright (C) 2017 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": "d53e85383580e5dbf81cbcb24426b0fe1bf419b4837540242dbdca3f1df4cf66",
+      "matches_old_context_source_file_sha256": true
+    },
+    {
+      "source_path": "build.gradle",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/build.gradle?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/build.gradle?format=TEXT",
+      "sha256": "dc6b0dfaa8393825da05eac9f6cd2ace91e7a85e6bcf6e80adb256caa25a339a",
+      "bytes": 3081,
+      "retrieved_at_utc": "2026-10-06T15:11:20.435114+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright (C) 2022 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright (C) 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "nostdlibpp_flag_present": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": "dc6b0dfaa8393825da05eac9f6cd2ace91e7a85e6bcf6e80adb256caa25a339a",
+      "matches_old_context_source_file_sha256": true
+    },
+    {
+      "source_path": "src/main/cpp/scalar.h",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/scalar.h?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/scalar.h?format=TEXT",
+      "sha256": "b1d2bba80a4c9272d84473b6f09f700972b016f7579842d3a87bdbbdb2af1edc",
+      "bytes": 1998,
+      "retrieved_at_utc": "2026-10-06T15:11:20.433824+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright 2022 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *       http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": "b1d2bba80a4c9272d84473b6f09f700972b016f7579842d3a87bdbbdb2af1edc",
+      "matches_old_context_source_file_sha256": true
+    },
+    {
+      "source_path": "src/main/cpp/Conic.h",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/Conic.h?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/Conic.h?format=TEXT",
+      "sha256": "cd315ad7c8d030c72e96893e9a0feec463d72d2066209a203dedcf0925398a6f",
+      "bytes": 1847,
+      "retrieved_at_utc": "2026-10-06T15:10:28.707537+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright 2022 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *       http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": "cd315ad7c8d030c72e96893e9a0feec463d72d2066209a203dedcf0925398a6f",
+      "matches_old_context_source_file_sha256": true
+    },
+    {
+      "source_path": "src/main/cpp/PathIterator.cpp",
+      "release_commit": "8a05a22af450d589ef911d772a001a49dcb05b71",
+      "url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/PathIterator.cpp?format=TEXT",
+      "final_url": "https://android.googlesource.com/platform/frameworks/support/+/8a05a22af450d589ef911d772a001a49dcb05b71/graphics/graphics-path/src/main/cpp/PathIterator.cpp?format=TEXT",
+      "sha256": "3705946b43bf894e013f46ccc940f9923f43285340f8fc2128f95c59238ec7f8",
+      "bytes": 3721,
+      "retrieved_at_utc": "2026-10-06T15:10:28.882739+00:00",
+      "transport": "urllib default HTTPS certificate validation",
+      "source_implementation_saved": false,
+      "copyright_lines": [
+        " * Copyright 2022 The Android Open Source Project"
+      ],
+      "leading_license_comment": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *       http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */",
+      "apache_header": true,
+      "status": "RECOVERED",
+      "old_context_source_file_sha256": null,
+      "matches_old_context_source_file_sha256": null
+    }
+  ],
+  "previous_elf_inspection": "Prior completed audit reported four ABI libraries depended on system libc/libm/libdl only. The old raw ELF reports were lost and have not been recreated here.",
+  "retrieval_note": "GitHub mirror URLs returned 404; canonical Google Gitiles URLs succeeded. Default TLS remained unchanged.",
+  "new_current_elf_report": "NATIVE_CURRENT_BINARY_INSPECTION.json"
+}

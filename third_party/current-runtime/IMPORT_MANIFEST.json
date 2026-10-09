@@ -1,0 +1,506 @@
+{
+  "bundle_identity": "NEW_LICENSE_RECOVERY_2026_10_06",
+  "not_original_lost_73_file_manifest": true,
+  "created_at_utc": "2026-10-06T15:22:18.989889+00:00",
+  "components": 55,
+  "official_components": 53,
+  "self_owned_components": 2,
+  "files": [
+    {
+      "path": "ACTUAL_RUNTIME_GRAPH_VERIFICATION.json",
+      "sha256": "d32f1261ff53a8b831177a8154cd0872ff7b81ec7d884efb016f61bb7cb08d1d",
+      "bytes": 64970
+    },
+    {
+      "path": "COPYRIGHT_ATTRIBUTIONS.txt",
+      "sha256": "0ae96389fb5cf92c4316e244abffb211930fc965b50c1762bc35700fb182dd91",
+      "bytes": 41088
+    },
+    {
+      "path": "NATIVE_CURRENT_BINARY_INSPECTION.json",
+      "sha256": "20f46c256c4e674a0e4d041525e8218f08034ff735de3228c8f111901dff2df8",
+      "bytes": 9084
+    },
+    {
+      "path": "NATIVE_SOURCE_LICENSE_PROVENANCE.json",
+      "sha256": "d3c98406943d88566b5a9bb9f4743a2ad6eeb4d550aa5ece3d1588abc6ea6f25",
+      "bytes": 21180
+    },
+    {
+      "path": "NEW_CANDIDATE_GATE.json",
+      "sha256": "6faec53d6e51b8ababfbef96b079e4adede91df0c5245424c87619bedc59c3fb",
+      "bytes": 3397
+    },
+    {
+      "path": "OBLIGATIONS_CN.md",
+      "sha256": "e5ef1940fe50718ee501403eddda30e14a5b3c0d6fccefbe8e802ae3fd56c08e",
+      "bytes": 3306
+    },
+    {
+      "path": "RECOVERY_STATUS.json",
+      "sha256": "5f8d9fe7e74a136e7e5b2dff7fa4db8eaee0afd28836f958ec66253288364742",
+      "bytes": 1672
+    },
+    {
+      "path": "SKINKIT_RECOVERY_PROVENANCE.json",
+      "sha256": "35a0c4865eccd0afc385835403a57a013710a04733f6cd6dbeb579f06b261fc7",
+      "bytes": 1173
+    },
+    {
+      "path": "SOURCE_HEADER_PROVENANCE.json",
+      "sha256": "c9d1f2cf287b56336af625505055b307c10e4386ffaf7e99cada673b4c8fe987",
+      "bytes": 741436
+    },
+    {
+      "path": "SOURCE_INDEX.json",
+      "sha256": "26cc5602bc295c6cccf3a4648e55893ab021266a2eabbb01ec1a11223ac75003",
+      "bytes": 363644
+    },
+    {
+      "path": "artifact-notices/androidx.activity__activity-compose__1.10.1/META-INF_androidx_activity_activity-compose_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.activity__activity-ktx__1.10.1/META-INF_androidx_activity_activity-ktx_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.activity__activity__1.10.1/META-INF_androidx_activity_activity_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.annotation__annotation-jvm__1.9.1/META-INF_androidx_annotation_annotation_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.collection__collection-jvm__1.5.0/META-INF_androidx_collection_collection_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.collection__collection-ktx__1.5.0/META-INF_androidx_collection_collection-ktx_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.animation__animation-android__1.8.3/META-INF_androidx_compose_animation_animation_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.animation__animation-core-android__1.8.3/META-INF_androidx_compose_animation_animation-core_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.foundation__foundation-android__1.8.3/META-INF_androidx_compose_foundation_foundation_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.foundation__foundation-layout-android__1.8.3/META-INF_androidx_compose_foundation_foundation-layout_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.runtime__runtime-android__1.8.3/META-INF_androidx_compose_runtime_runtime_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.runtime__runtime-saveable-android__1.8.3/META-INF_androidx_compose_runtime_runtime-saveable_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.ui__ui-android__1.8.3/META-INF_androidx_compose_ui_ui_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.ui__ui-geometry-android__1.8.3/META-INF_androidx_compose_ui_ui-geometry_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.ui__ui-graphics-android__1.8.3/META-INF_androidx_compose_ui_ui-graphics_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.ui__ui-text-android__1.8.3/META-INF_androidx_compose_ui_ui-text_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.ui__ui-unit-android__1.8.3/META-INF_androidx_compose_ui_ui-unit_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.compose.ui__ui-util-android__1.8.3/META-INF_androidx_compose_ui_ui-util_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.core__core-viewtree__1.0.0/META-INF_androidx_core_core-viewtree_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "artifact-notices/androidx.profileinstaller__profileinstaller__1.4.0/META-INF_androidx_profileinstaller_profileinstaller_LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "licenses/Apache-2.0-AOSP.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "bytes": 10175
+    },
+    {
+      "path": "licenses/Apache-2.0-ASF.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "licenses/Apache-2.0-JSpecify-1.0.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "licenses/Apache-2.0-JetBrains-Annotations-23.0.0.txt",
+      "sha256": "8c1e966c7855fb54027bcaf6ebe7a43abe4785791e8cf9148c363761d493d097",
+      "bytes": 11352
+    },
+    {
+      "path": "licenses/Apache-2.0-Kotlin-1.8.20.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "licenses/Apache-2.0-Kotlin-2.2.10.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "licenses/Apache-2.0-Kotlin-GWT.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "licenses/Apache-2.0-Kotlin-Guava.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "licenses/Apache-2.0-Kotlinx-Coroutines-1.7.3.txt",
+      "sha256": "b1febe6399dffb10d19d35e7663ab16300c93cb0476a94115df1cc0097a8ffd8",
+      "bytes": 11398
+    },
+    {
+      "path": "licenses/BSD-3-Clause-Kotlin-ThreeTenBP.txt",
+      "sha256": "d1bc53b493a3ab387b42717ed5c4b1976a5048996f81154278100bff86d39331",
+      "bytes": 1520
+    },
+    {
+      "path": "licenses/Boost-1.0-Kotlin.txt",
+      "sha256": "8d8291caf1cee26d23acf3eb67c9f9a2d58f1c681b16a4fbe8cbfb9e3c0b5a9b",
+      "bytes": 1337
+    },
+    {
+      "path": "poms/androidx.activity__activity-compose__1.10.1.pom",
+      "sha256": "e64db6b7126fb512394bc3cf4332a38828009daa8dd56ecbe6c0c7300b2127f5",
+      "bytes": 4289
+    },
+    {
+      "path": "poms/androidx.activity__activity-ktx__1.10.1.pom",
+      "sha256": "4213490e4ce2b5750e4445246dfe9de4f6655c2123c04a79a8248cc8893e2bf4",
+      "bytes": 2905
+    },
+    {
+      "path": "poms/androidx.activity__activity__1.10.1.pom",
+      "sha256": "0ae4de888974f5cef982660900ec32a33f10968750db7afa9438daec183f14e7",
+      "bytes": 4588
+    },
+    {
+      "path": "poms/androidx.annotation__annotation-experimental__1.4.1.pom",
+      "sha256": "fe57b228417f4d7c677903dc61fb4a7cf993d603499de26d8d8113e477cc4f1b",
+      "bytes": 2031
+    },
+    {
+      "path": "poms/androidx.annotation__annotation-jvm__1.9.1.pom",
+      "sha256": "89b99c218d60019316b50aab79816707bc21696c896a030e1b1ae038961bcb8e",
+      "bytes": 1826
+    },
+    {
+      "path": "poms/androidx.arch.core__core-common__2.2.0.pom",
+      "sha256": "1e17d4af8d6425be2a69f8af4d654a87e0456259a9eef1542869bcb023547e28",
+      "bytes": 1704
+    },
+    {
+      "path": "poms/androidx.arch.core__core-runtime__2.2.0.pom",
+      "sha256": "0f953706598140d9d8735cdd5aeb1fa35933f4e2f31c0bf3eb81a053a4c8c1a5",
+      "bytes": 1920
+    },
+    {
+      "path": "poms/androidx.autofill__autofill__1.0.0.pom",
+      "sha256": "3677abead5d4e06cf76cbacb954151e051779c2274494451fb424e375aa9e450",
+      "bytes": 1324
+    },
+    {
+      "path": "poms/androidx.collection__collection-jvm__1.5.0.pom",
+      "sha256": "11c415864d3402f61d426e67210158dce1b04680412526a994f1823ecd3cb388",
+      "bytes": 2383
+    },
+    {
+      "path": "poms/androidx.collection__collection-ktx__1.5.0.pom",
+      "sha256": "983f8d0630d072d5bfcd166a498ac7213f3a44a98c09051004ce96429d867cea",
+      "bytes": 2086
+    },
+    {
+      "path": "poms/androidx.compose.animation__animation-android__1.8.3.pom",
+      "sha256": "3f902c2ea58e8cbfb53f594f85a992cdc0583a3a5bef57b53e93403a2feba541",
+      "bytes": 7371
+    },
+    {
+      "path": "poms/androidx.compose.animation__animation-core-android__1.8.3.pom",
+      "sha256": "035f4eef2fc781dab781d50b6d94f3bc8e8936b6cde43919771340a5d78cf0ec",
+      "bytes": 8009
+    },
+    {
+      "path": "poms/androidx.compose.foundation__foundation-android__1.8.3.pom",
+      "sha256": "bd49a5c056d81d2dde528729a7a3604b5d00e0d7053305772cc1ccf0f29530b9",
+      "bytes": 7678
+    },
+    {
+      "path": "poms/androidx.compose.foundation__foundation-layout-android__1.8.3.pom",
+      "sha256": "ddd806fbca9ad9cb442d187de860df7f681aa68952d07fdd95bc2df23f10bd40",
+      "bytes": 7607
+    },
+    {
+      "path": "poms/androidx.compose.runtime__runtime-android__1.8.3.pom",
+      "sha256": "ab1d6cc48de4cd6bbd6ae89beee0472bff780ea462f61bd99b00919b19519928",
+      "bytes": 6040
+    },
+    {
+      "path": "poms/androidx.compose.runtime__runtime-saveable-android__1.8.3.pom",
+      "sha256": "d67cb1afd04caa540cb852c415f5c24b9c0b6770bf46076f1dd8e542865670f0",
+      "bytes": 4890
+    },
+    {
+      "path": "poms/androidx.compose.ui__ui-android__1.8.3.pom",
+      "sha256": "7384663a766e3131682264f2f3a66d779db0e1d6ea1295c7e364e2b4eed60d1c",
+      "bytes": 16890
+    },
+    {
+      "path": "poms/androidx.compose.ui__ui-geometry-android__1.8.3.pom",
+      "sha256": "cad8c47bbdca615c96c2d80e487a41e94cfe2ab8f4c5a491ec80a6be02f71bb6",
+      "bytes": 7303
+    },
+    {
+      "path": "poms/androidx.compose.ui__ui-graphics-android__1.8.3.pom",
+      "sha256": "58f04cf2001375b70b98ce3a7532391247108cd989891578efa4e3959bb219ae",
+      "bytes": 9713
+    },
+    {
+      "path": "poms/androidx.compose.ui__ui-text-android__1.8.3.pom",
+      "sha256": "4a68eca940c799a726c493c6b280cd0b938e86dd87f748763450268e1ce6af64",
+      "bytes": 11290
+    },
+    {
+      "path": "poms/androidx.compose.ui__ui-unit-android__1.8.3.pom",
+      "sha256": "7f6ebcae5ca9ec45c9f6e467cd96a7cb17bfe770cbe598afd767f1e14bf1ec80",
+      "bytes": 9027
+    },
+    {
+      "path": "poms/androidx.compose.ui__ui-util-android__1.8.3.pom",
+      "sha256": "b99318c68c2354573ab02ab01ffb2539459becc07e4a20357290f58defab5b50",
+      "bytes": 6657
+    },
+    {
+      "path": "poms/androidx.concurrent__concurrent-futures__1.1.0.pom",
+      "sha256": "748a34eb5d13d19d187adecaea82667fded5f1b0b98a655e13ed2e4a8b3d8ae6",
+      "bytes": 1888
+    },
+    {
+      "path": "poms/androidx.core__core-ktx__1.13.1.pom",
+      "sha256": "31cc345b8c6cdd2046dcf67872df8a8cb4f44ea0cade4df80002caa7e3b71809",
+      "bytes": 2450
+    },
+    {
+      "path": "poms/androidx.core__core-viewtree__1.0.0.pom",
+      "sha256": "d4f2ed1176fa8c5612b80f74c952a8799142a9ed36022a1a238fde5b140580d9",
+      "bytes": 2107
+    },
+    {
+      "path": "poms/androidx.core__core__1.13.1.pom",
+      "sha256": "527abfa5a8d6af748b37e1c0162d1633a2d5ea4387b0205a8b436b6214ba1cf6",
+      "bytes": 3654
+    },
+    {
+      "path": "poms/androidx.customview__customview-poolingcontainer__1.0.0.pom",
+      "sha256": "9fa62196c4c4e79b6a58dbb38a8c022bef8db21989d7dae2da0f6f5b66289a9c",
+      "bytes": 2068
+    },
+    {
+      "path": "poms/androidx.emoji2__emoji2__1.4.0.pom",
+      "sha256": "1f67221484f7d1260eb6e2b490cd4e7046bf5cb536276d79f972ad3f198b474d",
+      "bytes": 3339
+    },
+    {
+      "path": "poms/androidx.graphics__graphics-path__1.0.1.pom",
+      "sha256": "866fb357c7146f5f7678ad44e4bc6c2823d568defce1ed2805bb6c899606b228",
+      "bytes": 2051
+    },
+    {
+      "path": "poms/androidx.interpolator__interpolator__1.0.0.pom",
+      "sha256": "0ddc07cc39699f48ecd9ec894b5830c0f09e22e82959294edf37217224c88b7b",
+      "bytes": 1608
+    },
+    {
+      "path": "poms/androidx.lifecycle__lifecycle-common-jvm__2.8.7.pom",
+      "sha256": "8f0007d670749b2c70c226d75fe3837c6435e1b40036f1eb829078e90461a7e0",
+      "bytes": 5418
+    },
+    {
+      "path": "poms/androidx.lifecycle__lifecycle-livedata-core__2.8.7.pom",
+      "sha256": "e5e30bd3c0adbb4246b4feaf5d38e0b3eab6e495b126ee94497f7490ca35156a",
+      "bytes": 5651
+    },
+    {
+      "path": "poms/androidx.lifecycle__lifecycle-process__2.8.7.pom",
+      "sha256": "81ba3ae9ffe2594bf21a35e181cb53ce7b396f357f7c3cbffbe8fdd3a2330339",
+      "bytes": 5641
+    },
+    {
+      "path": "poms/androidx.lifecycle__lifecycle-runtime-android__2.8.7.pom",
+      "sha256": "28cb190de87de05d3c1a4f7674d1f458b7ab935e75cf83ba28b1539b5fa93c1a",
+      "bytes": 7199
+    },
+    {
+      "path": "poms/androidx.lifecycle__lifecycle-runtime-compose-android__2.8.7.pom",
+      "sha256": "0cc8bc6d293baa36008f71df68dacc656c760ffeb2f02b3134a636dcb94705e5",
+      "bytes": 5662
+    },
+    {
+      "path": "poms/androidx.lifecycle__lifecycle-runtime-ktx-android__2.8.7.pom",
+      "sha256": "1eda66f638060cd398e44896f934c273f003b9e8ed36995cfdf3eb131f072365",
+      "bytes": 5669
+    },
+    {
+      "path": "poms/androidx.lifecycle__lifecycle-viewmodel-android__2.8.7.pom",
+      "sha256": "b37c1a411eeb9877f0f25783d1ecaecf5656b8442c5445388046e69aace7c6b0",
+      "bytes": 5661
+    },
+    {
+      "path": "poms/androidx.lifecycle__lifecycle-viewmodel-ktx__2.8.7.pom",
+      "sha256": "9338277904cdf048d8f1d359fae5537a350c64f0de16b71ffa4e20a423c8a7c2",
+      "bytes": 5491
+    },
+    {
+      "path": "poms/androidx.lifecycle__lifecycle-viewmodel-savedstate__2.8.7.pom",
+      "sha256": "9b91c558fc31cd9a4181a410ddb9368359cb02362a50af64a1a30a12c3d5c1a9",
+      "bytes": 6254
+    },
+    {
+      "path": "poms/androidx.profileinstaller__profileinstaller__1.4.0.pom",
+      "sha256": "d5fe39981a3b4b7c39585130da0bfc93835054c834a438d3e63e065e5f78be55",
+      "bytes": 2477
+    },
+    {
+      "path": "poms/androidx.savedstate__savedstate-ktx__1.2.1.pom",
+      "sha256": "d09553211f6703b19aefd608d6007c77132d27a281556a8e689d92764ec27d3b",
+      "bytes": 2236
+    },
+    {
+      "path": "poms/androidx.savedstate__savedstate__1.2.1.pom",
+      "sha256": "0d33bc285df1e12f22780f1624a6f0b38ea2a6181b0955ec6641caf620c50cbf",
+      "bytes": 2549
+    },
+    {
+      "path": "poms/androidx.startup__startup-runtime__1.1.1.pom",
+      "sha256": "f4114b5c6859bb1bc3caf281cb6d6f25998fa7f7292c64ceaea74a93210e746b",
+      "bytes": 1949
+    },
+    {
+      "path": "poms/androidx.tracing__tracing__1.0.0.pom",
+      "sha256": "cd0299a90d4720d78f1cfb5ff7505f4dbc1a70d05fe23fd9f4d4b77ea59ca05e",
+      "bytes": 1717
+    },
+    {
+      "path": "poms/androidx.versionedparcelable__versionedparcelable__1.1.1.pom",
+      "sha256": "5f51e65873ca612de3838fa90d2ee95b8d040efd31b9c390a19bf94d615cdb2f",
+      "bytes": 1643
+    },
+    {
+      "path": "poms/com.google.guava__guava-parent__26.0-android.pom",
+      "sha256": "f8698ab46ca996ce889c1afc8ca4f25eb8ac6b034dc898d4583742360016cc04",
+      "bytes": 10180
+    },
+    {
+      "path": "poms/com.google.guava__listenablefuture__1.0.pom",
+      "sha256": "53873caf26bc1ed8a567ea6c939ab2aaa3f47a5e32d5cade95ddf5080d23238a",
+      "bytes": 2226
+    },
+    {
+      "path": "poms/dev.skinkit__skinkit-contract__0.0.1.pom",
+      "sha256": "f08e7294d2cb68f820f97a288ed09c85d74aef8edb0ae15629100c9e93a59efa",
+      "bytes": 1090
+    },
+    {
+      "path": "poms/dev.skinkit__skinkit-default__0.0.1.pom",
+      "sha256": "00cfd40c8764d7de4c65c88eaebc7290b846ec3cbe1914530ab6c0986ac67529",
+      "bytes": 1282
+    },
+    {
+      "path": "poms/org.jetbrains.kotlin__kotlin-stdlib-jdk7__1.8.20.pom",
+      "sha256": "3622d106578cddcc0a9ec20f8ce815f7f49ff542f640228d2141fcaf80616b06",
+      "bytes": 1389
+    },
+    {
+      "path": "poms/org.jetbrains.kotlin__kotlin-stdlib-jdk8__1.8.20.pom",
+      "sha256": "3a462214a336e995687769531b1e37b0c81d8e10c9949cd5ea7ae1d7803a0232",
+      "bytes": 1581
+    },
+    {
+      "path": "poms/org.jetbrains.kotlin__kotlin-stdlib__2.2.10.pom",
+      "sha256": "454ba507a3d36b4ac253df6df96f8739bd26ea19df3f332b10b13f2c5715f787",
+      "bytes": 2322
+    },
+    {
+      "path": "poms/org.jetbrains.kotlinx__kotlinx-coroutines-android__1.7.3.pom",
+      "sha256": "020515246d19e176d5626eb118f80f97f7876d1accd8cec15b1a4159257d5054",
+      "bytes": 2226
+    },
+    {
+      "path": "poms/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.7.3.pom",
+      "sha256": "753858753decbbb2397343e2b871f062f697812e9422e41c9ee46a66b93eee30",
+      "bytes": 2395
+    },
+    {
+      "path": "poms/org.jetbrains__annotations__23.0.0.pom",
+      "sha256": "c9490f655132328df2cfbcfdf743f53fc3916d6c1d10437175a6ca6e3a67771c",
+      "bytes": 1354
+    },
+    {
+      "path": "poms/org.jspecify__jspecify__1.0.0.pom",
+      "sha256": "cdab929a3b95211f43d2090c5e2d0dfe8465960e378bc32b35841dab324433a6",
+      "bytes": 1511
+    },
+    {
+      "path": "provenance/KOTLIN_COMPILER_NOTICE_NOT_APP_RUNTIME.txt",
+      "sha256": "0b09a83d3ef7795c7dec65e815866597c066c53898f2852a76599b8f5552941a",
+      "bytes": 482
+    },
+    {
+      "path": "provenance/KOTLIN_LICENSE_SCOPE_v2.2.10.md",
+      "sha256": "8cba83fcded6d166fc4398eb8cb9c1a12ad8b87ff624a404956242d22231fbc9",
+      "bytes": 17313
+    }
+  ],
+  "file_count_excluding_manifest": 99
+}

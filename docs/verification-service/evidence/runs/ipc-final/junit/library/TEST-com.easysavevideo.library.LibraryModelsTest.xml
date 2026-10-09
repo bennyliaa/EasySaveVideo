@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.library.LibraryModelsTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:30:28.092Z" hostname="05582a867b99" time="0.017">
+  <properties/>
+  <testcase name="invalidMetadataAndReferencesAreRejected" classname="com.easysavevideo.library.LibraryModelsTest" time="0.008"/>
+  <testcase name="storedNamesMustBeCanonicalNfc" classname="com.easysavevideo.library.LibraryModelsTest" time="0.002"/>
+  <testcase name="readReferenceBindsExactRevisionAndGeneration" classname="com.easysavevideo.library.LibraryModelsTest" time="0.001"/>
+  <testcase name="requestRequiresAnExplicitTrueConfirmation" classname="com.easysavevideo.library.LibraryModelsTest" time="0.001"/>
+  <testcase name="itemNameCollisionUsesCanonicalKeyAndOnlyReadySiblings" classname="com.easysavevideo.library.LibraryModelsTest" time="0.0"/>
+  <testcase name="summariesNeverLogMetadata" classname="com.easysavevideo.library.LibraryModelsTest" time="0.004"/>
+  <testcase name="unknownLegacyDimensionsAndDurationRemainUnknown" classname="com.easysavevideo.library.LibraryModelsTest" time="0.0"/>
+  <testcase name="deletionTombstonesAreNotPlayable" classname="com.easysavevideo.library.LibraryModelsTest" time="0.001"/>
+  <testcase name="metadataCasRejectsStaleRevision" classname="com.easysavevideo.library.LibraryModelsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,6 @@
+CC BY 2.5: https://creativecommons.org/licenses/by/2.5/
+Legal code: https://creativecommons.org/licenses/by/2.5/legalcode
+CC0 1.0: https://creativecommons.org/publicdomain/zero/1.0/
+Legal code: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+CC BY 2.5 permits a copy or URI with distribution. Official raw legal-code download returned HTTP 403; no missing text was fabricated. Terms were checked through public official web content. Apache and MIT complete texts are included separately.

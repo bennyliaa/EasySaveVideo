@@ -1,0 +1,637 @@
+{
+  "coordinate": "com.google.j2objc:j2objc-annotations:3.0.0",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/3.0.0/",
+  "file_metadata": {
+    "j2objc-annotations-3.0.0.pom": {
+      "sha256": "23b3d039e168ad89dd114698e6dd7be383f4a2c577b8877d82c73a6515e74a17",
+      "bytes": 5057,
+      "path": "official-maven/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.pom"
+    },
+    "j2objc-annotations-3.0.0.jar": {
+      "sha256": "88241573467ddca44ffd4d74aa04c2bbfd11bf7c17e0c342c94c9de7a70a7c64",
+      "bytes": 12467,
+      "path": "official-maven/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar"
+    },
+    "j2objc-annotations-3.0.0-sources.jar": {
+      "sha256": "bd60019a0423c3a025ef6ab24fe0761f5f45ffb48a8cca74a01b678de1105d38",
+      "bytes": 17340,
+      "path": "official-maven/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0-sources.jar"
+    }
+  },
+  "pom_licenses": [
+    {
+      "name": "Apache License, Version 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.txt",
+      "distribution": "repo"
+    }
+  ],
+  "source_headers": [
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/UsedByNative.java",
+      "sha256": "f2bd188f392b5e028c106c0025d39de4379cdab1733c18dde3b414ab014e7e03",
+      "bytes": 1117,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/ReflectionSupport.java",
+      "sha256": "6210ca53e21f06094696b4b7a3c8e342b514be90a261211f9a9cd5ebda389f15",
+      "bytes": 1446,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/AutoreleasePool.java",
+      "sha256": "e4d0a207c7feede58081deb8d0adad6d294e67c5e5db9510fc4cae31c7df7e90",
+      "bytes": 1839,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2012 Google Inc. All Rights Reserved.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/UsedByReflection.java",
+      "sha256": "e641db12691f6d02a690ff46cec6d122347649f1439571d5dde9373cf3e80cd3",
+      "bytes": 1118,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/Property.java",
+      "sha256": "3b695d12212f6654a78f1a0da243e10c7cab1726d9242d970be23e69891d847a",
+      "bytes": 2420,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/OnDealloc.java",
+      "sha256": "879c84070cca32040fc8ade7b92f781ce862fa75e70ab85037315108dc6e246d",
+      "bytes": 1420,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/J2ObjCIncompatible.java",
+      "sha256": "04fbc80abe31dd76860b842ae4f0ec2251f01613dd137aeb49e18f33e9299f50",
+      "bytes": 1341,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/RetainedLocalRef.java",
+      "sha256": "aea44698587d342c2e374b5183fc1f0f324743e95377cdcd12634e77b7014afe",
+      "bytes": 1726,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/ObjectiveCName.java",
+      "sha256": "495befea8489d4f68187147fa87cdca60b6a32cc0ddb04598ce7597276e36d3d",
+      "bytes": 1840,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/GenerateObjectiveCGenerics.java",
+      "sha256": "2ccf0a8fbed70c1568a7f8fa67335f9274a315137646ec851a862bc28891290f",
+      "bytes": 1167,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/RetainedWith.java",
+      "sha256": "6f22ef5627081aaf0099ef1542e92f561d561a4fe7e318bc6a193a09091df3ea",
+      "bytes": 2894,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/Weak.java",
+      "sha256": "38e59860a491d9ed5b2133df986b2f572e0ade380b8baa919edebbf124e4ec40",
+      "bytes": 1551,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2012 Google Inc. All Rights Reserved.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/LoopTranslation.java",
+      "sha256": "8c269a9cce9bf1f363194091f6407dedf5eb5be95d8bc6ed48aa0712e2364da7",
+      "bytes": 1607,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/WeakOuter.java",
+      "sha256": "beddc26a03376f9962657e3215e6b65fde6a6403999ea73bffe5c0c6139e6d04",
+      "bytes": 1425,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "module-info.java",
+      "sha256": "acac1075d1a87c632dc4e5b44610b882c02c5da36c7b231c299c3857d3088bc8",
+      "bytes": 722,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2012 Google Inc. All Rights Reserved.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    }
+  ],
+  "source_special_attributions": [
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/UsedByNative.java",
+      "sha256": "f2bd188f392b5e028c106c0025d39de4379cdab1733c18dde3b414ab014e7e03",
+      "bytes": 1117,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/ReflectionSupport.java",
+      "sha256": "6210ca53e21f06094696b4b7a3c8e342b514be90a261211f9a9cd5ebda389f15",
+      "bytes": 1446,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/AutoreleasePool.java",
+      "sha256": "e4d0a207c7feede58081deb8d0adad6d294e67c5e5db9510fc4cae31c7df7e90",
+      "bytes": 1839,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2012 Google Inc. All Rights Reserved."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/UsedByReflection.java",
+      "sha256": "e641db12691f6d02a690ff46cec6d122347649f1439571d5dde9373cf3e80cd3",
+      "bytes": 1118,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/Property.java",
+      "sha256": "3b695d12212f6654a78f1a0da243e10c7cab1726d9242d970be23e69891d847a",
+      "bytes": 2420,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/OnDealloc.java",
+      "sha256": "879c84070cca32040fc8ade7b92f781ce862fa75e70ab85037315108dc6e246d",
+      "bytes": 1420,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/J2ObjCIncompatible.java",
+      "sha256": "04fbc80abe31dd76860b842ae4f0ec2251f01613dd137aeb49e18f33e9299f50",
+      "bytes": 1341,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/RetainedLocalRef.java",
+      "sha256": "aea44698587d342c2e374b5183fc1f0f324743e95377cdcd12634e77b7014afe",
+      "bytes": 1726,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/ObjectiveCName.java",
+      "sha256": "495befea8489d4f68187147fa87cdca60b6a32cc0ddb04598ce7597276e36d3d",
+      "bytes": 1840,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/GenerateObjectiveCGenerics.java",
+      "sha256": "2ccf0a8fbed70c1568a7f8fa67335f9274a315137646ec851a862bc28891290f",
+      "bytes": 1167,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/RetainedWith.java",
+      "sha256": "6f22ef5627081aaf0099ef1542e92f561d561a4fe7e318bc6a193a09091df3ea",
+      "bytes": 2894,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/Weak.java",
+      "sha256": "38e59860a491d9ed5b2133df986b2f572e0ade380b8baa919edebbf124e4ec40",
+      "bytes": 1551,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2012 Google Inc. All Rights Reserved."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/LoopTranslation.java",
+      "sha256": "8c269a9cce9bf1f363194091f6407dedf5eb5be95d8bc6ed48aa0712e2364da7",
+      "bytes": 1607,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/WeakOuter.java",
+      "sha256": "beddc26a03376f9962657e3215e6b65fde6a6403999ea73bffe5c0c6139e6d04",
+      "bytes": 1425,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "module-info.java",
+      "sha256": "acac1075d1a87c632dc4e5b44610b882c02c5da36c7b231c299c3857d3088bc8",
+      "bytes": 722,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2012 Google Inc. All Rights Reserved."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    }
+  ],
+  "source_without_license_header": [],
+  "source_non_code_entries": [
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "74c7241effb7d9e7ce80288bcb8d3488de418942395b6d667e40b21930b428a4",
+      "bytes": 64
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "META-INF/maven/com.google.j2objc/j2objc-annotations/pom.xml",
+      "sha256": "23b3d039e168ad89dd114698e6dd7be383f4a2c577b8877d82c73a6515e74a17",
+      "bytes": 5057
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "META-INF/maven/com.google.j2objc/j2objc-annotations/pom.properties",
+      "sha256": "75ceb8349538d655b7e69fcf4b0964f8e876ca0f6f3f9eedcc9d14a229d88517",
+      "bytes": 70
+    }
+  ],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "a9acad1514fb3e73a7289b7cdc6b1981bdac9320dc0c1c0981b838cca8fec564",
+      "bytes": 102
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/LoopTranslation$LoopStyle.class",
+      "sha256": "fe63565d5c002df1d29382427a8598f50aa2196897289e71c0d12780f66818f9",
+      "bytes": 1328
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/J2ObjCIncompatible.class",
+      "sha256": "401921b2b2f62505451fa36399c2bd6eb54869a00ba8bdaedbcb372107daa0f1",
+      "bytes": 525
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/Property$Suppress.class",
+      "sha256": "37fa7d487b73f3dbba00a0eb05f17c9d4445fc09922d783d7f6a27efa7cbbbe5",
+      "bytes": 469
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/Property.class",
+      "sha256": "590012fb82c1d7ff9a5c232e1ce59dc1d603634df1f3a8e4a1ff8358b5c47692",
+      "bytes": 621
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/WeakOuter.class",
+      "sha256": "8cab9066a5b32001ca3b4413fb10f2b394c399abc57edb29c50a8ba9f1e07e4c",
+      "bytes": 436
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/LoopTranslation.class",
+      "sha256": "af1eff1d99cc7ecc4e879ab519a6a1cae2441510dcddba915281c790746f1031",
+      "bytes": 594
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/ReflectionSupport.class",
+      "sha256": "c1b6605b71a4ba99509d69517beb4adcf4c47b20e499fcfad20c11915389ee82",
+      "bytes": 634
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/RetainedLocalRef.class",
+      "sha256": "f332fd5c3960c35ef7003a4d70474d2a66b6b4f918473f41d4cef18ae2a55cc5",
+      "bytes": 422
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/ObjectiveCName.class",
+      "sha256": "f869e2ad005359215a135213115dca4579d5b34f11811538418b701129f12109",
+      "bytes": 526
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/OnDealloc.class",
+      "sha256": "bd70c75186bea87ab2c5c72d904e82b1b90b49a13be760dd4e09a4fec812b10d",
+      "bytes": 399
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/RetainedWith.class",
+      "sha256": "a140bbad15ee77414ecffc756f7b5e8dfc14e1da6f7737cef609fcc93eee1322",
+      "bytes": 404
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/GenerateObjectiveCGenerics.class",
+      "sha256": "71a2028ae892255ea75fe7b42d580d70ac083b83665f81fcee8f1e20d2232a5a",
+      "bytes": 432
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/UsedByReflection.class",
+      "sha256": "bf224757edd696a597289683272154dc7528e9eb63470aef275877153f973d69",
+      "bytes": 362
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/Weak.class",
+      "sha256": "5833a53fa0dbafb9eb0dd64e34cf5da9fb6dece471fae5047647735e38ea6a90",
+      "bytes": 427
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/AutoreleasePool.class",
+      "sha256": "475f6eab54e90e022327474c6cc6a590758296b6579d86b25c5746c4f5a79276",
+      "bytes": 434
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/UsedByNative.class",
+      "sha256": "1d7967076f43dfde957a4cb956033e2f8319548039d0e1cb664610bee5a05fe5",
+      "bytes": 354
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "com/google/j2objc/annotations/ReflectionSupport$Level.class",
+      "sha256": "ccff08e07c47cf0194961289deffc366a895a3e27002b60e8428b1300e87131d",
+      "bytes": 1302
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "META-INF/maven/com.google.j2objc/j2objc-annotations/pom.xml",
+      "sha256": "23b3d039e168ad89dd114698e6dd7be383f4a2c577b8877d82c73a6515e74a17",
+      "bytes": 5057
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "META-INF/maven/com.google.j2objc/j2objc-annotations/pom.properties",
+      "sha256": "75ceb8349538d655b7e69fcf4b0964f8e876ca0f6f3f9eedcc9d14a229d88517",
+      "bytes": 70
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0.jar",
+      "entry": "META-INF/versions/9/module-info.class",
+      "sha256": "2a775bf67417be5bdf759f4874b3b9ee5e5e8dcda74d5c74374db0445f27d386",
+      "bytes": 244
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "74c7241effb7d9e7ce80288bcb8d3488de418942395b6d667e40b21930b428a4",
+      "bytes": 64
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/UsedByNative.java",
+      "sha256": "f2bd188f392b5e028c106c0025d39de4379cdab1733c18dde3b414ab014e7e03",
+      "bytes": 1117
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/ReflectionSupport.java",
+      "sha256": "6210ca53e21f06094696b4b7a3c8e342b514be90a261211f9a9cd5ebda389f15",
+      "bytes": 1446
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/AutoreleasePool.java",
+      "sha256": "e4d0a207c7feede58081deb8d0adad6d294e67c5e5db9510fc4cae31c7df7e90",
+      "bytes": 1839
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/UsedByReflection.java",
+      "sha256": "e641db12691f6d02a690ff46cec6d122347649f1439571d5dde9373cf3e80cd3",
+      "bytes": 1118
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/Property.java",
+      "sha256": "3b695d12212f6654a78f1a0da243e10c7cab1726d9242d970be23e69891d847a",
+      "bytes": 2420
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/OnDealloc.java",
+      "sha256": "879c84070cca32040fc8ade7b92f781ce862fa75e70ab85037315108dc6e246d",
+      "bytes": 1420
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/J2ObjCIncompatible.java",
+      "sha256": "04fbc80abe31dd76860b842ae4f0ec2251f01613dd137aeb49e18f33e9299f50",
+      "bytes": 1341
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/RetainedLocalRef.java",
+      "sha256": "aea44698587d342c2e374b5183fc1f0f324743e95377cdcd12634e77b7014afe",
+      "bytes": 1726
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/ObjectiveCName.java",
+      "sha256": "495befea8489d4f68187147fa87cdca60b6a32cc0ddb04598ce7597276e36d3d",
+      "bytes": 1840
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/GenerateObjectiveCGenerics.java",
+      "sha256": "2ccf0a8fbed70c1568a7f8fa67335f9274a315137646ec851a862bc28891290f",
+      "bytes": 1167
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/RetainedWith.java",
+      "sha256": "6f22ef5627081aaf0099ef1542e92f561d561a4fe7e318bc6a193a09091df3ea",
+      "bytes": 2894
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/Weak.java",
+      "sha256": "38e59860a491d9ed5b2133df986b2f572e0ade380b8baa919edebbf124e4ec40",
+      "bytes": 1551
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/LoopTranslation.java",
+      "sha256": "8c269a9cce9bf1f363194091f6407dedf5eb5be95d8bc6ed48aa0712e2364da7",
+      "bytes": 1607
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "com/google/j2objc/annotations/WeakOuter.java",
+      "sha256": "beddc26a03376f9962657e3215e6b65fde6a6403999ea73bffe5c0c6139e6d04",
+      "bytes": 1425
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "module-info.java",
+      "sha256": "acac1075d1a87c632dc4e5b44610b882c02c5da36c7b231c299c3857d3088bc8",
+      "bytes": 722
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "META-INF/maven/com.google.j2objc/j2objc-annotations/pom.xml",
+      "sha256": "23b3d039e168ad89dd114698e6dd7be383f4a2c577b8877d82c73a6515e74a17",
+      "bytes": 5057
+    },
+    {
+      "archive": "j2objc-annotations-3.0.0-sources.jar",
+      "entry": "META-INF/maven/com.google.j2objc/j2objc-annotations/pom.properties",
+      "sha256": "75ceb8349538d655b7e69fcf4b0964f8e876ca0f6f3f9eedcc9d14a229d88517",
+      "bytes": 70
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": null,
+  "source_status": "PRESENT"
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.commons.maintenance.RepositorySecurityTest" tests="29" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:32:22.044Z" hostname="05582a867b99" time="0.189">
+  <properties/>
+  <testcase name="inProcessObservationIsMonotonicAndNegativeClockFailsClosed" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.003"/>
+  <testcase name="repositoryDisableDominatesHealthyCandidateRollbackAndLkg" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.01"/>
+  <testcase name="revokedPackageKeyCannotReenterThroughNewPackageOrRollbackGrant" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.008"/>
+  <testcase name="updateRuntimeNeverSniffsPackageAsPolicyOrPolicyAsPackage" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.005"/>
+  <testcase name="eachPolicyWriteCancellationFailsClosedBeforeAndAfterRestart" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.017"/>
+  <testcase name="corruptPolicySignatureCannotBeHiddenByRecomputedStateChecksum" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.004"/>
+  <testcase name="floorNeverDecreasesAndRejectsNewUnsafePackagesWithoutAdvancingPackageHighWater" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.009"/>
+  <testcase name="concurrentPolicyAndPackageMutationsSerializeAndLatestRevocationWins" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.004"/>
+  <testcase name="stableRollbackRequiresExactSignedTargetAndRetainsBothVersionAnchors" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.008"/>
+  <testcase name="policyCancellationBeforeTransactionLeavesOldStablePolicyUnchanged" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.004"/>
+  <testcase name="firstPolicyPersistsIndependentlyAndNeverMakesBundledManagedFallback" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.004"/>
+  <testcase name="productionPolicyRootIsEmptyEvenWhenPackageRootIsInjected" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.001"/>
+  <testcase name="policyVersionCannotReplayOrEquivocateAndPackageVersionIsIndependent" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.008"/>
+  <testcase name="grantForSameVersionDifferentEnvelopeCannotAuthorizeRollback" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.007"/>
+  <testcase name="firstPackageKillSwitchCannotRollbackToBundled" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.001"/>
+  <testcase name="stablePackageDisableCannotRollbackToOldEnabledOrBundledWithOrWithoutGrant" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.01"/>
+  <testcase name="newerPolicyMayWithdrawRollbackGrantButNeverItsSecurityRestrictions" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.007"/>
+  <testcase name="boundedUpdateRuntimeCanInstallExplicitPolicyKindFromMemoryOnly" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.005"/>
+  <testcase name="persistedClockLowerBoundSurvivesRestartAndDoesNotPermitMutationBehindIt" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.005"/>
+  <testcase name="expiredTargetRemainsDisabledEvenWithValidGrant" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.005"/>
+  <testcase name="policyChangeRevokesExistingLeaseAndFencesHealthPromotion" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.003"/>
+  <testcase name="floorAndRevocationAlwaysOverrideValidTargetGrant" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.011"/>
+  <testcase name="revokedVersionPersistsAndCannotDisappearFromHigherPolicy" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.01"/>
+  <testcase name="policyUpdateAfterRestartCannotMakeRecoveredPendingCandidateUsable" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.003"/>
+  <testcase name="eachPolicyWriteFaultFailsClosedBeforeAndAfterRestart" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.017"/>
+  <testcase name="rejectedCandidateDoesNotSilentlyActivateUnsignedBundledFallback" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.002"/>
+  <testcase name="legacyStateFormatFailsClosedWithoutMigrationOrReset" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.003"/>
+  <testcase name="rejectedCandidateLkgNeedsGrantAndRevocationOverridesGrant" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.007"/>
+  <testcase name="policyExpiryFailsClosedAndNewerValidPolicyCanRecoverWithoutReset" classname="com.easysavevideo.commons.maintenance.RepositorySecurityTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

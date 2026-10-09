@@ -1,0 +1,10 @@
+{
+  "debug": {
+    "commons_enabled": true,
+    "contact_present": true
+  },
+  "release": {
+    "commons_enabled": true,
+    "contact_present": true
+  }
+}

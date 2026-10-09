@@ -1,0 +1,8 @@
+{
+  "url": "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/33.3.1-android/guava-parent-33.3.1-android.pom",
+  "final_url": "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/33.3.1-android/guava-parent-33.3.1-android.pom",
+  "sha256": "6e11986ea7250b51f847157e2dc937f32a306804dfce0007a5e81ddb9b95c579",
+  "bytes": 20632,
+  "retrieved_at_utc": "2026-10-06T16:59:04.548269+00:00",
+  "transport": "urllib default HTTPS certificate validation"
+}

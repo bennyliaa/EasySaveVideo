@@ -1,0 +1,159 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+Unable to initialize metrics, ensure /home/agent/.android is writable, details: /home/agent/.android/analytics.settings (No such file or directory)
+
+> Task :commons-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:compileKotlin UP-TO-DATE
+> Task :core-model:compileJava NO-SOURCE
+> Task :discovery:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:compileKotlin UP-TO-DATE
+> Task :discovery:compileJava NO-SOURCE
+> Task :commons-provider:processResources NO-SOURCE
+> Task :commons-provider:processTestResources UP-TO-DATE
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar UP-TO-DATE
+> Task :discovery:processResources NO-SOURCE
+> Task :discovery:classes UP-TO-DATE
+> Task :discovery:jar UP-TO-DATE
+> Task :commons-provider:compileKotlin
+> Task :commons-provider:compileJava NO-SOURCE
+> Task :commons-provider:classes UP-TO-DATE
+> Task :commons-provider:jar
+> Task :commons-provider:compileTestKotlin
+> Task :commons-provider:compileTestJava NO-SOURCE
+> Task :commons-provider:testClasses UP-TO-DATE
+
+> Task :commons-provider:test
+
+ProviderRepositoryTest > restoredExpiredStableEnvelopeStillAuthenticatesButDoesNotActivate FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > corruptedHighWaterCannotBeResetEvenIfFramingChecksumIsRecomputed FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > candidateFailurePreservesPreviousStableHistoryAndTrustedAnchor FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > notificationsAreOffLockBoundedAndUnchangedHealthDoesNotNotify FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > missingTruncatedOversizedAndUnknownFormatRecordsFailClosed FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > stableRollbackAndRestartNeverLowerHighWater FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > failedCandidateNeverReenablesExpiredLastGood FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > cancellationBeforeTransactionLeavesHealthyStateUntouched FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > everyInjectedAtomicFailureStaysDisabledAcrossRestart FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > onlyOneCandidateAndExactHealthPromotionPreservesAuthorityGeneration FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > danglingStateMarkersAndWrongFileTypesNeverBecomeFreshBundledState FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+ProviderRepositoryTest > stableManualRollbackRevalidatesExpiryWithoutReplacingCurrentHealthyPolicy FAILED
+    java.lang.ClassCastException at ProviderRepositoryTest.kt:21
+
+RepositoryCommonsMaintenanceTest > successfulMetadataPromotesExactCandidateWithoutCancellingItself FAILED
+    java.lang.AssertionError at RepositoryCommonsMaintenanceTest.kt:62
+
+RepositorySecurityTest > inProcessObservationIsMonotonicAndNegativeClockFailsClosed FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > repositoryDisableDominatesHealthyCandidateRollbackAndLkg FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > revokedPackageKeyCannotReenterThroughNewPackageOrRollbackGrant FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > eachPolicyWriteCancellationFailsClosedBeforeAndAfterRestart FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > corruptPolicySignatureCannotBeHiddenByRecomputedStateChecksum FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > floorNeverDecreasesAndRejectsNewUnsafePackagesWithoutAdvancingPackageHighWater FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > concurrentPolicyAndPackageMutationsSerializeAndLatestRevocationWins FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > stableRollbackRequiresExactSignedTargetAndRetainsBothVersionAnchors FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > policyCancellationBeforeTransactionLeavesOldStablePolicyUnchanged FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > policyVersionCannotReplayOrEquivocateAndPackageVersionIsIndependent FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > grantForSameVersionDifferentEnvelopeCannotAuthorizeRollback FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > stablePackageDisableCannotRollbackToOldEnabledOrBundledWithOrWithoutGrant FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > newerPolicyMayWithdrawRollbackGrantButNeverItsSecurityRestrictions FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > boundedUpdateRuntimeCanInstallExplicitPolicyKindFromMemoryOnly FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > persistedClockLowerBoundSurvivesRestartAndDoesNotPermitMutationBehindIt FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > expiredTargetRemainsDisabledEvenWithValidGrant FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > floorAndRevocationAlwaysOverrideValidTargetGrant FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > revokedVersionPersistsAndCannotDisappearFromHigherPolicy FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > eachPolicyWriteFaultFailsClosedBeforeAndAfterRestart FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > legacyStateFormatFailsClosedWithoutMigrationOrReset FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > rejectedCandidateLkgNeedsGrantAndRevocationOverridesGrant FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+RepositorySecurityTest > policyExpiryFailsClosedAndNewerValidPolicyCanRecoverWithoutReset FAILED
+    java.lang.ClassCastException at RepositorySecurityTest.kt:29
+
+189 tests completed, 35 failed
+
+> Task :commons-provider:test FAILED
+
+[Incubating] Problems report is available at: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':commons-provider:test'.
+> There were failing tests. See the report at: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/commons-provider/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 29s
+9 actionable tasks: 4 executed, 5 up-to-date

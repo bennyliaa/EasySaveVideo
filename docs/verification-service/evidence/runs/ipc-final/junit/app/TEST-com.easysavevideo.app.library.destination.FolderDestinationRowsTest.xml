@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:31:03.553Z" hostname="05582a867b99" time="0.007">
+  <properties/>
+  <testcase name="persistedFolderSnapshotDecodesIntoExistingSafExportKind" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.002"/>
+  <testcase name="invalidationIsDistinctFromRetirementAndAlwaysVisibleToAuthorityChecks" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.001"/>
+  <testcase name="retiredRowsRemainDataButNeverHideTheirStateOrExposeUrisInText" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.0"/>
+  <testcase name="selectionRevisionCannotBeNegative" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.002"/>
+  <testcase name="selectionRevisionRoundTripsAndLegacyCallersDefaultToZero" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.0"/>
+  <testcase name="invalidationRejectsUnknownStateAndRedactsRetainedIdentity" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.0"/>
+  <testcase name="malformedFolderRowIdentitiesUriAndRetirementFailClosed" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.001"/>
+  <testcase name="folderAndNonfolderSelectionsMustHaveMatchingFields" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.001"/>
+  <testcase name="folderRowsRoundTripOnlyReadWriteFlagsAndRetirementState" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.0"/>
+  <testcase name="folderSourceTupleRequiresPositiveExactLongVersionsOrAllNull" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

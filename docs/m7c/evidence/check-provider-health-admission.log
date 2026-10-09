@@ -1,0 +1,19 @@
+{
+  "kind": "STATIC_SOURCE_AND_MAIN_JAR_GUARDS_ONLY",
+  "baseline": "13ab2b09e1ba33b1e8312b52ba42f78939071c3d",
+  "scope": "M7-C SINGLE COMMONS LOCAL HEALTH AND MANAGEMENT",
+  "runtime_dependencies": "EXACT74_UNCHANGED_INPUTS",
+  "production_package_and_policy_roots": "EMPTY",
+  "source_endpoint": "ABSENT",
+  "main_jar_classes": 127,
+  "test_signing_or_version_only_promotion_in_main_jar": false,
+  "format": 3,
+  "legacy_state": "FAIL_CLOSED_NO_RESET",
+  "fixed_self_test": "SYNTHETIC_OFFLINE_NOT_SITE_COMPATIBILITY",
+  "health": "LOCAL_BOUNDED_PROBATION_ONLY",
+  "full_directory_rollback_resistance": "NOT_PROVIDED",
+  "trusted_external_clock": "NOT_PROVIDED",
+  "policy_root_rotation": "NOT_IMPLEMENTED",
+  "device_power_loss": "NOT_RUN",
+  "vault": "DISABLED_UNCHANGED"
+}

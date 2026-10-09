@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.library.share.ShareReadBudgetTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:33:00.713Z" hostname="05582a867b99" time="0.007">
+  <properties/>
+  <testcase name="readsNeverExceedBoundedChunk" classname="com.easysavevideo.app.library.share.ShareReadBudgetTest" time="0.0"/>
+  <testcase name="boundedOffsetReadsSupportSeeking" classname="com.easysavevideo.app.library.share.ShareReadBudgetTest" time="0.0"/>
+  <testcase name="tinyReadsHaveFiniteCallBudget" classname="com.easysavevideo.app.library.share.ShareReadBudgetTest" time="0.006"/>
+  <testcase name="atMostEightTimesArtifactCanBeDeliveredPerDescriptor" classname="com.easysavevideo.app.library.share.ShareReadBudgetTest" time="0.0"/>
+  <testcase name="invalidOffsetsAndBufferRangesRejected" classname="com.easysavevideo.app.library.share.ShareReadBudgetTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

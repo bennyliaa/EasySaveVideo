@@ -1,0 +1,74 @@
+{
+  "core-model": {
+    "tests": 0,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "core-domain": {
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "ui-theme": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "discovery": {
+    "tests": 226,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "commons-provider": {
+    "tests": 238,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "searxng-provider": {
+    "tests": 25,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "save": {
+    "tests": 86,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "recording": {
+    "tests": 127,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "library": {
+    "tests": 246,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "hls": {
+    "tests": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "app": {
+    "tests": 1121,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "total": {
+    "tests": 2162,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

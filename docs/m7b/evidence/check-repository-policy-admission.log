@@ -1,0 +1,16 @@
+{
+  "kind": "STATIC_SOURCE_AND_MAIN_JAR_GUARDS_ONLY",
+  "baseline": "bccfc3ba644b4e6b86a52bf4474f240dd1971cee",
+  "scope": "M7-B SINGLE COMMONS OFFLINE SIGNED REPOSITORY POLICY",
+  "runtime_dependencies": "EXACT74_UNCHANGED_INPUTS",
+  "production_package_and_policy_roots": "EMPTY",
+  "source_endpoint": "ABSENT",
+  "main_jar_classes": 107,
+  "test_signing_material_in_main_jar": false,
+  "package_policy_version_anchors": "SEPARATE",
+  "full_directory_rollback_resistance": "NOT_PROVIDED",
+  "trusted_external_clock": "NOT_PROVIDED",
+  "policy_root_rotation": "NOT_IMPLEMENTED",
+  "device_power_loss": "NOT_RUN",
+  "vault": "DISABLED_UNCHANGED"
+}

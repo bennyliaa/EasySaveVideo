@@ -1,0 +1,1253 @@
+[
+  {
+    "path": "libraries/common/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/common/README.md",
+    "sha256": "79ad2ba4114f74a7fb0aab572ca60bae00ff8f6d3fa59e0564545848e4d671b4",
+    "bytes": 274,
+    "git_blob_sha1": "462062c6b6168cfb6c17e343bdc1cd7a9562cf9c",
+    "expected_blob_sha1": "462062c6b6168cfb6c17e343bdc1cd7a9562cf9c",
+    "retrieved_at_utc": "2026-10-06T16:50:34.250279+00:00"
+  },
+  {
+    "path": "libraries/common/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/common/build.gradle.kts",
+    "sha256": "52d3256a6dd7496faba3eeedb44d4d9187b52e767c57f6a144f77ad7f658ed08",
+    "bytes": 2387,
+    "git_blob_sha1": "c283d72fb4ddcea0632ba9060e2d6b525c9bb33f",
+    "expected_blob_sha1": "c283d72fb4ddcea0632ba9060e2d6b525c9bb33f",
+    "retrieved_at_utc": "2026-10-06T16:50:34.292269+00:00"
+  },
+  {
+    "path": "libraries/common/proguard-rules.txt",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/common/proguard-rules.txt",
+    "sha256": "901a1894a88465f86a21a1861cad6dedccc59961ad8579e5f325d75da943a8b6",
+    "bytes": 844,
+    "git_blob_sha1": "2eb313c45d5e7d7e9dc44a36d559949f2df869e5",
+    "expected_blob_sha1": "2eb313c45d5e7d7e9dc44a36d559949f2df869e5",
+    "retrieved_at_utc": "2026-10-06T16:50:34.255154+00:00"
+  },
+  {
+    "path": "libraries/common/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/common/src/main/AndroidManifest.xml",
+    "sha256": "328f05777715d68fe7ee4d26d5753db4eca36571e9f7380cd68f2161d7f4583c",
+    "bytes": 844,
+    "git_blob_sha1": "d6113b2bb56d7817e6a0bfd027ccc0a3ffe63752",
+    "expected_blob_sha1": "d6113b2bb56d7817e6a0bfd027ccc0a3ffe63752",
+    "retrieved_at_utc": "2026-10-06T16:50:34.385837+00:00"
+  },
+  {
+    "path": "libraries/container/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/container/README.md",
+    "sha256": "0afe8759ee07020a56fdb3a1bdb0dd4fcc33cae87782eec926463e16e053672a",
+    "bytes": 642,
+    "git_blob_sha1": "bf15fd0caeed82ce8073d10fba233738309a257e",
+    "expected_blob_sha1": "bf15fd0caeed82ce8073d10fba233738309a257e",
+    "retrieved_at_utc": "2026-10-06T16:50:34.287391+00:00"
+  },
+  {
+    "path": "libraries/container/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/container/build.gradle.kts",
+    "sha256": "a3e6da0e3971d30bfc1325d0d206732763206464953e14a0d620ccb95982a8e5",
+    "bytes": 1206,
+    "git_blob_sha1": "ffec1036a5fe19121d3fbc1066ddc1897f2a335c",
+    "expected_blob_sha1": "ffec1036a5fe19121d3fbc1066ddc1897f2a335c",
+    "retrieved_at_utc": "2026-10-06T16:50:34.277439+00:00"
+  },
+  {
+    "path": "libraries/container/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/container/src/main/AndroidManifest.xml",
+    "sha256": "114a8f02efe7a0910f0ca91a909257312391057f388cdbb5d9fa8cdbbc6c9225",
+    "bytes": 705,
+    "git_blob_sha1": "7371045cbe8c08b5e26c72e05566f05edd462805",
+    "expected_blob_sha1": "7371045cbe8c08b5e26c72e05566f05edd462805",
+    "retrieved_at_utc": "2026-10-06T16:50:34.210385+00:00"
+  },
+  {
+    "path": "libraries/database/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/database/README.md",
+    "sha256": "663ac72a3d8fe76b26ebb81bf48dcf2b8287d57f3478d4e1ea18d910ede26139",
+    "bytes": 276,
+    "git_blob_sha1": "27ab3841a7bd2e5317307c47ca02fbcc7a98ce7a",
+    "expected_blob_sha1": "27ab3841a7bd2e5317307c47ca02fbcc7a98ce7a",
+    "retrieved_at_utc": "2026-10-06T16:50:34.382391+00:00"
+  },
+  {
+    "path": "libraries/database/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/database/build.gradle.kts",
+    "sha256": "67ee605a247bc8d2a6690d30bcac21791c88d83f0a9e96115362fe273882ac4c",
+    "bytes": 1036,
+    "git_blob_sha1": "dbc79cded27f8419ba3ca6c73273d41fc98b4436",
+    "expected_blob_sha1": "dbc79cded27f8419ba3ca6c73273d41fc98b4436",
+    "retrieved_at_utc": "2026-10-06T16:50:34.422264+00:00"
+  },
+  {
+    "path": "libraries/database/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/database/src/main/AndroidManifest.xml",
+    "sha256": "eaceab1ac6b5fd5ac2ca8a47f14b3c128288a2d1ff7ba8a88ee3bb865357db5f",
+    "bytes": 708,
+    "git_blob_sha1": "f93cf99b493e62e984089a13f2cad21e307947d2",
+    "expected_blob_sha1": "f93cf99b493e62e984089a13f2cad21e307947d2",
+    "retrieved_at_utc": "2026-10-06T16:50:34.304650+00:00"
+  },
+  {
+    "path": "libraries/datasource/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/datasource/README.md",
+    "sha256": "ce8d2ab1ab1c2ed7397a93d6f9e21145c53a1be858974d3d073189296d459b79",
+    "bytes": 336,
+    "git_blob_sha1": "c66311bb70aabfe782e1e82494d7676750eb233f",
+    "expected_blob_sha1": "c66311bb70aabfe782e1e82494d7676750eb233f",
+    "retrieved_at_utc": "2026-10-06T16:50:34.286112+00:00"
+  },
+  {
+    "path": "libraries/datasource/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/datasource/build.gradle.kts",
+    "sha256": "9af4416a45aa0a709821486a574f39ab7ae7f00986ab25e77d978b77c10e4dcc",
+    "bytes": 1605,
+    "git_blob_sha1": "1a466e0b17937b7963ca8ae4db4a5835eaa4d32a",
+    "expected_blob_sha1": "1a466e0b17937b7963ca8ae4db4a5835eaa4d32a",
+    "retrieved_at_utc": "2026-10-06T16:50:34.373781+00:00"
+  },
+  {
+    "path": "libraries/datasource/proguard-rules.txt",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/datasource/proguard-rules.txt",
+    "sha256": "c405b921de211994fb65d96b4bd6fc2aef3a4a202a8e3a70129fd10ed70224e1",
+    "bytes": 551,
+    "git_blob_sha1": "cc33aacf6e4af927690689876a0763aace16a150",
+    "expected_blob_sha1": "cc33aacf6e4af927690689876a0763aace16a150",
+    "retrieved_at_utc": "2026-10-06T16:50:40.797824+00:00"
+  },
+  {
+    "path": "libraries/datasource/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/datasource/src/main/AndroidManifest.xml",
+    "sha256": "eaceab1ac6b5fd5ac2ca8a47f14b3c128288a2d1ff7ba8a88ee3bb865357db5f",
+    "bytes": 708,
+    "git_blob_sha1": "f93cf99b493e62e984089a13f2cad21e307947d2",
+    "expected_blob_sha1": "f93cf99b493e62e984089a13f2cad21e307947d2",
+    "retrieved_at_utc": "2026-10-06T16:50:40.875736+00:00"
+  },
+  {
+    "path": "libraries/decoder/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/decoder/README.md",
+    "sha256": "ce14d32bd052c3ee6d07bc3f55d4ee40ddee38ddf39db1961819addeb94e0c37",
+    "bytes": 244,
+    "git_blob_sha1": "70af19ec8f6d3868337ab65484e483fb62bfe8c3",
+    "expected_blob_sha1": "70af19ec8f6d3868337ab65484e483fb62bfe8c3",
+    "retrieved_at_utc": "2026-10-06T16:50:40.902138+00:00"
+  },
+  {
+    "path": "libraries/decoder/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/decoder/build.gradle.kts",
+    "sha256": "8ea1f15653ef0506f44de5f0c5cc43d034f9ad99c419eabc2fe4c9a900089d2b",
+    "bytes": 990,
+    "git_blob_sha1": "697628df631e5301425fc6a13f8905f087f6b1df",
+    "expected_blob_sha1": "697628df631e5301425fc6a13f8905f087f6b1df",
+    "retrieved_at_utc": "2026-10-06T16:50:40.913388+00:00"
+  },
+  {
+    "path": "libraries/decoder/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/decoder/src/main/AndroidManifest.xml",
+    "sha256": "eaceab1ac6b5fd5ac2ca8a47f14b3c128288a2d1ff7ba8a88ee3bb865357db5f",
+    "bytes": 708,
+    "git_blob_sha1": "f93cf99b493e62e984089a13f2cad21e307947d2",
+    "expected_blob_sha1": "f93cf99b493e62e984089a13f2cad21e307947d2",
+    "retrieved_at_utc": "2026-10-06T16:50:40.876911+00:00"
+  },
+  {
+    "path": "libraries/effect/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/README.md",
+    "sha256": "efd9da45d1c80b917d6d09c3390c8c9d0695cabaea2dc9482872e115e16fed90",
+    "bytes": 759,
+    "git_blob_sha1": "ea56fd79fc40483481e4322c6753a5afb22abf10",
+    "expected_blob_sha1": "ea56fd79fc40483481e4322c6753a5afb22abf10",
+    "retrieved_at_utc": "2026-10-06T16:50:40.874729+00:00"
+  },
+  {
+    "path": "libraries/effect/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/build.gradle.kts",
+    "sha256": "cbe4ce7007410ef10c45669874a46b7d34d65a1b12c32022879c2b29aa0c982d",
+    "bytes": 1875,
+    "git_blob_sha1": "5700a2b0a74b5b207641d8060311705b41174cb7",
+    "expected_blob_sha1": "5700a2b0a74b5b207641d8060311705b41174cb7",
+    "retrieved_at_utc": "2026-10-06T16:50:40.898678+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/AndroidManifest.xml",
+    "sha256": "9b53614511e7b060ac88d144275d31d468ca15f9d5d0c583411969e6cf232436",
+    "bytes": 704,
+    "git_blob_sha1": "4e7fb8877837f6e916b2f6fd390b52443da48669",
+    "expected_blob_sha1": "4e7fb8877837f6e916b2f6fd390b52443da48669",
+    "retrieved_at_utc": "2026-10-06T16:50:40.875016+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_alpha_scale_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_alpha_scale_es2.glsl",
+    "sha256": "c736784c62cb96195f365ba58b8a78649ad4e24f80e3783aa5a7081f6d4af08d",
+    "bytes": 1000,
+    "git_blob_sha1": "154a3e5ff97d0085e62d76b23f199a31d3380a6c",
+    "expected_blob_sha1": "154a3e5ff97d0085e62d76b23f199a31d3380a6c",
+    "retrieved_at_utc": "2026-10-06T16:50:40.871695+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_copy_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_copy_es2.glsl",
+    "sha256": "a5d27f85a7c274cf8c1ad24b97239dc9568126f5380c33ceb83299861aa86f5e",
+    "bytes": 905,
+    "git_blob_sha1": "0d38f9eae8b3c2569ae2c00fcff1a7064012a117",
+    "expected_blob_sha1": "0d38f9eae8b3c2569ae2c00fcff1a7064012a117",
+    "retrieved_at_utc": "2026-10-06T16:50:40.831201+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_hdr_to_ultra_hdr_es3.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_hdr_to_ultra_hdr_es3.glsl",
+    "sha256": "53897d57522ec14fefa935521d336d20a3b8b1d2a479d7ea544a06fda1c45294",
+    "bytes": 4213,
+    "git_blob_sha1": "6559348247f4b50711dc570dbdc812370d3a02ee",
+    "expected_blob_sha1": "6559348247f4b50711dc570dbdc812370d3a02ee",
+    "retrieved_at_utc": "2026-10-06T16:50:40.831947+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_hsl_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_hsl_es2.glsl",
+    "sha256": "e4f033f15597b0c993346d144755f4b7c6026cd3e6a93e5103158583498927a3",
+    "bytes": 2691,
+    "git_blob_sha1": "019527e88dbfac32bb71c900247c66042771be0f",
+    "expected_blob_sha1": "019527e88dbfac32bb71c900247c66042771be0f",
+    "retrieved_at_utc": "2026-10-06T16:50:40.875445+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_lut_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_lut_es2.glsl",
+    "sha256": "288fe88cc44333b0d96fa5eedf19ef67aa89b1f98eb831511a2dad0410137065",
+    "bytes": 4769,
+    "git_blob_sha1": "f8100ce10e68eda2eff7181eb69ed542f389caf7",
+    "expected_blob_sha1": "f8100ce10e68eda2eff7181eb69ed542f389caf7",
+    "retrieved_at_utc": "2026-10-06T16:50:47.376312+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_oetf_es3.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_oetf_es3.glsl",
+    "sha256": "38f1c3a3911ca8901ccf60d8aa602747c6a4d716801479b11b6d88e89fd0a942",
+    "bytes": 4404,
+    "git_blob_sha1": "0f5c7567219a8b2d8d52602ebb2599e0810b8f23",
+    "expected_blob_sha1": "0f5c7567219a8b2d8d52602ebb2599e0810b8f23",
+    "retrieved_at_utc": "2026-10-06T16:50:47.523387+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_separable_convolution_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_separable_convolution_es2.glsl",
+    "sha256": "2ffac0c1315439316368e893462b8d36f7116f0866b3e884c8c9a494f2834b14",
+    "bytes": 4879,
+    "git_blob_sha1": "205db7384fc0bb0265a3f6244ccbf0ec58c464b4",
+    "expected_blob_sha1": "205db7384fc0bb0265a3f6244ccbf0ec58c464b4",
+    "retrieved_at_utc": "2026-10-06T16:50:47.553178+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_transformation_es2.glsl",
+    "sha256": "c2591b6de6d00d530440368ccd7cf98b34eb663543eb213ef5a682b34a4d2506",
+    "bytes": 1110,
+    "git_blob_sha1": "8759c5d0423b0339606dbd10191ad8df0be72f88",
+    "expected_blob_sha1": "8759c5d0423b0339606dbd10191ad8df0be72f88",
+    "retrieved_at_utc": "2026-10-06T16:50:47.556054+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_external_yuv_es3.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_transformation_external_yuv_es3.glsl",
+    "sha256": "761d1512a5b8d1f9c8364684d78f501f498702fcd1ff13e50a554c168e0bcc87",
+    "bytes": 13490,
+    "git_blob_sha1": "5a8dcba4e102af86c98e3b609eb8ca6e48543b8e",
+    "expected_blob_sha1": "5a8dcba4e102af86c98e3b609eb8ca6e48543b8e",
+    "retrieved_at_utc": "2026-10-06T16:50:47.632377+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_hdr_internal_es3.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_transformation_hdr_internal_es3.glsl",
+    "sha256": "2c190d499ddb7258122d1fc758832cd925168a04e07f543660effcedb8e2b1c7",
+    "bytes": 12848,
+    "git_blob_sha1": "f62291d4bd543cbfa113c4344b2ea306508755b5",
+    "expected_blob_sha1": "f62291d4bd543cbfa113c4344b2ea306508755b5",
+    "retrieved_at_utc": "2026-10-06T16:50:47.497031+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_external_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_external_es2.glsl",
+    "sha256": "df2824107316b1a90798c42f4fc88617410b1b105d2206796dd8e8b44e2b9167",
+    "bytes": 5305,
+    "git_blob_sha1": "01a6a4225796fc84ae99a1f38104ac420e9e1b89",
+    "expected_blob_sha1": "01a6a4225796fc84ae99a1f38104ac420e9e1b89",
+    "retrieved_at_utc": "2026-10-06T16:50:47.518274+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_internal_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_internal_es2.glsl",
+    "sha256": "ad7a740ca4c012b03d02cc6d07e002d6bd3035115b935a0a7090fea944329663",
+    "bytes": 6650,
+    "git_blob_sha1": "9439c493e17cb587c6de4d1a625bcf42368c1790",
+    "expected_blob_sha1": "9439c493e17cb587c6de4d1a625bcf42368c1790",
+    "retrieved_at_utc": "2026-10-06T16:50:47.479693+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_oetf_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_oetf_es2.glsl",
+    "sha256": "f3f0583d9d7c385514e8391812e3f7b8908d9923d47db4a0e833748149209dbc",
+    "bytes": 3316,
+    "git_blob_sha1": "f78bc37e7350cb5f4575167d34da887af2afd8f0",
+    "expected_blob_sha1": "f78bc37e7350cb5f4575167d34da887af2afd8f0",
+    "retrieved_at_utc": "2026-10-06T16:50:47.557543+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_ultra_hdr_es3.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/fragment_shader_transformation_ultra_hdr_es3.glsl",
+    "sha256": "ffcce12baa4b279bc2d5b722980ab73e6db326269fe6decf6517c5fd48da8ec7",
+    "bytes": 9642,
+    "git_blob_sha1": "6129761b2956830b2e27d0be56f5c48782c7956d",
+    "expected_blob_sha1": "6129761b2956830b2e27d0be56f5c48782c7956d",
+    "retrieved_at_utc": "2026-10-06T16:50:47.539625+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/insert_overlay_fragment_shader_methods.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/insert_overlay_fragment_shader_methods.glsl",
+    "sha256": "943e4effeebc2aca742572e6c215f642d6c340d1c9636a12679214b44524cbe9",
+    "bytes": 895,
+    "git_blob_sha1": "ebc1260c3ee7073958cd771381abb72dd4c1b0a4",
+    "expected_blob_sha1": "ebc1260c3ee7073958cd771381abb72dd4c1b0a4",
+    "retrieved_at_utc": "2026-10-06T16:50:47.604634+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/insert_ultra_hdr.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/insert_ultra_hdr.glsl",
+    "sha256": "e3925fff5d15ff61c656d8da0252705b3ab52d44d3b98ae400b7363cb49e4221",
+    "bytes": 2828,
+    "git_blob_sha1": "9455f8ed2444247c1ba9fa7f380880d48a58d1d1",
+    "expected_blob_sha1": "9455f8ed2444247c1ba9fa7f380880d48a58d1d1",
+    "retrieved_at_utc": "2026-10-06T16:50:47.535529+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/vertex_shader_thumbnail_strip_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/vertex_shader_thumbnail_strip_es2.glsl",
+    "sha256": "cf662d1ac24d1f86ba905e015fca8780ecf0e06c050df375aeadf1b35ed8c27b",
+    "bytes": 1197,
+    "git_blob_sha1": "a72b22a08b97a85b1db06cf7a39ac37ffed6db26",
+    "expected_blob_sha1": "a72b22a08b97a85b1db06cf7a39ac37ffed6db26",
+    "retrieved_at_utc": "2026-10-06T16:50:51.789312+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/vertex_shader_transformation_es2.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/vertex_shader_transformation_es2.glsl",
+    "sha256": "9f35e3e2b512ba0a465987ace1f97b0b7ce5f667872ed1c0bba0be3c59e2640f",
+    "bytes": 1164,
+    "git_blob_sha1": "79313ca59c122abdf82d550931f48cd4b6e8f553",
+    "expected_blob_sha1": "79313ca59c122abdf82d550931f48cd4b6e8f553",
+    "retrieved_at_utc": "2026-10-06T16:50:51.795010+00:00"
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/vertex_shader_transformation_es3.glsl",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/effect/src/main/res/raw/vertex_shader_transformation_es3.glsl",
+    "sha256": "a591055e2b3f3d49cff0ea397296bfe63b3f9a0ece05e3b5914b821f1b902e47",
+    "bytes": 1156,
+    "git_blob_sha1": "6615d2b522628d03d29a0a9ea28a8e4afd5c58e9",
+    "expected_blob_sha1": "6615d2b522628d03d29a0a9ea28a8e4afd5c58e9",
+    "retrieved_at_utc": "2026-10-06T16:50:51.703000+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/README.md",
+    "sha256": "550b1be097a270061f25affc9016a99da04b90f2533adbea21fd8260f685b77b",
+    "bytes": 809,
+    "git_blob_sha1": "1200ad5c0556fa5296531a8fad8e536cd03cd70b",
+    "expected_blob_sha1": "1200ad5c0556fa5296531a8fad8e536cd03cd70b",
+    "retrieved_at_utc": "2026-10-06T16:50:51.811438+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/build.gradle.kts",
+    "sha256": "698fb0fe6312ebb93498b6a8622f7d4fe26ac3d40c99d4525b5526cde05b2a6e",
+    "bytes": 1809,
+    "git_blob_sha1": "e3087c5b5c055922a60d5a45150a362c0a1f46d9",
+    "expected_blob_sha1": "e3087c5b5c055922a60d5a45150a362c0a1f46d9",
+    "retrieved_at_utc": "2026-10-06T16:50:51.838321+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/proguard-rules.txt",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/proguard-rules.txt",
+    "sha256": "17fe6ac6372054f3935aaca6b9cfa1e3daf130bf47f7228a996422225dba0067",
+    "bytes": 5691,
+    "git_blob_sha1": "8f7c9ad9ea64dba2e8a34255549bc6fe0e728fe6",
+    "expected_blob_sha1": "8f7c9ad9ea64dba2e8a34255549bc6fe0e728fe6",
+    "retrieved_at_utc": "2026-10-06T16:50:51.777970+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/AndroidManifest.xml",
+    "sha256": "391ce132268950f7390b43ebc0ba6292f112ebc05ce1544c9866db00133a8727",
+    "bytes": 909,
+    "git_blob_sha1": "4ff10fb850cfd813240c8e9d03b232b035f18ac9",
+    "expected_blob_sha1": "4ff10fb850cfd813240c8e9d03b232b035f18ac9",
+    "retrieved_at_utc": "2026-10-06T16:50:51.795974+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-af/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-af/strings.xml",
+    "sha256": "5549bb1d728491e9703104cb4543bed4d8892299b3222856222a3cd3725a283d",
+    "bytes": 750,
+    "git_blob_sha1": "b935a4cf89b96808199a0659c4dc5d0738b0b8d8",
+    "expected_blob_sha1": "b935a4cf89b96808199a0659c4dc5d0738b0b8d8",
+    "retrieved_at_utc": "2026-10-06T16:50:51.777467+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-am/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-am/strings.xml",
+    "sha256": "7106a03fd155d586b06ed199cebcbde673d5e58ae9def01aa30cd3a0f5f54a0a",
+    "bytes": 905,
+    "git_blob_sha1": "93a8ae066bcdf16b0eb8ea499c2c1449a3f74f85",
+    "expected_blob_sha1": "93a8ae066bcdf16b0eb8ea499c2c1449a3f74f85",
+    "retrieved_at_utc": "2026-10-06T16:50:51.761833+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ar/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ar/strings.xml",
+    "sha256": "bf957c31d10c0fb50df3b21c7a8074c94562fa6032df3189d14d2860af2faeb6",
+    "bytes": 963,
+    "git_blob_sha1": "14db1306223326ba50a1b30912a7455afadec915",
+    "expected_blob_sha1": "14db1306223326ba50a1b30912a7455afadec915",
+    "retrieved_at_utc": "2026-10-06T16:50:51.778224+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-as/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-as/strings.xml",
+    "sha256": "41919ea5f7da440d76eadae68d87a7681445f46a9ffc1b2c46d3e26ac057ef93",
+    "bytes": 1106,
+    "git_blob_sha1": "5fecb3948c37480491653089ddfea8e127de5987",
+    "expected_blob_sha1": "5fecb3948c37480491653089ddfea8e127de5987",
+    "retrieved_at_utc": "2026-10-06T16:50:51.794795+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-az/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-az/strings.xml",
+    "sha256": "e8f381970f7e1baca54e37e212b93c113427b141ed63be14ce0b51aceb848331",
+    "bytes": 781,
+    "git_blob_sha1": "28e9dcb0103bdf253be49d9a0714aa48f57367c9",
+    "expected_blob_sha1": "28e9dcb0103bdf253be49d9a0714aa48f57367c9",
+    "retrieved_at_utc": "2026-10-06T16:50:51.769365+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-b+sr+Latn/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-b+sr+Latn/strings.xml",
+    "sha256": "97b8f9a67d54d10c9f5cf9e030604f62867d06e3425db75277dfd70f9547264a",
+    "bytes": 774,
+    "git_blob_sha1": "c8e8eeb7868d2e4fa5a5f94943bf183fdfe90e02",
+    "expected_blob_sha1": "c8e8eeb7868d2e4fa5a5f94943bf183fdfe90e02",
+    "retrieved_at_utc": "2026-10-06T16:50:56.664484+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-be/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-be/strings.xml",
+    "sha256": "79c7e898809c49d7cbdd282a2026c38135c061531c221d34a5e44950340218a8",
+    "bytes": 935,
+    "git_blob_sha1": "1539008d72fab273d64e3421539339b713e91ceb",
+    "expected_blob_sha1": "1539008d72fab273d64e3421539339b713e91ceb",
+    "retrieved_at_utc": "2026-10-06T16:50:56.673960+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-bg/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-bg/strings.xml",
+    "sha256": "fe3579aa9ff48cd0ebed2ce5806309604d580339fd1e3fef65e4a84e2174aa10",
+    "bytes": 953,
+    "git_blob_sha1": "af37d820785544bacabad30537c973d86ff47bc6",
+    "expected_blob_sha1": "af37d820785544bacabad30537c973d86ff47bc6",
+    "retrieved_at_utc": "2026-10-06T16:50:56.672293+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-bn/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-bn/strings.xml",
+    "sha256": "c9376dbce7b8dbbfe5401c99bcf810480c75521a9b692c282d539cebc57af02d",
+    "bytes": 1313,
+    "git_blob_sha1": "be8ed9cdaab12dc44667433e688c9666c2971cf0",
+    "expected_blob_sha1": "be8ed9cdaab12dc44667433e688c9666c2971cf0",
+    "retrieved_at_utc": "2026-10-06T16:50:56.592602+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-bs/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-bs/strings.xml",
+    "sha256": "82c6b15018a6a9d43487bcda7e237c70c8bd3c963a089a76d0d6a9503054970c",
+    "bytes": 782,
+    "git_blob_sha1": "5fe387cefb669dc8a6adc690f46a99f5c0867497",
+    "expected_blob_sha1": "5fe387cefb669dc8a6adc690f46a99f5c0867497",
+    "retrieved_at_utc": "2026-10-06T16:50:56.659036+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ca/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ca/strings.xml",
+    "sha256": "a17560cfba479d4bfeaeab36c4e67a14370e256c694b0e102fcf1bb71ac7e327",
+    "bytes": 804,
+    "git_blob_sha1": "ecb381f534993966570d30dc3ba11f0722e8192c",
+    "expected_blob_sha1": "ecb381f534993966570d30dc3ba11f0722e8192c",
+    "retrieved_at_utc": "2026-10-06T16:50:56.591609+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-cs/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-cs/strings.xml",
+    "sha256": "6ad8ec6b7263851ef1865362dd001c9d64574fc433d6b162864dc0a3d577620b",
+    "bytes": 785,
+    "git_blob_sha1": "54a112a9ee9d019d1409b0f8e895b8adec2b1d95",
+    "expected_blob_sha1": "54a112a9ee9d019d1409b0f8e895b8adec2b1d95",
+    "retrieved_at_utc": "2026-10-06T16:50:56.597983+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-da/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-da/strings.xml",
+    "sha256": "37171fd5a3afa6be6a6fb35da9327fcb3bc8a8d19a5daa5a64090bcbf80ce895",
+    "bytes": 781,
+    "git_blob_sha1": "1b15b1f605bab7ee7c355002ab8648d55e3754fe",
+    "expected_blob_sha1": "1b15b1f605bab7ee7c355002ab8648d55e3754fe",
+    "retrieved_at_utc": "2026-10-06T16:50:56.617908+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-de/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-de/strings.xml",
+    "sha256": "7e04fed420b714a8528e77143292764a4f0f8fd95ff444df1f7b51322c9cdd63",
+    "bytes": 793,
+    "git_blob_sha1": "848bfb2d4d6989c53366e684f818b41f7ecc97d5",
+    "expected_blob_sha1": "848bfb2d4d6989c53366e684f818b41f7ecc97d5",
+    "retrieved_at_utc": "2026-10-06T16:50:56.612865+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-el/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-el/strings.xml",
+    "sha256": "0b71c11f60407ccd005ba9540f7b1817954f1a5f5f02a7a4c216ea63802e5422",
+    "bytes": 895,
+    "git_blob_sha1": "8ef5c20f72d6597d10d85cd161932e84de8a8a8b",
+    "expected_blob_sha1": "8ef5c20f72d6597d10d85cd161932e84de8a8a8b",
+    "retrieved_at_utc": "2026-10-06T16:50:56.648978+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-en-rAU/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-en-rAU/strings.xml",
+    "sha256": "496803fa3ae534ea9bf8f7ac36fa5c68e7a8660e30914c3619bb76b4c21f2c17",
+    "bytes": 745,
+    "git_blob_sha1": "639a151801e2a793409935598b894216410410d7",
+    "expected_blob_sha1": "639a151801e2a793409935598b894216410410d7",
+    "retrieved_at_utc": "2026-10-06T16:50:56.622935+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-en-rGB/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-en-rGB/strings.xml",
+    "sha256": "496803fa3ae534ea9bf8f7ac36fa5c68e7a8660e30914c3619bb76b4c21f2c17",
+    "bytes": 745,
+    "git_blob_sha1": "639a151801e2a793409935598b894216410410d7",
+    "expected_blob_sha1": "639a151801e2a793409935598b894216410410d7",
+    "retrieved_at_utc": "2026-10-06T16:50:56.659523+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-en-rIN/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-en-rIN/strings.xml",
+    "sha256": "496803fa3ae534ea9bf8f7ac36fa5c68e7a8660e30914c3619bb76b4c21f2c17",
+    "bytes": 745,
+    "git_blob_sha1": "639a151801e2a793409935598b894216410410d7",
+    "expected_blob_sha1": "639a151801e2a793409935598b894216410410d7",
+    "retrieved_at_utc": "2026-10-06T16:51:02.720748+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-es-rUS/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-es-rUS/strings.xml",
+    "sha256": "cc34d162cc53c135e3a4bd8fba4f734e7f312c004a13a33026a1442a2704db24",
+    "bytes": 768,
+    "git_blob_sha1": "545c55ac86d5f85a109acbc2df6406340f979d4a",
+    "expected_blob_sha1": "545c55ac86d5f85a109acbc2df6406340f979d4a",
+    "retrieved_at_utc": "2026-10-06T16:51:02.750400+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-es/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-es/strings.xml",
+    "sha256": "35506781881503ddcdef9d5f653df4760eec61d39dcb2ce19b16c29c64c33868",
+    "bytes": 769,
+    "git_blob_sha1": "a7a8edeaba12b0dda6c383c71bff749d6280c018",
+    "expected_blob_sha1": "a7a8edeaba12b0dda6c383c71bff749d6280c018",
+    "retrieved_at_utc": "2026-10-06T16:51:02.830622+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-et/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-et/strings.xml",
+    "sha256": "33f9b22fa0b7e1d42069f47d9f6280e4a722b358a01e7be5a338acd9fa3df830",
+    "bytes": 796,
+    "git_blob_sha1": "5ac51b75cbf865149a3d06fd0329250a45707e11",
+    "expected_blob_sha1": "5ac51b75cbf865149a3d06fd0329250a45707e11",
+    "retrieved_at_utc": "2026-10-06T16:51:02.751247+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-eu/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-eu/strings.xml",
+    "sha256": "e0ec0f4bc86d8449f7a095453223137b55b2c38af6f01ec7b8ee6eaa8eba2de3",
+    "bytes": 796,
+    "git_blob_sha1": "d476d29b7bcffd37d929a4f0e89beca5154c8dfd",
+    "expected_blob_sha1": "d476d29b7bcffd37d929a4f0e89beca5154c8dfd",
+    "retrieved_at_utc": "2026-10-06T16:51:02.768547+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-fa/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-fa/strings.xml",
+    "sha256": "70bb8ba1781d7e3f6b71707cecefa527c5c4a051453c74d08ad83a152ea770fd",
+    "bytes": 887,
+    "git_blob_sha1": "271919fbc1bd03ef5e1a220209ec88059eda6972",
+    "expected_blob_sha1": "271919fbc1bd03ef5e1a220209ec88059eda6972",
+    "retrieved_at_utc": "2026-10-06T16:51:02.735496+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-fi/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-fi/strings.xml",
+    "sha256": "7ad89c9e230534339f77095e6a867ba40d161dc48bb40d545a0990c86a8eda54",
+    "bytes": 758,
+    "git_blob_sha1": "15f1a38628c30839a80fe3b904d64fcf6f3ec6d5",
+    "expected_blob_sha1": "15f1a38628c30839a80fe3b904d64fcf6f3ec6d5",
+    "retrieved_at_utc": "2026-10-06T16:51:02.731455+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-fr-rCA/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-fr-rCA/strings.xml",
+    "sha256": "35e7b1b15d1782b75bfa7d5f9ad2d36c49b8c789a916a265ea1166a00c55e79d",
+    "bytes": 853,
+    "git_blob_sha1": "e177a5d75347179b0b7c77a02da8d74fabaf5197",
+    "expected_blob_sha1": "e177a5d75347179b0b7c77a02da8d74fabaf5197",
+    "retrieved_at_utc": "2026-10-06T16:51:02.738197+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-fr/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-fr/strings.xml",
+    "sha256": "42cf2825981deed052a3c74ff82ab86be69a8a56a0e02c8e52b681453c750e49",
+    "bytes": 836,
+    "git_blob_sha1": "274278bf4adf46673fcc77ca729b104abdb50696",
+    "expected_blob_sha1": "274278bf4adf46673fcc77ca729b104abdb50696",
+    "retrieved_at_utc": "2026-10-06T16:51:02.715462+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-gl/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-gl/strings.xml",
+    "sha256": "70f46815534ecfbc2827821f18d80a8b3ca53b10450f80fde3de65f8bd8da032",
+    "bytes": 799,
+    "git_blob_sha1": "46f80721b571ce7bf14b46a882eb4dfaa9d0acb1",
+    "expected_blob_sha1": "46f80721b571ce7bf14b46a882eb4dfaa9d0acb1",
+    "retrieved_at_utc": "2026-10-06T16:51:02.751644+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-gu/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-gu/strings.xml",
+    "sha256": "63f1e3546f36bb061fd87ebf524c78c9fdce4c16bfae2c691ea780e767842187",
+    "bytes": 1140,
+    "git_blob_sha1": "5d2b5874e50d8d3f94a7b82ca376e69b664236de",
+    "expected_blob_sha1": "5d2b5874e50d8d3f94a7b82ca376e69b664236de",
+    "retrieved_at_utc": "2026-10-06T16:51:02.803322+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-hi/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-hi/strings.xml",
+    "sha256": "9f9eeb403c8be37f805c2dae836eddb8e0d8f82c73f9f2a24c450c8c9f8aa269",
+    "bytes": 1314,
+    "git_blob_sha1": "17a17adcdd25ca3fb1228e6dcf0a77584b002830",
+    "expected_blob_sha1": "17a17adcdd25ca3fb1228e6dcf0a77584b002830",
+    "retrieved_at_utc": "2026-10-06T16:51:02.769197+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-hr/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-hr/strings.xml",
+    "sha256": "eaf2520860c492d73cf2bfbcc336955d362c38539eb514404669a08a94d71638",
+    "bytes": 768,
+    "git_blob_sha1": "05d7cfa4481a1d7cae0454d6f2fb791cf18fc245",
+    "expected_blob_sha1": "05d7cfa4481a1d7cae0454d6f2fb791cf18fc245",
+    "retrieved_at_utc": "2026-10-06T16:51:10.386234+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-hu/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-hu/strings.xml",
+    "sha256": "72aca042d54eb15699b06847048dcb3b42ccc3057946423aaf6b15cb1f92a28f",
+    "bytes": 825,
+    "git_blob_sha1": "d19171d9750540651370a515d0e48308d6c002de",
+    "expected_blob_sha1": "d19171d9750540651370a515d0e48308d6c002de",
+    "retrieved_at_utc": "2026-10-06T16:51:10.625482+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-hy/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-hy/strings.xml",
+    "sha256": "e52071888fa100e2a024347f143f5e597314e2837ce9746e78506bafab489308",
+    "bytes": 896,
+    "git_blob_sha1": "4fc4e86bcb426e2ade32ff8927eca1c545eed4d0",
+    "expected_blob_sha1": "4fc4e86bcb426e2ade32ff8927eca1c545eed4d0",
+    "retrieved_at_utc": "2026-10-06T16:51:10.651818+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-in/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-in/strings.xml",
+    "sha256": "fb5c167c4aedcce17aca16741d6862dc1c392e43c7f3daed6465c33628aa2da3",
+    "bytes": 759,
+    "git_blob_sha1": "e20aac9971fd7d382a6ed3602993aa8f3ea0606d",
+    "expected_blob_sha1": "e20aac9971fd7d382a6ed3602993aa8f3ea0606d",
+    "retrieved_at_utc": "2026-10-06T16:51:10.556494+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-is/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-is/strings.xml",
+    "sha256": "6702c2d16058831cb1bf39c9d1cdf705fa1162253f931f1590e8740b087a9bd9",
+    "bytes": 749,
+    "git_blob_sha1": "6c62e12ee425b24eeedf3d7d2d7f55707ede1edd",
+    "expected_blob_sha1": "6c62e12ee425b24eeedf3d7d2d7f55707ede1edd",
+    "retrieved_at_utc": "2026-10-06T16:51:10.525337+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-it/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-it/strings.xml",
+    "sha256": "ed2b6e5eba880f93b4b5a7979793893a522750c95e054d1d4abdba5e8996b65e",
+    "bytes": 764,
+    "git_blob_sha1": "03a7a64d1af85fbba4f7ac7d05453ae492d6e390",
+    "expected_blob_sha1": "03a7a64d1af85fbba4f7ac7d05453ae492d6e390",
+    "retrieved_at_utc": "2026-10-06T16:51:10.599293+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-iw/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-iw/strings.xml",
+    "sha256": "12240beaef9b95ba9d8b26748a9754c6087e8efd77c02e145dc4e0840ded2312",
+    "bytes": 814,
+    "git_blob_sha1": "41010d65f8eca0409440e03f2c6759cc91e0bc19",
+    "expected_blob_sha1": "41010d65f8eca0409440e03f2c6759cc91e0bc19",
+    "retrieved_at_utc": "2026-10-06T16:51:10.561446+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ja/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ja/strings.xml",
+    "sha256": "4bf45335c9d0610d116aaad0676a2f2f721c7dba8852f698b0457b834486ef44",
+    "bytes": 907,
+    "git_blob_sha1": "f32b0bfc75a003d1094f01d54b0da5fbdc40aa65",
+    "expected_blob_sha1": "f32b0bfc75a003d1094f01d54b0da5fbdc40aa65",
+    "retrieved_at_utc": "2026-10-06T16:51:10.523626+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ka/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ka/strings.xml",
+    "sha256": "e41749298f5f269f455aedbcc303fa09122c507d587c1cc416aac63c9caf1f89",
+    "bytes": 1184,
+    "git_blob_sha1": "2460d0c4b7c8f9cb67a91cb1f582fb67928033cb",
+    "expected_blob_sha1": "2460d0c4b7c8f9cb67a91cb1f582fb67928033cb",
+    "retrieved_at_utc": "2026-10-06T16:51:10.612198+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-kk/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-kk/strings.xml",
+    "sha256": "c9664a8b9564b75bee84cb0576aec29de08361b9680ea8ed5103644b973cc676",
+    "bytes": 989,
+    "git_blob_sha1": "4347108843dcc080b5cab381c6d3589cbbb1f045",
+    "expected_blob_sha1": "4347108843dcc080b5cab381c6d3589cbbb1f045",
+    "retrieved_at_utc": "2026-10-06T16:51:10.616646+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-km/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-km/strings.xml",
+    "sha256": "7d02679a185aadcea8572f8a9257566c20e4cf845a67cd39e08152fc69f0cb47",
+    "bytes": 1107,
+    "git_blob_sha1": "2089642a4a3bf97a286869c89587eb8c588afae8",
+    "expected_blob_sha1": "2089642a4a3bf97a286869c89587eb8c588afae8",
+    "retrieved_at_utc": "2026-10-06T16:51:10.833767+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-kn/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-kn/strings.xml",
+    "sha256": "42ac81411da7bd77d2d43791878b8f5a61d15a806a6ec01a1ac67117ec959d14",
+    "bytes": 1263,
+    "git_blob_sha1": "7747d1256b370d9a3f36d1bf912ba300e193c4f3",
+    "expected_blob_sha1": "7747d1256b370d9a3f36d1bf912ba300e193c4f3",
+    "retrieved_at_utc": "2026-10-06T16:51:10.579339+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ko/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ko/strings.xml",
+    "sha256": "1a11526f1d8802bcbda1b223a614ffd95dcbc93c14bf9be1ec730d02728ec238",
+    "bytes": 829,
+    "git_blob_sha1": "a87dce92cc1af569870670a0d20462e3d9d4513a",
+    "expected_blob_sha1": "a87dce92cc1af569870670a0d20462e3d9d4513a",
+    "retrieved_at_utc": "2026-10-06T16:51:14.649946+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ky/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ky/strings.xml",
+    "sha256": "68b9673f4e270c3f5098afb084330689d61988d5431f505cc981dc47313d6d73",
+    "bytes": 957,
+    "git_blob_sha1": "6ce6949e2b29f69991f681527f464f87afd0680d",
+    "expected_blob_sha1": "6ce6949e2b29f69991f681527f464f87afd0680d",
+    "retrieved_at_utc": "2026-10-06T16:51:14.775219+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-lo/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-lo/strings.xml",
+    "sha256": "a6863a9d2dea3a1ddba6b56adea92ad5435645f20ccf59ce33d363a91c3c1d00",
+    "bytes": 1065,
+    "git_blob_sha1": "1ff16ef04f19f94b2bc0ff2ee492700918c3d0a7",
+    "expected_blob_sha1": "1ff16ef04f19f94b2bc0ff2ee492700918c3d0a7",
+    "retrieved_at_utc": "2026-10-06T16:51:14.859294+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-lt/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-lt/strings.xml",
+    "sha256": "fc74370fa93deb7c9f151096eecc23fac21c28f582286a5d663af9693a3d91e1",
+    "bytes": 810,
+    "git_blob_sha1": "c81cdd10928a158cb2d926054dbf0f986fdd719c",
+    "expected_blob_sha1": "c81cdd10928a158cb2d926054dbf0f986fdd719c",
+    "retrieved_at_utc": "2026-10-06T16:51:14.726777+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-lv/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-lv/strings.xml",
+    "sha256": "57ae30567a3406d43a724db8bfbcad693ac35686fc977067e07f449d6af8cb8b",
+    "bytes": 832,
+    "git_blob_sha1": "0213b5e0621e052c7ac0e0ce68d2e98377f3771f",
+    "expected_blob_sha1": "0213b5e0621e052c7ac0e0ce68d2e98377f3771f",
+    "retrieved_at_utc": "2026-10-06T16:51:14.760277+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-mk/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-mk/strings.xml",
+    "sha256": "c91fc8c87df853ac1dc88b99a0340eaad754aeb9758ed23be34f306788a2103b",
+    "bytes": 913,
+    "git_blob_sha1": "6e1c3aecfcd5bf1a5f503caba3c42b201ed3fc77",
+    "expected_blob_sha1": "6e1c3aecfcd5bf1a5f503caba3c42b201ed3fc77",
+    "retrieved_at_utc": "2026-10-06T16:51:14.718299+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ml/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ml/strings.xml",
+    "sha256": "ba4aeaf423a66b8dc313359fd6ca62ec0253d6e87761b638c64c9e5044a0ad6d",
+    "bytes": 1214,
+    "git_blob_sha1": "2e0653da43ec73247ac95646fb2d544c7827d303",
+    "expected_blob_sha1": "2e0653da43ec73247ac95646fb2d544c7827d303",
+    "retrieved_at_utc": "2026-10-06T16:51:14.709386+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-mn/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-mn/strings.xml",
+    "sha256": "f428ceb6dbf437a628561bc1cf371beea9386e03cbfbc3fe8bc7831779eb4346",
+    "bytes": 902,
+    "git_blob_sha1": "95b30da3ce3c38c663d3191cbd308b71400c846f",
+    "expected_blob_sha1": "95b30da3ce3c38c663d3191cbd308b71400c846f",
+    "retrieved_at_utc": "2026-10-06T16:51:14.776175+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-mr/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-mr/strings.xml",
+    "sha256": "0e40dedfdd26a1cdd0c89615ef18826ae9cac10dd7131e7533cf58de3620656f",
+    "bytes": 1094,
+    "git_blob_sha1": "0c37597ddae56fdab4cf938eb05f19032549d34c",
+    "expected_blob_sha1": "0c37597ddae56fdab4cf938eb05f19032549d34c",
+    "retrieved_at_utc": "2026-10-06T16:51:14.742166+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ms/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ms/strings.xml",
+    "sha256": "12c55d3ff698565908cdb6b2dc4b681e5be44a6a77d97b0b0faeb68cd080147b",
+    "bytes": 757,
+    "git_blob_sha1": "3033c3c93f89468a06580c35c37123cc7c308a46",
+    "expected_blob_sha1": "3033c3c93f89468a06580c35c37123cc7c308a46",
+    "retrieved_at_utc": "2026-10-06T16:51:14.765509+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-my/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-my/strings.xml",
+    "sha256": "e40f3c3469e239aba455f259086d4329b0a4c65667e4ca593511c9245b5038e8",
+    "bytes": 1240,
+    "git_blob_sha1": "88294129a9ca52042ee1e00b6eb4e172ef09e52d",
+    "expected_blob_sha1": "88294129a9ca52042ee1e00b6eb4e172ef09e52d",
+    "retrieved_at_utc": "2026-10-06T16:51:14.759319+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-nb/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-nb/strings.xml",
+    "sha256": "55351a36637688a1f1066b970206c3202bc7dbd5f92049597761e888d8c2a453",
+    "bytes": 795,
+    "git_blob_sha1": "026d9be10d72c3ef7babc994c5d4ff8f07ea29c4",
+    "expected_blob_sha1": "026d9be10d72c3ef7babc994c5d4ff8f07ea29c4",
+    "retrieved_at_utc": "2026-10-06T16:51:14.736460+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ne/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ne/strings.xml",
+    "sha256": "6d5221de91eeb56d945dd9667d3e737134ebd34199f6f6cf5aebc916f606669e",
+    "bytes": 1143,
+    "git_blob_sha1": "a1a014bf7bb920197747219de6c8c9404b3879a6",
+    "expected_blob_sha1": "a1a014bf7bb920197747219de6c8c9404b3879a6",
+    "retrieved_at_utc": "2026-10-06T16:51:19.704369+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-nl/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-nl/strings.xml",
+    "sha256": "8c29c90ed156d214c69e6434a2eb2907cd62f2ad91a4fa0970c5f483f5711073",
+    "bytes": 754,
+    "git_blob_sha1": "c8eeb8553dd705a78d07bf66c89c2ef66877c202",
+    "expected_blob_sha1": "c8eeb8553dd705a78d07bf66c89c2ef66877c202",
+    "retrieved_at_utc": "2026-10-06T16:51:19.709981+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-or/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-or/strings.xml",
+    "sha256": "1076230b8bb0f3de6c4a77eb7d6e25d73908304e29899c0c55cfe477e8ae88f2",
+    "bytes": 1182,
+    "git_blob_sha1": "df98316a6e6d8732f6365a7d4f360271c26b69e3",
+    "expected_blob_sha1": "df98316a6e6d8732f6365a7d4f360271c26b69e3",
+    "retrieved_at_utc": "2026-10-06T16:51:19.779315+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-pa/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-pa/strings.xml",
+    "sha256": "b2ed95a5a9703a72b93e25238e5a77a4670d3609eaf451f054422ef3b55d0c95",
+    "bytes": 1140,
+    "git_blob_sha1": "ee5031015df83b3b937aa50f1bc080c9027a5b71",
+    "expected_blob_sha1": "ee5031015df83b3b937aa50f1bc080c9027a5b71",
+    "retrieved_at_utc": "2026-10-06T16:51:19.608444+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-pl/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-pl/strings.xml",
+    "sha256": "0609b72c6421df255a34830d7f2c17c403557f1fa474528dc302ca454a6d1a3a",
+    "bytes": 767,
+    "git_blob_sha1": "40633af74cdab255ecc6b93bbb497ac8fa8dd318",
+    "expected_blob_sha1": "40633af74cdab255ecc6b93bbb497ac8fa8dd318",
+    "retrieved_at_utc": "2026-10-06T16:51:19.725179+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-pt-rPT/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-pt-rPT/strings.xml",
+    "sha256": "0bdfee186e1d06ea57ac00c324d0cb19567c08a23be4fe1ca718ae88fec88398",
+    "bytes": 814,
+    "git_blob_sha1": "1988ac95eb1ff5a0c6010d4f83b3f3c880db5e40",
+    "expected_blob_sha1": "1988ac95eb1ff5a0c6010d4f83b3f3c880db5e40",
+    "retrieved_at_utc": "2026-10-06T16:51:19.701742+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-pt/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-pt/strings.xml",
+    "sha256": "35de486756efaea9660f99f00dfc5112d90e14bf8692abc6ca4b3d6e5352ae6d",
+    "bytes": 786,
+    "git_blob_sha1": "59889e55d585f341ff68dce34f8bd0bdc4082349",
+    "expected_blob_sha1": "59889e55d585f341ff68dce34f8bd0bdc4082349",
+    "retrieved_at_utc": "2026-10-06T16:51:19.769954+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ro/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ro/strings.xml",
+    "sha256": "28d1a5e019f78439af3a4a10415ab48cb774bf74d651672750696d2456131dfe",
+    "bytes": 817,
+    "git_blob_sha1": "56355afa1f6d27f33a7a6cec110e9c39b9bee270",
+    "expected_blob_sha1": "56355afa1f6d27f33a7a6cec110e9c39b9bee270",
+    "retrieved_at_utc": "2026-10-06T16:51:19.679657+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ru/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ru/strings.xml",
+    "sha256": "0177de2947421efc163e871ed18840c9d4307d584e5e43e0608c6480b09e60c0",
+    "bytes": 922,
+    "git_blob_sha1": "c2b7f7f3603a1346f99a939edc7ee5b8f1dc3da7",
+    "expected_blob_sha1": "c2b7f7f3603a1346f99a939edc7ee5b8f1dc3da7",
+    "retrieved_at_utc": "2026-10-06T16:51:19.697131+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-si/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-si/strings.xml",
+    "sha256": "bbefb3213e1a686a79b9d3ed92f5f451f8ee98e7e7b11b81a5c6d8704a11ebb1",
+    "bytes": 1027,
+    "git_blob_sha1": "2b9b3289fd24163870d5911595e8b0f9d34cf159",
+    "expected_blob_sha1": "2b9b3289fd24163870d5911595e8b0f9d34cf159",
+    "retrieved_at_utc": "2026-10-06T16:51:19.687223+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sk/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-sk/strings.xml",
+    "sha256": "69acded8e6a161def671e4400dfe05cfd20262e026f72f04af95c6d7030ea385",
+    "bytes": 789,
+    "git_blob_sha1": "4581322c61a25dccee76830cc09c200eb6c45764",
+    "expected_blob_sha1": "4581322c61a25dccee76830cc09c200eb6c45764",
+    "retrieved_at_utc": "2026-10-06T16:51:19.716496+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sl/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-sl/strings.xml",
+    "sha256": "626e9743b232eddd9078458450430f03b98cfc35056236048071d21e740914ff",
+    "bytes": 780,
+    "git_blob_sha1": "460643ebb8e751c39d8a19280fafe56f48d2e0de",
+    "expected_blob_sha1": "460643ebb8e751c39d8a19280fafe56f48d2e0de",
+    "retrieved_at_utc": "2026-10-06T16:51:19.813211+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sq/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-sq/strings.xml",
+    "sha256": "a5c84529bc80c4d6302781963ab7303c169eecff19d5072285f50cd22f982646",
+    "bytes": 777,
+    "git_blob_sha1": "b3e916ef4c52a5a18006fba8522d3c3717b5d7d5",
+    "expected_blob_sha1": "b3e916ef4c52a5a18006fba8522d3c3717b5d7d5",
+    "retrieved_at_utc": "2026-10-06T16:51:24.165006+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sr/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-sr/strings.xml",
+    "sha256": "f5476f535ee84feaf711a6ad86392733d32eded199fc8d559b7aab72cf211361",
+    "bytes": 911,
+    "git_blob_sha1": "f537b8e38f091e77d4fd98f2521d4af63c8d0124",
+    "expected_blob_sha1": "f537b8e38f091e77d4fd98f2521d4af63c8d0124",
+    "retrieved_at_utc": "2026-10-06T16:51:24.357614+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sv/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-sv/strings.xml",
+    "sha256": "2ad17422a4fac87b0357d9b1c6728a2b19099517a0817fd6a7d8d33cad66acbd",
+    "bytes": 787,
+    "git_blob_sha1": "a645a70f8c3ccbddd123e67febbdc71729467c6a",
+    "expected_blob_sha1": "a645a70f8c3ccbddd123e67febbdc71729467c6a",
+    "retrieved_at_utc": "2026-10-06T16:51:24.195986+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sw/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-sw/strings.xml",
+    "sha256": "2af69bbcd882706cd75979e8d97d2df5e297572fead669b7ecabacbf411b0869",
+    "bytes": 747,
+    "git_blob_sha1": "e6d112427fd8da8794385b09a5591ea893a3be70",
+    "expected_blob_sha1": "e6d112427fd8da8794385b09a5591ea893a3be70",
+    "retrieved_at_utc": "2026-10-06T16:51:24.455920+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ta/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ta/strings.xml",
+    "sha256": "b334b1f8c93484d07829674214eec061f6f3a15de7b834e6b581b0c489f95acc",
+    "bytes": 1208,
+    "git_blob_sha1": "bd9cdbf5d4cae86f37659a7a4a39fb0f30eb562a",
+    "expected_blob_sha1": "bd9cdbf5d4cae86f37659a7a4a39fb0f30eb562a",
+    "retrieved_at_utc": "2026-10-06T16:51:24.144179+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-te/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-te/strings.xml",
+    "sha256": "a762e0512836acfb8104d16241f777894ae4988129b7d05751038d0cfd1f28ce",
+    "bytes": 1202,
+    "git_blob_sha1": "cf0480ebb08c50712eb2f333f2d5fa2a6263933b",
+    "expected_blob_sha1": "cf0480ebb08c50712eb2f333f2d5fa2a6263933b",
+    "retrieved_at_utc": "2026-10-06T16:51:24.362726+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-th/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-th/strings.xml",
+    "sha256": "4be45fb96cf4240041ebab940303bf56185d7d9ed6f8bcbc8f4eefbf5d9080a5",
+    "bytes": 1135,
+    "git_blob_sha1": "73cba4d678cbbaae59cd98ea35e597e6adb80958",
+    "expected_blob_sha1": "73cba4d678cbbaae59cd98ea35e597e6adb80958",
+    "retrieved_at_utc": "2026-10-06T16:51:24.370515+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-tl/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-tl/strings.xml",
+    "sha256": "c2650ecf1aac494f061d9aa3c5d8097eb0836d67ec8b86e2c265922ead44b3c7",
+    "bytes": 807,
+    "git_blob_sha1": "4e68f6f05c35da4acdd050db6a6e16c5047fd6d0",
+    "expected_blob_sha1": "4e68f6f05c35da4acdd050db6a6e16c5047fd6d0",
+    "retrieved_at_utc": "2026-10-06T16:51:24.186727+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-tr/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-tr/strings.xml",
+    "sha256": "35d59f07613ee3e1bb621866d71d2b5fabfcd6cd5c340478d93cfe9ebd3abdcf",
+    "bytes": 794,
+    "git_blob_sha1": "24a75afb36201c1b22841d63f28567cd556d7da1",
+    "expected_blob_sha1": "24a75afb36201c1b22841d63f28567cd556d7da1",
+    "retrieved_at_utc": "2026-10-06T16:51:24.156006+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-uk/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-uk/strings.xml",
+    "sha256": "6f93f08ae90898ae975c45bc5a33fa03f2412e06d356cdf113e58bafdc448edd",
+    "bytes": 962,
+    "git_blob_sha1": "2413efd778f460bdd8b79bc15d753c8e2828f157",
+    "expected_blob_sha1": "2413efd778f460bdd8b79bc15d753c8e2828f157",
+    "retrieved_at_utc": "2026-10-06T16:51:24.146993+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ur/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-ur/strings.xml",
+    "sha256": "fe4cb655ce53dc0eb7bcab6a15aa5aa15ad4439b273c039b63d2399c2e182e5d",
+    "bytes": 930,
+    "git_blob_sha1": "b9dd50dd8a489ce18e671d9e797f8423804b6164",
+    "expected_blob_sha1": "b9dd50dd8a489ce18e671d9e797f8423804b6164",
+    "retrieved_at_utc": "2026-10-06T16:51:24.369129+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-uz/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-uz/strings.xml",
+    "sha256": "9a24e5de092d69c2125045f95e937074d81cc706363f9436db9f8c7f58e5eac3",
+    "bytes": 786,
+    "git_blob_sha1": "21e3ed45d50146d8874a618ff1fd07fa68d74b3c",
+    "expected_blob_sha1": "21e3ed45d50146d8874a618ff1fd07fa68d74b3c",
+    "retrieved_at_utc": "2026-10-06T16:51:24.372724+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-vi/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-vi/strings.xml",
+    "sha256": "e02dff61acfce2637d662c22c79068a14ae3259fd3d09202ba2429c497e8b887",
+    "bytes": 870,
+    "git_blob_sha1": "3b74a5541a21a49a936563b14ae1fca73f4168bc",
+    "expected_blob_sha1": "3b74a5541a21a49a936563b14ae1fca73f4168bc",
+    "retrieved_at_utc": "2026-10-06T16:51:30.706222+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-zh-rCN/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-zh-rCN/strings.xml",
+    "sha256": "034a2f87b1c8d1f1357b72dece607f54be0a7e6639e10a07a6886f2fdfb39090",
+    "bytes": 777,
+    "git_blob_sha1": "4031209c29c82be6e69538bec659cced1ab01641",
+    "expected_blob_sha1": "4031209c29c82be6e69538bec659cced1ab01641",
+    "retrieved_at_utc": "2026-10-06T16:51:30.908764+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-zh-rHK/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-zh-rHK/strings.xml",
+    "sha256": "05bc8250d49f22b0c325e7d73ac6993aee0f0fdd15d7cef0efe283d1214592b3",
+    "bytes": 766,
+    "git_blob_sha1": "eb4c8197467632004782e675144c26ea9cd57106",
+    "expected_blob_sha1": "eb4c8197467632004782e675144c26ea9cd57106",
+    "retrieved_at_utc": "2026-10-06T16:51:30.850815+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-zh-rTW/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-zh-rTW/strings.xml",
+    "sha256": "2f32b9a50e86e449694a34529361ddc2f945ddccfd31ecab20802c32ce9abc65",
+    "bytes": 769,
+    "git_blob_sha1": "c95bfd95a2b3f66653ca935d72b558d6ba014ff4",
+    "expected_blob_sha1": "c95bfd95a2b3f66653ca935d72b558d6ba014ff4",
+    "retrieved_at_utc": "2026-10-06T16:51:30.932463+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-zu/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values-zu/strings.xml",
+    "sha256": "c56295a79b75373e4d8613d4a940d0d80cfa91322f877e98bef934ebfe0e308d",
+    "bytes": 753,
+    "git_blob_sha1": "4e2a4172614f1abf208a6ea8348e75487dd47872",
+    "expected_blob_sha1": "4e2a4172614f1abf208a6ea8348e75487dd47872",
+    "retrieved_at_utc": "2026-10-06T16:51:30.913819+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values/strings.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/res/values/strings.xml",
+    "sha256": "adc9d0f829daf3cc9094643d8bb952f9f89763efc392ad4a74e8c0f695961239",
+    "bytes": 2409,
+    "git_blob_sha1": "c7c9b2118e081a6ed3d8b4cf405214cb09fd1175",
+    "expected_blob_sha1": "c7c9b2118e081a6ed3d8b4cf405214cb09fd1175",
+    "retrieved_at_utc": "2026-10-06T16:51:31.032228+00:00"
+  },
+  {
+    "path": "libraries/exoplayer_hls/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer_hls/README.md",
+    "sha256": "b74dc36d1ba0a93d8bc1e31d3884e2a59cf1421284671aadb23ac7f647efaf38",
+    "bytes": 1638,
+    "git_blob_sha1": "3a1ae0c63d1e3c5c31142d6b92da6bd11be06a34",
+    "expected_blob_sha1": "3a1ae0c63d1e3c5c31142d6b92da6bd11be06a34",
+    "retrieved_at_utc": "2026-10-06T16:51:30.707076+00:00"
+  },
+  {
+    "path": "libraries/exoplayer_hls/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer_hls/build.gradle.kts",
+    "sha256": "823177ba05413ddea3b6e7e70308e3cea12bcb64dd94a75b425978bc1e50c9b7",
+    "bytes": 1366,
+    "git_blob_sha1": "340a837e1a08949bdf6d5fe8120c983c2206d95c",
+    "expected_blob_sha1": "340a837e1a08949bdf6d5fe8120c983c2206d95c",
+    "retrieved_at_utc": "2026-10-06T16:51:30.857529+00:00"
+  },
+  {
+    "path": "libraries/exoplayer_hls/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer_hls/src/main/AndroidManifest.xml",
+    "sha256": "a99f72ecb765495b4c2c832c7104873d1aa23e325f1dbc33634d1a991582278a",
+    "bytes": 709,
+    "git_blob_sha1": "2e431777b76ee4df6521f9b2ecfa1ca3b6dd7edc",
+    "expected_blob_sha1": "2e431777b76ee4df6521f9b2ecfa1ca3b6dd7edc",
+    "retrieved_at_utc": "2026-10-06T16:51:30.845009+00:00"
+  },
+  {
+    "path": "libraries/extractor/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/extractor/README.md",
+    "sha256": "9471ec378daef492848b6c1f7339e72fe5cb8dd46fa334f6a76a593069ba910e",
+    "bytes": 275,
+    "git_blob_sha1": "783bb6509285c3b68e5ea458a18b31c107accd60",
+    "expected_blob_sha1": "783bb6509285c3b68e5ea458a18b31c107accd60",
+    "retrieved_at_utc": "2026-10-06T16:51:30.881862+00:00"
+  },
+  {
+    "path": "libraries/extractor/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/extractor/build.gradle.kts",
+    "sha256": "75fcf9f2399d75bd9d99254b1402beeb3ee0937f75d28e615bb66bae3ae7b317",
+    "bytes": 1464,
+    "git_blob_sha1": "218928dc2e31daafbcc82e489465b8d6a45e644d",
+    "expected_blob_sha1": "218928dc2e31daafbcc82e489465b8d6a45e644d",
+    "retrieved_at_utc": "2026-10-06T16:51:30.696720+00:00"
+  },
+  {
+    "path": "libraries/extractor/proguard-rules.txt",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/extractor/proguard-rules.txt",
+    "sha256": "da594290bde45f9e8dcf6f12be930bfffd6a999d1bf1eec766b3afafa3ed7719",
+    "bytes": 708,
+    "git_blob_sha1": "ad850122420dfe89fee5545e7775235c93345cb1",
+    "expected_blob_sha1": "ad850122420dfe89fee5545e7775235c93345cb1",
+    "retrieved_at_utc": "2026-10-06T16:51:30.884432+00:00"
+  },
+  {
+    "path": "libraries/extractor/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/extractor/src/main/AndroidManifest.xml",
+    "sha256": "dab6086e00780ce3b43e5081ce729143167096cc51fa50531afa280e295062d4",
+    "bytes": 709,
+    "git_blob_sha1": "b35d33bdb42c6804c286f6c484db4ffb6919d539",
+    "expected_blob_sha1": "b35d33bdb42c6804c286f6c484db4ffb6919d539",
+    "retrieved_at_utc": "2026-10-06T16:51:36.826022+00:00"
+  },
+  {
+    "path": "libraries/muxer/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/muxer/README.md",
+    "sha256": "a4a648811f036e8c3022eca2213c4ec4bf6833f72c81b4ea3884147888638a0d",
+    "bytes": 754,
+    "git_blob_sha1": "e71496ca58eda12d0e97383c1e8d3f330372de0f",
+    "expected_blob_sha1": "e71496ca58eda12d0e97383c1e8d3f330372de0f",
+    "retrieved_at_utc": "2026-10-06T16:51:36.816682+00:00"
+  },
+  {
+    "path": "libraries/muxer/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/muxer/build.gradle.kts",
+    "sha256": "a22e1c3272bc845b396e7eb9479a5aa4f2d7489f9171eb7b2a89817d74495272",
+    "bytes": 1899,
+    "git_blob_sha1": "fe8eb7ff2774d0696ca0fea8f5db5502cfedaab0",
+    "expected_blob_sha1": "fe8eb7ff2774d0696ca0fea8f5db5502cfedaab0",
+    "retrieved_at_utc": "2026-10-06T16:51:36.826545+00:00"
+  },
+  {
+    "path": "libraries/muxer/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/muxer/src/main/AndroidManifest.xml",
+    "sha256": "e569a63ca880a381856ceb2d4bcd780c8f3a3f95ea3129153451beb5f31d18fd",
+    "bytes": 705,
+    "git_blob_sha1": "f558beb569950fff40fc118fa8e0ea5509e20056",
+    "expected_blob_sha1": "f558beb569950fff40fc118fa8e0ea5509e20056",
+    "retrieved_at_utc": "2026-10-06T16:51:36.887497+00:00"
+  },
+  {
+    "path": "libraries/transformer/README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/transformer/README.md",
+    "sha256": "387c9c3dc595c54cedd0342fda49b8edea0ad81583855489e566e4875b54bd6c",
+    "bytes": 869,
+    "git_blob_sha1": "95d9da93f5f5399e534078f65fd05822e8eaf1b5",
+    "expected_blob_sha1": "95d9da93f5f5399e534078f65fd05822e8eaf1b5",
+    "retrieved_at_utc": "2026-10-06T16:51:36.874028+00:00"
+  },
+  {
+    "path": "libraries/transformer/build.gradle.kts",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/transformer/build.gradle.kts",
+    "sha256": "646eaa020d4ab4d088febf38f45b44dd82b4c0fac0eed82348b8e472d93db0d7",
+    "bytes": 2148,
+    "git_blob_sha1": "7870a29f48c8c3f01d16fc76c3ba9187beb0aaca",
+    "expected_blob_sha1": "7870a29f48c8c3f01d16fc76c3ba9187beb0aaca",
+    "retrieved_at_utc": "2026-10-06T16:51:36.871199+00:00"
+  },
+  {
+    "path": "libraries/transformer/src/main/AndroidManifest.xml",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/transformer/src/main/AndroidManifest.xml",
+    "sha256": "0984f096906673d3e5222c2a0c85595ab9e52c1859c32e2bec6e85f5f3e4bce0",
+    "bytes": 705,
+    "git_blob_sha1": "51cff09a7d76382f83e60a9887aa2ea40e2acc26",
+    "expected_blob_sha1": "51cff09a7d76382f83e60a9887aa2ea40e2acc26",
+    "retrieved_at_utc": "2026-10-06T16:51:36.852286+00:00"
+  }
+]

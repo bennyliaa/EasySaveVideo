@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.searxng.SearxngProtocolTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:08.740Z" hostname="05582a867b99" time="0.118">
+  <properties/>
+  <testcase name="endpointRejectsCredentialsPortsPrivateNamesAndAmbiguousPaths" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.033"/>
+  <testcase name="parsingChecksCancellationInsideLargeWhitespaceAndText" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.013"/>
+  <testcase name="networkApiIsTiedToSelectedAuthorityAndPath" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.005"/>
+  <testcase name="addressPolicyRejectsPrivateSpecialAndTransitionRangesWithoutResolving" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.002"/>
+  <testcase name="endpointsHaveFixedSlotIdsAndExactUrlVersions" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.004"/>
+  <testcase name="malformedDuplicateDeepAndNonUtf8JsonFailClosed" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.009"/>
+  <testcase name="invalidUrlsAreNotCandidatesAndSafeDuplicatesAreCoalesced" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.005"/>
+  <testcase name="retryAfterIsOverflowSafeAndNeverMovesBackwards" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.001"/>
+  <testcase name="oversizedResultsTextAndUrlsAreBounded" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.008"/>
+  <testcase name="cursorBindsExactQueryLanguageEndpointVersionProfileAndPageLimits" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.032"/>
+  <testcase name="omittedAndUntrustedTotalCountsDoNotAffectCandidates" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.001"/>
+  <testcase name="malformedUnicodeEscapesRejectSignedOrNonHexDigits" classname="com.easysavevideo.searxng.SearxngProtocolTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

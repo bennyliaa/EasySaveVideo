@@ -1,0 +1,6 @@
+{
+  "old_class_count": 27,
+  "missing_public_api_lines": [],
+  "added_public_api_lines": [],
+  "limited_check": "public javap descriptors on existing classes; not behavioral compatibility or Android D8/R8 verification"
+}

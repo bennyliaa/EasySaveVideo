@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.save.PreviewSeekPolicyTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:59.497Z" hostname="05582a867b99" time="0.0">
+  <properties/>
+  <testcase name="seeksWithinKnownDuration" classname="com.easysavevideo.app.save.PreviewSeekPolicyTest" time="0.0"/>
+  <testcase name="clampsToBounds" classname="com.easysavevideo.app.save.PreviewSeekPolicyTest" time="0.0"/>
+  <testcase name="unknownDurationIsNotSeekable" classname="com.easysavevideo.app.save.PreviewSeekPolicyTest" time="0.0"/>
+  <testcase name="extremeInputsDoNotWrap" classname="com.easysavevideo.app.save.PreviewSeekPolicyTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

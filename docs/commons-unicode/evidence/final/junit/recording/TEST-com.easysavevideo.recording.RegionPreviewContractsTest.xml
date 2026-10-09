@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.recording.RegionPreviewContractsTest" tests="35" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:32:24.441Z" hostname="05582a867b99" time="0.036">
+  <properties/>
+  <testcase name="publicationAtExactFirstFrameDeadlineFailsEvenForOtherwiseValidSnapshot" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="retirementAndHostDrawAtExactRetirementDeadlineFailClosed" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="rasterBoundsAndByteBudgetAreIndependentOfSourceAndEncoderSize" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="sourceGeometryOrGenerationChangeRevokesTheFrozenSelectionInsteadOfRemappingIt" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="sourceTransformIsDefensiveAndUsesEveryActualMatrixValue" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="publicationRejectsOldSessionGeometryGenerationObservationAndFutureOrExpiredFrame" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="transformRejectsWrongLengthAndEveryNonfinitePosition" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.006"/>
+  <testcase name="ordinaryDynamicFramesKeepFrozenPreviewIdentityAndRemainConfirmable" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.004"/>
+  <testcase name="everyExplicitInvalidationReasonRevokesEveryPhaseAndAllLateCallbacks" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.004"/>
+  <testcase name="tooSmallOrDegenerateRoundedSelectionDoesNotDestroyVisiblePreview" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="everySnapshotIdentityFieldIsBoundToTheConfirmation" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="snapshotIdsAndFrameObservationTimeRequireValidBoundedLifetime" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.002"/>
+  <testcase name="visibleSnapshotExpiresAtExactDeadlineWithoutRenewalByInvalidSelection" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="aFreshReadbackTimeCannotLaunderAFrameFromBeforeHostReadiness" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="concurrentAdmissionIsOneShotAndPreAdmissionCancellationExcludesEveryConsumer" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.003"/>
+  <testcase name="scaledPreviewCoordinatesStillProduceOriginalSourcePixelCropIncludingInsets" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="hostReadinessAndFramePublicationAreBothOneShot" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="sameGeometryNewSessionOrGenerationCannotInheritOldConfirmation" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="actualUiDisposalAndSubsequentHostDrawAreSeparatelyRequired" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="concurrentConfirmationHasExactlyOneWinnerWithoutChangingItsSelection" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.002"/>
+  <testcase name="staleCallerTimesCannotRenewRetirementDeadlineOrReviveAnExpiredGate" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="shortSnapshotLifetimeExpiresInEachConfirmedButUnconsumedPhase" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="confirmingDoesNotIssueEncodingAuthorityAndDuplicateConfirmationCannotChangeSelection" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="exactLiveTransformChangeRevokesSnapshotEvenWhenBothTransformsDescribeFullFrames" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="noInitialHostReadinessMeansNoPublicationOrAuthority" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="firstFrameTimeoutIncludesWaitingForHostAndIsNotRenewedByReadiness" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="backwardClockInvalidatesAllWaitingStatesAndNegativeClockNeverUnderflowsDeadlines" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="reversedCrossThreadClockArrivalUsesConservativeHighWaterBarriers" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="gateConstructionRejectsInvalidGenerationAndOpeningClock" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="rasterPreservesWholeSourceAspectAndRejectsStretchingOrUpsampling" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="exactTransformMetadataDoesNotPretendToProveNativeSupportOrContentIdentity" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="wrongSnapshotDisposalAndPostDisposalCallbacksCannotReleaseCurrentConfirmation" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="consumedPreviewDeadlineDoesNotBecomeARecordingDurationLimit" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.001"/>
+  <testcase name="observedGeometryVersionAndScopeProvenanceAreValidatedWithoutInventingSourceIdentity" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <testcase name="retirementDeadlineStartsAtConfirmationAndIsNeverRenewedByDisposalOrHostDraw" classname="com.easysavevideo.recording.RegionPreviewContractsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

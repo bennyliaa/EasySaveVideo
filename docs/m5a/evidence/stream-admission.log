@@ -1,0 +1,18 @@
+{
+  "debug": {
+    "exact_runtime_gavs": 72,
+    "class_names": 15105,
+    "duplicate_runtime_classes": 0,
+    "excluded_non_runtime_descriptors": "module-info.class including META-INF/versions/9"
+  },
+  "release": {
+    "exact_runtime_gavs": 72,
+    "class_names": 15105,
+    "duplicate_runtime_classes": 0,
+    "excluded_non_runtime_descriptors": "module-info.class including META-INF/versions/9"
+  },
+  "original_candidate_evidence_payloads": 184,
+  "bundled_notices_required_markers": "PASS; installation-package reachability remains NOT_RUN",
+  "local_only_remux_no_default_network_and_direct_mime_unchanged": "PASS (source guard; device behavior NOT_RUN)",
+  "host_reader_shims_excluded_from_app_sources": "PASS"
+}

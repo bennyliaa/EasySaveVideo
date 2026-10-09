@@ -1,0 +1,30 @@
+{
+  "scope": "source wiring only; no native Android/device/UI acceptance",
+  "checks": [
+    "One process-owned hub using applicationContext",
+    "Activity uses shared owner controller",
+    "Activity does not construct its own configuration worker",
+    "Subscription is installed after UI delivery and initialized fields",
+    "Activity detaches without shutting down shared configuration owner",
+    "Busy/not-loaded owner snapshots cannot initialize sources",
+    "Shared owner claim is checked before source construction",
+    "Advanced source intent forces explicit-search restore",
+    "Accepted write publishes pending latch before invoking subscriber fences",
+    "Replacement subscriber fences before receiving pending owner snapshot",
+    "UI claim invalidation is separate from operation epoch",
+    "Existing cross-instance store lock retained",
+    "Callback captures source intent before queued application",
+    "Registry uses captured configuration rather than newer mutable state",
+    "New coordinator reference is published before post-install source recheck",
+    "Applied intent comes only from captured initialization intent",
+    "Source claim is rechecked again before lifecycle dispatch",
+    "Storage failure uses irreversible source fence"
+  ],
+  "source_sha256": {
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt": "f47b12fc16b217ff31536994734ed06f94b54b42f27e72aa5b1b2dcdf7043835",
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidSearxngConfigurationOwner.kt": "4ebbc20e3d4d19280cdf0c463d6b646087661580e40476739d4401f1f8effd5f",
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationHub.kt": "2c7c4a861faada461bbdd114578453b4d9a6056c1564071e58244755c9d56717",
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationController.kt": "6dd3a923660f5c04d72fe4947e65bef3dc6870d191153e312e7dbdb8c5f2027e",
+    "app/src/main/kotlin/com/easysavevideo/app/storage/SearxngConfigurationStore.kt": "ba1680b41ec53e6e5310acf6727822800b069e40a17e554b16684e38a92d3a48"
+  }
+}

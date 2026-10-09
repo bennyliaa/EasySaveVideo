@@ -1,0 +1,285 @@
+{
+  "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.9.0/",
+  "file_metadata": {
+    "kotlinx-coroutines-android-1.9.0.module": {
+      "sha256": "7df1e04d77f0cc411890d999a9449b0e3bcd4f159a46c3060b110204ca607d43",
+      "bytes": 3553,
+      "path": "official-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.9.0/kotlinx-coroutines-android-1.9.0.module"
+    },
+    "kotlinx-coroutines-android-1.9.0.pom": {
+      "sha256": "be86020cd5b93b8a68ca43185a049b9b0baa345fd1be1fdaa014fdaef92d6e7c",
+      "bytes": 2220,
+      "path": "official-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.9.0/kotlinx-coroutines-android-1.9.0.pom"
+    },
+    "kotlinx-coroutines-android-1.9.0.jar": {
+      "sha256": "bd783acd2f9738845d58380f46f45b5cde95d0cb03027d56725338b26bfc4d72",
+      "bytes": 19247,
+      "path": "official-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.9.0/kotlinx-coroutines-android-1.9.0.jar"
+    },
+    "kotlinx-coroutines-android-1.9.0-sources.jar": {
+      "sha256": "dd4d70dbc424eb0492126446b4035821d40d255664a8a36091d357f11390bc50",
+      "bytes": 7783,
+      "path": "official-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.9.0/kotlinx-coroutines-android-1.9.0-sources.jar"
+    }
+  },
+  "pom_licenses": [
+    {
+      "name": "The Apache Software License, Version 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+      "distribution": "repo"
+    }
+  ],
+  "source_headers": [],
+  "source_special_attributions": [],
+  "source_without_license_header": [
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "AndroidExceptionPreHandler.kt",
+      "sha256": "c74b956a1f8d1e977d2ab52e948dd37cf2a7491e731e874ba645ededbaadae51",
+      "bytes": 2186
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "module-info.java",
+      "sha256": "a923000382c96cb7d2444641537c3a0dca4aa28d8e4245db4258bfedd67d6da2",
+      "bytes": 331
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "HandlerDispatcher.kt",
+      "sha256": "6bd1b65863c9df78a8c9c993d55fa158aa48142f9ee38765655bf5d8c91ba862",
+      "bytes": 8491
+    }
+  ],
+  "source_non_code_entries": [
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/com.android.tools/r8-from-1.6.0/coroutines.pro",
+      "sha256": "9e234a50d0a557c9dc6d299cd4d8843c62c083eb57e70cfb8260b1a826e164dc",
+      "bytes": 899
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/com.android.tools/r8-upto-3.0.0/coroutines.pro",
+      "sha256": "aab104859675617120c953ddb0f675415a080972858a637f2abb17a4417fbecb",
+      "bytes": 558
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/com.android.tools/proguard/coroutines.pro",
+      "sha256": "2600b575d03b2f24e97e944820cad2f7792475c12affa58ddb5325fe81a8b178",
+      "bytes": 300
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/proguard/coroutines.pro",
+      "sha256": "204b89537b13a6eb3ca317ba6c4986a3fd94ddfc5e503e35d2ac9ce7260795a2",
+      "bytes": 419
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/services/kotlinx.coroutines.internal.MainDispatcherFactory",
+      "sha256": "a1ea77ea8f93f419256b6e66f29713f950d8d6e90442b608d880a48003b5eb72",
+      "bytes": 52
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/services/kotlinx.coroutines.CoroutineExceptionHandler",
+      "sha256": "3129b8edf6db07de6f8ff47695e2177c8bba4eed2962d3085c719e5acbb58a33",
+      "bytes": 54
+    }
+  ],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "f3e49dd130fa23515d8436c2881e0dafb5521b96ec5aed93f135474375fe19a8",
+      "bytes": 46
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "META-INF/kotlinx-coroutines-android.kotlin_module",
+      "sha256": "52765c1edda6482a009df044afb29560cf2ad5b3e1989e5097bec11985930513",
+      "bytes": 75
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "kotlinx/coroutines/android/HandlerContext.class",
+      "sha256": "c8648388815c730b201d683256fcb9e375f74b1472b73c394728398ae44ab61b",
+      "bytes": 8338
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "kotlinx/coroutines/android/HandlerDispatcherKt.class",
+      "sha256": "d07dd895762820bd349e26558eec562a2de2e7f395a1cee35cbb3523ab6cfbf5",
+      "bytes": 10346
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "kotlinx/coroutines/android/HandlerDispatcherKt$awaitFrameSlowPath$lambda$3$$inlined$Runnable$1.class",
+      "sha256": "a487d1fa95d1a4ec080704cdd35603de9106e2f10f67c52ee2d73b732b1dc23b",
+      "bytes": 1724
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "kotlinx/coroutines/android/HandlerDispatcher.class",
+      "sha256": "fac59dcc1c630a1f07c7022a903cc958d6aebc5360d562a437835ae5bdc0c030",
+      "bytes": 2409
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "kotlinx/coroutines/android/AndroidExceptionPreHandler.class",
+      "sha256": "46e2d38058903af355d10c6d3b56e4a9a4a52175be6b00f5b881a0d9adc728ff",
+      "bytes": 3081
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "kotlinx/coroutines/android/HandlerContext$scheduleResumeAfterDelay$$inlined$Runnable$1.class",
+      "sha256": "ab5016b2a27e9b123c5aed8c88fe20cc35c5e8b9fb670e34feb0912aff3f91a1",
+      "bytes": 2292
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "kotlinx/coroutines/android/AndroidDispatcherFactory.class",
+      "sha256": "c0dea97afee2e61df8fdf0a57223096a1b8a087affadf2032f157b3cf9c4df63",
+      "bytes": 2208
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "META-INF/com.android.tools/r8-from-1.6.0/coroutines.pro",
+      "sha256": "9e234a50d0a557c9dc6d299cd4d8843c62c083eb57e70cfb8260b1a826e164dc",
+      "bytes": 899
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "META-INF/com.android.tools/r8-upto-3.0.0/coroutines.pro",
+      "sha256": "aab104859675617120c953ddb0f675415a080972858a637f2abb17a4417fbecb",
+      "bytes": 558
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "META-INF/com.android.tools/proguard/coroutines.pro",
+      "sha256": "2600b575d03b2f24e97e944820cad2f7792475c12affa58ddb5325fe81a8b178",
+      "bytes": 300
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "META-INF/proguard/coroutines.pro",
+      "sha256": "204b89537b13a6eb3ca317ba6c4986a3fd94ddfc5e503e35d2ac9ce7260795a2",
+      "bytes": 419
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "META-INF/services/kotlinx.coroutines.internal.MainDispatcherFactory",
+      "sha256": "a1ea77ea8f93f419256b6e66f29713f950d8d6e90442b608d880a48003b5eb72",
+      "bytes": 52
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "META-INF/services/kotlinx.coroutines.CoroutineExceptionHandler",
+      "sha256": "3129b8edf6db07de6f8ff47695e2177c8bba4eed2962d3085c719e5acbb58a33",
+      "bytes": 54
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "META-INF/versions/9/module-info.class",
+      "sha256": "c2bd3015644600113f9a384e331436ef200ec3c64de7b8ef2a2c4e25198f0210",
+      "bytes": 381
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0.jar",
+      "entry": "META-INF/kotlinx_coroutines_android.version",
+      "sha256": "7717cbf90c63a3b096008763a02066239916fa9916f98254d1aa3b2470830fcd",
+      "bytes": 5
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/com.android.tools/r8-from-1.6.0/coroutines.pro",
+      "sha256": "9e234a50d0a557c9dc6d299cd4d8843c62c083eb57e70cfb8260b1a826e164dc",
+      "bytes": 899
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/com.android.tools/r8-upto-3.0.0/coroutines.pro",
+      "sha256": "aab104859675617120c953ddb0f675415a080972858a637f2abb17a4417fbecb",
+      "bytes": 558
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/com.android.tools/proguard/coroutines.pro",
+      "sha256": "2600b575d03b2f24e97e944820cad2f7792475c12affa58ddb5325fe81a8b178",
+      "bytes": 300
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/proguard/coroutines.pro",
+      "sha256": "204b89537b13a6eb3ca317ba6c4986a3fd94ddfc5e503e35d2ac9ce7260795a2",
+      "bytes": 419
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/services/kotlinx.coroutines.internal.MainDispatcherFactory",
+      "sha256": "a1ea77ea8f93f419256b6e66f29713f950d8d6e90442b608d880a48003b5eb72",
+      "bytes": 52
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "META-INF/services/kotlinx.coroutines.CoroutineExceptionHandler",
+      "sha256": "3129b8edf6db07de6f8ff47695e2177c8bba4eed2962d3085c719e5acbb58a33",
+      "bytes": 54
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "AndroidExceptionPreHandler.kt",
+      "sha256": "c74b956a1f8d1e977d2ab52e948dd37cf2a7491e731e874ba645ededbaadae51",
+      "bytes": 2186
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "module-info.java",
+      "sha256": "a923000382c96cb7d2444641537c3a0dca4aa28d8e4245db4258bfedd67d6da2",
+      "bytes": 331
+    },
+    {
+      "archive": "kotlinx-coroutines-android-1.9.0-sources.jar",
+      "entry": "HandlerDispatcher.kt",
+      "sha256": "6bd1b65863c9df78a8c9c993d55fa158aa48142f9ee38765655bf5d8c91ba862",
+      "bytes": 8491
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": null,
+  "source_status": "PRESENT",
+  "published_hash_checks": [
+    {
+      "variant": "apiElements",
+      "file": "kotlinx-coroutines-android-1.9.0.jar",
+      "sha256_published": "bd783acd2f9738845d58380f46f45b5cde95d0cb03027d56725338b26bfc4d72",
+      "sha256_actual": "bd783acd2f9738845d58380f46f45b5cde95d0cb03027d56725338b26bfc4d72",
+      "matches": true
+    },
+    {
+      "variant": "runtimeElements",
+      "file": "kotlinx-coroutines-android-1.9.0.jar",
+      "sha256_published": "bd783acd2f9738845d58380f46f45b5cde95d0cb03027d56725338b26bfc4d72",
+      "sha256_actual": "bd783acd2f9738845d58380f46f45b5cde95d0cb03027d56725338b26bfc4d72",
+      "matches": true
+    }
+  ]
+}

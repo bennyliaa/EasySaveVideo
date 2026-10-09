@@ -1,0 +1,7 @@
+{
+  "baseline": "9e9dea537c5f6e269adfb6791b47829eb4c440de",
+  "baseline_jvm_tests": 2035,
+  "expected_jvm_tests": 2175,
+  "new_jvm_tests": 140,
+  "basis": "Explicit build-owner count supplied after development run; verified again during final frozen aggregate"
+}

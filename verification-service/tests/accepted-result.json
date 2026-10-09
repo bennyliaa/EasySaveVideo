@@ -1,0 +1,23 @@
+{
+  "scope": "OWNED_ISOLATED_FIXTURES_ONLY",
+  "tested_at_utc": "2026-10-08T06:37:00Z",
+  "status": "PASS",
+  "tests": 48,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 22.442,
+  "actual_scrapling_version": "0.4.15",
+  "actual_lxml_version": "6.1.3+esv.eval1",
+  "actual_playwright_version": "1.63.0",
+  "actual_curl_cffi_version": "0.16.3",
+  "actual_browser_executable_sha256": "ded93a9c9a53a1ae040f08124badcca95c938e9d5015ff340c3b5538c41bf39e",
+  "actual_apis": ["Fetcher", "Selector", "DynamicFetcher", "captured_xhr"],
+  "actual_kotlin_http_python_scrapling_cases": 5,
+  "runtime_origin": "EXISTING_ADMITTED_ENVIRONMENT_ONLY",
+  "process_cleanup_source_sha256": "f595c0685e5df04e83e22d1079000011ac0b577dd049319d79f967b37aa6b727",
+  "public_target_execution": "NOT_RUN",
+  "production_deployment": "NOT_RUN",
+  "binary_redistribution": "NOT_APPROVED",
+  "hard_aggregate_browser_memory_limit": "NOT_IMPLEMENTED; sampled RSS watchdog only"
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.RightsAttributionTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:06.322Z" hostname="05582a867b99" time="0.027">
+  <properties/>
+  <testcase name="normalizationDetachesAllMutableCollectionsAndPreservesUnknownDuration" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.002"/>
+  <testcase name="wholeObservationReplacesRatherThanFieldwiseAttributionMixing" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.002"/>
+  <testcase name="laterPermissiveObservationRetainsPriorFlagAcrossAllMergeOrders" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.003"/>
+  <testcase name="repeatObservationIsIdempotentAndUnchangedFieldsOnlyFlagStaleness" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.001"/>
+  <testcase name="illegalTriStateAndPresenceBooleansReject" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.001"/>
+  <testcase name="allFieldsAndUnknownBooleansRoundTripWithoutClearance" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.0"/>
+  <testcase name="allRevisionRegressionsRetainAssociativeWarningsEvenWithUnchangedFields" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.003"/>
+  <testcase name="badCountsStringsAndWeakenedReviewReject" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.001"/>
+  <testcase name="unknownVersionCorruptTrailingAndTruncatedPayloadsReject" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.001"/>
+  <testcase name="replacingOldFlagDoesNotSilentlyLosePriorWarning" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.0"/>
+  <testcase name="equalVersionConflictsSelectDeterministically" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.004"/>
+  <testcase name="newerUnknownRevisionKeepsItsAuthorAndSafetyFlagsVisible" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.0"/>
+  <testcase name="combinedByteLimitAppliesAcrossSnapshots" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.002"/>
+  <testcase name="mixedKnownAndUnknownRevisionMergeIsAssociativeAcrossBatches" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.002"/>
+  <testcase name="invalidRightsRejectNormalizationRatherThanDroppingRights" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.0"/>
+  <testcase name="malformedUtf16Utf8AndUnsafeLinksReject" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.001"/>
+  <testcase name="stalePermissiveObservationCannotEraseNewRestriction" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.0"/>
+  <testcase name="inMemorySnapshotsRemainDetachedAcrossTransactionsAndRollback" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.001"/>
+  <testcase name="duplicatePoolMergeRetainsWholeRightsAndDetachedInput" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.0"/>
+  <testcase name="changedRightsSuppressThumbnailInsteadOfPairingWithAnotherObservation" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.001"/>
+  <testcase name="differentSourcesStayDistinctAndCountOverflowRejects" classname="com.easysavevideo.discovery.RightsAttributionTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

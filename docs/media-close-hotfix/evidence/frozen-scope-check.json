@@ -1,0 +1,6 @@
+{
+  "baseline": "f78d7cc46c92bdd461e701ac3c39f62e12cb0ce5",
+  "conservative_media_gates_watchdogs_consent_codecs_schemas_core_dependencies": "UNCHANGED",
+  "app_build_change": "versionCode 1 to 2 only",
+  "android_retest": "NOT_RUN"
+}

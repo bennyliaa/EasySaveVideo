@@ -1,0 +1,15 @@
+{
+  "kind": "STATIC_SCOPE_AND_MAIN_JAR_ONLY",
+  "baseline": "0762843aa22bf1907cedf5aeed84224fdb335f0f",
+  "scope": "M8-B1 BOUNDED LOCAL HISTORY AND SCOPED CONTROLS",
+  "external_artifacts": "EXACT74_UNCHANGED_INPUTS",
+  "commons_parser": "M7-C_FIXED_SCHEMA1_UNCHANGED",
+  "main_jar_classes": 127,
+  "vault": "DISABLED_UNCHANGED",
+  "blocked_rule_candidate": "NOT_INTEGRATED_OR_REVIEWED",
+  "production_roots": "EMPTY",
+  "endpoint": "ABSENT",
+  "new_dependencies": false,
+  "device": "NOT_RUN",
+  "full_M8": "NOT_COMPLETE"
+}

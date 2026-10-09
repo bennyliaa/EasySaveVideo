@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.recording.nativeregion.MeasuredAudioTailTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:59.251Z" hostname="05582a867b99" time="0.001">
+  <properties/>
+  <testcase name="backwardsPacketIsRejectedWithoutLosingPriorTail" classname="com.easysavevideo.app.recording.nativeregion.MeasuredAudioTailTest" time="0.001"/>
+  <testcase name="onlyWholePacketsEndingWithinActualVideoBoundaryAreWrittenInOrder" classname="com.easysavevideo.app.recording.nativeregion.MeasuredAudioTailTest" time="0.0"/>
+  <testcase name="audioAndVideoHoldbackShareByteAndSampleBudgets" classname="com.easysavevideo.app.recording.nativeregion.MeasuredAudioTailTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

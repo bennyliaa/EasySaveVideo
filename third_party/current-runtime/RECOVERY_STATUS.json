@@ -1,0 +1,30 @@
+{
+  "bundle_identity": "NEW_LICENSE_RECOVERY_2026_10_06",
+  "old_bundle_manifest_sha256_from_retained_context": "e8c3341a6b641e3d21eae22815e7b0321538de6698ff869572a90353cf91bf38",
+  "old_bundle_itself_available": false,
+  "claims_old_73_files_restored": false,
+  "old_source_index_sha256_from_retained_context": "f00f735be12dcffbc102254796f4252e6ab311b33ff3d5a2c89921c95d92338c",
+  "official_poms_newly_retrieved": 53,
+  "exact_version_source_archives_inspected_in_memory": 53,
+  "source_archives_persisted": false,
+  "original_license_texts": 11,
+  "license_texts_with_retained_old_hash": 9,
+  "license_texts_matching_retained_old_hash": 9,
+  "source_archives_with_retained_old_hash": 7,
+  "source_archives_matching_retained_old_hash": 7,
+  "self_owned_skinkit_poms_and_binaries_match_retained_old_hash": true,
+  "still_not_recovered": [
+    "Original73-file bundle, full original manifest rows, original source-index/report bytes",
+    "Original complete55-artifact old hash inventory and raw original ELF report files. New actual55 inventories and a new4-ABI static inspection are present; they do not impersonate old files."
+  ],
+  "still_not_completed": [
+    "Final actual Release package contents and accessible license/NOTICE presentation",
+    "External SkinKit ownership/distribution attribution record",
+    "Any new candidate or module admission"
+  ],
+  "default_tls_unchanged": true,
+  "native_source_or_build_files_with_retained_old_hash": 10,
+  "native_source_or_build_files_matching_retained_old_hash": 10,
+  "actual_runtime_graph_verification": "MATCHED_55_DEBUG_AND_RELEASE_WITH_NEW_STATIC_HASH_CHECKS",
+  "new_four_abi_elf_inspection_available": true
+}

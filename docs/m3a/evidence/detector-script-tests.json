@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "checks": 11,
+  "scope": "synthetic bounded DOM script only",
+  "androidWebView": "NOT_RUN",
+  "realSite": "NOT_RUN"
+}

@@ -1,0 +1,10 @@
+./app/gradle.lockfile: OK
+./commons-provider/gradle.lockfile: OK
+./core-domain/gradle.lockfile: OK
+./core-model/gradle.lockfile: OK
+./discovery/gradle.lockfile: OK
+./gradle/verification-metadata.xml: OK
+./hls/gradle.lockfile: OK
+./library/gradle.lockfile: OK
+./save/gradle.lockfile: OK
+./ui-theme/gradle.lockfile: OK

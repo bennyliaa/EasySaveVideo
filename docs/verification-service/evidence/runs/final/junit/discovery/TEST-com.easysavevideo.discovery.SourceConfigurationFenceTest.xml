@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.SourceConfigurationFenceTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:06.350Z" hostname="05582a867b99" time="0.011">
+  <properties/>
+  <testcase name="sourceChangeDemandFencePersistsAcrossAnotherProcessRestore" classname="com.easysavevideo.discovery.SourceConfigurationFenceTest" time="0.001"/>
+  <testcase name="staleSourceResponseCannotPublishIntoNewQueryCandidates" classname="com.easysavevideo.discovery.SourceConfigurationFenceTest" time="0.0"/>
+  <testcase name="pendingCardsDoNotEnterVerifiedPoolHistoryOrPersistence" classname="com.easysavevideo.discovery.SourceConfigurationFenceTest" time="0.001"/>
+  <testcase name="sourceWriteFenceRejectsCapturedLocalHistoryAndProgressCommands" classname="com.easysavevideo.discovery.SourceConfigurationFenceTest" time="0.001"/>
+  <testcase name="ephemeralProgressNeverSurvivesFreshSearchOrProcessRestore" classname="com.easysavevideo.discovery.SourceConfigurationFenceTest" time="0.006"/>
+  <testcase name="sourceWriteFenceCannotBeReopenedByLifecyclePriorityPowerOrDemand" classname="com.easysavevideo.discovery.SourceConfigurationFenceTest" time="0.001"/>
+  <testcase name="changedConfigurationClearsVerifiedPoolCursorsAndDemandOnRestore" classname="com.easysavevideo.discovery.SourceConfigurationFenceTest" time="0.001"/>
+  <testcase name="recoveryRestoreRetiresDemandEvenWhenSourceGenerationIsUnchanged" classname="com.easysavevideo.discovery.SourceConfigurationFenceTest" time="0.0"/>
+  <testcase name="sourceProgressResetAndNewQueryClearPendingOnly" classname="com.easysavevideo.discovery.SourceConfigurationFenceTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

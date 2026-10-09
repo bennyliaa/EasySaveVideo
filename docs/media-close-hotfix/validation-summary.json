@@ -1,0 +1,101 @@
+{
+  "baseline": "f78d7cc46c92bdd461e701ac3c39f62e12cb0ce5",
+  "jvm": {
+    "total": {
+      "tests": 1959,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "modules": {
+      "core-model": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "core-domain": {
+        "tests": 44,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "ui-theme": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "discovery": {
+        "tests": 205,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "commons-provider": {
+        "tests": 238,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "save": {
+        "tests": 86,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "recording": {
+        "tests": 127,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "library": {
+        "tests": 246,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "hls": {
+        "tests": 40,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "app": {
+        "tests": 964,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "new_owned_stream_regressions": 15
+  },
+  "compile": {
+    "debug": "PASS",
+    "release": "PASS"
+  },
+  "lint": {
+    "debug": {
+      "Warning": 17,
+      "Hint": 6
+    },
+    "release": {
+      "Warning": 17,
+      "Hint": 6
+    }
+  },
+  "runtime_admission": "PASS strict offline exact admitted artifacts",
+  "static_guards": [
+    "boundaries",
+    "stream",
+    "recording",
+    "ordinary library",
+    "editor",
+    "region recording",
+    "capture preview"
+  ],
+  "sqlite_tests": 75,
+  "editor_muxer_release_host": "PASS synthetic fixture, actual pinned Media3 muxer and FD close",
+  "android_retest": "NOT_RUN"
+}

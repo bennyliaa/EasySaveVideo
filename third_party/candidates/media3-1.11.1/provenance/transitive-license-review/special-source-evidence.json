@@ -1,0 +1,114 @@
+[
+  {
+    "coordinate": "com.google.code.findbugs:jsr305:3.0.2",
+    "source": "raw/com.google.code.findbugs__jsr305__3.0.2/sources/javax/annotation/concurrent/Immutable.java",
+    "header_extract": "license-headers/com.google.code.findbugs__jsr305__3.0.2__Immutable.java.txt",
+    "source_sha256": "6f95c78b0412c79b82eb34a44a5f2667d6e10bfe6af2471f3d9202a5e6633724",
+    "extract_sha256": "2d0c74e39703b49264f1b32ae2a236e3f7be462bf740f7d2ff848cf97e7e02d1"
+  },
+  {
+    "coordinate": "com.google.code.findbugs:jsr305:3.0.2",
+    "source": "raw/com.google.code.findbugs__jsr305__3.0.2/sources/javax/annotation/concurrent/GuardedBy.java",
+    "header_extract": "license-headers/com.google.code.findbugs__jsr305__3.0.2__GuardedBy.java.txt",
+    "source_sha256": "394a92efceb1e774e5fcb3a2636fef41eee51042d26673bb6350fe46ae0f6a17",
+    "extract_sha256": "2d0c74e39703b49264f1b32ae2a236e3f7be462bf740f7d2ff848cf97e7e02d1"
+  },
+  {
+    "coordinate": "com.google.code.findbugs:jsr305:3.0.2",
+    "source": "raw/com.google.code.findbugs__jsr305__3.0.2/sources/javax/annotation/concurrent/ThreadSafe.java",
+    "header_extract": "license-headers/com.google.code.findbugs__jsr305__3.0.2__ThreadSafe.java.txt",
+    "source_sha256": "58c3192ce6f8ec7b54d20af2781f56ab54a5b8a12ff87e179e4f1b9ed419eaeb",
+    "extract_sha256": "2d0c74e39703b49264f1b32ae2a236e3f7be462bf740f7d2ff848cf97e7e02d1"
+  },
+  {
+    "coordinate": "com.google.code.findbugs:jsr305:3.0.2",
+    "source": "raw/com.google.code.findbugs__jsr305__3.0.2/sources/javax/annotation/concurrent/NotThreadSafe.java",
+    "header_extract": "license-headers/com.google.code.findbugs__jsr305__3.0.2__NotThreadSafe.java.txt",
+    "source_sha256": "4f87edf90c26f47873aa8199310b18d9b4786304119cfe795a9ada526888c519",
+    "extract_sha256": "2d0c74e39703b49264f1b32ae2a236e3f7be462bf740f7d2ff848cf97e7e02d1"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/cache/Striped64.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__Striped64.java.txt",
+    "source_sha256": "9d579b55af4b90eea0549fbec6bd9588f91261d7c84470bd9501305978fa5209",
+    "extract_sha256": "8df61aee80f959c18e661a2c2421dcbbe55bcc57d88ace8c79703b90d6933d49"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/cache/LongAdder.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__LongAdder.java.txt",
+    "source_sha256": "5a4c04b560dc1d1395ae3063aaeaf4ef368ecb0eee65b37404fa38d2d8532ecc",
+    "extract_sha256": "8df61aee80f959c18e661a2c2421dcbbe55bcc57d88ace8c79703b90d6933d49"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/collect/Hashing.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__Hashing.java.txt",
+    "source_sha256": "58c26b1f80dfca4bfe27db75e367b2dda5cab5315716f605ec362891cdae9bab",
+    "extract_sha256": "a4dac672db0ef3d208e3e07b5db7fd8f0b84a86222048d03c7b592bef2b25f72"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/hash/Murmur3_128HashFunction.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__Murmur3_128HashFunction.java.txt",
+    "source_sha256": "4e3f06f43e3c7671c2e703fc989d995b2878069a9a8e626a0ee29fc26f729611",
+    "extract_sha256": "6e91fd1620a902be2fddd4695bd863fdf5d096312de040247ee3b023904dc420"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/hash/Striped64.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__Striped64.java.txt",
+    "source_sha256": "9163a7a54f6698bc53c3f99128f8304d422fce2aacc7d28a0e966a832141adcd",
+    "extract_sha256": "8df61aee80f959c18e661a2c2421dcbbe55bcc57d88ace8c79703b90d6933d49"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/hash/LongAdder.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__LongAdder.java.txt",
+    "source_sha256": "8abae13df4dd9e24608f83d41c30325680e15ce82e318cf1df0cdfa169e405b6",
+    "extract_sha256": "8df61aee80f959c18e661a2c2421dcbbe55bcc57d88ace8c79703b90d6933d49"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/hash/Murmur3_32HashFunction.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__Murmur3_32HashFunction.java.txt",
+    "source_sha256": "9428ef71f91d99fa6cce384e74d73b15514d587c6d882aebfb57b801e1c8e1c4",
+    "extract_sha256": "6e91fd1620a902be2fddd4695bd863fdf5d096312de040247ee3b023904dc420"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/base/SmallCharMatcher.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__SmallCharMatcher.java.txt",
+    "source_sha256": "578398bbf063f75d5fa6c53b012e7924191e579fa2d77bfd81d2569804077375",
+    "extract_sha256": "b5da6f1affc760e6680689e4d2b3d0cc6d78a0ddbf090744e1e10a4281ce32f4"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/util/concurrent/Striped.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__Striped.java.txt",
+    "source_sha256": "b2688ca4b0a8474bdec70428739357201dab12ced73f9d2f524faf0ac78d5b7a",
+    "extract_sha256": "127e6647b097d5a0d626bc3face93ee33c4d27d25a3a7e88d9df73f669bdc207"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/util/concurrent/AtomicDouble.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__AtomicDouble.java.txt",
+    "source_sha256": "e5ba248f121be15045da54ce3236745ca2766495dec0f2410b2318b7318a8de9",
+    "extract_sha256": "ec8d473e807fa299dcbdadb63d779df27d26101b099b1862fd85aad597a9f542"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/util/concurrent/AtomicDoubleArray.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__AtomicDoubleArray.java.txt",
+    "source_sha256": "8e58b9c298fb2a2976b0b3c9a609fa18c56b80045954480473039da00dedd083",
+    "extract_sha256": "8df61aee80f959c18e661a2c2421dcbbe55bcc57d88ace8c79703b90d6933d49"
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.3.1-android",
+    "source": "raw/com.google.guava__guava__33.3.1-android/sources/com/google/common/util/concurrent/MoreExecutors.java",
+    "header_extract": "license-headers/com.google.guava__guava__33.3.1-android__MoreExecutors.java.txt",
+    "source_sha256": "746145f0ac5a04c093035fc55ff9eacc2135daef6c4c247a932dd54fff3495d5",
+    "extract_sha256": "3d261b2839595bf2b727483fbea8dde14c6da4620dfb821d6b27d194a5693ba3"
+  }
+]

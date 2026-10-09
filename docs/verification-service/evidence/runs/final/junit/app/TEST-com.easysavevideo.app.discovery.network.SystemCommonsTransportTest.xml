@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" tests="26" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:58.232Z" hostname="05582a867b99" time="0.166">
+  <properties/>
+  <testcase name="cancellationClosesConnectTlsHeadersAndBodyIoWithoutWaitingOnTheirThread" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.032"/>
+  <testcase name="ambientCookieAuthenticatorAndProxyAreNeverConsultedOrChanged" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.003"/>
+  <testcase name="slowHeadersAndBodyDeadlineRetainSlotUntilCleanupThenReleaseWithoutRetry" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.003"/>
+  <testcase name="ordinaryDeclaredLimitRejectionDoesNotConsumeBodyAndNextConnectionRecovers" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.003"/>
+  <testcase name="refusesCredentialExtraOrInjectedHeadersAndSnapshotsSuppliedMap" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.002"/>
+  <testcase name="elapsedMonotonicDeadlineCannotBeExtendedByWallClockRollbackDuringBodyRead" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.001"/>
+  <testcase name="allRedirectsAreRejectedWithNoSecondDnsOrSocket" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.005"/>
+  <testcase name="cancelledBeforeExecutionAndDuplicateExecuteNeverStartAnotherExchange" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.001"/>
+  <testcase name="checksEveryDnsAnswerBeforeOpeningEvenIfFirstAnswerIsPublic" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.001"/>
+  <testcase name="ordinaryPartialAndMalformedWireResponsesReleaseForOneExplicitFreshConnection" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.038"/>
+  <testcase name="unreachableDnsIsOneSanitizedAttemptAndExplicitNextRequestCanRecover" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.002"/>
+  <testcase name="deadlineWhileDnsStuckReturnsPromptlyAndNeverRefreshesOriginalBudget" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.001"/>
+  <testcase name="emptyDnsAndChangedPublicOrPrivatePeerCannotReachTls" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.002"/>
+  <testcase name="anonymousExactRequestPinsPeerAndConfiguresHostnameAndSni" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.001"/>
+  <testcase name="deadlineIncludesElapsedDnsAndTlsAndNeverExtendsForBody" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.001"/>
+  <testcase name="blockedCloseKeepsSlotButDoesNotBlockCancellationOrDeadlineThread" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.001"/>
+  <testcase name="bodyMemoryReadsStillRespectCancellationAndAbsoluteDeadline" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.002"/>
+  <testcase name="refusedConnectionIsClosedWithoutTlsOrAutomaticRetry" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.002"/>
+  <testcase name="cancelledStuckDnsReturnsPromptlyAndRetainsPhysicalSlotUntilResolverExits" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.005"/>
+  <testcase name="rateLimitReachesProviderBeforeStuckCloseAndSurvivesDeadlineAndPhysicalRelease" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.028"/>
+  <testcase name="tlsPeerMismatchAndCertificateOrHostnameFailureTransmitNoHttp" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.002"/>
+  <testcase name="transportCooldownSurvivesCallerDiscardingHeadersCancellationAndLatePhysicalClose" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.002"/>
+  <testcase name="connectAndAbsoluteWatchdogsCloseTheActualSocket" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.002"/>
+  <testcase name="interruptedBodyIoDoesNotPublishPartialResponseAndFreshConnectionRecovers" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.005"/>
+  <testcase name="rateLimitAndDenialHeadersSurviveUnreadableCompressedOversizedErrorBodies" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.017"/>
+  <testcase name="endpointAndBudgetValidationDoesNoIo" classname="com.easysavevideo.app.discovery.network.SystemCommonsTransportTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

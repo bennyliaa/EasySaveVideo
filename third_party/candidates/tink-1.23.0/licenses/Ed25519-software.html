@@ -1,0 +1,104 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type=text/css>pre{font-size:large;}tt{font-size:large;}</style>
+<title>
+Software
+</title>
+</head>
+<body>
+<table width="100%">
+  <tr>
+    <td align=left bgcolor="#AAAAFF"><h1>Ed25519: high-speed high-security signatures</h1></td>
+  </tr>
+</table>
+<table width="100%"><tr>
+<td width="15%" align=left valign=top><table bgcolor="#AAAAFF" border width="100%"><tr><td width="100%"><table width="100%">
+<tr><td width="100%"><a href="index.html" style="text-decoration:none">Introduction</a></td></tr>
+<tr><td width="100%" bgcolor="#FFFF80">Software</td></tr>
+<tr><td width="100%"><a href="papers.html" style="text-decoration:none">Papers</a></td></tr>
+</table></td></tr></table>
+</td><td align=left valign=top>
+<h1>Software</h1>
+The Ed25519 software
+is available as the <tt>crypto_sign/ed25519</tt> subdirectory of the
+<a href="https://bench.cr.yp.to/supercop.html">SUPERCOP</a> benchmarking tool,
+starting in version 20110629.
+This software will also be integrated into the next release of the
+<a href="https://nacl.cr.yp.to">Networking and Cryptography library</a> (NaCl).
+<p>
+The Ed25519 software consists of three separate implementations,
+all providing the same interface:
+<ul>
+<li><tt>amd64-51-30k</tt>. Assembly-language implementation for the amd64 architecture,
+using radix 2^51 and a 30KB precomputed table.
+<li><tt>amd64-64-24k</tt>. Assembly-language implementation for the amd64 architecture,
+using radix 2^64 and a 24KB precomputed table.
+<li><tt>ref</tt>. Slow but relatively simple and portable C implementation.
+</ul>
+Both SUPERCOP and NaCl automatically select the fastest implementation on each computer.
+<h2>Alternate implementations</h2>
+There is a very slow but very concise Python implementation,
+consisting of four files:
+<ul>
+<li><a href="python/ed25519.py">ed25519.py</a>, the main subroutines.
+<li><a href="python/checkparams.py">checkparams.py</a>, some optional double-checks.
+<li><a href="python/sign.py">sign.py</a>, a signature regression test.
+<li><a href="python/sign.input">sign.input</a>, data for the regression test.
+</ul>
+This implementation does not include protection against side-channel attacks.
+<h2>Copyrights</h2>
+The Ed25519 software is in the public domain.
+<h2>Patents</h2>
+The authors have not been notified of any claims of patent problems wth Ed25519.
+Even if such claims are made in the future,
+the authors will continue to make the Ed25519 software available
+for practical use in countries where practical use is legal,
+and for research and experimentation in countries where research and experimentation are legal.
+<p>
+Readers interested in the scope of various cryptographic patents
+might find the following links helpful:
+<ul>
+<li><b>Expired</b> 29 April 1997:
+<a href="https://cr.yp.to/patents/us/4200770.html">US 4200770</a>,
+public-key cryptography.
+<b>Prior art:</b> Diffie and Hellman, June 1976.
+<li><b>Expired</b> 16 October 2007:
+<a href="https://cr.yp.to/patents/us/4964164.html">US 4964164</a>,
+batch RSA signing.
+<li><b>Expired</b> 19 February 2008:
+<a href="https://cr.yp.to/patents/us/4995082.html">US 4995082</a>,
+Schnorr signatures.
+<li><b>Expired</b> 17 September 2011:
+<a href="https://cr.yp.to/patents/us/5159632.html">US 5159632</a>,
+elliptic-curve arithmetic mod p with reduction using "shift and add operations".
+<b>Prior art:</b> Bender and Castagnoli, 1989.
+<li><b>Expired</b> 17 September 2011:
+<a href="https://cr.yp.to/patents/us/5271061.html">US 5271061</a>.
+<b>Prior art:</b> Bender and Castagnoli, 1989.
+<li><b>Expired</b> 17 September 2011:
+<a href="https://cr.yp.to/patents/us/5463690.html">US 5463690</a>.
+<b>Prior art:</b> Bender and Castagnoli, 1989.
+<li><b>Expired</b> 13 August 2012:
+<a href="https://cr.yp.to/patents/us/5299262.html">US 5299262</a>,
+fixed-base-point exponentiation.
+<b>Prior art:</b> Pippenger, 1976.
+<li><b>Expired</b> 15 September 2013:
+<a href="https://cr.yp.to/patents/us/5347581.html">US 5347581</a>,
+batch verification.
+<b>Prior art:</b> Lilien and Bhargava, 1984.
+<li><b>Expired</b> 29 July 2014:
+<a href="https://cr.yp.to/patents/us/6141420.html">US 6141420</a>,
+point compression.
+<b>Prior art:</b> Miller, 1985; Harper, Menezes, and Vanstone, 1992.
+<li><b>Expired</b> 6 June 2015:
+<a href="https://cr.yp.to/patents/us/5999627.html">US 5999627</a>,
+fixed-base-point exponentiation.
+<b>Prior art:</b> Pippenger, 1976.
+</ul>
+<h2>Version</h2>
+This is version 2017.01.22 of the software.html web page.
+</td></tr></table>
+</body>
+</html>

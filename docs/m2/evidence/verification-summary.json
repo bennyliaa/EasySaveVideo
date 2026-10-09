@@ -1,0 +1,73 @@
+{
+  "status": "M2_FRAMEWORK_LOCAL_DEVELOPMENT_CANDIDATE",
+  "real_source_acceptance": "PENDING_ZERO_RELEASE_PROVIDERS",
+  "device_acceptance": "NOT_RUN",
+  "verification": "PASS_STRICT_OFFLINE_UNCHANGED_LOCKS_AND_SHA256_METADATA",
+  "jvm_tests": {
+    "app": {
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core_domain": {
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "theme": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "discovery": {
+      "tests": 65,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "total_jvm_tests": 131,
+  "lint": {
+    "debug": {
+      "Error": 0,
+      "Fatal": 0,
+      "Warning": 4,
+      "Information": 0,
+      "Hint": 2
+    },
+    "release": {
+      "Error": 0,
+      "Fatal": 0,
+      "Warning": 4,
+      "Information": 0,
+      "Hint": 2
+    }
+  },
+  "runtime_admitted_artifacts": 55,
+  "apk_aab_assembly": "NOT_RUN",
+  "installation": "NOT_RUN",
+  "source_boundary_checks": {
+    "core_platform_provider_store_import_boundary": "PASS",
+    "fake_entitlements_debug_only": "PASS",
+    "synthetic_discovery_debug_only": "PASS",
+    "release_zero_admitted_search_sources": "PASS",
+    "license_recovery_original_bytes": "PASS (99 payloads + manifest)",
+    "skinkit_original_release_jar_hashes": "PASS",
+    "seven_getter_abi": "PASS"
+  },
+  "host_sqlite_contracts": {
+    "host_sqlite_version": "3.53.1",
+    "ddl_tables": 6,
+    "atomic_rollback": "PASS",
+    "seen_progress_independent": "PASS",
+    "unchanged_upsert_no_write": "PASS",
+    "wide_rows": 500,
+    "max_result_row_bytes_estimate": 30003,
+    "total_result_bytes_estimate": 15001390,
+    "android_sqlite_runtime": "NOT_RUN",
+    "cursor_window_device_check": "NOT_RUN"
+  }
+}

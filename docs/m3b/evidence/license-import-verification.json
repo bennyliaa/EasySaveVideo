@@ -1,0 +1,8 @@
+{
+  "manifest_sha256": "d4888243418b5d71d90df41ea3e6aed4e5ef26437a2b472a0638ab71fc23d3b9",
+  "payloads_verified": 184,
+  "reviewed_candidate_binaries_verified": 23,
+  "combined_runtime_gavs": 74,
+  "development_integration": "PERMITTED_WITH_OBLIGATIONS",
+  "publication": "NOT_AUTHORIZED_NOT_DONE"
+}

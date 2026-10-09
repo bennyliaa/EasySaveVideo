@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:31:03.649Z" hostname="05582a867b99" time="0.005">
+  <properties/>
+  <testcase name="thirtyTwoEffectiveResumesFitButThirtyThirdCannotBeMuxedOrCounted" classname="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" time="0.002"/>
+  <testcase name="trackEvidenceIncludesOnlySuccessfulWritesAndExplicitFinalDuration" classname="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" time="0.0"/>
+  <testcase name="commandFloodHasAHardBound" classname="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" time="0.0"/>
+  <testcase name="arithmeticAndInvalidDurationAreRejectedBeforeWrite" classname="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" time="0.0"/>
+  <testcase name="audioCannotInventSyncFramesAndKeepsItsOwnStartOffset" classname="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" time="0.0"/>
+  <testcase name="duplicateControlsAreCoalescedButAlternatingCommandsAreNotLost" classname="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" time="0.0"/>
+  <testcase name="onlySuccessfulMuxedResumeKeyframeCreatesBoundary" classname="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" time="0.0"/>
+  <testcase name="videoMustStartWithRealKeyframeAtZero" classname="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" time="0.0"/>
+  <testcase name="pendingResumeReservationsBoundPreMuxFormatDelay" classname="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" time="0.0"/>
+  <testcase name="duplicateOrBackwardsSamplesFailWithoutClamping" classname="com.easysavevideo.app.recording.RecordingCaptureAccountingTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

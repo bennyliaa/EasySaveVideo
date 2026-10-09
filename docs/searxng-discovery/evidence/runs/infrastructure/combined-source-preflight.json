@@ -1,0 +1,273 @@
+{
+  "current_source_scope": {
+    "baseline": "9e9dea537c5f6e269adfb6791b47829eb4c440de",
+    "baseline_files": 4644,
+    "changed_files": [
+      "app/build.gradle.kts",
+      "app/src/debug/kotlin/com/easysavevideo/app/discovery/BuildDiscovery.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryFilterPresentationPolicy.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/storage/DiscoveryCheckpointCodec.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
+      "app/src/release/kotlin/com/easysavevideo/app/discovery/BuildDiscovery.kt",
+      "discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryModels.kt",
+      "discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryStore.kt",
+      "discovery/src/main/kotlin/com/easysavevideo/discovery/ValidationPipeline.kt",
+      "discovery/src/main/kotlin/com/easysavevideo/discovery/VideoDiscoveryCoordinator.kt",
+      "settings.gradle.kts"
+    ],
+    "allowed_production_and_gradle_edits": [
+      "app/build.gradle.kts",
+      "app/src/debug/kotlin/com/easysavevideo/app/discovery/BuildDiscovery.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryFilterPresentationPolicy.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/storage/DiscoveryCheckpointCodec.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
+      "app/src/release/kotlin/com/easysavevideo/app/discovery/BuildDiscovery.kt",
+      "discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryModels.kt",
+      "discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryStore.kt",
+      "discovery/src/main/kotlin/com/easysavevideo/discovery/ValidationPipeline.kt",
+      "discovery/src/main/kotlin/com/easysavevideo/discovery/VideoDiscoveryCoordinator.kt",
+      "settings.gradle.kts"
+    ],
+    "new_source_files": [
+      "app/src/main/kotlin/com/easysavevideo/app/discovery/DiscoverySourceUiFence.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationController.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/discovery/SearxngSourceConfiguration.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/discovery/SearxngSourceRegistration.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/discovery/network/StrictSearxngHttp.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/discovery/network/SystemSearxngTransport.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/storage/AndroidSearxngConfigurationStore.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/storage/SearxngConfigurationCodec.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/storage/SearxngConfigurationStore.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/ui/PendingCandidateCards.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/ui/SearxngSourceSettings.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/discovery/DiscoverySourceUiFenceTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationControllerTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationPolicyTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/discovery/SearxngSourceGenerationTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/discovery/network/StrictSearxngHttpTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/discovery/network/SystemSearxngTransportTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/storage/DiscoveryConfigurationCheckpointTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/storage/SearxngConfigurationCodecTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/storage/SearxngConfigurationStoreTest.kt",
+      "discovery/src/main/kotlin/com/easysavevideo/discovery/PendingCandidates.kt",
+      "discovery/src/test/kotlin/com/easysavevideo/discovery/PendingCandidateTest.kt",
+      "discovery/src/test/kotlin/com/easysavevideo/discovery/SourceConfigurationFenceTest.kt",
+      "searxng-provider/build.gradle.kts",
+      "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngCursor.kt",
+      "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngModels.kt",
+      "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngResponseParser.kt",
+      "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngRetryAfter.kt",
+      "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngTransport.kt",
+      "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngVideoSearchProvider.kt",
+      "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/StrictJson.kt",
+      "searxng-provider/src/test/kotlin/com/easysavevideo/searxng/SearxngProtocolTest.kt",
+      "searxng-provider/src/test/kotlin/com/easysavevideo/searxng/SearxngTestSupport.kt",
+      "searxng-provider/src/test/kotlin/com/easysavevideo/searxng/SearxngVideoSearchProviderTest.kt"
+    ],
+    "unchanged_baseline_files": 4632,
+    "historical_scripts_tests_fixtures_evidence": "ALL_BASELINE_BYTES_AND_GIT_MODES_UNCHANGED"
+  },
+  "identity_adaptation": "Historical hotfix/bookmark identity compared to exact approved baseline; only explicit current edits are separately scope-checked and frozen",
+  "status": "PASS_BASELINE_AND_CURRENT_SCOPE_IDENTITY_ONLY",
+  "original_baseline": "f78d7cc46c92bdd461e701ac3c39f62e12cb0ce5",
+  "hotfix_inclusive_baseline": "0c178320cd78391bfedd5f9846e3ee873f0f5fce",
+  "bookmark_checkpoint": "53ee1863a5b60f44752d246e936b599ca1ca7628",
+  "combined_integration": "c3792eac3f98c87c4ea55331a271124d89e64829",
+  "hotfix_patch_sha256": "11b053992a672fff53c59653008a6438a18bf133f3b23dc958e26a850b11238d",
+  "bookmark_integration_patch_sha256": "28a12e6cc6d5f64fd5622265da74f95ea114a173ba4f9774c9bb429ae10e2d06",
+  "hotfix_files": [
+    {
+      "path": "app/build.gradle.kts",
+      "git_blob": "c048ef2a4e7373bf86f8e3c6d1f11fd2ffa4b7c2",
+      "sha256": "33eb46ca2d765d6bb6b1312661e5aa5613baf50c6a7c6f82b14d7e99f7c204c7",
+      "size": 5858,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/editor/storage/AndroidEditStorage.kt",
+      "git_blob": "49b8a6069aa8ddf9711267b46405a9e23b5c5c17",
+      "sha256": "71e8f27b7371a58e6ba4eadaa66e4303b8815bb9d404b5c5bdf8cb7a324f7a20",
+      "size": 25100,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/recording/segments/AndroidRecordedSegmentStorage.kt",
+      "git_blob": "edec0cf8fd5ab73cbc196641b8f3e2e632936eb9",
+      "sha256": "54c1fa65529cd52048b33c2c4f1cafec90f8c89efd37b7a39ba910fe701f1082",
+      "size": 27689,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+      "git_blob": "7c351a643c527299e2074d0c677c4417919a422d",
+      "sha256": "b2ce2e0d36b8fa941a38bb8c28aeab6b351a62191cf54d034766c2f020e4a6ab",
+      "size": 33197,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/storage/OwnedFileStreams.kt",
+      "git_blob": "502bccdeb8f2e52da308b43f7cf65c9b3aa995b1",
+      "sha256": "8b8bbcb1cfa28e1d8246b52a1822ad167b780bf73c703dd15001c105b7d5bf26",
+      "size": 2050,
+      "executable": false
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/storage/OwnedFileStreamReleaseReviewTest.kt",
+      "git_blob": "d75723adf050b08f068c08dc736bd9a23da6c0b0",
+      "sha256": "784a7e7c049bf43e6d84d72c3f920f224e610fae4e9d7f7ba848be2b3aaed551",
+      "size": 3229,
+      "executable": false
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/storage/OwnedFileStreamsTest.kt",
+      "git_blob": "a54dd185fae30c7846c876601be17538f271d265",
+      "sha256": "92d1f8919359ab0a086bc469d28a3ea0b42ece65612b4770cff9f9afd3e89c7a",
+      "size": 9551,
+      "executable": false
+    },
+    {
+      "path": "docs/media-close-hotfix/DIAGNOSIS_AND_VALIDATION.md",
+      "git_blob": "0814bf8a3ab2cda02f11d8f217af8bf954e307cf",
+      "sha256": "3b8681842e93ee93cea68a1356b2f718e29a101491f844376a4769ed0e29b0ca",
+      "size": 3471,
+      "executable": false
+    },
+    {
+      "path": "docs/media-close-hotfix/evidence/TEST-com.easysavevideo.app.storage.OwnedFileStreamReleaseReviewTest.xml",
+      "git_blob": "c21be6af30169a3f34cc6a9840b9934eec1c4eb8",
+      "sha256": "ca403973c1e43e4bf2ef6b3f6f4a37f694f968794b017f6d71876fa7e99b240a",
+      "size": 861,
+      "executable": false
+    },
+    {
+      "path": "docs/media-close-hotfix/evidence/TEST-com.easysavevideo.app.storage.OwnedFileStreamsTest.xml",
+      "git_blob": "a2023a45a0b2aa0d5133842d30e5e0679fb281e5",
+      "sha256": "d56554b98b16a1a406b76c46c1f61f3d2f43e5c8365b90fce973ded10e8c0755",
+      "size": 2166,
+      "executable": false
+    },
+    {
+      "path": "docs/media-close-hotfix/evidence/frozen-close-reproduction.txt",
+      "git_blob": "01ac5664617ca5b0e48beb951da804223461e30c",
+      "sha256": "23f53a1da79afd115cfb0394ee00a33b6aa249e530e0f483caf061a7d598e578",
+      "size": 351,
+      "executable": false
+    },
+    {
+      "path": "docs/media-close-hotfix/evidence/frozen-scope-check.json",
+      "git_blob": "bb2a8248fca53c2f77f6bb2abaac2815b1a8f320",
+      "sha256": "0cb1b24e66be4ccb27b3ab82b0657befac523844b2db250fa1b82f9e8bb96bdd",
+      "size": 235,
+      "executable": false
+    },
+    {
+      "path": "docs/media-close-hotfix/validation-summary.json",
+      "git_blob": "edd72e8c1a21e65dc537fb6631cf22588f8b200d",
+      "sha256": "b309c71dcf79c31b63521169d44058817cb11e142f5b95e61f3093810815bf98",
+      "size": 1974,
+      "executable": false
+    },
+    {
+      "path": "scripts/check-library-admission.py",
+      "git_blob": "f338b86705d245c59d5d707f1a428ba237fa6306",
+      "sha256": "e113db416c2184fea130e2b9304114de64048c3c51481461fc7d41bc7b36d94b",
+      "size": 5409,
+      "executable": true
+    }
+  ],
+  "unchanged_bookmark_files": [
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+      "git_blob": "c7f449c6939d84ac5f4e13da3e27841baf5787a3",
+      "sha256": "1f4966f5955ed752b88e417d5659201945c7407f10d3063d8548c346b0fab1bd",
+      "size": 37189,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt",
+      "git_blob": "e680594b6bc57bff14da5892015a64b4eb914c55",
+      "sha256": "1ee8afbc5c52eb3314a9e8b0d0b45cef21a26ce9413454a068d0a02f5e39df70",
+      "size": 30219,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt",
+      "git_blob": "fa02c76c4a228ce1db89e4ca093f3d137feb67ce",
+      "sha256": "68769d49eb7d6a1f0362cc9fd8be9ad418e91a85481e9527492516e4f477bbc9",
+      "size": 20717,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/AndroidBookmarkRuntime.kt",
+      "git_blob": "7d85ebb5469eeb57b95e1547b71fbf3dc7894b14",
+      "sha256": "4d47818e8e9990b2212ae9d816431591b669e15b3a4f12003713e9effcfcbe29",
+      "size": 2143,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/AndroidBookmarkStorage.kt",
+      "git_blob": "905a1c994e71f72c57cc5507cb5b2d5b07963a98",
+      "sha256": "53c2d2e4af158d8c7e6fbc9eeade843d07096deffbbe2ecc1e907340f7d5254b",
+      "size": 2447,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkCodec.kt",
+      "git_blob": "3d7620e23adb2a4c584d4459c59bf065cba6e7c2",
+      "sha256": "ef4a38921b098f78f423edfc0c92bd0bf917e47c9f135617ef81341ad776e4cb",
+      "size": 2673,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkController.kt",
+      "git_blob": "d2a3f2f6d6a665983ac234ded9b9b71bd864b956",
+      "sha256": "fbfe3f39e2794758166719dee1305db9c97379ec7a24acb9ce97414a54f92c98",
+      "size": 4414,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPanel.kt",
+      "git_blob": "e52ccb68179a286cc922ab2557bb7ecab31d860f",
+      "sha256": "74f5adc3b992546c290b8e584e6504cd90f7aeaeaf95626cf23505d5103d3745",
+      "size": 3892,
+      "executable": false
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPolicy.kt",
+      "git_blob": "4f053ab849d5c1a6e623650019d2df1195c68f22",
+      "sha256": "684cb44dfe050abe42eb302e59948d52b9638bb2bf6a582f24f093443f201dd1",
+      "size": 4888,
+      "executable": false
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkCodecTest.kt",
+      "git_blob": "8cd4f4d00d6e0c593aa529f241ebee8b723548a0",
+      "sha256": "183c8e45767045f313868f8146d1ee1473480af657d0afb7d15a7ae7cf2022a7",
+      "size": 3938,
+      "executable": false
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkControllerTest.kt",
+      "git_blob": "169711a6ab4fd650aa87dad9acad0689f3d2450b",
+      "sha256": "1b3625b79336a0030221db9b0a866987acea039a9f58dc463917f7b558e6028b",
+      "size": 10010,
+      "executable": false
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPolicyTest.kt",
+      "git_blob": "85c7d8a8362fb8d644799f13a413bfd4911d5958",
+      "sha256": "da10df92d7e162bae6065c09e5fb2c25e84e5aef36cb2cf5f402a5352f1a0755",
+      "size": 6626,
+      "executable": false
+    }
+  ],
+  "expected_combined_jvm_count": 2035,
+  "count_basis": "1959 hotfix-inclusive baseline + 76 bookmark tests; declared expectation, not a runtime result",
+  "limits": [
+    "Source identity and integration-delta review only.",
+    "Hotfix device QA remains pending; no native or hotfix runtime PASS is claimed.",
+    "Original 2020-count bookmark evidence remains separate from combined verification."
+  ]
+}

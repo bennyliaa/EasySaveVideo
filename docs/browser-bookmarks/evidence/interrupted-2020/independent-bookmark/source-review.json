@@ -1,0 +1,33 @@
+{
+  "pass": true,
+  "checks": {
+    "pure policy/controller contain no platform imports": true,
+    "bookmark package has no network or WebView load primitive": true,
+    "store resolves no-backup directory lazily": true,
+    "store sync precedes finish and confirms readable committed records": true,
+    "store bounds streaming bytes and rejects zero-progress reads": true,
+    "runtime uses app-owned singleton": true,
+    "runtime uses serial worker and main dispatcher": true,
+    "worker failure cannot publish success": true,
+    "single operation and completion generation gate": true,
+    "host capture requires current entry and exact live/admitted URL": true,
+    "host uses identity-aware live token revalidation": true,
+    "same-document callback verifies current entry READY and live origin": true,
+    "explicit open validates current entry in both layouts": true,
+    "list-only state is saveable without stored destination": true,
+    "phone/tablet use list plus modal/sidebar": true,
+    "keyboard/back/dismiss cannot trigger opening": true,
+    "URL display is bounded and directional": true,
+    "list rows contain no images or actionable URI parsing": true,
+    "unavailable items cannot open or mutate": true,
+    "history reload is never admitted as same-document": true,
+    "ambiguous missing storage never becomes writable empty": true,
+    "ordinary capture excludes incognito and unready page": true,
+    "new store has no session/history/settings import": true
+  },
+  "count": 23,
+  "limits": [
+    "Source wiring only; not native Android UI, lifecycle, filesystem, WebView, or rotation acceptance.",
+    "No network, Gradle, APK or device operations are executed by this script."
+  ]
+}

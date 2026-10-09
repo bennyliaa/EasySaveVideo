@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.library.LibraryNamesTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:32:27.666Z" hostname="05582a867b99" time="0.015">
+  <properties/>
+  <testcase name="rejectsPathsDotsWhitespaceAndInvisibleCharacters" classname="com.easysavevideo.library.LibraryNamesTest" time="0.002"/>
+  <testcase name="failuresDoNotEchoInput" classname="com.easysavevideo.library.LibraryNamesTest" time="0.0"/>
+  <testcase name="canonicalNamesNormalizeToNfc" classname="com.easysavevideo.library.LibraryNamesTest" time="0.0"/>
+  <testcase name="acceptsOpaqueIdsAndRejectsLocators" classname="com.easysavevideo.library.LibraryNamesTest" time="0.0"/>
+  <testcase name="keyDoesNotDependOnDeviceLocale" classname="com.easysavevideo.library.LibraryNamesTest" time="0.001"/>
+  <testcase name="nameLimitUsesUtf8Bytes" classname="com.easysavevideo.library.LibraryNamesTest" time="0.008"/>
+  <testcase name="rejectsMalformedUtf16WithoutReplacementEncoding" classname="com.easysavevideo.library.LibraryNamesTest" time="0.001"/>
+  <testcase name="normalizationHappensBeforeEncodedLengthCheck" classname="com.easysavevideo.library.LibraryNamesTest" time="0.0"/>
+  <testcase name="searchIsBoundedLiteralTextWithEmptyAllowed" classname="com.easysavevideo.library.LibraryNamesTest" time="0.001"/>
+  <testcase name="doesNotClaimFullUnicodeCaseFolding" classname="com.easysavevideo.library.LibraryNamesTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

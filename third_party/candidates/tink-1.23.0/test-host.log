@@ -1,0 +1,32 @@
+PASS authenticated sequential EOF size=1
+PASS random access and size after final segment size=1
+PASS authenticated sequential EOF size=1048520
+PASS random access and size after final segment size=1048520
+PASS authenticated sequential EOF size=1048521
+PASS random access and size after final segment size=1048521
+PASS authenticated sequential EOF size=1048560
+PASS random access and size after final segment size=1048560
+PASS authenticated sequential EOF size=1048576
+PASS random access and size after final segment size=1048576
+PASS authenticated sequential EOF size=3145865
+PASS random access and size after final segment size=3145865
+PASS tampered middle segment before target plaintext
+PASS wrong AAD before target plaintext
+PASS tampered salt/header before target plaintext
+PASS truncated final segment before target plaintext
+PASS appended trailing byte before target plaintext
+PASS reordered segments before target plaintext
+PASS duplicate segment in different index before target plaintext
+PASS segment from distinct ciphertext before target plaintext
+PASS untouched segment readable before remote corruption is visited (documented partial verification)
+PASS cross-segment exception leaves only prior authenticated bytes in caller buffer
+PASS KNOWN EDGE: seek directly to EOF returns zero, not authenticated EOF
+PASS KNOWN EDGE: empty seekable plaintext returns zero
+PASS KNOWN EDGE: public wrapper close leaves cached plaintext readable; outer lease MUST revoke
+PASS binary encrypted keyset roundtrip with explicit AAD
+PASS wrapped keyset wrong AAD rejected
+PASS 2 GiB synthetic plaintext ciphertext extent uses long arithmetic
+PASS 2 GiB random seeks including last byte verified
+PASS 2 GiB authenticated final EOF
+2GiB streaming encrypt and random-read elapsed_ms=7064
+TOTAL PASS=30; no Android/Keystore/device/Gradle test performed

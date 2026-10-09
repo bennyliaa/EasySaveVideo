@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:33:00.520Z" hostname="05582a867b99" time="0.03">
+  <properties/>
+  <testcase name="excessiveAacPrimingAndNonUnitAudioEditsAreRejected" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.007"/>
+  <testcase name="validMainAndEightBitHighSpsAreSupported" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.002"/>
+  <testcase name="hdrTransferAndHighBitDepthAreRejectedIndependently" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.002"/>
+  <testcase name="cancellationCheckpointIsUsedDuringContainerWalk" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="chunkExtentPastMdatTailFails" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="exactExtentAndSampleTablesReconcile" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="declaredTimingCannotInventMissingTailDuration" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="movieHeaderCannotAdvertiseADifferentDuration" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.0"/>
+  <testcase name="productionShapeNegativeAacEditListHasBoundedExplicitMapping" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.002"/>
+  <testcase name="pqInSpsCannotHideBehindMissingContainerColorTag" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="trailingUnboxedBytesCannotHideAfterCompleteMoov" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.0"/>
+  <testcase name="chunkOutsideMdatAndMetadataPointingIntoMoovFail" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.002"/>
+  <testcase name="spsDimensionsAreNotInferredFromContainerLabels" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="sampleCountsMustMatchBothTimingAndChunkMapping" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.002"/>
+  <testcase name="compositionReorderingAndNonSquarePixelsFail" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="extractorCannotSilentlyHideAacPrimingPacketsFromCompleteWalk" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="fragmentedOrExternalDataIsOutsideThisOutputProfile" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="geometryAndRotationMustMatchPhysicalOutput" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="videoEditListCannotIntroduceHiddenTrimOrNonUnitRate" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="zeroTimingAndOversizedSampleAreRejected" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <testcase name="truncatedLastMdatOrMoovFails" classname="com.easysavevideo.app.editor.verification.EditMp4ProbeTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

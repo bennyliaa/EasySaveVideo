@@ -1,0 +1,8 @@
+PASS ACTUAL_RELEASE_BUILD_CONFIG_DEBUG_FALSE
+PASS frozen source manifest exact hashes: 539
+JUnit version 4.13.2
+........
+Time: 0.034
+
+OK (8 tests)
+

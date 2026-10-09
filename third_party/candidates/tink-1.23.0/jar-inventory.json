@@ -1,0 +1,63 @@
+{
+  "error_prone_annotations-2.41.0.jar": {
+    "classes": 30,
+    "nonclass": [
+      "META-INF/MANIFEST.MF",
+      "META-INF/maven/com.google.errorprone/error_prone_annotations/pom.xml",
+      "META-INF/maven/com.google.errorprone/error_prone_annotations/pom.properties"
+    ],
+    "native": [],
+    "bytecode_versions": {
+      "52": 29,
+      "53": 1
+    }
+  },
+  "gson-2.13.2.jar": {
+    "classes": 204,
+    "nonclass": [
+      "META-INF/MANIFEST.MF",
+      "META-INF/proguard/gson.pro",
+      "META-INF/maven/com.google.code.gson/gson/pom.xml",
+      "META-INF/maven/com.google.code.gson/gson/pom.properties"
+    ],
+    "native": [],
+    "bytecode_versions": {
+      "52": 203,
+      "53": 1
+    }
+  },
+  "tink-android-1.23.0.jar": {
+    "classes": 1878,
+    "nonclass": [
+      "META-INF/proguard/protobuf.pro",
+      "META-INF/MANIFEST.MF"
+    ],
+    "native": [],
+    "bytecode_versions": {
+      "55": 1875,
+      "52": 3
+    }
+  },
+  "protobuf-javalite-4.33.6.jar": {
+    "classes": 539,
+    "nonclass": [
+      "META-INF/MANIFEST.MF",
+      "core/java_features_proto-descriptor-set.proto.bin",
+      "google/protobuf/any.proto",
+      "google/protobuf/api.proto",
+      "google/protobuf/descriptor.proto",
+      "google/protobuf/duration.proto",
+      "google/protobuf/empty.proto",
+      "google/protobuf/field_mask.proto",
+      "google/protobuf/source_context.proto",
+      "google/protobuf/struct.proto",
+      "google/protobuf/timestamp.proto",
+      "google/protobuf/type.proto",
+      "google/protobuf/wrappers.proto"
+    ],
+    "native": [],
+    "bytecode_versions": {
+      "52": 539
+    }
+  }
+}

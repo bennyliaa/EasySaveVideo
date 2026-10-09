@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-06",
+  "scope": "Host-only actual admitted Media3 1.11.1 extractor contract regression on original synthetic TS header bytes",
+  "status": "PASS",
+  "production_raw_probe_agreement": true,
+  "jvm_policy_tests": 43,
+  "jvm_policy_test_groups": {
+    "StrictTsProfileProbeTest": 35,
+    "LocalHlsAddressTest": 8
+  },
+  "not_tested": [
+    "codec entropy validity",
+    "Android platform runtime",
+    "MediaCodec",
+    "HlsMediaChunk",
+    "Transformer export",
+    "MP4 muxing",
+    "cancellation and thread release on Android",
+    "device or emulator",
+    "real media",
+    "APK/AAB assembly"
+  ],
+  "files": {
+    "README.md": "470eb2df0e1b0d5b7c6a8123b924d222abd63dbe4f014db8e0655bae9d35a9b8",
+    "RESULTS_2026-10-06.txt": "fe86664e5b418a5dc4feb706f42a19131ca0a6d877e2f92966589f076c86acac",
+    "run.sh": "d89b967cdae05f17da839400933825b1c02915283e8b93f5a090c7ef70975741",
+    "src/ReaderProbe.java": "9eb8897a74fd3974ed090507104ddc4e2100b3af6e3106b0ac5faa20b81e9a2f",
+    "src/SyntheticTs.java": "38ac7c5c25e155fd99d9b03a2a13df13184d7c7614c03ca7073e1899add67a56",
+    "src/android/app/ActivityManager.java": "7a2a4740d347bbbd468a221e4ec727a4bb3dc484f92e4a4a1931efce0470c0cd",
+    "src/android/os/Build.java": "ef6e06d4590c0bbd013c039376b53a352efc0ca5877bef820846866cee5045bb",
+    "src/android/text/TextUtils.java": "1d91fa6e66ad6cb2f75a885b682dab76b1baf4222687b43e373aebffa026142e",
+    "src/android/util/SparseArray.java": "03cb647ff867edd63c501d249fe39192146ceee6818cb72f39dc4a5650391f2e",
+    "src/android/util/SparseBooleanArray.java": "0579d17b9b5c5add37948db13dbe0476ce7395f96033752023a3e70307f1303d",
+    "src/android/util/SparseIntArray.java": "3cac2470773446265dc69f57c3faa11953c39fface5d8cffe29c0f87068d4e81"
+  },
+  "production_sources": {
+    "app/src/main/kotlin/com/easysavevideo/app/save/stream/LocalOnlyDataSource.kt": "7fed4e7f3cd742e123a45745b721e9cff1046718129d024fc924e9ed91502cb7",
+    "app/src/main/kotlin/com/easysavevideo/app/save/stream/Media3LocalHlsEngine.kt": "0b8a96dc4bd04bd3914ba6a202a9dc1b58a6d6b75b92e92da1f226e53a524d38",
+    "app/src/main/kotlin/com/easysavevideo/app/save/stream/StrictTsProfileProbe.kt": "d32361c4521db1eb877888bbf7e77c41b985375b0857ad9e7fb4c4011c544168"
+  }
+}

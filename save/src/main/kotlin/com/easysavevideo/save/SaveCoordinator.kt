@@ -1,0 +1,489 @@
+package com.easysavevideo.save
+
+import com.easysavevideo.core.domain.TaskStateMachine
+import com.easysavevideo.core.model.*
+import com.easysavevideo.recording.RecordingSnapshot
+
+/**
+ * One serialized task owner per journal. execute is synchronous and MUST run on a background worker.
+ * No network/native/hash work runs under the monitor; only the final journal/index publish CAS is fenced with cancel.
+ * Background suspension waits for the active port to release resources before publishing WAITING_USER.
+ */
+class SaveCoordinator(
+    private val journal: SaveJournal,
+    private val transfer: DirectTransferPort,
+    private val verifier: ArtifactVerifier,
+    private val mediaStore: PrivateMediaStore,
+    private val clock: EpochClock,
+    private val limits: SaveLimits,
+    private val retryDelay: SaveRetryDelay = ThreadSaveRetryDelay(clock),
+    private val stream: StreamSavePort = UnsupportedStreamSave,
+    private val recording: RecordSavePort = UnsupportedRecordSave,
+) : TaskController {
+    private fun portFor(method: TaskMethod): DirectTransferPort? = when (method) {
+        TaskMethod.DIRECT -> transfer
+        TaskMethod.STREAM -> stream.takeIf { it.availability().available }
+        else -> null
+    }
+    private fun resourcesUnreleased() = transfer.requiresProcessRecovery() || stream.requiresProcessRecovery() || recording.requiresProcessRecovery() || verifier.requiresProcessRecovery()
+
+    private val lock = Any()
+    private class Runtime(val original: OperationContext, val method: TaskMethod, @Volatile var resource: SelectedMediaResource?, val sourceExpiresAt: Long) {
+        val cancel = CancellationSource()
+        @Volatile var pause = false
+        @Volatile var userCancel = false
+        @Volatile var executing = false
+        @Volatile var lastRecord: SaveRecord? = null
+        var reservedBytes = 0L
+        var context = original.copy(cancelToken = object : CancellationToken {
+            override val isCancelled: Boolean get() = cancel.isCancelled || original.cancelToken.isCancelled
+        })
+    }
+    private val runtimes = java.util.concurrent.ConcurrentHashMap<String, Runtime>()
+    private val observers = mutableMapOf<String, MutableSet<TaskObserver>>()
+    private val cachedSnapshots = java.util.concurrent.ConcurrentHashMap<String, TaskSnapshot>()
+    private var activeTaskId: String? = null
+
+    fun submit(request: SaveRequest, context: OperationContext, preparationBytes: Long = 0): SaveSubmission = synchronized(lock) {
+        try {
+            if (request.networkResource?.durableReference == true) return@synchronized SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+            if (request.origin != CommandOrigin.USER) return@synchronized SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+            if (if (request.method == TaskMethod.RECORD) !recording.availability().available else portFor(request.method) == null) return@synchronized SaveSubmission.Rejected(SaveError.METHOD_UNSUPPORTED)
+            if (preparationBytes < 0 || (request.method != TaskMethod.STREAM && preparationBytes != 0L))
+                return@synchronized SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+            if (preparationBytes > minOf(limits.maxTotalTransferBytes, context.resourceBudget.maxBytes ?: 0))
+                return@synchronized SaveSubmission.Rejected(SaveError.BYTE_LIMIT_EXCEEDED)
+            val durableRequest = request.asDurableReference()
+            journal.findByIdempotencyKey(request.idempotencyKey)?.let {
+                return@synchronized if (it.request == durableRequest.withTaskId(it.request.requestId)) { publish(it); SaveSubmission.Accepted(it, true) }
+                else SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+            }
+            if (resourcesUnreleased()) return@synchronized SaveSubmission.Rejected(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+            stopError(context)?.let { return@synchronized SaveSubmission.Rejected(it) }
+            if (context.resourceBudget.maxBytes == null || context.resourceBudget.maxConcurrentWork != 1)
+                return@synchronized SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+            if (request.networkResource?.expiresAtEpochMillis?.let { clock.nowMillis() >= it } == true)
+                return@synchronized SaveSubmission.Rejected(SaveError.EXPIRED_RESOURCE)
+            val record = SaveRecord(durableRequest, TaskSnapshot(request.requestId, 0, TaskState.QUEUED, request.method),
+                commitId = request.requestId, operationId = context.operationId,
+                deadlineEpochMillis = context.deadlineEpochMillis, retryBudget = if (request.method == TaskMethod.RECORD) 0 else context.retryBudget,
+                attempt = if (request.method == TaskMethod.RECORD) 0 else context.attempt, bytesTransferred = preparationBytes)
+            val inserted = journal.insert(record, limits.maxJournalEntries)
+            if (inserted.request != durableRequest.withTaskId(inserted.request.requestId)) return@synchronized SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+            if (inserted == record) runtimes.putIfAbsent(request.requestId, Runtime(if (request.method == TaskMethod.RECORD) context.copy(retryBudget = 0, attempt = 0) else context,
+                request.method, request.networkResource, sourceExpiry(context, request.networkResource)))
+            publish(inserted)
+            SaveSubmission.Accepted(inserted, inserted != record)
+        } catch (_: Exception) { SaveSubmission.Rejected(SaveError.JOURNAL_UNAVAILABLE) }
+    }
+
+    /** A new explicit user command, not an internal retry. It does not silently reacquire credentials. */
+    fun resume(taskId: String, operation: OperationContext, requestContextRef: RequestContextRef? = null, resource: SelectedMediaResource? = null): SaveRecord? = synchronized(lock) {
+        val record = journal.read(taskId) ?: return@synchronized null
+        if (record.task.state != TaskState.WAITING_USER) return@synchronized record
+        if (clock.nowMillis() >= record.task.waitingUser!!.expiresAtEpochMillis) return@synchronized cancelRecord(record)
+        if (stopError(operation) != null || operation.resourceBudget.maxBytes == null || operation.resourceBudget.maxConcurrentWork != 1)
+            return@synchronized record
+        if (operation.operationId == record.operationId) return@synchronized record
+        val priorRuntime = runtimes[taskId]
+        if (priorRuntime?.executing == true) return@synchronized record
+        // Process restart never replays a capture or reacquires system consent. Only a finalized
+        // durable artifact can enter the shared local verify/commit continuation.
+        if (record.request.method == TaskMethod.RECORD && (record.transfer == null || resource != null || requestContextRef != null))
+            return@synchronized record
+        val liveResource = resource ?: sourceForTask(taskId)
+        if (liveResource != null && (liveResource.durableReference || liveResource.asDurableReference() != record.request.networkResource)) return@synchronized record
+        if (record.transfer == null && liveResource == null) return@synchronized record
+        if (resourcesUnreleased()) return@synchronized record
+        if (record.waitReason == SaveWaitReason.AUTHENTICATION && requestContextRef == null) return@synchronized record
+        val running = changeState(record, TaskState.RUNNING).copy(operationId = operation.operationId,
+            deadlineEpochMillis = operation.deadlineEpochMillis, retryBudget = if (record.request.method == TaskMethod.RECORD) 0 else operation.retryBudget,
+            attempt = if (record.request.method == TaskMethod.RECORD) 0 else operation.attempt,
+            error = null, phase = SavePhase.PREPARING)
+        val sourceExpiresAt = if (resource != null) sourceExpiry(operation, liveResource)
+            else priorRuntime?.sourceExpiresAt ?: sourceExpiry(operation, null)
+        val nextRuntime = Runtime(if (record.request.method == TaskMethod.RECORD) operation.copy(retryBudget = 0, attempt = 0) else operation,
+            record.request.method, liveResource?.copy(requestContextRef = requestContextRef), sourceExpiresAt).also { it.lastRecord = running }
+        runtimes[taskId] = nextRuntime
+        try { save(record, running) }
+        catch (error: Exception) {
+            if (priorRuntime == null) runtimes.remove(taskId, nextRuntime) else runtimes[taskId] = priorRuntime
+            throw error
+        }
+        running
+    }
+
+    fun execute(taskId: String): SaveRecord? {
+        val runtime = synchronized(lock) {
+            val record = journal.read(taskId) ?: return null
+            if (record.task.state.isTerminal || record.task.state == TaskState.WAITING_USER || record.task.state == TaskState.INTERRUPTED) return record
+            val value = runtimes[taskId] ?: return record
+            if (activeTaskId != null || value.executing) return record
+            if (resourcesUnreleased()) {
+                val running = if (record.task.state == TaskState.QUEUED) save(record, changeState(record, TaskState.RUNNING)) else record
+                return waitForUser(running, SaveWaitReason.RECOVERY, SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+            }
+            activeTaskId = taskId; value.executing = true
+            try {
+                if (record.task.state == TaskState.QUEUED) save(record, changeState(record, TaskState.RUNNING).copy(phase = SavePhase.PREPARING))
+            } catch (error: Exception) { activeTaskId = null; value.executing = false; throw error }
+            value
+        }
+        try {
+            while (true) {
+                try { runAttempt(taskId, runtime); break }
+                catch (error: Exception) {
+                    val code = SaveErrors.classify(error)
+                    val retry = synchronized(lock) {
+                        var record = journal.read(taskId) ?: return null
+                        if (record.task.state.isTerminal || runtimes[taskId] !== runtime) return@synchronized false
+                        if (resourcesUnreleased()) { waitForUser(record, SaveWaitReason.RECOVERY, SaveError.RESOURCE_RELEASE_UNCONFIRMED); return@synchronized false }
+                        if (runtime.pause && !runtime.userCancel && !runtime.original.cancelToken.isCancelled) { waitForUser(record, SaveWaitReason.BACKGROUND, null); return@synchronized false }
+                        if (record.phase == SavePhase.COMMITTING && stopError(runtime.context) != SaveError.CANCELLED) { waitForUser(record, SaveWaitReason.RECOVERY, SaveError.RECOVERY_REQUIRED); return@synchronized false }
+                        val stopped = stopError(runtime.context)
+                        if (stopped != null) { finishFailure(record, stopped); return@synchronized false }
+                        val policy = SaveErrors.policy(code)
+                        val next = if (runtime.method != TaskMethod.RECORD && policy.retryable) runtime.context.nextAttempt(clock.nowMillis()) else null
+                        if (next != null) {
+                            runtime.context = next
+                            record = update(record) { it.copy(attempt = next.attempt, error = code) }
+                            true
+                        } else {
+                            if (policy.waitReason != null) waitForUser(record, policy.waitReason, code)
+                            else finishFailure(record, if (runtime.method != TaskMethod.RECORD && policy.retryable) SaveError.RETRY_EXHAUSTED else code)
+                            false
+                        }
+                    }
+                    if (!retry) break
+                    try {
+                        retryDelay.await(if (runtime.context.attempt == 1) 1_000 else 3_000, runtime.context)
+                        checkActive(taskId, runtime)
+                    } catch (retryError: Exception) {
+                        synchronized(lock) {
+                            journal.read(taskId)?.takeUnless { it.task.state.isTerminal }?.let {
+                                if (runtime.pause && !runtime.userCancel && !runtime.original.cancelToken.isCancelled) waitForUser(it, SaveWaitReason.BACKGROUND, null)
+                                else finishFailure(it, stopError(runtime.context) ?: SaveErrors.classify(retryError))
+                            }
+                        }
+                        break
+                    }
+                }
+            }
+        } finally {
+            synchronized(lock) {
+                runtime.executing = false
+                if (activeTaskId == taskId) activeTaskId = null
+                journal.read(taskId)?.takeIf { it.task.state.isTerminal }?.let { runtimes.remove(taskId, runtime) }
+            }
+        }
+        return journal.read(taskId)
+    }
+
+    private fun runAttempt(taskId: String, runtime: Runtime) {
+        checkActive(taskId, runtime)
+        var record = journal.read(taskId) ?: throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+        var artifact = record.artifact
+        if (artifact == null) {
+            setPhase(taskId, runtime, SavePhase.PREPARING)
+            artifact = mediaStore.prepare(taskId, record.commitId, runtime.context)
+            if (artifact.commitId != record.commitId) throw SaveFailure(SaveError.COMMIT_MISMATCH)
+            synchronized(lock) {
+                record = journal.read(taskId)!!
+                if (runtimes[taskId] === runtime && !record.task.state.isTerminal) update(record) { it.copy(artifact = artifact) }
+                else { try { mediaStore.cleanup(artifact, false) } catch (_: Exception) {} }
+                checkActive(taskId, runtime)
+            }
+        }
+        val ownedArtifact = artifact
+        record = journal.read(taskId)!!
+        var result = record.transfer
+        if (result == null) {
+            if (record.request.networkResource?.expiresAtEpochMillis?.let { clock.nowMillis() >= it } == true)
+                throw SaveFailure(SaveError.EXPIRED_RESOURCE)
+            setPhase(taskId, runtime, SavePhase.EXECUTING)
+            result = if (record.request.method == TaskMethod.RECORD) {
+                recording.record(taskId, requireNotNull(record.request.captureDescriptor), ownedArtifact, runtime.context, limits)
+            } else {
+                val source = sourceForTask(taskId) ?: throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
+                val executor = portFor(record.request.method) ?: throw SaveFailure(SaveError.METHOD_UNSUPPORTED)
+                executor.transfer(source, ownedArtifact,
+                    record.checkpoint, runtime.context, limits, object : TransferProgress {
+                        override fun onBytes(delta: Long) = synchronized(lock) {
+                            checkActive(taskId, runtime)
+                            if (delta <= 0) throw SaveFailure(SaveError.INVALID_REQUEST)
+                            val current = journal.read(taskId)!!
+                            val maxBytes = minOf(limits.maxTotalTransferBytes, runtime.context.resourceBudget.maxBytes!!)
+                            if (delta > runtime.reservedBytes) {
+                                val required = delta - runtime.reservedBytes
+                                val remaining = maxBytes - current.bytesTransferred
+                                if (required > remaining) throw SaveFailure(SaveError.BYTE_LIMIT_EXCEEDED)
+                                // Reserve before accepting bytes: one journal write per MiB, conservative across crashes.
+                                val charge = maxOf(required, minOf(1024L * 1024, remaining))
+                                update(current) { it.copy(bytesTransferred = it.bytesTransferred + charge) }
+                                runtime.reservedBytes += charge
+                            }
+                            runtime.reservedBytes -= delta; Unit
+                        }
+                        override fun onRestart() = synchronized(lock) {
+                            checkActive(taskId, runtime)
+                            update(journal.read(taskId)!!) { it.copy(checkpoint = null, transfer = null, verification = null) }; Unit
+                        }
+                        override fun onCheckpoint(checkpoint: DownloadCheckpoint) = synchronized(lock) {
+                            checkActive(taskId, runtime)
+                            val current = journal.read(taskId)!!
+                            if (checkpoint.artifactId != ownedArtifact.artifactId || checkpoint.offset > limits.maxArtifactBytes ||
+                                checkpoint.totalBytes > limits.maxArtifactBytes) throw SaveFailure(SaveError.INVALID_RANGE)
+                            update(current) { it.copy(checkpoint = checkpoint) }; Unit
+                        }
+                    })
+            }
+            synchronized(lock) {
+                checkActive(taskId, runtime)
+                if (resourcesUnreleased()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+                if (result.artifactId != ownedArtifact.artifactId || result.bytesOnDisk <= 0 || result.bytesOnDisk > minOf(limits.maxArtifactBytes, runtime.context.resourceBudget.maxBytes!!))
+                    throw SaveFailure(SaveError.INVALID_MEDIA)
+                if (record.request.method == TaskMethod.DIRECT && journal.read(taskId)!!.bytesTransferred < result.bytesOnDisk)
+                    throw SaveFailure(SaveError.INCOMPLETE_TRANSFER)
+                if (!result.matchesMethod(record.request))
+                    throw SaveFailure(SaveError.INVALID_MEDIA)
+                if (record.request.method == TaskMethod.STREAM && result.streamExpectation?.conservation == null)
+                    throw SaveFailure(SaveError.INVALID_MEDIA)
+                if (record.request.method == TaskMethod.RECORD && result.recordingExpectation?.resumeBoundaries == null)
+                    throw SaveFailure(SaveError.INVALID_MEDIA)
+                if (result.expectedTotalBytes != null && result.bytesOnDisk != result.expectedTotalBytes)
+                    throw SaveFailure(SaveError.INCOMPLETE_TRANSFER)
+                if (result.responseMimeType.substringBefore(';').trim().lowercase(java.util.Locale.ROOT) !in setOf("video/mp4", "application/mp4", "application/octet-stream"))
+                    throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
+                update(journal.read(taskId)!!) { it.copy(transfer = result) }
+            }
+        }
+        val completedTransfer = result
+        // Recovery must enforce the same method-specific evidence gate as fresh transfers.
+        if (!completedTransfer.matchesMethod(record.request))
+            throw SaveFailure(SaveError.INVALID_MEDIA)
+        if (record.request.method == TaskMethod.STREAM && completedTransfer.streamExpectation?.conservation == null)
+            throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        if (record.request.method == TaskMethod.RECORD && completedTransfer.recordingExpectation?.resumeBoundaries == null)
+            throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        if (resourcesUnreleased()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+        setPhase(taskId, runtime, SavePhase.VERIFYING)
+        val verificationContext = runtime.context.copy(deadlineEpochMillis = minOf(runtime.context.deadlineEpochMillis,
+            saturatedAdd(clock.nowMillis(), limits.verificationTimeoutMillis)))
+        val evidence = verifier.verify(ownedArtifact, completedTransfer, verificationContext)
+        if (verificationContext.stopReason(clock.nowMillis()) != null) throw SaveFailure(stopError(verificationContext)!!)
+        val verified = synchronized(lock) {
+            checkActive(taskId, runtime)
+            if (resourcesUnreleased()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+            record = journal.read(taskId)!!
+            if (evidence.encrypted) throw SaveFailure(SaveError.PROTECTED_MEDIA)
+            if (!evidence.isValidFor(ownedArtifact, completedTransfer, record.request.networkResource?.expectedAudio ?: false))
+                throw SaveFailure(SaveError.INVALID_MEDIA)
+            val detachedEvidence = evidence.copy(decodedPositions = evidence.decodedPositions.toSet())
+            record = update(record) { it.copy(verification = detachedEvidence, phase = SavePhase.COMMITTING) }
+            VerifiedArtifact(ownedArtifact, detachedEvidence)
+        }
+        // These potentially long operations only prepare an INVISIBLE provisional file/index.
+        // Their completion must never publish media or a terminal task on its own.
+        val receipt = mediaStore.commit(verified, runtime.context)
+        if (!receipt.matches(verified)) throw SaveFailure(SaveError.COMMIT_MISMATCH)
+        val inspection = mediaStore.inspectCommitted(record.commitId, runtime.context)
+        if (inspection?.confirms(receipt) != true) throw SaveFailure(SaveError.COMMIT_MISMATCH)
+        synchronized(lock) {
+            // Single short cancel-versus-publish decision. A cancellation after this point loses.
+            checkActive(taskId, runtime)
+            if (resourcesUnreleased()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+            record = journal.read(taskId)!!
+            val success = changeState(record.copy(receipt = receipt), TaskState.SUCCEEDED, progress = 100).copy(phase = SavePhase.CLEANUP)
+            save(record, success) // Journal atomically publishes the matching provisional index.
+        }
+        try { mediaStore.cleanup(ownedArtifact, true) } catch (_: Exception) { /* Durable success remains success. */ }
+    }
+
+    /** Immediate memory-only lifecycle fence; never depends on a control queue or journal IO. */
+    fun signalBackgroundPauseAll() {
+        runtimes.values.filter { it.method != TaskMethod.RECORD }.forEach { runtime -> runtime.pause = true; runtime.cancel.cancel() }
+    }
+    /** Immediate user cancellation signal, safe before an asynchronously queued durable command. */
+    fun signalUserCancel(taskId: String) {
+        runtimes[taskId]?.let { runtime ->
+            runtime.userCancel = true; runtime.cancel.cancel()
+            if (runtime.method == TaskMethod.RECORD) recording.cancel(taskId)
+        }
+    }
+
+    /** Tab navigation must not call this; use only the app's real foreground/background boundary. */
+    fun pauseForBackground(taskId: String): SaveRecord? {
+        val runtime = runtimes[taskId]
+        if (runtime?.method == TaskMethod.RECORD) return runtime.lastRecord
+        if (runtime?.executing == true) {
+            runtime.pause = true; runtime.cancel.cancel(); return runtime.lastRecord
+        }
+        return synchronized(lock) {
+            val currentRuntime = runtimes[taskId]
+            if (currentRuntime?.method == TaskMethod.RECORD) return@synchronized currentRuntime.lastRecord
+            if (currentRuntime?.executing == true) {
+                currentRuntime.pause = true; currentRuntime.cancel.cancel(); return@synchronized currentRuntime.lastRecord
+            }
+            val record = journal.read(taskId) ?: return@synchronized null
+            if (record.request.method == TaskMethod.RECORD || record.task.state.isTerminal || record.task.state == TaskState.WAITING_USER) return@synchronized record
+            val running = if (record.task.state == TaskState.QUEUED) save(record, changeState(record, TaskState.RUNNING)) else record
+            waitForUser(running, SaveWaitReason.BACKGROUND, null)
+        }
+    }
+
+    /** A rejected local-recovery schedule must not strand a finalized recording in RUNNING. */
+    fun deferFinalizedRecording(taskId: String): SaveRecord? = synchronized(lock) {
+        val record = journal.read(taskId) ?: return@synchronized null
+        val finalized = record.transfer
+        if (record.request.method != TaskMethod.RECORD || runtimes[taskId]?.executing == true ||
+            finalized?.recordingExpectation?.finalized != true || !finalized.matchesMethod(record.request) ||
+            record.task.state !in setOf(TaskState.QUEUED, TaskState.RUNNING)) return@synchronized record
+        // No capture command, cancellation signal or publication: retain the closed artifact for
+        // another explicit local-only resume. Repeated deferrals leave the existing wait intact.
+        val running = if (record.task.state == TaskState.QUEUED) save(record, changeState(record, TaskState.RUNNING)) else record
+        waitForUser(running, SaveWaitReason.RECOVERY, SaveError.RECOVERY_REQUIRED)
+    }
+
+    override fun cancel(taskId: String): TaskSnapshot? {
+        // Signal before any monitor, journal or storage IO; long hashes must not delay cancellation.
+        val runtime = runtimes[taskId]
+        runtime?.userCancel = true
+        runtime?.cancel?.cancel()
+        if (runtime?.method == TaskMethod.RECORD) recording.cancel(taskId)
+        if (runtime?.executing == true) return runtime.lastRecord?.task
+        return synchronized(lock) {
+            val currentRuntime = runtimes[taskId]
+            currentRuntime?.userCancel = true; currentRuntime?.cancel?.cancel()
+            if (currentRuntime?.executing == true) return@synchronized currentRuntime.lastRecord?.task
+            val record = journal.read(taskId) ?: return@synchronized null
+            if (record.task.state.isTerminal || resourcesUnreleased()) return@synchronized record.task
+            finishFailure(record, SaveError.CANCELLED).task
+        }
+    }
+    /** Capture pause preserves the same session; background download suspension never calls this. */
+    fun recordingSnapshot(taskId: String): RecordingSnapshot? = if (isActiveCapture(taskId)) recording.snapshot(taskId) else null
+    fun pauseRecording(taskId: String): RecordingSnapshot? = if (isActiveCapture(taskId)) recording.pause(taskId) else null
+    fun resumeRecording(taskId: String): RecordingSnapshot? = if (isActiveCapture(taskId)) recording.resume(taskId) else null
+    /** Normal finalization may publish after independent verification; cancellation never does. */
+    fun stopAndSave(taskId: String): RecordingSnapshot? = if (isActiveCapture(taskId)) recording.stopAndSave(taskId) else null
+    private fun isActiveCapture(taskId: String): Boolean = runtimes[taskId]?.let {
+        it.method == TaskMethod.RECORD && it.executing && !it.userCancel && !it.cancel.isCancelled
+    } == true
+
+    /** Nonblocking memory-only projection. submit, record, recover and execution populate it. */
+    override fun snapshot(taskId: String): TaskSnapshot? = cachedSnapshots[taskId]
+    /** Durable read: call on a background/control worker, never the UI thread. */
+    fun record(taskId: String): SaveRecord? = synchronized(lock) { journal.read(taskId)?.also { cachedSnapshots[taskId] = it.task } }
+    /** Short-lived source context only. A durable origin-only reference must never be used for downloading. */
+    fun sourceForTask(taskId: String): SelectedMediaResource? {
+        val runtime = runtimes[taskId] ?: return null
+        if (clock.nowMillis() >= runtime.sourceExpiresAt) { runtime.resource = null; return null }
+        return runtime.resource
+    }
+    private fun sourceExpiry(operation: OperationContext, resource: SelectedMediaResource?): Long = minOf(
+        operation.deadlineEpochMillis, saturatedAdd(clock.nowMillis(), limits.sourceContextLifetimeMillis),
+        resource?.expiresAtEpochMillis ?: Long.MAX_VALUE)
+    override fun observe(taskId: String, observer: TaskObserver): TaskObservation {
+        synchronized(lock) {
+            observers.getOrPut(taskId) { mutableSetOf() }.add(observer)
+            cachedSnapshots[taskId]?.let { try { observer.onSnapshot(it) } catch (_: Exception) {} }
+        }
+        return TaskObservation { synchronized(lock) { observers[taskId]?.remove(observer); Unit } }
+    }
+
+    /** Expire only due waits; leave live sources and nonexpired tasks alone. Safe for bounded foreground polling. */
+    fun expireWaitingUsers(context: OperationContext): List<SaveRecord> = synchronized(lock) {
+        val expired = mutableListOf<SaveRecord>()
+        for (record in journal.listUnfinished(limits.maxRecoveryEntries)) {
+            if (context.stopReason(clock.nowMillis()) != null) break
+            if (runtimes[record.task.taskId]?.executing == true) continue
+            if (record.task.state == TaskState.WAITING_USER && clock.nowMillis() >= record.task.waitingUser!!.expiresAtEpochMillis) {
+                val result = cancelRecord(record)
+                if (result.task.state == TaskState.CANCELLED) expired.add(result)
+            }
+        }
+        // Eligibility expires even while the user is idle; no durable source URL is created.
+        runtimes.keys.forEach { sourceForTask(it) }
+        expired
+    }
+
+    /** Bounded recovery never starts network work and never deletes unknown or committed files. */
+    fun recover(context: OperationContext): List<SaveRecord> = synchronized(lock) {
+        val recovered = mutableListOf<SaveRecord>()
+        for (original in journal.listUnfinished(limits.maxRecoveryEntries)) {
+            if (context.stopReason(clock.nowMillis()) != null) break
+            if (runtimes[original.task.taskId]?.executing == true) continue
+            var record = original
+            if (record.task.state.isTerminal) continue
+            if (record.schemaVersion != 1) {
+                record = save(record, changeState(record, TaskState.FAILED, SaveError.RECOVERY_REQUIRED))
+            } else if (record.task.state == TaskState.WAITING_USER) {
+                if (clock.nowMillis() >= record.task.waitingUser!!.expiresAtEpochMillis) record = cancelRecord(record)
+            } else {
+                if (record.task.state != TaskState.INTERRUPTED)
+                    record = save(record, changeState(record, TaskState.INTERRUPTED, SaveError.RECOVERY_REQUIRED))
+                record = waitForUser(record, SaveWaitReason.RECOVERY, SaveError.RECOVERY_REQUIRED)
+            }
+            runtimes.remove(record.task.taskId)
+            recovered.add(record)
+        }
+        recovered
+    }
+
+    private fun checkActive(taskId: String, runtime: Runtime) = synchronized(lock) {
+        if (runtimes[taskId] !== runtime) throw SaveFailure(SaveError.CANCELLED)
+        stopError(runtime.context)?.let { throw SaveFailure(it) }
+        val state = journal.read(taskId)?.task?.state
+        if (state != TaskState.RUNNING) throw SaveFailure(SaveError.CANCELLED)
+        Unit
+    }
+    private fun setPhase(taskId: String, runtime: Runtime, phase: SavePhase) = synchronized(lock) {
+        checkActive(taskId, runtime); update(journal.read(taskId)!!) { it.copy(phase = phase, error = null) }; Unit
+    }
+    private fun stopError(context: OperationContext): SaveError? = when (context.stopReason(clock.nowMillis())) {
+        OperationStopReason.CANCELLED -> SaveError.CANCELLED
+        OperationStopReason.DEADLINE_EXCEEDED -> SaveError.DEADLINE_EXCEEDED
+        OperationStopReason.RETRY_EXHAUSTED -> SaveError.RETRY_EXHAUSTED
+        null -> null
+    }
+    private fun cancelRecord(record: SaveRecord): SaveRecord = if (resourcesUnreleased()) record else finishFailure(record, SaveError.CANCELLED)
+    private fun finishFailure(record: SaveRecord, code: SaveError): SaveRecord {
+        val result = save(record, changeState(record, if (code == SaveError.CANCELLED) TaskState.CANCELLED else TaskState.FAILED, code))
+        if (record.phase != SavePhase.COMMITTING && !resourcesUnreleased()) record.artifact?.let { try { mediaStore.cleanup(it, false) } catch (_: Exception) {} }
+        runtimes[record.task.taskId]?.takeUnless { it.executing }?.let { runtimes.remove(record.task.taskId, it) }
+        return result
+    }
+    private fun waitForUser(record: SaveRecord, reason: SaveWaitReason, error: SaveError?): SaveRecord {
+        val wait = UserWait(saturatedAdd(clock.nowMillis(), limits.waitingUserLifetimeMillis),
+            if (reason == SaveWaitReason.RECOVERY) ResumeAction.REVIEW_RECOVERY else ResumeAction.RETRY)
+        return save(record, changeState(record, TaskState.WAITING_USER, error, wait).copy(waitReason = reason))
+    }
+    private fun changeState(record: SaveRecord, next: TaskState, error: SaveError? = null, wait: UserWait? = null, progress: Int? = record.task.progressPercent): SaveRecord {
+        val machine = TaskStateMachine(record.task)
+        if (!machine.transition(record.task.revision, next, error?.let(SaveErrors::coreCode), wait, progress))
+            throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        return record.copy(task = machine.snapshot, error = error,
+            waitReason = if (next == TaskState.WAITING_USER) record.waitReason ?: SaveWaitReason.RECOVERY else null)
+    }
+    private fun update(record: SaveRecord, mutation: (SaveRecord) -> SaveRecord): SaveRecord {
+        if (record.task.revision == Long.MAX_VALUE) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+        return save(record, mutation(record).copy(task = record.task.copy(revision = record.task.revision + 1)))
+    }
+    private fun save(previous: SaveRecord, next: SaveRecord): SaveRecord {
+        if (!journal.compareAndSet(previous.task.revision, next)) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+        publish(next); return next
+    }
+    private fun publish(record: SaveRecord) {
+        cachedSnapshots[record.task.taskId] = record.task
+        runtimes[record.task.taskId]?.lastRecord = record
+        observers[record.task.taskId]?.toList()?.forEach { try { it.onSnapshot(record.task) } catch (_: Exception) {} }
+    }
+}
+
+private fun saturatedAdd(a: Long, b: Long): Long = if (a > Long.MAX_VALUE - b) Long.MAX_VALUE else a + b
+
+/** Compare an idempotent capture against the original request identity without manufacturing a URL. */
+private fun SaveRequest.withTaskId(taskId: String): SaveRequest = when (val source = input) {
+    is SaveInput.Network -> copy(requestId = taskId)
+    is SaveInput.Capture -> copy(requestId = taskId, input = source.copy(descriptor = source.descriptor.copy(sessionId = taskId)))
+}

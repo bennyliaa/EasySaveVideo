@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.hls.HlsParserTest" tests="40" skipped="0" failures="0" errors="0" timestamp="2026-10-06T21:07:49.301Z" hostname="723dfa57d2fa" time="0.592">
+  <properties/>
+  <testcase name="optionalCodecDeclarationIsAHintAndNoImplicitAudioIsInvented" classname="com.easysavevideo.hls.HlsParserTest" time="0.057"/>
+  <testcase name="literalDotNavigationHonorsRootAndPreservesEmptySegments" classname="com.easysavevideo.hls.HlsParserTest" time="0.04"/>
+  <testcase name="budgetsCountFailedAttemptsAndNeverRenewAcrossRetries" classname="com.easysavevideo.hls.HlsParserTest" time="0.003"/>
+  <testcase name="cumulativeBytesAndPerManifestBytesAreBothBounded" classname="com.easysavevideo.hls.HlsParserTest" time="0.003"/>
+  <testcase name="allEncryptionIsRejectedWithoutAnyKeyRequestOrStoredKeyUri" classname="com.easysavevideo.hls.HlsParserTest" time="0.005"/>
+  <testcase name="noClosedCaptionsMustBeDeclaredConsistentlyAcrossMasterVariants" classname="com.easysavevideo.hls.HlsParserTest" time="0.01"/>
+  <testcase name="rejectsNonfiniteNegativeExponentZeroSubmicroAndOverflowDurations" classname="com.easysavevideo.hls.HlsParserTest" time="0.007"/>
+  <testcase name="containerAndTimelineExtensionsFailClosed" classname="com.easysavevideo.hls.HlsParserTest" time="0.002"/>
+  <testcase name="everyProducedToStringAndFailureIsSafeForDiagnostics" classname="com.easysavevideo.hls.HlsParserTest" time="0.028"/>
+  <testcase name="directMediaSelectionRemainsUnvalidatedAndOnlyDurableMetadataIsExposed" classname="com.easysavevideo.hls.HlsParserTest" time="0.001"/>
+  <testcase name="externalUriStringsRejectUnpairedSurrogatesWithoutHashReplacement" classname="com.easysavevideo.hls.HlsParserTest" time="0.001"/>
+  <testcase name="longBoundaryConversionAndSumNeverOverflow" classname="com.easysavevideo.hls.HlsParserTest" time="0.002"/>
+  <testcase name="networkRelativeAndRootRelativeUrisResolveNormally" classname="com.easysavevideo.hls.HlsParserTest" time="0.001"/>
+  <testcase name="staticEndlistRequiredAndEventRemainsUnsupportedEvenWhenEnded" classname="com.easysavevideo.hls.HlsParserTest" time="0.004"/>
+  <testcase name="defaultSequenceZeroAndLastSignedLongSequenceAreValid" classname="com.easysavevideo.hls.HlsParserTest" time="0.015"/>
+  <testcase name="relativeAndBaseEmptyPathSegmentsAreNotCollapsed" classname="com.easysavevideo.hls.HlsParserTest" time="0.017"/>
+  <testcase name="malformedAndDuplicateAttributesRejectRatherThanLastValueWins" classname="com.easysavevideo.hls.HlsParserTest" time="0.005"/>
+  <testcase name="normalManySegmentVodIsNotLimitedByDiscoveryPageBudget" classname="com.easysavevideo.hls.HlsParserTest" time="0.312"/>
+  <testcase name="loopsAndNestedMasterCannotTurnIntoRecursiveFetchPlans" classname="com.easysavevideo.hls.HlsParserTest" time="0.003"/>
+  <testcase name="encodedDotsSlashesAndQueryNavigationAreNotReinterpreted" classname="com.easysavevideo.hls.HlsParserTest" time="0.001"/>
+  <testcase name="unsignedRelativeUriDoesNotCopyBaseQuery" classname="com.easysavevideo.hls.HlsParserTest" time="0.001"/>
+  <testcase name="masterSupportsQuotedCommaCodecListAndExplicitImmutableSelection" classname="com.easysavevideo.hls.HlsParserTest" time="0.001"/>
+  <testcase name="resolvesAgainstFinalResponseUrlAndDoesNotInheritManifestSignatures" classname="com.easysavevideo.hls.HlsParserTest" time="0.001"/>
+  <testcase name="codecDeclarationsOutsideBaselineAndOptionalAacLcReject" classname="com.easysavevideo.hls.HlsParserTest" time="0.016"/>
+  <testcase name="listsAreActuallyImmutableAcrossJavaAndKotlinCallers" classname="com.easysavevideo.hls.HlsParserTest" time="0.003"/>
+  <testcase name="utf8IsStrictBomBareCrControlsAndNonNfcAreRejected" classname="com.easysavevideo.hls.HlsParserTest" time="0.004"/>
+  <testcase name="fractionalDurationUsesExactMicrosecondsAndRfcTargetRounding" classname="com.easysavevideo.hls.HlsParserTest" time="0.002"/>
+  <testcase name="lowLatencyStartDateRangeVariablesAndUnknownTagsFailClosed" classname="com.easysavevideo.hls.HlsParserTest" time="0.004"/>
+  <testcase name="relativeQueryPreservesFinalFilenameAndExactEscaping" classname="com.easysavevideo.hls.HlsParserTest" time="0.001"/>
+  <testcase name="refetchMustMatchManifestBaseSelectionAndSegmentIdentities" classname="com.easysavevideo.hls.HlsParserTest" time="0.003"/>
+  <testcase name="emptyNetworkAuthorityNeverInheritsTheBaseHost" classname="com.easysavevideo.hls.HlsParserTest" time="0.001"/>
+  <testcase name="mixedMasterAndMediaNeverParseAsOneOrTheOther" classname="com.easysavevideo.hls.HlsParserTest" time="0.002"/>
+  <testcase name="groupsAndSeparateAudioRejectTheEntireInitialMasterProfile" classname="com.easysavevideo.hls.HlsParserTest" time="0.003"/>
+  <testcase name="linesByteLengthUriAttrsVariantsSegmentsAndTotalDurationAreBounded" classname="com.easysavevideo.hls.HlsParserTest" time="0.006"/>
+  <testcase name="malformedOrderingDuplicatesMissingUriDurationAndEmptyPlaylistReject" classname="com.easysavevideo.hls.HlsParserTest" time="0.003"/>
+  <testcase name="methodNoneIsAcceptedButNeverWithKeyData" classname="com.easysavevideo.hls.HlsParserTest" time="0.002"/>
+  <testcase name="httpsIsRequiredAndOpaqueCredentialsFragmentsWhitespaceAndBadPortsAreRejected" classname="com.easysavevideo.hls.HlsParserTest" time="0.005"/>
+  <testcase name="versionIsBoundedAndFractionalDurationsNeedVersionThree" classname="com.easysavevideo.hls.HlsParserTest" time="0.003"/>
+  <testcase name="parsesStaticMediaAndPreservesOrderedSequencesWithoutDeduplicatingUris" classname="com.easysavevideo.hls.HlsParserTest" time="0.004"/>
+  <testcase name="independentSegmentsDoesNotClaimValidationAndDuplicateTagRejects" classname="com.easysavevideo.hls.HlsParserTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

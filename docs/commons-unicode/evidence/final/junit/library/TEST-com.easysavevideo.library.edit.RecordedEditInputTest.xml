@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.library.edit.RecordedEditInputTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:32:27.876Z" hostname="05582a867b99" time="0.008">
+  <properties/>
+  <testcase name="recordedAudioBudgetIsExplicitAndCannotBroadenOrdinaryAllowance" classname="com.easysavevideo.library.edit.RecordedEditInputTest" time="0.0"/>
+  <testcase name="completeThirtyThreeSegmentCfrAacPlanHasExactObservedTimeline" classname="com.easysavevideo.library.edit.RecordedEditInputTest" time="0.004"/>
+  <testcase name="snapshotIsTheOnlyValidatedAndRetainedList" classname="com.easysavevideo.library.edit.RecordedEditInputTest" time="0.001"/>
+  <testcase name="mixedSourcesSessionsGapsDuplicatesAndReorderReject" classname="com.easysavevideo.library.edit.RecordedEditInputTest" time="0.001"/>
+  <testcase name="initialPlus32ResumesAreAllowedOnlyForPrivateOrderedSession" classname="com.easysavevideo.library.edit.RecordedEditInputTest" time="0.0"/>
+  <testcase name="observedVfrAmongThirtyThreeInputsNeverNormalizesSilently" classname="com.easysavevideo.library.edit.RecordedEditInputTest" time="0.001"/>
+  <testcase name="generationAndSessionRemainInFingerprint" classname="com.easysavevideo.library.edit.RecordedEditInputTest" time="0.001"/>
+  <testcase name="ordinaryLimitRemainsEight" classname="com.easysavevideo.library.edit.RecordedEditInputTest" time="0.0"/>
+  <testcase name="maliciousListCannotChangeTypeAfterValidationBeforeCopy" classname="com.easysavevideo.library.edit.RecordedEditInputTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

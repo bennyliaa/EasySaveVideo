@@ -1,0 +1,2033 @@
+{
+  "coordinate": "androidx.media3:media3-exoplayer-hls:1.11.1",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://dl.google.com/dl/android/maven2/androidx/media3/media3-exoplayer-hls/1.11.1/",
+  "file_metadata": {
+    "media3-exoplayer-hls-1.11.1.module": {
+      "sha256": "6c93a1be0dda47d7a58c7a0f1cef32b5b9c2581ed386efcfa85fc6f81a7e5442",
+      "bytes": 3487,
+      "path": "official-maven/androidx/media3/media3-exoplayer-hls/1.11.1/media3-exoplayer-hls-1.11.1.module"
+    },
+    "media3-exoplayer-hls-1.11.1.pom": {
+      "sha256": "b6f009ec8863fe6f6cbd70d80f331bb7737f13c1fa610fd4b385f9971c7d8b2b",
+      "bytes": 1926,
+      "path": "official-maven/androidx/media3/media3-exoplayer-hls/1.11.1/media3-exoplayer-hls-1.11.1.pom"
+    },
+    "media3-exoplayer-hls-1.11.1.aar": {
+      "sha256": "bd7aeac8dc60b3ee926eddbe05e29f27dc53c81514cae3271b2edab693f34262",
+      "bytes": 263835,
+      "path": "official-maven/androidx/media3/media3-exoplayer-hls/1.11.1/media3-exoplayer-hls-1.11.1.aar"
+    },
+    "media3-exoplayer-hls-1.11.1-sources.jar": {
+      "sha256": "27f36d1714018c7b2a17656f8b5fbf3e93b6bec72aac82990c9ae0fab34a3160",
+      "bytes": 173444,
+      "path": "official-maven/androidx/media3/media3-exoplayer-hls/1.11.1/media3-exoplayer-hls-1.11.1-sources.jar"
+    }
+  },
+  "pom_licenses": [
+    {
+      "name": "The Apache Software License, Version 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.txt",
+      "distribution": "repo"
+    }
+  ],
+  "source_headers": [
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/Aes128DataSource.java",
+      "sha256": "ea1f62bc83c03a1e0697664d70d80d2af558827417400baa98df585b75682c03",
+      "bytes": 4321,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/AssetListParser.java",
+      "sha256": "1988ebf104227e34a258189795e2497442960353a60c61254985df9cbd3e25a3",
+      "bytes": 4877,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2024 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/BundledHlsMediaChunkExtractor.java",
+      "sha256": "2c6864d29d179a052aa188cbf9e7e4d8740c21eb7826d2a4c8de7e44ec358d2c",
+      "bytes": 6521,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2020 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/DefaultHlsDataSourceFactory.java",
+      "sha256": "340bf0602b8e379e8610664a31529e86cdb15a9e60dbda4e560c307efd23cad4",
+      "bytes": 1363,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2017 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/DefaultHlsExtractorFactory.java",
+      "sha256": "3cf8ff6e08171bb89601ef97c91d9eae2be6b57c0082eae83d1b8b4be56a29e0",
+      "bytes": 14537,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2017 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/FullSegmentEncryptionKeyCache.java",
+      "sha256": "9b201994159655081653a3954ef4ea0d348d9f6fc77b3fe55198289674e3702a",
+      "bytes": 2682,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2019 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsChunkSource.java",
+      "sha256": "3b62ff244bec641c62e32c806b86424a43219db97d233bcfd0717972546430dd",
+      "bytes": 60667,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsContentSteeringTracker.java",
+      "sha256": "bdfd4e85ce451bc6fbb29e1029aceb509544656297e9ef2aec1dde11fab66412",
+      "bytes": 14961,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2026 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsDataSourceFactory.java",
+      "sha256": "b6a4c35f9072c2bc8dc47e544769c36bad2d3deb50fea508c4cbafcfdd58201a",
+      "bytes": 1210,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2017 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsExtractorFactory.java",
+      "sha256": "8187f40845232efc4d30033fc024d14fc200fac34f07c49ee26b97453da2c31c",
+      "bytes": 6301,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2017 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader.java",
+      "sha256": "606d97c3e9a7a600bc6835a1a02cf63c6008174722310d480292b9d7381c1347",
+      "bytes": 113287,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2024 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsManifest.java",
+      "sha256": "0ab1cf208aad622edc1dd4a311e49c440e6f35c6a9661a1624b3f70b298fa82a",
+      "bytes": 1563,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2017 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaChunk.java",
+      "sha256": "335605e410fa744104a1f74366afa1aa2e31938c7b0691b09aff9dac81007aa4",
+      "bytes": 28047,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaChunkExtractor.java",
+      "sha256": "6f799d740844bf24a9c4a409b4137051674d138121709a490b085a87c26c15d3",
+      "bytes": 3188,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2020 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaPeriod.java",
+      "sha256": "399fca17b185a5b82d598e7982cc131da9e9a6742f24b873358475e7bb1845d6",
+      "bytes": 47427,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaSource.java",
+      "sha256": "dd64a80074e76900f9955836346eded388daf487c85aabd17515a7ec51aef7a4",
+      "bytes": 33476,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStream.java",
+      "sha256": "210b57e8d07ac68d3c667fc8f492c4d9338809fe3b84fa4ff25a7cb0f3d7a332",
+      "bytes": 3824,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStreamWrapper.java",
+      "sha256": "13c0fa1594743e6b2f00d4c0c0a14a6c56a23baa9652e347ebd2dcaca5ad283a",
+      "bytes": 82787,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsTrackMetadataEntry.java",
+      "sha256": "2f5d17f64ea33ac934e02839102e2c81bad954ae6a02074b814ec11a966346da",
+      "bytes": 6173,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2019 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/MediaParserHlsMediaChunkExtractor.java",
+      "sha256": "20105008dae1dbfa780abcc76a300c7bc4b4f57650747e1e7c57cfbd4505cc85",
+      "bytes": 13308,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2020 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/SampleQueueMappingException.java",
+      "sha256": "0f39b9714c910cab1b0f60aac06e91448048b270ea4ed2158f9a342eb6ed13e7",
+      "bytes": 1295,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2017 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/TimestampAdjusterProvider.java",
+      "sha256": "ca2a81d63e274d3b074ff5c9326e89ad7497ffae2eb16508cb66d15d9f5c9e43",
+      "bytes": 2027,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/UnexpectedSampleTimestampException.java",
+      "sha256": "8a110db63ca48d02f23647139077a07021aefcb38348e7b4caccb795d95070ac",
+      "bytes": 2622,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2020 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/WebvttExtractor.java",
+      "sha256": "6a3919ca1916a8cae669b9feb5c654483b12e87d44e89fe1008696e0497f2564",
+      "bytes": 9120,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/package-info.java",
+      "sha256": "b55fe76bdfaafd9bbf5e261bd18dc65d054e4c932563c926a2b2d0e93af0f695",
+      "bytes": 719,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2019 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/offline/HlsDownloader.java",
+      "sha256": "3bf8126cdced06a69951d1e30d80e9793e1da1f98728f5a16a09f3881a3a32a4",
+      "bytes": 11799,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2017 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/offline/package-info.java",
+      "sha256": "c656c40c4c654c3bef7fd79c08f5aa6c6c51c0d0103579d80bdcace85f8cc38a",
+      "bytes": 727,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2019 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistParserFactory.java",
+      "sha256": "fcb0a1239aa0d93a13346cd0b672ac244ab8fce6dfa28ee7850a952dc5444deb",
+      "bytes": 1382,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistTracker.java",
+      "sha256": "74d449a492f54e6fd62345572f05b2bae57d3c6120b5e6140baf4c5d8517ee0b",
+      "bytes": 59935,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/FilteringHlsPlaylistParserFactory.java",
+      "sha256": "bd9767a988e6eaec0defaa0de80796d3ffc3c75bbbb8faacd2759b8c5579ba79",
+      "bytes": 2280,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist.java",
+      "sha256": "dbbde773621ee83979b903444e2f0d467ddb9ede22b27d5847b0226bf934b441",
+      "bytes": 57128,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMultivariantPlaylist.java",
+      "sha256": "4373a106eeaf01b7cad6c9b34574f43b5aaa87d6b0b63458d746e7049502c6cf",
+      "bytes": 15119,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylist.java",
+      "sha256": "f411fd72a46c23443369bdfc2f0b57bd20cdeb7714c1bffa2590443ac170d688",
+      "bytes": 1698,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParser.java",
+      "sha256": "c15d49e4215cd8227c47bb52f34a5cb7d07311e0dae0023ccddb3067c1145b75",
+      "bytes": 87375,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2016 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParserFactory.java",
+      "sha256": "d0274380e790d9ff35b01ad79d80fa2c6d985fc967de52e6dc3310aac4d9b623",
+      "bytes": 1820,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistTracker.java",
+      "sha256": "d4c5df42ba4eb085a5bc6f3f8c519cfe0f187f8e4b8737e66ddd9bf697655752",
+      "bytes": 10931,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsRedundantGroup.java",
+      "sha256": "c07b2e5196e2c97e03683681624dcd912cf4a8c18575038bb8a3b4cf225305a8",
+      "bytes": 26981,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2026 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      https://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/package-info.java",
+      "sha256": "7fb62360f2b9e7b93f078fd898edafd39a2bb8310abdb5ee745f7fabead1520d",
+      "bytes": 728,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2019 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    }
+  ],
+  "source_special_attributions": [
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/Aes128DataSource.java",
+      "sha256": "ea1f62bc83c03a1e0697664d70d80d2af558827417400baa98df585b75682c03",
+      "bytes": 4321,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/AssetListParser.java",
+      "sha256": "1988ebf104227e34a258189795e2497442960353a60c61254985df9cbd3e25a3",
+      "bytes": 4877,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2024 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/BundledHlsMediaChunkExtractor.java",
+      "sha256": "2c6864d29d179a052aa188cbf9e7e4d8740c21eb7826d2a4c8de7e44ec358d2c",
+      "bytes": 6521,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2020 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/DefaultHlsDataSourceFactory.java",
+      "sha256": "340bf0602b8e379e8610664a31529e86cdb15a9e60dbda4e560c307efd23cad4",
+      "bytes": 1363,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2017 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/DefaultHlsExtractorFactory.java",
+      "sha256": "3cf8ff6e08171bb89601ef97c91d9eae2be6b57c0082eae83d1b8b4be56a29e0",
+      "bytes": 14537,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2017 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/FullSegmentEncryptionKeyCache.java",
+      "sha256": "9b201994159655081653a3954ef4ea0d348d9f6fc77b3fe55198289674e3702a",
+      "bytes": 2682,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2019 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsChunkSource.java",
+      "sha256": "3b62ff244bec641c62e32c806b86424a43219db97d233bcfd0717972546430dd",
+      "bytes": 60667,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 117,
+          "text": "/** Indicates that the chunk is based on a preload hint. */"
+        },
+        {
+          "line": 355,
+          "text": "// Chunks based on full segments can't be removed and are always published."
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsContentSteeringTracker.java",
+      "sha256": "bdfd4e85ce451bc6fbb29e1029aceb509544656297e9ef2aec1dde11fab66412",
+      "bytes": 14961,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2026 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsDataSourceFactory.java",
+      "sha256": "b6a4c35f9072c2bc8dc47e544769c36bad2d3deb50fea508c4cbafcfdd58201a",
+      "bytes": 1210,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2017 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsExtractorFactory.java",
+      "sha256": "8187f40845232efc4d30033fc024d14fc200fac34f07c49ee26b97453da2c31c",
+      "bytes": 6301,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2017 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader.java",
+      "sha256": "606d97c3e9a7a600bc6835a1a02cf63c6008174722310d480292b9d7381c1347",
+      "bytes": 113287,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2024 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsManifest.java",
+      "sha256": "0ab1cf208aad622edc1dd4a311e49c440e6f35c6a9661a1624b3f70b298fa82a",
+      "bytes": 1563,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2017 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaChunk.java",
+      "sha256": "335605e410fa744104a1f74366afa1aa2e31938c7b0691b09aff9dac81007aa4",
+      "bytes": 28047,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 476,
+          "text": "* Sets the publish flag of the media chunk to indicate that it is not based on a part that is a"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaChunkExtractor.java",
+      "sha256": "6f799d740844bf24a9c4a409b4137051674d138121709a490b085a87c26c15d3",
+      "bytes": 3188,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2020 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaPeriod.java",
+      "sha256": "399fca17b185a5b82d598e7982cc131da9e9a6742f24b873358475e7bb1845d6",
+      "bytes": 47427,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaSource.java",
+      "sha256": "dd64a80074e76900f9955836346eded388daf487c85aabd17515a7ec51aef7a4",
+      "bytes": 33476,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStream.java",
+      "sha256": "210b57e8d07ac68d3c667fc8f492c4d9338809fe3b84fa4ff25a7cb0f3d7a332",
+      "bytes": 3824,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStreamWrapper.java",
+      "sha256": "13c0fa1594743e6b2f00d4c0c0a14a6c56a23baa9652e347ebd2dcaca5ad283a",
+      "bytes": 82787,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsTrackMetadataEntry.java",
+      "sha256": "2f5d17f64ea33ac934e02839102e2c81bad954ae6a02074b814ec11a966346da",
+      "bytes": 6173,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2019 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 122,
+          "text": "* The GROUP-ID value of this track, if the track is derived from an EXT-X-MEDIA tag. Null if the"
+        },
+        {
+          "line": 123,
+          "text": "* track is not derived from an EXT-X-MEDIA TAG."
+        },
+        {
+          "line": 128,
+          "text": "* The NAME value of this track, if the track is derived from an EXT-X-MEDIA tag. Null if the"
+        },
+        {
+          "line": 129,
+          "text": "* track is not derived from an EXT-X-MEDIA TAG."
+        },
+        {
+          "line": 135,
+          "text": "* (and therefore empty) if this track is derived from an EXT-X-MEDIA tag."
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/MediaParserHlsMediaChunkExtractor.java",
+      "sha256": "20105008dae1dbfa780abcc76a300c7bc4b4f57650747e1e7c57cfbd4505cc85",
+      "bytes": 13308,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2020 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/SampleQueueMappingException.java",
+      "sha256": "0f39b9714c910cab1b0f60aac06e91448048b270ea4ed2158f9a342eb6ed13e7",
+      "bytes": 1295,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2017 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/TimestampAdjusterProvider.java",
+      "sha256": "ca2a81d63e274d3b074ff5c9326e89ad7497ffae2eb16508cb66d15d9f5c9e43",
+      "bytes": 2027,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/UnexpectedSampleTimestampException.java",
+      "sha256": "8a110db63ca48d02f23647139077a07021aefcb38348e7b4caccb795d95070ac",
+      "bytes": 2622,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2020 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/WebvttExtractor.java",
+      "sha256": "6a3919ca1916a8cae669b9feb5c654483b12e87d44e89fe1008696e0497f2564",
+      "bytes": 9120,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/package-info.java",
+      "sha256": "b55fe76bdfaafd9bbf5e261bd18dc65d054e4c932563c926a2b2d0e93af0f695",
+      "bytes": 719,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2019 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/offline/HlsDownloader.java",
+      "sha256": "3bf8126cdced06a69951d1e30d80e9793e1da1f98728f5a16a09f3881a3a32a4",
+      "bytes": 11799,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2017 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/offline/package-info.java",
+      "sha256": "c656c40c4c654c3bef7fd79c08f5aa6c6c51c0d0103579d80bdcace85f8cc38a",
+      "bytes": 727,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2019 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistParserFactory.java",
+      "sha256": "fcb0a1239aa0d93a13346cd0b672ac244ab8fce6dfa28ee7850a952dc5444deb",
+      "bytes": 1382,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistTracker.java",
+      "sha256": "74d449a492f54e6fd62345572f05b2bae57d3c6120b5e6140baf4c5d8517ee0b",
+      "bytes": 59935,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/FilteringHlsPlaylistParserFactory.java",
+      "sha256": "bd9767a988e6eaec0defaa0de80796d3ffc3c75bbbb8faacd2759b8c5579ba79",
+      "bytes": 2280,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist.java",
+      "sha256": "dbbde773621ee83979b903444e2f0d467ddb9ede22b27d5847b0226bf934b441",
+      "bytes": 57128,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMultivariantPlaylist.java",
+      "sha256": "4373a106eeaf01b7cad6c9b34574f43b5aaa87d6b0b63458d746e7049502c6cf",
+      "bytes": 15119,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 185,
+          "text": "/** Content Steering information derived from an #EXT-X-CONTENT-STEERING tag. */"
+        },
+        {
+          "line": 244,
+          "text": "/** DRM initialization data derived from #EXT-X-SESSION-KEY tags. */"
+        },
+        {
+          "line": 247,
+          "text": "/** Content Steering information derived from #EXT-X-CONTENT-STEERING tag. */"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylist.java",
+      "sha256": "f411fd72a46c23443369bdfc2f0b57bd20cdeb7714c1bffa2590443ac170d688",
+      "bytes": 1698,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParser.java",
+      "sha256": "c15d49e4215cd8227c47bb52f34a5cb7d07311e0dae0023ccddb3067c1145b75",
+      "bytes": 87375,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2016 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParserFactory.java",
+      "sha256": "d0274380e790d9ff35b01ad79d80fa2c6d985fc967de52e6dc3310aac4d9b623",
+      "bytes": 1820,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistTracker.java",
+      "sha256": "d4c5df42ba4eb085a5bc6f3f8c519cfe0f187f8e4b8737e66ddd9bf697655752",
+      "bytes": 10931,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsRedundantGroup.java",
+      "sha256": "c07b2e5196e2c97e03683681624dcd912cf4a8c18575038bb8a3b4cf225305a8",
+      "bytes": 26981,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2026 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/package-info.java",
+      "sha256": "7fb62360f2b9e7b93f078fd898edafd39a2bb8310abdb5ee745f7fabead1520d",
+      "bytes": 728,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2019 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    }
+  ],
+  "source_without_license_header": [],
+  "source_non_code_entries": [
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    }
+  ],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar",
+      "entry": "R.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar",
+      "entry": "AndroidManifest.xml",
+      "sha256": "08cdd4946bc4eaa3458af86f4eaba0e20c9512c77943ba79ea12c052a9c46d4c",
+      "bytes": 843
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar",
+      "entry": "classes.jar",
+      "sha256": "ae8ff8ea41915c7d9646e82a5fd8304fef69f17a2fcf1f043d765966674259f0",
+      "bytes": 277955
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/Aes128DataSource.class",
+      "sha256": "e2bd43733cbd00942ee58c734dedc2ce5e241bd5d37fc82ccea5a320265ab7d7",
+      "bytes": 3757
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/AssetListParser.class",
+      "sha256": "ac9d3d2b83757cc737a1220d2ee8506bd7d3e8862b2845347e12a7dfb144d4b0",
+      "bytes": 5092
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/BundledHlsMediaChunkExtractor.class",
+      "sha256": "505a466eacf72f356db9ebb27ce1a31045dbeabaafb717d1456d1cf3ddd884fa",
+      "bytes": 4663
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/DefaultHlsDataSourceFactory.class",
+      "sha256": "3c5fc7093a2c6a8a48d69b22d812649a73a71fff5f4721c9d8aa2ba38f271603",
+      "bytes": 1018
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/DefaultHlsExtractorFactory.class",
+      "sha256": "ea6fc7d1f2da2ddb615cc731e283d688e39e3ac4d7051e99641ffb0b9a3ef72a",
+      "bytes": 12717
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/FullSegmentEncryptionKeyCache$1.class",
+      "sha256": "82487ea39ece6f0ad94cecf6097ec0a78fbd4270207cba5a8a82482cf7dfcb64",
+      "bytes": 1336
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/FullSegmentEncryptionKeyCache.class",
+      "sha256": "a2908bf24eaa0ea7cb078afd5bed2702b3fe3651c4624105703e8bdd46d284b9",
+      "bytes": 1717
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsChunkSource$EncryptionKeyChunk.class",
+      "sha256": "29d14b78fd42dbc68d795fab1ba8e8776c26ab1f6b6895786a8a8974a51bb105",
+      "bytes": 1638
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsChunkSource$HlsChunkHolder.class",
+      "sha256": "81e46bded28bd9b95d19eeadb524bd3586ee7a6466d465f20555a9ce51d7d36b",
+      "bytes": 819
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsChunkSource$HlsMediaPlaylistSegmentIterator.class",
+      "sha256": "fc73162505f4094cee2f2ceb76781117d64f0d4999256dd2469d753f2f0b1ea0",
+      "bytes": 2423
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsChunkSource$InitializationTrackSelection.class",
+      "sha256": "c819f4fad018098a4c956c1650d78be4c155333a7759b11051373034ffc7c91e",
+      "bytes": 2247
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsChunkSource$SegmentBaseHolder.class",
+      "sha256": "b59e77ba0428d8f5d4d553c8ba119e8222976a9a9043e2674238c6860f9955f8",
+      "bytes": 1146
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsChunkSource.class",
+      "sha256": "42e090494351556d5ae1fb92a9f954995001b98de407e58b4ed1c13cc9ea1301",
+      "bytes": 32548
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsContentSteeringTracker$1.class",
+      "sha256": "f495f4d81cf6078078c27a137027da484c105d486871ec330d6b6ed4a02ebdc4",
+      "bytes": 283
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsContentSteeringTracker$Callback.class",
+      "sha256": "d4ad41dfbae6d47f3d2becbed7df202e29beec8b3392f4e72dc3cb0c58aef5aa",
+      "bytes": 777
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsContentSteeringTracker$SteeringManifestTrackerCallback.class",
+      "sha256": "81697910cbb57ac7e6f3e5e612e9a31a438801f797c903a2fe4f20bd0e4560c9",
+      "bytes": 3651
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsContentSteeringTracker.class",
+      "sha256": "a9f30b2c3af0747420cd3f4c3fe8ea3378a94f6447cc879cdec5f05a9eafaeb5",
+      "bytes": 16193
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsDataSourceFactory.class",
+      "sha256": "92d23842cc196010d55a4f86f91eb8458ad0223bf843623489bfd8986c7cb027",
+      "bytes": 309
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsExtractorFactory.class",
+      "sha256": "f83be53f1b6e958f9d0291ae91cdc485561a399f9242da1d4cd5bae59fd31a2e",
+      "bytes": 2660
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$1.class",
+      "sha256": "f0d6110cbbf248e4fc1e92b58549f767d4e3b8fd2ab55c322c86e11a8343679e",
+      "bytes": 283
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$AdsMediaSourceFactory.class",
+      "sha256": "95eb6b6dba4ad5db610596f6698f1df89abfe8dc72eb73fd1338493fbf030adc",
+      "bytes": 5696
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$AdsMediaSourceSessionManager.class",
+      "sha256": "d081a3199be683f6df54976df1cb5cb3a51057cdf6f4ad897636735006db4aec",
+      "bytes": 3859
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$AdsResumptionState.class",
+      "sha256": "cd717bff04f55eb2bb6ace9c74e8a6d49fa8f063c2037edfbbeddf0cf4c8de7e",
+      "bytes": 2956
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$Asset.class",
+      "sha256": "d9451bf9ad467c575b0ec4ffcac83ca1cc42b1a4399f3e0bd9730871c1fe5fe5",
+      "bytes": 1228
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$AssetList.class",
+      "sha256": "3eaab04a80094c2080075da408effdcb3154fdaa3e2676e2044ddbb655dc00af",
+      "bytes": 2145
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$AssetListData.class",
+      "sha256": "85e9e0c49707962306a367f8d00e14b211be5cbab4938a019b6edd95212ea401",
+      "bytes": 3218
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$HlsAdSession.class",
+      "sha256": "028df6605eb62c933d364282791c35da6db159b1b950150014c823680fae2cc6",
+      "bytes": 8546
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$Listener.class",
+      "sha256": "70862114457d38fd5521a1f45bd5327bc62753c6126b0e645ddba0e32bfd2417",
+      "bytes": 3273
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$LoaderCallback.class",
+      "sha256": "201c148b36a5deb62c6ec007a446b1227758f2d0d9a5c1f229fe797b389594e8",
+      "bytes": 15241
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$PendingSnapInResolution.class",
+      "sha256": "feebb838b90ee366c2058fe7439fcca310e57638f5e89d28bf545e0f6475b158",
+      "bytes": 1683
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$PlayerListener.class",
+      "sha256": "916080c6e2771c613d3cf5591c49f6c8886339b366717b76694569d00a661061",
+      "bytes": 11235
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader$RunnableAtPosition.class",
+      "sha256": "add0700585c1bde04c71fa5ad8aaa456c496fdf04088d811a665b523caa9cf2f",
+      "bytes": 1001
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader.class",
+      "sha256": "363e206df4810d51f3f051cd7e2671d1c4941b2a303be507b3ed60a6e1f3b344",
+      "bytes": 55501
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsManifest.class",
+      "sha256": "1ccd59fa04d1704ff759fe08116d657be4faf7d7f666a763d3c040675862f440",
+      "bytes": 775
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaChunk.class",
+      "sha256": "5323bfe1e6614c18ae6423afd41397a9fba478290cb7f2e0c88093db0c5a45ad",
+      "bytes": 21993
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaChunkExtractor.class",
+      "sha256": "c7fff83982f2e9fe677f415702a674dc93480b545ef910056901c60d7989ec51",
+      "bytes": 595
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaPeriod$1.class",
+      "sha256": "f950621d31086f0b08c58fbcb40bf79ac5c0004782b93f4fd67b54108c72f5df",
+      "bytes": 250
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaPeriod$SampleStreamWrapperCallback.class",
+      "sha256": "0a52564ba88b86118b78716500bfdc905caaa52c34d561c9b544df9e03bd9b69",
+      "bytes": 3551
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaPeriod.class",
+      "sha256": "246308f87f12fcc1983734e8d3a627a9cf1f6302b46a054b5421d2947f164bf8",
+      "bytes": 35455
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaSource$1.class",
+      "sha256": "96dbcccfa0abb7b151685cd9dc1b76347b19ef48544fb5991602aec4d20f2e5b",
+      "bytes": 250
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaSource$Factory.class",
+      "sha256": "759711cd133b285029ac8c57d91072768cdb12985c666b13c13a668e575d21f8",
+      "bytes": 13355
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaSource$MetadataType.class",
+      "sha256": "d8b2fdbc78916d6c8d94ae57a5ac66bbc6dd93c512a36cfd8f85d11448806ee9",
+      "bytes": 561
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaSource.class",
+      "sha256": "9c6a8f3eb2c33df02726efd3767d0a01172c3e4776f3ef7f01c811e9796bed07",
+      "bytes": 17453
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStream.class",
+      "sha256": "16511fd0cc8da26273ddb6918bd2e3ad036feda202d0e2813470d95fa6c57cfc",
+      "bytes": 2901
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStreamWrapper$1.class",
+      "sha256": "6b20940a74f42f91880e6de40f1e3c3b3c9fcacba6750f0edfa317659b7bd8e8",
+      "bytes": 274
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStreamWrapper$Callback.class",
+      "sha256": "34c2eda1690294ea3bcc731c46937dfb4f16fe3a7b4b952f936367ac2888f3b6",
+      "bytes": 642
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStreamWrapper$EmsgUnwrappingTrackOutput.class",
+      "sha256": "5978eedaeef6d13ec183311a7c5d2d19ecf78ae4d3ca941954c5c3e32902a506",
+      "bytes": 6013
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStreamWrapper$HlsSampleQueue.class",
+      "sha256": "ff0eca5702978e4e1bcb109ea68be0dce2fc5766f22f8c70dcb6fa85c1ce94d0",
+      "bytes": 5708
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStreamWrapper.class",
+      "sha256": "7ec4b825fe95104768124af345b36f4e08c67789d718808d209c9634862f6c48",
+      "bytes": 48393
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsTrackMetadataEntry$VariantInfo.class",
+      "sha256": "44a1d90fb075eb6ede1e386f3a57b5986e492b65bd5037cbd067c794abf52e11",
+      "bytes": 1909
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsTrackMetadataEntry.class",
+      "sha256": "0b7c3cc6893702845133345f864ee7831b1a51af6d9296450076fa2307b5fc16",
+      "bytes": 2521
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/MediaParserHlsMediaChunkExtractor$1.class",
+      "sha256": "efcb8e4ccf1d507617e0e25a4e1a8e6beea53a258a8794ae9e4c078941d59124",
+      "bytes": 307
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/MediaParserHlsMediaChunkExtractor$PeekingInputReader.class",
+      "sha256": "74ded6f5c8ecaebd55db801c4bbe278bbbc10b56c3e6ebd57ec6e17b216e1ade",
+      "bytes": 2054
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/MediaParserHlsMediaChunkExtractor.class",
+      "sha256": "42590d6b1f35dde6111829f141ad92f11ddfe9f7966e88c0b774c3c127d9e41a",
+      "bytes": 11434
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/SampleQueueMappingException.class",
+      "sha256": "3b07acb31fe6bee06fd848ff91d7a143f54ba174da6afb5d55081fbdeb926434",
+      "bytes": 856
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/TimestampAdjusterProvider.class",
+      "sha256": "816b4516b0ef3391bee1f161ba178e935d77628ed87b693a6a3a3962a7369341",
+      "bytes": 1234
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/UnexpectedSampleTimestampException.class",
+      "sha256": "91edc7763d6861f067cf4893b40624e67afe0a129d77a05a77d54bf312a8dc10",
+      "bytes": 1193
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/WebvttExtractor.class",
+      "sha256": "5a2518feba472e56906149c03cf50987868161a233d3701186ade82ab10aaa3e",
+      "bytes": 7941
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/offline/HlsDownloader$1.class",
+      "sha256": "d7bffc6d6599eef20c0b4be3c282b3011e8347852ce4725b8b80f90e981908fa",
+      "bytes": 263
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/offline/HlsDownloader$Factory.class",
+      "sha256": "b8e6bf5ecfbc5de04df3728e3e71872860fd25a78b45360d79df947c7deefbcd",
+      "bytes": 4458
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/offline/HlsDownloader.class",
+      "sha256": "dee40af2529a29da31d5a76cd2b9be8a9ec933f663db55a06ddfb399fea55466",
+      "bytes": 9713
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/offline/package-info.class",
+      "sha256": "218fdf59a2da80227c8810cc0e62b9f30e514ae76f14e06e3a021aa0ffc074d5",
+      "bytes": 228
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/package-info.class",
+      "sha256": "678e86b2ae99764af8638fe3fc80b286f18b5c0afa0f5b8b85fb342cc593553e",
+      "bytes": 220
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistParserFactory.class",
+      "sha256": "923e857788db052cb99e2ee155ae3fb74c4ab30e4c731576f5f552890a966d0c",
+      "bytes": 1984
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistTracker$1.class",
+      "sha256": "61b98b167bd4a8ff7e9ba78f2a1f338f53b03f2e997c4cf136b9fe6ff97c61fb",
+      "bytes": 301
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistTracker$ContentSteeringCallback.class",
+      "sha256": "910bd34fd646ae8bcfe01938d6653f9b291ad46f4312159aabacd5d3755a7ecb",
+      "bytes": 4602
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistTracker$FirstPrimaryMediaPlaylistListener.class",
+      "sha256": "384442199455c41e612bcac9a14b0351e2d915e01a1e936f3c053e0af661112c",
+      "bytes": 6487
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistTracker$MediaPlaylistBundle.class",
+      "sha256": "703ecb1d6cf2643f2bf23fb124cf28f4415b900c2c50605d7e867b7b934c4faf",
+      "bytes": 23526
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistTracker$RedundantGroupBundle.class",
+      "sha256": "862b032fc12a18c150d57c2e7b9492e3a7d7797f91144cc67854273681b26ec0",
+      "bytes": 14055
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistTracker.class",
+      "sha256": "f4544f6b98fddcba8632d0d5f508d3ec1ec9558bdd046bc793e51e40a7be2c83",
+      "bytes": 36420
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/FilteringHlsPlaylistParserFactory.class",
+      "sha256": "b68d8a7246c3c326efd913b632b31b43bbf15335743948cbc5ead2231bdd9ba8",
+      "bytes": 2531
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$1.class",
+      "sha256": "0bf55f2492761d6582816f8a2f38474a48da8ae4491b51992320722ed7e87b5d",
+      "bytes": 274
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$ClientDefinedAttribute$Type.class",
+      "sha256": "c0178320f616997ac9927d6290dd775d6735b1b38354ada5494f5be6de39a15f",
+      "bytes": 709
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$ClientDefinedAttribute.class",
+      "sha256": "2556f4e403d7ac4eff2ebf168100f58458bf2ea8e539382e1f05f7c7b7562931",
+      "bytes": 2828
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$Interstitial$Builder.class",
+      "sha256": "901bc8b47e6b3eeff6fa05440d7682260b74526d8f80aa2128fde4d3669df273",
+      "bytes": 10401
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$Interstitial$CueTriggerType.class",
+      "sha256": "cb2e3b337335947fd2da994ab023353751ea9db9b6161aa9f48ae37a00c3f720",
+      "bytes": 699
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$Interstitial$NavigationRestriction.class",
+      "sha256": "ee6e75e6fa7b9feda907c58e00e629545d9e8588534566902f4527070fb089a9",
+      "bytes": 713
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$Interstitial$SnapType.class",
+      "sha256": "0af6e093a1ff381e9369e5b25710734f2feef0c1ac328725848328e236b274c4",
+      "bytes": 687
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$Interstitial$TimelineOccupiesType.class",
+      "sha256": "2f9416b607f49fbd5f503af8a7c1072df157e973decabd4ab2cc1048091ebed7",
+      "bytes": 711
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$Interstitial$TimelineStyleType.class",
+      "sha256": "67cb9907491e2f14cd329c6bcfe260ce011123746196ee4030a73fc8a61a343f",
+      "bytes": 705
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$Interstitial.class",
+      "sha256": "af56772451425c0492f1569c2be496e911aa0bdd55a71d731fde4189fd9d5c2f",
+      "bytes": 6718
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$Part.class",
+      "sha256": "3c111e37f9a6814cd49c505a24f51107474ebacb5a180377330e9296635696a1",
+      "bytes": 2093
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$PlaylistType.class",
+      "sha256": "c779fb5b30ff0abcad709b1eb194c75666675f160826ce60292af801e7065a5b",
+      "bytes": 585
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$RenditionReport.class",
+      "sha256": "d3624331e189abbc454c9d8cdca7d9beadcaa3bbc9f52c8e65e3584554af0cba",
+      "bytes": 712
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$Segment.class",
+      "sha256": "87db4aff48a6ce70af44aa286c6621597075d98ad007de5212bee84af5f7e488",
+      "bytes": 3528
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$SegmentBase.class",
+      "sha256": "3a5580cf1a04cb9dda258e5927391fa8d28fe1dc0064ef18371dbe18b9009f73",
+      "bytes": 2803
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist$ServerControl.class",
+      "sha256": "906e96e0c74eb4df08a8d69ad5d1ed8e01c6f77228035e4031fd0b0c2bc8214e",
+      "bytes": 779
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist.class",
+      "sha256": "d32927e924f3fbd508c94b2b8c32ab2f88daaef543772296367001beaf25eb13",
+      "bytes": 7439
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMultivariantPlaylist$ContentSteeringInfo.class",
+      "sha256": "e00521ee9793155ebb8c5e7b347cd8e067ba57fd3e6d285e021be5e7befce589",
+      "bytes": 846
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMultivariantPlaylist$Rendition.class",
+      "sha256": "9369679c2da85a803f14f0d4528fe24ddbf2b5928dca552e29879c8c00201f14",
+      "bytes": 1080
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMultivariantPlaylist$Variant.class",
+      "sha256": "d70385fe76f3c890db487dbd7daa4f60e81de79c553cb4cf833d382eae2d6575",
+      "bytes": 2185
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMultivariantPlaylist.class",
+      "sha256": "90bfe40c0265af0a96e3e98ff226862bd9da83ca40c183d34e7260f0d53e391c",
+      "bytes": 8212
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylist.class",
+      "sha256": "be0ce1076c7701cec1fc69852389dd34d35931a59b495d1551651d7426e8024d",
+      "bytes": 1128
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParser$1.class",
+      "sha256": "8d4c136bdd93d68d8df9408c144da0b50d83e6d7501e365b800fd21ddd760aca",
+      "bytes": 277
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParser$DeltaUpdateException.class",
+      "sha256": "0b0d283da95cca499a9f462b1f70b43dfa036b6d22939dba25f4634d1c68811a",
+      "bytes": 515
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParser$LineIterator.class",
+      "sha256": "0926c9e6e3ad420f94d7ad64ee7e26a500cc201a7df8ff79b4193d7762d50d22",
+      "bytes": 1879
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParser$MatcherCache.class",
+      "sha256": "6d177fad62aa0e84702a0dbf1ca9823b1fc4eb9a71e7d8d5fabd532a4610f481",
+      "bytes": 2284
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParser.class",
+      "sha256": "b7635af06f17953db8fb902fcc47a5f381cec29b1835c18341ec1d1fa4b7e825",
+      "bytes": 61465
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParserFactory.class",
+      "sha256": "90567febccce1dbec414d1edc4aaee96ad151baa53dce0dae5927b8c586e706c",
+      "bytes": 1173
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistTracker$Factory.class",
+      "sha256": "16300051d818a2ded3e5360d550e299dbf83b0e566110ff7ffc393c906995fb9",
+      "bytes": 1118
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistTracker$PlaylistEventListener.class",
+      "sha256": "d9f40a1a3b565f13cab45bd232e4896431c5838dbd13d165f8587560616a3273",
+      "bytes": 620
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistTracker$PlaylistResetException.class",
+      "sha256": "5f96e195dbd570284fb3dfff6a3540f4b7b01065fbfaa86251b420aea1d8cd79",
+      "bytes": 615
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistTracker$PlaylistStuckException.class",
+      "sha256": "a8d0aff8a713c94a26c2de5c0116db593bd8d0625a36c24e923865f190c845fc",
+      "bytes": 615
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistTracker$PrimaryPlaylistListener.class",
+      "sha256": "4ba64358de7e0ccbddb405b393316ab3a4b9d996b87536b5c524ca8011d82f38",
+      "bytes": 400
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistTracker.class",
+      "sha256": "8d1606dba99c378672236a6c52f1b80d940d85cb34fcd027e3b1a13e1e5c7f05",
+      "bytes": 2779
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsRedundantGroup$Factory.class",
+      "sha256": "d1609a5ad6913a6cf3c0bb07ee43411b4508aa90f144c4af94cef68d370f4064",
+      "bytes": 11090
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsRedundantGroup$GroupKey.class",
+      "sha256": "03f7fbd2579e4a5c8a142f4f55282f1c9c3f09379466ceaf46abc94750cf5484",
+      "bytes": 1988
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsRedundantGroup$Type.class",
+      "sha256": "bad6dce4ea6a08506dd85b17c320ba0134925910d1afd33aeb7450fcb5e8b7b0",
+      "bytes": 572
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsRedundantGroup.class",
+      "sha256": "c37f495756b167dbb5d00e944383244f3df02b1132673ebd6ff0749c1ffbcee6",
+      "bytes": 4278
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/package-info.class",
+      "sha256": "8a44315b89ccc0f85bf3b82bd116eee4a28d581c01716adb03fdee355d729fd8",
+      "bytes": 229
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar",
+      "entry": "annotations.zip",
+      "sha256": "4f59d3e1cc44d73530690a3680f10ed912886c45469c577457a1a0fbdb457c28",
+      "bytes": 2130
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1.aar",
+      "entry": "META-INF/com/android/build/gradle/aar-metadata.properties",
+      "sha256": "08ee81351e24d5fb98490f59522c587e5fbaf50b7794a721d6fb021a08368cc6",
+      "bytes": 157
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/Aes128DataSource.java",
+      "sha256": "ea1f62bc83c03a1e0697664d70d80d2af558827417400baa98df585b75682c03",
+      "bytes": 4321
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/AssetListParser.java",
+      "sha256": "1988ebf104227e34a258189795e2497442960353a60c61254985df9cbd3e25a3",
+      "bytes": 4877
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/BundledHlsMediaChunkExtractor.java",
+      "sha256": "2c6864d29d179a052aa188cbf9e7e4d8740c21eb7826d2a4c8de7e44ec358d2c",
+      "bytes": 6521
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/DefaultHlsDataSourceFactory.java",
+      "sha256": "340bf0602b8e379e8610664a31529e86cdb15a9e60dbda4e560c307efd23cad4",
+      "bytes": 1363
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/DefaultHlsExtractorFactory.java",
+      "sha256": "3cf8ff6e08171bb89601ef97c91d9eae2be6b57c0082eae83d1b8b4be56a29e0",
+      "bytes": 14537
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/FullSegmentEncryptionKeyCache.java",
+      "sha256": "9b201994159655081653a3954ef4ea0d348d9f6fc77b3fe55198289674e3702a",
+      "bytes": 2682
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsChunkSource.java",
+      "sha256": "3b62ff244bec641c62e32c806b86424a43219db97d233bcfd0717972546430dd",
+      "bytes": 60667
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsContentSteeringTracker.java",
+      "sha256": "bdfd4e85ce451bc6fbb29e1029aceb509544656297e9ef2aec1dde11fab66412",
+      "bytes": 14961
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsDataSourceFactory.java",
+      "sha256": "b6a4c35f9072c2bc8dc47e544769c36bad2d3deb50fea508c4cbafcfdd58201a",
+      "bytes": 1210
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsExtractorFactory.java",
+      "sha256": "8187f40845232efc4d30033fc024d14fc200fac34f07c49ee26b97453da2c31c",
+      "bytes": 6301
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsInterstitialsAdsLoader.java",
+      "sha256": "606d97c3e9a7a600bc6835a1a02cf63c6008174722310d480292b9d7381c1347",
+      "bytes": 113287
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsManifest.java",
+      "sha256": "0ab1cf208aad622edc1dd4a311e49c440e6f35c6a9661a1624b3f70b298fa82a",
+      "bytes": 1563
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaChunk.java",
+      "sha256": "335605e410fa744104a1f74366afa1aa2e31938c7b0691b09aff9dac81007aa4",
+      "bytes": 28047
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaChunkExtractor.java",
+      "sha256": "6f799d740844bf24a9c4a409b4137051674d138121709a490b085a87c26c15d3",
+      "bytes": 3188
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaPeriod.java",
+      "sha256": "399fca17b185a5b82d598e7982cc131da9e9a6742f24b873358475e7bb1845d6",
+      "bytes": 47427
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsMediaSource.java",
+      "sha256": "dd64a80074e76900f9955836346eded388daf487c85aabd17515a7ec51aef7a4",
+      "bytes": 33476
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStream.java",
+      "sha256": "210b57e8d07ac68d3c667fc8f492c4d9338809fe3b84fa4ff25a7cb0f3d7a332",
+      "bytes": 3824
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsSampleStreamWrapper.java",
+      "sha256": "13c0fa1594743e6b2f00d4c0c0a14a6c56a23baa9652e347ebd2dcaca5ad283a",
+      "bytes": 82787
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/HlsTrackMetadataEntry.java",
+      "sha256": "2f5d17f64ea33ac934e02839102e2c81bad954ae6a02074b814ec11a966346da",
+      "bytes": 6173
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/MediaParserHlsMediaChunkExtractor.java",
+      "sha256": "20105008dae1dbfa780abcc76a300c7bc4b4f57650747e1e7c57cfbd4505cc85",
+      "bytes": 13308
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/SampleQueueMappingException.java",
+      "sha256": "0f39b9714c910cab1b0f60aac06e91448048b270ea4ed2158f9a342eb6ed13e7",
+      "bytes": 1295
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/TimestampAdjusterProvider.java",
+      "sha256": "ca2a81d63e274d3b074ff5c9326e89ad7497ffae2eb16508cb66d15d9f5c9e43",
+      "bytes": 2027
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/UnexpectedSampleTimestampException.java",
+      "sha256": "8a110db63ca48d02f23647139077a07021aefcb38348e7b4caccb795d95070ac",
+      "bytes": 2622
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/WebvttExtractor.java",
+      "sha256": "6a3919ca1916a8cae669b9feb5c654483b12e87d44e89fe1008696e0497f2564",
+      "bytes": 9120
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/package-info.java",
+      "sha256": "b55fe76bdfaafd9bbf5e261bd18dc65d054e4c932563c926a2b2d0e93af0f695",
+      "bytes": 719
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/offline/HlsDownloader.java",
+      "sha256": "3bf8126cdced06a69951d1e30d80e9793e1da1f98728f5a16a09f3881a3a32a4",
+      "bytes": 11799
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/offline/package-info.java",
+      "sha256": "c656c40c4c654c3bef7fd79c08f5aa6c6c51c0d0103579d80bdcace85f8cc38a",
+      "bytes": 727
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistParserFactory.java",
+      "sha256": "fcb0a1239aa0d93a13346cd0b672ac244ab8fce6dfa28ee7850a952dc5444deb",
+      "bytes": 1382
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/DefaultHlsPlaylistTracker.java",
+      "sha256": "74d449a492f54e6fd62345572f05b2bae57d3c6120b5e6140baf4c5d8517ee0b",
+      "bytes": 59935
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/FilteringHlsPlaylistParserFactory.java",
+      "sha256": "bd9767a988e6eaec0defaa0de80796d3ffc3c75bbbb8faacd2759b8c5579ba79",
+      "bytes": 2280
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMediaPlaylist.java",
+      "sha256": "dbbde773621ee83979b903444e2f0d467ddb9ede22b27d5847b0226bf934b441",
+      "bytes": 57128
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsMultivariantPlaylist.java",
+      "sha256": "4373a106eeaf01b7cad6c9b34574f43b5aaa87d6b0b63458d746e7049502c6cf",
+      "bytes": 15119
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylist.java",
+      "sha256": "f411fd72a46c23443369bdfc2f0b57bd20cdeb7714c1bffa2590443ac170d688",
+      "bytes": 1698
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParser.java",
+      "sha256": "c15d49e4215cd8227c47bb52f34a5cb7d07311e0dae0023ccddb3067c1145b75",
+      "bytes": 87375
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistParserFactory.java",
+      "sha256": "d0274380e790d9ff35b01ad79d80fa2c6d985fc967de52e6dc3310aac4d9b623",
+      "bytes": 1820
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsPlaylistTracker.java",
+      "sha256": "d4c5df42ba4eb085a5bc6f3f8c519cfe0f187f8e4b8737e66ddd9bf697655752",
+      "bytes": 10931
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/HlsRedundantGroup.java",
+      "sha256": "c07b2e5196e2c97e03683681624dcd912cf4a8c18575038bb8a3b4cf225305a8",
+      "bytes": 26981
+    },
+    {
+      "archive": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "entry": "androidx/media3/exoplayer/hls/playlist/package-info.java",
+      "sha256": "7fb62360f2b9e7b93f078fd898edafd39a2bb8310abdb5ee745f7fabead1520d",
+      "bytes": 728
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": null,
+  "source_status": "PRESENT",
+  "published_hash_checks": [
+    {
+      "variant": "releaseVariantReleaseApiPublication",
+      "file": "media3-exoplayer-hls-1.11.1.aar",
+      "sha256_published": "bd7aeac8dc60b3ee926eddbe05e29f27dc53c81514cae3271b2edab693f34262",
+      "sha256_actual": "bd7aeac8dc60b3ee926eddbe05e29f27dc53c81514cae3271b2edab693f34262",
+      "matches": true
+    },
+    {
+      "variant": "releaseVariantReleaseRuntimePublication",
+      "file": "media3-exoplayer-hls-1.11.1.aar",
+      "sha256_published": "bd7aeac8dc60b3ee926eddbe05e29f27dc53c81514cae3271b2edab693f34262",
+      "sha256_actual": "bd7aeac8dc60b3ee926eddbe05e29f27dc53c81514cae3271b2edab693f34262",
+      "matches": true
+    },
+    {
+      "variant": "releaseVariantReleaseSourcePublication",
+      "file": "media3-exoplayer-hls-1.11.1-sources.jar",
+      "sha256_published": "27f36d1714018c7b2a17656f8b5fbf3e93b6bec72aac82990c9ae0fab34a3160",
+      "sha256_actual": "27f36d1714018c7b2a17656f8b5fbf3e93b6bec72aac82990c9ae0fab34a3160",
+      "matches": true
+    }
+  ]
+}

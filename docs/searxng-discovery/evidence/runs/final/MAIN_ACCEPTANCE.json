@@ -1,0 +1,148 @@
+{
+  "scope": "FIRST_LAYER_SOURCE_HOST_DEVELOPMENT_ACCEPTANCE_ONLY",
+  "verified_utc": "2026-10-08T03:43:13.554624+00:00",
+  "baseline": "9e9dea537c5f6e269adfb6791b47829eb4c440de",
+  "jvm": {
+    "tests": 2175,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "debug": {
+      "Error": 0,
+      "Warning": 18,
+      "Hint": 7
+    },
+    "release": {
+      "Error": 0,
+      "Warning": 18,
+      "Hint": 7
+    }
+  },
+  "external_runtime_artifacts_each_variant": 74,
+  "independent_integration_tests": 33,
+  "independent_source_wiring_checks": 18,
+  "verification_infrastructure_tests": 42,
+  "payload_v4_additive_sql_checks": 42,
+  "full_inherited_sql_dom_media_provider_discovery_history_power_os_filter_reliability_entitlement_hosts": "PASS",
+  "channels": {
+    "scope": "ACTUAL_COMPILED_IDENTITY_AND_UNCONFIGURED_STORE_HOST_NOT_ANDROID_OR_STORE_ACCEPTANCE",
+    "rows": [
+      {
+        "channel": "unconfigured",
+        "variants": {
+          "debug": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          },
+          "release": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          }
+        }
+      },
+      {
+        "channel": "google_play",
+        "variants": {
+          "debug": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          },
+          "release": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          }
+        }
+      },
+      {
+        "channel": "huawei",
+        "variants": {
+          "debug": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          },
+          "release": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          }
+        }
+      },
+      {
+        "channel": "xiaomi",
+        "variants": {
+          "debug": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          },
+          "release": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          }
+        }
+      },
+      {
+        "channel": "oppo",
+        "variants": {
+          "debug": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          },
+          "release": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          }
+        }
+      },
+      {
+        "channel": "vivo",
+        "variants": {
+          "debug": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          },
+          "release": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          }
+        }
+      },
+      {
+        "channel": "tencent_myapp",
+        "variants": {
+          "debug": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          },
+          "release": {
+            "tests": 15,
+            "status": "PASS",
+            "compiled_inputs_hashed": true
+          }
+        }
+      }
+    ],
+    "rejected_build_values": 5,
+    "final_default": "unconfigured",
+    "payment": "UNCONFIGURED_ALL_CHANNELS"
+  },
+  "actual_endpoint_queries": "NOT_RUN",
+  "actual_scrapling_page_validation": "NOT_INTEGRATED_IN_THIS_SLICE",
+  "android_device_apk_aab": "NOT_RUN",
+  "M0_accepted": false,
+  "two_layer_discovery_complete": false,
+  "known_inherited_gap": "Commons signed Unicode escape validation, documented for separate bounded fix"
+}

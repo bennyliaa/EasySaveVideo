@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.save.RecordingVideoTailStateTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:33:01.005Z" hostname="05582a867b99" time="0.01">
+  <properties/>
+  <testcase name="finalNonemptyOutputMayCarryActualEos" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.001"/>
+  <testcase name="wrongOrMissingNextSyncAndPrematureExtractorEofFailClosed" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.002"/>
+  <testcase name="truncatedAddedDuplicateAndChangedInputsAreRejected" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.001"/>
+  <testcase name="duplicateInputEosAndPostCompletionOutputInvalidateEvidence" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.0"/>
+  <testcase name="cancellationAndDeadlinePoisonFutureEvidence" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.001"/>
+  <testcase name="missingIntermediateDoubledOutputAndOutputBeforeInputFail" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.0"/>
+  <testcase name="exactOutputPtsRejectsEvenOneMicrosecondDrift" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.001"/>
+  <testcase name="noProgressBudgetOnlyExtendsForActualProgress" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.0"/>
+  <testcase name="selectedGopMustBeginWithOnlyOneSyncAndStayWithinFrameAndPayloadBounds" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.003"/>
+  <testcase name="emptyAndConfigOnlyOutputNeverCountsAsAFrameOrProvesEos" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.0"/>
+  <testcase name="nonFinalGopStopsAtExactNextSyncWithoutConsumingThatFrame" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.0"/>
+  <testcase name="emptyEosWaitsForEveryFrameAndEveryInput" classname="com.easysavevideo.app.save.RecordingVideoTailStateTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

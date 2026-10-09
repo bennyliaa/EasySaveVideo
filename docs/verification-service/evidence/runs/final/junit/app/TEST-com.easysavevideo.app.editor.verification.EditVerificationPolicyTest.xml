@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" tests="25" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:59.060Z" hostname="05582a867b99" time="0.009">
+  <properties/>
+  <testcase name="changedSampleSizeFailsEvenIfTotalCouldMatch" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.001"/>
+  <testcase name="omittedTailCannotUseMetadataAsCoverage" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="nearbySeekFrameCannotStandInForExactTail" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="firstVideoAccessUnitMustBeSync" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="finalFrameCannotHaveAnInventedNearZeroDisplayDuration" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.001"/>
+  <testcase name="expectedFrameCountComesFromActualSnappedSourceTimeline" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="individuallySmallFrameDriftCannotAccumulateAcrossTheOutput" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="aacInteriorGapCannotBeExcusedAsPriming" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.001"/>
+  <testcase name="prematureVideoEosIsRejected" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="aacPrimingBudgetAndFullPcmCoverageCanPass" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="fullSampleWalkUsesExactFinalSampleDuration" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="inputMustMatchPreviouslyScannedIdentity" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="codecConfigDoesNotCountAsDecodedVideo" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="boundedClockRoundingIsAccepted" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="completeVideoDecodeRequiresEveryActualSampleAndEos" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="aacDuplicatePcmAndFractionalFramesFail" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.001"/>
+  <testcase name="encryptedPartialAndUnknownFlagsFailClosed" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="duplicateReorderedAndVariableFrameTimesFail" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="inwardSnappedNonFrameTrimProducesRebasedCfr" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.001"/>
+  <testcase name="decodeCannotInventOrDuplicateFrames" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="emptyOrTruncatedAacDecodeIsNotEvidence" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="snappedMergeJoinsDoNotPermitAnArbitraryCadenceReset" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.001"/>
+  <testcase name="aacLcConfigurationRequiresExactRateAndChannels" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.001"/>
+  <testcase name="noProgressBudgetCannotBeRenewedByPollingOrReversedClock" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.0"/>
+  <testcase name="noSampleMayBeAddedAfterFinishOrRejection" classname="com.easysavevideo.app.editor.verification.EditVerificationPolicyTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

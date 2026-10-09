@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.editor.EditorFeaturePolicyTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:33:00.303Z" hostname="05582a867b99" time="0.005">
+  <properties/>
+  <testcase name="trimUsesExistingCropCapability" classname="com.easysavevideo.app.editor.EditorFeaturePolicyTest" time="0.004"/>
+  <testcase name="mixedOperationsRequireOnlyTheirExistingCapabilities" classname="com.easysavevideo.app.editor.EditorFeaturePolicyTest" time="0.0"/>
+  <testcase name="compressOnlyRequiresCompress" classname="com.easysavevideo.app.editor.EditorFeaturePolicyTest" time="0.001"/>
+  <testcase name="orderedFullMergeOnlyRequiresMerge" classname="com.easysavevideo.app.editor.EditorFeaturePolicyTest" time="0.0"/>
+  <testcase name="noOpRequiresNoPaidOperation" classname="com.easysavevideo.app.editor.EditorFeaturePolicyTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

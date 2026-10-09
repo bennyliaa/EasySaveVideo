@@ -1,0 +1,20 @@
+{
+  "discovery": {
+    "tests": 205,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "commons-provider": {
+    "tests": 236,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "app": {
+    "tests": 859,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

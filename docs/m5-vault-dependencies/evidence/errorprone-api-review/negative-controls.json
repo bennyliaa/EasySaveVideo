@@ -1,0 +1,55 @@
+[
+  {
+    "control": "remove_class",
+    "expected_rejection": "unresolved_type",
+    "returncode": 1,
+    "failure_kinds": [
+      "not_annotation_type",
+      "old_class_removed",
+      "unresolved_raw_utf8_reference",
+      "unresolved_type"
+    ],
+    "pass_": true
+  },
+  {
+    "control": "rename_element",
+    "expected_rejection": "unresolved_annotation_element",
+    "returncode": 1,
+    "failure_kinds": [
+      "missing_required_annotation_element",
+      "old_member_missing",
+      "unresolved_annotation_element"
+    ],
+    "pass_": true
+  },
+  {
+    "control": "wrong_element_descriptor",
+    "expected_rejection": "annotation_element_value_type_mismatch",
+    "returncode": 1,
+    "failure_kinds": [
+      "annotation_element_value_type_mismatch",
+      "old_member_missing"
+    ],
+    "pass_": true
+  },
+  {
+    "control": "remove_default",
+    "expected_rejection": "missing_required_annotation_element",
+    "returncode": 1,
+    "failure_kinds": [
+      "missing_required_annotation_element",
+      "old_member_changed"
+    ],
+    "pass_": true
+  },
+  {
+    "control": "remove_enum_constant",
+    "expected_rejection": "unresolved_member",
+    "returncode": 1,
+    "failure_kinds": [
+      "old_member_missing",
+      "unresolved_member"
+    ],
+    "pass_": true
+  }
+]

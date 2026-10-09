@@ -1,0 +1,42 @@
+Checked 2026-10-06 UTC; local pinned Android 36 SDK stub signatures only, not runtime behavior
+d9eb9da824d9e247a352f570f01e1169e725b2954bca9e283a71786c59b59f9a  /workspace/scratch/df6c1284d5ab/esv-toolchain-recovery/sdk/platforms/android-36/android.jar
+public abstract class android.media.projection.MediaProjection$Callback {
+  public void onCapturedContentResize(int, int);
+  public void onCapturedContentVisibilityChanged(boolean);
+  public void onStop();
+public final class android.media.projection.MediaProjection {
+  public android.hardware.display.VirtualDisplay createVirtualDisplay(java.lang.String, int, int, int, int, android.view.Surface, android.hardware.display.VirtualDisplay$Callback, android.os.Handler);
+  public void registerCallback(android.media.projection.MediaProjection$Callback, android.os.Handler);
+  public void unregisterCallback(android.media.projection.MediaProjection$Callback);
+public class android.graphics.SurfaceTexture {
+  public long getTimestamp();
+  public void getTransformMatrix(float[]);
+  public void updateTexImage();
+public final class android.view.ViewTreeObserver {
+  public void registerFrameCommitCallback(java.lang.Runnable);
+  public boolean unregisterFrameCommitCallback(java.lang.Runnable);
+public class android.opengl.GLES20 {
+  public static native int glCheckFramebufferStatus(int);
+  public static native void glFramebufferRenderbuffer(int, int, int, int);
+  public static native void glFramebufferTexture2D(int, int, int, int, int);
+  public static native void glReadPixels(int, int, int, int, int, int, java.nio.Buffer);
+public final class android.graphics.Bitmap implements android.os.Parcelable {
+  public android.graphics.Bitmap copy(android.graphics.Bitmap$Config, boolean);
+  public void copyPixelsFromBuffer(java.nio.Buffer);
+  public void copyPixelsToBuffer(java.nio.Buffer);
+  public static android.graphics.Bitmap createBitmap(android.graphics.Picture, int, int, android.graphics.Bitmap$Config);
+  public static android.graphics.Bitmap createBitmap(android.util.DisplayMetrics, int, int, android.graphics.Bitmap$Config);
+  public static android.graphics.Bitmap createBitmap(android.util.DisplayMetrics, int, int, android.graphics.Bitmap$Config, boolean);
+  public static android.graphics.Bitmap createBitmap(android.util.DisplayMetrics, int, int, android.graphics.Bitmap$Config, boolean, android.graphics.ColorSpace);
+  public static android.graphics.Bitmap createBitmap(android.util.DisplayMetrics, int[], int, int, android.graphics.Bitmap$Config);
+  public static android.graphics.Bitmap createBitmap(android.util.DisplayMetrics, int[], int, int, int, int, android.graphics.Bitmap$Config);
+  public static android.graphics.Bitmap createBitmap(int, int, android.graphics.Bitmap$Config);
+  public static android.graphics.Bitmap createBitmap(int, int, android.graphics.Bitmap$Config, boolean);
+  public static android.graphics.Bitmap createBitmap(int, int, android.graphics.Bitmap$Config, boolean, android.graphics.ColorSpace);
+  public static android.graphics.Bitmap createBitmap(int[], int, int, android.graphics.Bitmap$Config);
+  public static android.graphics.Bitmap createBitmap(int[], int, int, int, int, android.graphics.Bitmap$Config);
+  public android.graphics.Bitmap$Config getConfig();
+  public boolean isRecycled();
+  public void reconfigure(int, int, android.graphics.Bitmap$Config);
+  public void recycle();
+  public void setConfig(android.graphics.Bitmap$Config);

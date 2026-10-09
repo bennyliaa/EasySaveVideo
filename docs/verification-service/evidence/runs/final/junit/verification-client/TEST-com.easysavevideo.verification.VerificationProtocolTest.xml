@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.verification.VerificationProtocolTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:16.346Z" hostname="05582a867b99" time="0.101">
+  <properties/>
+  <testcase name="requestIsExactAndCarriesNoSourceMetadata" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.038"/>
+  <testcase name="positiveResponseHasPageEvidenceOnly" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.005"/>
+  <testcase name="malformedUtf8SurrogatesUnicodeEscapesAndStructureRejected" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.002"/>
+  <testcase name="falseFlagsCannotBeCoercedOrPromoted" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.005"/>
+  <testcase name="requestIdentityBudgetAndSizeAreValidated" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.003"/>
+  <testcase name="dynamicEvidenceRequiresClientOptIn" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.002"/>
+  <testcase name="endpointAllowsOnlyExactPublicHttps443Api" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.005"/>
+  <testcase name="unknownPositiveMetadataStaysNull" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.0"/>
+  <testcase name="candidatePolicyPreservesExactPublicHttpAndHttpsIdentity" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.007"/>
+  <testcase name="thumbnailMustBePublicHttps" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.003"/>
+  <testcase name="everyIdentityMismatchIsRejected" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.002"/>
+  <testcase name="functionalObjectsAreRedacted" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.001"/>
+  <testcase name="outcomeEvidenceAndMetadataMustAgree" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.003"/>
+  <testcase name="titleBoundsControlsAndTypes" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.01"/>
+  <testcase name="everyNegativeOutcomeCannotPromoteToRaw" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.0"/>
+  <testcase name="missingUnknownDuplicateFieldsRejected" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.004"/>
+  <testcase name="publicDnsAnswerPolicyRejectsReservedRanges" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.001"/>
+  <testcase name="strictVersionAndDurationIntegerTokens" classname="com.easysavevideo.verification.VerificationProtocolTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

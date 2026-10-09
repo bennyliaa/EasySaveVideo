@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.library.LibraryRuntimeTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:59.107Z" hostname="05582a867b99" time="0.02">
+  <properties/>
+  <testcase name="pendingDeletionPollDoesNotDismissAnotherConfirmation" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.009"/>
+  <testcase name="playbackReferenceRequiresExactActiveForegroundSelectionAndIsSingleUse" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="failedFolderNavigationClearsPreviousSnapshotAndDisablesDestination" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="queueRejectionRestoresControlsAndDoesNotClaimWriteSuccess" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="disposedReadCannotPublishItsLateResult" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="missingTombstoneNeverCountsAsCompletedDeletion" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="staleMutationShowsConflictAndReloadsCurrentMetadata" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="restartPendingReportIsShownWithoutInventingSuccessfulDeletion" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="repositoryCallsAreOffUiAndPagesReplaceRatherThanAccumulate" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="failedPageCannotExposePriorRowsUnderNewPageNumber" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="staleCursorRecoversToFirstPageWithoutAppendingObsoleteRows" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="rapidSearchReplacesQueuedReadAndBoundsInput" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="deletionConfirmationBindsExactSelectedItemAndRevision" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="moveCannotConfirmDestinationWhoseLatestLoadFailed" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="nonemptyFolderDeleteExplainsCountsAndDoesNotQueueMutation" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="doubleDeleteTapProducesOneDurableIntentAndHonestPendingState" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="backgroundClearsDeleteAndMoveConsentAndRejectsOldCallbacks" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="acceptedMutationFinishesAfterDisposeWithoutPublishingOrClosingSharedRepository" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="staleRunningSearchCannotPublishIntoNewGeneration" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

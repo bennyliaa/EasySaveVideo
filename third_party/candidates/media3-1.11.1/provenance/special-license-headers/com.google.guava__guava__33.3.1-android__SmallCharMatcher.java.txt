@@ -1,0 +1,9 @@
+47:    * This method was rewritten in Java from an intermediate step of the Murmur hash function in
+48:    * http://code.google.com/p/smhasher/source/browse/trunk/MurmurHash3.cpp, which contained the
+49:    * following header:
+50:    *
+51:    * MurmurHash3 was written by Austin Appleby, and is placed in the public domain. The author
+52:    * hereby disclaims copyright to this source code.
+53:    */
+54:   static int smear(int hashCode) {
+55:     return C2 * Integer.rotateLeft(hashCode * C1, 15);

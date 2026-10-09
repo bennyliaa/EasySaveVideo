@@ -1,0 +1,13 @@
+Compiled from "BuildConfig.java"
+public final class com.easysavevideo.app.BuildConfig {
+  public static final boolean DEBUG;
+  public static final java.lang.String APPLICATION_ID = "com.easysavevideo.app";
+  public static final java.lang.String BUILD_TYPE = "debug";
+  public static final int VERSION_CODE = 2;
+  public static final java.lang.String VERSION_NAME = "0.3.2-commons-dev";
+  public static final java.lang.String COMMONS_CONTACT = "";
+  public static final boolean COMMONS_ENABLED = false;
+  public static final java.lang.String DISTRIBUTION_CHANNEL = "huawei";
+  public com.easysavevideo.app.BuildConfig();
+  static {};
+}

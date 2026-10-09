@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.verification.VerificationServiceClientTest" tests="23" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:30:22.167Z" hostname="05582a867b99" time="0.115">
+  <properties/>
+  <testcase name="serviceLocalDeadlineAndTimerReturnPendingWithoutCancellingOriginalOperation" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.012"/>
+  <testcase name="requestIsImmutableAndFunctionalObjectsRedacted" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.002"/>
+  <testcase name="originalDeadlineAndCancellationPropagateBeforeIO" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.002"/>
+  <testcase name="nonSuccessStatusesAndRedirectsHaveNoRetries" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.016"/>
+  <testcase name="wrongResponseUrlFailsEvenWithGoodBody" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.006"/>
+  <testcase name="configurationGenerationRevocationPropagatesBeforeAndAfterTransport" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.004"/>
+  <testcase name="blockedCleanupRetainsClientPhysicalAdmission" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.003"/>
+  <testcase name="generationAndRequestCorrelationRejectReplay" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.006"/>
+  <testcase name="originalDeadlinePropagatesAfterTransportInsteadOfPendingSuccess" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.001"/>
+  <testcase name="contentTypeEncodingLengthsAndDuplicateHeadersAreStrict" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.01"/>
+  <testcase name="interruptedCallerCannotPublish" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.001"/>
+  <testcase name="transportAndConstructionFailuresAreIsolated" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.009"/>
+  <testcase name="finiteBodyRejectsOversizeAndZeroProgress" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.003"/>
+  <testcase name="unsafeCandidatesCauseNoCall" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.001"/>
+  <testcase name="httpSuccessAloneCannotEstablishEvidence" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.003"/>
+  <testcase name="candidateValidatorUsesOnlyPageEvidenceWithoutSourceFallback" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.001"/>
+  <testcase name="concurrentAttemptDoesNotAcquireSecondPhysicalClientSlot" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.002"/>
+  <testcase name="operationBudgetReservePreventsLateOptionalCall" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.001"/>
+  <testcase name="rawInterruptedExceptionRestoresFlagAndPropagatesWithoutTokenCancellation" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.002"/>
+  <testcase name="allServiceNegativeOutcomesRetainCandidateAsNull" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.005"/>
+  <testcase name="requestIdsAreFreshEveryAttempt" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.02"/>
+  <testcase name="originalCancellationPropagatesAfterTransportInsteadOfPendingSuccess" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.001"/>
+  <testcase name="dynamicOptInIsExplicitAndForwarded" classname="com.easysavevideo.verification.VerificationServiceClientTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

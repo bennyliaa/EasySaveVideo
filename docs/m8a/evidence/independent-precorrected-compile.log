@@ -1,0 +1,14 @@
+JUnit version 4.13.2
+..........E..
+Time: 0.168
+There was 1 failure:
+1) completedCooldownDoesNotContinueReportingActiveBackoff(com.easysavevideo.discovery.IndependentDiscoveryReviewTest)
+java.lang.AssertionError: No cooldown or retry remains; status reads must report the current state without launching work. Actual: BACKOFF
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failEquals(Assert.java:187)
+	at org.junit.Assert.assertNotEquals(Assert.java:163)
+	at com.easysavevideo.discovery.IndependentDiscoveryReviewTest.completedCooldownDoesNotContinueReportingActiveBackoff(independent-discovery-review.kt:121)
+
+FAILURES!!!
+Tests run: 12,  Failures: 1
+

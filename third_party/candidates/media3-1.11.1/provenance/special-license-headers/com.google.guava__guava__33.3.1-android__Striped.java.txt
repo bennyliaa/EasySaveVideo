@@ -1,0 +1,19 @@
+512:   }
+513: 
+514:   /*
+515:    * This method was written by Doug Lea with assistance from members of JCP JSR-166 Expert Group
+516:    * and released to the public domain, as explained at
+517:    * http://creativecommons.org/licenses/publicdomain
+518:    *
+519:    * As of 2010/06/11, this method is identical to the (package private) hash method in OpenJDK 7's
+520:    * java.util.HashMap class.
+
+513: 
+514:   /*
+515:    * This method was written by Doug Lea with assistance from members of JCP JSR-166 Expert Group
+516:    * and released to the public domain, as explained at
+517:    * http://creativecommons.org/licenses/publicdomain
+518:    *
+519:    * As of 2010/06/11, this method is identical to the (package private) hash method in OpenJDK 7's
+520:    * java.util.HashMap class.
+521:    */

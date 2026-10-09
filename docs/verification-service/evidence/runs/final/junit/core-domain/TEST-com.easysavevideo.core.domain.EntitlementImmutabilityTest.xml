@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.core.domain.EntitlementImmutabilityTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:50:56.451Z" hostname="05582a867b99" time="0.03">
+  <properties/>
+  <testcase name="managerReturnCannotRegrantSameRevisionOrChangeFutureReads" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.006"/>
+  <testcase name="originalAliasesCannotChangeObservedManagerRevisionOrGate" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.007"/>
+  <testcase name="sourceFailureCannotExposeCachedPaidGrantButPreservesFreeGate" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.003"/>
+  <testcase name="emptyAndSingleItemOutputsAreAlsoImmutable" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.001"/>
+  <testcase name="expiryAndRevocationKeepFreeCapabilitiesAvailable" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.0"/>
+  <testcase name="returnedListCannotBeModifiedThroughMutableCastOrIterator" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.001"/>
+  <testcase name="sameAndRollbackRevisionDoNotRegrantAfterNewRevocation" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.003"/>
+  <testcase name="copyDefensivelyCopiesItsNewInput" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.001"/>
+  <testcase name="copiedInputsRetainValidationAndUniquenessRequirements" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.006"/>
+  <testcase name="constructorCopiesInputBeforeRetainingSnapshot" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.001"/>
+  <testcase name="valueEqualityHashAndCopyCompatibilityRemainStableAfterInputChanges" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.0"/>
+  <testcase name="destructuredListCannotBeModified" classname="com.easysavevideo.core.domain.EntitlementImmutabilityTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,8 @@
+{
+  "source_archive": "upstream/coroutines-1.9.0.tar.gz",
+  "source_archive_sha256": "67b46c86851bd63c3a2dcb50087189c61d6d2bdc3d9b594924a078f7f854612c",
+  "archive_member": "kotlinx.coroutines-1.9.0/license/NOTICE.txt",
+  "upstream_url": "https://raw.githubusercontent.com/Kotlin/kotlinx.coroutines/1.9.0/license/NOTICE.txt",
+  "sha256": "421d45acbd92670b4131621a28fcbb41ba0b747d3a336cb13fca38c0685426c4",
+  "bytes": 452
+}

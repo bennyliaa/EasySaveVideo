@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.commons.CommonsFailureRecoveryTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:09.962Z" hostname="05582a867b99" time="0.082">
+  <properties/>
+  <testcase name="serverCooldownRejectsEarlyRetryWithoutIoAndAllowsRequestAtExactBoundary" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.027"/>
+  <testcase name="smallOperationBudgetReadsOnlyOneExcessByteAndFailedBodyIsNotCached" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.004"/>
+  <testcase name="failedOtherQueryDoesNotEvictTheOnlyValidCacheEntry" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.003"/>
+  <testcase name="unreachableAndTimeoutErrorsAreSanitizedSingleAttemptsAndAllowExplicitRecovery" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.008"/>
+  <testcase name="cancellationDuringBodyReadRejectsReturnedBytesAndAllowsExplicitRecovery" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.004"/>
+  <testcase name="deadlineSignalWinsOverIoFailureAndReleasesCallWithoutAnInternalRetry" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.003"/>
+  <testcase name="truncatedDeclaredBodyIsRejectedAndSubsequentCompletePageIsFresh" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.002"/>
+  <testcase name="zeroProgressBodyFailsAfterOneReadAndDoesNotBlockFollowingRequest" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.003"/>
+  <testcase name="partialReadIOExceptionClosesResponseAndNeverCachesPartialMetadata" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.002"/>
+  <testcase name="expiredCacheDoesNotBecomeStaleSuccessWhenRefreshFails" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.003"/>
+  <testcase name="slowReadAtDeadlineCannotPublishOrCacheAndNextOperationGetsItsOwnBudget" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.004"/>
+  <testcase name="ordinaryMalformedOrTruncatedJsonDoesNotPoisonSameQueryRecovery" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.007"/>
+  <testcase name="noStoreResponseDoesNotHideFailureOfFollowingRequest" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.004"/>
+  <testcase name="smallerBudgetRejectsCachedPageWithoutIoOrDestroyingExistingEntry" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.002"/>
+  <testcase name="normalDeclaredResponseLimitRejectsBeforeReadingAndReleasesForRecovery" classname="com.easysavevideo.commons.CommonsFailureRecoveryTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,625 @@
+[
+  {
+    "path": "libraries/exoplayer_hls/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright (C) 2017 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/database/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright (C) 2021 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/container/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright 2023 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/extractor/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright (C) 2020 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/datasource/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright (C) 2021 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/transformer/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright 2020 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/muxer/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright 2022 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/common/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright (C) 2020 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright 2022 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/insert_overlay_fragment_shader_methods.glsl",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_lut_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2022 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_oetf_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2022 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_hdr_internal_es3.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2022 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/vertex_shader_transformation_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2021 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_oetf_es3.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2022 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_hsl_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2022 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_external_yuv_es3.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2022 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_hdr_to_ultra_hdr_es3.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2026 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_external_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2021 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_copy_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2023 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_alpha_scale_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2023 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2022 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/vertex_shader_transformation_es3.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2021 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/vertex_shader_thumbnail_strip_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2023 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_internal_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2023 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/insert_ultra_hdr.glsl",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_transformation_ultra_hdr_es3.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2022 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/effect/src/main/res/raw/fragment_shader_separable_convolution_es2.glsl",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "// Copyright 2023 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/decoder/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright (C) 2021 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/exoplayer/src/main/AndroidManifest.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright (C) 2016 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ar/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-es-rUS/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-et/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-te/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-lt/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-gl/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-cs/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-zu/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ro/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-nb/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-th/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ta/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ko/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-bs/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sk/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-gu/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ml/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-hy/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-be/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-mk/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sl/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sr/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-or/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-kk/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-es/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-b+sr+Latn/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-mr/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-tl/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-fi/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-hi/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ne/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-fa/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-el/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-pt/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-nl/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sv/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values/strings.xml",
+    "explicit_apache_header": true,
+    "copyright_lines": [
+      "<!-- Copyright (C) 2016 The Android Open Source Project"
+    ]
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-en-rIN/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-pl/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sw/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-lv/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-az/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-mn/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-hu/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-uk/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-in/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ky/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ka/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-pa/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-da/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-pt-rPT/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-en-rGB/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-zh-rHK/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ca/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-bn/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-sq/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-it/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-vi/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-lo/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-hr/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-my/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-de/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-bg/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-af/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-km/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-as/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ms/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-uz/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-tr/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-is/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ru/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-kn/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-eu/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ja/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-zh-rTW/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-si/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-fr/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-ur/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-en-rAU/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-am/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-iw/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-zh-rCN/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  },
+  {
+    "path": "libraries/exoplayer/src/main/res/values-fr-rCA/strings.xml",
+    "explicit_apache_header": false,
+    "copyright_lines": []
+  }
+]

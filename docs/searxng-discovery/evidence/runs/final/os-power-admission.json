@@ -1,0 +1,66 @@
+{
+  "scope": "M8_B4_UNCHANGED_OS_REGRESSION_WITH_SEARXNG_SCOPE_GUARD",
+  "baseline": "9e9dea537c5f6e269adfb6791b47829eb4c440de",
+  "baseline_files": 4644,
+  "unchanged_baseline_files": 4632,
+  "allowed_production_edits": [
+    "app/build.gradle.kts",
+    "app/src/debug/kotlin/com/easysavevideo/app/discovery/BuildDiscovery.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryFilterPresentationPolicy.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/storage/DiscoveryCheckpointCodec.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
+    "app/src/release/kotlin/com/easysavevideo/app/discovery/BuildDiscovery.kt",
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryModels.kt",
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryStore.kt",
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/ValidationPipeline.kt",
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/VideoDiscoveryCoordinator.kt",
+    "settings.gradle.kts"
+  ],
+  "changed_files": [
+    "app/build.gradle.kts",
+    "app/src/debug/kotlin/com/easysavevideo/app/discovery/BuildDiscovery.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryFilterPresentationPolicy.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/storage/DiscoveryCheckpointCodec.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
+    "app/src/release/kotlin/com/easysavevideo/app/discovery/BuildDiscovery.kt",
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryModels.kt",
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryStore.kt",
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/ValidationPipeline.kt",
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/VideoDiscoveryCoordinator.kt",
+    "settings.gradle.kts"
+  ],
+  "historical_scripts_tests_and_evidence": "BYTE_AND_EXECUTABLE_MODE_UNCHANGED",
+  "effective_permissions": {
+    "debug": [
+      "android.permission.ACCESS_NETWORK_STATE",
+      "android.permission.FOREGROUND_SERVICE",
+      "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION",
+      "android.permission.INTERNET",
+      "android.permission.POST_NOTIFICATIONS",
+      "android.permission.RECORD_AUDIO",
+      "android.permission.WAKE_LOCK",
+      "com.easysavevideo.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+    ],
+    "release": [
+      "android.permission.ACCESS_NETWORK_STATE",
+      "android.permission.FOREGROUND_SERVICE",
+      "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION",
+      "android.permission.INTERNET",
+      "android.permission.POST_NOTIFICATIONS",
+      "android.permission.RECORD_AUDIO",
+      "android.permission.WAKE_LOCK",
+      "com.easysavevideo.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+    ]
+  },
+  "network_state_permission": "ALREADY_MERGED_FROM_ADMITTED_MEDIA3_EXOPLAYER_1_11_1; NO_NEW_PERMISSION",
+  "runtime_artifacts": "EXACT74_GATED_BY_STRICT_GRADLE",
+  "core_android_types": "UNCHANGED_PLATFORM_NEUTRAL",
+  "release_simulation": "ABSENT",
+  "device_acceptance": "NOT_RUN",
+  "energy_or_threshold_calibration": "NOT_RUN",
+  "vault": "DISABLED_UNCHANGED",
+  "blocked_rule_candidate": "NOT_RETRIED_REVIEWED_OR_SUBSTITUTED",
+  "overall_feature_completion": false
+}

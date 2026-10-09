@@ -1,0 +1,67 @@
+{
+  "overlay_prior_apache_header": true,
+  "overlay_functions": {
+    "getClampToBorderOverlayColor": {
+      "normalized_code_equal": true,
+      "prior_code": "vec4 getClampToBorderOverlayColor(\n    sampler2D texSampler, vec2 texSamplingCoord, float alphaScale){\n  if (texSamplingCoord.x > 1.0 || texSamplingCoord.x < 0.0\n      || texSamplingCoord.y > 1.0 || texSamplingCoord.y < 0.0) {\n    return vec4(0.0, 0.0, 0.0, 0.0);\n  } else {\n    vec4 overlayColor = vec4(texture2D(texSampler, texSamplingCoord));\n    overlayColor.a = alphaScale * overlayColor.a;\n    return overlayColor;\n  }\n}",
+      "current_code": "vec4 getClampToBorderOverlayColor(sampler2D texSampler, vec2 texSamplingCoord,\n                                  float alphaScale) {\n  if (texSamplingCoord.x > 1.0 || texSamplingCoord.x < 0.0 ||\n      texSamplingCoord.y > 1.0 || texSamplingCoord.y < 0.0) {\n    return vec4(0.0, 0.0, 0.0, 0.0);\n  } else {\n    vec4 overlayColor = vec4(texture2D(texSampler, texSamplingCoord));\n    overlayColor.a = alphaScale * overlayColor.a;\n    return overlayColor;\n  }\n}"
+    },
+    "getMixColor": {
+      "normalized_code_equal": true,
+      "prior_code": "vec4 getMixColor(vec4 videoColor, vec4 overlayColor) {\n  vec4 outputColor;\n  outputColor.rgb = overlayColor.rgb * overlayColor.a\n      + videoColor.rgb * (1.0 - overlayColor.a);\n  outputColor.a = overlayColor.a + videoColor.a * (1.0 - overlayColor.a);\n  return outputColor;\n}",
+      "current_code": "vec4 getMixColor(vec4 videoColor, vec4 overlayColor) {\n  vec4 outputColor;\n  outputColor.rgb = overlayColor.rgb * overlayColor.a +\n                    videoColor.rgb * (1.0 - overlayColor.a);\n  outputColor.a = overlayColor.a + videoColor.a * (1.0 - overlayColor.a);\n  return outputColor;\n}"
+    }
+  },
+  "ultra_hdr_prior_apache_header": true,
+  "ultra_hdr_functions": {
+    "applyGainmap": {
+      "normalized_code_equal": false,
+      "prior_code": "highp vec3 applyGainmapToBase(vec4 S) {\n  vec4 G = texture(uGainmapTexSampler, vTexSamplingCoord);\n  float W = clamp((log(HDR_SDR_RATIO) - log(uDisplayRatioSdr)) /\n                      (log(uDisplayRatioHdr) - log(uDisplayRatioSdr)),\n                  0.0, 1.0);\n  vec3 H;\n  if (uGainmapIsAlpha == 1) {\n    G = vec4(G.a, G.a, G.a, 1.0);\n  }\n  if (uSingleChannel == 1) {\n    mediump float L;\n    if (uNoGamma == 1) {\n      L = mix(uLogRatioMin.r, uLogRatioMax.r, G.r);\n    } else {\n      L = mix(uLogRatioMin.r, uLogRatioMax.r, pow(G.r, uGainmapGamma.r));\n    }\n    H = (S.rgb + uEpsilonSdr.rgb) * exp(L * W) - uEpsilonHdr.rgb;\n  } else {\n    mediump vec3 L;\n    if (uNoGamma == 1) {\n      L = mix(uLogRatioMin.rgb, uLogRatioMax.rgb, G.rgb);\n    } else {\n      L = mix(uLogRatioMin.rgb, uLogRatioMax.rgb,\n              pow(G.rgb, uGainmapGamma.rgb));\n    }\n    H = (S.rgb + uEpsilonSdr.rgb) * exp(L * W) - uEpsilonHdr.rgb;\n  }\n  return H;\n}",
+      "current_code": "highp vec3 applyGainmap(vec4 S, vec4 G, int uGainmapIsAlpha, int uNoGamma,\n                        int uSingleChannel, vec4 uLogRatioMin,\n                        vec4 uLogRatioMax, vec4 uEpsilonSdr, vec4 uEpsilonHdr,\n                        vec4 uGainmapGamma, float uDisplayRatioHdr,\n                        float uDisplayRatioSdr) {\n  float W = clamp((log(HDR_SDR_RATIO) - log(uDisplayRatioSdr)) /\n                      (log(uDisplayRatioHdr) - log(uDisplayRatioSdr)),\n                  0.0, 1.0);\n  vec3 H;\n  if (uGainmapIsAlpha == 1) {\n    G = vec4(G.a, G.a, G.a, 1.0);\n  }\n  if (uSingleChannel == 1) {\n    mediump float L;\n    if (uNoGamma == 1) {\n      L = mix(uLogRatioMin.r, uLogRatioMax.r, G.r);\n    } else {\n      L = mix(uLogRatioMin.r, uLogRatioMax.r, pow(G.r, uGainmapGamma.r));\n    }\n    H = (S.rgb + uEpsilonSdr.rgb) * exp(L * W) - uEpsilonHdr.rgb;\n  } else {\n    mediump vec3 L;\n    if (uNoGamma == 1) {\n      L = mix(uLogRatioMin.rgb, uLogRatioMax.rgb, G.rgb);\n    } else {\n      L = mix(uLogRatioMin.rgb, uLogRatioMax.rgb,\n              pow(G.rgb, uGainmapGamma.rgb));\n    }\n    H = (S.rgb + uEpsilonSdr.rgb) * exp(L * W) - uEpsilonHdr.rgb;\n  }\n  return H;\n}",
+      "adaptation": "Function renamed applyGainmapToBase -> applyGainmap; sampled G plus global uniforms converted to parameters; function body otherwise equal after removing the old G texture sample statement.",
+      "normalized_body_equal_after_described_parameterization": true
+    },
+    "bt709ToBt2020": {
+      "normalized_code_equal": true,
+      "prior_code": "highp vec3 bt709ToBt2020(vec3 bt709Color) {\n  return XYZ_TO_RGB_BT2020 * RGB_BT709_TO_XYZ * bt709Color;\n}",
+      "current_code": "highp vec3 bt709ToBt2020(vec3 bt709Color) {\n  return XYZ_TO_RGB_BT2020 * RGB_BT709_TO_XYZ * bt709Color;\n}"
+    },
+    "scaleHdrLuminance": {
+      "normalized_code_equal": true,
+      "prior_code": "vec3 scaleHdrLuminance(vec3 linearColor) {\n  const float SDR_MAX_LUMINANCE = 500.0;\n  const float HDR_MAX_LUMINANCE = 1000.0;\n  return linearColor * SDR_MAX_LUMINANCE / HDR_MAX_LUMINANCE;\n}",
+      "current_code": "vec3 scaleHdrLuminance(vec3 linearColor) {\n  const float SDR_MAX_LUMINANCE = 500.0;\n  const float HDR_MAX_LUMINANCE = 1000.0;\n  return linearColor * SDR_MAX_LUMINANCE / HDR_MAX_LUMINANCE;\n}"
+    },
+    "srgbEotfSingleChannel": {
+      "normalized_code_equal": false,
+      "prior_code": "float srgbEotfSingleChannel(float electricalChannel) {\n  // Specification:\n  // https://developer.android.com/ndk/reference/group/a-data-space#group___a_data_space_1gga2759ad19cae46646cc5f7002758c4a1cac1bef6aa3a72abbf4a651a0bfb117f96\n  return electricalChannel <= 0.04045\n             ? electricalChannel / 12.92\n             : pow((electricalChannel + 0.055) / 1.055, 2.4);\n}",
+      "current_code": "float srgbEotfSingleChannel(float srgb) {\n  return srgb <= 0.04045 ? srgb / 12.92 : pow((srgb + 0.055) / 1.055, 2.4);\n}",
+      "normalized_equal_after_renaming_electricalChannel_to_srgb": true
+    },
+    "srgbEotf": {
+      "normalized_code_equal": false,
+      "prior_code": "vec3 srgbEotf(const vec3 electricalColor) {\n  return vec3(srgbEotfSingleChannel(electricalColor.r),\n              srgbEotfSingleChannel(electricalColor.g),\n              srgbEotfSingleChannel(electricalColor.b));\n}",
+      "current_code": "vec4 srgbEotf(vec4 srgb) {\n  return vec4(srgbEotfSingleChannel(srgb.r), srgbEotfSingleChannel(srgb.g),\n              srgbEotfSingleChannel(srgb.b), srgb.a);\n}",
+      "adaptation": "Existing vec3 RGB function extended to vec4 RGBA; same channel EOTF calls; alpha passes through as srgb.a; parameters renamed."
+    }
+  },
+  "ultra_hdr_constants": {
+    "HDR_SDR_RATIO": {
+      "normalized_code_equal": true,
+      "prior_code": "const float HDR_SDR_RATIO = 2.0;",
+      "current_code": "const float HDR_SDR_RATIO = 2.0;",
+      "normalized_equal_after_float_suffix_removal": true
+    },
+    "XYZ_TO_RGB_BT2020": {
+      "normalized_code_equal": false,
+      "prior_code": "const mat3 XYZ_TO_RGB_BT2020 =\n    mat3(1.71665f, -0.666684f, 0.0176399f, -0.355671f, 1.61648f, -0.0427706,\n         -0.253366f, 0.0157685f, 0.942103f);",
+      "current_code": "const mat3 XYZ_TO_RGB_BT2020 =\n    mat3(1.71665, -0.666684, 0.0176399, -0.355671, 1.61648, -0.0427706,\n         -0.253366, 0.0157685, 0.942103);",
+      "normalized_equal_after_float_suffix_removal": true
+    },
+    "RGB_BT709_TO_XYZ": {
+      "normalized_code_equal": false,
+      "prior_code": "const mat3 RGB_BT709_TO_XYZ =\n    mat3(0.412391f, 0.212639f, 0.0193308f, 0.357584f, 0.715169f, 0.119195f,\n         0.180481f, 0.0721923f, 0.950532f);",
+      "current_code": "const mat3 RGB_BT709_TO_XYZ =\n    mat3(0.412391, 0.212639, 0.0193308, 0.357584, 0.715169, 0.119195, 0.180481,\n         0.0721923, 0.950532);",
+      "normalized_equal_after_float_suffix_removal": true
+    }
+  }
+}

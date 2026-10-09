@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:23:31.340Z" hostname="723dfa57d2fa" time="0.671">
+  <properties/>
+  <testcase name="currentAnchorMayExceedNewPageSizeWithoutLosingIds" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.01"/>
+  <testcase name="unsafeUrlCannotReachRestoredGrid" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.001"/>
+  <testcase name="negativeOrderAndUnknownIdentityVersionAreRejected" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.001"/>
+  <testcase name="headerOnlyCheckpointIsValid" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.001"/>
+  <testcase name="checkpointPresenceAndFilterBooleansAreStrictInBothVersions" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.003"/>
+  <testcase name="versionTwoRoundTripRetainsCompleteAttributionAndWarnings" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.003"/>
+  <testcase name="duplicateResultAndForeignPageIdsAreRejected" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.001"/>
+  <testcase name="genuineFrozenV1FixtureRestoresLegacyRowsWithEmptyRights" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.001"/>
+  <testcase name="unknownSchemaAndMalformedUtf8AreRejected" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.003"/>
+  <testcase name="truncatedAndTrailingBytesAreRejected" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.002"/>
+  <testcase name="roundTripPreservesAliasesNullableFieldsPagesAndQuery" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.001"/>
+  <testcase name="checkpointEncodingRejectsMalformedUtf16BeforeReplacement" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.001"/>
+  <testcase name="wholeCheckpointAndNestedRightsBoundsAreIndependent" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.045"/>
+  <testcase name="maximumPoolWithWideUnicodeFieldsCanRoundTrip" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.594"/>
+  <testcase name="checkpointRejectsUnknownOrCorruptNestedRightsInsteadOfClearingThem" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.001"/>
+  <testcase name="staleStampAndRevisionAreRejected" classname="com.easysavevideo.app.storage.DiscoveryCheckpointCodecTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

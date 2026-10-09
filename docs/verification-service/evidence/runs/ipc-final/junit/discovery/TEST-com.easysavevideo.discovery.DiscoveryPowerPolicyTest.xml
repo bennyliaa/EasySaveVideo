@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.DiscoveryPowerPolicyTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:30:08.426Z" hostname="05582a867b99" time="0.006">
+  <properties/>
+  <testcase name="softLimitsIndependentlyConserveWithoutEscalatingUserMode" classname="com.easysavevideo.discovery.DiscoveryPowerPolicyTest" time="0.001"/>
+  <testcase name="enabledUnknownAndHardLimitsEachIndependentlyPause" classname="com.easysavevideo.discovery.DiscoveryPowerPolicyTest" time="0.001"/>
+  <testcase name="defaultDisconnectedIsNotEnabledUnknownAndDoesNotFabricateHealthyInputs" classname="com.easysavevideo.discovery.DiscoveryPowerPolicyTest" time="0.0"/>
+  <testcase name="everyCombinationOnlyTightensAllAdmittedBounds" classname="com.easysavevideo.discovery.DiscoveryPowerPolicyTest" time="0.003"/>
+  <testcase name="healthySnapshotRetainsSelectedModeAndStricterCallerLimits" classname="com.easysavevideo.discovery.DiscoveryPowerPolicyTest" time="0.001"/>
+  <testcase name="schedulerConservingWatermarksRoundAndConcurrencyHaveExactBoundaries" classname="com.easysavevideo.discovery.DiscoveryPowerPolicyTest" time="0.0"/>
+  <testcase name="schedulerIntersectsExistingForegroundVisibilityAndTaskPriorityGates" classname="com.easysavevideo.discovery.DiscoveryPowerPolicyTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,24 @@
+{
+  "node_id": "TA_kwDOHXkKS9oAKDdkNDFhNjQzNTY2N2U2ZWM1NDNlNDlhYzU0NGZmNTk5YjcyNjAxYzk",
+  "sha": "7d41a6435667e6ec543e49ac544ff599b72601c9",
+  "url": "https://api.github.com/repos/tink-crypto/tink-java/git/tags/7d41a6435667e6ec543e49ac544ff599b72601c9",
+  "tagger": {
+    "name": "kbuilder user",
+    "email": "kbuilder@kokoro-gcp-ubuntu-prod-1616845392.europe-west4-b.c.tink-test-infrastructure.internal",
+    "date": "2026-07-09T08:49:05Z"
+  },
+  "object": {
+    "sha": "1bedd75ae7161017c5f45b020395a72bbd40645d",
+    "type": "commit",
+    "url": "https://api.github.com/repos/tink-crypto/tink-java/git/commits/1bedd75ae7161017c5f45b020395a72bbd40645d"
+  },
+  "tag": "v1.23.0",
+  "message": "tink-java version 1.23.0\n",
+  "verification": {
+    "verified": false,
+    "reason": "unsigned",
+    "signature": null,
+    "payload": null,
+    "verified_at": null
+  }
+}

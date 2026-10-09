@@ -1,0 +1,12 @@
+{
+  "kind": "STATIC_SOURCE_GUARDS_ONLY",
+  "existing_runtime_74_and_entitlement_manifest_unchanged": "PASS",
+  "Save_Record_HLS_proof_sources_unchanged": "PASS",
+  "core_platform_boundary": "PASS",
+  "typed_editor_no_network_or_capture": "PASS",
+  "catalog_identity_and_owned_publication_source": "PASS",
+  "sole_storage_monitor_and_checked_v4_migration_source": "PASS",
+  "skinkit_limits_and_free_cancel_source": "PASS",
+  "native_codec_gpu_oem_and_device_acceptance": "NOT_RUN",
+  "vault": "DISABLED_UNCHANGED"
+}

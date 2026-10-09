@@ -1,0 +1,17 @@
+PASS exact frozen source manifest: 155
+PASS eight previously admitted compiler/runtime/JUnit artifact SHA-256 values
+JUnit version 4.13.2
+............E...................................
+Time: 0.128
+There was 1 failure:
+1) explicitResumeAfterInterruptedTransferDoesNotRecreateOrigin(com.easysavevideo.app.save.IndependentMediaReviewTest)
+java.lang.AssertionError: expected:<SUCCEEDED> but was:<FAILED>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at com.easysavevideo.app.save.IndependentMediaReviewTest.explicitResumeAfterInterruptedTransferDoesNotRecreateOrigin(independent-media-review.kt:106)
+
+FAILURES!!!
+Tests run: 47,  Failures: 1
+

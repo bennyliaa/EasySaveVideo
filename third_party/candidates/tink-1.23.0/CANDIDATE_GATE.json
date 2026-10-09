@@ -1,0 +1,52 @@
+{
+  "candidate": "com.google.crypto.tink:tink-android:1.23.0",
+  "profile": "AES256_GCM_HKDF_1MB",
+  "admitted": false,
+  "main_repository_modified": false,
+  "gradle_executed": false,
+  "apk_aab_or_device_execution": false,
+  "production_keys_created": false,
+  "test_keys": "ephemeral host synthetic test keys only; not persisted",
+  "closed_source_compatibility": "reviewed licenses permit closed-source distribution subject to documented notice conditions and admission approval",
+  "license_scope_reviewed": [
+    "Tink Apache-2.0",
+    "embedded protobuf-javalite 4.33.6 BSD-3-Clause",
+    "Curve25519-donna BSD/public-domain ancestry",
+    "Poly1305-donna public-domain option",
+    "Ed25519/NaCl public-domain ancestry",
+    "Gson Apache-2.0 including AOSP/Jackson/Moshi ancestry",
+    "error_prone_annotations 2.41.0 Apache-2.0"
+  ],
+  "projected_runtime_artifacts": 74,
+  "baseline_runtime_artifacts": 72,
+  "host_checks_passed": 30,
+  "blockers_before_admission": [
+    "Explicit owner admission of exact binaries, embedded scope, obligations and ancestry limitations",
+    "Main build owner exact debug/release graph resolution and lock/admission update after approval"
+  ],
+  "blockers_before_shipping": [
+    "Reviewed ESV authenticated manifest and revocable adapter",
+    "Android provider/Keystore and lifecycle/codec verification",
+    "Release shrinking/packaging and notices verification",
+    "Distribution approval"
+  ],
+  "required_api_guards": [
+    "Manifest-authenticated size and exact ciphertext extent",
+    "Explicit final-segment authentication for nonempty video",
+    "No zero-progress EOF loop",
+    "Atomic outer lease revocation and publication fence, not close-only",
+    "Scratch-buffer discard on read exception",
+    "No AndroidKeysetManager cleartext fallback",
+    "No disk plaintext media cache"
+  ],
+  "unknowns": [
+    "Actual Gradle graph, D8/R8, Android provider/Keystore and packaged release artifact remain unverified."
+  ],
+  "license_assessment": "PERMITTED_FOR_CLOSED_SOURCE_SUBJECT_TO_DOCUMENTED_LICENSE_OBLIGATIONS",
+  "project_admission_status": "NOT_ADMITTED",
+  "substantive_license_unknowns": [],
+  "source_provenance_limitations": [
+    "Tink names donna/ref10 ancestry but does not record exact historical imported commits. Applicable BSD/public-domain terms are identified in primary upstream sources; this is not an UNKNOWN license.",
+    "No reproducible binary build and no independently trusted-key PGP verification."
+  ]
+}

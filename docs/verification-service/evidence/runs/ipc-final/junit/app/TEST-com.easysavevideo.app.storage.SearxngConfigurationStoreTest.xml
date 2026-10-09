@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.storage.SearxngConfigurationStoreTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:31:05.123Z" hostname="05582a867b99" time="0.006">
+  <properties/>
+  <testcase name="readFailureIsDistinctFromMissingAndNoFileIsErased" classname="com.easysavevideo.app.storage.SearxngConfigurationStoreTest" time="0.003"/>
+  <testcase name="directoryOrSymlinkTargetIsNeverReadAsConfigurationOrReplaced" classname="com.easysavevideo.app.storage.SearxngConfigurationStoreTest" time="0.001"/>
+  <testcase name="missingReadDoesNotCreateAnyFileAndSuccessfulWriteRestores" classname="com.easysavevideo.app.storage.SearxngConfigurationStoreTest" time="0.001"/>
+  <testcase name="malformedAndOversizedDataArePreservedAndCannotBeOverwritten" classname="com.easysavevideo.app.storage.SearxngConfigurationStoreTest" time="0.001"/>
+  <testcase name="staleGenerationAndInvalidRevisionCannotOverwriteNewConfig" classname="com.easysavevideo.app.storage.SearxngConfigurationStoreTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

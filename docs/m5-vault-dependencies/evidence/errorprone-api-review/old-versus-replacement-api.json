@@ -1,0 +1,191 @@
+[
+  {
+    "class_name": "com/google/errorprone/annotations/CanIgnoreReturnValue",
+    "byte_identical": true,
+    "old_sha256": "7ddc43df3c8db828d0f97ec17a65fc519772e78bf72228ac0172c2543f1dcdb5",
+    "new_sha256": "7ddc43df3c8db828d0f97ec17a65fc519772e78bf72228ac0172c2543f1dcdb5",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/CheckReturnValue",
+    "byte_identical": true,
+    "old_sha256": "6b918c216280b89291b7efa537eb94e1dd89341a6ce878583b7c99a38c170d34",
+    "new_sha256": "6b918c216280b89291b7efa537eb94e1dd89341a6ce878583b7c99a38c170d34",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/CompatibleWith",
+    "byte_identical": true,
+    "old_sha256": "f01e4d656951773b18dc092eeacadaba820543072c12196319d7c3c77b2e5593",
+    "new_sha256": "f01e4d656951773b18dc092eeacadaba820543072c12196319d7c3c77b2e5593",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/CompileTimeConstant",
+    "byte_identical": true,
+    "old_sha256": "aa16142d61ba41aedb675b46774a2689c4d639ebb06ac750c093e54e400fcf32",
+    "new_sha256": "aa16142d61ba41aedb675b46774a2689c4d639ebb06ac750c093e54e400fcf32",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/DoNotCall",
+    "byte_identical": true,
+    "old_sha256": "be56a64414db23d5b6e1314266be05a7ca2cd1a663dfbe5d2cdda01bf1fcb618",
+    "new_sha256": "be56a64414db23d5b6e1314266be05a7ca2cd1a663dfbe5d2cdda01bf1fcb618",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/DoNotMock",
+    "byte_identical": true,
+    "old_sha256": "8bdd4364acfaf0e056d0c76b11dbb35708283d49b6d9a46cc68e9e2f336fbd44",
+    "new_sha256": "8bdd4364acfaf0e056d0c76b11dbb35708283d49b6d9a46cc68e9e2f336fbd44",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/ForOverride",
+    "byte_identical": true,
+    "old_sha256": "ef1b6bc70c80666032bf721beea86a6abcd0c03561ea7de3558dcea04eeb3fc8",
+    "new_sha256": "ef1b6bc70c80666032bf721beea86a6abcd0c03561ea7de3558dcea04eeb3fc8",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/FormatMethod",
+    "byte_identical": true,
+    "old_sha256": "c9b6513f233e2fe13c10b4f53b4ee6e94f45ec5b3276f0104ce405b782a25f0a",
+    "new_sha256": "c9b6513f233e2fe13c10b4f53b4ee6e94f45ec5b3276f0104ce405b782a25f0a",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/FormatString",
+    "byte_identical": true,
+    "old_sha256": "dd387d9753a121865c81796b1cd55cef0a52fd89db31d91feb7b5e49b79303ef",
+    "new_sha256": "dd387d9753a121865c81796b1cd55cef0a52fd89db31d91feb7b5e49b79303ef",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/Immutable",
+    "byte_identical": true,
+    "old_sha256": "ca2d4ff9e5f87057e9c9020755c4fd1eb9308968a76078c857f7c7f5bd33e1cf",
+    "new_sha256": "ca2d4ff9e5f87057e9c9020755c4fd1eb9308968a76078c857f7c7f5bd33e1cf",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/IncompatibleModifiers",
+    "byte_identical": true,
+    "old_sha256": "0daf27cffdb7e3836b75803f398fa1dbfe9d6405c616abe9b6f1ec88fb7869a2",
+    "new_sha256": "0daf27cffdb7e3836b75803f398fa1dbfe9d6405c616abe9b6f1ec88fb7869a2",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/InlineMe",
+    "byte_identical": true,
+    "old_sha256": "8955b534d7bca0c020042aca023e7bca9591cf20c79917db625bbed15b56ee52",
+    "new_sha256": "8955b534d7bca0c020042aca023e7bca9591cf20c79917db625bbed15b56ee52",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/InlineMeValidationDisabled",
+    "byte_identical": true,
+    "old_sha256": "14840b472a4874d9eff88eda662ecaf135e1ca9a79afd862257d4573d936137e",
+    "new_sha256": "14840b472a4874d9eff88eda662ecaf135e1ca9a79afd862257d4573d936137e",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/Keep",
+    "byte_identical": true,
+    "old_sha256": "cff44fe06b28330c2dff7ad0e0f7c59570a6af0c3f238366d2950be134da9289",
+    "new_sha256": "cff44fe06b28330c2dff7ad0e0f7c59570a6af0c3f238366d2950be134da9289",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/Modifier",
+    "byte_identical": false,
+    "old_sha256": "f4c32a3bf459fd7d485758dcc23350a1728c1ba2744fff15ee610e52acaccf96",
+    "new_sha256": "9e8bb645f228e89773e02ed9c00aaf3173e4156b342f58bb4e9887773e072fdd",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/MustBeClosed",
+    "byte_identical": true,
+    "old_sha256": "0b01f5dbc365b455b6ada0b0a9234f301e577667a856d6443c3ec37408f46f28",
+    "new_sha256": "0b01f5dbc365b455b6ada0b0a9234f301e577667a856d6443c3ec37408f46f28",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/NoAllocation",
+    "byte_identical": true,
+    "old_sha256": "1b5df19edbf3b4cdb22c8df09a44b8b89dba7faba0d887bd8738fd9cc0183416",
+    "new_sha256": "1b5df19edbf3b4cdb22c8df09a44b8b89dba7faba0d887bd8738fd9cc0183416",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/OverridingMethodsMustInvokeSuper",
+    "byte_identical": true,
+    "old_sha256": "fd1a876f658ae70b1c2a6d29330be7bdff45a9ab26624dec662ddbdcf0755e06",
+    "new_sha256": "fd1a876f658ae70b1c2a6d29330be7bdff45a9ab26624dec662ddbdcf0755e06",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/RequiredModifiers",
+    "byte_identical": true,
+    "old_sha256": "d67b42f96cc2ac737a4a06fecf6937b97c0f90be0ac491bfbd98925e687ece45",
+    "new_sha256": "d67b42f96cc2ac737a4a06fecf6937b97c0f90be0ac491bfbd98925e687ece45",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/RestrictedApi",
+    "byte_identical": true,
+    "old_sha256": "52bec4e179b69ac9d1756c183db787c41bf412142169ec6413bd169d7ade5434",
+    "new_sha256": "52bec4e179b69ac9d1756c183db787c41bf412142169ec6413bd169d7ade5434",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/SuppressPackageLocation",
+    "byte_identical": true,
+    "old_sha256": "f3e1dd64b092e62877e9a4bc5fef7a1084a4ea73be4e20c6453d5a8679b0b34c",
+    "new_sha256": "f3e1dd64b092e62877e9a4bc5fef7a1084a4ea73be4e20c6453d5a8679b0b34c",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/ThreadSafe",
+    "byte_identical": true,
+    "old_sha256": "d532983f57fd8b9a4d292040959c19bb006fb177720703c42129c53de44bffb1",
+    "new_sha256": "d532983f57fd8b9a4d292040959c19bb006fb177720703c42129c53de44bffb1",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/Var",
+    "byte_identical": true,
+    "old_sha256": "2011a9fc2f512cabbf384315b434aca1a1dabe9e7582a57059075c56952fca11",
+    "new_sha256": "2011a9fc2f512cabbf384315b434aca1a1dabe9e7582a57059075c56952fca11",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/concurrent/GuardedBy",
+    "byte_identical": true,
+    "old_sha256": "a82bb9746459246fe4554851c684be3ef1e8e4d3197af0dd288d21084db18ffc",
+    "new_sha256": "a82bb9746459246fe4554851c684be3ef1e8e4d3197af0dd288d21084db18ffc",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/concurrent/LazyInit",
+    "byte_identical": true,
+    "old_sha256": "2f570b8d97f96a1ffa7facd95ed85b379d2ae510fe12cd26387027750d084d85",
+    "new_sha256": "2f570b8d97f96a1ffa7facd95ed85b379d2ae510fe12cd26387027750d084d85",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/concurrent/LockMethod",
+    "byte_identical": true,
+    "old_sha256": "b3d764ba5dd7cbd8a696d061f02f085220cd1fe8ece1b227dee72049aaa6e073",
+    "new_sha256": "b3d764ba5dd7cbd8a696d061f02f085220cd1fe8ece1b227dee72049aaa6e073",
+    "changed_structural_properties": {}
+  },
+  {
+    "class_name": "com/google/errorprone/annotations/concurrent/UnlockMethod",
+    "byte_identical": true,
+    "old_sha256": "93d83e05b5a4d41c28980fe9241a2b22ab3d31335598dbc99bab39d94cc93a70",
+    "new_sha256": "93d83e05b5a4d41c28980fe9241a2b22ab3d31335598dbc99bab39d94cc93a70",
+    "changed_structural_properties": {}
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "scope": "M10B_DISTRIBUTION_IDENTITY_PREPARATION_ONLY",
+  "baseline": "4a8f02e7d515b17e478abdce2957fd9d3401ca34",
+  "protected_files": 2717,
+  "exact_existing_edits": [
+    "app/build.gradle.kts",
+    "app/src/debug/kotlin/com/easysavevideo/app/entitlements/BuildEntitlements.kt",
+    "app/src/release/kotlin/com/easysavevideo/app/entitlements/BuildEntitlements.kt"
+  ],
+  "channel_identities": 7,
+  "android_variants": [
+    "debug",
+    "release"
+  ],
+  "dependencies": "EXACT74_UNCHANGED",
+  "payment": "SAME_UNCONFIGURED_PORT_ALL_CHANNELS",
+  "core_and_skinkit": "BYTE_UNCHANGED",
+  "vault": "DISABLED_UNCHANGED",
+  "blocked_rule_candidate": "ISOLATED_NOT_REVIEWED",
+  "account_sdk_backend_payment_choice": "NOT_CONFIGURED",
+  "apk_aab_device_publication": "NOT_RUN",
+  "store_acceptance": "NOT_CLAIMED"
+}

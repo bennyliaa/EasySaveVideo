@@ -1,0 +1,20 @@
+{
+  "candidate_isolated_graph": 74,
+  "actual_app_graph": 72,
+  "selection_removed_compatibility_stubs": [
+    "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20",
+    "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20"
+  ],
+  "unexpected_artifacts": [],
+  "changed_candidate_gavs": 23,
+  "variants": {
+    "debug": {
+      "unique_gavs": 72,
+      "exact_byte_match": true
+    },
+    "release": {
+      "unique_gavs": 72,
+      "exact_byte_match": true
+    }
+  }
+}

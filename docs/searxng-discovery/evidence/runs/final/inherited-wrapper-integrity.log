@@ -1,0 +1,204 @@
+{
+  "status": "PASS",
+  "behavioral_case_bodies_fixtures_source_selection_and_exact8_checks": "UNCHANGED",
+  "identity_only_adaptations": [
+    "Current manifest/self/nested-wrapper/output locations",
+    "Current baseline and already-delegated exact full membership for folder SQLite",
+    "OS report label refers to new complete baseline byte/mode guard",
+    "Three protected historical Git comparisons terminate at approved baseline; complete current byte/mode scope guard added",
+    "Combined hotfix/bookmark identity terminates at approved baseline for explicit integration edits; every current byte is separately frozen"
+  ],
+  "additive_model_adaptations": [
+    "Checkpoint payload v4 source guard and bounded optional configuration/strict authorization tail; every legacy history test body unchanged",
+    "New explicit v4 header rejection, SQL clear/rollback/reopen cases; SQLite schema3 and schema4 rejection unchanged",
+    "Process-reopen wrapper redirects only its history-model import; all four-process behavioral cases unchanged"
+  ],
+  "mappings": [
+    {
+      "source": "docs/browser-bookmarks/evidence/check-inherited-capture-preview-admission.py",
+      "destination": "docs/searxng-discovery/evidence/check-inherited-capture-preview-admission.py",
+      "original_sha256": "80cc1433e503dec2dab41e9a86990f2257f377ea1d54bcea29e3742f73bce9b2",
+      "adapted_sha256": "8448c7159c45b21fd23e08a1e6e7626d7a2ef93c4d7d48d5b380f8dfc1501919",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/check-inherited-editor-admission.py",
+      "destination": "docs/searxng-discovery/evidence/check-inherited-editor-admission.py",
+      "original_sha256": "2ab4bd6ea04e13db80de8a2f379267c3eac1a8615ec8c83b3e7fb1eed5539b9a",
+      "adapted_sha256": "5ea41cc822f6a1264730e4108c695988f6673445cb1fdfe8c42bef8e903ae673",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/check-inherited-purchase-admission.py",
+      "destination": "docs/searxng-discovery/evidence/check-inherited-purchase-admission.py",
+      "original_sha256": "d66e72931290ab2d893e70b260f0891e353d15c4adaa1573ec1f1ec154982a61",
+      "adapted_sha256": "9db82bcad370ade25f4ad1a8a622b29e9093766b3fd34d2ac7ff4b4dd87c40ae",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/check-inherited-region-recording-admission.py",
+      "destination": "docs/searxng-discovery/evidence/check-inherited-region-recording-admission.py",
+      "original_sha256": "37f2c22ce6cb404b4f87d26f894b5c71131aef4d954b14d971a1b64948a8e256",
+      "adapted_sha256": "91bada4c20b678728b0830a403dad55fcbafd3ff7d14e322a3d2920216c7b15c",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/check-inherited-os-power-admission.py",
+      "destination": "docs/searxng-discovery/evidence/check-inherited-os-power-admission.py",
+      "original_sha256": "c7f7e77b9febb720a25ad0d187163b6592b9b36f286d011b141fbb13c7cb6b34",
+      "adapted_sha256": "65fe5c1ab3b6b4619ceaf63a172ec83a00078a143a323f9af18ae8cbf9f4e0dc",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/inherited-reliability-run.sh",
+      "destination": "docs/searxng-discovery/evidence/inherited-reliability-run.sh",
+      "original_sha256": "616580590c219cceb459b058371b899d57c266f6f143b931eaf99a0c5a4f5121",
+      "adapted_sha256": "9efe7c8a688105d4e1c1f0a3a1cdc0cf9be60b9fc5d4a17afecd8de22a010f2a",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/inherited-filter-run.sh",
+      "destination": "docs/searxng-discovery/evidence/inherited-filter-run.sh",
+      "original_sha256": "1ffd65513d2b1967f600fc4f17ef0978010bb8796b96ce6c1f22b7b029f24f4e",
+      "adapted_sha256": "e618a4d0a9fb486e8d1b0641282e4aee442bacd708d76542ac2225ac9f3d5acd",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/inherited-media-run.sh",
+      "destination": "docs/searxng-discovery/evidence/inherited-media-run.sh",
+      "original_sha256": "fb3df83ffa5f80f57bc6f95ed727962174f34f362663ed467c85f42efdd39892",
+      "adapted_sha256": "12bfe72df89f44e398e3f17da6ee5df5abf7b1037d8726b66cfd08dcb74a5dbe",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/inherited-origin-run.sh",
+      "destination": "docs/searxng-discovery/evidence/inherited-origin-run.sh",
+      "original_sha256": "2d9d4f86a7ba7fa67305ee0b4c0bb7d70dc45c7af04f5275135b608881bbd40c",
+      "adapted_sha256": "acef72f9a1b7cc2a974a60247d929308a6438ce69d837cd005acaf34d40af134",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/inherited-power-run.sh",
+      "destination": "docs/searxng-discovery/evidence/inherited-power-run.sh",
+      "original_sha256": "c749df7c794a79f9acb1355fc24a750d91f3525186131b9e29abe5409f811336",
+      "adapted_sha256": "7265748db841978ad308d21ab713d133dc409efbcfe96a8844c294f14a382446",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/run-channel-matrix.sh",
+      "destination": "docs/searxng-discovery/evidence/run-channel-matrix.sh",
+      "original_sha256": "3d2254b41047a106040560c5f939022607f59e684817f54917358b8e67be8665",
+      "adapted_sha256": "3641602271d039d014ddecc79c52b172426b00b6025baff375a75710818580ac",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/run-distribution-host.sh",
+      "destination": "docs/searxng-discovery/evidence/run-distribution-host.sh",
+      "original_sha256": "c42bfd839f88f68c17d310023cdb58e495523da3874ed23ca8d0c7e4e4f2db7a",
+      "adapted_sha256": "f400e8c57c27442400482e1d1b51d41ca4f888ebf4a30e2f96080dfe6746d71c",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/run-independent-destination-review.sh",
+      "destination": "docs/searxng-discovery/evidence/run-independent-destination-review.sh",
+      "original_sha256": "e104984b36a2395d9afec7b70edee25adc6885acc601c4767bf320a081c9262b",
+      "adapted_sha256": "c72a5ea02f18b91fc01e0d9c42af0529051e7698baaee90ed7274822446933b6",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/run-independent-entitlement-review.sh",
+      "destination": "docs/searxng-discovery/evidence/run-independent-entitlement-review.sh",
+      "original_sha256": "ffdc2c5981f175e1c46b656a97dafe0ec3fdd22d4b667a8bf23ea7f8ff308419",
+      "adapted_sha256": "07346b05ef49dc09778fb9391c465239819ce4169c3e6a70b2ad1213fe61b5b6",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/run-isolation-host.sh",
+      "destination": "docs/searxng-discovery/evidence/run-isolation-host.sh",
+      "original_sha256": "22aca776ac7342a450368fa14f014690ce07b5a8c5bbb926c2454657b468df51",
+      "adapted_sha256": "d21f436ca0bacf634e6ee2614d3e7b4fb575e6832209a1acd4d6cc4abad560e0",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/run-independent-folder-review.sh",
+      "destination": "docs/searxng-discovery/evidence/run-independent-folder-review.sh",
+      "original_sha256": "333e60c8133e71b03c4e5bae09d1d8b1363ca918460abaf2df35cd6751566858",
+      "adapted_sha256": "ba0640e0c926e50f47e6a5dfdbb94afb4bd610b99f2070599b49d04b33299ee4",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/inherited-destination-sqlite.py",
+      "destination": "docs/searxng-discovery/evidence/inherited-destination-sqlite.py",
+      "original_sha256": "f1b4807028b9a6b80bc46fe924e59050361334233d2a21a15d4e8f3d2575e441",
+      "adapted_sha256": "f1b4807028b9a6b80bc46fe924e59050361334233d2a21a15d4e8f3d2575e441",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/inherited-independent-destination-sqlite.py",
+      "destination": "docs/searxng-discovery/evidence/inherited-independent-destination-sqlite.py",
+      "original_sha256": "48155cb738c55d4b0584d520d935246251f61b28e5d84c146d94de70cdf23ff3",
+      "adapted_sha256": "48155cb738c55d4b0584d520d935246251f61b28e5d84c146d94de70cdf23ff3",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/inherited-folder-sqlite.py",
+      "destination": "docs/searxng-discovery/evidence/inherited-folder-sqlite.py",
+      "original_sha256": "b3817dd49052e151c0411ea00da0f5aff2e9c40e3d5997f2002d440f3c2dcdfb",
+      "adapted_sha256": "e23459406b64d99aca7ea9f7d5c8f736a91572cefc7e37a13f8330a101fb1d61",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/independent-os-run.sh",
+      "destination": "docs/searxng-discovery/evidence/independent-os-run.sh",
+      "original_sha256": "b1bbcb4b68ad9192a380b1d38af4c3a6606b967ab10bb9ec2c165bcdef2d0626",
+      "adapted_sha256": "a40cc82af9683062aab3fab175e33bef97b120d619eb146cdc3e19a968784d11",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/independent-bookmark-run.sh",
+      "destination": "docs/searxng-discovery/evidence/independent-bookmark-run.sh",
+      "original_sha256": "7e7bb5c68901d42b85ba9cda43dae03c12386c939e1d3bee7d143c1e08a67b42",
+      "adapted_sha256": "006a126d91a526d5d737a93122e608327d176b6999d940d6ebb0bc00abb61a7d",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "docs/browser-bookmarks/evidence/independent-combined-source.py",
+      "destination": "docs/searxng-discovery/evidence/independent-combined-source.py",
+      "original_sha256": "90624a18e003a6730a980875403a87f396d96685c2d95ee8376ee517257e7690",
+      "adapted_sha256": "7aa522ec4ecf831698367b263fa95861262ad324ff9ac106f555d57fc47b405d",
+      "git_executable_mode_preserved": true
+    },
+    {
+      "source": "scripts/test-discovery-history-sqlite.py",
+      "destination": "docs/searxng-discovery/evidence/inherited-discovery-history-sqlite.py",
+      "original_sha256": "3aeb8d5962b18b1145c2ecb391f93ad16171c489b16450d17783a433548bf8af",
+      "adapted_sha256": "6a9e4d74d9dad9626d56c80c66d97a811820dc29b4748b3c2d24e19056f483a7",
+      "git_executable_mode_preserved": true,
+      "unchanged_legacy_case_functions": {
+        "test_alias_groups_and_boundaries": "3d6e851095279592b851224ec3c8e509b7ea912a2b0ddaa4796ca1ec53ed252a",
+        "test_bounded_properties": "fd227c8fcbaf78dbadf03fb13bc79ce03a590d6fc725e016a811383a095879d4",
+        "test_controls_and_statistics": "d1e20cf54b6701ac0b93774d11b9eeaf7523b8cb1e54128ea5e0fe278651e440",
+        "test_deterministic_insertion_order": "873ddd3f0956518462515acdf6c2c6c6478b442031a1f00c242841b6078b92cc",
+        "test_independent_event_monotonicity": "43da972c8ed3c8338f5b850da4c79c62fa6c61e6c7a7ce1323fc728ec5f42de1",
+        "test_migration": "f469f99748db4d51786a17a0656b35bf250f54416ed3fb9c53abb11dc19640b7",
+        "test_migration_pruning": "edf81c66dc4c9ff637c5edf39c6244f270abe655fc70457e1d7c14392b87678b",
+        "test_migration_rejection": "d214a919e1eaeaeef627a0c74c53a404e8cc191f96526824508032aeff7c6981",
+        "test_mutation_sequence_overflow": "6a260665989e0ed378b7695600dff0a9aa4b84a6b0039c3dd9cab194da0d3605",
+        "test_post_prune_rollback": "6d95d3ae2878370ccb519aac5f64f329c504f63cf33b161368e3c02bbbe5553c"
+      }
+    },
+    {
+      "source": "docs/m9a/evidence/verify-process-reopen.py",
+      "destination": "docs/searxng-discovery/evidence/inherited-process-reopen.py",
+      "original_sha256": "08c544d79359c221d5004cd34b883f1c36092adcfe33a00513c6c83a27fc1b30",
+      "adapted_sha256": "797949a700552374f878f7a578bd64a249fdb51706c266dd0d39a6c32c3cccd8",
+      "git_executable_mode_preserved": true,
+      "unchanged_legacy_case_functions": {
+        "baseline": "49c344e5d66a602453d9641ee9c5819249eef2ffc9b4726066af20b6650a629f",
+        "digest": "671a4e2778ea97d399db5e04a7f5aa9c3085df01d683be8314c50ec8fb397878",
+        "main": "2b7ec9c79fc75fec78c83842bf46914b2c40f4abbee40a1a912ba93a708a34a3",
+        "worker": "2bcb340dc7d3d11f1d994a21b5bb3f67c16e4b7132688c8b189dd773a5d4be9f"
+      }
+    }
+  ]
+}

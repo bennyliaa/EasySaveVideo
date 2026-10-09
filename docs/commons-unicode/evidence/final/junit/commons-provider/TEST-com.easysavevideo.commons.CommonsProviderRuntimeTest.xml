@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.commons.CommonsProviderRuntimeTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:32:15.889Z" hostname="05582a867b99" time="0.315">
+  <properties/>
+  <testcase name="stuckCancellationHookRetainsPhysicalSlotButCannotBlockDeadlineCallback" classname="com.easysavevideo.commons.CommonsProviderRuntimeTest" time="0.155"/>
+  <testcase name="callbackRunsOffCallerAndOnlyOnce" classname="com.easysavevideo.commons.CommonsProviderRuntimeTest" time="0.003"/>
+  <testcase name="deadlineCompletesEvenWhenTransportIgnoresInterruptAndCancel" classname="com.easysavevideo.commons.CommonsProviderRuntimeTest" time="0.152"/>
+  <testcase name="runtimeHookRegistrationFailureDoesNotStartTransportOrLoseCompletion" classname="com.easysavevideo.commons.CommonsProviderRuntimeTest" time="0.002"/>
+  <testcase name="closeCancelsTheRealInflightCallAndCompletesPromptly" classname="com.easysavevideo.commons.CommonsProviderRuntimeTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

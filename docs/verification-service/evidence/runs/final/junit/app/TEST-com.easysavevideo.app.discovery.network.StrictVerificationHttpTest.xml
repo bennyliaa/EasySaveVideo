@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:58.114Z" hostname="05582a867b99" time="0.107">
+  <properties/>
+  <testcase name="rejectsTruncatedFixedOrChunkedBodiesAndUnexpectedBytesAfterBody" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.002"/>
+  <testcase name="fixedLengthCloseDelimitedAndChunkedBodiesRoundTripWithoutTransformation" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.001"/>
+  <testcase name="statusAndHeadersRemainAvailableWithoutAutomaticRetryOrAuthentication" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.0"/>
+  <testcase name="zeroReturningStreamIsNotAnUnboundedSpinOrInventedEof" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.001"/>
+  <testcase name="rejectsConflictingOrMalformedFramingAndCompression" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.0"/>
+  <testcase name="everyReadIsGuardedAndCancellationCannotBecomeSuccessfulEof" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.001"/>
+  <testcase name="budgetProbeReadsAtMostOneExtraBodyByteWithoutReadAhead" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.0"/>
+  <testcase name="rejectsMalformedStatusInterimUpgradeAndBareLf" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.0"/>
+  <testcase name="headerBytesAndFieldsIncludeRepeatedHeadersAndTrailers" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.013"/>
+  <testcase name="rejectsFoldingControlCharactersWhitespaceBeforeColonAndDuplicateSingletons" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.001"/>
+  <testcase name="decodedBodyBudgetIsIndependentOfFiniteFramingBudget" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.071"/>
+  <testcase name="cumulativeChunksCannotExceedDecodedBodyLimit" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.001"/>
+  <testcase name="invalidParserBudgetIsRejectedBeforeAnyRead" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.003"/>
+  <testcase name="rejectsInvalidChunkSizeExtensionsAndUnboundedNumericClaims" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.011"/>
+  <testcase name="rejectsFramingAndMetadataOverridesInTrailersAndConnectionNominatedTrailers" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.0"/>
+  <testcase name="unexpectedBodiesOnBodylessResponsesAreRejected" classname="com.easysavevideo.app.discovery.network.StrictVerificationHttpTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

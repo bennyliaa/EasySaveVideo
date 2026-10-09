@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.library.export.ExportModelsTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:22.355Z" hostname="05582a867b99" time="0.008">
+  <properties/>
+  <testcase name="diagnosticStringsDoNotLeakIdsOrEvidence" classname="com.easysavevideo.library.export.ExportModelsTest" time="0.004"/>
+  <testcase name="outputKindCannotCrossDestinationAuthority" classname="com.easysavevideo.library.export.ExportModelsTest" time="0.001"/>
+  <testcase name="operationAndCapabilityIdentitiesAreBoundedOpaqueIds" classname="com.easysavevideo.library.export.ExportModelsTest" time="0.0"/>
+  <testcase name="fingerprintIsCanonicalBoundedAndBindsEveryAuthorityField" classname="com.easysavevideo.library.export.ExportModelsTest" time="0.001"/>
+  <testcase name="unverifiedTerminalOutcomeIsSafOnlyAndCannotBeCancelledInPlace" classname="com.easysavevideo.library.export.ExportModelsTest" time="0.0"/>
+  <testcase name="onlySettledPhasesAreTerminal" classname="com.easysavevideo.library.export.ExportModelsTest" time="0.0"/>
+  <testcase name="byteAndHashEvidenceHasFiniteCanonicalBounds" classname="com.easysavevideo.library.export.ExportModelsTest" time="0.002"/>
+  <testcase name="successCannotBeConstructedWithoutVerifiedOwnedOutput" classname="com.easysavevideo.library.export.ExportModelsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

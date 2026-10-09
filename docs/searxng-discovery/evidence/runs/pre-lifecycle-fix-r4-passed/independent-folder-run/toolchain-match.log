@@ -1,0 +1,5 @@
+{
+  "result": "PASS",
+  "exact_artifacts": 8,
+  "reference": "docs/m7c/evidence/independent-final-toolchain-sha256.txt"
+}

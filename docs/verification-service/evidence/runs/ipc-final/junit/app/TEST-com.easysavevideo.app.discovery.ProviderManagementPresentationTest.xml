@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:31:02.402Z" hostname="05582a867b99" time="0.018">
+  <properties/>
+  <testcase name="fixedSelfTestAndLifecycleLimitsAreExplicit" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.001"/>
+  <testcase name="busyOrHiddenOrWorkerRejectedStateDisablesBothActions" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.001"/>
+  <testcase name="unreadableRepositoryDoesNotPresentDefaultZeroAnchorsOrEmptyIsolationAsKnown" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.0"/>
+  <testcase name="probationShowsBoundedCountersAndNoStatisticalGuarantee" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.001"/>
+  <testcase name="pendingCandidateAloneDoesNotOfferRecovery" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.0"/>
+  <testcase name="enabledSuccessDoesNotPromiseHealthOrCompatibility" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.001"/>
+  <testcase name="healthyPhaseDoesNotDisplayResetZeroAsOngoingFailedProbation" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.001"/>
+  <testcase name="repositorySuccessWhileDisabledExplicitlyRemainsDisabled" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.0"/>
+  <testcase name="versionsExposeSeparateAnchorsAndDoNotCallDisabledLkgTrialPassed" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.001"/>
+  <testcase name="quarantineExplainsDistinctReasonsAndDoesNotPublishArbitraryDigestStrings" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.005"/>
+  <testcase name="recoverableInterruptedCandidateOffersOnlyRepositoryGrantedAction" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.0"/>
+  <testcase name="allTechnicalErrorsHaveSafeUserText" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.004"/>
+  <testcase name="suspendedObservationBudgetDoesNotImplyBadPackage" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.001"/>
+  <testcase name="failedInspectionDoesNotInventZeroVersionsOrHealthyState" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.0"/>
+  <testcase name="zeroProviderBuildStillShowsMissingRootsAndEndpoint" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.0"/>
+  <testcase name="localDisableRemainsVisibleWhenRepositoryAllowsBundled" classname="com.easysavevideo.app.discovery.ProviderManagementPresentationTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

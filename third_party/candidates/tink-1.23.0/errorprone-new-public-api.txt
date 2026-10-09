@@ -1,0 +1,158 @@
+Compiled from "OverridingMethodsMustInvokeSuper.java"
+public interface com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper extends java.lang.annotation.Annotation {
+}
+Compiled from "CanIgnoreReturnValue.java"
+public interface com.google.errorprone.annotations.CanIgnoreReturnValue extends java.lang.annotation.Annotation {
+}
+Compiled from "SuppressPackageLocation.java"
+public interface com.google.errorprone.annotations.SuppressPackageLocation extends java.lang.annotation.Annotation {
+}
+Compiled from "InlineMe.java"
+public interface com.google.errorprone.annotations.InlineMe extends java.lang.annotation.Annotation {
+  public abstract java.lang.String replacement();
+    descriptor: ()Ljava/lang/String;
+
+  public abstract java.lang.String[] imports();
+    descriptor: ()[Ljava/lang/String;
+
+  public abstract java.lang.String[] staticImports();
+    descriptor: ()[Ljava/lang/String;
+}
+Compiled from "RestrictedApi.java"
+public interface com.google.errorprone.annotations.RestrictedApi extends java.lang.annotation.Annotation {
+  public abstract java.lang.String explanation();
+    descriptor: ()Ljava/lang/String;
+
+  public abstract java.lang.String link();
+    descriptor: ()Ljava/lang/String;
+
+  public abstract java.lang.String allowedOnPath();
+    descriptor: ()Ljava/lang/String;
+
+  public abstract java.lang.Class<? extends java.lang.annotation.Annotation>[] allowlistAnnotations();
+    descriptor: ()[Ljava/lang/Class;
+
+  public abstract java.lang.Class<? extends java.lang.annotation.Annotation>[] allowlistWithWarningAnnotations();
+    descriptor: ()[Ljava/lang/Class;
+}
+Compiled from "CompileTimeConstant.java"
+public interface com.google.errorprone.annotations.CompileTimeConstant extends java.lang.annotation.Annotation {
+}
+Compiled from "MustBeClosed.java"
+public interface com.google.errorprone.annotations.MustBeClosed extends java.lang.annotation.Annotation {
+}
+Compiled from "ForOverride.java"
+public interface com.google.errorprone.annotations.ForOverride extends java.lang.annotation.Annotation {
+}
+Compiled from "Modifier.java"
+public final class com.google.errorprone.annotations.Modifier extends java.lang.Enum<com.google.errorprone.annotations.Modifier> {
+  public static final com.google.errorprone.annotations.Modifier PUBLIC;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier PROTECTED;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier PRIVATE;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier ABSTRACT;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier DEFAULT;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier STATIC;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier FINAL;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier TRANSIENT;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier VOLATILE;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier SYNCHRONIZED;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier NATIVE;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static final com.google.errorprone.annotations.Modifier STRICTFP;
+    descriptor: Lcom/google/errorprone/annotations/Modifier;
+  public static com.google.errorprone.annotations.Modifier[] values();
+    descriptor: ()[Lcom/google/errorprone/annotations/Modifier;
+
+  public static com.google.errorprone.annotations.Modifier valueOf(java.lang.String);
+    descriptor: (Ljava/lang/String;)Lcom/google/errorprone/annotations/Modifier;
+}
+Compiled from "Var.java"
+public interface com.google.errorprone.annotations.Var extends java.lang.annotation.Annotation {
+}
+Compiled from "ThreadSafe.java"
+public interface com.google.errorprone.annotations.ThreadSafe extends java.lang.annotation.Annotation {
+}
+Compiled from "DoNotCall.java"
+public interface com.google.errorprone.annotations.DoNotCall extends java.lang.annotation.Annotation {
+  public abstract java.lang.String value();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "IncompatibleModifiers.java"
+public interface com.google.errorprone.annotations.IncompatibleModifiers extends java.lang.annotation.Annotation {
+  public abstract javax.lang.model.element.Modifier[] value();
+    descriptor: ()[Ljavax/lang/model/element/Modifier;
+
+  public abstract com.google.errorprone.annotations.Modifier[] modifier();
+    descriptor: ()[Lcom/google/errorprone/annotations/Modifier;
+}
+Compiled from "Immutable.java"
+public interface com.google.errorprone.annotations.Immutable extends java.lang.annotation.Annotation {
+  public abstract java.lang.String[] containerOf();
+    descriptor: ()[Ljava/lang/String;
+}
+Compiled from "DoNotMock.java"
+public interface com.google.errorprone.annotations.DoNotMock extends java.lang.annotation.Annotation {
+  public abstract java.lang.String value();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "CompatibleWith.java"
+public interface com.google.errorprone.annotations.CompatibleWith extends java.lang.annotation.Annotation {
+  public abstract java.lang.String value();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "GuardedBy.java"
+public interface com.google.errorprone.annotations.concurrent.GuardedBy extends java.lang.annotation.Annotation {
+  public abstract java.lang.String value();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "LazyInit.java"
+public interface com.google.errorprone.annotations.concurrent.LazyInit extends java.lang.annotation.Annotation {
+}
+Compiled from "UnlockMethod.java"
+public interface com.google.errorprone.annotations.concurrent.UnlockMethod extends java.lang.annotation.Annotation {
+  public abstract java.lang.String[] value();
+    descriptor: ()[Ljava/lang/String;
+}
+Compiled from "LockMethod.java"
+public interface com.google.errorprone.annotations.concurrent.LockMethod extends java.lang.annotation.Annotation {
+  public abstract java.lang.String[] value();
+    descriptor: ()[Ljava/lang/String;
+}
+Compiled from "CheckReturnValue.java"
+public interface com.google.errorprone.annotations.CheckReturnValue extends java.lang.annotation.Annotation {
+}
+Compiled from "NoAllocation.java"
+public interface com.google.errorprone.annotations.NoAllocation extends java.lang.annotation.Annotation {
+}
+Compiled from "FormatString.java"
+public interface com.google.errorprone.annotations.FormatString extends java.lang.annotation.Annotation {
+}
+Compiled from "Keep.java"
+public interface com.google.errorprone.annotations.Keep extends java.lang.annotation.Annotation {
+}
+Compiled from "FormatMethod.java"
+public interface com.google.errorprone.annotations.FormatMethod extends java.lang.annotation.Annotation {
+}
+Compiled from "InlineMeValidationDisabled.java"
+public interface com.google.errorprone.annotations.InlineMeValidationDisabled extends java.lang.annotation.Annotation {
+  public abstract java.lang.String value();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "RequiredModifiers.java"
+public interface com.google.errorprone.annotations.RequiredModifiers extends java.lang.annotation.Annotation {
+  public abstract javax.lang.model.element.Modifier[] value();
+    descriptor: ()[Ljavax/lang/model/element/Modifier;
+
+  public abstract com.google.errorprone.annotations.Modifier[] modifier();
+    descriptor: ()[Lcom/google/errorprone/annotations/Modifier;
+}

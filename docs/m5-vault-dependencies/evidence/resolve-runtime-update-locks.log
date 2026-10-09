@@ -1,0 +1,96 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+Unable to initialize metrics, ensure /home/agent/.android is writable, details: /home/agent/.android/analytics.settings (No such file or directory)
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/build.gradle.kts:82:37: 'fun RegisteringDomainObjectDelegateProviderWithAction<out TaskContainer, Task>.provideDelegate(receiver: Any?, property: KProperty<*>): ExistingDomainObjectDelegate<TaskProvider<Task>>' is deprecated. Use 'val task = tasks.register(name) { }' instead. See the Gradle 9.6 upgrading guide.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/build.gradle.kts:82:37: 'fun <T : Any, C : NamedDomainObjectContainer<T>> C.registering(action: T.() -> Unit): RegisteringDomainObjectDelegateProviderWithAction<out C, T>' is deprecated. Use 'val element = register(name) { }' instead. See the Gradle 9.6 upgrading guide.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/build.gradle.kts:82:37: 'fun <T> ExistingDomainObjectDelegate<out T>.getValue(receiver: Any?, property: KProperty<*>): T' is deprecated. Use the named() API instead. See the Gradle 9.6 upgrading guide.
+
+> Task :commons-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:compileKotlin UP-TO-DATE
+> Task :core-model:compileJava NO-SOURCE
+> Task :discovery:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:compileKotlin UP-TO-DATE
+> Task :discovery:compileJava NO-SOURCE
+> Task :commons-provider:compileKotlin UP-TO-DATE
+> Task :commons-provider:compileJava NO-SOURCE
+> Task :commons-provider:processResources NO-SOURCE
+> Task :commons-provider:classes UP-TO-DATE
+> Task :commons-provider:jar UP-TO-DATE
+> Task :core-domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-domain:compileKotlin UP-TO-DATE
+> Task :core-domain:compileJava NO-SOURCE
+> Task :core-domain:processResources NO-SOURCE
+> Task :core-domain:classes UP-TO-DATE
+> Task :core-domain:jar UP-TO-DATE
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar UP-TO-DATE
+> Task :discovery:processResources NO-SOURCE
+> Task :discovery:classes UP-TO-DATE
+> Task :discovery:jar UP-TO-DATE
+> Task :hls:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :hls:compileKotlin UP-TO-DATE
+> Task :hls:compileJava NO-SOURCE
+> Task :hls:processResources NO-SOURCE
+> Task :hls:classes UP-TO-DATE
+> Task :hls:jar UP-TO-DATE
+> Task :library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :library:compileKotlin UP-TO-DATE
+> Task :library:compileJava NO-SOURCE
+> Task :library:processResources NO-SOURCE
+> Task :library:classes UP-TO-DATE
+> Task :library:jar UP-TO-DATE
+> Task :recording:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :recording:compileKotlin UP-TO-DATE
+> Task :recording:compileJava NO-SOURCE
+> Task :recording:processResources NO-SOURCE
+> Task :recording:classes UP-TO-DATE
+> Task :recording:jar UP-TO-DATE
+> Task :save:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :save:compileKotlin UP-TO-DATE
+> Task :save:compileJava NO-SOURCE
+> Task :save:processResources NO-SOURCE
+> Task :save:classes UP-TO-DATE
+> Task :save:jar UP-TO-DATE
+> Task :ui-theme:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :ui-theme:compileKotlin UP-TO-DATE
+> Task :ui-theme:compileJava NO-SOURCE
+> Task :ui-theme:processResources NO-SOURCE
+> Task :ui-theme:classes UP-TO-DATE
+> Task :ui-theme:jar UP-TO-DATE
+> Task :app:runtimeInventory FAILED
+
+[Incubating] Problems report is available at: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:runtimeInventory' (registered in build file 'app/build.gradle.kts').
+> Dependency verification failed for configuration ':app:debugRuntimeClasspath'
+  5 artifacts failed verification:
+    - error_prone_annotations-2.41.0.pom (com.google.errorprone:error_prone_annotations:2.41.0) from repository maven2
+    - error_prone_parent-2.41.0.pom (com.google.errorprone:error_prone_parent:2.41.0) from repository maven2
+    - gson-2.13.2.pom (com.google.code.gson:gson:2.13.2) from repository maven2
+    - gson-parent-2.13.2.pom (com.google.code.gson:gson-parent:2.13.2) from repository maven2
+    - tink-android-1.23.0.pom (com.google.crypto.tink:tink-android:1.23.0) from repository maven2
+  If the artifacts are trustworthy, you will need to update the gradle/verification-metadata.xml file. For more on how to do this, please refer to https://docs.gradle.org/9.6.0/userguide/dependency_verification.html#sec:troubleshooting-verification in the Gradle documentation.
+  
+  Open this report for more details: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/build/reports/dependency-verification/at-1791320661493/dependency-verification-report.html
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 15s
+19 actionable tasks: 1 executed, 18 up-to-date

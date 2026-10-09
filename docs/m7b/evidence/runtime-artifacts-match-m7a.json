@@ -1,0 +1,5 @@
+{
+  "admitted_external_artifacts_per_variant": 74,
+  "admitted_artifact_coordinates_filenames_sha256": "IDENTICAL_TO_M7_A",
+  "project_module_jars": "COMMONS_CHANGED_AS_EXPECTED"
+}

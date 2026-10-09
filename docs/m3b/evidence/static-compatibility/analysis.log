@@ -1,0 +1,4 @@
+androidx.concurrent:concurrent-futures:1.1.0 => androidx.concurrent:concurrent-futures:1.2.0 old/new classes 19 19 missing public classes 0 declared removed 0 unresolved public members 0 refs 7 refproblems 0
+com.google.guava:listenablefuture:1.0 => com.google.guava:guava:33.3.1-android old/new classes 1 1940 missing public classes 0 declared removed 0 unresolved public members 0 refs 0 refproblems 0
+org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3 => org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0 old/new classes 867 825 missing public classes 15 declared removed 163 unresolved public members 150 refs 649 refproblems 0
+org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3 => org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0 old/new classes 8 7 missing public classes 0 declared removed 1 unresolved public members 1 refs 2 refproblems 0

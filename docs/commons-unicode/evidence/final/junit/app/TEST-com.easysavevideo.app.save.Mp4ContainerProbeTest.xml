@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.save.Mp4ContainerProbeTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:33:00.927Z" hostname="05582a867b99" time="0.009">
+  <properties/>
+  <testcase name="truncatedPayloadAndMissingMoovRejected" classname="com.easysavevideo.app.save.Mp4ContainerProbeTest" time="0.001"/>
+  <testcase name="validBoxLayoutPassesPreflightOnly" classname="com.easysavevideo.app.save.Mp4ContainerProbeTest" time="0.0"/>
+  <testcase name="boundedBoxCountRejectsBomb" classname="com.easysavevideo.app.save.Mp4ContainerProbeTest" time="0.008"/>
+  <testcase name="oversizedUnsignedAndExtendedBoxRejected" classname="com.easysavevideo.app.save.Mp4ContainerProbeTest" time="0.0"/>
+  <testcase name="quicktimeBrandIsNotRenamedToMp4" classname="com.easysavevideo.app.save.Mp4ContainerProbeTest" time="0.0"/>
+  <testcase name="htmlAndEmptyRejected" classname="com.easysavevideo.app.save.Mp4ContainerProbeTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

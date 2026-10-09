@@ -1,0 +1,34 @@
+[
+  {
+    "path": "README.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/README.md",
+    "sha256": "591ae2fdcaa8174d1c3609c1bf26e397f420b4baecf5f6e79f7c2acd4fece970",
+    "git_blob_sha1": "8d056c17f195dd251d535d6ab147976ce366b1ef",
+    "expected_blob_sha1": "8d056c17f195dd251d535d6ab147976ce366b1ef",
+    "retrieved_at_utc": "2026-10-06T16:52:41.012196+00:00"
+  },
+  {
+    "path": "CONTRIBUTING.md",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/CONTRIBUTING.md",
+    "sha256": "fb61a155504e9e923404b4b5a65dea47e4bf3b7f3ebd9b1a9cf66b999c9dc10a",
+    "git_blob_sha1": "04120620fe7a78be2b3fe3ee9ca29e615671947b",
+    "expected_blob_sha1": "04120620fe7a78be2b3fe3ee9ca29e615671947b",
+    "retrieved_at_utc": "2026-10-06T16:52:41.016916+00:00"
+  },
+  {
+    "path": "libraries/common/src/main/java/androidx/media3/common/audio/Sonic.java",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/common/src/main/java/androidx/media3/common/audio/Sonic.java",
+    "sha256": "6fdaffeca98ad1e4d3d0bfc84eeba5501fb2b69adb8d1f5201e9b76547b4fa04",
+    "git_blob_sha1": "8f4d08448f1b7a4d00d8d524f91158546446e85a",
+    "expected_blob_sha1": "8f4d08448f1b7a4d00d8d524f91158546446e85a",
+    "retrieved_at_utc": "2026-10-06T16:52:40.941287+00:00"
+  },
+  {
+    "path": "libraries/exoplayer/src/main/java/androidx/media3/exoplayer/DefaultRenderersFactory.java",
+    "url": "https://raw.githubusercontent.com/androidx/media/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/exoplayer/src/main/java/androidx/media3/exoplayer/DefaultRenderersFactory.java",
+    "sha256": "2991f5627c34f7ff2cf44d7c1782a81ccecfae4c982fde0f67351ce50945e847",
+    "git_blob_sha1": "64bc61cd88585ed1cb2aa003fa86269fe320fe6c",
+    "expected_blob_sha1": "64bc61cd88585ed1cb2aa003fa86269fe320fe6c",
+    "retrieved_at_utc": "2026-10-06T16:52:41.041679+00:00"
+  }
+]

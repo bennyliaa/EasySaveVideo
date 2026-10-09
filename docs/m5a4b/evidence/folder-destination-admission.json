@@ -1,0 +1,39 @@
+{
+  "scope": "M5_A4B_ORDINARY_REMEMBERED_SAF_FOLDER_COPIES_ONLY",
+  "baseline": "046209b39d932f08910a8b79f33d4d02d6183ccd",
+  "baseline_files": 3270,
+  "byte_exact_baseline_files": 3259,
+  "exact_transformation_baseline_files": 1,
+  "permitted_baseline_edits": [
+    "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidOrdinaryDestinationJournal.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidOrdinaryDestinationRuntime.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationSelection.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationUi.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidExportPort.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidExportRuntime.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+    "library/src/main/kotlin/com/easysavevideo/library/destination/OrdinaryDestinationContracts.kt"
+  ],
+  "exact_enum_expectation_adaptation": [
+    "library/src/test/kotlin/com/easysavevideo/library/destination/OrdinaryDestinationAdmissionTest.kt"
+  ],
+  "actual_baseline_edits": [
+    "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidOrdinaryDestinationJournal.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidOrdinaryDestinationRuntime.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationSelection.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationUi.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidExportPort.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidExportRuntime.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+    "library/src/main/kotlin/com/easysavevideo/library/destination/OrdinaryDestinationContracts.kt",
+    "library/src/test/kotlin/com/easysavevideo/library/destination/OrdinaryDestinationAdmissionTest.kt"
+  ],
+  "unchanged": "All other baseline files and all baseline executable modes, including historical test bodies apart from the two exact enum expectations, every historical script/evidence file, exact74 dependencies, manifests, SkinKit, rule interpreter, distribution/payment, Save codec/core/native capture, Vault and M7-D",
+  "ordinary_destination_source_guards": "PASS",
+  "android_device_saf_media_store_acceptance": "NOT_RUN",
+  "vault_export": "NOT_IMPLEMENTED"
+}

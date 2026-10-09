@@ -1,0 +1,23 @@
+{
+  "result": "PASS",
+  "evidence": "STATIC_SOURCE_ONLY",
+  "checks": [
+    "enabled-unknown production startup",
+    "generation-zero coordinator initialization",
+    "generation-before-flags lifecycle helper",
+    "foreground-and-discovery-only OS lease",
+    "immediate fence before bounded power delivery",
+    "coordinator-identity and power-generation apply",
+    "no policy-drain or signal-refresh demand creation",
+    "monotonic revalidation before serialized commands",
+    "independent one-shot cancel-removable expiry executor",
+    "bounded power and UI publication",
+    "close removes observations and delivery",
+    "release synthetic allowlist remains empty",
+    "default-network callback-arguments-only source",
+    "no new bridge polling or persistence",
+    "native media identity remains unknown"
+  ],
+  "android_runtime": "NOT_RUN",
+  "device_energy": "NOT_RUN"
+}

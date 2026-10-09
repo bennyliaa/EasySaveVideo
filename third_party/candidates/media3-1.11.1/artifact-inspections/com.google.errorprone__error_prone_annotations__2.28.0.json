@@ -1,0 +1,1164 @@
+{
+  "coordinate": "com.google.errorprone:error_prone_annotations:2.28.0",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.28.0/",
+  "file_metadata": {
+    "error_prone_annotations-2.28.0.pom": {
+      "sha256": "0ce909f13a568148476e5ee200f380f98c75ba08971aaf15db295eb77598ef3a",
+      "bytes": 4252,
+      "path": "official-maven/com/google/errorprone/error_prone_annotations/2.28.0/error_prone_annotations-2.28.0.pom"
+    },
+    "error_prone_annotations-2.28.0.jar": {
+      "sha256": "f3fc8a3a0a4020706a373b00e7f57c2512dd26d1f83d28c7d38768f8682b231e",
+      "bytes": 19370,
+      "path": "official-maven/com/google/errorprone/error_prone_annotations/2.28.0/error_prone_annotations-2.28.0.jar"
+    },
+    "error_prone_annotations-2.28.0-sources.jar": {
+      "sha256": "2936e9b315d790d8a6364f0574bcec9c8b2d78688b317e1765c4a16f9ef80632",
+      "bytes": 37565,
+      "path": "official-maven/com/google/errorprone/error_prone_annotations/2.28.0/error_prone_annotations-2.28.0-sources.jar"
+    }
+  },
+  "pom_licenses": [
+    {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+    }
+  ],
+  "source_headers": [
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "module-info.java",
+      "sha256": "cbcf5f8000705f8f0c6297e47669693574d02cb575937c1e7523f50c7996762d",
+      "bytes": 787,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2015 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/DoNotMock.java",
+      "sha256": "f9fafefa9032f677a1afff12cf50dcc2101acb2944ba0455a9a9144219df4a5c",
+      "bytes": 1612,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2016 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/FormatString.java",
+      "sha256": "09370c8693dced3cddde9f25ffc4d4101e87e28cad7c2be81ee2acdad00f6c70",
+      "bytes": 1774,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2016 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/DoNotCall.java",
+      "sha256": "91e1b24c8fd6b34cae7f147d7379cf8740534a21ab5fcb39037dc08fe7cd3009",
+      "bytes": 3040,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2017 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Modifier.java",
+      "sha256": "28e9d88cf4bf0cbd9f805161edb82053198e6d311998edd72b52d44f59bfe1a9",
+      "bytes": 1218,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2021 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/InlineMeValidationDisabled.java",
+      "sha256": "387a714177a98abba728b226392ae041ee5fb2dccd84c7e78af1b64e56e4d772",
+      "bytes": 1319,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2021 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/ThreadSafe.java",
+      "sha256": "78407ad60421fb1fa770040cd468bffd352d585e0fabd163dd4a8e5275319055",
+      "bytes": 7174,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2023 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/ForOverride.java",
+      "sha256": "537d2c22144408e70e467339cf9be7be5b77c8d7ff9a08fe84a0bb708d3be9e5",
+      "bytes": 1864,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2015 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CanIgnoreReturnValue.java",
+      "sha256": "66c06b3c92923fb451d38ba059e1a734d61de17dcfd2a11c143b293feae3894d",
+      "bytes": 1469,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2015 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/OverridingMethodsMustInvokeSuper.java",
+      "sha256": "69b739a13c51e689301792dc422786b307bfc7f10fb9dd935465243c459dd8c8",
+      "bytes": 1932,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2017 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CheckReturnValue.java",
+      "sha256": "6bb3481be928f21d7ace3fc127fd5cd1122c5763fc8f19976fba6e0d717dbac8",
+      "bytes": 1727,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2017 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/MustBeClosed.java",
+      "sha256": "55734cbb3c33e5dbbb65cf571b89ac091c5bea9c672df27c38204a08f4aba375",
+      "bytes": 1566,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2016 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Keep.java",
+      "sha256": "8eb12c29b1cbe2c2f1f630aa3a1f0fb15db023bdb73c112f77da1b3488713fcc",
+      "bytes": 1678,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2021 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/RequiredModifiers.java",
+      "sha256": "c170b0def694be32fded545cf703da00832c76d60bd455ad8f745186e4d8ce7e",
+      "bytes": 1896,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2015 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/RestrictedApi.java",
+      "sha256": "8db291bbb8bd61b2e619d5e7db459fe8a9f161f90a057d46fdca0f0eb0a03bae",
+      "bytes": 3996,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2016 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/GuardedBy.java",
+      "sha256": "6b5926e264bf8bd4c52a83098e4ddc027cc125475c32694b1551988989755552",
+      "bytes": 1306,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2017 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/LockMethod.java",
+      "sha256": "882aa8fa436dd94f52b38a1fc78e3f39a9a312aa05dcc1d814d600611cd2145b",
+      "bytes": 2067,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2014 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/LazyInit.java",
+      "sha256": "0ccb615473f70219607078f3efd1ded059ca3af2e922b9e8b4c82a1707ef95b2",
+      "bytes": 2924,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2015 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/UnlockMethod.java",
+      "sha256": "90dc91dcf3bfe77e9d1686678f7fbde74a28dbf7ec50c4a08d6abc3fa6f0971c",
+      "bytes": 2103,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2014 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CompatibleWith.java",
+      "sha256": "625734d315ca4ca92910d30d306b945bbbfc4a4abcf20eee7f75146f59c8f4df",
+      "bytes": 2003,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2016 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/InlineMe.java",
+      "sha256": "daa26553d2c08d21de97540402003ea0c8989e8f3e5d3797ceeb4c77b2bc2db3",
+      "bytes": 1701,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2021 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CompileTimeConstant.java",
+      "sha256": "2bda724df7c0422f5dc045a7688726caee2b9beac7f8c39cf5562ce827f67103",
+      "bytes": 4877,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2015 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/NoAllocation.java",
+      "sha256": "d883a08f7bd2318371936d8cdf267ee9f28526ded73d0ded073815329517e0ef",
+      "bytes": 1366,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2014 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/SuppressPackageLocation.java",
+      "sha256": "14f45ff5901310638e28cc7e5fabcfa715126178e45fcf9be409bf4da876e0b6",
+      "bytes": 1171,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2015 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Immutable.java",
+      "sha256": "a6eb49931e65dcc633d641bca1c2e54925cb44bfddbd217f2bffe52aeb5fef04",
+      "bytes": 3547,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2015 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/FormatMethod.java",
+      "sha256": "f8d0960170f892da0b476dfef8267f7f8f05a9064652c76a4dbdae4914dcd89a",
+      "bytes": 3851,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2016 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Var.java",
+      "sha256": "761bb12299c6728350aad5763c202a82ea3709b3742abf67c4e95a9dccf7c6f6",
+      "bytes": 1933,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2015 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/IncompatibleModifiers.java",
+      "sha256": "8e05fe227849e0af34b7aa88437001a57f8f2ab7bd427131311d756c01563a31",
+      "bytes": 1905,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2015 The Error Prone Authors.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    }
+  ],
+  "source_special_attributions": [
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "module-info.java",
+      "sha256": "cbcf5f8000705f8f0c6297e47669693574d02cb575937c1e7523f50c7996762d",
+      "bytes": 787,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2015 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/DoNotMock.java",
+      "sha256": "f9fafefa9032f677a1afff12cf50dcc2101acb2944ba0455a9a9144219df4a5c",
+      "bytes": 1612,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2016 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/FormatString.java",
+      "sha256": "09370c8693dced3cddde9f25ffc4d4101e87e28cad7c2be81ee2acdad00f6c70",
+      "bytes": 1774,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2016 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/DoNotCall.java",
+      "sha256": "91e1b24c8fd6b34cae7f147d7379cf8740534a21ab5fcb39037dc08fe7cd3009",
+      "bytes": 3040,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2017 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Modifier.java",
+      "sha256": "28e9d88cf4bf0cbd9f805161edb82053198e6d311998edd72b52d44f59bfe1a9",
+      "bytes": 1218,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2021 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/InlineMeValidationDisabled.java",
+      "sha256": "387a714177a98abba728b226392ae041ee5fb2dccd84c7e78af1b64e56e4d772",
+      "bytes": 1319,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2021 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/ThreadSafe.java",
+      "sha256": "78407ad60421fb1fa770040cd468bffd352d585e0fabd163dd4a8e5275319055",
+      "bytes": 7174,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2023 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/ForOverride.java",
+      "sha256": "537d2c22144408e70e467339cf9be7be5b77c8d7ff9a08fe84a0bb708d3be9e5",
+      "bytes": 1864,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2015 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CanIgnoreReturnValue.java",
+      "sha256": "66c06b3c92923fb451d38ba059e1a734d61de17dcfd2a11c143b293feae3894d",
+      "bytes": 1469,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2015 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/OverridingMethodsMustInvokeSuper.java",
+      "sha256": "69b739a13c51e689301792dc422786b307bfc7f10fb9dd935465243c459dd8c8",
+      "bytes": 1932,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2017 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CheckReturnValue.java",
+      "sha256": "6bb3481be928f21d7ace3fc127fd5cd1122c5763fc8f19976fba6e0d717dbac8",
+      "bytes": 1727,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2017 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/MustBeClosed.java",
+      "sha256": "55734cbb3c33e5dbbb65cf571b89ac091c5bea9c672df27c38204a08f4aba375",
+      "bytes": 1566,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2016 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Keep.java",
+      "sha256": "8eb12c29b1cbe2c2f1f630aa3a1f0fb15db023bdb73c112f77da1b3488713fcc",
+      "bytes": 1678,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2021 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/RequiredModifiers.java",
+      "sha256": "c170b0def694be32fded545cf703da00832c76d60bd455ad8f745186e4d8ce7e",
+      "bytes": 1896,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2015 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/RestrictedApi.java",
+      "sha256": "8db291bbb8bd61b2e619d5e7db459fe8a9f161f90a057d46fdca0f0eb0a03bae",
+      "bytes": 3996,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2016 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/GuardedBy.java",
+      "sha256": "6b5926e264bf8bd4c52a83098e4ddc027cc125475c32694b1551988989755552",
+      "bytes": 1306,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2017 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/LockMethod.java",
+      "sha256": "882aa8fa436dd94f52b38a1fc78e3f39a9a312aa05dcc1d814d600611cd2145b",
+      "bytes": 2067,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2014 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/LazyInit.java",
+      "sha256": "0ccb615473f70219607078f3efd1ded059ca3af2e922b9e8b4c82a1707ef95b2",
+      "bytes": 2924,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2015 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/UnlockMethod.java",
+      "sha256": "90dc91dcf3bfe77e9d1686678f7fbde74a28dbf7ec50c4a08d6abc3fa6f0971c",
+      "bytes": 2103,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2014 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CompatibleWith.java",
+      "sha256": "625734d315ca4ca92910d30d306b945bbbfc4a4abcf20eee7f75146f59c8f4df",
+      "bytes": 2003,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2016 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/InlineMe.java",
+      "sha256": "daa26553d2c08d21de97540402003ea0c8989e8f3e5d3797ceeb4c77b2bc2db3",
+      "bytes": 1701,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2021 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CompileTimeConstant.java",
+      "sha256": "2bda724df7c0422f5dc045a7688726caee2b9beac7f8c39cf5562ce827f67103",
+      "bytes": 4877,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2015 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/NoAllocation.java",
+      "sha256": "d883a08f7bd2318371936d8cdf267ee9f28526ded73d0ded073815329517e0ef",
+      "bytes": 1366,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2014 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/SuppressPackageLocation.java",
+      "sha256": "14f45ff5901310638e28cc7e5fabcfa715126178e45fcf9be409bf4da876e0b6",
+      "bytes": 1171,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2015 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Immutable.java",
+      "sha256": "a6eb49931e65dcc633d641bca1c2e54925cb44bfddbd217f2bffe52aeb5fef04",
+      "bytes": 3547,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2015 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/FormatMethod.java",
+      "sha256": "f8d0960170f892da0b476dfef8267f7f8f05a9064652c76a4dbdae4914dcd89a",
+      "bytes": 3851,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2016 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Var.java",
+      "sha256": "761bb12299c6728350aad5763c202a82ea3709b3742abf67c4e95a9dccf7c6f6",
+      "bytes": 1933,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2015 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/IncompatibleModifiers.java",
+      "sha256": "8e05fe227849e0af34b7aa88437001a57f8f2ab7bd427131311d756c01563a31",
+      "bytes": 1905,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2015 The Error Prone Authors."
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    }
+  ],
+  "source_without_license_header": [],
+  "source_non_code_entries": [
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "31f06c9999bfd523e192864178cfe4a9873d336884cf59a0d698e520895caeaa",
+      "bytes": 64
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "META-INF/maven/com.google.errorprone/error_prone_annotations/pom.xml",
+      "sha256": "0ce909f13a568148476e5ee200f380f98c75ba08971aaf15db295eb77598ef3a",
+      "bytes": 4252
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "META-INF/maven/com.google.errorprone/error_prone_annotations/pom.properties",
+      "sha256": "1a5b84880b6ddb63de3b479cb73184963e80611f4dc7e3bae302b014b1a2193d",
+      "bytes": 80
+    }
+  ],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "41ee6646dd5270dfba5cbf0dfd327811a20bd1b9ce46daf715edc724bcc05d84",
+      "bytes": 1116
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/OverridingMethodsMustInvokeSuper.class",
+      "sha256": "fd1a876f658ae70b1c2a6d29330be7bdff45a9ab26624dec662ddbdcf0755e06",
+      "bytes": 489
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/CanIgnoreReturnValue.class",
+      "sha256": "7ddc43df3c8db828d0f97ec17a65fc519772e78bf72228ac0172c2543f1dcdb5",
+      "bytes": 496
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/SuppressPackageLocation.class",
+      "sha256": "f3e1dd64b092e62877e9a4bc5fef7a1084a4ea73be4e20c6453d5a8679b0b34c",
+      "bytes": 432
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/InlineMe.class",
+      "sha256": "8955b534d7bca0c020042aca023e7bca9591cf20c79917db625bbed15b56ee52",
+      "bytes": 514
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/RestrictedApi.class",
+      "sha256": "52bec4e179b69ac9d1756c183db787c41bf412142169ec6413bd169d7ade5434",
+      "bytes": 661
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/CompileTimeConstant.class",
+      "sha256": "aa16142d61ba41aedb675b46774a2689c4d639ebb06ac750c093e54e400fcf32",
+      "bytes": 479
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/MustBeClosed.class",
+      "sha256": "0b01f5dbc365b455b6ada0b0a9234f301e577667a856d6443c3ec37408f46f28",
+      "bytes": 373
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/ForOverride.class",
+      "sha256": "ef1b6bc70c80666032bf721beea86a6abcd0c03561ea7de3558dcea04eeb3fc8",
+      "bytes": 668
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/Modifier.class",
+      "sha256": "f4c32a3bf459fd7d485758dcc23350a1728c1ba2744fff15ee610e52acaccf96",
+      "bytes": 1691
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/Var.class",
+      "sha256": "2011a9fc2f512cabbf384315b434aca1a1dabe9e7582a57059075c56952fca11",
+      "bytes": 609
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/ThreadSafe.class",
+      "sha256": "d532983f57fd8b9a4d292040959c19bb006fb177720703c42129c53de44bffb1",
+      "bytes": 484
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/DoNotCall.class",
+      "sha256": "be56a64414db23d5b6e1314266be05a7ca2cd1a663dfbe5d2cdda01bf1fcb618",
+      "bytes": 466
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/IncompatibleModifiers.class",
+      "sha256": "0daf27cffdb7e3836b75803f398fa1dbfe9d6405c616abe9b6f1ec88fb7869a2",
+      "bytes": 688
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/Immutable.class",
+      "sha256": "ca2d4ff9e5f87057e9c9020755c4fd1eb9308968a76078c857f7c7f5bd33e1cf",
+      "bytes": 557
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/DoNotMock.class",
+      "sha256": "8bdd4364acfaf0e056d0c76b11dbb35708283d49b6d9a46cc68e9e2f336fbd44",
+      "bytes": 598
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/CompatibleWith.class",
+      "sha256": "f01e4d656951773b18dc092eeacadaba820543072c12196319d7c3c77b2e5593",
+      "bytes": 487
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/GuardedBy.class",
+      "sha256": "a82bb9746459246fe4554851c684be3ef1e8e4d3197af0dd288d21084db18ffc",
+      "bytes": 458
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/LazyInit.class",
+      "sha256": "2f570b8d97f96a1ffa7facd95ed85b379d2ae510fe12cd26387027750d084d85",
+      "bytes": 591
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/UnlockMethod.class",
+      "sha256": "93d83e05b5a4d41c28980fe9241a2b22ab3d31335598dbc99bab39d94cc93a70",
+      "bytes": 500
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/LockMethod.class",
+      "sha256": "b3d764ba5dd7cbd8a696d061f02f085220cd1fe8ece1b227dee72049aaa6e073",
+      "bytes": 496
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/CheckReturnValue.class",
+      "sha256": "6b918c216280b89291b7efa537eb94e1dd89341a6ce878583b7c99a38c170d34",
+      "bytes": 505
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/NoAllocation.class",
+      "sha256": "1b5df19edbf3b4cdb22c8df09a44b8b89dba7faba0d887bd8738fd9cc0183416",
+      "bytes": 354
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/FormatString.class",
+      "sha256": "dd387d9753a121865c81796b1cd55cef0a52fd89db31d91feb7b5e49b79303ef",
+      "bytes": 452
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/Keep.class",
+      "sha256": "cff44fe06b28330c2dff7ad0e0f7c59570a6af0c3f238366d2950be134da9289",
+      "bytes": 502
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/FormatMethod.class",
+      "sha256": "c9b6513f233e2fe13c10b4f53b4ee6e94f45ec5b3276f0104ce405b782a25f0a",
+      "bytes": 468
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/InlineMeValidationDisabled.class",
+      "sha256": "14840b472a4874d9eff88eda662ecaf135e1ca9a79afd862257d4573d936137e",
+      "bytes": 392
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "com/google/errorprone/annotations/RequiredModifiers.class",
+      "sha256": "d67b42f96cc2ac737a4a06fecf6937b97c0f90be0ac491bfbd98925e687ece45",
+      "bytes": 680
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "META-INF/maven/com.google.errorprone/error_prone_annotations/pom.xml",
+      "sha256": "0ce909f13a568148476e5ee200f380f98c75ba08971aaf15db295eb77598ef3a",
+      "bytes": 4252
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "META-INF/maven/com.google.errorprone/error_prone_annotations/pom.properties",
+      "sha256": "1a5b84880b6ddb63de3b479cb73184963e80611f4dc7e3bae302b014b1a2193d",
+      "bytes": 80
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0.jar",
+      "entry": "META-INF/versions/9/module-info.class",
+      "sha256": "259435e16a02abc8f0057b327e2c3bba8c9497febc6d8879704b8b303fe33baf",
+      "bytes": 336
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "31f06c9999bfd523e192864178cfe4a9873d336884cf59a0d698e520895caeaa",
+      "bytes": 64
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "module-info.java",
+      "sha256": "cbcf5f8000705f8f0c6297e47669693574d02cb575937c1e7523f50c7996762d",
+      "bytes": 787
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/DoNotMock.java",
+      "sha256": "f9fafefa9032f677a1afff12cf50dcc2101acb2944ba0455a9a9144219df4a5c",
+      "bytes": 1612
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/FormatString.java",
+      "sha256": "09370c8693dced3cddde9f25ffc4d4101e87e28cad7c2be81ee2acdad00f6c70",
+      "bytes": 1774
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/DoNotCall.java",
+      "sha256": "91e1b24c8fd6b34cae7f147d7379cf8740534a21ab5fcb39037dc08fe7cd3009",
+      "bytes": 3040
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Modifier.java",
+      "sha256": "28e9d88cf4bf0cbd9f805161edb82053198e6d311998edd72b52d44f59bfe1a9",
+      "bytes": 1218
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/InlineMeValidationDisabled.java",
+      "sha256": "387a714177a98abba728b226392ae041ee5fb2dccd84c7e78af1b64e56e4d772",
+      "bytes": 1319
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/ThreadSafe.java",
+      "sha256": "78407ad60421fb1fa770040cd468bffd352d585e0fabd163dd4a8e5275319055",
+      "bytes": 7174
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/ForOverride.java",
+      "sha256": "537d2c22144408e70e467339cf9be7be5b77c8d7ff9a08fe84a0bb708d3be9e5",
+      "bytes": 1864
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CanIgnoreReturnValue.java",
+      "sha256": "66c06b3c92923fb451d38ba059e1a734d61de17dcfd2a11c143b293feae3894d",
+      "bytes": 1469
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/OverridingMethodsMustInvokeSuper.java",
+      "sha256": "69b739a13c51e689301792dc422786b307bfc7f10fb9dd935465243c459dd8c8",
+      "bytes": 1932
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CheckReturnValue.java",
+      "sha256": "6bb3481be928f21d7ace3fc127fd5cd1122c5763fc8f19976fba6e0d717dbac8",
+      "bytes": 1727
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/MustBeClosed.java",
+      "sha256": "55734cbb3c33e5dbbb65cf571b89ac091c5bea9c672df27c38204a08f4aba375",
+      "bytes": 1566
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Keep.java",
+      "sha256": "8eb12c29b1cbe2c2f1f630aa3a1f0fb15db023bdb73c112f77da1b3488713fcc",
+      "bytes": 1678
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/RequiredModifiers.java",
+      "sha256": "c170b0def694be32fded545cf703da00832c76d60bd455ad8f745186e4d8ce7e",
+      "bytes": 1896
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/RestrictedApi.java",
+      "sha256": "8db291bbb8bd61b2e619d5e7db459fe8a9f161f90a057d46fdca0f0eb0a03bae",
+      "bytes": 3996
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/GuardedBy.java",
+      "sha256": "6b5926e264bf8bd4c52a83098e4ddc027cc125475c32694b1551988989755552",
+      "bytes": 1306
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/LockMethod.java",
+      "sha256": "882aa8fa436dd94f52b38a1fc78e3f39a9a312aa05dcc1d814d600611cd2145b",
+      "bytes": 2067
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/LazyInit.java",
+      "sha256": "0ccb615473f70219607078f3efd1ded059ca3af2e922b9e8b4c82a1707ef95b2",
+      "bytes": 2924
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/concurrent/UnlockMethod.java",
+      "sha256": "90dc91dcf3bfe77e9d1686678f7fbde74a28dbf7ec50c4a08d6abc3fa6f0971c",
+      "bytes": 2103
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CompatibleWith.java",
+      "sha256": "625734d315ca4ca92910d30d306b945bbbfc4a4abcf20eee7f75146f59c8f4df",
+      "bytes": 2003
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/InlineMe.java",
+      "sha256": "daa26553d2c08d21de97540402003ea0c8989e8f3e5d3797ceeb4c77b2bc2db3",
+      "bytes": 1701
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/CompileTimeConstant.java",
+      "sha256": "2bda724df7c0422f5dc045a7688726caee2b9beac7f8c39cf5562ce827f67103",
+      "bytes": 4877
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/NoAllocation.java",
+      "sha256": "d883a08f7bd2318371936d8cdf267ee9f28526ded73d0ded073815329517e0ef",
+      "bytes": 1366
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/SuppressPackageLocation.java",
+      "sha256": "14f45ff5901310638e28cc7e5fabcfa715126178e45fcf9be409bf4da876e0b6",
+      "bytes": 1171
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Immutable.java",
+      "sha256": "a6eb49931e65dcc633d641bca1c2e54925cb44bfddbd217f2bffe52aeb5fef04",
+      "bytes": 3547
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/FormatMethod.java",
+      "sha256": "f8d0960170f892da0b476dfef8267f7f8f05a9064652c76a4dbdae4914dcd89a",
+      "bytes": 3851
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/Var.java",
+      "sha256": "761bb12299c6728350aad5763c202a82ea3709b3742abf67c4e95a9dccf7c6f6",
+      "bytes": 1933
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "com/google/errorprone/annotations/IncompatibleModifiers.java",
+      "sha256": "8e05fe227849e0af34b7aa88437001a57f8f2ab7bd427131311d756c01563a31",
+      "bytes": 1905
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "META-INF/maven/com.google.errorprone/error_prone_annotations/pom.xml",
+      "sha256": "0ce909f13a568148476e5ee200f380f98c75ba08971aaf15db295eb77598ef3a",
+      "bytes": 4252
+    },
+    {
+      "archive": "error_prone_annotations-2.28.0-sources.jar",
+      "entry": "META-INF/maven/com.google.errorprone/error_prone_annotations/pom.properties",
+      "sha256": "1a5b84880b6ddb63de3b479cb73184963e80611f4dc7e3bae302b014b1a2193d",
+      "bytes": 80
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": {
+    "groupId": "com.google.errorprone",
+    "artifactId": "error_prone_parent",
+    "version": "2.28.0"
+  },
+  "source_status": "PRESENT"
+}

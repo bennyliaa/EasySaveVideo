@@ -1,0 +1,119 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+Unable to initialize metrics, ensure /home/agent/.android is writable, details: /home/agent/.android/analytics.settings (No such file or directory)
+
+> Task :app:resolveReviewedAdmissionConfigurations FAILED
+WARNING: platform-tools package is not installed.
+Add android.sync.suppressAgpWarnings=MISSING_SDK_PACKAGE to the gradle.properties file to suppress this warning.
+Resolved existing locked configuration: androidJdkImage
+Resolved existing locked configuration: androidLintTool
+
+[Incubating] Problems report is available at: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Initialization script '/workspace/scratch/df6c1284d5ab/esv-tink-admission-raw-logs/resolve-reviewed-configurations.init.gradle' line: 10
+
+* What went wrong:
+Execution failed for task ':app:resolveReviewedAdmissionConfigurations' (registered in initialization script '../esv-tink-admission-raw-logs/resolve-reviewed-configurations.init.gradle').
+> Could not resolve all files for configuration ':app:debugAndroidTestCompileClasspath'.
+   > The consumer was configured to find a library for use during compile-time, preferably optimized for Android, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug', attribute 'org.jetbrains.kotlin.platform.type' with value 'androidJvm'. However we cannot choose between the following variants of project ':app':
+       - Configuration ':app:debugApiElements' variant android-app-symbol-for-data-binding declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'android-app-symbol-for-data-binding' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+       - Configuration ':app:debugApiElements' variant android-base-module-metadata declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'android-base-module-metadata' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+       - Configuration ':app:debugApiElements' variant android-classes-jar declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'android-classes-jar' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+               - Provides its elements packaged as a jar but the consumer didn't ask for it
+       - Configuration ':app:debugApiElements' variant android-feature-all-metadata declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'android-feature-all-metadata' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+       - Configuration ':app:debugApiElements' variant android-feature-res-ap_ declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'android-feature-res-ap_' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+       - Configuration ':app:debugApiElements' variant android-feature-signing-config-data declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'android-feature-signing-config-data' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+       - Configuration ':app:debugApiElements' variant android-feature-signing-config-versions declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'android-feature-signing-config-versions' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+       - Configuration ':app:debugApiElements' variant android-java-res declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'android-java-res' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+       - Configuration ':app:debugApiElements' variant android-manifest-metadata declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'android-manifest-metadata' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+       - Configuration ':app:debugApiElements' variant jar declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'jar' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+               - Provides its elements packaged as a jar but the consumer didn't ask for it
+       - Configuration ':app:debugApiElements' variant merged-test-only-native-libs declares a component for use during compile-time, as well as attribute 'com.android.build.api.attributes.AgpVersionAttr' with value '9.4.0', attribute 'com.android.build.api.attributes.BuildTypeAttr' with value 'debug':
+           - Unmatched attributes:
+               - Doesn't say anything about its component category (required a library)
+               - Doesn't say anything about its target Java environment (preferred optimized for Android)
+               - Doesn't say anything about org.jetbrains.kotlin.platform.type (required 'androidJvm')
+               - Provides attribute 'artifactType' with value 'merged-test-only-native-libs' but the consumer didn't ask for it
+               - Provides attribute 'com.android.build.gradle.internal.attributes.VariantAttr' with value 'debug' but the consumer didn't ask for it
+
+* Try:
+> Ambiguity errors are explained in more detail at https://docs.gradle.org/9.6.0/userguide/variant_model.html#sub:variant-ambiguity.
+> Review the variant matching algorithm at https://docs.gradle.org/9.6.0/userguide/variant_attributes.html#sec:abm_algorithm.
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 9s
+1 actionable task: 1 executed

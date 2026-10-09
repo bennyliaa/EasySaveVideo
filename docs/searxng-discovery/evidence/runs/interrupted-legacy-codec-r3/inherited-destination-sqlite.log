@@ -1,0 +1,19 @@
+test_capability_choice_and_bound_source_cannot_change (__main__.OrdinaryDestinationSQLiteTest.test_capability_choice_and_bound_source_cannot_change) ... ok
+test_every_migration_boundary_rolls_back_version_tables_and_rows (__main__.OrdinaryDestinationSQLiteTest.test_every_migration_boundary_rolls_back_version_tables_and_rows) ... ok
+test_existing_ids_cannot_be_newly_admitted (__main__.OrdinaryDestinationSQLiteTest.test_existing_ids_cannot_be_newly_admitted) ... ok
+test_external_errors_leave_exact_private_original_unchanged (__main__.OrdinaryDestinationSQLiteTest.test_external_errors_leave_exact_private_original_unchanged) ... ok
+test_links_are_immutable_foreign_key_checked_and_survive_reopen (__main__.OrdinaryDestinationSQLiteTest.test_links_are_immutable_foreign_key_checked_and_survive_reopen) ... ok
+test_operation_and_grant_ids_are_unique_retained_capabilities (__main__.OrdinaryDestinationSQLiteTest.test_operation_and_grant_ids_are_unique_retained_capabilities) ... ok
+test_pending_excludes_private_unbound_terminal_and_ambiguous_exports (__main__.OrdinaryDestinationSQLiteTest.test_pending_excludes_private_unbound_terminal_and_ambiguous_exports) ... ok
+test_preference_is_durable_and_never_rebinds_existing_admission (__main__.OrdinaryDestinationSQLiteTest.test_preference_is_durable_and_never_rebinds_existing_admission) ... ok
+test_private_publication_and_source_binding_roll_back_together (__main__.OrdinaryDestinationSQLiteTest.test_private_publication_and_source_binding_roll_back_together) ... ok
+test_production_hooks_are_inside_verified_publication_transactions (__main__.OrdinaryDestinationSQLiteTest.test_production_hooks_are_inside_verified_publication_transactions) ... ok
+test_rotating_bounded_pending_scan_persists_cursor_across_reopen (__main__.OrdinaryDestinationSQLiteTest.test_rotating_bounded_pending_scan_persists_cursor_across_reopen) ... ok
+test_unknown_choice_or_preference_and_partial_source_are_rejected (__main__.OrdinaryDestinationSQLiteTest.test_unknown_choice_or_preference_and_partial_source_are_rejected) ... ok
+test_upgrade_branches_do_not_recreate_v5_recording_or_source_tables (__main__.OrdinaryDestinationSQLiteTest.test_upgrade_branches_do_not_recreate_v5_recording_or_source_tables) ... ok
+test_v5_exact_legacy_rows_and_schema_survive_v6_reopen_without_backfill (__main__.OrdinaryDestinationSQLiteTest.test_v5_exact_legacy_rows_and_schema_survive_v6_reopen_without_backfill) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.062s
+
+OK

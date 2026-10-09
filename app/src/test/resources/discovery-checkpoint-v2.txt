@@ -1,0 +1,24 @@
+Frozen checkpoint v2 binary compatibility fixture.
+
+Generated on 2026-10-07 by compiling the unchanged model/codec sources from
+35dfacf03c38b6359719e184e74e1d2ce5880625 with the existing offline Kotlin 2.2.10
+compiler and Java 21, without running Gradle or modifying the old codec.
+GenerateDiscoveryCheckpointV2.kt is the complete generator. Its arguments are
+discovery-checkpoint-v1.bin and discovery-checkpoint-v2.bin, respectively.
+
+The generator decodes the genuine frozen v1 fixture with the old v2 reader,
+adds a complete synthetic attribution observation and a conflicting-reports
+warning, then encodes v2 using the unchanged old writer. It verifies decoding
+equals the original object and re-encoding is byte-identical before writing.
+This is not a v3 payload with its version field patched.
+
+Source: app/src/main/kotlin/com/easysavevideo/app/storage/DiscoveryCheckpointCodec.kt
+at the commit above; SHA-256:
+1348cc354f09b4bebbae4434ccc82f6ba3164bc11c0210e999d049805cb55a85
+Input v1 SHA-256:
+a58309da3e846d6af207f3726d6745ab8a2b7e82a40943a120b7471b60616bd5
+Output v2 SHA-256 (852 bytes):
+a0d25e3c6d1b3c1e2f4165f2ff88b75e1b985442500061e089d98b037b65d0e0
+
+Host functional data only. No network, Android device, APK or service acceptance
+is claimed by this fixture.

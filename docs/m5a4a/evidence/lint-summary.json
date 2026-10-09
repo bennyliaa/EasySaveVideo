@@ -1,0 +1,12 @@
+{
+  "debug": {
+    "Error": 0,
+    "Warning": 14,
+    "Hint": 6
+  },
+  "release": {
+    "Error": 0,
+    "Warning": 14,
+    "Hint": 6
+  }
+}

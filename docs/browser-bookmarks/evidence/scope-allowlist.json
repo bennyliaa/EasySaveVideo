@@ -1,0 +1,15 @@
+{
+  "slice": "M1-B1",
+  "baseline": "0c178320cd78391bfedd5f9846e3ee873f0f5fce",
+  "new_source_files": [
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/AndroidBookmarkRuntime.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/AndroidBookmarkStorage.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkCodec.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkController.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPanel.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPolicy.kt",
+    "app/src/test/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkCodecTest.kt",
+    "app/src/test/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkControllerTest.kt",
+    "app/src/test/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPolicyTest.kt"
+  ]
+}

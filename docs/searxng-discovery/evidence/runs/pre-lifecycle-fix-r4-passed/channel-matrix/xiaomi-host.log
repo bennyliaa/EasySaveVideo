@@ -1,0 +1,15 @@
+PASS exact8 admitted host toolchain
+PASS actual generated distribution identity: xiaomi
+JUnit version 4.13.2
+...............
+Time: 0.039
+
+OK (15 tests)
+
+PASS actual generated distribution identity: xiaomi
+JUnit version 4.13.2
+...............
+Time: 0.038
+
+OK (15 tests)
+

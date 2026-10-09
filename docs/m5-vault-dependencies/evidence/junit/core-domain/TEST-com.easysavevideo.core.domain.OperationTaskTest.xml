@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.core.domain.OperationTaskTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-06T21:07:33.361Z" hostname="723dfa57d2fa" time="0.003">
+  <properties/>
+  <testcase name="waitingUserRequiresExpiryAndRecoveryAction" classname="com.easysavevideo.core.domain.OperationTaskTest" time="0.001"/>
+  <testcase name="terminalCancellationRejectsEveryLateTransition" classname="com.easysavevideo.core.domain.OperationTaskTest" time="0.0"/>
+  <testcase name="retriesShareAbsoluteBudgetAndCancellation" classname="com.easysavevideo.core.domain.OperationTaskTest" time="0.0"/>
+  <testcase name="interruptedWorkMustBeReviewedOrFailedBeforeRunningAgain" classname="com.easysavevideo.core.domain.OperationTaskTest" time="0.0"/>
+  <testcase name="staleRevisionCannotCommitSuccess" classname="com.easysavevideo.core.domain.OperationTaskTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

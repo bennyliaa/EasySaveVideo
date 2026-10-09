@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.reliability.OrdinaryIsolationTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:59.363Z" hostname="05582a867b99" time="0.075">
+  <properties/>
+  <testcase name="browserDiskCloseReopenUsesFreshIdentityAndNeverRestoresIncognitoOrOldCallbacks" classname="com.easysavevideo.app.reliability.OrdinaryIsolationTest" time="0.01"/>
+  <testcase name="failedDiscoveryPersistenceDoesNotGateIndependentBrowserOrSave" classname="com.easysavevideo.app.reliability.OrdinaryIsolationTest" time="0.026"/>
+  <testcase name="zeroProvidersLeaveBrowserNavigationAndExplicitSaveAvailable" classname="com.easysavevideo.app.reliability.OrdinaryIsolationTest" time="0.015"/>
+  <testcase name="everyFixedSourceFailureLeavesBrowserAndSaveIndependent" classname="com.easysavevideo.app.reliability.OrdinaryIsolationTest" time="0.01"/>
+  <testcase name="succeededSaveRecordSurvivesCodecDiskReopenAndDiscoveryFailureWithoutReexecution" classname="com.easysavevideo.app.reliability.OrdinaryIsolationTest" time="0.003"/>
+  <testcase name="mediaOwnerPriorityCancelsDiscoveryAndLateFailureCannotFailSave" classname="com.easysavevideo.app.reliability.OrdinaryIsolationTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

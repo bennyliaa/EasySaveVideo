@@ -1,0 +1,1378 @@
+[
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-android__1.9.0/sources/HandlerDispatcher.kt",
+    "sha256": "6bd1b65863c9df78a8c9c993d55fa158aa48142f9ee38765655bf5d8c91ba862",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/ui/kotlinx-coroutines-android/src/HandlerDispatcher.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-android__1.9.0/sources/module-info.java",
+    "sha256": "a923000382c96cb7d2444641537c3a0dca4aa28d8e4245db4258bfedd67d6da2",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/ui/kotlinx-coroutines-android/src/module-info.java"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-android__1.9.0/sources/AndroidExceptionPreHandler.kt",
+    "sha256": "c74b956a1f8d1e977d2ab52e948dd37cf2a7491e731e874ba645ededbaadae51",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/ui/kotlinx-coroutines-android/src/AndroidExceptionPreHandler.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Yield.kt",
+    "sha256": "2656bf0628d4335e3e5674aea5e56dc7941c8bff963617c82270e2280398921c",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Yield.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CompletableJob.kt",
+    "sha256": "1015f4218f50daca8cfde7f95ad1f21bee6ab671e8d2d6a56fb83fa91dd2ba15",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CompletableJob.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Dispatchers.common.kt",
+    "sha256": "0d107c93e06ae6b7547fd6f1b12b168121d3010f9896c875b6378e390aee2bd3",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Dispatchers.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Timeout.kt",
+    "sha256": "ad0bf9638cade961f587df7f8e9f30d510181fa2d6b2998852186077a8fa20b8",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Timeout.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Delay.kt",
+    "sha256": "daf81a48985d890509e3622fa3537561c98dcddb48c865298d4a79b3c6176fea",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Delay.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Debug.common.kt",
+    "sha256": "831eef3510e63f6d2c5bb8292f237a11df6e54aaf45bdf71d8d3725c7a5d3b8a",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Debug.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CoroutineContext.common.kt",
+    "sha256": "892a9e9cce337258e9a7d90bfbf566c52f76b88e810a0a6578de8ea60021f886",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CoroutineContext.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Waiter.kt",
+    "sha256": "2732642a001f3f97993fa6f2001d94cde05f5451789bbebcb2467fe961cbacfb",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Waiter.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/NonCancellable.kt",
+    "sha256": "7d9235a25cd736921339152ab9fdb3280bad93f45a129f425867eeab7cfff78a",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/NonCancellable.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Builders.common.kt",
+    "sha256": "5dc67f7fe59f1ffbcfe91686f658aeeb83eac0a6d3cb8511b48290f7a7fbccda",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Builders.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Annotations.kt",
+    "sha256": "9ee965f0ff68171a8b7e5596ed0eaa8c7ed20235dae7e75911d75d862b264ac5",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Annotations.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Unconfined.kt",
+    "sha256": "caeae92ec98ce383c78be3f9df394a8ecd13dfc9184fcfb7fb26cdf0f13c6cd4",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Unconfined.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/SchedulerTask.common.kt",
+    "sha256": "150bd82255d8fe42725440ec8f4460b980dffc2a96156c6e4646ac67e90f3d14",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/SchedulerTask.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CloseableCoroutineDispatcher.kt",
+    "sha256": "51311acaaad633b53b21e30c8921de993f55f5e4d98512c95cee8cbadb655397",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CloseableCoroutineDispatcher.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CancellableContinuation.kt",
+    "sha256": "8c1dfb998d2e835513c1b0255ff87777287d02fa0d29b4b97d42592ff5c25369",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CancellableContinuation.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Runnable.common.kt",
+    "sha256": "32c595fc51dcc680d273cd395d133fa287248254704cd08283103238efbb348c",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Runnable.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Job.kt",
+    "sha256": "23042f8626956589bfd20ee9431fce5faa6770f58b5c2e29f719129849f6504c",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Job.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CoroutineDispatcher.kt",
+    "sha256": "e89efed531589fc1013b29f63e2245d4d0931a577de6974502618e22638cd00e",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CoroutineDispatcher.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CoroutineName.kt",
+    "sha256": "981e1bdf88b73f447004a4d8c1a77cbc92fbc9f54538cd90a0f02f1c9da1b66d",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CoroutineName.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CompletionState.kt",
+    "sha256": "2cfbfc6fa4f8a2185f19784eb8fcfc1efdf922a1f4701e3e0e0721dc00821a7f",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CompletionState.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CancellableContinuationImpl.kt",
+    "sha256": "dd2c707e362274e8d2017180b827c361d3fa237263412d4e3907bbea60f641ee",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CancellableContinuationImpl.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CoroutineScope.kt",
+    "sha256": "2689e70070f6598d347bbb74f308c6437b6588c4f403dc79b621abd2bf25f2e9",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CoroutineScope.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CompletionHandler.common.kt",
+    "sha256": "acceed5ad6d2b32043717db89a212113ffdb933cc3800bef1fd26efc4ea885fb",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CompletionHandler.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/JobSupport.kt",
+    "sha256": "c845aa8de90238a6471baa6c9ae39bb5957b121051016cf29f52a2750fd94860",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/JobSupport.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Exceptions.common.kt",
+    "sha256": "526326ac2a833a2dd548f6ffcb4a295c5be545fd598572d8d75e06f8e76b1cdf",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Exceptions.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CoroutineExceptionHandler.kt",
+    "sha256": "ee24e19ff4f5760b2f871711ea2f4c9936eb28d416bd2d1116d552878a4a3c46",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CoroutineExceptionHandler.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CompletableDeferred.kt",
+    "sha256": "ec1a16468dbf9c603a9831e37e8f7b333d2bac678c4c2068077897959265c57f",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CompletableDeferred.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/AbstractCoroutine.kt",
+    "sha256": "9cd97cccc3848a52913cf747d555e2c936659a77c90deb2bb772ce8cd46bd738",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/AbstractCoroutine.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Await.kt",
+    "sha256": "0ac8b68f77fdfdfd2978473852f7e652fab539b0027c0c3cc4b3f321bb44a1a3",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Await.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/CoroutineStart.kt",
+    "sha256": "9df59f4965653b91ae93440ea1b3e9a546d1acbb2bb3037fef4ba8ec4b038a58",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/CoroutineStart.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/EventLoop.common.kt",
+    "sha256": "e88d37b96e3cffb91d876f9e5b1dd093000a3f70ca36f44615428ef1a703c982",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/EventLoop.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/MainCoroutineDispatcher.kt",
+    "sha256": "4ffe3b8f3aef6fdd87e88e12cb072a79f67b5780f2e6c03f6d3d1d07fd0f8bed",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/MainCoroutineDispatcher.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Deferred.kt",
+    "sha256": "dd7d365bc4a191de790cbc8c3c240c8ac194a738e89ee7b7b8157806d0728cfb",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Deferred.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/Supervisor.kt",
+    "sha256": "f4884bff0b0f8ff37aa93a641b3127a44e935e6128f874ca92fd7b50468b1f68",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/Supervisor.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/concurrentMain/Builders.concurrent.kt",
+    "sha256": "e86327fd3de592c0dc1b600d845523d4a46ce43e4b271ba5c80a0f362587b496",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/concurrent/src/Builders.concurrent.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/concurrentMain/MultithreadedDispatchers.common.kt",
+    "sha256": "d56cd003c3707bac0b0f40159eaba0f9ad40477fbc444bd5fafb3bb8768c54ea",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/concurrent/src/MultithreadedDispatchers.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/concurrentMain/Dispatchers.kt",
+    "sha256": "4f53e79893d64976e4ee21a11aa7ce9a6c37a9251f0030c24a5c4fe6a2f32256",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/concurrent/src/Dispatchers.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/Interruptible.kt",
+    "sha256": "b27853dcf1847e7b0cf59f4945b1b6d31ba6fbbee4d505f9b5b528162be70961",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/Interruptible.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/Debug.kt",
+    "sha256": "5469b4251ec8c8293e664371a0baeb5e6202bae320378a4d129e0cb5dbb8a28a",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/Debug.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/ThreadPoolDispatcher.kt",
+    "sha256": "837b9f18f0100721f5ce8478f70bc394a03fbbae098cc90ea7899e9187403a6e",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/ThreadPoolDispatcher.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/AbstractTimeSource.kt",
+    "sha256": "6a2adb578abf832e0434c66302ae7c31a7a15810273379164672c0c6f290f9ea",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/AbstractTimeSource.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/DefaultExecutor.kt",
+    "sha256": "7c3c7a78525022c894168d588a47e3e39daf2bde1bd19b02e0821323fc9a6ae1",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/DefaultExecutor.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/SchedulerTask.kt",
+    "sha256": "3666eba47d5477d0b6e896da7c98544eb24cbe69fa15c0397f2c651ccbd83ac6",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/SchedulerTask.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/Dispatchers.kt",
+    "sha256": "1577801706cf3bbd068108d95efb39174fef2940a2a8414616d13864870f8a83",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/Dispatchers.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/Runnable.kt",
+    "sha256": "5edd406e38d21d276212c8f7417580a734b2c26a2daf431966a29afbfc0ceba9",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/Runnable.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/CoroutineContext.kt",
+    "sha256": "dc9617a19fed296d804fb2e2262264c33bf104fba5b9e5fd6a39aad8108a4d82",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/CoroutineContext.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/ThreadContextElement.kt",
+    "sha256": "1971e19baf5f77cfede37d5969abd068531233e0d03086ddf1d639b45d150650",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/ThreadContextElement.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/DebugStrings.kt",
+    "sha256": "58f81c5fef9140ffd6baea691f9614eeb0954c55c8ba8ca38c05b1aebd83df8c",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/DebugStrings.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/EventLoop.kt",
+    "sha256": "f4a5c28da93ca6cd3e1ee5833ce90aee160f939d602d166ebe21f7041bc88cf0",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/EventLoop.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/module-info.java",
+    "sha256": "9590bc0cd364e665c0900e9b819e2ed6ee903694b0469b285b02aa41db31acf0",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/module-info.java"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/Executors.kt",
+    "sha256": "0cfa8b724db8e5da297136c69ab9000d86602c693b848c981adb5e63a566a245",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/Executors.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/Future.kt",
+    "sha256": "b2691872bef83c28725f2340e36565adf64d8fb9bfec4f0811c1972b983a4d16",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/Future.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/Exceptions.kt",
+    "sha256": "f35ea14ee94c639a371ba15aa5fbfbb3a5c01c51a3fbb075fbe111c2c2b926e1",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/Exceptions.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/Builders.kt",
+    "sha256": "ef032418925e12322ca9daa6303446e0ec9b51d17582ce4369d8e30e94c6506b",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/Builders.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/selects/WhileSelect.kt",
+    "sha256": "379d6e3ba61a3ecd2399dd02c096d405285117d9b0f3c3955cfa87fda085d4ba",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/selects/WhileSelect.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/selects/OnTimeout.kt",
+    "sha256": "0ebb99b12f37554f7ddfe17216fc32ae976faca0f29313d11b5790f8e3a89f09",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/selects/OnTimeout.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/selects/Select.kt",
+    "sha256": "cc9fafce25579abdc6cb2334524e5ca6d2e76ba4279dd6799b75f5c95e647737",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/selects/Select.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/selects/SelectOld.kt",
+    "sha256": "4a2241d338155c847f77c13068c341c1c9077a682f5c13dcf4d470b8336cb48d",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/selects/SelectOld.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/selects/SelectUnbiased.kt",
+    "sha256": "057168a810007f7fbfd8211ec10317383aba2eb660ae36fa1404be2df2c4aaa6",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/selects/SelectUnbiased.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/Channels.kt",
+    "sha256": "9be0fd41fb0bf5877a1c9e919379c6cfe78ee341458c8588032a467ef6a13d3b",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/Channels.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/SharingStarted.kt",
+    "sha256": "72518f841d9b7266d97d4ea856418354352ab7ec25da9972e6c205ea9217f33f",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/SharingStarted.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/Migration.kt",
+    "sha256": "9415625fcdb934fb7534fbae6a63297f3bc2ee7b2f0c8ee89f622982bee8b14a",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/Migration.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/StateFlow.kt",
+    "sha256": "98008ea8c791fcebd57d4356c1eccd5bc11c7979b4405dcefae99cc890632343",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/StateFlow.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/FlowCollector.kt",
+    "sha256": "7548eb948dfaad0b43ae4483be2beb1ae68c73262c030c901160b21ed60c0439",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/FlowCollector.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/SharedFlow.kt",
+    "sha256": "2a833275e436112e797084ac92d602126f397880801a36e7f67a3d70ad933d78",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/SharedFlow.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/Flow.kt",
+    "sha256": "68704e19dd01e14e46d9b4fac489bd993440e32390580d143c2802f2b5c447d9",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/Flow.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/Builders.kt",
+    "sha256": "de467ccfedd9e1f8639fe9e3dd934267bb15c7989a5973176f60825135370d48",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/Builders.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/intrinsics/Undispatched.kt",
+    "sha256": "671395d14b4970a3e362fde94e0cbfb0f3a931c694524cd24583fcdacce8ad75",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/intrinsics/Undispatched.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/intrinsics/Cancellable.kt",
+    "sha256": "89cb581ca5ea72d1080297db70e2a4a6fe4c617b57bd6aba7e5fe67a1a73c316",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/intrinsics/Cancellable.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/channels/ConflatedBufferedChannel.kt",
+    "sha256": "abdb0f8992533ab2481dafa6bb4961c3d7465eed88da09680de7d4a04b75070f",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/channels/ConflatedBufferedChannel.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/channels/BroadcastChannel.kt",
+    "sha256": "592f1956fcbfb5d3cb713ef43a9983d871263d2a996a8321a593a5095341f0ff",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/channels/BroadcastChannel.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/channels/Broadcast.kt",
+    "sha256": "7527ba91b7dbec0e009d0ba683b469fa5b7364b0982e867c17fe0dee077bf164",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/channels/Broadcast.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/channels/Channel.kt",
+    "sha256": "bdaf7764a48a444199ef68433cbbe2b2a283ec592d39c0f1f30ddc4549123556",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/channels/Channel.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/channels/BufferedChannel.kt",
+    "sha256": "c029c72b1bf096994d09533d6a9ad1f625400085fc9aaec12b48ce5a1624d1b9",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/channels/BufferedChannel.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/channels/Produce.kt",
+    "sha256": "2a6f738d15d38ed3b4989ca3a5bc796cc23cc336078e566834c9b458a59e090a",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/channels/Produce.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/channels/ChannelCoroutine.kt",
+    "sha256": "5990623d9423ee64d4a6da404a39446dbfaad6a629262845f6062098625daa8b",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/channels/ChannelCoroutine.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/channels/Channels.common.kt",
+    "sha256": "2620db6ed9912a45d09c62b38d7791ca36fae8083cb8da3d8ecbed2fdb383ee7",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/channels/Channels.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/channels/BufferOverflow.kt",
+    "sha256": "b2e484606fcbf99b48cc358b59ece412287dd660fc0fb948e1967345c63cd449",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/channels/BufferOverflow.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/channels/Deprecated.kt",
+    "sha256": "7abb72209f4e8af281583430bc95725d4631fc8ed5fe60524535e5339c1734b3",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/channels/Deprecated.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/sync/Semaphore.kt",
+    "sha256": "eed09fdd68efd006722d439bd36be904769d0231a03f55ad3fa7f785033407af",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/sync/Semaphore.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/sync/Mutex.kt",
+    "sha256": "1d071256d7d747badec70eab774d9c23d9efcd3cd4bf22dfdb96cde8a37e8726",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/sync/Mutex.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/DispatchedTask.kt",
+    "sha256": "e68f43a3c3932b2e898f64a9881fc0b0521a6144df74d196c939703db69c1e17",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/DispatchedTask.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/ProbesSupport.common.kt",
+    "sha256": "f3b7b727cdda092c7c3d4dee8ca6afdc0eead31c5c2355835af1ef28736b6b06",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/ProbesSupport.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/DispatchedContinuation.kt",
+    "sha256": "a07c53f1cef9507ae0380dd1c0eec301b5d448e0efdfeb7896ce898348c00ffb",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/DispatchedContinuation.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/ThreadSafeHeap.kt",
+    "sha256": "2852a43083af5da2fdf392733bf8d1b4c5f08d61c1f5ccdcabce21a726c8d2e4",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/ThreadSafeHeap.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/StackTraceRecovery.common.kt",
+    "sha256": "f0b785a045b5357aab2b98e6d3b7f707971d8b07ad60b904f208718f834ed7aa",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/StackTraceRecovery.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/CoroutineExceptionHandlerImpl.common.kt",
+    "sha256": "e6761d53459ae4940d6998b90d679aba6eb27f6dfd32f7c8d4a8d5eebbb170a9",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/CoroutineExceptionHandlerImpl.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/LimitedDispatcher.kt",
+    "sha256": "2e5d0d11de8f6cfccdcc337ee11554cb83ca09b1e6c4cab2bb54c6514091325f",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/LimitedDispatcher.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/InternalAnnotations.common.kt",
+    "sha256": "f02ec49acc3882fc3d5f2d3721451e3c8d36683919b1772178e0e12471fb1298",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/InternalAnnotations.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/SystemProps.common.kt",
+    "sha256": "c9e039104923c25b07cb43826493fe7618d1e421982a2f8ce8ef64951e112fad",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/SystemProps.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/Synchronized.common.kt",
+    "sha256": "1204b24d89449b58c158c96db19cd373ff23599d6da0165fc5731eca3d3643eb",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/Synchronized.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/MainDispatcherFactory.kt",
+    "sha256": "d0288ae128dcfef192a23048972b422f68fca0d4444014c8e455c7c776e4f99a",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/MainDispatcherFactory.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/ThreadLocal.common.kt",
+    "sha256": "db7afb7f2182f3df60192166492980d1a3b23f544c14a46d420b905071a7f8c9",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/ThreadLocal.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/Symbol.kt",
+    "sha256": "b2a9fde8f11534a89928e38be73ee368649128829e8d67115075ccd1539def98",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/Symbol.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/InlineList.kt",
+    "sha256": "d5bf63365bd3b4fff97b85c50bac719a8db97d6755a02d028c0ed6a71b0d61aa",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/InlineList.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/OnUndeliveredElement.kt",
+    "sha256": "93a87bd2096b1bbf0fea9717bd35043641d3a4b30f6fefa81e9c3372d3a1fe82",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/OnUndeliveredElement.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/Scopes.kt",
+    "sha256": "37b43fccd66ff70971662a42c243165bbc38fbc675eca5aa7c77004aa44d9161",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/Scopes.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/LocalAtomics.common.kt",
+    "sha256": "7b921435d0c38df0a1120aebde002a5c8bdc4050a34a2c4ad6260be31c578f87",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/LocalAtomics.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/LockFreeTaskQueue.kt",
+    "sha256": "d9b6c7aae183526fc28d37d5c1c1ffff5727c75218391a400dff535a950ca1fe",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/LockFreeTaskQueue.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/Concurrent.common.kt",
+    "sha256": "9679fd13041edfc32db9208c465af1cc0fb3ebb2c8c7f058b08507d84d4dbc6f",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/Concurrent.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/LockFreeLinkedList.common.kt",
+    "sha256": "04235621c2870bbb65b0474d48be008573a96fb66d2ade78a473170b7a782f24",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/LockFreeLinkedList.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/ThreadContext.common.kt",
+    "sha256": "58ed2df66d5bafa275b46de3166461c9fa876041cae06de7a92adb62d0ce5cce",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/ThreadContext.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/NamedDispatcher.kt",
+    "sha256": "7e7a6d07fafcb09a1e750b9831694f6090744ce7244f1031c1aeeb5453cd1a9e",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/NamedDispatcher.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/internal/ConcurrentLinkedList.kt",
+    "sha256": "5de9569d8fa2babb4a948ef9375b052462f32df74b2c66b5540b9afb2f2e21bc",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/internal/ConcurrentLinkedList.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/terminal/Collection.kt",
+    "sha256": "9b6b191b8eb2bd53d4ee2456ee6f2d7f3db7678749296cd33fdab7634ee61d02",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/terminal/Collection.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/terminal/Collect.kt",
+    "sha256": "c1f921a1c5369af673c337bd61975141c19634c38ddc71e720bbe158612a2e38",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/terminal/Collect.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/terminal/Reduce.kt",
+    "sha256": "5f3eae9cf35a25d56332b08008815b123195c651ade563f828475c83769978b4",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/terminal/Reduce.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/terminal/Count.kt",
+    "sha256": "72636a20b264d437b23f13b163f534a5d79a47c2a46a7f58bcf15e7af4f86d98",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/terminal/Count.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Merge.kt",
+    "sha256": "45e300fe74817ecd0f391264ec52ef2fd69ab6fb7d5e637d654792de965d62fb",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Merge.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Delay.kt",
+    "sha256": "16487775ffc7d1fdf0ecb3633aaa14e8fd7554e684f70fcea4b5ff5183779cc9",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Delay.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Zip.kt",
+    "sha256": "0f937daeec5cd5bc31faf1747e788a97817690bf6e74698e0f04b9964cbc06d2",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Zip.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Share.kt",
+    "sha256": "10aff1fe90cb5d8e0fe0ebfa9fc4686dc69a096b16a9e58d8b8bd01b2f0bcfc1",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Share.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Context.kt",
+    "sha256": "e64ceccd2a9e5613a05a4242a90a5fd6e05b709db487a27fbe757bf2d0f03b75",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Context.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Lint.kt",
+    "sha256": "27ddb415e5ffd767fefb6f3df38c30a53c664afc64d27d7b564ac1a5817ceaf3",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Lint.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Transform.kt",
+    "sha256": "52c1f07d68f1de9dce210845e88f143326df6f4276c795494f4c15cabed71255",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Transform.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Emitters.kt",
+    "sha256": "4901407926be05fc8a15624ec1859995d518d93c99c5b6c03ff9dce7bb41535f",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Emitters.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Distinct.kt",
+    "sha256": "1c5239c297e17f4ee1431a2b6978d792e676a1475de6637a07e239b20dd95880",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Distinct.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Errors.kt",
+    "sha256": "1a7c5f3997111e17f49a9ea9f3566f3ca42b8441ad269869ed95984e999b0915",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Errors.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/operators/Limit.kt",
+    "sha256": "1e028e27703ffa28a9c2c7c00d484e8fece940e199dfb52dc0cc6e6e52590607",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/operators/Limit.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/internal/Merge.kt",
+    "sha256": "1215e857d8e901f921f0fa9ecfde13e06b14a482116a1683005b6c91a8dcaf6e",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/internal/Merge.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/internal/SendingCollector.kt",
+    "sha256": "7151176ca48ff126df2f6fdde1bfd799a230b5a0c913363697758a8da8d63e14",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/internal/SendingCollector.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/internal/AbstractSharedFlow.kt",
+    "sha256": "f5323dd16f0e1dcb3353f78a682685398d312cb7be22a047e636250681b073db",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/internal/AbstractSharedFlow.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/internal/NopCollector.kt",
+    "sha256": "5cf8e1ed183ed427f4d9c6b41fdad106f3a142f954e34dd05c7d77294aee1939",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/internal/NopCollector.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/internal/ChannelFlow.kt",
+    "sha256": "3889cfef2152956db4980e0b5be63389a6b55483dc873ad7adb86f1e36a235c1",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/internal/ChannelFlow.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/internal/FlowExceptions.common.kt",
+    "sha256": "a77abda8f59a61ba40dfba26704fbbc5506080d107b4216235bfcc5ec6a7da41",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/internal/FlowExceptions.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/internal/NullSurrogate.kt",
+    "sha256": "bf0c7cbc9c7eb66287d9dce89e41fa11886ef6b3aa31f7e4328e2e20cb8827ed",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/internal/NullSurrogate.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/internal/Combine.kt",
+    "sha256": "ccb54a5bd80e952a1e52bb0c3ee9b57c5484bbb49425d041852b44390159c43c",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/internal/Combine.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/internal/FlowCoroutine.kt",
+    "sha256": "1a26289ac7cbda38e09beb36ae4e3ff5dc958e7caebd50d799f2dd7b9766fc4a",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/internal/FlowCoroutine.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/commonMain/flow/internal/SafeCollector.common.kt",
+    "sha256": "d0c74c365cee8fc8f8b4ec86613c765b24e09c028c74a1581f4ea496b880fc3a",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/common/src/flow/internal/SafeCollector.common.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/concurrentMain/channels/Channels.kt",
+    "sha256": "23808d3e3bc39133d63110fa43d3de30825357f7d7b728aedaba36a3d61d12aa",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/concurrent/src/channels/Channels.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/concurrentMain/internal/OnDemandAllocatingPool.kt",
+    "sha256": "599470b3fa73a0780b69ee90296c1ffa2da77b62d6a7b59f7bcd786fb9782a80",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/concurrent/src/internal/OnDemandAllocatingPool.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/concurrentMain/internal/LockFreeLinkedList.kt",
+    "sha256": "dcd5b6fc66f6e7e22932dd6238b22f36187e03eb8de2869e7681b726006c8651",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/concurrent/src/internal/LockFreeLinkedList.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/scheduling/Tasks.kt",
+    "sha256": "65ea5dbde89fcdbdea8843f81ab384b8d7a40caf4f9897e78f4bf8b80d61ca8d",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/scheduling/Tasks.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/scheduling/CoroutineScheduler.kt",
+    "sha256": "92536ea03af8acbe90086a298ddf0e46df810789640de972fed02e11fa16db06",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/scheduling/CoroutineScheduler.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/scheduling/Dispatcher.kt",
+    "sha256": "a6e1ff3247078da69498a78239d4ba6113e3ea9a6685da0f67f845616e7dc05c",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/scheduling/Dispatcher.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/scheduling/WorkQueue.kt",
+    "sha256": "6a07b15169a975b0662cbbb2fd17609ce05696b05b26a9fe5f7b1f9d93227c48",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/scheduling/WorkQueue.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/debug/CoroutineDebugging.kt",
+    "sha256": "07fc2e625dc712850d3789db968b516dd340c228f0c1323935e7398a55bbf7ed",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/debug/CoroutineDebugging.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/debug/AgentPremain.kt",
+    "sha256": "32a6211c2d1f51143540e97e031fdf668a598597d9e2f74e77e9eb0ce5590262",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/debug/AgentPremain.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/channels/TickerChannels.kt",
+    "sha256": "cf1bde75ddc9a3f3d424be179fe4f32787b004e22058ab12573dd4f2818b70c3",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/channels/TickerChannels.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/channels/Actor.kt",
+    "sha256": "5aa1e98a20d07b7d89550719de20d2d2f818b73f023c91317526ebdaa52fbf24",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/channels/Actor.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/ProbesSupport.kt",
+    "sha256": "73b545332060b8a7d5bb58e8b7eec529bae3c5778cd7ad661d6dcc51fe9e8af4",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/ProbesSupport.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/ThreadContext.kt",
+    "sha256": "d957b246383910b270029185168215ed4996e5b64437b70c061d28bc90f37113",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/ThreadContext.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/LocalAtomics.kt",
+    "sha256": "5016945b619120a9485c1959db49a654e4859ae4aefd4641c8ee5effcfcaf3b1",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/LocalAtomics.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/Synchronized.kt",
+    "sha256": "4584bcf7fcdfe4e8e439c566f608964bf9da987b2e6e9293ce47e94809cd98fe",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/Synchronized.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/ResizableAtomicArray.kt",
+    "sha256": "e0f2c19742be16be780733fbd83081967f91b8c265474eb4537c6bcfa5c275e6",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/ResizableAtomicArray.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/ExceptionsConstructor.kt",
+    "sha256": "d644e1b1655ae8481afe5cec1805930d3b4b6495eede9f28ca29f839b2e92859",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/ExceptionsConstructor.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/StackTraceRecovery.kt",
+    "sha256": "a60fbba0f8614a84e1826ad12e6613c6fe0036940c8ad541db127abfbdfc88a8",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/StackTraceRecovery.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/InternalAnnotations.kt",
+    "sha256": "8b10352bdee946260794be3c2557e8a122544a4ffd6fc9c09c6591bb99a63124",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/InternalAnnotations.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/SystemProps.kt",
+    "sha256": "3628dbc7571e269c12be8c1c41d92c3edf1c1e4d47708964f28391c831e0d713",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/SystemProps.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/MainDispatchers.kt",
+    "sha256": "3e17a238299dfdfa95fbb8b98c21bb2c262c69feb56ff4736e9d5abd3c287e24",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/MainDispatchers.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/CoroutineExceptionHandlerImpl.kt",
+    "sha256": "35c20ac6a15dfa07737732a865e7be1495219e0710bdbf28122cc842a7edff60",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/CoroutineExceptionHandlerImpl.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/FastServiceLoader.kt",
+    "sha256": "270f875504e1cfdeba08f47a634da50c507f60284c2f75aa75b02c5e4174765d",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/FastServiceLoader.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/Concurrent.kt",
+    "sha256": "fcd15a0501c08b1904cbacdbb8af7254f20b1b4d8c2e0ee235d90452767ea5e3",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/Concurrent.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/internal/ThreadLocal.kt",
+    "sha256": "51f7b74e81ac7ebebd0d29919a8d625218c44be221f940425234880b4bb9fb36",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/internal/ThreadLocal.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/flow/internal/SafeCollector.kt",
+    "sha256": "d98df411eceef4d58098088a7e948d42fce1555eaec57d4bfd83a0b81d12be84",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/flow/internal/SafeCollector.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/flow/internal/FlowExceptions.kt",
+    "sha256": "04fbea27fb8588890020eb12bf6ef69adc8ce73ddd043e55a573a2e2953197c3",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/flow/internal/FlowExceptions.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/debug/internal/DebugProbes.kt",
+    "sha256": "7a7f30ec0fcd3ff1a251f4960a798124d9e80084c3b70e783ed1c282a8d06c03",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/debug/internal/DebugProbes.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/debug/internal/DebugProbesImpl.kt",
+    "sha256": "f3fda6b11d9288f095573bc572a4d939c4186f92dd6b1e0ef07138aec30ea6d0",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/debug/internal/DebugProbesImpl.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/debug/internal/AgentInstallationType.kt",
+    "sha256": "3265b15f1ddcd834f91b74ceb4c324e350a778e1a69f30d526ab8e9d5dc914b7",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/debug/internal/AgentInstallationType.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/debug/internal/DebugCoroutineInfoImpl.kt",
+    "sha256": "b4d44dacde00207006213a7b54b36abaa0896f29ff9899065f1f91b371664cd6",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/debug/internal/DebugCoroutineInfoImpl.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/debug/internal/DebuggerInfo.kt",
+    "sha256": "a79f366b9839b2b4ff9721680fff71c8b4f8632964f0f7e1130c05b18eaecf3f",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/debug/internal/DebuggerInfo.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/debug/internal/ConcurrentWeakMap.kt",
+    "sha256": "91ae4cad6218547769d1fbfd1dc59feee65f6b38488facb15975430b2cb16455",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/debug/internal/ConcurrentWeakMap.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/debug/internal/StackTraceFrame.kt",
+    "sha256": "ac61dfd665de02dee03f6e1ed226be1158e8962a58f65c2792ab1952da83f9f3",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/debug/internal/StackTraceFrame.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jvmMain/debug/internal/DebugCoroutineInfo.kt",
+    "sha256": "d20227936db1797cbe61653fab5f38a82c771a65016eacebc06d11c66ba6f5ce",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jvm/src/debug/internal/DebugCoroutineInfo.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jdk8Main/future/Future.kt",
+    "sha256": "d7bebb0b0ebf27c1acf08e4d5a857d88a70603c9070db3f05f5c8b8a4a5fe7e9",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jdk8/src/future/Future.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jdk8Main/time/Time.kt",
+    "sha256": "dcaa6bac4342ee80b36913cce73bb0e35fd83c5300a7746db593d8aa3a7d4074",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jdk8/src/time/Time.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.9.0/sources/jdk8Main/stream/Stream.kt",
+    "sha256": "0d8a21d171d1f22d188470d716ffd4afcaffddb03cf421a748ba7305a4a19c42",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/kotlinx-coroutines-core/jdk8/src/stream/Stream.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-guava__1.9.0/sources/ListenableFuture.kt",
+    "sha256": "8be11e20352ae925da6cf6749e8db1227ab69e9b6129768742091c13147f15ea",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/integration/kotlinx-coroutines-guava/src/ListenableFuture.kt"
+    ]
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.9.0",
+    "source": "raw/org.jetbrains.kotlinx__kotlinx-coroutines-guava__1.9.0/sources/module-info.java",
+    "sha256": "fdb654b424b6886b6fdb57e2bfa12daf7c966b02889770f47a089e2ea04ed67b",
+    "exact_tag_files": [
+      "kotlinx.coroutines-1.9.0/integration/kotlinx-coroutines-guava/src/module-info.java"
+    ]
+  }
+]

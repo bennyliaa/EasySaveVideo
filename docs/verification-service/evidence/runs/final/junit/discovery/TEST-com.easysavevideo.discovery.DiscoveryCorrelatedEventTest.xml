@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:05.159Z" hostname="05582a867b99" time="0.063">
+  <properties/>
+  <testcase name="restoredEpochRejectsCapturedSavedEventWhileRetainingThePage" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.004"/>
+  <testcase name="savedAliasesMergeIndependentMaximaAcrossHistoricalGroupWithoutRegressing" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.003"/>
+  <testcase name="savedCompletionCanArriveOffScreenButCannotManufactureShownOrPlayed" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.002"/>
+  <testcase name="cancelledCorrelationBeforeEntryDoesNotEvenOpenTransaction" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.003"/>
+  <testcase name="eachForgedPageFieldIsRejectedEvenWhenStampRevisionAndFingerprintOtherwiseMatch" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.002"/>
+  <testcase name="cancellationInFinalPostRetentionGuardRollsBackAllFactsAndDoesNotReportStorageFailure" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.006"/>
+  <testcase name="newSearchRejectsCapturedSavedEvent" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.002"/>
+  <testcase name="cancellationAtPersistedRecheckLeavesFactsAndStateUnchanged" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.002"/>
+  <testcase name="zeroSourcesSurvivesRepeatedPriorityAndVisibilityResumptionWithoutDemand" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.001"/>
+  <testcase name="pooledAndOtherPageResultsCannotBorrowAMaterializedPagesAuthority" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.002"/>
+  <testcase name="saveRecordOverlapAndDuplicatePriorityUpdatesResumeOnlyAfterBothAreInactive" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.001"/>
+  <testcase name="correlationTtlExpiringInFinalPostRetentionGuardRollsBackAllFacts" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.002"/>
+  <testcase name="resumedProviderRoundIsBoundedAndOldSuccessOrFailureCannotPolluteIt" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.011"/>
+  <testcase name="closedCoordinatorRejectsCapturedSavedEvent" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.001"/>
+  <testcase name="priorityCancellationRetiresScheduledRetriesAndLateFailuresAfterResume" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.002"/>
+  <testcase name="persistedStampRevisionProfileAndExactPageAreRecheckedBeforeAnyWrite" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.01"/>
+  <testcase name="genuineStorageFailureIsFalseWithStorageStateAndNoPartialSavedFact" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.003"/>
+  <testcase name="releasingMediaPriorityDoesNotOverrideForegroundOrDiscoveryScreenVisibility" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.002"/>
+  <testcase name="viewRevisionRejectsCapturedSavedEvent" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.001"/>
+  <testcase name="historyClearRejectsCapturedSavedEventWithoutRepopulatingFacts" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.002"/>
+  <testcase name="currentSavedEventAddsOnlySavedAndKeepsDiscoveryPagesAndProgress" classname="com.easysavevideo.discovery.DiscoveryCorrelatedEventTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

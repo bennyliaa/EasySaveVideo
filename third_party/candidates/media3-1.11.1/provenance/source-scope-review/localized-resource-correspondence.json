@@ -1,0 +1,749 @@
+[
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values/strings.xml",
+    "aar_entry": "res/values/values.xml",
+    "source_sha256": "adc9d0f829daf3cc9094643d8bb952f9f89763efc392ad4a74e8c0f695961239",
+    "aar_entry_sha256": "0301aad1f9aeb7d14a11cdea158ea6e2b5f435271e37d45bcf234081def2bcc0",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-af/strings.xml",
+    "aar_entry": "res/values-af/values-af.xml",
+    "source_sha256": "5549bb1d728491e9703104cb4543bed4d8892299b3222856222a3cd3725a283d",
+    "aar_entry_sha256": "a0c6c26953eafd61cf0030294ca2cef50d461a88724b0088549bf415ffa275bb",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-am/strings.xml",
+    "aar_entry": "res/values-am/values-am.xml",
+    "source_sha256": "7106a03fd155d586b06ed199cebcbde673d5e58ae9def01aa30cd3a0f5f54a0a",
+    "aar_entry_sha256": "fb05a762ad02b3644940acb13974fb6f86ccd4e9f2efb15cb23300d334e90bb4",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ar/strings.xml",
+    "aar_entry": "res/values-ar/values-ar.xml",
+    "source_sha256": "bf957c31d10c0fb50df3b21c7a8074c94562fa6032df3189d14d2860af2faeb6",
+    "aar_entry_sha256": "291cd5f1027d5ee5af38bdade4c3925ef34474d58ef2360f054c62a0ced43669",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-as/strings.xml",
+    "aar_entry": "res/values-as/values-as.xml",
+    "source_sha256": "41919ea5f7da440d76eadae68d87a7681445f46a9ffc1b2c46d3e26ac057ef93",
+    "aar_entry_sha256": "f0d0ed3028247b37862b26194d3c2c543dcaa2c65eddaef91b99167030a5d515",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-az/strings.xml",
+    "aar_entry": "res/values-az/values-az.xml",
+    "source_sha256": "e8f381970f7e1baca54e37e212b93c113427b141ed63be14ce0b51aceb848331",
+    "aar_entry_sha256": "771f47098e84ae3aa5f5f8e06c4d51a7f15b3f2c46ae183d420b83efc9b852e5",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-b+sr+Latn/strings.xml",
+    "aar_entry": "res/values-b+sr+Latn/values-b+sr+Latn.xml",
+    "source_sha256": "97b8f9a67d54d10c9f5cf9e030604f62867d06e3425db75277dfd70f9547264a",
+    "aar_entry_sha256": "dba3ca9945d3b1dba78be821a6a859be71f3a57ffb8f508a842bfe33327abadf",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-be/strings.xml",
+    "aar_entry": "res/values-be/values-be.xml",
+    "source_sha256": "79c7e898809c49d7cbdd282a2026c38135c061531c221d34a5e44950340218a8",
+    "aar_entry_sha256": "af198a8ca856926c1ebde2146a725a2972bd9873c91d246f205919109fefb59c",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-bg/strings.xml",
+    "aar_entry": "res/values-bg/values-bg.xml",
+    "source_sha256": "fe3579aa9ff48cd0ebed2ce5806309604d580339fd1e3fef65e4a84e2174aa10",
+    "aar_entry_sha256": "65a811f4d39d79ba8dcf5b55652e62f733c0339030c07bced29488992212c19d",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-bn/strings.xml",
+    "aar_entry": "res/values-bn/values-bn.xml",
+    "source_sha256": "c9376dbce7b8dbbfe5401c99bcf810480c75521a9b692c282d539cebc57af02d",
+    "aar_entry_sha256": "27e89ce530c72d1b422ebe943018024315961cda8e50fa32b9dca9809f4f115a",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-bs/strings.xml",
+    "aar_entry": "res/values-bs/values-bs.xml",
+    "source_sha256": "82c6b15018a6a9d43487bcda7e237c70c8bd3c963a089a76d0d6a9503054970c",
+    "aar_entry_sha256": "c777ba6610a200bb60ddf0fd5359841a3e475863a5769e4d781fc760cc2322fc",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ca/strings.xml",
+    "aar_entry": "res/values-ca/values-ca.xml",
+    "source_sha256": "a17560cfba479d4bfeaeab36c4e67a14370e256c694b0e102fcf1bb71ac7e327",
+    "aar_entry_sha256": "7594d8354c2cea666c5f2fb1b4eb4573119b461e01126d70b02c3d8aa4c5a2bc",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-cs/strings.xml",
+    "aar_entry": "res/values-cs/values-cs.xml",
+    "source_sha256": "6ad8ec6b7263851ef1865362dd001c9d64574fc433d6b162864dc0a3d577620b",
+    "aar_entry_sha256": "0ed38ad629bb256d693822bf8ad607e6fb44599f3360add6d822072b9e32c12f",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-da/strings.xml",
+    "aar_entry": "res/values-da/values-da.xml",
+    "source_sha256": "37171fd5a3afa6be6a6fb35da9327fcb3bc8a8d19a5daa5a64090bcbf80ce895",
+    "aar_entry_sha256": "27b058b0c000cd0599ed5cacff1cf6d3ceb4caec99bb3e3c7e0b7ad407cba3d2",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-de/strings.xml",
+    "aar_entry": "res/values-de/values-de.xml",
+    "source_sha256": "7e04fed420b714a8528e77143292764a4f0f8fd95ff444df1f7b51322c9cdd63",
+    "aar_entry_sha256": "9650fe789889a30a2626e93a82ce8de7b05d206119de1ff253d860acf2248597",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-el/strings.xml",
+    "aar_entry": "res/values-el/values-el.xml",
+    "source_sha256": "0b71c11f60407ccd005ba9540f7b1817954f1a5f5f02a7a4c216ea63802e5422",
+    "aar_entry_sha256": "823a7a45b52e5bf8369e3301a6843f72b2c9b15386d9c7e7e25b12fc47010d1e",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-en-rAU/strings.xml",
+    "aar_entry": "res/values-en-rAU/values-en-rAU.xml",
+    "source_sha256": "496803fa3ae534ea9bf8f7ac36fa5c68e7a8660e30914c3619bb76b4c21f2c17",
+    "aar_entry_sha256": "1d21695c4ecf7668a893c77d788a6ad4ac0d7348fd5e229ae5f0ca3dcc5f4482",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-en-rGB/strings.xml",
+    "aar_entry": "res/values-en-rGB/values-en-rGB.xml",
+    "source_sha256": "496803fa3ae534ea9bf8f7ac36fa5c68e7a8660e30914c3619bb76b4c21f2c17",
+    "aar_entry_sha256": "1d21695c4ecf7668a893c77d788a6ad4ac0d7348fd5e229ae5f0ca3dcc5f4482",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-en-rIN/strings.xml",
+    "aar_entry": "res/values-en-rIN/values-en-rIN.xml",
+    "source_sha256": "496803fa3ae534ea9bf8f7ac36fa5c68e7a8660e30914c3619bb76b4c21f2c17",
+    "aar_entry_sha256": "1d21695c4ecf7668a893c77d788a6ad4ac0d7348fd5e229ae5f0ca3dcc5f4482",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-es/strings.xml",
+    "aar_entry": "res/values-es/values-es.xml",
+    "source_sha256": "35506781881503ddcdef9d5f653df4760eec61d39dcb2ce19b16c29c64c33868",
+    "aar_entry_sha256": "b175ca5621a1555746c501a923d190fd308fa12104287174ce20b31437c5131e",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-es-rUS/strings.xml",
+    "aar_entry": "res/values-es-rUS/values-es-rUS.xml",
+    "source_sha256": "cc34d162cc53c135e3a4bd8fba4f734e7f312c004a13a33026a1442a2704db24",
+    "aar_entry_sha256": "04d9fce7e49db301c370a12795002c994acea9eed21024d89f42ff80019b4843",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-et/strings.xml",
+    "aar_entry": "res/values-et/values-et.xml",
+    "source_sha256": "33f9b22fa0b7e1d42069f47d9f6280e4a722b358a01e7be5a338acd9fa3df830",
+    "aar_entry_sha256": "b8d53e2eeb0d575a32db5286ff7fa27fa4f28d8e1a6b2260da53d48fece43e56",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-eu/strings.xml",
+    "aar_entry": "res/values-eu/values-eu.xml",
+    "source_sha256": "e0ec0f4bc86d8449f7a095453223137b55b2c38af6f01ec7b8ee6eaa8eba2de3",
+    "aar_entry_sha256": "395d87da2ab3ec39cfa49b32e8bbbcba245a78a81e00339ed94d6434aa3a71b9",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-fa/strings.xml",
+    "aar_entry": "res/values-fa/values-fa.xml",
+    "source_sha256": "70bb8ba1781d7e3f6b71707cecefa527c5c4a051453c74d08ad83a152ea770fd",
+    "aar_entry_sha256": "609b94d9f7baa028b2c5592dced061949336de4727b0c6ed3af64f78f1b900b2",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-fi/strings.xml",
+    "aar_entry": "res/values-fi/values-fi.xml",
+    "source_sha256": "7ad89c9e230534339f77095e6a867ba40d161dc48bb40d545a0990c86a8eda54",
+    "aar_entry_sha256": "e95180e180601c175a0232c7104f149c9cc617d0cb91deb46011be5b620ebca2",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-fr/strings.xml",
+    "aar_entry": "res/values-fr/values-fr.xml",
+    "source_sha256": "42cf2825981deed052a3c74ff82ab86be69a8a56a0e02c8e52b681453c750e49",
+    "aar_entry_sha256": "857f1db5205ce5b7008990af13a7af659f7957aeb85da2bc523c60825e29bdba",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-fr-rCA/strings.xml",
+    "aar_entry": "res/values-fr-rCA/values-fr-rCA.xml",
+    "source_sha256": "35e7b1b15d1782b75bfa7d5f9ad2d36c49b8c789a916a265ea1166a00c55e79d",
+    "aar_entry_sha256": "0f3d21080836539912dc40413386b9ed032449681fed118cecc86d0086293caf",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-gl/strings.xml",
+    "aar_entry": "res/values-gl/values-gl.xml",
+    "source_sha256": "70f46815534ecfbc2827821f18d80a8b3ca53b10450f80fde3de65f8bd8da032",
+    "aar_entry_sha256": "bc89942785a84440123c3dfa6ba1e78bf48f0a8abf830af05e59bc65208d8ac7",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-gu/strings.xml",
+    "aar_entry": "res/values-gu/values-gu.xml",
+    "source_sha256": "63f1e3546f36bb061fd87ebf524c78c9fdce4c16bfae2c691ea780e767842187",
+    "aar_entry_sha256": "680d3472d525816e4427213d495f927c9f604e5908e8d90baf6383386cbae36e",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-hi/strings.xml",
+    "aar_entry": "res/values-hi/values-hi.xml",
+    "source_sha256": "9f9eeb403c8be37f805c2dae836eddb8e0d8f82c73f9f2a24c450c8c9f8aa269",
+    "aar_entry_sha256": "255a09179b8be5f0823acdab8a23e9e990029d64045a666892766306a4c56126",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-hr/strings.xml",
+    "aar_entry": "res/values-hr/values-hr.xml",
+    "source_sha256": "eaf2520860c492d73cf2bfbcc336955d362c38539eb514404669a08a94d71638",
+    "aar_entry_sha256": "9e07186d8889be7bd56b3bf855d4288d804f904175cb3bdda2fe38dd8e430393",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-hu/strings.xml",
+    "aar_entry": "res/values-hu/values-hu.xml",
+    "source_sha256": "72aca042d54eb15699b06847048dcb3b42ccc3057946423aaf6b15cb1f92a28f",
+    "aar_entry_sha256": "3fbf1806d900794d93524b961646e27314d49d8200a80462d5ca2c6986bfb68b",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-hy/strings.xml",
+    "aar_entry": "res/values-hy/values-hy.xml",
+    "source_sha256": "e52071888fa100e2a024347f143f5e597314e2837ce9746e78506bafab489308",
+    "aar_entry_sha256": "cb9c4d2a26322998b609ac2e89be2d3ecb93cd960eaf884e097092abac6f1c24",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-in/strings.xml",
+    "aar_entry": "res/values-in/values-in.xml",
+    "source_sha256": "fb5c167c4aedcce17aca16741d6862dc1c392e43c7f3daed6465c33628aa2da3",
+    "aar_entry_sha256": "5f46ac90a59a16df664c43a5a928506b6d73eb0ff0a1a7aa7833a3f923e0aecc",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-is/strings.xml",
+    "aar_entry": "res/values-is/values-is.xml",
+    "source_sha256": "6702c2d16058831cb1bf39c9d1cdf705fa1162253f931f1590e8740b087a9bd9",
+    "aar_entry_sha256": "decd0929ee1b04b73f9a786fc027860370924fe6e0e77a1c910109b18ea57ac5",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-it/strings.xml",
+    "aar_entry": "res/values-it/values-it.xml",
+    "source_sha256": "ed2b6e5eba880f93b4b5a7979793893a522750c95e054d1d4abdba5e8996b65e",
+    "aar_entry_sha256": "a710af60d0e7c00880716e9907e2c33003b69a57efcb9020f8c90d38ffec0afc",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-iw/strings.xml",
+    "aar_entry": "res/values-iw/values-iw.xml",
+    "source_sha256": "12240beaef9b95ba9d8b26748a9754c6087e8efd77c02e145dc4e0840ded2312",
+    "aar_entry_sha256": "e3025e3e31972f9b70ea10acc260f3868fef866da81ac5545a60a456dd780a7b",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ja/strings.xml",
+    "aar_entry": "res/values-ja/values-ja.xml",
+    "source_sha256": "4bf45335c9d0610d116aaad0676a2f2f721c7dba8852f698b0457b834486ef44",
+    "aar_entry_sha256": "a842653fa507156cfb1caf39ee1e485781954e2e8972d1e00ca82a00918ccb32",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ka/strings.xml",
+    "aar_entry": "res/values-ka/values-ka.xml",
+    "source_sha256": "e41749298f5f269f455aedbcc303fa09122c507d587c1cc416aac63c9caf1f89",
+    "aar_entry_sha256": "6a7b0e0a8e0ab42d01332a8b2e863e6de87cf8c0c95daf8b73d9bacec73427a6",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-kk/strings.xml",
+    "aar_entry": "res/values-kk/values-kk.xml",
+    "source_sha256": "c9664a8b9564b75bee84cb0576aec29de08361b9680ea8ed5103644b973cc676",
+    "aar_entry_sha256": "10b53011feb46b95fab6b23702ccfcdcd764b6f2a1ff0f7dfdd9ab6ec2db9c62",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-km/strings.xml",
+    "aar_entry": "res/values-km/values-km.xml",
+    "source_sha256": "7d02679a185aadcea8572f8a9257566c20e4cf845a67cd39e08152fc69f0cb47",
+    "aar_entry_sha256": "4d57098da38a63fe44fc45afc2ca958943a65b001cfe66f9d29bbb616ce00005",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-kn/strings.xml",
+    "aar_entry": "res/values-kn/values-kn.xml",
+    "source_sha256": "42ac81411da7bd77d2d43791878b8f5a61d15a806a6ec01a1ac67117ec959d14",
+    "aar_entry_sha256": "ba2ac3430e0e577ef72e9134129b13f5b96a0c89b3c970bf1b12dbb582de46c7",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ko/strings.xml",
+    "aar_entry": "res/values-ko/values-ko.xml",
+    "source_sha256": "1a11526f1d8802bcbda1b223a614ffd95dcbc93c14bf9be1ec730d02728ec238",
+    "aar_entry_sha256": "63ee760d8bac9ea47f1b37c7d308215e7db8a9ae39e0ff0bb25e7717893d0610",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ky/strings.xml",
+    "aar_entry": "res/values-ky/values-ky.xml",
+    "source_sha256": "68b9673f4e270c3f5098afb084330689d61988d5431f505cc981dc47313d6d73",
+    "aar_entry_sha256": "cc4664d05299d9d36e2bc484f84b5b651454c666636ec35f5cc289b6efff846a",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-lo/strings.xml",
+    "aar_entry": "res/values-lo/values-lo.xml",
+    "source_sha256": "a6863a9d2dea3a1ddba6b56adea92ad5435645f20ccf59ce33d363a91c3c1d00",
+    "aar_entry_sha256": "d87eee21d726eea12ab99e7f80079a313b6beca685231dd57aedc32f68e15e20",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-lt/strings.xml",
+    "aar_entry": "res/values-lt/values-lt.xml",
+    "source_sha256": "fc74370fa93deb7c9f151096eecc23fac21c28f582286a5d663af9693a3d91e1",
+    "aar_entry_sha256": "33677f954eec2e087a4d6b42b848c15f2291027fc17bb61e02ed7f765da28202",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-lv/strings.xml",
+    "aar_entry": "res/values-lv/values-lv.xml",
+    "source_sha256": "57ae30567a3406d43a724db8bfbcad693ac35686fc977067e07f449d6af8cb8b",
+    "aar_entry_sha256": "708441ba18c095a5a550d3d64e6f023bd1b40aee12de65d06c1d65ab4a51f945",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-mk/strings.xml",
+    "aar_entry": "res/values-mk/values-mk.xml",
+    "source_sha256": "c91fc8c87df853ac1dc88b99a0340eaad754aeb9758ed23be34f306788a2103b",
+    "aar_entry_sha256": "ce3d5a0f9c7c1b9324cf83daebfe6b9e4c0a46e5ef44870c5c3a0ac15514be5f",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ml/strings.xml",
+    "aar_entry": "res/values-ml/values-ml.xml",
+    "source_sha256": "ba4aeaf423a66b8dc313359fd6ca62ec0253d6e87761b638c64c9e5044a0ad6d",
+    "aar_entry_sha256": "0aef82da6982d2b3f71fd08fe2f04b20819824fec94228a19eeef5e041e172ad",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-mn/strings.xml",
+    "aar_entry": "res/values-mn/values-mn.xml",
+    "source_sha256": "f428ceb6dbf437a628561bc1cf371beea9386e03cbfbc3fe8bc7831779eb4346",
+    "aar_entry_sha256": "28aa7b8d680f2b6222733564b98de2b390daede4a570d6287e714367e4fd525f",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-mr/strings.xml",
+    "aar_entry": "res/values-mr/values-mr.xml",
+    "source_sha256": "0e40dedfdd26a1cdd0c89615ef18826ae9cac10dd7131e7533cf58de3620656f",
+    "aar_entry_sha256": "888164cf5036d291945e0897e1c902d4daad140a8b7cf82d69fddcfe57d374c1",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ms/strings.xml",
+    "aar_entry": "res/values-ms/values-ms.xml",
+    "source_sha256": "12c55d3ff698565908cdb6b2dc4b681e5be44a6a77d97b0b0faeb68cd080147b",
+    "aar_entry_sha256": "3655f804356b862aa3a87daf780b60697b6a0e0e16e2e041ad56868da46fb426",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-my/strings.xml",
+    "aar_entry": "res/values-my/values-my.xml",
+    "source_sha256": "e40f3c3469e239aba455f259086d4329b0a4c65667e4ca593511c9245b5038e8",
+    "aar_entry_sha256": "c5fd85370977167eb1604ce0310cfc346c2cb11e4a7d7fa00987b0e8fed68032",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-nb/strings.xml",
+    "aar_entry": "res/values-nb/values-nb.xml",
+    "source_sha256": "55351a36637688a1f1066b970206c3202bc7dbd5f92049597761e888d8c2a453",
+    "aar_entry_sha256": "b70af40546a7f5f221a16e6d604abe89d6e39747563befcf4fdd843cd497b177",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ne/strings.xml",
+    "aar_entry": "res/values-ne/values-ne.xml",
+    "source_sha256": "6d5221de91eeb56d945dd9667d3e737134ebd34199f6f6cf5aebc916f606669e",
+    "aar_entry_sha256": "6f63c534bedd1100b1deb1ff85c4e9a390d9dbf92eba020573ad1a2b6ada221a",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-nl/strings.xml",
+    "aar_entry": "res/values-nl/values-nl.xml",
+    "source_sha256": "8c29c90ed156d214c69e6434a2eb2907cd62f2ad91a4fa0970c5f483f5711073",
+    "aar_entry_sha256": "874a4cc769efed0afb698b1578a5edcd7e5a0fcf2291a29cbb0f53a20355f1ed",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-or/strings.xml",
+    "aar_entry": "res/values-or/values-or.xml",
+    "source_sha256": "1076230b8bb0f3de6c4a77eb7d6e25d73908304e29899c0c55cfe477e8ae88f2",
+    "aar_entry_sha256": "267214c876849e846b059aee5b5d2bad3b9f3cc7ba19a00240be1fcb52261503",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-pa/strings.xml",
+    "aar_entry": "res/values-pa/values-pa.xml",
+    "source_sha256": "b2ed95a5a9703a72b93e25238e5a77a4670d3609eaf451f054422ef3b55d0c95",
+    "aar_entry_sha256": "8e6407d8c5a148f89e2bb0be15f40581e2bd306c35d07c43d339f43f1ba33116",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-pl/strings.xml",
+    "aar_entry": "res/values-pl/values-pl.xml",
+    "source_sha256": "0609b72c6421df255a34830d7f2c17c403557f1fa474528dc302ca454a6d1a3a",
+    "aar_entry_sha256": "46f482a226081051abc68f57233e99cfb55024db9a386c43b0323cbc9ef2da3f",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-pt/strings.xml",
+    "aar_entry": "res/values-pt/values-pt.xml",
+    "source_sha256": "35de486756efaea9660f99f00dfc5112d90e14bf8692abc6ca4b3d6e5352ae6d",
+    "aar_entry_sha256": "38a66880f21482e6dcaee8f6e38eaadb66f1378f18130da35f72fcf365110c59",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-pt-rPT/strings.xml",
+    "aar_entry": "res/values-pt-rPT/values-pt-rPT.xml",
+    "source_sha256": "0bdfee186e1d06ea57ac00c324d0cb19567c08a23be4fe1ca718ae88fec88398",
+    "aar_entry_sha256": "b1cfde953bd332c2eaf1f5538928aeb7b1788808012f7b6b35b92ade0cb50e9f",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ro/strings.xml",
+    "aar_entry": "res/values-ro/values-ro.xml",
+    "source_sha256": "28d1a5e019f78439af3a4a10415ab48cb774bf74d651672750696d2456131dfe",
+    "aar_entry_sha256": "014a32043e6714b76224715276df23ce89c3396d5d8782fd636e7c81530a02e5",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ru/strings.xml",
+    "aar_entry": "res/values-ru/values-ru.xml",
+    "source_sha256": "0177de2947421efc163e871ed18840c9d4307d584e5e43e0608c6480b09e60c0",
+    "aar_entry_sha256": "11fb92595b7cc90558aea7144c244167ccd7fe85315dd28e9c4f125591758511",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-si/strings.xml",
+    "aar_entry": "res/values-si/values-si.xml",
+    "source_sha256": "bbefb3213e1a686a79b9d3ed92f5f451f8ee98e7e7b11b81a5c6d8704a11ebb1",
+    "aar_entry_sha256": "b6bdd21d9942f608308518c8d51b78e391790f02d309b89e2f2ab648b639a7a0",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-sk/strings.xml",
+    "aar_entry": "res/values-sk/values-sk.xml",
+    "source_sha256": "69acded8e6a161def671e4400dfe05cfd20262e026f72f04af95c6d7030ea385",
+    "aar_entry_sha256": "039f6b06513d772b35d96094ec6297b7295bdaf7f63fe3484aece3a47598807c",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-sl/strings.xml",
+    "aar_entry": "res/values-sl/values-sl.xml",
+    "source_sha256": "626e9743b232eddd9078458450430f03b98cfc35056236048071d21e740914ff",
+    "aar_entry_sha256": "78ca719848ec6c44e2894ca22a5ac226875d11dd234fe46a27da0ee10d2f4496",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-sq/strings.xml",
+    "aar_entry": "res/values-sq/values-sq.xml",
+    "source_sha256": "a5c84529bc80c4d6302781963ab7303c169eecff19d5072285f50cd22f982646",
+    "aar_entry_sha256": "8d1eb5c701973dc4e10633f4fa5c1c2ef26dab3c9a976c473c2834a4f77ba9f3",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-sr/strings.xml",
+    "aar_entry": "res/values-sr/values-sr.xml",
+    "source_sha256": "f5476f535ee84feaf711a6ad86392733d32eded199fc8d559b7aab72cf211361",
+    "aar_entry_sha256": "df4e55414d9a238eae3a7f5c10e0867a09d1e5300309d2ffd31c7dc721ea7be3",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-sv/strings.xml",
+    "aar_entry": "res/values-sv/values-sv.xml",
+    "source_sha256": "2ad17422a4fac87b0357d9b1c6728a2b19099517a0817fd6a7d8d33cad66acbd",
+    "aar_entry_sha256": "86ef6805ebf44087b9e5f7ab2badd2a363be8b5450c16c2815bd298172c73dd8",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-sw/strings.xml",
+    "aar_entry": "res/values-sw/values-sw.xml",
+    "source_sha256": "2af69bbcd882706cd75979e8d97d2df5e297572fead669b7ecabacbf411b0869",
+    "aar_entry_sha256": "902f6465ff077b9d1f0c4049f6ac70d6ef5606c1ab0add13828efad7dd7eb391",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ta/strings.xml",
+    "aar_entry": "res/values-ta/values-ta.xml",
+    "source_sha256": "b334b1f8c93484d07829674214eec061f6f3a15de7b834e6b581b0c489f95acc",
+    "aar_entry_sha256": "bac83533b8ba392b871df2ce0a02e8ee8a7b886b9f9f4469fbd3327163c23002",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-te/strings.xml",
+    "aar_entry": "res/values-te/values-te.xml",
+    "source_sha256": "a762e0512836acfb8104d16241f777894ae4988129b7d05751038d0cfd1f28ce",
+    "aar_entry_sha256": "6807bfea5ba6301960a95e5ca1f5a49ef855e4762b75509f9a6a6be055f4ec0a",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-th/strings.xml",
+    "aar_entry": "res/values-th/values-th.xml",
+    "source_sha256": "4be45fb96cf4240041ebab940303bf56185d7d9ed6f8bcbc8f4eefbf5d9080a5",
+    "aar_entry_sha256": "99a47c8955fbad1514271d2d4fac899a580c7829be0faeed6efd7b36a43cfa85",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-tl/strings.xml",
+    "aar_entry": "res/values-tl/values-tl.xml",
+    "source_sha256": "c2650ecf1aac494f061d9aa3c5d8097eb0836d67ec8b86e2c265922ead44b3c7",
+    "aar_entry_sha256": "cf23988348e24f8536d8b80bc0854a6b29bfa83c3c15b58d37e03cae81965089",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-tr/strings.xml",
+    "aar_entry": "res/values-tr/values-tr.xml",
+    "source_sha256": "35d59f07613ee3e1bb621866d71d2b5fabfcd6cd5c340478d93cfe9ebd3abdcf",
+    "aar_entry_sha256": "46f1edf5bfb085dda442fe8484f03d5496858ad03c9ddce21fc0a2fcd4fbdd6f",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-uk/strings.xml",
+    "aar_entry": "res/values-uk/values-uk.xml",
+    "source_sha256": "6f93f08ae90898ae975c45bc5a33fa03f2412e06d356cdf113e58bafdc448edd",
+    "aar_entry_sha256": "7496acc280d86fc9b5bdc1614516570b5b4c3c16b3421a637de5ce9adac9fe47",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-ur/strings.xml",
+    "aar_entry": "res/values-ur/values-ur.xml",
+    "source_sha256": "fe4cb655ce53dc0eb7bcab6a15aa5aa15ad4439b273c039b63d2399c2e182e5d",
+    "aar_entry_sha256": "c059b8c5ed2bfc74a5beb36e6e0fec10770e3cd25c597b6fad4830bb29895b46",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-uz/strings.xml",
+    "aar_entry": "res/values-uz/values-uz.xml",
+    "source_sha256": "9a24e5de092d69c2125045f95e937074d81cc706363f9436db9f8c7f58e5eac3",
+    "aar_entry_sha256": "fec28d06628a1d0c96770cc6b0f7d535d8469e14d58521cb038e034f0e0e16f7",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-vi/strings.xml",
+    "aar_entry": "res/values-vi/values-vi.xml",
+    "source_sha256": "e02dff61acfce2637d662c22c79068a14ae3259fd3d09202ba2429c497e8b887",
+    "aar_entry_sha256": "5389ae35cfc939a110da8f5508443a785f1ff3b35284ea8b4d62c3068efb6510",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-zh-rCN/strings.xml",
+    "aar_entry": "res/values-zh-rCN/values-zh-rCN.xml",
+    "source_sha256": "034a2f87b1c8d1f1357b72dece607f54be0a7e6639e10a07a6886f2fdfb39090",
+    "aar_entry_sha256": "9692952c838325305d298d109ae00211ff66a1054ef84d7b7588d560ee95ab44",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-zh-rHK/strings.xml",
+    "aar_entry": "res/values-zh-rHK/values-zh-rHK.xml",
+    "source_sha256": "05bc8250d49f22b0c325e7d73ac6993aee0f0fdd15d7cef0efe283d1214592b3",
+    "aar_entry_sha256": "45bbff0739c673a8528a18033b8de43c8a46c0e2575a592a0eb7cbca7e9b736c",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-zh-rTW/strings.xml",
+    "aar_entry": "res/values-zh-rTW/values-zh-rTW.xml",
+    "source_sha256": "2f32b9a50e86e449694a34529361ddc2f945ddccfd31ecab20802c32ce9abc65",
+    "aar_entry_sha256": "4a02b55a793d5a79bfc44b02b87c01fd6233af197fb3937af72f439f042d37f6",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  },
+  {
+    "upstream_path": "libraries/exoplayer/src/main/res/values-zu/strings.xml",
+    "aar_entry": "res/values-zu/values-zu.xml",
+    "source_sha256": "c56295a79b75373e4d8613d4a940d0d80cfa91322f877e98bef934ebfe0e308d",
+    "aar_entry_sha256": "9510b6dc862c5cf32a1443bff5534970631a10b3e060548f60d2322f8db76c57",
+    "source_keys": 9,
+    "aar_keys": 9,
+    "resource_text_equal": true
+  }
+]

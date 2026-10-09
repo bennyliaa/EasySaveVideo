@@ -1,0 +1,10 @@
+{
+  "debug": {
+    "Warning": 14,
+    "Hint": 6
+  },
+  "release": {
+    "Warning": 14,
+    "Hint": 6
+  }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.discovery.SearxngConfigurationPolicyTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:32:59.701Z" hostname="05582a867b99" time="0.006">
+  <properties/>
+  <testcase name="everyEffectiveMutationAndResetChangesPersistentGeneration" classname="com.easysavevideo.app.discovery.SearxngConfigurationPolicyTest" time="0.002"/>
+  <testcase name="anyEndpointChangeRequiresNewAcknowledgementAndPreservesOtherSlots" classname="com.easysavevideo.app.discovery.SearxngConfigurationPolicyTest" time="0.001"/>
+  <testcase name="invalidEndpointsAndBlankEnabledSlotAreRejectedWithoutAnyFallback" classname="com.easysavevideo.app.discovery.SearxngConfigurationPolicyTest" time="0.001"/>
+  <testcase name="defaultsHaveExactlyThreeDisabledSlotsAndNoEndpoint" classname="com.easysavevideo.app.discovery.SearxngConfigurationPolicyTest" time="0.0"/>
+  <testcase name="unknownOrDuplicateSlotsAndVersionOverflowFailClosed" classname="com.easysavevideo.app.discovery.SearxngConfigurationPolicyTest" time="0.0"/>
+  <testcase name="mutableInputIsDetachedAndDiagnosticsAreRedacted" classname="com.easysavevideo.app.discovery.SearxngConfigurationPolicyTest" time="0.001"/>
+  <testcase name="disableAndRemoveDoNotNeedFreshAcknowledgement" classname="com.easysavevideo.app.discovery.SearxngConfigurationPolicyTest" time="0.0"/>
+  <testcase name="additionEvenWhenDisabledAndReenableRequireAcknowledgement" classname="com.easysavevideo.app.discovery.SearxngConfigurationPolicyTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

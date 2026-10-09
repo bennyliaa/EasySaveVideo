@@ -1,0 +1,8 @@
+{
+  "url": "https://jcip.net/jcip-annotations-src.jar",
+  "final_url": "https://jcip.net/jcip-annotations-src.jar",
+  "sha256": "221f5cbe0b00a4c5f3c8870639de3573223fb9aa2636c631f901302fd4339efc",
+  "bytes": 4998,
+  "retrieved_at_utc": "2026-10-06T17:00:21.678475+00:00",
+  "transport": "urllib default HTTPS certificate validation"
+}

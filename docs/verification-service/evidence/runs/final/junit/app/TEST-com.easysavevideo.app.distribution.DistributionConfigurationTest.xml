@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.distribution.DistributionConfigurationTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:58.680Z" hostname="05582a867b99" time="0.005">
+  <properties/>
+  <testcase name="unfamiliarOrNormalizedValuesCannotSelectAChannel" classname="com.easysavevideo.app.distribution.DistributionConfigurationTest" time="0.001"/>
+  <testcase name="actualBuildCompositionPreservesIdentityAndStoreAlias" classname="com.easysavevideo.app.distribution.DistributionConfigurationTest" time="0.003"/>
+  <testcase name="documentedBuildValuesAreExactAndUnique" classname="com.easysavevideo.app.distribution.DistributionConfigurationTest" time="0.0"/>
+  <testcase name="everyIdentityKeepsPaymentUnconfiguredAndSnapshotUnavailable" classname="com.easysavevideo.app.distribution.DistributionConfigurationTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

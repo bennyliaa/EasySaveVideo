@@ -1,0 +1,6 @@
+{
+  "baseline": "f78d7cc46c92bdd461e701ac3c39f62e12cb0ce5",
+  "manifest_sha256": "768a2f95936fb564d072adc8032aaf56fe74be7099d0e378fe803d7dcfe6265c",
+  "files": 4103,
+  "expected_jvm_tests": 2020
+}

@@ -1,0 +1,10 @@
+{
+  "review": "M6-C independent source identity",
+  "checked_utc": "2026-10-07T00:01:54.479072+00:00",
+  "manifest_sha256": "690f6ded6208fc6fc123f613e2381cb46a6d0e69e03b3bd54341db213f572c8d",
+  "entries": 434,
+  "mismatches": [],
+  "status": "PASS",
+  "prior_manifest_note": "Final manifest includes the independently inspected NativeRegionPreviewPort thread-ownership documentation clarification. All host-compiled inputs remained unchanged during the test runs.",
+  "device": "NOT_RUN"
+}

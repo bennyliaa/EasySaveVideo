@@ -1,0 +1,1489 @@
+{
+  "coordinate": "androidx.media3:media3-muxer:1.11.1",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://dl.google.com/dl/android/maven2/androidx/media3/media3-muxer/1.11.1/",
+  "file_metadata": {
+    "media3-muxer-1.11.1.module": {
+      "sha256": "00a69a87954bc2ddad70f64f03ea08a592c606c95ddad4c2838e341786a49a03",
+      "bytes": 3419,
+      "path": "official-maven/androidx/media3/media3-muxer/1.11.1/media3-muxer-1.11.1.module"
+    },
+    "media3-muxer-1.11.1.pom": {
+      "sha256": "f10b2937ce651477e8e594d7c15eeb3ffdeea0fba6d0f11eae45da30ea9ad6e1",
+      "bytes": 1925,
+      "path": "official-maven/androidx/media3/media3-muxer/1.11.1/media3-muxer-1.11.1.pom"
+    },
+    "media3-muxer-1.11.1.aar": {
+      "sha256": "f68fa5996882a5f08ea0925463bc56e1c2b20ead3f556dadba24686fc4c979f1",
+      "bytes": 109910,
+      "path": "official-maven/androidx/media3/media3-muxer/1.11.1/media3-muxer-1.11.1.aar"
+    },
+    "media3-muxer-1.11.1-sources.jar": {
+      "sha256": "eefa3f69ad13ccc7c59988bd934cc90653fe24ea64f1eb072db5cf9a674ea47e",
+      "bytes": 94110,
+      "path": "official-maven/androidx/media3/media3-muxer/1.11.1/media3-muxer-1.11.1-sources.jar"
+    }
+  },
+  "pom_licenses": [
+    {
+      "name": "The Apache Software License, Version 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.txt",
+      "distribution": "repo"
+    }
+  ],
+  "source_headers": [
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AacMuxer.java",
+      "sha256": "03477ed6149a9844be8954656e281cbe69b7c3cb32b17c6bb687654f6ab1da42",
+      "bytes": 3294,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AacWriter.java",
+      "sha256": "d18475d2d90d25dd484379cf896e6bf86dd77df9e36a4a01e19442e06e49ca2e",
+      "bytes": 4786,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AnnexBToAvccConverter.java",
+      "sha256": "f12d9b47155e00414971c5653bd4cbd9c5d341a7bd80368a62f30337a3dfe58b",
+      "bytes": 3154,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2023 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AnnexBUtils.java",
+      "sha256": "0df820cc0de618a29dd41520b5402faf5a104d6d1fa5ef49ff038441d05da061",
+      "bytes": 8416,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Av1ConfigUtil.java",
+      "sha256": "77e066037dc3229fd47357bbae0596b79a6c8b5bf16e50a2a675cf81ffaab9e5",
+      "bytes": 5733,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/BoxUtils.java",
+      "sha256": "bf1374e1b24448a35995446faee040d07518faf4f3eac252c97367b3be889061",
+      "bytes": 3493,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Boxes.java",
+      "sha256": "307efb00045cb3798fcf24b3efc1190cb2719f9bad8ff8ca610a6db983cbe993",
+      "bytes": 80635,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/BufferInfo.java",
+      "sha256": "ec538c242eb1533fd08eb88910c9fb12fb45b59a9f1a6967d39a29def3b10b8e",
+      "bytes": 1653,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      https://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/ByteBufferAllocator.java",
+      "sha256": "3320f5a8fc6b8588141983ed6fc059f054d4427f7f9b2470691393b3be138797",
+      "bytes": 1174,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      https://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/EbmlUtils.java",
+      "sha256": "b8f90e5388aa6b6addb179966a3d1179fca884ee4d93026cb24a23e45501199d",
+      "bytes": 3688,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/FileOutputStreamSeekableMuxerOutput.java",
+      "sha256": "acc431cc3c58297c9cb305aad22e38f300ff65e73f4cd1231ca752ed19114375",
+      "bytes": 2110,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Muxer.java",
+      "sha256": "30f6b722aedb26926506d658f96c7d49626af5dc567f91015744ca6016805b93",
+      "bytes": 10272,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2024 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Writer.java",
+      "sha256": "3563b3abc32f4b5e61ebc6dc82a473a64312f476e966831ccf017c1b6b66a6cf",
+      "bytes": 16473,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2023 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/LinearByteBufferAllocator.java",
+      "sha256": "cfd33eae3dfb748210b3a426d2793d2627695d2f746352d18c73995878e46bc6",
+      "bytes": 1835,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      https://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MediaMuxerCompat.java",
+      "sha256": "80e57cf2c6bbb831012c2f0278b0816c9b270a9b2d6dbaa4411243925a7b98cb",
+      "bytes": 9276,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MetadataCollector.java",
+      "sha256": "f9a52c24a5c254dfb77680c6386984e19cada582023d3d24f3a8028b9aa85eb7",
+      "bytes": 2845,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Mp4Muxer.java",
+      "sha256": "39007459bf9dc6b9251458c84adecb1a002b79d7d99b7ed0aa7b6d1fb50d14a0",
+      "bytes": 30439,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Mp4Writer.java",
+      "sha256": "a962792a6270acf58ea894fc8d9764f9acd864506485d140fbc27f31ca8ab68b",
+      "bytes": 23843,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2023 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Muxer.java",
+      "sha256": "7806d22f4e980f45f0e698cd16598319b1edb1ef7d406020e99eaf4c8042789f",
+      "bytes": 3054,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2024 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MuxerException.java",
+      "sha256": "c0369597d6df5be3a34075b3748bdb91cf7108cd720e3e36499f487f85a9b313",
+      "bytes": 1150,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2024 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MuxerUtil.java",
+      "sha256": "39ccfa75deeb71e23513ac3a4ee726bc75fe619f0d121b89253e5bc7f580d39a",
+      "bytes": 15693,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/OggMuxer.java",
+      "sha256": "b761803ce9e4741368dd4ea60fa3ec853cdeca50835cc50b21087b6e96f347ba",
+      "bytes": 4499,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2026 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/OggWriter.java",
+      "sha256": "d90f77be43f5da74dedb43b02a993f6d3270f91b450cd14725953fc6d8ee731f",
+      "bytes": 14371,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2026 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/SeekableMuxerOutput.java",
+      "sha256": "fa6eec37f64f37a7ffb4dbab7eb919f38200b90f3bb46deeee32c23d82a1b645",
+      "bytes": 2743,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Track.java",
+      "sha256": "b12394b47731329a2c9e8dfe872b4416ec788f62ec8d6520d944c60b3bf2776c",
+      "bytes": 4669,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WavMuxer.java",
+      "sha256": "e1113df99305de38a93c0d5bd63f7bb0f6343ec40eb68444ac0c58b9e1c80e69",
+      "bytes": 2701,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2026 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WavWriter.java",
+      "sha256": "d7856213ee3dc4b8b426236d0b3207709dfed6298f5cb3d1c06de576b6c68b27",
+      "bytes": 6138,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2026 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmConstants.java",
+      "sha256": "ad2a5c02eacc4d8decf760449a1a860b6144fad7a55ff45e9c4d76119fe4b550",
+      "bytes": 9229,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmElements.java",
+      "sha256": "399549b30bd679cf4676514b84359442df3dc3ba07fdb08730e98b72f3daf9d5",
+      "bytes": 22226,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmMuxer.java",
+      "sha256": "d7aa1545e9f76f560f6ba56c2689fde078e88c195e943cefe841c4b823823fe9",
+      "bytes": 5444,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmWriter.java",
+      "sha256": "de39392a5fa4344b854d219137dbffd287d37c75e610f5f39ac6f2bbbc18eeb0",
+      "bytes": 15776,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2025 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/package-info.java",
+      "sha256": "6451531a151ae98c121e5c61ff04fff0d4aba815b23219586994a7e44c4d0f4b",
+      "bytes": 707,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright 2022 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    }
+  ],
+  "source_special_attributions": [
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AacMuxer.java",
+      "sha256": "03477ed6149a9844be8954656e281cbe69b7c3cb32b17c6bb687654f6ab1da42",
+      "bytes": 3294,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AacWriter.java",
+      "sha256": "d18475d2d90d25dd484379cf896e6bf86dd77df9e36a4a01e19442e06e49ca2e",
+      "bytes": 4786,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 109,
+          "text": "// copyrighted_stream (1 bit), copyright_start (1 bit) + frame_length (2 bits)."
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AnnexBToAvccConverter.java",
+      "sha256": "f12d9b47155e00414971c5653bd4cbd9c5d341a7bd80368a62f30337a3dfe58b",
+      "bytes": 3154,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2023 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AnnexBUtils.java",
+      "sha256": "0df820cc0de618a29dd41520b5402faf5a104d6d1fa5ef49ff038441d05da061",
+      "bytes": 8416,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2022 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Av1ConfigUtil.java",
+      "sha256": "77e066037dc3229fd47357bbae0596b79a6c8b5bf16e50a2a675cf81ffaab9e5",
+      "bytes": 5733,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/BoxUtils.java",
+      "sha256": "bf1374e1b24448a35995446faee040d07518faf4f3eac252c97367b3be889061",
+      "bytes": 3493,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2022 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 39,
+          "text": "* copyright symbol in the beginning."
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Boxes.java",
+      "sha256": "307efb00045cb3798fcf24b3efc1190cb2719f9bad8ff8ca610a6db983cbe993",
+      "bytes": 80635,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2022 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 652,
+          "text": "(byte) 0xA9, // copyright symbol"
+        },
+        {
+          "line": 737,
+          "text": "/** Returns an audio sample entry box based on the MIME type. */"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/BufferInfo.java",
+      "sha256": "ec538c242eb1533fd08eb88910c9fb12fb45b59a9f1a6967d39a29def3b10b8e",
+      "bytes": 1653,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/ByteBufferAllocator.java",
+      "sha256": "3320f5a8fc6b8588141983ed6fc059f054d4427f7f9b2470691393b3be138797",
+      "bytes": 1174,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/EbmlUtils.java",
+      "sha256": "b8f90e5388aa6b6addb179966a3d1179fca884ee4d93026cb24a23e45501199d",
+      "bytes": 3688,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/FileOutputStreamSeekableMuxerOutput.java",
+      "sha256": "acc431cc3c58297c9cb305aad22e38f300ff65e73f4cd1231ca752ed19114375",
+      "bytes": 2110,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Muxer.java",
+      "sha256": "30f6b722aedb26926506d658f96c7d49626af5dc567f91015744ca6016805b93",
+      "bytes": 10272,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2024 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Writer.java",
+      "sha256": "3563b3abc32f4b5e61ebc6dc82a473a64312f476e966831ccf017c1b6b66a6cf",
+      "bytes": 16473,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2023 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 245,
+          "text": "// If video track is present then fragment will be created based on group of pictures and"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/LinearByteBufferAllocator.java",
+      "sha256": "cfd33eae3dfb748210b3a426d2793d2627695d2f746352d18c73995878e46bc6",
+      "bytes": 1835,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MediaMuxerCompat.java",
+      "sha256": "80e57cf2c6bbb831012c2f0278b0816c9b270a9b2d6dbaa4411243925a7b98cb",
+      "bytes": 9276,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 48,
+          "text": "* A drop-in replacement for {@link MediaMuxer} that provides similar functionality, based on the"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MetadataCollector.java",
+      "sha256": "f9a52c24a5c254dfb77680c6386984e19cada582023d3d24f3a8028b9aa85eb7",
+      "bytes": 2845,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2022 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Mp4Muxer.java",
+      "sha256": "39007459bf9dc6b9251458c84adecb1a002b79d7d99b7ed0aa7b6d1fb50d14a0",
+      "bytes": 30439,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2022 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Mp4Writer.java",
+      "sha256": "a962792a6270acf58ea894fc8d9764f9acd864506485d140fbc27f31ca8ab68b",
+      "bytes": 23843,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2023 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Muxer.java",
+      "sha256": "7806d22f4e980f45f0e698cd16598319b1edb1ef7d406020e99eaf4c8042789f",
+      "bytes": 3054,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2024 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MuxerException.java",
+      "sha256": "c0369597d6df5be3a34075b3748bdb91cf7108cd720e3e36499f487f85a9b313",
+      "bytes": 1150,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2024 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MuxerUtil.java",
+      "sha256": "39ccfa75deeb71e23513ac3a4ee726bc75fe619f0d121b89253e5bc7f580d39a",
+      "bytes": 15693,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2022 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/OggMuxer.java",
+      "sha256": "b761803ce9e4741368dd4ea60fa3ec853cdeca50835cc50b21087b6e96f347ba",
+      "bytes": 4499,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2026 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/OggWriter.java",
+      "sha256": "d90f77be43f5da74dedb43b02a993f6d3270f91b450cd14725953fc6d8ee731f",
+      "bytes": 14371,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2026 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        },
+        {
+          "line": 158,
+          "text": "// Calculate granule position based on presentation time."
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/SeekableMuxerOutput.java",
+      "sha256": "fa6eec37f64f37a7ffb4dbab7eb919f38200b90f3bb46deeee32c23d82a1b645",
+      "bytes": 2743,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Track.java",
+      "sha256": "b12394b47731329a2c9e8dfe872b4416ec788f62ec8d6520d944c60b3bf2776c",
+      "bytes": 4669,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2022 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WavMuxer.java",
+      "sha256": "e1113df99305de38a93c0d5bd63f7bb0f6343ec40eb68444ac0c58b9e1c80e69",
+      "bytes": 2701,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2026 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WavWriter.java",
+      "sha256": "d7856213ee3dc4b8b426236d0b3207709dfed6298f5cb3d1c06de576b6c68b27",
+      "bytes": 6138,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2026 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmConstants.java",
+      "sha256": "ad2a5c02eacc4d8decf760449a1a860b6144fad7a55ff45e9c4d76119fe4b550",
+      "bytes": 9229,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmElements.java",
+      "sha256": "399549b30bd679cf4676514b84359442df3dc3ba07fdb08730e98b72f3daf9d5",
+      "bytes": 22226,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmMuxer.java",
+      "sha256": "d7aa1545e9f76f560f6ba56c2689fde078e88c195e943cefe841c4b823823fe9",
+      "bytes": 5444,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmWriter.java",
+      "sha256": "de39392a5fa4344b854d219137dbffd287d37c75e610f5f39ac6f2bbbc18eeb0",
+      "bytes": 15776,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2025 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/package-info.java",
+      "sha256": "6451531a151ae98c121e5c61ff04fff0d4aba815b23219586994a7e44c4d0f4b",
+      "bytes": 707,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright 2022 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    }
+  ],
+  "source_without_license_header": [],
+  "source_non_code_entries": [
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    }
+  ],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "media3-muxer-1.11.1.aar",
+      "entry": "R.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar",
+      "entry": "AndroidManifest.xml",
+      "sha256": "f68803d0ad31fddff3e83a89c14e6720ebfd59803eecb1b01fb22d6ba900cbf5",
+      "bytes": 831
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar",
+      "entry": "classes.jar",
+      "sha256": "2ae0d658f2ee501658bd8ca07d4451a0b17e6537d61644b39ceb12703c789e39",
+      "bytes": 112387
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/AacMuxer.class",
+      "sha256": "a82ca1eee7dfa3a503fa280932e0229f86e7cb08e07c68742e094c518443ea3a",
+      "bytes": 3162
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/AacWriter.class",
+      "sha256": "23ca267dec700fedd06da1c486879d2b4d0bac337078e3c7376fa29bb3f9a47a",
+      "bytes": 3685
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/AnnexBToAvccConverter$1.class",
+      "sha256": "903a3e1630ff4564db764cad26c145196cc8ff8770de2540f39fdf54899ae851",
+      "bytes": 1994
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/AnnexBToAvccConverter.class",
+      "sha256": "ce39a7e9ae25c4d2d57506702635def5740951287aa61f866c9504d9b98bd6f1",
+      "bytes": 872
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/AnnexBUtils.class",
+      "sha256": "d3355427e5892aac05afef6288a993df18ec1abb7f13648c194072b302b55ec3",
+      "bytes": 4540
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Av1ConfigUtil.class",
+      "sha256": "7f7996846b326a0922478e15e629409a78d07fcb17deb8d28113d664073e36ed",
+      "bytes": 4824
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/BoxUtils.class",
+      "sha256": "ba9014f6bd3d6b643f9ace7462d5f9fd83527f27b87e12d53ff6f543239aa164",
+      "bytes": 2796
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Boxes.class",
+      "sha256": "bc0ecd601d0a2bac10483343111ed2c87348e1464678efff0e97eeb088fe94a8",
+      "bytes": 47258
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/BufferInfo.class",
+      "sha256": "b1bef8045b71fad8b4c4beca58337ef8514584d9bffddcc08a4f4f24509cd588",
+      "bytes": 554
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/ByteBufferAllocator.class",
+      "sha256": "0c20a53ae1d729be8a5fd74c755429b382fd950ce30635058a598a2f09af0243",
+      "bytes": 984
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/EbmlUtils.class",
+      "sha256": "33877f0514afab9fb3af02f2c1539cd53b23ec51ebab128225e44a57fe93a721",
+      "bytes": 1721
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/FileOutputStreamSeekableMuxerOutput.class",
+      "sha256": "0e34a116d528fe87aa82b2069591d93947b05a3d51f2dea6b08115807e150883",
+      "bytes": 1704
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Muxer$1.class",
+      "sha256": "b3e390529d68c93815814c4fcd13c00147be575aa963b0d64a5f8a06afd3450c",
+      "bytes": 246
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Muxer$Builder.class",
+      "sha256": "0a3849d17fb34d123de6b5c5cb95571990f50c5fc7eac5e82faa1f46a4494254",
+      "bytes": 1941
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Muxer.class",
+      "sha256": "1bdb07b83ec11df71a8f657c6beaada0c08a0b3d2639912e490629686502d6d7",
+      "bytes": 5208
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Writer$PositionTrackingOutputChannel.class",
+      "sha256": "d13a97ce0d1f2bce2aff289459a3f38a5b22ee0a0ada7bcc49e95de607eb0a27",
+      "bytes": 1247
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Writer$ProcessedTrackInfo.class",
+      "sha256": "84a0596dd4cecf5889f2830ff1299377ec08a05cdd8f2f3b5868e58ea17f8dbc",
+      "bytes": 1559
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Writer$SampleMetadata.class",
+      "sha256": "7c8cbd0ac05f9c87a43ec42f27f58eed46d0542743808da17cafbabecc5f1598",
+      "bytes": 686
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Writer.class",
+      "sha256": "2ff38ca0291047d241b2c6cd7ffec9fefd23bdb07e22d0a022635a5e7b28dc48",
+      "bytes": 12595
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/LinearByteBufferAllocator.class",
+      "sha256": "26da609a2afba9fb96734a8e3822f11798373363a46c9f7f887dbd69e970fbac",
+      "bytes": 1280
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/MediaMuxerCompat$OutputFormat.class",
+      "sha256": "b84f7f43832ec8a22e083e6afd3b7f52089b3651610c54ed06ad16bf1137797a",
+      "bytes": 637
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/MediaMuxerCompat.class",
+      "sha256": "3d6f29e05c5b98d2fe0533f7beba4d297610771d37aea5fe37fdcde4bd9b38e7",
+      "bytes": 5552
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/MetadataCollector.class",
+      "sha256": "a43f8ffaa7f586a2bf7e3231ed69edadbe1283b0b247cc9282febbce228a1ab5",
+      "bytes": 2282
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Mp4Muxer$1.class",
+      "sha256": "d0741a22ab6e2b430f54794626c9a75aaa1fd49048b7e13b9a683374fc446128",
+      "bytes": 216
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Mp4Muxer$Builder.class",
+      "sha256": "6567d7da589d3ba7c1374735b50a81c32d3f089f8990168a759c882224675ce1",
+      "bytes": 4514
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Mp4Muxer$FileFormat.class",
+      "sha256": "9cc78c8383859c89a720effcb2aec50cc878c921f215f489d0680a19fa88712a",
+      "bytes": 523
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Mp4Muxer$LastSampleDurationBehavior.class",
+      "sha256": "54b0c4dd545da09a4b2c75500d8d2272cbbd3bf6558581d95923eff76e9dd0e8",
+      "bytes": 555
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Mp4Muxer$Mp4AtFileParameters.class",
+      "sha256": "abd4f41486d81f866f97c49028ffe050f93c585d74052369f3e18a5c07701254",
+      "bytes": 500
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Mp4Muxer$TrackReferenceType.class",
+      "sha256": "f05de4c01ba0a528b4d553a3356807f4015e8223c9285082b8fa6d1b852389e8",
+      "bytes": 539
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Mp4Muxer.class",
+      "sha256": "f92a252d1799f449a139fd68d3ef5959447acf3f98db27344450bf5337ac30f7",
+      "bytes": 12764
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Mp4Writer.class",
+      "sha256": "25ed8da8112d313b545734367d8425f8ed49cf8e011fc4cb970f0c3322abab77",
+      "bytes": 13831
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Muxer$Factory.class",
+      "sha256": "00ae4b5e75497122eaf85d7b671a777489e2e738adcabdbc83942182feea0627",
+      "bytes": 704
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Muxer.class",
+      "sha256": "65d3c57a8146c875e3011f209345e201a3842a6b6690c4dba8a2e6477821934e",
+      "bytes": 731
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/MuxerException.class",
+      "sha256": "8607d60f45cae2c7b7dc7abc798edef464eef453a5b408a632e12cc53a831b4c",
+      "bytes": 707
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/MuxerUtil.class",
+      "sha256": "df1d5cbf9662e4f9ee4739c7df19948f6eb780290286b869b7fcf6c2e2b323d0",
+      "bytes": 10603
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/OggMuxer$1.class",
+      "sha256": "2860ba0576c1e8e191b69b67f9228feef770dd2ed02f8b8ba66c7bf394cb26db",
+      "bytes": 216
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/OggMuxer$Builder.class",
+      "sha256": "f82ba461a63a292e4fa18b10a0255e114727a100aeb30fee4ece7ec452f6fe7a",
+      "bytes": 1196
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/OggMuxer.class",
+      "sha256": "c67019a9b25e44a1d8b31e35c8e33a4fbbbc0d9c8bac06a76f8afcb94e5dcf13",
+      "bytes": 3595
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/OggWriter.class",
+      "sha256": "1591632554da38d2f8e3c02d74a38975e91b40e7b1921cdc300d609f5e5dce6f",
+      "bytes": 8736
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/SeekableMuxerOutput.class",
+      "sha256": "ef2e9d49830a413afb214d627f978e25fd1ffbec6d19bfbba2a0918ee7f13588",
+      "bytes": 1075
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/Track.class",
+      "sha256": "478c4bf05ae1ed87d058d47da6969cf62b6a1bab9eebdfb2bd0d0fd53f273792",
+      "bytes": 3741
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WavMuxer.class",
+      "sha256": "959253deef1b0d595356e2e3ba0b26ef7ae607a057aa45ecc196e4817973f0ea",
+      "bytes": 2252
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WavWriter.class",
+      "sha256": "6046742521cae0cb9d8a7e8dc706beb2a212824c6a4255a5e062963ba72bc8e2",
+      "bytes": 3969
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WebmConstants$MkvEbmlElement.class",
+      "sha256": "735cac7e38f6bb34b49fbcc5b4e3c70314b453ceed970ddfb192541f23452748",
+      "bytes": 4343
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WebmConstants$TrackNumber.class",
+      "sha256": "3af8141975628c7974f2e3a03e149e8bc9295658ac70b0e71c74f4384fa8ea9f",
+      "bytes": 618
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WebmConstants$TrackType.class",
+      "sha256": "13b35e857e0ea2627bf4c3ca55c0a7ae144b8e27ef69e81fce6da736cd325d21",
+      "bytes": 798
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WebmConstants.class",
+      "sha256": "2be20e90fef4fe404fd963d4bfa5257d48c2b5052728355231a503fcdb34eedc",
+      "bytes": 670
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WebmElements.class",
+      "sha256": "ea19d2bdb2f18be7c46dcdaea2f8a5922736138090c2f76f23b8c88f50c3aff2",
+      "bytes": 12312
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WebmMuxer$1.class",
+      "sha256": "e201ba7cab8e3caae41df9ccc7b097ba053cd48fad0ad52688d92e12297771d5",
+      "bytes": 219
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WebmMuxer$Builder.class",
+      "sha256": "1b4c9c29f9f669136d718f9d904e1b44eb2702b025b00cb72e3ee39ceb96319b",
+      "bytes": 1118
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WebmMuxer.class",
+      "sha256": "c24c63184311f3e8b3d5d30b377bc7ff9c5f216d0592f262c0c83b1b46592343",
+      "bytes": 4173
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WebmWriter$WebmFrame.class",
+      "sha256": "a7ed3ffd4827d3aa9519963e681a3decc9946490af6d478526ce3e7325c68d32",
+      "bytes": 2034
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/WebmWriter.class",
+      "sha256": "01c0306e942f17c5b38fbc0e8c5b10768614b63e9b428f1bd53542f949286feb",
+      "bytes": 8229
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/muxer/package-info.class",
+      "sha256": "0f0cf0d7a061a413b2378b347372abe91e939cae723832fca6324ec8119d8da6",
+      "bytes": 212
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar",
+      "entry": "annotations.zip",
+      "sha256": "97065c7fb6fcf90074e5484c2bfcfa200086a928815a690f76054f117fc1c0ea",
+      "bytes": 2482
+    },
+    {
+      "archive": "media3-muxer-1.11.1.aar",
+      "entry": "META-INF/com/android/build/gradle/aar-metadata.properties",
+      "sha256": "08ee81351e24d5fb98490f59522c587e5fbaf50b7794a721d6fb021a08368cc6",
+      "bytes": 157
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AacMuxer.java",
+      "sha256": "03477ed6149a9844be8954656e281cbe69b7c3cb32b17c6bb687654f6ab1da42",
+      "bytes": 3294
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AacWriter.java",
+      "sha256": "d18475d2d90d25dd484379cf896e6bf86dd77df9e36a4a01e19442e06e49ca2e",
+      "bytes": 4786
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AnnexBToAvccConverter.java",
+      "sha256": "f12d9b47155e00414971c5653bd4cbd9c5d341a7bd80368a62f30337a3dfe58b",
+      "bytes": 3154
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/AnnexBUtils.java",
+      "sha256": "0df820cc0de618a29dd41520b5402faf5a104d6d1fa5ef49ff038441d05da061",
+      "bytes": 8416
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Av1ConfigUtil.java",
+      "sha256": "77e066037dc3229fd47357bbae0596b79a6c8b5bf16e50a2a675cf81ffaab9e5",
+      "bytes": 5733
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/BoxUtils.java",
+      "sha256": "bf1374e1b24448a35995446faee040d07518faf4f3eac252c97367b3be889061",
+      "bytes": 3493
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Boxes.java",
+      "sha256": "307efb00045cb3798fcf24b3efc1190cb2719f9bad8ff8ca610a6db983cbe993",
+      "bytes": 80635
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/BufferInfo.java",
+      "sha256": "ec538c242eb1533fd08eb88910c9fb12fb45b59a9f1a6967d39a29def3b10b8e",
+      "bytes": 1653
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/ByteBufferAllocator.java",
+      "sha256": "3320f5a8fc6b8588141983ed6fc059f054d4427f7f9b2470691393b3be138797",
+      "bytes": 1174
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/EbmlUtils.java",
+      "sha256": "b8f90e5388aa6b6addb179966a3d1179fca884ee4d93026cb24a23e45501199d",
+      "bytes": 3688
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/FileOutputStreamSeekableMuxerOutput.java",
+      "sha256": "acc431cc3c58297c9cb305aad22e38f300ff65e73f4cd1231ca752ed19114375",
+      "bytes": 2110
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Muxer.java",
+      "sha256": "30f6b722aedb26926506d658f96c7d49626af5dc567f91015744ca6016805b93",
+      "bytes": 10272
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/FragmentedMp4Writer.java",
+      "sha256": "3563b3abc32f4b5e61ebc6dc82a473a64312f476e966831ccf017c1b6b66a6cf",
+      "bytes": 16473
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/LinearByteBufferAllocator.java",
+      "sha256": "cfd33eae3dfb748210b3a426d2793d2627695d2f746352d18c73995878e46bc6",
+      "bytes": 1835
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MediaMuxerCompat.java",
+      "sha256": "80e57cf2c6bbb831012c2f0278b0816c9b270a9b2d6dbaa4411243925a7b98cb",
+      "bytes": 9276
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MetadataCollector.java",
+      "sha256": "f9a52c24a5c254dfb77680c6386984e19cada582023d3d24f3a8028b9aa85eb7",
+      "bytes": 2845
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Mp4Muxer.java",
+      "sha256": "39007459bf9dc6b9251458c84adecb1a002b79d7d99b7ed0aa7b6d1fb50d14a0",
+      "bytes": 30439
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Mp4Writer.java",
+      "sha256": "a962792a6270acf58ea894fc8d9764f9acd864506485d140fbc27f31ca8ab68b",
+      "bytes": 23843
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Muxer.java",
+      "sha256": "7806d22f4e980f45f0e698cd16598319b1edb1ef7d406020e99eaf4c8042789f",
+      "bytes": 3054
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MuxerException.java",
+      "sha256": "c0369597d6df5be3a34075b3748bdb91cf7108cd720e3e36499f487f85a9b313",
+      "bytes": 1150
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/MuxerUtil.java",
+      "sha256": "39ccfa75deeb71e23513ac3a4ee726bc75fe619f0d121b89253e5bc7f580d39a",
+      "bytes": 15693
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/OggMuxer.java",
+      "sha256": "b761803ce9e4741368dd4ea60fa3ec853cdeca50835cc50b21087b6e96f347ba",
+      "bytes": 4499
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/OggWriter.java",
+      "sha256": "d90f77be43f5da74dedb43b02a993f6d3270f91b450cd14725953fc6d8ee731f",
+      "bytes": 14371
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/SeekableMuxerOutput.java",
+      "sha256": "fa6eec37f64f37a7ffb4dbab7eb919f38200b90f3bb46deeee32c23d82a1b645",
+      "bytes": 2743
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/Track.java",
+      "sha256": "b12394b47731329a2c9e8dfe872b4416ec788f62ec8d6520d944c60b3bf2776c",
+      "bytes": 4669
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WavMuxer.java",
+      "sha256": "e1113df99305de38a93c0d5bd63f7bb0f6343ec40eb68444ac0c58b9e1c80e69",
+      "bytes": 2701
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WavWriter.java",
+      "sha256": "d7856213ee3dc4b8b426236d0b3207709dfed6298f5cb3d1c06de576b6c68b27",
+      "bytes": 6138
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmConstants.java",
+      "sha256": "ad2a5c02eacc4d8decf760449a1a860b6144fad7a55ff45e9c4d76119fe4b550",
+      "bytes": 9229
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmElements.java",
+      "sha256": "399549b30bd679cf4676514b84359442df3dc3ba07fdb08730e98b72f3daf9d5",
+      "bytes": 22226
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmMuxer.java",
+      "sha256": "d7aa1545e9f76f560f6ba56c2689fde078e88c195e943cefe841c4b823823fe9",
+      "bytes": 5444
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/WebmWriter.java",
+      "sha256": "de39392a5fa4344b854d219137dbffd287d37c75e610f5f39ac6f2bbbc18eeb0",
+      "bytes": 15776
+    },
+    {
+      "archive": "media3-muxer-1.11.1-sources.jar",
+      "entry": "androidx/media3/muxer/package-info.java",
+      "sha256": "6451531a151ae98c121e5c61ff04fff0d4aba815b23219586994a7e44c4d0f4b",
+      "bytes": 707
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": null,
+  "source_status": "PRESENT",
+  "published_hash_checks": [
+    {
+      "variant": "releaseVariantReleaseApiPublication",
+      "file": "media3-muxer-1.11.1.aar",
+      "sha256_published": "f68fa5996882a5f08ea0925463bc56e1c2b20ead3f556dadba24686fc4c979f1",
+      "sha256_actual": "f68fa5996882a5f08ea0925463bc56e1c2b20ead3f556dadba24686fc4c979f1",
+      "matches": true
+    },
+    {
+      "variant": "releaseVariantReleaseRuntimePublication",
+      "file": "media3-muxer-1.11.1.aar",
+      "sha256_published": "f68fa5996882a5f08ea0925463bc56e1c2b20ead3f556dadba24686fc4c979f1",
+      "sha256_actual": "f68fa5996882a5f08ea0925463bc56e1c2b20ead3f556dadba24686fc4c979f1",
+      "matches": true
+    },
+    {
+      "variant": "releaseVariantReleaseSourcePublication",
+      "file": "media3-muxer-1.11.1-sources.jar",
+      "sha256_published": "eefa3f69ad13ccc7c59988bd934cc90653fe24ea64f1eb072db5cf9a674ea47e",
+      "sha256_actual": "eefa3f69ad13ccc7c59988bd934cc90653fe24ea64f1eb072db5cf9a674ea47e",
+      "matches": true
+    }
+  ]
+}

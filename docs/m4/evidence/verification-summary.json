@@ -1,0 +1,105 @@
+{
+  "date_utc": "2026-10-06T19:31:24.516429+00:00",
+  "base_commit": "1caa0d8d858ffbdb9144ad42f3cc266242008ce6",
+  "kind": "M4_RECORD_DEVELOPMENT_CHECKPOINT_ONLY",
+  "policy": "B: full sample/timing scan, bounded actual first/middle/final/resume GOP decode; sparse AAC",
+  "gradle_jvm_suites": {
+    "core-model": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core-domain": {
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "recording": {
+      "tests": 71,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "save": {
+      "tests": 86,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "hls": {
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ui-theme": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "discovery": {
+      "tests": 94,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "commons-provider": {
+      "tests": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "tests": 323,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "jvm_total": 701,
+  "hls_eof_host_tests": 81,
+  "pinned_hls_mp4_roundtrip_host_tests": 15,
+  "legacy_pinned_reader": "PASS synthetic host probe only",
+  "debug_compile": "PASS",
+  "release_compile": "PASS",
+  "lint": {
+    "debug": {
+      "Warning": 9,
+      "Hint": 3
+    },
+    "release": {
+      "Warning": 9,
+      "Hint": 3
+    }
+  },
+  "exact_admitted_external_runtime_artifacts_per_variant": 72,
+  "new_external_dependencies": 0,
+  "review_file_sha256": "2fc73e26b5f2ea32adc133c464578ce20ac1dc31e3cdece4fc1dbe0e4463c871",
+  "review_production_file_hashes_match": true,
+  "late_legacy_recovery_tests_in_final_run": true,
+  "manifest_source_static_guards": "PASS",
+  "discovery_sqlite_host": "PASS",
+  "browser_detector_synthetic_checks": 11,
+  "task_codec_write_version": 5,
+  "task_codec_read_versions": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "owned_evidence_write_version": 3,
+  "owned_evidence_read_versions": [
+    "unversioned",
+    1,
+    2,
+    3
+  ],
+  "device_native_api31_to36_phone_tablet": "NOT_RUN",
+  "permission_prompts_actual_capture_audio_av_sync_rotation": "NOT_RUN",
+  "apk_aab_install_publish": "NOT_RUN",
+  "supported_recording_duration": "NOT_ESTABLISHED; 2h and2GiB are only resource ceilings"
+}

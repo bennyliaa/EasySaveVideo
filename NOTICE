@@ -1,0 +1,11 @@
+EasySaveVideo — private development source
+
+This repository includes internally authorized user-owned SkinKit 0.0.1 Contract and Default artifacts. No public license is selected for EasySaveVideo or SkinKit.
+
+Official runtime dependencies are identified with original licenses, copyright notices, source provenance and conditions in third_party/current-runtime/, third_party/candidates/media3-1.11.1/ and third_party/candidates/tink-1.23.0/. The current exact admitted graph has 74 artifacts: 72 official components and two SkinKit artifacts; third_party/admitted-runtime.tsv pins their bytes. Kotlin standard library obligations include applicable bundled third-party notices, including ThreeTenBP BSD; source/target-code distinctions such as Boost are preserved in the evidence.
+
+Wikimedia Commons metadata is source-reported content, not a software dependency or blanket CC0 grant. Per-file source/author/license/custom attribution and metadata provenance remain attached to results. The three test captures and their retrieval/source terms are documented in commons-provider/docs/evidence/ and commons-provider/docs/CONTRACT.md; this does not authorize media reuse.
+
+The Gradle Wrapper is from Gradle 9.6.0 (Apache-2.0). Android SDK, complete JDK, Gradle caches and distributions are build-environment dependencies and are not included in project recovery archives.
+
+This is not a release-compliance or store-approval statement. The final Release package and in-app notice display require separate verification before public distribution.

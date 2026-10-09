@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.commons.maintenance.ProviderPackageTest" tests="23" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:32:16.910Z" hostname="05582a867b99" time="1.677">
+  <properties/>
+  <testcase name="upperBound4096BitRsaIsAcceptedWithoutPermittingLargerSignatures" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.874"/>
+  <testcase name="lengthPrefixesAreBoundedBeforeAnyAllocationOrDecode" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.014"/>
+  <testcase name="unknownMagicFormatSchemaAndTargetFailClosed" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.02"/>
+  <testcase name="inputAndExportsAreDefensivelyCopiedEvenAcrossCancellationCallbacks" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.002"/>
+  <testcase name="negativeAndOverflowingTimeRangesAreRejectedBeforeClockComparisons" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.011"/>
+  <testcase name="everySingleByteMutationAndEveryTruncationFailsClosed" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.019"/>
+  <testcase name="booleansHaveExactlyTwoCanonicalRepresentations" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.288"/>
+  <testcase name="totalEnvelopeAndPayloadBoundsCannotBeBypassedWithPadding" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.003"/>
+  <testcase name="trustRequiresRsaAndBoundedModulusAndValidPublicExponent" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.088"/>
+  <testcase name="historicalAuthenticationPreservesEvidenceWithoutAuthorizingExpiredActivation" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.007"/>
+  <testcase name="tokenLengthsAndAsciiAlphabetAreStrictAndMaxKeyIdWorks" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.018"/>
+  <testcase name="shippedTrustIsEmptyAndUnknownKeysNeverBecomeTrusted" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.004"/>
+  <testcase name="threadInterruptionIsHonoredWithoutClearingTheInterrupt" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.002"/>
+  <testcase name="everyBudgetIsNonExpandingAndLowerBoundsAreExact" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.029"/>
+  <testcase name="lifetimeAndClockSkewBoundariesAreInclusiveButExpiryIsExclusive" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.014"/>
+  <testcase name="aValidSignatureFromAnotherKeyOrAnotherAlgorithmIsRejected" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.122"/>
+  <testcase name="trustStoreAndPublicKeyParametersAreSnapshotted" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.14"/>
+  <testcase name="allEnvelopeAndPayloadTrailingBytesAreRejectedEvenWhenSigned" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.009"/>
+  <testcase name="toStringNeverPrintsKeysBytesTargetsOrSignedValues" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.002"/>
+  <testcase name="signedVersionsAreStrictlyPositiveWithoutNumericOverflow" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.006"/>
+  <testcase name="cancellationAtEveryBoundaryIsRedactedAndCannotReturnSuccess" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.002"/>
+  <testcase name="canonicalPackagePinsBuiltInTargetAndPreservesEveryDeclarativeValue" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.001"/>
+  <testcase name="malformedTrustKeyCannotLeakItsExceptionOrBecomeAKey" classname="com.easysavevideo.commons.maintenance.ProviderPackageTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

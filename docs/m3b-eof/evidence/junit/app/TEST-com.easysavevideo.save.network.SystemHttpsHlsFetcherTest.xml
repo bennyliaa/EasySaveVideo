@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" tests="42" skipped="0" failures="0" errors="0" timestamp="2026-10-06T18:44:55.122Z" hostname="723dfa57d2fa" time="0.419">
+  <properties/>
+  <testcase name="noProgressTimeoutDisconnectsBlockedReadAndRetainsSlotUntilRelease" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.108"/>
+  <testcase name="oneLifetimeBudgetCoversManifestSegmentsAndAttemptChanges" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.011"/>
+  <testcase name="bytesReturnedDuringCancellationAreStillCharged" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="shortLongAndEmptyBodiesNeverProduceTransferEvidence" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.004"/>
+  <testcase name="failedOutputCloseFencesAndRemovesExceptionDetails" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="coordinatorMayWrapTokenButCannotReviveCancelledOriginalSession" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.002"/>
+  <testcase name="knownOversizeRejectsBeforeInputOrStagingOpen" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="cancelledDeadlineExpiredAndDurableSourcesNeverOpen" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="knownAndDynamicFreeSpaceFailuresCloseButDoNotPretendCompletion" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.002"/>
+  <testcase name="originalCredentialsOnlyApplyToExactOriginalFirstHop" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.006"/>
+  <testcase name="absoluteDeadlineDisconnectsBlockedReadWithoutARefreshedPerSegmentClock" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.052"/>
+  <testcase name="hangingDisconnectKeepsSingleLaneOccupiedUntilActualRelease" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.103"/>
+  <testcase name="manifestRemainsMemoryOnlyAndDoesNotEmitCheckpointOrRestart" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.002"/>
+  <testcase name="failedReadDoesNotRestoreLifetimeAllowance" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="cookieHandlerInstalledDuringOpenStillBlocksBeforeResponse" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="observedWrappedTokenCancellationCannotBeResetByAnotherWrapper" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="noCallMayRenewDeadlineSourceOperationOrBudget" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="redirectDowngradeLoopPrivatePeerAndEmptyAuthorityAreRejected" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.004"/>
+  <testcase name="deadlineDuringFinalDisconnectRejectsLateSuccessAfterActualRelease" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="cancellationDisconnectsBlockedReadAndDoesNotRetry" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.051"/>
+  <testcase name="storageFailuresAreSanitizedAndNetworkCloses" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.003"/>
+  <testcase name="failedInputCloseFencesThisInstance" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="progressFailureDoesNotEraseConsumedBytesOrLeakRawException" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.003"/>
+  <testcase name="cancellationDuringFinalDisconnectRejectsLateSuccessAndLatchesCancellation" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="originalDeadlineIsNotRenewedAcrossSegments" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.0"/>
+  <testcase name="inputOpenFailureStillClosesOwnedOutputAndSanitizesTls" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.0"/>
+  <testcase name="generatedLargeSegmentUsesAtMost64KiBBufferEvenWithLargerPreference" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.021"/>
+  <testcase name="framingAndIdentityEncodingAreStrict" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.007"/>
+  <testcase name="maxArtifactAndContextLimitsAlsoApply" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.002"/>
+  <testcase name="playlistMimeTypesAreExplicitAndRequireExtM3uLineGate" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.005"/>
+  <testcase name="processGlobalCookieHandlerBlocksBeforeRequestAndIsNotChanged" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.0"/>
+  <testcase name="manifestCapIsConfigurableDownwardAndHardBoundedToTwoMiB" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="redirectLimitIsBoundedWithNoAutomaticRetry" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="sameOriginRedirectAlsoStripsAllSourceHeaders" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="unsafeInitialTargetsAreRejectedBeforeFactoryOpen" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="failedDisconnectFencesAndPreventsAReplacementCall" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.0"/>
+  <testcase name="completeSegmentReturnsOnlyBytesAndHashAndClosesAllResources" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.0"/>
+  <testcase name="onlyStatus200MayProduceBodyOrOpenStaging" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.004"/>
+  <testcase name="segmentNeverReceivesSourceCredentialsEvenIfUrlIsExactlyTheSource" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="playlistAndSegmentMimePoliciesNeverRelaxDirectMp4" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.003"/>
+  <testcase name="chunkedAndUnknownLengthStayBoundedAndRequireNonemptyEof" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <testcase name="finalRedirectBaseAndSignedRawComponentsArePreserved" classname="com.easysavevideo.save.network.SystemHttpsHlsFetcherTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

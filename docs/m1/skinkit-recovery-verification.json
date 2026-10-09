@@ -1,0 +1,106 @@
+{
+  "library_file_id": "libfile_629d12adab5c8191b1c383cf78ed1e64",
+  "file_id": "file_00000000de9081f79259ed6fc0e88934",
+  "release_zip": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/library-originals/SkinKit-Contract-Default-0.0.1.zip",
+  "release_zip_size": 4086831,
+  "release_zip_sha256": "fcc3db7eadbfa6e4473e06b6b1ffd4580d5a724d5bd4f3cbdc7b78da3fc8eef1",
+  "comparisons": [
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/dist/skinkit-0.0.1/maven/dev/skinkit/skinkit-contract/0.0.1/skinkit-contract-0.0.1-sources.jar",
+      "release_sha256": "ef8b33eb5fb7e8a6114471d50e26ff52761e373d8490f375cb0856c6d2cd43fc",
+      "local_sha256": "ef8b33eb5fb7e8a6114471d50e26ff52761e373d8490f375cb0856c6d2cd43fc",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/build/offline-maven/dev/skinkit/skinkit-contract/0.0.1/skinkit-contract-0.0.1-sources.jar",
+      "release_sha256": "ef8b33eb5fb7e8a6114471d50e26ff52761e373d8490f375cb0856c6d2cd43fc",
+      "local_sha256": "ef8b33eb5fb7e8a6114471d50e26ff52761e373d8490f375cb0856c6d2cd43fc",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/dist/skinkit-0.0.1/maven/dev/skinkit/skinkit-contract/0.0.1/skinkit-contract-0.0.1.jar",
+      "release_sha256": "4bbb7cf74f53e64f4adc7bd42d10b423f38dc961ba6a0dad145c16327007a083",
+      "local_sha256": "4bbb7cf74f53e64f4adc7bd42d10b423f38dc961ba6a0dad145c16327007a083",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/build/offline-maven/dev/skinkit/skinkit-contract/0.0.1/skinkit-contract-0.0.1.jar",
+      "release_sha256": "4bbb7cf74f53e64f4adc7bd42d10b423f38dc961ba6a0dad145c16327007a083",
+      "local_sha256": "4bbb7cf74f53e64f4adc7bd42d10b423f38dc961ba6a0dad145c16327007a083",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/dist/skinkit-0.0.1/maven/dev/skinkit/skinkit-contract/0.0.1/skinkit-contract-0.0.1.module",
+      "release_sha256": "9f4f854f772e57a1817ad4171512e03dc9824ac41f990c4936b2445dfd2e8eba",
+      "local_sha256": "9f4f854f772e57a1817ad4171512e03dc9824ac41f990c4936b2445dfd2e8eba",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/build/offline-maven/dev/skinkit/skinkit-contract/0.0.1/skinkit-contract-0.0.1.module",
+      "release_sha256": "9f4f854f772e57a1817ad4171512e03dc9824ac41f990c4936b2445dfd2e8eba",
+      "local_sha256": "9f4f854f772e57a1817ad4171512e03dc9824ac41f990c4936b2445dfd2e8eba",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/dist/skinkit-0.0.1/maven/dev/skinkit/skinkit-contract/0.0.1/skinkit-contract-0.0.1.pom",
+      "release_sha256": "f08e7294d2cb68f820f97a288ed09c85d74aef8edb0ae15629100c9e93a59efa",
+      "local_sha256": "f08e7294d2cb68f820f97a288ed09c85d74aef8edb0ae15629100c9e93a59efa",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/build/offline-maven/dev/skinkit/skinkit-contract/0.0.1/skinkit-contract-0.0.1.pom",
+      "release_sha256": "f08e7294d2cb68f820f97a288ed09c85d74aef8edb0ae15629100c9e93a59efa",
+      "local_sha256": "f08e7294d2cb68f820f97a288ed09c85d74aef8edb0ae15629100c9e93a59efa",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/dist/skinkit-0.0.1/maven/dev/skinkit/skinkit-default/0.0.1/skinkit-default-0.0.1-sources.jar",
+      "release_sha256": "b385aa3c9881fca866a82e59c011083ae9f7c4d66a2c7f028bf30570d149b640",
+      "local_sha256": "b385aa3c9881fca866a82e59c011083ae9f7c4d66a2c7f028bf30570d149b640",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/build/offline-maven/dev/skinkit/skinkit-default/0.0.1/skinkit-default-0.0.1-sources.jar",
+      "release_sha256": "b385aa3c9881fca866a82e59c011083ae9f7c4d66a2c7f028bf30570d149b640",
+      "local_sha256": "b385aa3c9881fca866a82e59c011083ae9f7c4d66a2c7f028bf30570d149b640",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/dist/skinkit-0.0.1/maven/dev/skinkit/skinkit-default/0.0.1/skinkit-default-0.0.1.jar",
+      "release_sha256": "b0f7b327ec9c9228de6fed2409b883b5f55973d1f65c3d69a96c45a8f2ee15df",
+      "local_sha256": "b0f7b327ec9c9228de6fed2409b883b5f55973d1f65c3d69a96c45a8f2ee15df",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/build/offline-maven/dev/skinkit/skinkit-default/0.0.1/skinkit-default-0.0.1.jar",
+      "release_sha256": "b0f7b327ec9c9228de6fed2409b883b5f55973d1f65c3d69a96c45a8f2ee15df",
+      "local_sha256": "b0f7b327ec9c9228de6fed2409b883b5f55973d1f65c3d69a96c45a8f2ee15df",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/dist/skinkit-0.0.1/maven/dev/skinkit/skinkit-default/0.0.1/skinkit-default-0.0.1.module",
+      "release_sha256": "b8ee3637db78a157563a807090cd09eac0fe4293dca94f5abb6f71487adaffcc",
+      "local_sha256": "b8ee3637db78a157563a807090cd09eac0fe4293dca94f5abb6f71487adaffcc",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/build/offline-maven/dev/skinkit/skinkit-default/0.0.1/skinkit-default-0.0.1.module",
+      "release_sha256": "b8ee3637db78a157563a807090cd09eac0fe4293dca94f5abb6f71487adaffcc",
+      "local_sha256": "b8ee3637db78a157563a807090cd09eac0fe4293dca94f5abb6f71487adaffcc",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/dist/skinkit-0.0.1/maven/dev/skinkit/skinkit-default/0.0.1/skinkit-default-0.0.1.pom",
+      "release_sha256": "00cfd40c8764d7de4c65c88eaebc7290b846ec3cbe1914530ab6c0986ac67529",
+      "local_sha256": "00cfd40c8764d7de4c65c88eaebc7290b846ec3cbe1914530ab6c0986ac67529",
+      "match": true
+    },
+    {
+      "path": "/workspace/scratch/df6c1284d5ab/skinkit-0.0.1/build/offline-maven/dev/skinkit/skinkit-default/0.0.1/skinkit-default-0.0.1.pom",
+      "release_sha256": "00cfd40c8764d7de4c65c88eaebc7290b846ec3cbe1914530ab6c0986ac67529",
+      "local_sha256": "00cfd40c8764d7de4c65c88eaebc7290b846ec3cbe1914530ab6c0986ac67529",
+      "match": true
+    }
+  ],
+  "all_matched": true
+}

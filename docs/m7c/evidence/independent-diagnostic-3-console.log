@@ -1,0 +1,8 @@
+docs/m7c/evidence/IndependentProviderManagementTest.kt:21:13: error: class 'IndependentProviderManagementTest.Backend' is not abstract and does not implement abstract member:
+fun rollback(expectedGeneration: Long, checkCancelled: () -> Unit): ProviderRepositoryResult
+    private class Backend(var value: ProviderRepositorySnapshot) : ProviderManagementBackend {
+            ^^^^^^^^^^^^^
+docs/m7c/evidence/IndependentProviderManagementTest.kt:30:9: error: 'rollback' overrides nothing. Potential signatures for overriding:
+fun rollback(expectedGeneration: Long, checkCancelled: () -> Unit): ProviderRepositoryResult
+        override fun rollback(checkCancelled: () -> Unit): ProviderRepositoryResult {
+        ^^^^^^^^

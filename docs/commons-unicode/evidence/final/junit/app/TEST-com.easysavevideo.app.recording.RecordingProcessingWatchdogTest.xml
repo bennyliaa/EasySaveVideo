@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.recording.RecordingProcessingWatchdogTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:33:00.757Z" hostname="05582a867b99" time="0.002">
+  <properties/>
+  <testcase name="earlierExplicitCancelNoticeSurvivesOriginalLongProcessingDeadline" classname="com.easysavevideo.app.recording.RecordingProcessingWatchdogTest" time="0.001"/>
+  <testcase name="queuedCancellationAndActualCompletionFenceAllLateTimers" classname="com.easysavevideo.app.recording.RecordingProcessingWatchdogTest" time="0.0"/>
+  <testcase name="laterOverallDeadlineNeverDowngradesAlreadyVisibleCleanupRecovery" classname="com.easysavevideo.app.recording.RecordingProcessingWatchdogTest" time="0.0"/>
+  <testcase name="waitingNoticeCannotAllowReplacementUntilActualOwnerCompletes" classname="com.easysavevideo.app.recording.RecordingProcessingWatchdogTest" time="0.001"/>
+  <testcase name="blockedRawVerificationHasDeadlineThenBoundedWaitingNoticeWithoutRelease" classname="com.easysavevideo.app.recording.RecordingProcessingWatchdogTest" time="0.0"/>
+  <testcase name="retainedCleanupGetsTimerEvenWithoutCaptureOrProcessing" classname="com.easysavevideo.app.recording.RecordingProcessingWatchdogTest" time="0.0"/>
+  <testcase name="explicitPostCaptureCancelDoesNotWaitWholeProcessingBudget" classname="com.easysavevideo.app.recording.RecordingProcessingWatchdogTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

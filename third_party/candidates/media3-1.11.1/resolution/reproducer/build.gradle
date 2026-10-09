@@ -1,0 +1,58 @@
+import groovy.json.JsonOutput
+import org.gradle.api.attributes.*
+buildscript { dependencies { classpath files('../../android-build-home/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-api/2.2.10/8b990c8b8a53b5179f6a7a43718079cabac9d4c9/kotlin-gradle-plugin-api-2.2.10.jar') } }
+plugins { id 'java-base' }
+def kotlinPlatformCompanion = org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.class.getField('Companion').get(null)
+kotlinPlatformCompanion.setupAttributesMatchingStrategy(dependencies.attributesSchema)
+repositories { maven { url = uri('../official-maven') } }
+def names = ['candidateOnly', 'combined', 'baselineOnly']
+names.each { n ->
+    configurations.create(n) {
+        canBeConsumed = false
+        canBeResolved = true
+        attributes {
+            attribute(kotlinPlatformCompanion.getAttribute(), org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.androidJvm)
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, 'java-runtime'))
+            attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, 'library'))
+            attribute(org.gradle.api.attributes.java.TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(org.gradle.api.attributes.java.TargetJvmEnvironment, 'android'))
+        }
+    }
+    if (n != 'baselineOnly') {
+        dependencies.add(n, 'androidx.media3:media3-transformer:1.11.1')
+        dependencies.add(n, 'androidx.media3:media3-exoplayer-hls:1.11.1')
+    }
+}
+file('../baseline/admitted-runtime.tsv').readLines().findAll { !it.startsWith('#') && it.trim() }.each { line -> ['combined', 'baselineOnly'].each { dependencies.add(it, line.split('\t')[0]) } }
+tasks.register('auditResolve') {
+    doLast {
+        names.each { n ->
+            def c=configurations.getByName(n)
+            def artifacts=c.resolvedConfiguration.resolvedArtifacts.collect { a -> [coordinate:a.moduleVersion.id.toString(),file:a.file.absolutePath,filename:a.file.name,type:a.type] }.sort { it.coordinate }
+            def components=c.incoming.resolutionResult.allComponents.collect { x -> [id:x.id.displayName,selectionReasons:x.selectionReason.descriptions.collect { it.description },variants:x.variants.collect { [name:it.displayName,attributes:it.attributes.keySet().collectEntries { a -> [a.name,it.attributes.getAttribute(a).toString()] }] }] }
+            def edges=c.incoming.resolutionResult.allDependencies.collect { d -> [from:d.from.id.displayName,requested:d.requested.displayName,selected:d.hasProperty('selected')?d.selected.id.displayName:null,failure:d.hasProperty('failure')?d.failure.message:null] }
+            file("../${n}-resolution.json").text=JsonOutput.prettyPrint(JsonOutput.toJson([configuration:n,artifacts:artifacts,components:components,edges:edges]))+'\n'
+            println("AUDIT ${n}: ${artifacts.size()} artifacts, ${components.size()} components")
+        }
+    }
+}
+// Reproduce the existing exact version lock as strict consumer constraints, never force downgrades.
+configurations.create('baselineLockedWithCandidate') {
+    canBeConsumed = false
+    canBeResolved = true
+    extendsFrom(configurations.combined)
+    configurations.combined.attributes.keySet().each { a -> attributes.attribute(a, configurations.combined.attributes.getAttribute(a)) }
+}
+file('../baseline/admitted-runtime.tsv').readLines().findAll { !it.startsWith('#') && it.trim() }.each { line ->
+    def gav=line.split('\t')[0]
+    dependencies.constraints.add('baselineLockedWithCandidate', gav) { version { strictly(gav.split(':')[2]) } }
+}
+tasks.register('auditLockedBaseline') {
+    doLast {
+        def c=configurations.baselineLockedWithCandidate
+        def failures=c.incoming.resolutionResult.allDependencies.findAll { it instanceof org.gradle.api.artifacts.result.UnresolvedDependencyResult }.collect { [from:it.from.id.displayName,requested:it.requested.displayName,failure:it.failure.message] }
+        def edges=c.incoming.resolutionResult.allDependencies.collect { d -> [from:d.from.id.displayName,requested:d.requested.displayName,selected:d.hasProperty('selected')?d.selected.id.displayName:null] }
+        def artifacts=c.resolvedConfiguration.resolvedArtifacts.collect { a -> [coordinate:a.moduleVersion.id.toString(),file:a.file.absolutePath] }
+        file('../baseline-strict-constraint-experiment.json').text=JsonOutput.prettyPrint(JsonOutput.toJson([purpose:'Diagnostic only. Strict baseline constraints are not the recommended candidate graph. Gradle permits strict downgrades; this is not compatibility validation.',unresolved:failures,artifacts:artifacts,edges:edges]))+'\n'
+        println("STRICT BASELINE EXPERIMENT: ${failures.size()} unresolved edges; selected versions separately inspected for downgrades")
+    }
+}

@@ -1,0 +1,3952 @@
+[
+  {
+    "source": "com/google/crypto/tink/InsecureSecretKeyAccess.java",
+    "sha256": "c88c34298262528bd3ee92f6e98dbc44a849dc58d2453cbf6e9c189d27cf0f91",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeyGenConfiguration.java",
+    "sha256": "093d93ea62f496247c572ba66ed09039be33ef7a036943cfc181e527ababaaa1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/ConfigurationFips140v2.java",
+    "sha256": "4a765730bad1b66a76e6689a76ac0bfae0484a251d78afa5a27f32cb6be104b5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/NoSecretKeysetHandle.java",
+    "sha256": "ac87a0e0d7b61b023e28bc0771a8a361bb1641d99fc9938bdd9eb17d2fd34974",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/CryptoFormat.java",
+    "sha256": "ca7d438de68c78cb61cb4b3de050380c10bf7ca5f34be34e6227bc90263f9262",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Configuration.java",
+    "sha256": "c23544276d7794de2ec5b0d705bccc5115437a9ae8019ea99779f36c714341be",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/CleartextKeysetHandle.java",
+    "sha256": "519de2a6f57480f5c705e2bbd9c8a7a29bdd7d2c4118b166d8fdacbc89ebc709",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Catalogue.java",
+    "sha256": "82d4924bbce04e97a23f7f7deec3a210030a2427b77699706b4f813aa8ddaecf",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Util.java",
+    "sha256": "dc8f13c6319dc71f18f70a8d7dfdec0726bd5af97c1c39e244d8518f3e8f61c9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/HybridEncrypt.java",
+    "sha256": "2183fe7bfc368582da26780cbe40b6044bf31972f77523c6aedd269c0a35d4c0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Annotations.java",
+    "sha256": "fc987dd2587fe6acacc8b86550cc53753ecde4f4b6602e2da1e669c63653ab99",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeyTemplate.java",
+    "sha256": "02b6e113f98f8964355d5ff62aebb14fcff705fd5f13983a4b646fdb7d40c3c1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/RegistryConfiguration.java",
+    "sha256": "2e846f6e572be492eb38e7409f480b5b2d9d53bd8494d11d3547d329178d4384",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/BinaryKeysetWriter.java",
+    "sha256": "380b50dbc1ead6b123d1a22481c302cd2687b7fbe56ae5d07b25560e5cb9cdcf",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/TinkProtoKeysetFormat.java",
+    "sha256": "09365acd4b041992ba19ceb6b33d0cc6f6e09fd5e22d130c435c28ce0f915e87",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeyManager.java",
+    "sha256": "9341638c658b31054a2e54344043dafe9f72b82a18d6571f3384e11734d1f831",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KmsClients.java",
+    "sha256": "8cc4aaeb4837dbbd105329121b8d2293ff3aa2b650905fa4e34b52ef4811ad9e",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/LowLevelCryptoCaller.java",
+    "sha256": "0569fc43fa22db2aa47fc2c827957642a6fb99f17e06362a43aed85ea8403417",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/AccessesPartialKey.java",
+    "sha256": "465280c2f0bcce83b90ebf7c5b99dc22754e7a9f08db941e9028f8121aebb8e6",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeysetWriter.java",
+    "sha256": "c8a5cee67b7a05664f2e2a9ca6cf31fd2110995a1a7832aad7bfa59cfde091cd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/TinkJsonProtoKeysetFormat.java",
+    "sha256": "7661a1a8816078b024834416c2a964648b47609cdb417621ea422418b11f784a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/BinaryKeysetReader.java",
+    "sha256": "ed179ffc4e0a374332f86afb5fd6da5ec7bd3ecac6cf24a484d50c54426e5eb1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Config.java",
+    "sha256": "ca8e317211d6820b4717283b34fe4fcf7968b23e471bb206060e54959407eef2",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Version.java",
+    "sha256": "6975b96fef98f62019e6b336703917a0bb633ef9394b39e66294c449c004bf6c",
+    "tag_comparison": "generated-from-Version.java.templ-with-tink_version.bzl-1.23.0"
+  },
+  {
+    "source": "com/google/crypto/tink/PublicKeySign.java",
+    "sha256": "b78ee211beaf13dacd33adc9c09733e7ad87b4130b1824c540830efdb8a3ae69",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeyTemplates.java",
+    "sha256": "8ec026eec719b1a7c0a9d9bf75a3ee79feb86441667eb836de1e02965402d43a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeysetReader.java",
+    "sha256": "2bf8f2bbf8767db6ab52f9938b15cce74183d5a0c1f52e45f5a5f9ba396f3fcc",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/PublicKeyVerify.java",
+    "sha256": "f0abcca46968379aefc33ff17d04daabe35011081b49f4caef7b93e61bc72e40",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeysetHandleInterface.java",
+    "sha256": "6425709057cd9d7fbc8848ce9dc71b246d957420f200d6710e38e47e437b7293",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeyStatus.java",
+    "sha256": "82b6dcc886a2e039bdd008df5a830bc4aa3fdd0650de236556cc71a37d3a988f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/ProtoKeySerializer.java",
+    "sha256": "feae650103e27b3856d549b3e5cb4cc688a0b27408c36b06f0c133e8b828a291",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeysetManager.java",
+    "sha256": "233c5e6af94c91845968b3a81076dbf946e12faf9f7bb28d9ed35439e379c1d3",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Parameters.java",
+    "sha256": "ec8b3f538c4a23b49b4addbcc869712c632d73a143465d6b6cc9ae7a4e258422",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/SecretKeyAccess.java",
+    "sha256": "d59348e24f34f8f68d8b636db6d6f42b699a7d1aa606c9f9f62e87a0aefae5d8",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeyWrap.java",
+    "sha256": "5d217da71bb23fe52e3f432d12d03d1a6533d7a11051e7aea8deba4913bdd76d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/TinkProtoParametersFormat.java",
+    "sha256": "081a4f9f93608f53e1f59ab37e5815bf4aec63fcef450ffe7f937fb81df6cfb1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/JsonKeysetReader.java",
+    "sha256": "bff5e19195461ba9003bb4d76a22199010a3195a3632f8e51fdd4c70ccdaecea",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Mac.java",
+    "sha256": "3977db9aef078daa341ddcbbe2cec8972d1ca668a642b556b86d447f39cc86ba",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/PemKeyType.java",
+    "sha256": "69d52565f80ccaef400987dd58c763bb2ccc75a70a6b83d52203ccc7aee7eb93",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/ProtoParametersSerialization.java",
+    "sha256": "ead2da0c5b8045088206c975ea9ec6580be1c1622e873ca05d1de21c7f604a2a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/LegacyKeysetSerialization.java",
+    "sha256": "2b70ca15f240b1b7447d954e038351b024a885e6ea8f77b6f763b986c9eeb771",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Registry.java",
+    "sha256": "efc8d002a65a8a471a0d9e058f695460fad22a9f212973b82eb7ae5c78105421",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/ConfigurationV0.java",
+    "sha256": "46a78d5265e3c0818bd03a706321edd7ce829793adb84d60ef0062748f6989a9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/PrivateKeyManager.java",
+    "sha256": "eb447c449a3a4fd058f6494bf6d3725fe52988252fd493fc1e0e25cca11cb8ea",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/StreamingAead.java",
+    "sha256": "e2e8e33fdfe7083b509de6f78f527ecf9137b3dd1ef3738e92f69dc1602ca864",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KeysetHandle.java",
+    "sha256": "aae8e99fd52b954e603bfb678f395aa499e04ded3bce88a7f13f310ceb564047",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/DeterministicAead.java",
+    "sha256": "9d06a2181a0672363eb51940c9159f770ba93c3c49b634806af556bdce189b79",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/HybridDecrypt.java",
+    "sha256": "03a68c09fe1cddb704638131226899f9a3bfdc83ec4eaad8c35cfdc8ad9db8ab",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Aead.java",
+    "sha256": "db8cc5ddbb8cddc20cd356e2312b28cac586b70c15b751ecb4f3a90fa65d60bb",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/JsonKeysetWriter.java",
+    "sha256": "81f64b2416932653f3506ea4dfa43d2f5d616308c9df863a86756c7e55f443fe",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/ProtoKeySerialization.java",
+    "sha256": "e4f8ca92ad844c71c72ce81a9f31a2fda90119f1b0615383951900931cca603b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/PrivateKey.java",
+    "sha256": "53abce6b64d552a87138d16c1ca34d954045a814f07b9438997582a070733afc",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/Key.java",
+    "sha256": "71c0faf72ddf837453fc8e050c51919033aaab797ce94efc57e2cd68dc03b70d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/KmsClient.java",
+    "sha256": "157eac354f9cdc9c8f3cb57d1881941abcf2472803a8db864f3407e5b9b3407c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/PrfKey.java",
+    "sha256": "9eda7492442c9f6e492e41fdd194324967db3b19b4bb99473b53084773d0710e",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/Prf.java",
+    "sha256": "c97a97d43e62681e964a51c20182c4ebc4afc10d51bdfe14319515f343f71657",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/HkdfPrfParameters.java",
+    "sha256": "f0cc37de986368bf391c1d93d6dd4243e4875adc83d4d610a86cf0af1cf57ab7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/PrfKeyTemplates.java",
+    "sha256": "d3a69b01498244b5e5255f28c5ce732d137549cf660e0663eb3da3700e6e9c39",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/HmacPrfKeyManager.java",
+    "sha256": "c058ba9851fd6b49497534717bdec720e9b6c3d0d53aed98681c929530608966",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/PrfSetWrapper.java",
+    "sha256": "e0411cce046187e3b354ca5c770b57c53a807c8b837a08183368ef8839c96ced",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/PrfParameters.java",
+    "sha256": "e165afce14e94cd886fa54d697ac4688957358ce1ff8505eefa2ac6f012db6e0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/PrfConfigurationV1.java",
+    "sha256": "8aca6effb4b1e993433d3baf5a1af3265f25a47ce867ddf43b1739e5bfc2e987",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/AesCmacPrfKey.java",
+    "sha256": "e05ecec8fcb9a06d7291c5f5d42d331c382c802f9f3390b29e7674a7a3e016b1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/AesCmacPrfKeyManager.java",
+    "sha256": "ecf0947b058c01038d0edccb9c46320943e391e0f77ffc3fd714c2a1553b0ac0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/PredefinedPrfParameters.java",
+    "sha256": "64e7ffcf5fb4ea73122b6ca91c843fac07528e59deeb438dbc35604b7af98e1f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/HkdfPrfKeyManager.java",
+    "sha256": "d97e3f128f33d273c4b5a17c654c33ff05aba46839cc0c85e84baa5c44e49275",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/PrfSet.java",
+    "sha256": "5118d2f4c15aa6891d08d17b50820857147f56e4e6716896144fc1b981a47a21",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/PrfConfig.java",
+    "sha256": "3227a16296f84797b09374425613db8223f83d2f094c63edd2d327402b679233",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/HmacPrfParameters.java",
+    "sha256": "e37d2697efd34734ceb97fc2a8dec674e8d2ebed6d912cc1905352de46f027cf",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/PrfConfig2026.java",
+    "sha256": "efb663a9b55af17118fe98c580724d9aa0febe580af8289faaaf9bc078c48b8c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/PrfConfigurationV0.java",
+    "sha256": "db6d12b43381fc67e2185b9b259e3f166913c0d541ace114891b99db0a42a27f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/HmacPrfKey.java",
+    "sha256": "bbbaecb1283145c2f06eae380d25e12281cbb1e5f997bc7bede71162a5272d08",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/HkdfPrfKey.java",
+    "sha256": "29ec65968090cd11522460cca9a42c157de313e1783f5dfa469af00707d97bfb",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/AesCmacPrfParameters.java",
+    "sha256": "328e1d7b4b5710f99bb6dcf3f4670e17ddb7f1316347963dc05aff82dafc2f77",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AeadKey.java",
+    "sha256": "91dc91864699023876c74b510f54862b16bba7798229aa4170aa26fe96233d8a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/ChaCha20Poly1305KeyManager.java",
+    "sha256": "8b3ce464b9a104cb2525692e88cdf5ae3b44f997631631ace0992a3a5dbfcf1d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/XChaCha20Poly1305KeyManager.java",
+    "sha256": "1ba3a042a33bd09296474755839401d2337beb928dcf258b0301ad44479ee3f5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AeadWrapper.java",
+    "sha256": "468a7f7747f011bc4e8789edde7df1390d2b2db18ddf996e53d99ca701a0399d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/XAesGcmKeyManager.java",
+    "sha256": "fdbcf0ab79e83c983f0ce4d8981b5780936ac23fda81727285840e7e9979d8db",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/XChaCha20Poly1305Key.java",
+    "sha256": "59ced81851e56d51cd48bc83823015a8835a9ec781088fc9c4c99900a215e5f3",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesGcmKeyManager.java",
+    "sha256": "8a322cf6a1b43cceb92d473f34ab2c1d5ff3e4b184868ba5eb849f4b0985ecc3",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesEaxKey.java",
+    "sha256": "433404d12ee1642668ea0b96c16972eac79ad8b6d7546190862eccd040895703",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesEaxParameters.java",
+    "sha256": "0158b639f89f7ad00062196e9f0faf31a8f1c97e103d215caff03f0b5d9277f7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AeadParameters.java",
+    "sha256": "fd18098cf0c058bf1844a52b71b0a52697bfa186906ef88a3644cdb95e4406a7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/XChaCha20Poly1305Parameters.java",
+    "sha256": "6b5f9a4f1168ba3a7098e710c437143203577a9d3b35da93e075272401ff1b4b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AeadKeyTemplates.java",
+    "sha256": "9ca71ea639f67755d1d67f56b34d4c539b0f0ae6d43614e43662e699f93231dd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/KmsEnvelopeAead.java",
+    "sha256": "938f1ded7a21ad68bf618f246341f2d43b6d13cb10211c058d980913e4132d77",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/KmsAeadKeyManager.java",
+    "sha256": "dd06cc8096288905adde51a56075fc73462a2be3aac309f67a4651a7000e5558",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/ChaCha20Poly1305Parameters.java",
+    "sha256": "9ba829b1711839154cdaf2ed6f976087c2ee83767eddc7226a24777f0a64a14f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesGcmSivKeyManager.java",
+    "sha256": "ad03b650280bfdbc5c71ec303c5064670f5b41267a04ba5c21bad2f44363ce32",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesCtrHmacAeadKey.java",
+    "sha256": "92f06de7b93948320f9c83fa4b948eee39137fea216b84faa96bf255cf9a150f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesEaxKeyManager.java",
+    "sha256": "1b5145bda3bf652d7721d81888c259098d14882c5d5a6fc1fdce598d498f4ca9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AeadFactory.java",
+    "sha256": "fdd4b59033c9bd3b899a1445cc235dd6dcffb824662150a151e21701adef0e83",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesGcmSivKey.java",
+    "sha256": "e267dabe8160549169d9659f18fa889b5eca143ab48362e2dfeba62bc3829950",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesGcmKey.java",
+    "sha256": "e39dbab4d462543642878053e7aced234845958fba34ef98050c367f73d7ccf8",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AeadConfig.java",
+    "sha256": "16472065d426bb90f723d9da69f544f01eaf1729a40b06af3f902e1490d30138",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/LegacyKmsAeadKey.java",
+    "sha256": "1c0ddfd32625210c130b08569be5fcf409496dc49f70be8f18d72030d4e43807",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AeadConfigurationV1.java",
+    "sha256": "7b16df48cfb7223918e69db3b2e90bf47f239fbdade34657e343f726ef16cde7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/KmsEnvelopeAeadKeyManager.java",
+    "sha256": "70c8af419d997959a11b793171f21e066d79e15ebd04b8ffea58f44eae41b357",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesGcmSivParameters.java",
+    "sha256": "39429734038cadc4446f964cdb42b16d24b08a72ba86e603f9a6c9144407c8a3",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/LegacyKmsAeadProtoSerialization.java",
+    "sha256": "a4f4e3aebaa96e2907982020bae9e80430be52a1ed5c114005c75c83722d6393",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AeadConfigurationV0.java",
+    "sha256": "ac907bdd34448aad13e619e9eaaa5bfbf140459ce9e2b18c9ee7d88bf3768da4",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/LegacyKmsAeadParameters.java",
+    "sha256": "23fa9fb877578e58484f99e9aa010c0feee361f227889a1def5433d725964235",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/ChaCha20Poly1305Key.java",
+    "sha256": "349b354ec24664bd0620f40bb14834c63fde24ba571061ae953aecd0b496a982",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/XAesGcmParameters.java",
+    "sha256": "fd71e8beba17021729cd23dda01e1e32c107889565813ae353f89abce86da6ba",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesCtrHmacAeadParameters.java",
+    "sha256": "8486a253e1aa2416eabc7ba723c87df19ef239c6c837d872a823c1fb331f5f78",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/LegacyKmsEnvelopeAeadProtoSerialization.java",
+    "sha256": "070cef295433a406c41a1d342a5fa9001de0cb0eac297dbc6f48b1d67577af78",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesGcmParameters.java",
+    "sha256": "c5de439a2b23e6f53266d4121890af772493be74e1e9fa3226a505c661722d61",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/XAesGcmKey.java",
+    "sha256": "03856f01f5528bc81dd0981019e05fd06ecbd8f42f40dfd94ff27274bdbb9977",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/LegacyKmsEnvelopeAeadKey.java",
+    "sha256": "783881d51f6049b40a0f54b3596a5cebcaa11c0fafb9d87f1af7f9829c95d9b7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/LegacyKmsEnvelopeAeadParameters.java",
+    "sha256": "f0579c1885264f7682a927d97cf68a946d315576d979ec647972f33c84589374",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/AesCtrHmacAeadKeyManager.java",
+    "sha256": "a19d2eabee38c6dc0b66dd46c31d456981d728c97a51e91681164c341525a67a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/PredefinedAeadParameters.java",
+    "sha256": "1db9fae3ca3bd972e50a1b2f3e7084adbd42be0f5d179b9572af88c2e60039d1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtEcdsaSignKeyManager.java",
+    "sha256": "826372f468f34ff8cdf5c01c60fc65ff4b1d2dbe189c7b958e56bb310845a69a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtEcdsaParameters.java",
+    "sha256": "0731824aab21fc9ed294da7e753f9fa8c69182e2f5f020aef8f08196c896a26c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtRsaSsaPssPublicKey.java",
+    "sha256": "fe67126a468644e4f5a7766fcb90ab33ab135ac151d01b517c87b2a116a5aa3a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtSignatureConfig.java",
+    "sha256": "c19dcd6c5cd79b59a13861efd1a9b98e5f5af7fc0b14b78bc2af463a9ced560b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtPublicKeySignWrapper.java",
+    "sha256": "5f2e71da58de93eb93231591cf90a5f7c3d43b544d2cf2cdc1d982f1cd3c9947",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtRsaSsaPkcs1PublicKey.java",
+    "sha256": "9bb86796aa356ec5490cc9bb6b2fc2daa05fadd87185256011dde004e729feb1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtRsaSsaPssPrivateKey.java",
+    "sha256": "e29915c8902c00b2c0520d4ef1b64886e258ea7f17d600a3cc83d20622fc8a1a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtPublicKeySignInternal.java",
+    "sha256": "aed1dd1f0d618a018d317839a195d9ccedddafcec89e383f5ecb5458546b4474",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtPublicKeyVerifyInternal.java",
+    "sha256": "18f1fca501fd25ba0893bf37cf3caf1ecf1c8dd668ff30fb3c90ce0be5cc6927",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtValidator.java",
+    "sha256": "fc74cefe4644a7ab0819f75315e2b59e80e05980e59e44163abc315fc566f89d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtRsaSsaPkcs1PrivateKey.java",
+    "sha256": "e352f1324cb5e1f0662bbffdc9999d50ac91c660b56053a98ea1497e6ce40e20",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtMacConfig.java",
+    "sha256": "e10ac6d7586e30a3dc1baf69aa1f89709a829191d411103baee9c8dfb4f81c64",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtMacWrapper.java",
+    "sha256": "5cab8d5b683a674f2154908f5935670842eae4b5b7b1a3e6b1778e196c60a285",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtRsaSsaPkcs1VerifyKeyManager.java",
+    "sha256": "d92df5e2c3b7e62454c28ec6ade31438c16de7222b5313c66d8e76e1711d36f5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtMacParameters.java",
+    "sha256": "900efea609577757188c1f27d3890d832eb4642e617f51a9639c3380be18ce37",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwkSetConverter.java",
+    "sha256": "58021fc4e95b6f41a752602d6958026de5c3bbbc7edf22b8b457f3c43d5b29a0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtRsaSsaPkcs1SignKeyManager.java",
+    "sha256": "4fc9f962143ccfe103d795217205bb646146eab2ea85accab674e1d95f0690f5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtPublicKeyVerifyWrapper.java",
+    "sha256": "1b3d6652e660807565d2bf347c6d3a1fb768c678e34c7cf99d6043c83a0cb07d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtRsaSsaPssVerifyKeyManager.java",
+    "sha256": "9a220165392430b30ec4b9553372b1da33441392146078f780ddd8b8b69d324a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtHmacKeyManager.java",
+    "sha256": "5d60d6465d139928f934c452419158e67d8827a19f4e0f248009dabf8f909512",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtRsaSsaPssParameters.java",
+    "sha256": "4a6ab6571072ae12088df2955110427f5b56d79b89835364bb5b195842faf274",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtSignatureConfigurationV0.java",
+    "sha256": "909ec425dc1905276ff2e99060578f48e52ae87a9cd5be59e7cd913b515a4fbd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/RawJwt.java",
+    "sha256": "1ca21ac368a96a17e522633b4d462ccd4fa67f84bf391a4ef66c7ecb83c30297",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtRsaSsaPssSignKeyManager.java",
+    "sha256": "aab2eae8af02b36e57fd4d1119330835905651bc6c3fb05550bd43b7f3a0fdac",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtPublicKeyVerify.java",
+    "sha256": "dd60f8ad67a209bfda4abd21c3aaaa8c584ad734ef78ce2bed19185ea3f01c31",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtInvalidException.java",
+    "sha256": "58ead31ffe71c113b2ab6a957e79dbce30eb4db22b0387f281c2652e4714c71b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtPublicKeySign.java",
+    "sha256": "ca613f45bd093a9a46c62edc38bdc1aa0222c860f78c2158201bd03b6b34642f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtHmacParameters.java",
+    "sha256": "45892dea9640fa63f57c3b2b1ae87e01d6869d929ae815572eaa215548864fe9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtSignaturePublicKey.java",
+    "sha256": "12a8ae3ee682a50473e149652ec075fb639ee7b3df3758019253d13de9892f1b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtHmacKey.java",
+    "sha256": "3bf018a08a3f985989d752a997641d8cbf55d11e1a32437aa5469d2ceea99861",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtMac.java",
+    "sha256": "401449ced4a6eae1a446f5fbb098200b658ca5664e8cd35b589447370fe56153",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtSignaturePrivateKey.java",
+    "sha256": "520027fa8e6d2d0e19b7ffaa8fa07e1274d575bc2172a80b60351befb56f80ec",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/VerifiedJwt.java",
+    "sha256": "d596593f451d196f682dd51da859206855c020f480af76bb7de2f659ecd1c26b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtEcdsaPrivateKey.java",
+    "sha256": "000ed9b330a837c527a31fd965c56224b9fe03c1260e23c72c78d3ba59532f08",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtEcdsaPublicKey.java",
+    "sha256": "a61e3f91f5ff0005e1863a3f54ae97124f15dffcd417e99e2b9ff511c446f774",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtHmacProtoSerialization.java",
+    "sha256": "cd44d1530a77efa65e3df74fdf17bf796cd7d9d9df95d09e1bc723e7897a319b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtSignatureParameters.java",
+    "sha256": "cf56dcb858003af85cfd18c499f23c3b829b73f6258a13e6fe45256cedfe1d7b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtMacKey.java",
+    "sha256": "32f52624d3d2faca153553cfb10bd4a9c0ea08b95b96473ed8e39742a68a8418",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtRsaSsaPkcs1Parameters.java",
+    "sha256": "36c72ae2f4293e0c8a3323de45fd1390800fa33b26b3f49c9057f52b88fca661",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/JwtEcdsaVerifyKeyManager.java",
+    "sha256": "46f705debd56660d051450f2939c4d7b970db2a9974f60835ce45bdc811106a5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/ChunkedMac.java",
+    "sha256": "eb5cbdc012757609ff338274a02ec8a699e2512b051ba7dadf5dfe6e7ca14b89",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/HmacParameters.java",
+    "sha256": "c32188ad9ac897a77e68e5f7f1423684e36375bc2dbc9417aa1a7187f9cb40a5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/ChunkedMacComputation.java",
+    "sha256": "fe95b165c62efbc606fb6bc01bdc7c2fb3f714ba357372efd54d627db8449944",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/AesCmacKey.java",
+    "sha256": "bf1759afda09746996e69aaabd54c202f0cfe1bad4ccdd1b495226e47a7eea57",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/ChunkedMacWrapper.java",
+    "sha256": "bc197b2faab1ec250f6f17c8e81d6bbcf930100931134b427deccfad9c997b49",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/ChunkedMacVerification.java",
+    "sha256": "5427970c09e6297a7cc776b6f34c457ee265536f77d7ba686cb9a782c07a9710",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/AesCmacParameters.java",
+    "sha256": "2197e078bacaa48d1c782430436b0fbcc6617e986d7b9e177baaeb28f13a0ded",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/MacConfig.java",
+    "sha256": "399b9516721da9e2cc245ea9ca88b57f2d285544d3fd77d84d71c861c9958494",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/MacParameters.java",
+    "sha256": "0f8cb96e7e9b888a0e46874f6770a0348ea87fc30f2b15850eb02fafc939697b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/MacFactory.java",
+    "sha256": "7da1a7bd82535bf3fed3a609c6035fcb4cf4fe1e2f3b17c8e775369c7cd3fd72",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/MacWrapper.java",
+    "sha256": "5bd6e948d1e522628a8e92faffc781c4015cf1089f9e03176145b7760a4ce9ce",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/MacConfigurationV0.java",
+    "sha256": "c2c4efe75dacff16483171518bec804e579ce4782370a214637d2cf578892bda",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/PredefinedMacParameters.java",
+    "sha256": "6ee2b5faa6a2ec0a27b64155269e152b4e8b0033767f8b7cd8c62dd1cfddbec5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/MacConfig2026.java",
+    "sha256": "711d4aa707fe41e8a2114394250787ef8641155e96c84d88ea1efd5fb96c9b3c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/HmacKeyManager.java",
+    "sha256": "6e97a1a214a4f7e2ffac236efeb8d20deff28b6aa88253a14e78d2f2df1dd421",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/HmacKey.java",
+    "sha256": "1c21fa013fffad72bf6120fc0072022418bb83b27f354d553a18514f31084337",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/MacKey.java",
+    "sha256": "65fef4bfd56d038a3246914d94e2ea141c5a9faf47bedd4db9ab954ea0e36943",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/AesCmacKeyManager.java",
+    "sha256": "abeb2cfedf7f21bdf160948cf06d1e879449573cdef76b639f157d5fd738534f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/MacKeyTemplates.java",
+    "sha256": "034dfecf808c1dfe6de216b4d9093ce4173ff0ae79418b75058f6f867527c241",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/AesGcmHkdfStreamingKey.java",
+    "sha256": "d14865d234fad55eefd3707cc7f9a0bfff49dfceacf64d2699d40ca1c639f9bf",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/AesCtrHmacStreamingParameters.java",
+    "sha256": "459557c50fbd7ecf207d8e485f950c88e2be310739a4caec1e812bd45224b5c7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/StreamingAeadKey.java",
+    "sha256": "45b8f8ab7243f38767b89ef3b20fcb1d59e4d8af86f3b9710e083271ce11b107",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/StreamingAeadConfig.java",
+    "sha256": "1285b6795c784dc3fe44769a6b0a80763894e5579f8587c0dab13ee9d07241b5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/StreamingAeadConfigurationV0.java",
+    "sha256": "f48f66dfc21bf033f8b36e51fe47233572c5de31a01b1ceaff720d7ac201b722",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/AesGcmHkdfStreamingParameters.java",
+    "sha256": "b53a0aca8c188e54b707339953349d42d6c3df025ab9fed312315cf31d6080a9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/StreamingAeadParameters.java",
+    "sha256": "17109e874e5fb0935a7357c7dc9b8c87a2bb87d6d702e59743d250903e5ff692",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/AesCtrHmacStreamingKey.java",
+    "sha256": "b37d1b9f161db064eb2b5f43fc83d78e363f0548abf7799be8e8ef80e423a2cc",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/AesCtrHmacStreamingKeyManager.java",
+    "sha256": "3b75f0e23d582f8a052b3c9a10c964bf17e689c25940ece971bf49b2c14c68c9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/StreamingAeadWrapper.java",
+    "sha256": "d8f8b48810f433394c76a5fadc8030347a066157c2ea68ccfaf2cd0b9dc903d8",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/PredefinedStreamingAeadParameters.java",
+    "sha256": "3056f0c4c85b55cf573277ceafc579f0512fc52f067b2dccfd4b40e3941d35d2",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/StreamingAeadFactory.java",
+    "sha256": "8b9c8ad3903e85ac2074d2dc9c09487e7a163bd57614590014434c04b812c405",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/AesGcmHkdfStreamingKeyManager.java",
+    "sha256": "1ad1df679f35ddf5855436a53e9697cd5b5049e2b2d425dcb247fcdd9219a8be",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/StreamingAeadConfigurationV1.java",
+    "sha256": "88bbb4cf06eae60d9f923f6db622721a351a508068c586a4c45a18a3122bc562",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/StreamingAeadKeyTemplates.java",
+    "sha256": "52635135c2d1165d7c8f6621db6b46216a01c658f130eeef80097e7971f708e0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RegistryConfig.java",
+    "sha256": "0730e3ff7749f86a6150d6eb99bed23cb4ebe7b76713bd2fb600b8867f633b64",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KmsEnvelopeAeadKeyFormat.java",
+    "sha256": "a0a824a0c9f97304630fe2f1680b6b8cd737439caf8c72fd11951908c5c1b0af",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmHkdfStreamingKeyOrBuilder.java",
+    "sha256": "5226681db64f0699fc98c0c1dde79beff201ca0082674f4cc737d742a995f5b8",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacAeadKeyFormat.java",
+    "sha256": "cd2b443afd9f03f5cff79d4a156e42b44bedcd9b17d5973269161fa2d05776d5",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtHmacKeyFormatOrBuilder.java",
+    "sha256": "f74666673b82ce3d76f75e3bf6c4b516790a596ef6314d576ad7d3f0f5c57ead",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtEcdsa.java",
+    "sha256": "3ee4e6d2a1a36c4dafacf013c3d5d014acb6c7b6306aef7785ea87d61337e882",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadHkdfPrivateKey.java",
+    "sha256": "69972106355c74677730c7329fee37ad63c4c8f3b7167f588fdd9e6f7377e3db",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacStreamingParamsOrBuilder.java",
+    "sha256": "49c3f047d07d933c81c788011d0b8c5c2a63425278bcb06433e08823c8499207",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HkdfPrf.java",
+    "sha256": "a78185f51a8edc0ec88b3b92ce7470997e0d73fd20c4850e14742adc46af5528",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacKeyOrBuilder.java",
+    "sha256": "7ff66450579657c686b2526f96bcfc1175bae3932f7c54c0333fb4ae1b7a3d51",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EcdsaParamsOrBuilder.java",
+    "sha256": "cf76e6c8eaa44bbac015c47bc7efcf4dfa0a44f2fc04d6f64521cc9720840572",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/MlDsaPublicKey.java",
+    "sha256": "e4646d5b0be799ac01c395a48e21a23beab0226e124a5e7f1e36d110d124e1ab",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesSivKeyFormat.java",
+    "sha256": "567ecb4ca70f132c73d8f5be0b267d85c80e738cc689b43dc16839008bb2c45b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmHkdfStreaming.java",
+    "sha256": "acb5e90aa8ac5b88728231da979627b52ac07d2b1d5894c41f62965cb4417094",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XChaCha20Poly1305Key.java",
+    "sha256": "ead03922e46b990b3a5424b861f21581d9d3518d0d3ab19665a8b0411713439a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPssPublicKey.java",
+    "sha256": "be394d132d12f3a347ae7461315a40e0fef65243216fb94ee0b6f3e0241649b0",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmKeyFormat.java",
+    "sha256": "8a846f6c8da76e3996cc9c5acc0922adb1de3fca8714d8c8716b3f060c266cfa",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPssPublicKeyOrBuilder.java",
+    "sha256": "ba01a966b17c90349aa0964545994e10be6e9bfc2dcf7ce935ee7f4eb0a8f76b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HkdfPrfKeyFormat.java",
+    "sha256": "186c645f472330b323e63fae62d267c5a3576d9107c74dcdeee3836589d151c3",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesHkdfKemParams.java",
+    "sha256": "754999ecbd3c6437275371da0570f0326db465ad81b5e490cf79a8bfe5ce49e5",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmHkdfStreamingKey.java",
+    "sha256": "0c59e07664416b009d787f19f74cb00f4eda9dab445e6ccfbfabe91b95dbd976",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EcdsaPublicKey.java",
+    "sha256": "14ee773fca8e5fee434f1847cd9ea3833b0b1fbd9d444de9adb32ceadee846e2",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KmsEnvelopeAeadKeyFormatOrBuilder.java",
+    "sha256": "ad050c17698e6a01394c6e1f58c13647cf0074830f0a40b27a67a7ac01887bb0",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacPrfKeyOrBuilder.java",
+    "sha256": "bb2c4ac6b106ba5d603b7bf2b44935f5723d74b5da066dc2e01509633c454184",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/CompositeMlDsaPublicKey.java",
+    "sha256": "4232f2b53e73a8e63617a55d9d8e60fb5e04863127c1c48907dad20ed7d35729",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacParamsOrBuilder.java",
+    "sha256": "2c36fa1b49fc5c66ec1ffdd7de7caf175480db74178515c02dd1b43fbffbae90",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/PrfBasedDeriverParamsOrBuilder.java",
+    "sha256": "4e68e90cd92641ebb5dd45204fb805c263a9648fb9dd2cebfd44f407d622e3f6",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtHmac.java",
+    "sha256": "ff00fa35dc094860b4ee362cbf5bc7a33ecacf2f9d292f870bb2ac16fd7f1374",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/CompositeMlDsaParamsOrBuilder.java",
+    "sha256": "3045308cd957eaebd2085d3a9407fe699637be088fa36c5dee8dde64898911d5",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacKeyFormat.java",
+    "sha256": "e8757d83cab9bcdb8a5918fc3ac11e0948879dce9107b74eb9eb05fe274739b5",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPkcs1.java",
+    "sha256": "6b5b3733aa735818e3624d1151ef64bb8672c2f7f9c968bebe2f5affa021f036",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EcdsaKeyFormatOrBuilder.java",
+    "sha256": "2b49ff9c2f112c3c3f8fec606339e40cb4c78cadd1e3f1b2faf09178972cc130",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmSiv.java",
+    "sha256": "c4819ddf3ad6fa6d17b61c0d9100c99838b751097ba71547be6afce7a30e87ab",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacKeyFormat.java",
+    "sha256": "5ca77903f028c11cdf7ab1acdbb075312cd448ca425b5c0dd1b3d1e2eda3ae7b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesEaxKey.java",
+    "sha256": "ac571db7c4177ae9aaae0be9bdb84857dfb5f21aeb0c8318433341d431d61036",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrParamsOrBuilder.java",
+    "sha256": "e3636fb6583e6a563b0128d52ef51b26fcab2fbb8d125c67526c7117daf0abf1",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/PrfBasedDeriverKeyOrBuilder.java",
+    "sha256": "85ce31674439e3e2cb9e21bb464ea1cb68c7045428da7b4cba8f21712ad86cc2",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacStreamingKeyFormatOrBuilder.java",
+    "sha256": "3b48d18bd5ae455b07c38634edd5e871f45dfdaf057c601b4f3054980ab658a1",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPkcs1.java",
+    "sha256": "e66e4f7e7b7c0dcfa07c386e53126f3f0a3f9ec4cb219478bc0c698a43d40f6b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacKey.java",
+    "sha256": "ba4eb1090e8ae4786544a7f08738713809da0ad28b5f7bd2c347cc465c82fdc8",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacPrfKeyFormatOrBuilder.java",
+    "sha256": "08d8fecc138e35d181ab307827c7507a98afab14a4440835d3768b7f06dfb73c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EncryptedKeysetOrBuilder.java",
+    "sha256": "e7c57ac355630b5a1abd1c6e6457fbc0e5a0a88838068380bc80b213710e0a0e",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmac.java",
+    "sha256": "37639df0ef896b43e7ad98725789801081cd09e5bbacc4427aefeeb7fc984417",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPssPrivateKeyOrBuilder.java",
+    "sha256": "9413e1bb1426afdfda7e38b46555b85f25b06a8962cee0b505d03b119944a6e5",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesEaxParams.java",
+    "sha256": "016552cd367c0456b582abaa604737a8fd3ed34b72e677a3120794ee39126b4c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KeyTemplate.java",
+    "sha256": "6b00133d9a57fd6fb15a570fd9a9a3a33e873aa7d8be4d8f0ae7cf14b41ceade",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XAesGcmKeyFormat.java",
+    "sha256": "cfda07cba8bb9ac45fe88dbdf3b2fb60af0bffc3d3f58deed2b096dd2a6e3d37",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPss.java",
+    "sha256": "63f43e30e722b8ced970a993e71f0c7542fcbaeaf5ad5cdbfdae1dd36a2b012c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPssKeyFormat.java",
+    "sha256": "0b6ef55bcbae048aa39ff633182ae72b79308c4c6026e089b971ef0c324727f3",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsa.java",
+    "sha256": "e771b50453afc89fab8a7ea527d95a19fc5e60347291ab27c6f07cc014968c5a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacPrfParamsOrBuilder.java",
+    "sha256": "f3cdcc7cbe1060412b775f9fff56699421d9b3d027bf2f84ba6c87d0d801a206",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KmsAeadKeyOrBuilder.java",
+    "sha256": "87d49888011078d3c14d27ea1a8aaaf5501bdff3557a2a0014658acaf8f08ad8",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadHkdfParams.java",
+    "sha256": "8ae86a6c9e10be94a507173e06dacda15d430ccb8883055d7387350f60477c76",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KmsAeadKey.java",
+    "sha256": "254dd448dfed414a4dfc87355fe3bd9fe06189828f8976cac66442328948d08d",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkeParamsOrBuilder.java",
+    "sha256": "e9149e4b5190d3f4c4be7f44d2a4028084acda648697abf273a7a2e456e95889",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/MlDsa.java",
+    "sha256": "04e6380dee5444500196132a83c99675b8911257b9ec9bddf7ff9b37494b971f",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPkcs1PublicKey.java",
+    "sha256": "dd42aac2c0add2363f21370298d843fe7975ce9c9c4834295551464f5ab2d408",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacPrfKeyOrBuilder.java",
+    "sha256": "e13566265d4fbb238cd90dfa4cbb57b35fea5fdc25ca4d56e6fff4bf60a2adf5",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XChaCha20Poly1305KeyFormat.java",
+    "sha256": "32b14c2a5326ecc284d068e7ff12fe7f3a33b6122916bf8aba8dffd04be45339",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EcdsaSignatureEncoding.java",
+    "sha256": "2191ac815db8d2b4d89063e34c6ea5e298a7d09097f42e46ca71c0e095057868",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/MlDsaKeyFormat.java",
+    "sha256": "98d7550952a0eee92e356cae6c8098460a8f8ef52becbcaf298d8137ecbab99b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HkdfPrfParamsOrBuilder.java",
+    "sha256": "f430490aeffbab64a7dfbb22ff68c3d9be30e9d68b0cc5ea7988dba59da8be3b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/ChaCha20Poly1305KeyOrBuilder.java",
+    "sha256": "6e77e8c32d7595230bc6c52e2c7d08cd4f01e2ceeb3fe44a06a0d9f070659d26",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesHkdfKemParamsOrBuilder.java",
+    "sha256": "1846e905c12528be9b99dc504d9191f3c9b2a43f7a6410ef2a5df29769f36b07",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesEaxKeyOrBuilder.java",
+    "sha256": "c2faa5b588e27634467f7c274470c10757335ff5d122ee982aa85ff6d772dd48",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPssKeyFormatOrBuilder.java",
+    "sha256": "297ff67e3f3f93b1687ab44f2eaa6839f97460d6106645aa86ed088eabc1d46f",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Ed25519PublicKey.java",
+    "sha256": "603884c1bd9ff33189b55df934382b0bd69d15fc6b7b68e762cba9e91634fed6",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KeyDataOrBuilder.java",
+    "sha256": "21819912ca8d5707cb07f7bdf56e11b58fde50578914fd8c096da0de4172a282",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadHkdfParamsOrBuilder.java",
+    "sha256": "d9e2da6730edc814879e15079204a8ab25a3a1602ead07c511f21af8b79e2443",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPssPrivateKey.java",
+    "sha256": "a43e1f0d947722bdf597424960a2fee61bd3f4f57e3f530d058e67e340bb0885",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/ChaCha20Poly1305KeyFormat.java",
+    "sha256": "523ab0ca896d807adbd6b4ea9a64f207280164d8aa340e1b4f7133be6848fd5a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesEaxKeyFormat.java",
+    "sha256": "dbd093b08f19394aa98c6a0c723c777193f11c0d62ae8270f876dbf1aa65940a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrKeyOrBuilder.java",
+    "sha256": "11e3f0969477312ae36eae9f0211525e459ab9c9f89c4b94db2e4889b98008e6",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPssParamsOrBuilder.java",
+    "sha256": "f654476de07acdc0a1f27ba219902cfb677402f414057482e04e8e0015d57ee5",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Common.java",
+    "sha256": "7185569d42c0f31c4e7291660896e4536efe31f30294fd4ec7ccde77fdce3794",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtEcdsaPublicKeyOrBuilder.java",
+    "sha256": "187eb87144ea63db2f57afaa84630a9e7ecde2702cbf1f5c4f68ca1f248ce80b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XChaCha20Poly1305KeyFormatOrBuilder.java",
+    "sha256": "0028ae25f5ebf8076d9e032795e1332eed5dd33f260b029d9207c93f60cf6d6a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadDemParams.java",
+    "sha256": "819f1a8b2ebb44b05e8a58cd31fd64713fe3c466e4825c7afcd34c3a2e467f58",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkePrivateKeyOrBuilder.java",
+    "sha256": "607c92010965943e5b869dfa40c7080ece499ca2d2c7113fa345c2ff1d4f4930",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KmsEnvelope.java",
+    "sha256": "3e37f003a56c8e29fe274ba8ad712fa420048842644db4ebbdeafced9551090a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacAeadKeyOrBuilder.java",
+    "sha256": "f381844b87142fc1d31d624b5e9b0518cc47fca328eb1e45b734694aba342852",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Ed25519KeyFormatOrBuilder.java",
+    "sha256": "f1bf75f0ab4da2e22bcfe29b5843778a08c7b4a89483fc5391a8e15eae71b35b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmSivKeyOrBuilder.java",
+    "sha256": "d6f1c6b9dff902c919e2b1637373f4cc18844d041f77b7e1cbc6fefede84064b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsaParamsOrBuilder.java",
+    "sha256": "97b764e761d6c400c934ac727c4c44e1c9aada30e2adc77b5e622b7cdee94077",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/MlDsaPublicKeyOrBuilder.java",
+    "sha256": "73ebca86a588f933b31d920661c0d418a5d81aee2a0588495fde715580624ac3",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtEcdsaKeyFormat.java",
+    "sha256": "742f1ef0c5d3f5f1f8db0073177ec87bab3f0ee1ee8edab503a18a8e1c009eeb",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadHkdf.java",
+    "sha256": "6cbdb7421a5ff1499760c01fb7396ffc7c5b7b5eaeee3051bd2524af67e5600b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KmsAeadKeyFormatOrBuilder.java",
+    "sha256": "d13f0a869d8fd259d64a995a9ec77b26bb930572618e6159ff71e16ad1d216fb",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Ed25519PrivateKey.java",
+    "sha256": "2a72e5f4fabf7f99c91c7c1b67fc5dee68f24ed5978d37f1b02ce0a65f1dbc2d",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesSivKeyFormatOrBuilder.java",
+    "sha256": "c17b361dd5e4e71d7caa16b6e818381bed4fcd47a7ebeeeafa149137da0c9d05",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacPrfKeyFormatOrBuilder.java",
+    "sha256": "ed17bd033d0c3f5970134f3ae84c730370c62f09f3c455e3fbd9195193120ed7",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesSivKeyOrBuilder.java",
+    "sha256": "9d5f78032f3eb694f5507f43ac6bf7a511828c83290b925d5934adb344fb4c70",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Config.java",
+    "sha256": "ba170dcb59002242588897fee108fc0e222a551221ddec7c1981dd483245efd5",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPssPublicKeyOrBuilder.java",
+    "sha256": "072bac52ee1f9459dd93077f5cf9989f254db91ebf6dcb4aa7e185a6457be430",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadHkdfKeyFormat.java",
+    "sha256": "799c0e372ed1986ceeb8be3094a24d33cad03242bab4da80b07fb5726f07269b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacParamsOrBuilder.java",
+    "sha256": "4bdcf41d33583a1b29e5b0f2086aca04bbc64f20ffe05db0434f1268615d9c68",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPkcs1PrivateKey.java",
+    "sha256": "3c90f6244fa089924fc38f9661391a3f27fff13429aba38ea52559d8b5062cb3",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPkcs1KeyFormatOrBuilder.java",
+    "sha256": "c2c920900af238d810dcd8ef6aa1cba0e826de8e07d313eecf9b5a387acb9cbd",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/MlDsaParams.java",
+    "sha256": "ec452639c56c9c34132456e4413d84b7417213d7699a911a7edb9cadc0dc9474",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkeKeyFormat.java",
+    "sha256": "f8d26fd6d1e180878d88d48313098d70834f395b96722a24f23086a49b73d864",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPss.java",
+    "sha256": "ae1491bcf5053a4fa15e6ecde6c75513a653d84dcd280138374279b80bbb7052",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPssPublicKey.java",
+    "sha256": "6e527e8ae53fcfcca70c4c2dce71861add2773dbce2a4c24068135c676ecd546",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsaPublicKey.java",
+    "sha256": "133d6c701ed69c1ab07e301e32baa1bbb2b0994494c9897de19ae3d3b6a83fcb",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacKeyOrBuilder.java",
+    "sha256": "2b78e9d3eea3f5bea181373de36a24bbdf4406e1cef4f81c9d77f83ebffe80b3",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacAeadKey.java",
+    "sha256": "883f243a2137a2439358a1019d23952d143db6fab9f35cdb6063368d5eef59cd",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EcdsaPrivateKey.java",
+    "sha256": "2b440d9eb9fb7bf67491bb42140796a907232d521f007b56b0f6f3a99d121296",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/CompositeMlDsaPrivateKeyOrBuilder.java",
+    "sha256": "064cc13d6704ef930b6e2284fa81d8cfa3600977aa8e129167b2fa833551b062",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtEcdsaPrivateKeyOrBuilder.java",
+    "sha256": "1eb87ee4654b87475123ad3666df6bbee4363ca36f2abe0e2240dcca347a2072",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsaParams.java",
+    "sha256": "bd19783af93af32a500a2a300875af75639947e093eba93d39a07b1a6d078329",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadDemParamsOrBuilder.java",
+    "sha256": "297468c3e4905c32af73ae761573af6bbeba5d19efe4fed84bcaeeb255427bc6",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EcPointFormat.java",
+    "sha256": "473234d08b7e0d7671f29cbd009943b6ef55cec60f0589474af0484f668d5611",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacParams.java",
+    "sha256": "f3dd143e783b1700f1b1adf375863808e87625b1ac682bdbe3391d3237fd20d3",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EncryptedKeyset.java",
+    "sha256": "0fadccb5a17bbd545a5d81aec9d270fe41777c949bee63e6deabd9149ceda754",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacPrfKey.java",
+    "sha256": "adb7bcefe69d1aec56645420af245e148a8df3cc28e991d11df97b66fabbe96a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Ed25519PublicKeyOrBuilder.java",
+    "sha256": "827b1b9581d5cbc86d6350fbeae18f2ccb276d9a7f09c6afc21aa0f77abb00fb",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtHmacAlgorithm.java",
+    "sha256": "1bb4b644728d03a78b68cbc03971ff31962be25d218c3b0302ba74bda5a17313",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/MlDsaPrivateKey.java",
+    "sha256": "9e07805bf65ec6b233887a8bd3c204cc54f86d9155a487cd374a50c6a3fc646c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcm.java",
+    "sha256": "1b5bb15b0472b9cab8f9ea9904189491cc47876059ae843395a0de0e180bad9d",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacPrfParams.java",
+    "sha256": "09d04caa0c2db03b1e0ca954814a31e26bf1e24b4d5fb302e45db1cb966bee87",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPssKeyFormat.java",
+    "sha256": "0ced23c9e641ed296b47df7a433d235f0663fb67eadff1f657b5570267b34554",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPkcs1PrivateKeyOrBuilder.java",
+    "sha256": "a445582eb57dc8a3450bdf684f46c65559437038dc3b3152b85e29244d882660",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkePrivateKey.java",
+    "sha256": "798a7fbcefde5640645ee0f132ee4a3891c3362709e6ab4ff217e8cf6876e0c1",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPssPrivateKeyOrBuilder.java",
+    "sha256": "8b2c7983073f734627aac62aff53e99e2037c0de6efae00f488a1c2c1d2e6364",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacStreamingKeyFormat.java",
+    "sha256": "ecb93d23d838a5b94e1a543f33f7352537b03c359da87b58d97716058a6178bb",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Tink.java",
+    "sha256": "7eeb87073e2475e6e77b669c019bb3b633c6238c0ef175b6fd9107c1ca12e96c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsaSignatureType.java",
+    "sha256": "86c63204ffe962091dc091742432b0c72e44069e01d4829ea352ffdc154bfd9c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPkcs1PublicKey.java",
+    "sha256": "972ef2447e54c677667f326b1219b63fe2daa05fcbcdbbb0f7d788ad23dd7d89",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/OutputPrefixType.java",
+    "sha256": "3b892d26c275faf5b6694a3243a0420f72ab41a2583741a1a166523be80e8a1e",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Ed25519PrivateKeyOrBuilder.java",
+    "sha256": "85b133f4257ec10185e19b239c8f30c74f98643df3ba9a3dccadad3ba520d924",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmSivKey.java",
+    "sha256": "68d4f68798f934468c54b6e9aa060ba3d91c65c5baf21c829b8547d1b6c72a36",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmKeyFormatOrBuilder.java",
+    "sha256": "4fde1f48775837b9e1ff7cc9eaf686e736a35afc6e7c7d76bb543f8507fde171",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KeysetInfoOrBuilder.java",
+    "sha256": "64f23964ac62dc67adbe6ac83f15c0f589a41facfd72a535866ef042d0b6066e",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacStreamingKey.java",
+    "sha256": "629086d900846523d0004440e2f3404e4eca1c91446402775dc18ae5d994e10b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmKey.java",
+    "sha256": "bcc7141d6f43058412a0504f9b34ebba7e09a659220f6ced9e7e6768731ed35d",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrParams.java",
+    "sha256": "ffd7c5131ae29c01f47767dd5caf040250ad28c05ec72b7737193a3d954cf9ee",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtHmacKeyOrBuilder.java",
+    "sha256": "caa98b475d56b729b1e18aa2a9463bcccabe32d90e518301103de143df96e397",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/PrfBasedDeriver.java",
+    "sha256": "de05c65ca5e78d8400e8bb30c2a6825f49f5e5e619bb9c707794b3784792815c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesSivKey.java",
+    "sha256": "c8dee2c9a4a5455b764656d773605054a910a468fde8f9859acd3f989c32dd69",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacPrf.java",
+    "sha256": "8c1c08905b66762a195dd12a3ab0c3f986d9c8ebfe42b8d5171eb6355f997f07",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Hpke.java",
+    "sha256": "b0e53067e90e21ef1274b2468adf907fce9b4eaa43fd59fadd9229652d7f26b4",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Keyset.java",
+    "sha256": "dd30213de2addb80c14eae7dcb318519c80796759384d2b30734c2c7767352a7",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPkcs1Algorithm.java",
+    "sha256": "b8c989705630c388a25306ed7e7f8f7bf8298a90cbd707db4cb419d93351523e",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesSiv.java",
+    "sha256": "1129ea947270f980a485addbcd7dcf7bb7900e70953961d091a7e85360fccea9",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KeyTemplateOrBuilder.java",
+    "sha256": "4a0a12c4b542b498ee2aac760d9422ca9fa97606b0508bb3e4a23defd0ac7faa",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadHkdfPrivateKeyOrBuilder.java",
+    "sha256": "35a88f28ac2bd99e8f54f5440e5687ac1d215d8419c56535fd5d2a941b0b38f0",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/MlDsaParamsOrBuilder.java",
+    "sha256": "0509e8c4d8825b6c85f0047e7ebc16a1143f2b9175768dc5c908e62a15876eae",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KmsEnvelopeAeadKeyOrBuilder.java",
+    "sha256": "17b2c41641f350d2a33b0d16be7061560fe7fc0b8d6aa677dfc24356a22820e9",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsaHashType.java",
+    "sha256": "4324eee3499a73054dfc1f8d60b51471c776cd917f072751971db59650a162e6",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrKeyFormat.java",
+    "sha256": "d9b57dd29b777660fe513910110016e7d28204f418281d35f718851726015a27",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/PrfBasedDeriverKeyFormatOrBuilder.java",
+    "sha256": "41d9774b114b27868bc921a61a6ad55cda623f62f2360b679cd5887104944815",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesEaxKeyFormatOrBuilder.java",
+    "sha256": "3c33e759a886ec70e4ce280df37600f73f21c76d39e3da75b9a21675610bf488",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HashType.java",
+    "sha256": "ef805a495d7b24134d4800ec6d5a8088c7032e5f04ff68cfa56aeb45afc5aba8",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KeyTypeEntry.java",
+    "sha256": "9ffa2ad236820aaf40a683ae990dd447fd8af6172af771607dc480875de11df4",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmHkdfStreamingKeyFormat.java",
+    "sha256": "cf4ecd15e97cde1b79146d84fe6cd406d5fc3c14f54e3ea9cd5eaa4caaf8ee36",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Hmac.java",
+    "sha256": "a6b7036a0f6d3a75eb53c677e57f902131f84f681acb3d46f8c75046bac3860f",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HkdfPrfParams.java",
+    "sha256": "fa056064120b46a0ea7216c30144fbb277b7dc4512a6f74d1a5ce8019d5a17e9",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacPrfKeyFormat.java",
+    "sha256": "00de36ee97f66aeed4f398ff8140b80beaa2e48240ef7cabc3bc63df5a382609",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacKey.java",
+    "sha256": "e7d9be6fc9010524e0eea4ce08930f8cff0c51dc871f2f06d51403cd6d9e12ee",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacKeyFormatOrBuilder.java",
+    "sha256": "3e9f7f42100d3e23d63857a46d48b60f11a34ff9e17716e39e68cac3304dd7c3",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/PrfBasedDeriverKeyFormat.java",
+    "sha256": "4771b784824385c13a64257fc883d5bfcdb2b02458c69b1f041a21703ff8e4f8",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesEax.java",
+    "sha256": "23b13d2cb99c690e764c467548d31069d617daf92d1af85fb9b6f2f323411a18",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPkcs1ParamsOrBuilder.java",
+    "sha256": "c1c7a3bceb9e4486cf9994b6fe8295f0ac36bb2d4ee6748b9fa556eb79081c5a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmSivKeyFormat.java",
+    "sha256": "0a573b62622a4d94b9ca9072732cc862e461f47c98e46fec00fa19b93f3c05b8",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/CompositeMlDsaKeyFormat.java",
+    "sha256": "0eb16e91d098d013982fbdc6a747cc32b571db189bc9ed38f55e645f71eb0ab6",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/MlDsaInstance.java",
+    "sha256": "32b7c0344f9b42ebea7831257cd45ca40a285f075752b0e5a0f47f0d02e44e4c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtr.java",
+    "sha256": "f66b4368760ef3fa84289edad3b2b021ca08c8982fe5ca98c42edc853d7cef67",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/ChaCha20Poly1305KeyFormatOrBuilder.java",
+    "sha256": "df828903824d343526fe430c3ef3e68732bcfe6434a3b329d4e5a1da0a2f303c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/CompositeMlDsaClassicalAlgorithm.java",
+    "sha256": "dce107e650c60cd0bbb1667e10888ddeab0599b56808ec7ed16997e00297d788",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KmsAeadKeyFormat.java",
+    "sha256": "a12623110a109efbc5efc9adbc71de39ab1feb3e472e0b3b77e44e2d9dfb2d0f",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Ed25519.java",
+    "sha256": "955767058b0718ed6d85a67d2bee12ca1171e4b0e66cc0b4dcdcf18529d5078f",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/MlDsaKeyFormatOrBuilder.java",
+    "sha256": "13e900fb1e11b419c9e1bd3f527024075ddd66c86bf7541a028a9d4dcce3095f",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XAesGcmParams.java",
+    "sha256": "63382a582685433f074e0886ec04a1d7437d6925aa0f416e1a3f72beb0d7038a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPkcs1KeyFormat.java",
+    "sha256": "1bd76831f0cec8b9e981597d0d1a56067bbdd6d05b3b0c4a78c9d8cdb9697792",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/CompositeMlDsaPublicKeyOrBuilder.java",
+    "sha256": "be15f8ba088192331267720151f14dd74a4d42a6438f6cebf829258a4ba4ed68",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HkdfPrfKeyFormatOrBuilder.java",
+    "sha256": "4407c48cf1325e759a5b373e71027aeffe48fc28d520d039a7fba2ba72f74adf",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KmsEnvelopeAeadKey.java",
+    "sha256": "b837cfc4142c50ac309ed2e021df6a3be33ed8d47131be9b8ceb8a5b6d7e66b0",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Ecdsa.java",
+    "sha256": "fb00cbb06d594e8fb659c394aa39362d3cac408a5fa1e85691821823af1d66aa",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KeyStatusType.java",
+    "sha256": "bafb6ff2b765603a33fd0aeff01d57eae9b333433eddd86a66f8da1d5d34a547",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KeyData.java",
+    "sha256": "334d46d38f51eb450d94b77dd7041a24e6cb9098e5b6208225734fb64bc13f7e",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkeKeyFormatOrBuilder.java",
+    "sha256": "06bff4e5a1e75cb946091f5635deb7bc00ef2c610e20ef0310c3c49c70bfecb4",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkeKdf.java",
+    "sha256": "2025abb0e7fd4f8d13b4786e87cffbb9dd1ab0382b78e90c045bc66eb05907dd",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/ChaCha20Poly1305Key.java",
+    "sha256": "44fdf4fb8ef2ed7dc6ef1b3e2263b1b0e6aaf77767e01a5a1e5a733fd22ebcd1",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacStreaming.java",
+    "sha256": "4938efb0eb30337d6439c286c11082fbc632b9da1bb946a7dd2b4707ac0aa8b3",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmHkdfStreamingParams.java",
+    "sha256": "89c5552b76f958154cf45289816f9bc64d305403bee6ac74b2987089267e865a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacStreamingKeyOrBuilder.java",
+    "sha256": "551c7bd33135f22dd82c26e30da97262cc6dfda53e0b87f393bd9e89c220d822",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EcdsaParams.java",
+    "sha256": "f0d2b4ae41b4e2461168d759a788a8da7593e3473a8bc588a6a5f45dacbfb545",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesEaxParamsOrBuilder.java",
+    "sha256": "9dbe7b71e0a4838ad7b291e326bd0d86220328e8a4d15aaaf5e14168e5b808d4",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrKey.java",
+    "sha256": "d3541a3a7d33c37094b9e844355d837cf04f23b03a2e699efd1fb593163ba950",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkeAead.java",
+    "sha256": "a5b08bd02f227147cde7676de1bfd3cacd188b69f7ea61609a717393f8732526",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XChaCha20Poly1305KeyOrBuilder.java",
+    "sha256": "9b3d1ad0b4cbbbf920b3d8e8b9685d7105db5aed9fa21edbff91d75805eee7c6",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkePublicKey.java",
+    "sha256": "43c56012e271c2eb57b2bf97fe43c0ace95d606b29bdc90c0fceaa99109c6d62",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KeysetInfo.java",
+    "sha256": "499d874d432cbc20e12107f18960b7169c63c10aa3125fc2d9adb979026d6bfa",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtHmacKey.java",
+    "sha256": "afec5b2296e41d4dcbfe261b1cdbb7d25c3747e3701b96be9989b95e93dff00b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/MlDsaPrivateKeyOrBuilder.java",
+    "sha256": "e1b2fdf0b1c690ac7e0db16ae69ba109d3605be6ed2a06bb73dfeb74a3c08898",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkeParams.java",
+    "sha256": "91b6d307711cae21fb69f03242d071a270d6e5ca542e263db0675e1f9aee88ad",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EcdsaPublicKeyOrBuilder.java",
+    "sha256": "c431ad4c3f237dc4632d0cf0c960b28ae6714cc02b245e13a8c20293492271e6",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadHkdfPublicKeyOrBuilder.java",
+    "sha256": "c69d02c37786646721c122908311152ebf13e3129df3d2938585b165261b1744",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPssParams.java",
+    "sha256": "8ee26274f0b35ace6c405289f6a09a5c43f546210e59001210043a3560f38fd5",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPkcs1PublicKeyOrBuilder.java",
+    "sha256": "dd8e4237eeee008c0af1fe75ca9aaa2758bc68b7d451e59e2c513b4b1c83ec89",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Ed25519KeyFormat.java",
+    "sha256": "f473c58d1ffc0850b74e5905a0f711a06f25439fb3158539aaaf643cdd1d0554",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPkcs1PrivateKey.java",
+    "sha256": "f14f6fb4670b26955bc2ab012791543bba904aeb6905b6e3a66fd0e33304c524",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmKeyOrBuilder.java",
+    "sha256": "3d3172c810803429dfc24dc832ad44ad3192acd614654b63c431e3f19c70de83",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HkdfPrfKeyOrBuilder.java",
+    "sha256": "4dc1e44fc3e6912b70f651b9ba6b68a4b46cdd87998ce145c4eb05e171f08c4c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacPrfKey.java",
+    "sha256": "6e027f770e02647aa017cb3fb23ca793b4340a481244e880840b002676e44958",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XAesGcmParamsOrBuilder.java",
+    "sha256": "24b5ced0a79ec59149ec3803f9aac8a1a1300377c44432fabdde4fc902fb298c",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkePublicKeyOrBuilder.java",
+    "sha256": "3d52194a02474bde4d018f283d805e918ee97b93933971436dc3de83719b0d16",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacParams.java",
+    "sha256": "75170137d9de7860f344d2a80836c2a4697bd9b0abffeefb54828bae432db2f4",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/CompositeMlDsaPrivateKey.java",
+    "sha256": "0d2c78500ba9b8bb2ce818080fd4825aeefe86f617bdab0754c2cdd938bf540e",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPssAlgorithm.java",
+    "sha256": "0d01077674c84fc2ebe4875720d56d4b9a8184222994e3b5f3a727034805fa33",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KmsAead.java",
+    "sha256": "d1eddd9fd5cb0c7fd3ef5683ac4a0e6f6f23890cf1882d928fe743c02e57fc43",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RegistryConfigOrBuilder.java",
+    "sha256": "c017ecbe80b9b344f68dea6ffe5dc9484307abcf1cd74cc7d8aae4bb6f5b2759",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadHkdfPublicKey.java",
+    "sha256": "5019e8e200d09fe9a2cbb0ce6a113b0b71df82093e38b531beed3ee68f2153ee",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XAesGcmKeyOrBuilder.java",
+    "sha256": "334aa48e8763508a361bbec8db163eef4873cbe0ef224640694349df857ce75b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtHmacKeyFormat.java",
+    "sha256": "7926c3b90a1f0e3607398f4ba67233e0392170780bbe5daa1137fd5a93f3cb99",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsaKeyFormatOrBuilder.java",
+    "sha256": "e2976589723691eeeef2c726526132bfa0cfb62f9a46491befb3c9333038a97e",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsaKeyFormat.java",
+    "sha256": "4efe804108284feaa6368432ebec2c98f28306c7b3d6723936566a34726d33d4",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HkdfPrfKey.java",
+    "sha256": "3ccbf78c7268406b1dd127435feddf99c5138f4215da0a069fb5f6ea147f6ca7",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmHkdfStreamingKeyFormatOrBuilder.java",
+    "sha256": "f1b2f23b99b9d9dcd90dca57af3d56670fa64a9412d6d70df7a331332a901863",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/PrfBasedDeriverParams.java",
+    "sha256": "154fd5e1d62a71b3d1b617dcf7824e5f677d893f1e331c7318a185e474893de5",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPkcs1Params.java",
+    "sha256": "141763e3d179d73313d2617922586f67fc768ec236a4ffdac4279732b32213f4",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmHkdfStreamingParamsOrBuilder.java",
+    "sha256": "d29ce923f6aee225d0dacc5dd8a11b5235d7759942023fa5d8feade4bcf4f77f",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPkcs1KeyFormat.java",
+    "sha256": "cd1ef596dce13b92ce675a0fbde1b888a435254028f20550c358a71df2f851f0",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Chacha20Poly1305.java",
+    "sha256": "8a44d00f7d7f75e47b4790323365323a507c4007dbcb41a9abc6c7efe4344b36",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EllipticCurveType.java",
+    "sha256": "9d51b00b8d1bbfa712bc894392f89725be8b5692d271ce0d2e89c9e8807aab39",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtEcdsaPrivateKey.java",
+    "sha256": "86bfd33985d2fb087aacbbae80787571d6aea08b252fff4edc4bb5cd16132dcb",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XAesGcmKey.java",
+    "sha256": "34820b89b600519097d3ea3a8dc1e5f3e653f0f70ea2cc0e641c852fb857b09a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCmacKeyFormatOrBuilder.java",
+    "sha256": "841420e777f1b4e0879dc3585605a0583931453c223db6dd5c98ac3a245b6d78",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtEcdsaPublicKey.java",
+    "sha256": "d2cd3482d1d988ffcbcb6541c451574ab40ec338cfeef3a3a4eb168a11176758",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KeysetOrBuilder.java",
+    "sha256": "061d27a29c454e212769e035ee29ff14de4c6ad4257fb03de74c635ddf9270a8",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EciesAeadHkdfKeyFormatOrBuilder.java",
+    "sha256": "a308b49fde98df5c5215825ecf77292f722b482338ec7a7074bc4ca16d6609f3",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPkcs1KeyFormatOrBuilder.java",
+    "sha256": "570e1a7c6f9dfff86da65fa995e5f214f0a60f25402c76632268e88a57c40385",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EcdsaKeyFormat.java",
+    "sha256": "f7383e613de0e17c5780f3cbf0221b9779252b247794d86ca13e02fd585a7588",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XAesGcm.java",
+    "sha256": "4e9772cba205c8c15f2843edb22a4c0ba0e8065aef545caf2cc68b9f52c63743",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacPrfKeyFormat.java",
+    "sha256": "983b6606c0827e9082b9835494617de41c318457ee46b6aba256c8d2a3ce9dd4",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/KeyTypeEntryOrBuilder.java",
+    "sha256": "64cbdddeef150e22a230a8ead3db103aa74bf51b386803c092f6a370d579d269",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsaPrivateKeyOrBuilder.java",
+    "sha256": "21263dd0fdf1f9110bfaa16ca6bc2d6f600d5cfe5d9403937de59597b1540b35",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacAeadKeyFormatOrBuilder.java",
+    "sha256": "98f99b406466634e472f7a440789bb39c08b2f0ec6771c2cc1cc7bc056685e2b",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/PrfBasedDeriverKey.java",
+    "sha256": "e0ba26fb44d138f4ba2802fe44540621902cd3081096053940e7153a1947b2a9",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HmacPrf.java",
+    "sha256": "4a6b2f9ca52b6de3aa78b7cc9afcc1f647745132e9d8e3c1ed022c2e95b07466",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/CompositeMlDsaParams.java",
+    "sha256": "ec7d596d08a5568009e4cd5971f793a064d59e12f6f64d1347be9a6829e76f27",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/CompositeMlDsa.java",
+    "sha256": "89766bcb610e1a44d083bde324090527003ca7b22e786167de6c8dd6749742b4",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/Xchacha20Poly1305.java",
+    "sha256": "fabee9612b4022f7c78ab39f7bcf7479d5992de3eadc6de7b0892511b6837ff9",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacStreamingParams.java",
+    "sha256": "f9a42ba9dd3220370392fc1d895372e4dfae106ed8e40e1721519ac7b29b6334",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPssKeyFormatOrBuilder.java",
+    "sha256": "cfdc014245b1b8291f01248aad25e3b271f566fe29788d282ba956e315e629a8",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/EcdsaPrivateKeyOrBuilder.java",
+    "sha256": "af23e9e92677ddcc90c455ca5e5b3d741b6de35186fcac601b68613e8302073f",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPkcs1PublicKeyOrBuilder.java",
+    "sha256": "2b38f30181e15596aa880bbab1d5a233608531076da2372f78cd8c41df8ea142",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesGcmSivKeyFormatOrBuilder.java",
+    "sha256": "79a99b5856e638bba275912957c369c1c5e7396095b3ab6d7b37783dc116282f",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtEcdsaKeyFormatOrBuilder.java",
+    "sha256": "7ee6a217d17e1a14a51a0efda70fbcd0b524312a0ca2e6a7b73f1b5a04e6687a",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/HpkeKem.java",
+    "sha256": "7b339518eb08b71b6523b9cb1048e06516681ecdc8c37411f028e25ecb0620cc",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/XAesGcmKeyFormatOrBuilder.java",
+    "sha256": "521d38eb0ba606cf3647fcfceb5680afe6ce7519fe868e4ae7eb90a91ad43440",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/CompositeMlDsaKeyFormatOrBuilder.java",
+    "sha256": "8a312c113fbf8e0108c7fa6bdbeda2502854968cfb5635d7700f6316d4cc3fef",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrKeyFormatOrBuilder.java",
+    "sha256": "87599b7549f21540156d87d645d79d360b58ff3c3089c193843f8db6b4f6e35f",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsaPrivateKey.java",
+    "sha256": "db4e07fb4dc5b70e5a0daf830e39d7ff6ad33fd843ac959b1c9bad776be36524",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/AesCtrHmacAead.java",
+    "sha256": "f99ecbaae09c7ff2867d0edee3bc7fe77152fd24f6f100c24a15eb156423e669",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtEcdsaAlgorithm.java",
+    "sha256": "d37cd52ab126846a4e5f1f7680f9bfb496f06942be196b6108214610a92929e0",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/JwtRsaSsaPkcs1PrivateKeyOrBuilder.java",
+    "sha256": "5a4cd2037910eb365ba9fe335568c27780bba6f84812b6fe4104ef071d04beb3",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/RsaSsaPssPrivateKey.java",
+    "sha256": "a97dc0719cea4698cbec10e9acb824681fc961bf8893c8c10a52a26d7712837d",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/proto/SlhDsaPublicKeyOrBuilder.java",
+    "sha256": "e10c6361d510dfdfc2ba48542df28c92cfb96ba9e1cb2dbba02b381a38876495",
+    "tag_comparison": "generated-proto"
+  },
+  {
+    "source": "com/google/crypto/tink/annotations/Alpha.java",
+    "sha256": "00ef68399561c8c3fea39993be73aa92778fd3f2360b39d214728a503ba35b6f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/tinkkey/SecretKeyAccess.java",
+    "sha256": "8009dda0417dadb42cc88b7cf5b2c835ba4c1f71c0c7335dcf43dfbf3d88a4c4",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/tinkkey/TinkKey.java",
+    "sha256": "0c70687d0419af7c7d24ccb06c63124399c7c1f7e69686604a79b4fc8508ed09",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/tinkkey/KeyHandle.java",
+    "sha256": "9af8195f2cbff8aed45f7c8e803454a651aad90ea4e6b13b7de641a83bb7faa1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/tinkkey/KeyAccess.java",
+    "sha256": "a00bcb697067928c8ec5a29397711556b0214e33ac76926f877394401ed3800f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SignatureKeyTemplates.java",
+    "sha256": "8f8a1eed076ac8e05d8fc32acf50e249c5f195d365789c6a2607a423d756a233",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/MlDsaPublicKey.java",
+    "sha256": "d83646459f30e09854b7b01d91cf81a8ed286a9c9e2d020c92866c90618f4ffb",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/EcdsaPublicKey.java",
+    "sha256": "9ccc7d6eb43a4f9655a9b89505b7d0dbc5f51dccac3885189e95634b131e6636",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/CompositeMlDsaPublicKey.java",
+    "sha256": "1856c041342d04bfd21fed4ecc0a435abea342e0fb0d1439e7f884f52a22a256",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SlhDsaParameters.java",
+    "sha256": "cfcdc7a40720c6d06485af3c73012dbfbc232aa8fa5f575b14c439260c2ed988",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/PublicKeyVerifyConfig.java",
+    "sha256": "6ef3be387ce3bbd6f58a4626a2a8d64cbe640026a7a07702fcf27253b55b16c6",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SignatureConfig2026.java",
+    "sha256": "a7984099c8f4d6f356524d3d9cb1d62dbd5accb11a0fd89371f331e089ec373f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/PublicKeySignConfig.java",
+    "sha256": "a3aaf735ce67087c57d6b6d757ca3a172aabffe4a191002532c912515f4ae9d0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SignatureParameters.java",
+    "sha256": "b01619f3e573c89540bf2d2af14733d07ba61ba727f3759a81f1f3baa423f1f0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/Ed25519PublicKey.java",
+    "sha256": "6f10f92eb1e8f727385442e308828318700392b0c16c5f49c5c1d569c7a15ae0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/MlDsaSignKeyManager.java",
+    "sha256": "701b764d39d5b7615f2109e2139fb8d241bfd7def1839b91d46a0cdc067a61b7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/EcdsaVerifyKeyManager.java",
+    "sha256": "44cb6f03f4c7ba0518e73868565414757f51f8f6634e9a802acfe408f02a2fd6",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SlhDsaSignKeyManager.java",
+    "sha256": "ee93aad61b7d8a38b0536f450fe22d2572d68789ae2ee516dadac7bb5a7e5614",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SignaturePrivateKey.java",
+    "sha256": "0cdaf65bd49b3cc190e003cde2d8ec3d86abb2fcdf12371647dab8dec248d80b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/Ed25519PrivateKey.java",
+    "sha256": "a7e8127fc2567772715687786b2528fcbcab2b42d58e99e7a93b52fd3cd92bbd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SignaturePemKeysetReader.java",
+    "sha256": "8956a1ad76aaad88442e8ac442f0b3c58edd239408cf01f1ae31fb3f1f3114d1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/MlDsaParameters.java",
+    "sha256": "306cb5396cbc40848454275305a218fed472560ce665ca8d957a0d74c5d3b8b7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/RsaSsaPssPublicKey.java",
+    "sha256": "994212e70d8ba86d8ae1c767b226e2edf02043440c9c3ce1a7e55e8d70ae42d1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SlhDsaPublicKey.java",
+    "sha256": "7d6b5c62f2c28e931e5b9cf720560ccd607af07e8e9b7621420487578cc8ce94",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/EcdsaPrivateKey.java",
+    "sha256": "9547a317697793f2f2e61da26aa0de00f7acd648a19cdb0ea18f4ae514758b1e",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/RsaSsaPkcs1SignKeyManager.java",
+    "sha256": "1e07b87efa911e4c8332f60aae2c95418ffb4b148dcfd8252888efe8fde97b7f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/PublicKeySignWrapper.java",
+    "sha256": "14dd60fd79ba6d6f11c353433b12bee982a687eb7cbcbb3d30d64ad73bbaf89c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/MlDsaPrivateKey.java",
+    "sha256": "7ab114d1a50eb130c6ad074193599b4bebbb1f0f6888da110e4a34e78e6dec21",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/RsaSsaPkcs1PublicKey.java",
+    "sha256": "7ac028b15f7f9c09fafe1a67e692597b6fc4c520f9ffa16651081d51de09e42a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/CompositeMlDsaParameters.java",
+    "sha256": "61aaac9477cc67f0fcb09e4e5e0904fb6f9e892f83927c3b4b56b37f52e23237",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/PublicKeySignFactory.java",
+    "sha256": "4f5d7357ad9c3984ef0d67b1481e42f78bd0cdd38d50c125f45df509ae9d109d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/PublicKeyVerifyWrapper.java",
+    "sha256": "3b3cf337d826994a24e7b2121409b2f11d1aa3e6e6a8850417aee87f0b11b731",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/Ed25519PrivateKeyManager.java",
+    "sha256": "19c1fa479c9ff85d5fbd7a9ad192698f043a1a2b412e3ab76412e39c5fffcda0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/RsaSsaPssSignKeyManager.java",
+    "sha256": "2578b7a02de04082b062a6a46d84f52fd1eb72e607144a38e7c1132f5ea03baf",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/PredefinedSignatureParameters.java",
+    "sha256": "c7fca50ad29081d3cbd4e13870c0fd02515d98dd1dd50c8bc370d588609b5c32",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/EcdsaParameters.java",
+    "sha256": "e93909f26d1d7811922611689e507485edebd63e2d4c72ef413e719f1ef35855",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SignaturePublicKey.java",
+    "sha256": "bb70dff0714f09563296443a6bdf9e9625ce192a9db47369ec67ae3bc79920cd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/RsaSsaPssVerifyKeyManager.java",
+    "sha256": "4ba024b1c4da9f37ae0208cefbbb6741d81089214f5f1dbf3fd5a38c9a63939d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/RsaSsaPkcs1Parameters.java",
+    "sha256": "cff5841a9f86455bd52a6676e8bc4379aebded56e724fa7ed57638f88a7b16de",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SignatureJwkSetConverter.java",
+    "sha256": "14011cb260ca009a259e92d7f86b268c0da4b669318944a62ecc0db380bc632f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SignatureConfig.java",
+    "sha256": "80eda0f1ea0d6a0908af6ea6484afae065dd38d463c67a526cef27310482136b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SignatureConfigurationV0.java",
+    "sha256": "3c4c58c26cdb1093b2925e94e70278993860bac39788eb8c61bdadf314426f4c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/Ed25519Parameters.java",
+    "sha256": "59937232d158b236d762f2146daaa987f11ba4bc97d55f3dd96e6dee2de5e239",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SignatureConfigurationV1.java",
+    "sha256": "007fca5b37e1f94f6ee3c4c092ec7bcd1f213911cda5ddfa33912e4fe815a509",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/EcdsaSignKeyManager.java",
+    "sha256": "de84e50ff7176879ed47ced4be9bf69d2257605fdab9b2e2856269c0cb1244e1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/RsaSsaPkcs1PrivateKey.java",
+    "sha256": "a8a110445b684120a8978264c671e1bc646cef3f510371b6993e5c155090db29",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/PublicKeyVerifyFactory.java",
+    "sha256": "26a1f8a717112ee6292c52b4c36a6695bb226aa3eb722792023b1fcd831a22ea",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/CompositeMlDsaPrivateKey.java",
+    "sha256": "3568136f581334497abe641cd747efbe82e45afc45b214ad88d7e68d358d0471",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/Ed25519PublicKeyManager.java",
+    "sha256": "8a738061adbcb24ca3a64b070841dd8a6b9ae076eab6412e856367ea965a2664",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/RsaSsaPkcs1VerifyKeyManager.java",
+    "sha256": "233ebbae10a6788cc569d9e7662903425bdbea72346b498336fb1b294a97ddbf",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/SlhDsaPrivateKey.java",
+    "sha256": "6571da60c0d2bf6c7c459fbb65813ad493179ede4044f97be6ef3a42a5c58903",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/RsaSsaPssParameters.java",
+    "sha256": "39992a185c549e6d79944d0e6f96a9e5666589a1da338644d5f34f213c162862",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/RsaSsaPssPrivateKey.java",
+    "sha256": "204155d22332732f22b53f228755ba86cd1f5e89fbd66f37bf395e16f77aa619",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/KeysetDeriverConfigurationV1.java",
+    "sha256": "8bc33a3bffc663e7687b394e15c6dbf8450ae2e4dc43e28988e266490c5a77f7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/KeysetDeriverWrapper.java",
+    "sha256": "ed8fa334989e6b248eabf098a923f8b59826089caaf96c9688a95f5a42e27671",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/KeysetDeriver.java",
+    "sha256": "7f8c4b3f68ecc5003facc508451f58f7be60f67109467b6e4c46fc6b3ad57a5b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/PrfBasedKeyDerivationParameters.java",
+    "sha256": "2b96f446c5240aa275081b52f4e1c73897c03c1bec818f7e07902aa81fa14632",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/KeysetDeriverConfigurationV0.java",
+    "sha256": "83de2c4e1f237795534abc10d02b33b869026f0a2d4d45014061e7bd838b1ac8",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/PrfBasedKeyDerivationKey.java",
+    "sha256": "91ff878338865d2a46d45a815c3d89b87090a370d98d8b57201fbc3d6f1e2885",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/KeyDerivationConfig.java",
+    "sha256": "c1c3b4fe026e5416c093e7f9048dbc05cd7aa1253221eef80a41e6994a0338dd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/KeyDerivationKey.java",
+    "sha256": "ef9f80313c753fc7c996c644b281488be2b4bd378d1a75414e1ec8859866dc94",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/KeyDerivationParameters.java",
+    "sha256": "bcea8341a87a82cc0037713bfe4c0baf431997c470585acccdf67698bf7b81ef",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/DeterministicAeadConfig.java",
+    "sha256": "7b260c4360a08e9ba68b68650501bfd8fc5c626680f8c3ced68bf009a093ff55",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/DeterministicAeadConfigurationV1.java",
+    "sha256": "8564cd46640df117b185b29990882e64b96dfab6691d6cfb3cbd27051d5e75ef",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/DeterministicAeadConfigurationV0.java",
+    "sha256": "34ac7a2d984197d8803635c0189802cbd16ef5c7ca4c5142d024edf9ca79cc8a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/DeterministicAeadKey.java",
+    "sha256": "a15b880ef4814cd138bfdc5e20cb789ab17103e484fc371f546e8f1563fbfab6",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/DeterministicAeadConfig2026.java",
+    "sha256": "83b1580ed10a036a26f3181682e4e80297b4a0ca72dfbde9bcef05fca8979ce1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/DeterministicAeadWrapper.java",
+    "sha256": "7718c7231fd450576c2da19b82ddb36c43cb8ce8bc540d1e3c118114d5350c0d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/PredefinedDeterministicAeadParameters.java",
+    "sha256": "c92b1fe0b7b7dae0a4ee775d7980bc63525ef6522aa35461d02b4aa9fdb246f1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/DeterministicAeadParameters.java",
+    "sha256": "6df5bd0aa90d0f99dd6bbac04fb64e51c28c2ce26c35472581689ba701ee5cec",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/DeterministicAeadFactory.java",
+    "sha256": "2f46d1755e048ed6c0de5129dcd1e14c94c7b2844832fbe777f9ba13cf01ee14",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/AesSivKey.java",
+    "sha256": "9143f215fea1dfee08f895d54a88dd0e5b3d0c297b8159c2b07429211fad0eb2",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/DeterministicAeadKeyTemplates.java",
+    "sha256": "b01bdddb35b76c3fbffef48ca9a6ee4008817d0e947410ad5938e76c90f7b83c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/AesSivKeyManager.java",
+    "sha256": "ee5c41e4ff995fa223680bab84fd21bb8a1db885f1f823390b71ac5c5ec28126",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/AesSivParameters.java",
+    "sha256": "8af807717bed4507693bc0052a8aa46fa69608f726aef3ba8555b79eeeac1702",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/util/Bytes.java",
+    "sha256": "b1f2c547ac57b5aacf00b37cd5050a425ae103f322b2336f07186fb57d2f65ee",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/util/SecretBigInteger.java",
+    "sha256": "8415872d2c0153dc77c0c24f81763a5438ed2b2e513f456ff64cd312330140ad",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/util/SecretBytes.java",
+    "sha256": "b4bd70d0bd3060aaa04403c8dd045a8303dacdcb1ccae33a1b098a0358358744",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/MutableMonitoringRegistry.java",
+    "sha256": "a7c145749000669bd5b1932bda43179d8074d0ec1f881e9b4c89044121c3afe7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/KeyManagerRegistry.java",
+    "sha256": "af1ed6a013f47647860eff362f74c2cef29af8c74b56b0e8d6c08ba567ec01f5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/JsonParser.java",
+    "sha256": "289c98beec2a0a1524309adc19170428079592c9203b633111bd86f05659e14c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/Random.java",
+    "sha256": "b695c45a442b900c36cdc3f66c8ca30a90c499d1e5dcfcf142a86b5335c2ba3a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/Ed25519Constants.java",
+    "sha256": "35396e721df9edbaf782e31f8b988658cab8dd484ac5b3affa967a1e15e9ea7a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/PemUtil.java",
+    "sha256": "af20d626d2175f7bde13c7148f28d2d4ab595d545a9810806b30357e26d8725c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/Util.java",
+    "sha256": "9e172ba9fdd28fd6a25e46f34f5c96983ce34e983ed1559ec08693aa9b0a81cf",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/TinkBugException.java",
+    "sha256": "ae65897460beeb7c70c1edff7e9e1cd7cd7f2f68603d363ffd61049d1d25d110",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/PrimitiveConstructor.java",
+    "sha256": "f33aa9dcb8325a1908988d3129e5aef52919e6aad8fcc4efe0448d140a474486",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/MonitoringAnnotations.java",
+    "sha256": "2cbd6868a0340245197af5db86f45e8b2647c65b46c522994424c59a070c3eca",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/KeyCreator.java",
+    "sha256": "3e0ba68a9481fd8514e751a0ffc08136f89ccbde4c62ed42943453cae3a8b856",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/OutputPrefixUtil.java",
+    "sha256": "866ab395730a5ac2a3ef6e85018eb20bb518a314a98dc5784c4f37aad8758095",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/MutableKeyCreationRegistry.java",
+    "sha256": "d0cea327498baf89624dac16ac394ce86a64d459077125c027a46947cc68cc8d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/MutableParametersRegistry.java",
+    "sha256": "0c43709b663146df621cbdc962d826a05cb6c4020e00455506cb63f781658725",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/MonitoringClient.java",
+    "sha256": "84d3cc3990aa892f3bca21ddfa548bf8c233ad948693e530f9fcc3bb905d8fea",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/MutableSerializationRegistry.java",
+    "sha256": "bcae5711967e45fea3247d1a0c2e379d91deea1cad0325c191059db5fb089a54",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/ParametersSerializer.java",
+    "sha256": "ae3245098a6e0fe460cf7b79ceb17ee42ef2707c718e56be6271177375c0cfbe",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/BigIntegerEncoding.java",
+    "sha256": "51b6c6add70e594afab2e3072c5fcf64391df63bf1811d695f97c28389e20bf5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/SerializationRegistry.java",
+    "sha256": "9b149a3ccce9ff685984ed7f282e5405aa28b9f282f03153708773e5591154ce",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/ParametersParser.java",
+    "sha256": "4230d376976d73f4cddd097ed20a4b222dc84189b97413b8361c35a418e4dfa2",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/PrimitiveRegistry.java",
+    "sha256": "1dd5421babc3ed2cd5a8b0fe3b7247031a805c26115ec16d9d6f84af2347a3ac",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/SkipValidateKeysetsOnParsingTag.java",
+    "sha256": "caff5fb0dff5c0c76d589478fbdd1e7536bce251ae3ad559247dac4abbc6e210",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/MonitoringUtil.java",
+    "sha256": "34bfe81c8e3cf47450b3bee5a1e8290151209ca88805883702e985826bd47603",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/KeySerializer.java",
+    "sha256": "167b2f54df93694e378bd53dbfcb9b51532e6c6a1308a5e9f9b365880f945aca",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/KeyParser.java",
+    "sha256": "ee02cdd8f77c093e8beeb12a605fa77ac14a71b9c475d4aa856b0e2870b89077",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/Curve25519.java",
+    "sha256": "ec4793ae6279be9272642728ec40dad43f9392ba5a22d60ba9d36641cf9d8efe",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/MutablePrimitiveRegistry.java",
+    "sha256": "b8c2641039ec587dbd1adf8a8e743b30eb0e6edb4696f2cd277186d74993b559",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/Field25519.java",
+    "sha256": "2a844052f1ce76e20a37ef1787442ab971f7c987271c34853ad5c66e8d63dd5b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/Ed25519.java",
+    "sha256": "910c75cfbc7bb3acfabdfef83f905e9c6ee3e303a118f8430f45796710363918",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/PrefixMap.java",
+    "sha256": "7b671969b19450327913cbcf81dda518129b91058c9cf293598faabefb991bf0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/PrimitiveWrapper.java",
+    "sha256": "96803de33d286bb2b612f0d8b8ec2964bd639d1e77ea2e530225dfd136e16cb9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/BuildDispatchedCode.java",
+    "sha256": "794da27b6041db7751a61622fab133698b263e2126b9e432c19877188e6f8497",
+    "tag_comparison": "exact-android-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/ProtoConversions.java",
+    "sha256": "67f1ba89b4ec24769bc82b6878e212c08f468b8040df65e2411fd711a6d9debd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/KeyTemplateProtoConverter.java",
+    "sha256": "2a25a8e3b3833567f362c7e01e07172d7e2d08152c3cc0bdbe7e9c9896990611",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/EllipticCurvesUtil.java",
+    "sha256": "36119be327fcd22996143ced395b2a1def0ab12a58aeafa90faf753dbd1ec89c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/KeyStatusTypeProtoConverter.java",
+    "sha256": "3878ab5bd9ee731a66114f989fd08ebfd7ba8fafc40f997027aaaf075dd6cbd5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/LegacyProtoParameters.java",
+    "sha256": "e69171322044c4e514fb4270a67eca62ff51fff6b8da9ef285c11539ec3e00b0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/EnumTypeProtoConverter.java",
+    "sha256": "27c1b82b55f67b1b62895edc5cbbc9efac08a646c448be31d63a6a8119a6f013",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/ConscryptUtil.java",
+    "sha256": "20f304161e1c48cf7bffa1ed6cb6e100054cece3ccab29bc7b0ef548c2202d6d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/MutableKeyDerivationRegistry.java",
+    "sha256": "8dab5ae0b24650d07144677ea5ad4dccd5383ac51b1bb2f5c1db58f694f06079",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/PrimitiveFactory.java",
+    "sha256": "20705ef00c14e06fa51227123b7aa59edf4218431291f8411c3271a8fadf03ba",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/LegacyProtoKey.java",
+    "sha256": "68345825a8bd611a5101f16140da591a19e85f2ecbadfa9ba5b0d12f5556b82b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/internal/LegacyKeyManagerImpl.java",
+    "sha256": "1e92fb286139f9ee657d89f1464972733dc0ffa09a3d64312ff4828fe75ef49c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/Bytes.java",
+    "sha256": "34a3010af92fc1344a967042fa9a1706e0bf037fda5760f1a4321c3879fba7a4",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/AesGcmHkdfStreaming.java",
+    "sha256": "19c5ff90c450b4d923dd036ec6c8b54addc5d6fe17fd87a84ac79dfcffbca520",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/Validators.java",
+    "sha256": "ecb0b8fd3f5a96ecd6b728ca29faca0bb004079b9cf84a6f9e5a441651e93ddd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/PrfHmacJce.java",
+    "sha256": "4d0fb126cbbf355cd21cb913d32f7cfca5c973524abca9eb0b4e88ad84583aae",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/Random.java",
+    "sha256": "fce9f61587fa05947a13968571657c9584c4bc5d660b21fc92cdd3a00bfcccdd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/XChaCha20.java",
+    "sha256": "2be97b8ac51a35ea594a6a8c6bcc704df469b2ef8f3dadfbde9105224e970dba",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/EciesHkdfRecipientKem.java",
+    "sha256": "851ffd0fefab64c57e98f79b17b65449c901410eed296dc77655927be9c31348",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/EcdsaSignJce.java",
+    "sha256": "cfea9c1c9857bfef187da9d37a351e118e4c0ade0a70dc8bcdbddf6b8ef1744d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/EngineWrapper.java",
+    "sha256": "152bd7eca1b0070ddfc92a9f8dafa132387a50a438c69c13b373a1255c6a15f1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/StreamSegmentDecrypter.java",
+    "sha256": "f5e176d815820607239fdaf8d926149ad42e19484ddd7ad802badefa9eb45be8",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/Hkdf.java",
+    "sha256": "a0c29dbe05478baf58469351e6c1637d5b2e4b12397cc4b9f7943c3e47c403e7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/Kwp.java",
+    "sha256": "820153a4f9674edbb4090e36f67f6e093b396010388a66b2d83944736390665c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/EncryptThenAuthenticate.java",
+    "sha256": "a16cff584904982fd9d82e4944dbfb15e4f1d5d781a0b8260744ffe8002505ff",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/EcdsaVerifyJce.java",
+    "sha256": "b805589ad0fa0c0c0167793ffd265380c958a51891af41d8d9069241af1005ad",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/StreamingAeadSeekableDecryptingChannel.java",
+    "sha256": "b21f340cac6d1e0be0fdcaf20eaee2b39d0591ff09c460e79b9c7bafb5d73684",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/StreamingAeadEncryptingStream.java",
+    "sha256": "fa3b257fbb3404c345f304e08f380dfbb1339f1953a9534e036d8a60e61bdf11",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/ChaCha20Poly1305.java",
+    "sha256": "0d6ba86991b394504c300c79cde2bee4bf22bbbd022f2fb4e33a59f288bf5253",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/PrfAesCmac.java",
+    "sha256": "191cb3287309c4115f02b7ebc845dae313a3fc7a3439e92340172e797125abce",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/RsaSsaPkcs1SignJce.java",
+    "sha256": "1e594aca1c1cbb2eb6e1ce99c3d55a9dafd6371442dfad7cf5f5aa77f3c04b6a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/StreamSegmentEncrypter.java",
+    "sha256": "9e0ac1c7656216a283e1b84f34db4d1b64ed5194607948ff3f3b422256a2e400",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/RewindableReadableByteChannel.java",
+    "sha256": "bbcd5fd0ab6b54f71e637f887eff6c7ac0d948635b5d001016018305d8d00322",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/RsaSsaPkcs1VerifyJce.java",
+    "sha256": "c7f71daf7d1372aa1873060b69e4968c3ef4505f2e2779bc3b5c4a38d19dc9cd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/EciesHkdfSenderKem.java",
+    "sha256": "2a4a7b519defeca4c5724b2c7389d171d4f74dfb8c55cde869f3274e6afb0d8a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/AesEaxJce.java",
+    "sha256": "2038f76c8cbcb4a1376b45bdcd1d9aeb2a462df6d4a925c41aed104444e185bc",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/EllipticCurves.java",
+    "sha256": "d2d3b2f83eae909ab6ec2c406a0d299916c1a4bb61e231db0fd7d1cf0e9c547d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/SubtleUtil.java",
+    "sha256": "251b627bcacc20d643a2df283ce63898d3220d5434a02add4795c04d60111934",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/ChaCha20.java",
+    "sha256": "1dccf40067f29eb59e3cebc7292b404b0860382028f866cc0240d2e9c470f061",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/SelfKeyTestValidators.java",
+    "sha256": "b5ad894a245d811b0a886b3a3102aa261c6c3d1f00d481620571c9dc280e589a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/EciesAeadHkdfHybridDecrypt.java",
+    "sha256": "b443525c53882fa5e2ec513d58ff89755785a958895eb04906f87b0c32de2c22",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/AesSiv.java",
+    "sha256": "d227ec8f8c2f7b2d283f01c6ebbd0e03f7eb728c33d3ec57cc22d3c435e77361",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/X25519.java",
+    "sha256": "e9451f47b32f7a6c0166d2202a302c091f6b0ee1be4e0c3cdd2e63406a53419d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/Ed25519Verify.java",
+    "sha256": "c3a72a26af1e216b85d4d30f8f68a514e5fcf22a118c483f1c44c7f0438418ee",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/EciesAeadHkdfHybridEncrypt.java",
+    "sha256": "8b5d7570f924926c2730044aa4097f423576c267c71e957fbd2b291fdaaccd2c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/IndCpaCipher.java",
+    "sha256": "3e1f344c0920fa7167bfcd73b1b890b3cdd1085b2f2da93a137ab6d8748bf25d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/EngineFactory.java",
+    "sha256": "0795c0a5761c27ee49bc543eae715eca0ec65e8b8f4b63ef206e75b9c917ef12",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/NonceBasedStreamingAead.java",
+    "sha256": "4561235c2d2a22cfbf967703abf1cbdc9cf41e8e53e5fcc6a1376cade2c46fe9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/StreamingAeadDecryptingChannel.java",
+    "sha256": "a1c3190b3fa57aba6b7fcdc1784c0a9a6896ea15b7dd61d200127077d4778489",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/Ed25519Sign.java",
+    "sha256": "58183033e93324f5228e332bd2db9e03835441819adf4863fd5e95aa2b43604a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/PemKeyType.java",
+    "sha256": "546bdeef0622086dc7a5ff198be86b52200b5b415ecba2a9d8f7a84a25a59a6c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/StreamingAeadDecryptingStream.java",
+    "sha256": "1b6ad03fd4f64b89e032a88d0bbc2b64e4fc81286351a463bc4905cc6f4e906a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/Base64.java",
+    "sha256": "8200292666c2b024abdbb6033b092b55ce76260b7a1a4eda6e5b6dc9d12c4dc1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/RsaSsaPssSignJce.java",
+    "sha256": "b65372b7e20cdc9ba30d173a75c01efc09bcd7e5cc9a497154936d490430c20f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/AesCtrHmacStreaming.java",
+    "sha256": "13c2eebf42859025f14a7f594c4535bc4a39a83443de9293b75da1a9450a180a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/StreamingAeadEncryptingChannel.java",
+    "sha256": "f2dc93f81414b9dba53f7b49064b829181e9cf9ff402e86375db6e08f2add7b6",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/Hex.java",
+    "sha256": "eb8ad329f2d193d94d3d49b4866b28d9fe35901fac286108a714e98574904f1c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/AesCtrJceCipher.java",
+    "sha256": "988052be44ed39e5d07a886e0ca7c92899f6c37071d897c79f98401303985806",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/Enums.java",
+    "sha256": "6b07ac88ba5b0c4335d64ce3f881e4cf61ae65943dcaf66b99c4b6ec47b429d6",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/PrfMac.java",
+    "sha256": "6b24406ee7ab0be5a3c4ae9eeb8cdebb3abb1373501da05b4c2b9529e71bca37",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/XChaCha20Poly1305.java",
+    "sha256": "c6b1c1fb3588fa3b492e8d8e66e4e386acdfe8c13353695a7757561454a197a2",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/RsaSsaPssVerifyJce.java",
+    "sha256": "99f47d22ee6a59720a596d7a083e0e5c329fe1706c14a97a4baeab029f350f77",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/AesGcmJce.java",
+    "sha256": "41e7bc67fe923e2bbcb6a352bf669e6a4477f4b68b062746470d6eb4bd1a3fef",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridPrivateKey.java",
+    "sha256": "7f80d476b73e6d970eaae6acd0030088822efda763c4ec043b644cb60e7b5481",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridUtil.java",
+    "sha256": "8fe591dae3f2c8cd41f4c6c7eeb35c7f46abafa847ec415043a793aaf571fe52",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/EciesPublicKey.java",
+    "sha256": "d31a0269cbbcec9c2a42b5f9d01be21783d1e9d4093f1094eed4f958256e9f1a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridConfigurationV0.java",
+    "sha256": "86669cbc8f0ac8c71577c99c6d6516df2ef9c50d1f5134e8f525828395669f08",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/EciesAeadHkdfPublicKeyManager.java",
+    "sha256": "2f0aa9c82a26987e5f3ce583d284c4400e9ee2f81d2fc7d45946724f921c138b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/EciesAeadHkdfPrivateKeyManager.java",
+    "sha256": "59818b76088d776130ac470ff62a8320cba16db20cf4cebcbf3facf3dbf1a21e",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/EciesParameters.java",
+    "sha256": "05bb5e6dfcc3821d81b6a73e99799680bb4df47b72d05e8cbc4e0888803a3cf9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridConfig.java",
+    "sha256": "837c076aaf6b769923b67b82876727525069e381f8e21e4c1c491e0a6b7d3fa0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridEncryptWrapper.java",
+    "sha256": "5b533cc6bc439b42f52232ad6a4033e2878dbd2b5d9f2f2207bf39e62c18e294",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/PredefinedHybridParameters.java",
+    "sha256": "c21b0225aada306cb89546780c51305a1c6855482128eff72efdd4def6663067",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridParameters.java",
+    "sha256": "49593eaf412ad29e27d4d40462864fee8a0f2298c8f9bd3ce9e6bbbf3da75398",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridDecryptWrapper.java",
+    "sha256": "db0ba8bf7307df97f145f3b35641efd7ef2923e2f020a131ee601d570e09ab16",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HpkeParameters.java",
+    "sha256": "91c05854b09562ce4ef36cbe1b4ff24ba07f87225e9e9da1e8293f8e01a22b69",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridDecryptConfig.java",
+    "sha256": "8d414168a336c8ace423aada08c85062a2b5acd1be5495715c099170d6b9317b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HpkePrivateKey.java",
+    "sha256": "c0f1ac09e53eb0a5fbe31cf39ced25df40a4f8239c15fe721505da1a210d9506",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HpkeProtoSerialization.java",
+    "sha256": "cf90e9f48610aaa4f9dafc692ce886ca2b49b51da59e062273e6ebb09e411d2e",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridKeyTemplates.java",
+    "sha256": "f0f0e4c77cbeead26f7e7c8074b6058e2a196c5adfde3f2400b1bcbf331e5b53",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridDecryptFactory.java",
+    "sha256": "0a7b3a880aa0d003e9ff9614e81261e2c5cb4b1c184860bc45c68a470c5d030a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridEncryptConfig.java",
+    "sha256": "2b9b06357cda5c371011449817fc3fffd975c2286451b0122499a9dfbd2e9661",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HpkePublicKey.java",
+    "sha256": "aca1821aa7f23b1897c6f825868cee116a80647fd14f750c751a4254bab70f23",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridConfigurationV1.java",
+    "sha256": "49c77a2c5bc2948d4ebf68ec163f92f40d4f564000a40729d393cb8e633252f8",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridPublicKey.java",
+    "sha256": "747e54488b32d38e47349418c18f3b4f473bf07d1b5db629d88d394003332ba8",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/EciesPrivateKey.java",
+    "sha256": "2dd281b03d8e02a120e38271090e77279111af4218ad598eb31bbc66d7332636",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/HybridEncryptFactory.java",
+    "sha256": "54c4e759dbb5183b00b76845ec59481574bed9e4a344f603951f348601ad1854",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/config/TinkFlag.java",
+    "sha256": "8bf0900e10ccdc3099beeed85bf390d62ff85cbc6f2d9bae470b05501eab32d7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/config/TinkFips.java",
+    "sha256": "ccafa91a3cd76740eabba5df208b91ff3b060c30aead4988858cb7888e269227",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/config/GlobalTinkFlags.java",
+    "sha256": "19ac378bf1246b350ba4af94f78888e1056f696de115beae8bd8605c877ebd72",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/config/TinkConfig.java",
+    "sha256": "a1333bdb9a195b6e3fb470ad540b2cb43f96845dcb03c7c5af0c75aa7ad5c129",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/internal/AesCmacPrfProtoSerialization.java",
+    "sha256": "c565205d11e2db10c6b12ca2e042461c5b7ff45add0108187fad9c92dee3440b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/internal/HkdfPrfProtoSerialization.java",
+    "sha256": "282c621c87a728ee1f46fb2f2ab1fafc9c9578c4b4e99f5f53ad4363add30952",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/internal/PrfAesCmac.java",
+    "sha256": "b1e2ac97625519a5d3256cf747fc782718bdc4a4e34bcaa1f7d58561f9131e6b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/internal/HmacPrfProtoSerialization.java",
+    "sha256": "2730c1903ff69a38d9ddfc72ddf1fd54c0d71c9d6c054d5af0009fc7abaea2dc",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/internal/LegacyFullPrf.java",
+    "sha256": "b2810470022ffae09eb0d60033c08ea123d5f01baffbe88b2ca3b67472370063",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/internal/WrappedPrfSet.java",
+    "sha256": "9c8ba8abc0c92f93034bdecdc5c8ed50035cb6deb39b37615f366b87662b2200",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/prf/internal/PrfAesCmacConscrypt.java",
+    "sha256": "316540dbc75f50a5ad844022fed58464e7d000e6c17f4767a417edbfb2b56dcb",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/InsecureNonceAesGcmJce.java",
+    "sha256": "94b388d7ffbb72972df2d96b68cfca41e67705eba08223577cda0a0c9d502a52",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/AesGcmSiv.java",
+    "sha256": "29539e783f9b57f9f48f70d443d5cd5bf079e96a98f2d8b706bd123d60d4d15e",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/InsecureNonceXChaCha20Poly1305.java",
+    "sha256": "520e9af2df5e6a66ab87928839b90de1ccb8900bf076af2862fe93791c6d3c9d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/ChaCha20Poly1305Jce.java",
+    "sha256": "293beb869b61fccbd66ed440305e8b039af1663bd82a01c507d5504d1ed59dc2",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/XChaCha20Poly1305ProtoSerialization.java",
+    "sha256": "10abc149681f1a7e41d99fc52f8273195661a129495ff7adca4b3f81bf3a38d3",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/AesGcmJceUtil.java",
+    "sha256": "90e50f4332d0dec78f3bb634d3f9042e83188aa9eb6f6f337e2a14e3d840bd24",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/AesGcmSivProtoSerialization.java",
+    "sha256": "a6c32b5fceec10629835e5b732f645cfd923f36066702d40e497be09ec963b4b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/Poly1305.java",
+    "sha256": "716ce1f69eb120c5e3f7e815a490082b85df03d41375f7d9bf6d34befdaf9655",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/InsecureNonceChaCha20Poly1305Base.java",
+    "sha256": "92d521ac85ad39d216c3dd62abcb520ba36bb12727ade05c5139d9f676f79330",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/InsecureNonceXChaCha20.java",
+    "sha256": "118edbd2450e0d4d1e73204cbb7be74b2ad2b57a0f119b83c0c793e92e2efc3c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/XChaCha20Poly1305Jce.java",
+    "sha256": "bdaded5d9cc42525e4e8f9a5fc9889d078e25a62be0c3451b3cbddadbf408c22",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/ChaCha20Util.java",
+    "sha256": "9cb534ac48b5d70c0b2548288d6e68d4b0e3a9fe6a7f23d6abdc18c9d45fa2a1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/XAesGcmProtoSerialization.java",
+    "sha256": "dec38c9955d14787c3472b776e5427a8184c2603e291d7b7415830421533a50c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/ChaCha20Poly1305ProtoSerialization.java",
+    "sha256": "ea13997c3135e395f9b41aed372c83c838244c7d33e424a09c7e0a0ae8d7a364",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/InsecureNonceChaCha20Base.java",
+    "sha256": "ae53149a9d63c985fd7f997b79ad604abc73a89cb68803e4ce27d8168b520969",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/AesCtrHmacAeadProtoSerialization.java",
+    "sha256": "a40ed2c43d4565ca77f67daf94341dd90e146fc43db12af7348788440c7c3ba2",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/InsecureNonceChaCha20Poly1305.java",
+    "sha256": "ca0b46d3441cbac1e763e911137c05c57995b79adcb9ed4e84dc0c2777a26679",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/InsecureNonceChaCha20.java",
+    "sha256": "22a1369be25117e02450bb7c156f51177e36b43536ef51e8ff4628672369c83c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/AesEaxProtoSerialization.java",
+    "sha256": "44dba5096716d5c122edb05fd1f035e83046c294220b26afba2a57b8fd028ff7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/AesGcmProtoSerialization.java",
+    "sha256": "a3d81d287585f27acd6050fcb445c1cd7ea9a30ab1ec033279df1bc70bf45141",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/XAesGcm.java",
+    "sha256": "bb6d4c9e4360eba94107f7ab77fcb66b9592eaefeb9ed4561f411de4e64daac5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/WrappedAead.java",
+    "sha256": "b965058b25d56f5f526b2e54417e77448d19a4bd756a7b4664033bb58965c84a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/InsecureNonceChaCha20Poly1305Jce.java",
+    "sha256": "4291e9332ca2ca35f7c2f525dbe4f918a9543831414568e433fc5589ee1dbe24",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/internal/LegacyFullAead.java",
+    "sha256": "cb9ee308726452f07ae09e2bb894850f5be41d7e6dba9908d9a24dff02cdf8ea",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/subtle/AesGcmSiv.java",
+    "sha256": "a77f8a18b1dd78f29e1e1fbd7106cf85e6717a2d5317cb2e7a646f579aa4d398",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/subtle/AesGcmFactory.java",
+    "sha256": "c8b8e3072368c2e815a645673d3bd9a0a031e16b8b927b4d2b3b9d2dcd1360ce",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/aead/subtle/AeadFactory.java",
+    "sha256": "ea3464311045fee2e90095e2876757627fe1fb742c2cd673b34eb4b266970e47",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/internal/JwtFormat.java",
+    "sha256": "b25abd05f23559560d90bca21919bc0198febe93ff0f136375bf2478b630a7a1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/internal/JwtEcdsaProtoSerialization.java",
+    "sha256": "5ed9114c1704c351d838fd9baaf9f011abd1990c713e0e65f4062f071206a9a2",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/internal/JwtRsaSsaPssProtoSerialization.java",
+    "sha256": "2d85b64562121dfd62d02f1a94c2194253c723f4bc99cf157d4c92323a99ac34",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/internal/JwtNames.java",
+    "sha256": "a0921f859fcfdd6e155f3e770b9676676a6dc2d699b90e99d72687afe3119cf9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/internal/JsonUtil.java",
+    "sha256": "d48fa188e9803a0d08f219887238569161eca7506a949fbefac807c8e6e76c29",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/internal/JwtRsaSsaPkcs1ProtoSerialization.java",
+    "sha256": "8b3fa2c7c083ae2464f48f0e8fce0a1f3f5839f2f8d86997ff2a7c1f596d5f62",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/subtle/JwtEcdsaPublicKeySign.java",
+    "sha256": "ec911972173215dc85f03b438a910f9e765fce96fa1527b5e4eb82c6e31a7805",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/jwt/subtle/JwtEcdsaPublicKeyVerify.java",
+    "sha256": "c6fe4a51249f3f7eba263bf28fe3b8cdd241ee0f2a6203d2e1f77f24525894ac",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/ChunkedMacVerificationFromComputation.java",
+    "sha256": "0efb38ebb39a3e713dba0945f9186c8349d4458d73ea52c3d0b70d80ccee86de",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/AesCmacProtoSerialization.java",
+    "sha256": "0995ddf7ac764e5b6e8cb569e7c5ca79f57505e670eb1de849e2f41de89966a5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/WrappedMac.java",
+    "sha256": "49aa772437fcfd6332440eef0636fc9fe2f81ab02d4976068ce79879aa2e5b2f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/HmacProtoSerialization.java",
+    "sha256": "32b329889f4b804d3b98f7860038dee161aa688285ff5917be1c58e564534377",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/ChunkedHmacComputation.java",
+    "sha256": "38d7a874462444c29331ffd6ed8790edc2c33b747369e567dda154bc4231ad6e",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/ChunkedAesCmacComputation.java",
+    "sha256": "2e6873d02364ca666c946cae42dc9773af616aa8eae2ae4c2146d31193f01247",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/ChunkedAesCmacImpl.java",
+    "sha256": "1742cddf67c26ac55017e7dd894cdb1afaa6b24ad445002134c415b8b7c40001",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/AesUtil.java",
+    "sha256": "d198becceccaa9bac0465ff87a03eee2ffb11c38bd9f7d9061eab53a8fe37dde",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/WrappedChunkedMac.java",
+    "sha256": "a1e309e90f7490a69b8a2196c86de437bb81a2e279e268167b6e8080e8a222b3",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/ChunkedAesCmacConscrypt.java",
+    "sha256": "3c389c72d20a241b660d93e07e9d310064b4cc97ffff0203aad08aba4b054de0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/ChunkedHmacImpl.java",
+    "sha256": "4be75b63c9d655a3c352ec1b3d2365e806f9dd2dccab3968f1b8fb03769df809",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/mac/internal/LegacyFullMac.java",
+    "sha256": "44c2cb42c13664c6e53b70379be9562fa4019cf07bf327ea1026b636e0e484ef",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/internal/AesGcmHkdfStreamingProtoSerialization.java",
+    "sha256": "4a0a4f7691a7d24c7a5fddad78d21acb87c277924bbf2658114eeb41fb3550c0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/internal/LegacyFullStreamingAead.java",
+    "sha256": "e4140ed8a1b9af293cbfef3a0bc90bd9739ad0760265b05cb8870259b9590a7f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/internal/AesCtrHmacStreamingProtoSerialization.java",
+    "sha256": "f14da250cd85786716d67c52054753acc2f4a93ebc727b4bceaed4c21824e992",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/internal/ReadableByteChannelDecrypter.java",
+    "sha256": "1b193f451b87463a4ce39248277f73b7269fdcfab2b29328baf3dd2e2a898ae2",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/internal/WrappedStreamingAead.java",
+    "sha256": "1d93a2c120fb1054fbd48a5efb25167cddd26426627bf478b87a224a01b06a33",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/internal/StreamingAeadHelper.java",
+    "sha256": "986a6279b6148cfd093656955107c5d613dc6dda5d8dceadb5af61b95dd8c246",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/internal/SeekableByteChannelDecrypter.java",
+    "sha256": "c41546180354d817f5cd09143dac4dcd73795b7859c4302a62dbbc7eab733f44",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/streamingaead/internal/InputStreamDecrypter.java",
+    "sha256": "8e696b0afef53af6dca26f2f6ec8773c67eb65d3af77238587713ee56d8f18e0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/integration/android/AndroidKeystore.java",
+    "sha256": "47f9f5bfb85aa6a2bf0391f6a470ae47eadd93b5ef7a43d29f36a9f7656a41d6",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/integration/android/AndroidKeysetManager.java",
+    "sha256": "cbd652a82ad461b3f63c725d4a49a3710c08290af177cdce852b244a56903891",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/integration/android/AndroidKeystoreKmsClient.java",
+    "sha256": "d96c3476f834b106479fd6c38b51d15bee46a70bffeae692d84b443e3af83e20",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/integration/android/AndroidKeystoreAesGcm.java",
+    "sha256": "f648523fc56ed6aaa6eade5322766defcd589ccc372c1ff8f9c9dea2c23c7d01",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/integration/android/SharedPrefKeysetWriter.java",
+    "sha256": "71f446da0d65ebb0b1429c60ba909b12ee6eed767bc4d322ba4ff10067913d6f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/integration/android/SharedPrefKeysetReader.java",
+    "sha256": "b8f306a1fc67269a878496cfbfd92fd9d6c459f1f0f702354089d1ae3d222b2a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/tinkkey/internal/InternalKeyHandle.java",
+    "sha256": "6d106fe1cdbdf36fa9d6276aab27e885974bab3f5efa3040715f7804edc95a8c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/tinkkey/internal/ProtoKey.java",
+    "sha256": "8c776c9467f855f16e51880dec517e414a57cac5fab079bb357bc0cb3a6cf28b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/RsaSsaPkcs1VerifyConscrypt.java",
+    "sha256": "1ba389e57a87f79e4cc2e64fea6aa6143d641c2d509c175e11e57c8fc70851e4",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/EcdsaProtoSerialization.java",
+    "sha256": "3873794d1eeb20d58520320b82e814774e5b4a7ebee7db55778fe2b4ee4cc49a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/SlhDsaSignConscrypt.java",
+    "sha256": "18c03455f8bb6ad6317afb4a8316698393d59f6ec20a7fe9f5a59978a43f32d4",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/Ed25519ProtoSerialization.java",
+    "sha256": "3bb4d3c12577b50537740c72d2f922dfa80c4dbc1bf96117486881f5c1c2e725",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/EcdsaSignJce.java",
+    "sha256": "31e8ed08b7eeaa2cb44935165e869fa5f0944d797a895ed64b6d460a55fe4a88",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/RsaSsaPssVerifyConscrypt.java",
+    "sha256": "0205ea8af3f18ab38da6570b68d6fec62351b404df743340c677b92707cc40e4",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/EcdsaVerifyJce.java",
+    "sha256": "8b1c13b71b99f4da3d87f45fe7bfd5f4a7199ace00ea62f7ac24436108cdeef9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/RsaSsaPssSignConscrypt.java",
+    "sha256": "5c586ba79e54ea6c60718c5d47d294f95aa41e6bba12c9b407fb289aa78ae0e6",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/MlDsaSignConscrypt.java",
+    "sha256": "d31f4c2a16a6dea9777b729728c87d98e10fcc8928a6ec90ed0d684364a1e81d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/RsaSsaPkcs1ProtoSerialization.java",
+    "sha256": "a7d7a7d68d18ad935db8d82abc9df834c568d4bc57cba93436e62c71714b6433",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/CompositeMlDsaProtoSerialization.java",
+    "sha256": "96ef88ef00b522cde1e1d31e507efb26f7ff8d13573ea2db55c025e77467a5fd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/RsaSsaPkcs1SignJce.java",
+    "sha256": "56e86fcef92464fd9f7e0fd4ffa02df52cfa3e8c968025e278da6a2fc4d20fb5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/RsaSsaPssProtoSerialization.java",
+    "sha256": "09249d5e08f628987322ebf15bb84ca49f1b3be951ea5b983ce683eda147628a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/LegacyFullVerify.java",
+    "sha256": "5d85f16c217171f70ba62d46d73017635576942c258022d29b2b6a404a1fa3a0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/Ed25519SignJce.java",
+    "sha256": "0a1ddadcf015a39c70eacc7268dd2d2e15789e6bbb3c2161061b3fa040165597",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/MlDsaVerifyConscrypt.java",
+    "sha256": "0c91a201e1ee57672445a21e0bacb9c7dee7f135e68010d5eaae0ddd5954075f",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/Ed25519VerifyJce.java",
+    "sha256": "8293d9e948e230307cf9de194da0fd7719e9e4edc333febcb09cf796918d9283",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/WrappedPublicKeySign.java",
+    "sha256": "cf7140e0be2b80be7517af55d46c04cf1a7466d6eaa3a4862e444eb325e52fea",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/LegacyFullSign.java",
+    "sha256": "45e42a19f2df4f7650c2c55b06e78b2504f702c76d25d69b8ad269db8075e6c9",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/SlhDsaVerifyConscrypt.java",
+    "sha256": "c47a0a8c37f3ef12ea94d32f73e468031aa461746df770847c66ff0758c33cc1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/SlhDsaProtoSerialization.java",
+    "sha256": "1b22002e2467639a242d60aeee6020c1dca5b74d844b0678a91304a09aa1db63",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/SigUtil.java",
+    "sha256": "6a20d84ab0988a2142a4d93e99506d1f75d0e1c593f83c786d863c10577d0575",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/WrappedPublicKeyVerify.java",
+    "sha256": "917be62f81ca29b159e3fc5b666a32c91ed0195bb1164709311c4a695aba5c3d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/internal/MlDsaProtoSerialization.java",
+    "sha256": "f9fe034faeb869cf12729fd3031e927b1b9a761676008468b66faac70629877c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/subtle/Ed25519Signer.java",
+    "sha256": "1dcce10d15d0269ee0a34c3e68a028d9d3a660e7820eff63a167d86e32d5cd71",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/subtle/EcdsaSigner.java",
+    "sha256": "29d8a4882372bf7008025019d9c3d162d4c75ef7fd12223b06a338d19e5e9881",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/subtle/Ed25519Verifier.java",
+    "sha256": "1506c552de4b9b88b800c5e5227e3e9a20269bb85ee4072c5dea8aea1d9f2a8a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/signature/subtle/EcdsaVerifier.java",
+    "sha256": "ecd45465fcf3dae4df72afd816441f31cac58fade1617cf6c9dfdf2dd41e9602",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/internal/KeysetDeriverWrapper.java",
+    "sha256": "e713d308b83f46dfc1e640f8529f44711b86544503864f12c876aa0dc9f6a730",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/internal/PrfBasedKeyDeriver.java",
+    "sha256": "f0f9e245ea75e5bbaca029b15d0c8520beb9e403dae66d36235f7594df31bf04",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/internal/PrfBasedDeriverKeyManager.java",
+    "sha256": "19cd6786dd0aa01d24ccc9bf3ca1a05236fc79937a14f4d75a648b10a673f988",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/internal/PrfBasedKeyDerivationKeyProtoSerialization.java",
+    "sha256": "31028b020b988409f8f357123468a408a6b7d201acb74ecc347131310024ae10",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/keyderivation/internal/KeyDeriver.java",
+    "sha256": "7e239c60176973a4a9bfb2f0a1446164a158514193a189b428afe5a11de88991",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/internal/LegacyFullDeterministicAead.java",
+    "sha256": "8f2bae53c65d44c9ae8856aeaeac6ee9cffc5897c0a99e59a167787f35bc996a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/internal/AesSivProtoSerialization.java",
+    "sha256": "a3ebcd7f729de210206f93a1a9b1c23b762965d2e3d9815f22881bbfaee1ff1e",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/internal/WrappedDeterministicAead.java",
+    "sha256": "4224622b89a2def2f921922151f7c3b1f4f89c73dc1fe571bd0488737b6b2c56",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/daead/subtle/DeterministicAeads.java",
+    "sha256": "9f73630c4a5b157a6fa6ce099e7087105a65a1c670881e7e9b3ee01f9d1de6c7",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/prf/PrfImpl.java",
+    "sha256": "a039884a5c2fcf537771accfc8941b7e6108477288e5694e34ad1eed16a620db",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/prf/StreamingPrf.java",
+    "sha256": "38e4863a84833f44de170dd74384c9df04d696d9319501d3eaef9eea74dc4f77",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/subtle/prf/HkdfStreamingPrf.java",
+    "sha256": "39cce5fe00e3bc1b6239a2d8cfcefae7839a75813854c102a0d9ccec4b39f55e",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeDecrypt.java",
+    "sha256": "07c368d2a4da4b11c7580bb245c9fb8bfc308a2685a0f8459236e3749ad2ff27",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeUtil.java",
+    "sha256": "5f27d97cd3f1296e598e511e4c10655ee071bef7307c3b05893e5f6605dc4608",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkePublicKeyManager.java",
+    "sha256": "446fedc6d4392b81c44518e42e3ec8e7ec6d2b0162eb9d474dfc5430323f59fb",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/NistCurvesHpkeKem.java",
+    "sha256": "36f158d0529a5c5398d0eb8b519c3baf42901e1d57b9f92f5efdb51c8989a473",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkePrimitiveFactory.java",
+    "sha256": "1696f065286fbcdc7f933b2386b91c4d2d307a63354fb47977ebee2472c5d422",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/WrappedHybridEncrypt.java",
+    "sha256": "eb6044ded525309ed13e0609502163a78d2f4283c8907fea63ec43a63c6f16d5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/ChaCha20Poly1305HpkeAead.java",
+    "sha256": "1f880b913b3101c671ac18e05e558952b559def4b65ae23a5bd884505b9f3333",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkePrivateKeyManager.java",
+    "sha256": "7d087d383778077fe8790ac61212842d2be7a4bb7e491b68e215eb1efb9a3826",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeEncrypt.java",
+    "sha256": "ca88e8299dc39849c61d6b6b1b6cd7b4005ff1966a7bc739b730d40a13855897",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeKemEncapOutput.java",
+    "sha256": "3eaf4cfbec436f00fe7d7d06f4b1886f82feafe741cb48f3e58423d72f5fbf49",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/LegacyFullHybridEncrypt.java",
+    "sha256": "b83ba75c0b1053512573034fde12fa9650c81b3f8902ad6750ff6f2dd5f4efa0",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeKemKeyFactory.java",
+    "sha256": "9a16f042088d19a1508addcbf17f5575584f6f93ab14b9dd8bd12c396b7c37fc",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/XWingHpkeConscryptEncrypt.java",
+    "sha256": "54452e162014337025e0db805c1a3326b6e03ef0343d84305d43166637880de1",
+    "tag_comparison": "exact-android-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/LegacyFullHybridDecrypt.java",
+    "sha256": "30fd765766185a86e75ba84d3f0b46662c59aa347cdc253cd4094232ac5cf8fb",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/X25519HpkeKem.java",
+    "sha256": "8255906d237b636a8cb5f5871c20a1b679b066c3e19d783b37d2bdcdf155de2c",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/WrappedHybridDecrypt.java",
+    "sha256": "5238762d0310ce860491cbf2185325c1ca890405ff0da44f0bdef027a13d62e6",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeKemPrivateKey.java",
+    "sha256": "d2b1fbb487beafe0357a6a84d440e4d8a1dbd67aaca03f80c4676766c64ccd80",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeContext.java",
+    "sha256": "bb7c2cb730faa2d322ab70efd4f57dcc06343554aca9340e5cefde6ea3a60d6d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/X25519.java",
+    "sha256": "43f3b1dbcbb143894edcd08f47cf3b1371319e14574d64252d09df254d7f3b38",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/EciesProtoSerialization.java",
+    "sha256": "6d6869c9f594f8d90a294c382afd0e39763c9d45337a27ee4cbcc62c1b126873",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/EciesDemHelper.java",
+    "sha256": "bf559af6d288fbabceb1d3c65c91900a2c2b80b38dc0c8985ee0460d51f41ef8",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeKdf.java",
+    "sha256": "8372f2325fb88e698f53b0c571e92a65c4230d03f7e1980ff92ba7b830dd3751",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeHelperForAndroidKeystore.java",
+    "sha256": "ef2b28582e16e2137fbe4adeeebcdccedc2d38ed97a9f831a28c97903da3f61a",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/AesGcmHpkeAead.java",
+    "sha256": "7a673da87f11eea92aa3e22d813b9bfa4d1056fae31217c6277b2776ba295af6",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeAead.java",
+    "sha256": "d12ee6a2c394fae151e1558b54083cda01baa332859dcf45cd5d4fadf016168d",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/X25519Conscrypt.java",
+    "sha256": "5e5dd1cdb8b9adcb4059dd32a91f1e854a801ec1bd29d940b8487ac19dd3d618",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/AuthHpkeHelperForAndroidKeystore.java",
+    "sha256": "80b2db8b124f461263ce6b08bedd33060a1c570508cc014f5d536ba19e2e19cd",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HkdfHpkeKdf.java",
+    "sha256": "45e8d7093ca594e72d8f3defe11d8be367a50c294741fdfb953e8d9eb312c4ae",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/XWingHpkeConscryptDecrypt.java",
+    "sha256": "e1b0c97a08e5d6c3fda64762b3c08fb356e1ff47bfd51a786daaa915d1addc74",
+    "tag_comparison": "exact-android-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/internal/HpkeKem.java",
+    "sha256": "251fe40c27274b5647e14a42f3900805ab060b972120af5be632c132db70dd1b",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/subtle/RsaKemHybridEncrypt.java",
+    "sha256": "21c460259a7e61bc9e108789fef482f868feacfaa9c7428fd4ffd01bb82a1ae1",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/subtle/RsaKem.java",
+    "sha256": "33b40dc6148ea2b77b509ede7a433a01799d0163f86281e4cde7624e45116e49",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/hybrid/subtle/RsaKemHybridDecrypt.java",
+    "sha256": "a607ebe350c497ec163d609958300a5b72d6ffd573e4f35a7a34e8781985fbc5",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/config/internal/TinkFipsDisabled.java",
+    "sha256": "6ff8b3da6228fb6f484c8effc76c9e4f563dba881f4d6329674ce3fe4bafe867",
+    "tag_comparison": "exact-tag-match"
+  },
+  {
+    "source": "com/google/crypto/tink/config/internal/TinkFipsUtil.java",
+    "sha256": "026c0a2ab7fdd0a50d99e0d17a5e6f080fb927e9e8f3ceb0f23f6e1063b3b115",
+    "tag_comparison": "exact-tag-match"
+  }
+]

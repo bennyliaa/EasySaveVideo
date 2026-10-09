@@ -1,0 +1,251 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type=text/css>pre{font-size:large;}tt{font-size:large;}</style>
+<title>
+Features
+</title>
+</head>
+<body>
+<table width="100%">
+  <tr>
+    <td align=left bgcolor="#AAAAFF"><h1>NaCl: Networking and Cryptography library</h1></td>
+    <td align=middle><img src="cace-logo-25.png" width="207" height="59"><br><small>Computer Aided Cryptography Engineering</small></td>
+    <td align=middle><img src="ecrypt2-logo-trans.png" width="175" height="66"><br><a href="http://www.ecrypt.eu.org/"><small>ECRYPT II</small></a></td>
+  </tr>
+</table>
+<table width="100%"><tr>
+<td width="15%" align=left valign=top><table bgcolor="#AAAAFF" border width="100%"><tr><td width="100%"><table width="100%">
+<tr><td width="100%"><a href="index.html" style="text-decoration:none">Introduction</a></td></tr>
+<tr><td width="100%" bgcolor="#FFFF80">Features</td></tr>
+<tr><td width="100%"><a href="install.html" style="text-decoration:none">Installation</a></td></tr>
+<tr><td width="100%"><a href="internals.html" style="text-decoration:none">Internals</a></td></tr>
+<tr><td width="100%"><a href="valid.html" style="text-decoration:none">Validation</a></td></tr>
+</table></td></tr><tr><td width="100%"><table width="100%">
+<tr><td width="100%">Public-key cryptography:</td></tr>
+<tr><td width="100%"><a href="box.html" style="text-decoration:none">Authenticated encryption</a></td></tr>
+<tr><td width="100%"><a href="scalarmult.html" style="text-decoration:none">Scalar multiplication</a></td></tr>
+<tr><td width="100%"><a href="sign.html" style="text-decoration:none">Signatures</a></td></tr>
+</table></td></tr><tr><td width="100%"><table width="100%">
+<tr><td width="100%">Secret-key cryptography:</td></tr>
+<tr><td width="100%"><a href="secretbox.html" style="text-decoration:none">Authenticated encryption</a></td></tr>
+<tr><td width="100%"><a href="stream.html" style="text-decoration:none">Encryption</a></td></tr>
+<tr><td width="100%"><a href="auth.html" style="text-decoration:none">Authentication</a></td></tr>
+<tr><td width="100%"><a href="onetimeauth.html" style="text-decoration:none">One-time authentication</a></td></tr>
+</table></td></tr><tr><td width="100%"><table width="100%">
+<tr><td width="100%">Low-level functions:</td></tr>
+<tr><td width="100%"><a href="hash.html" style="text-decoration:none">Hashing</a></td></tr>
+<tr><td width="100%"><a href="verify.html" style="text-decoration:none">String comparison</a></td></tr>
+</table></td></tr></table>
+</td><td align=left valign=top>
+<h1>Features</h1>
+<h2>C NaCl, C++ NaCl, and Python NaCl</h2>
+The current version of NaCl supports C and C++.
+Support for Python is a high priority.
+<p>
+NaCl takes advantage of higher-level language features
+to simplify the APIs for those languages.
+For example:
+<ul>
+<li>
+A message is represented in C NaCl as two variables:
+an array variable <tt>m</tt> and an integer variable <tt>mlen</tt>.
+Higher-level APIs use a single string variable <tt>m</tt> that knows its own length.
+<li>
+The C NaCl functions return error codes to indicate, e.g., invalid signatures;
+a caller that neglects to check for those error codes will blithely proceed
+as if the signatures were valid.
+Higher-level APIs raise exceptions.
+<li>
+The C NaCl functions write output strings via pointers.
+Higher-level APIs simply return the strings as function values.
+</ul>
+
+
+
+<h2>High-speed implementations of high-speed primitives</h2>
+NaCl aims to, and in many cases already does,
+provide record-setting speeds for each of its cryptographic operations.
+<p>
+This means not merely record-setting speeds for (e.g.) bulk data encryption with AES,
+but record-setting speeds for bulk data encryption with the best secret-key cipher available.
+Note that
+a state-of-the-art stream cipher such as Salsa20
+is considerably faster than AES.
+<p>
+Sometimes NaCl includes
+slow implementations of primitives
+that are expected to set speed records with better implementations.
+Applications built using these NaCl functions
+will eventually benefit from higher-speed implementations.
+
+
+<h2>Automatic CPU-specific tuning</h2>
+NaCl, like other speed-oriented cryptographic libraries,
+supports multiple implementations of the same function.
+<p>
+Most of these libraries attempt to recognize CPUs
+and select implementations (and compiler options) known to work well on those CPUs.
+NaCl instead compiles all implementations (with all specified compiler options)
+and uses speed measurements
+to select the fastest implementation for the user's CPU.
+<p>
+One advantage of NaCl's automatic tuning
+is that new CPUs automatically use the best option available,
+without any human intervention.
+Another advantage is that new implementations (and new compiler options)
+can be added with a minimum of fuss.
+<p>
+In theory,
+there is a compile-time cost for automatic tuning,
+and the cost grows with the number of implementations (and compiler options).
+In practice,
+the cost of NaCl's automatic tuning is quite small,
+and if it ever becomes troublesome then it can easily be split across many machines.
+
+
+<h2>Support for standard primitives</h2>
+Whenever NaCl includes&mdash;for speed reasons or for security reasons&mdash;a
+newly proposed cipher,
+a newly proposed signature system, etc.,
+it also includes
+an older standard cipher (e.g., AES),
+<u>[TO DO:] an older standard signature system</u>
+(e.g., ECDSA using the NIST P-256 elliptic curve),
+etc.
+Some users avoid new proposals as a matter of policy;
+NaCl accommodates those users.
+<p>
+This does not mean that it is a high priority for NaCl
+to support <i>every</i> cryptographic standard.
+Example:
+An implementation of triple DES
+might be of interest for bank-industry applications,
+but is a lower priority for NaCl
+than an improved implementation of AES.
+
+
+<h2>Expert selection of default primitives</h2>
+Typical cryptographic libraries force the programmer
+to specify choices of cryptographic primitives:
+e.g., "sign this message with 4096-bit RSA using PKCS #1 v2.0 with SHA-256."
+<p>
+Most programmers using cryptographic libraries
+are not expert cryptographic security evaluators.
+Often programmers pass the choice along to users&mdash;who usually have even less information
+about the security of cryptographic primitives.
+There is a long history of these programmers and users
+making poor choices of cryptographic primitives,
+such as MD5 and 512-bit RSA,
+years after cryptographers began issuing warnings about the security of those primitives.
+<p>
+NaCl allows, and encourages,
+the programmer to simply say "sign this message."
+NaCl has a side mechanism through which
+a cryptographer can easily specify the choice of signature system.
+Furthermore, NaCl is shipped with a preselected choice,
+namely a state-of-the-art signature system
+suitable for worldwide use in a wide range of applications.
+
+
+<h2>High-level primitives</h2>
+A typical cryptographic library requires several steps to authenticate and encrypt a message.
+Consider, for example, the following typical combination of RSA, AES, etc.:
+<ul>
+<li>Generate a random AES key.
+<li>Use the AES key to encrypt the message.
+<li>Hash the encrypted message using SHA-256.
+<li>Read the sender's RSA secret key from "wire format."
+<li>Use the sender's RSA secret key to sign the hash.
+<li>Read the recipient's RSA public key from wire format.
+<li>Use the recipient's public key to encrypt the AES key, hash, and signature.
+<li>Convert the encrypted key, hash, and signature to wire format.
+<li>Concatenate with the encrypted message.
+</ul>
+Sometimes even more steps are required for storage allocation, error handling, etc.
+<p>
+NaCl provides a simple <tt>crypto_box</tt> function
+that does everything in one step.
+The function takes the sender's secret key, the recipient's public key, and a message,
+and produces an authenticated ciphertext.
+All objects are represented in wire format,
+as sequences of bytes suitable for transmission;
+the <tt>crypto_box</tt> function automatically handles
+all necessary conversions, initializations, etc.
+<p>
+Another virtue of NaCl's high-level API
+is that it is not tied to the traditional hash-sign-encrypt-etc. hybrid structure.
+NaCl supports much faster message-boxing solutions
+that reuse Diffie-Hellman shared secrets for any number of messages between the same parties.
+<p>
+A multiple-step procedure can have important speed advantages
+when multiple computations share precomputations.
+NaCl allows users to split <tt>crypto_box</tt> into two steps,
+namely <tt>crypto_box_beforenm</tt> for message-independent precomputation
+and <tt>crypto_box_afternm</tt> for message-dependent computation.
+
+
+<h2>No data-dependent branches</h2>
+The CPU's instruction pointer, branch predictor, etc.
+are not designed to keep information secret.
+For performance reasons this situation is unlikely to change.
+The literature has many examples of successful timing attacks
+that extracted secret keys from these parts of the CPU.
+<p>
+NaCl systematically avoids all data flow from secret information
+to the instruction pointer and the branch predictor.
+There are no conditional branches
+with conditions based on secret information;
+in particular, all loop counts are predictable in advance.
+<p>
+This protection appears to be compatible with extremely high speed,
+so there is no reason to consider weaker protections.
+
+
+
+
+<h2>No data-dependent array indices</h2>
+The CPU's cache, TLB, etc. are not designed to keep addresses secret.
+For performance reasons this situation is unlikely to change.
+The literature has several examples of successful cache-timing attacks
+that used secret information leaked through addresses.
+<p>
+NaCl systematically avoids all data flow from secret information
+to the addresses used in load instructions and store instructions.
+There are no array lookups
+with indices based on secret information;
+the pattern of memory access is predictable in advance.
+<p>
+The conventional wisdom for many years
+was that achieving acceptable software speed for AES
+required variable-index array lookups,
+exposing the AES key to side-channel attacks,
+specifically cache-timing attacks.
+However,
+the paper "Faster and timing-attack resistant AES-GCM"
+by Emilia Käsper and Peter Schwabe at CHES 2009
+introduced a new implementation that set record-setting speeds for AES
+on the popular Core 2 CPU despite being immune to cache-timing attacks.
+NaCl reuses these results.
+
+
+<h2>No dynamic memory allocation</h2>
+C NaCl is intended to be usable in environments
+that cannot guarantee the availability of large amounts of heap storage
+but that nevertheless rely on their cryptographic computations to continue working.
+C NaCl functions do not call <tt>malloc</tt>, <tt>sbrk</tt>, etc.
+They do use small amounts of stack space;
+these amounts will eventually be measured by separate benchmarks.
+<p>
+This feature applies only to C NaCl.
+Higher-level languages such as Python are not currently usable in restricted environments.
+
+
+<h2>No copyright restrictions</h2>
+All of the NaCl software is in the public domain.
+<h2>Version</h2>
+This is version 2011.02.20 of the features.html web page.
+</td></tr></table>
+</body>
+</html>

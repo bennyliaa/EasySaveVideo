@@ -1,0 +1,26 @@
+[
+  {
+    "coordinate": "dev.skinkit:skinkit-contract:0.0.1",
+    "pom_path": "poms/dev.skinkit__skinkit-contract__0.0.1.pom",
+    "pom_sha256": "f08e7294d2cb68f820f97a288ed09c85d74aef8edb0ae15629100c9e93a59efa",
+    "pom_matches_old_context_sha256": true,
+    "artifact_sha256": "4bbb7cf74f53e64f4adc7bd42d10b423f38dc961ba6a0dad145c16327007a083",
+    "artifact_matches_old_context_sha256": true,
+    "source_kind": "USER_OWNED_LOCAL_PUBLICATION",
+    "public_license_assigned": null,
+    "existing_internal_ui_reuse_authorized": true,
+    "distribution_rights_record": "UNRESOLVED"
+  },
+  {
+    "coordinate": "dev.skinkit:skinkit-default:0.0.1",
+    "pom_path": "poms/dev.skinkit__skinkit-default__0.0.1.pom",
+    "pom_sha256": "00cfd40c8764d7de4c65c88eaebc7290b846ec3cbe1914530ab6c0986ac67529",
+    "pom_matches_old_context_sha256": true,
+    "artifact_sha256": "b0f7b327ec9c9228de6fed2409b883b5f55973d1f65c3d69a96c45a8f2ee15df",
+    "artifact_matches_old_context_sha256": true,
+    "source_kind": "USER_OWNED_LOCAL_PUBLICATION",
+    "public_license_assigned": null,
+    "existing_internal_ui_reuse_authorized": true,
+    "distribution_rights_record": "UNRESOLVED"
+  }
+]

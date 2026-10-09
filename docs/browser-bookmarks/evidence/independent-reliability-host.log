@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "baseline": "0c178320cd78391bfedd5f9846e3ee873f0f5fce",
+  "manifest_sha256": "ec8b4adb5be000b19783b6d80e0959acdde64ac1b1f34463234281394009656a",
+  "files": 4317,
+  "expected_jvm_tests": 2035,
+  "baseline_files": 4070,
+  "historical_bytes_and_git_modes": "UNCHANGED"
+}
+PASS INDEPENDENT_INPUTS_FROZEN=72
+PASS ADMITTED_EXACT8_BEFORE
+PASS INDEPENDENT_COMPILATION
+PASS INDEPENDENT_COORDINATOR TESTS=10
+PASS AUTHOR_COORDINATOR TESTS=11
+PASS AUTHOR_COMMONS TESTS=15
+PASS AUTHOR_BROWSER_SAVE_ISOLATION TESTS=6
+PASS AUTHOR_TRANSPORT_unreachableDnsIsOneSanitizedAttemptAndExplicitNextRequestCanRecover TESTS=1
+PASS AUTHOR_TRANSPORT_refusedConnectionIsClosedWithoutTlsOrAutomaticRetry TESTS=1
+PASS AUTHOR_TRANSPORT_ordinaryPartialAndMalformedWireResponsesReleaseForOneExplicitFreshConnection TESTS=1
+PASS AUTHOR_TRANSPORT_interruptedBodyIoDoesNotPublishPartialResponseAndFreshConnectionRecovers TESTS=1
+PASS AUTHOR_TRANSPORT_ordinaryDeclaredLimitRejectionDoesNotConsumeBodyAndNextConnectionRecovers TESTS=1
+PASS AUTHOR_TRANSPORT_slowHeadersAndBodyDeadlineRetainSlotUntilCleanupThenReleaseWithoutRetry TESTS=1
+PASS AUTHOR_TRANSPORT_elapsedMonotonicDeadlineCannotBeExtendedByWallClockRollbackDuringBodyRead TESTS=1
+ORDINARY_TOTAL=49 FAILURES=0
+OK (49 tests)
+PASS ADMITTED_EXACT8_AFTER
+{
+  "status": "PASS",
+  "baseline": "0c178320cd78391bfedd5f9846e3ee873f0f5fce",
+  "manifest_sha256": "ec8b4adb5be000b19783b6d80e0959acdde64ac1b1f34463234281394009656a",
+  "files": 4317,
+  "expected_jvm_tests": 2035,
+  "baseline_files": 4070,
+  "historical_bytes_and_git_modes": "UNCHANGED"
+}
+PASS INDEPENDENT_INPUTS_UNCHANGED

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:32:14.253Z" hostname="05582a867b99" time="0.097">
+  <properties/>
+  <testcase name="uncooperativeWorkerAndCleanupRetainAdmissionAfterDeadlineSignal" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.023"/>
+  <testcase name="statusAndRedirectFailuresNeverFetchAlternativesOrAuthorizeAccounts" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.016"/>
+  <testcase name="invalidLanguageFallsBackToFixedEnglishWithoutHeaderInjection" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.005"/>
+  <testcase name="sourceNamespaceExclusionRequiresNoRequest" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.001"/>
+  <testcase name="crossQueryOrEndpointCursorIsRejectedWithoutRequest" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.006"/>
+  <testcase name="sequentialPaginationUsesBoundedPageNumberAndEmptyResultsExhaust" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.005"/>
+  <testcase name="blankControlsAndMalformedUnicodeRefuseBeforeTransport" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.002"/>
+  <testcase name="cancellationAndExpiredDeadlinePreventRequestAndPostReadSuccess" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.003"/>
+  <testcase name="diagnosticRepresentationsNeverContainQueryOrEndpointOrCandidateText" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.002"/>
+  <testcase name="exactQueryIsEncodedAsJsonVideoCategoryWithExplicitDisabledSafeSearchAndNoTotalRequirement" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.003"/>
+  <testcase name="safeSearchUnknownIsAlwaysRefusedWithoutIoOrFilterDowngrade" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.001"/>
+  <testcase name="rateLimitIsReturnedBeforeStalledCloseAndSlotStaysOccupiedUntilCleanupExits" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.008"/>
+  <testcase name="bodyBoundsContentTypeCompressionLengthAndZeroProgressAreEnforced" classname="com.easysavevideo.searxng.SearxngVideoSearchProviderTest" time="0.018"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

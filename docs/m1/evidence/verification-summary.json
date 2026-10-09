@@ -1,0 +1,134 @@
+{
+  "lint_debug": {
+    "errors": 0,
+    "issues": [
+      {
+        "id": "OldTargetApi",
+        "severity": "Warning",
+        "message": "Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
+      },
+      {
+        "id": "GradleDependency",
+        "severity": "Warning",
+        "message": "A newer version of `compileSdk` than 36 is available: 37"
+      },
+      {
+        "id": "AutoboxingStateCreation",
+        "severity": "Hint",
+        "message": "Prefer `mutableLongStateOf` instead of `mutableStateOf`"
+      },
+      {
+        "id": "AutoboxingStateCreation",
+        "severity": "Hint",
+        "message": "Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+      },
+      {
+        "id": "UseKtx",
+        "severity": "Warning",
+        "message": "Use the KTX extension function `SharedPreferences.edit` instead?"
+      },
+      {
+        "id": "UseKtx",
+        "severity": "Warning",
+        "message": "Use the KTX extension function `String.toUri` instead?"
+      }
+    ]
+  },
+  "lint_release": {
+    "errors": 0,
+    "issues": [
+      {
+        "id": "OldTargetApi",
+        "severity": "Warning",
+        "message": "Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
+      },
+      {
+        "id": "GradleDependency",
+        "severity": "Warning",
+        "message": "A newer version of `compileSdk` than 36 is available: 37"
+      },
+      {
+        "id": "AutoboxingStateCreation",
+        "severity": "Hint",
+        "message": "Prefer `mutableLongStateOf` instead of `mutableStateOf`"
+      },
+      {
+        "id": "AutoboxingStateCreation",
+        "severity": "Hint",
+        "message": "Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+      },
+      {
+        "id": "UseKtx",
+        "severity": "Warning",
+        "message": "Use the KTX extension function `SharedPreferences.edit` instead?"
+      },
+      {
+        "id": "UseKtx",
+        "severity": "Warning",
+        "message": "Use the KTX extension function `String.toUri` instead?"
+      }
+    ]
+  },
+  "tests": {
+    "total": 51,
+    "suites": [
+      {
+        "module": "core-domain",
+        "suite": "com.easysavevideo.core.domain.BrowserSessionControllerTest",
+        "tests": 12,
+        "failures": 0,
+        "errors": 0
+      },
+      {
+        "module": "core-domain",
+        "suite": "com.easysavevideo.core.domain.EntitlementsTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0
+      },
+      {
+        "module": "core-domain",
+        "suite": "com.easysavevideo.core.domain.RecoverySettingsTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0
+      },
+      {
+        "module": "core-domain",
+        "suite": "com.easysavevideo.core.domain.OperationTaskTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0
+      },
+      {
+        "module": "ui-theme",
+        "suite": "com.easysavevideo.theme.EsvThemeTest",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0
+      },
+      {
+        "module": "app",
+        "suite": "com.easysavevideo.app.storage.BrowserSessionCodecTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0
+      },
+      {
+        "module": "app",
+        "suite": "com.easysavevideo.app.browser.BrowserPolicyTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0
+      }
+    ]
+  },
+  "android_debug_compile": "PASS",
+  "android_release_compile": "PASS",
+  "strict_offline_locked_sha256_verification": "PASS",
+  "runtime_admission": "55 identical external artifacts across both variants",
+  "runtime_admission_negative": "PASS: deliberately missing allowlist row rejected by actual Gradle task; exact bytes restored",
+  "device_emulator_install_assembly": "NOT_RUN",
+  "provider_count": 0,
+  "license_recovery_manifest_sha256": "e58733f0839c83e46fc7cc8f41cccdfa71cbdb104775c4d6972cc7fd70987d06"
+}

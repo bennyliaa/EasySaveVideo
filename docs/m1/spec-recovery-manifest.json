@@ -1,0 +1,73 @@
+{
+  "source_library_file_id": "libfile_45f6d2f40fd48191893cb0989782e68c",
+  "source_file_id": "file_00000000874081f8b7c80df47de3405b",
+  "source_name": "EasySaveVideo_Spec_v0.3_CN.rar",
+  "source_bytes": 85550,
+  "source_sha256": "7a223f16c344a9c40b953575fc6222ea1dbdf9380af0170e15a5ba1238bbc257",
+  "files": [
+    {
+      "archive_path": "EasySaveVideo_Spec_v0.3_CN/01_Product_Requirements.md",
+      "size": 23266,
+      "sha256": "2fcc9419be3ee6bc650df12f68ab7009d78a12f4724ec87b175a61a14f6b6e77",
+      "encoding": "UTF-8",
+      "original_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/original-md/EasySaveVideo_Spec_v0.3_CN/01_Product_Requirements.md",
+      "readable_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/readable-utf8/EasySaveVideo_Spec_v0.3_CN/01_Product_Requirements.md"
+    },
+    {
+      "archive_path": "EasySaveVideo_Spec_v0.3_CN/02_Architecture_and_Data_Model.md",
+      "size": 33752,
+      "sha256": "e5f906ef6c5dddabddec49df05481ef290072360d990e54fc74578d746288834",
+      "encoding": "UTF-8",
+      "original_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/original-md/EasySaveVideo_Spec_v0.3_CN/02_Architecture_and_Data_Model.md",
+      "readable_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/readable-utf8/EasySaveVideo_Spec_v0.3_CN/02_Architecture_and_Data_Model.md"
+    },
+    {
+      "archive_path": "EasySaveVideo_Spec_v0.3_CN/02_Architecture_and_Data_Model_update_1.md",
+      "size": 36416,
+      "sha256": "21d984a47b4453d87eb55d0e7173a40085c699c927c29f9b88eb0401ca9b745a",
+      "encoding": "UTF-16LE with BOM",
+      "original_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/original-md/EasySaveVideo_Spec_v0.3_CN/02_Architecture_and_Data_Model_update_1.md",
+      "readable_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/readable-utf8/EasySaveVideo_Spec_v0.3_CN/02_Architecture_and_Data_Model_update_1.md"
+    },
+    {
+      "archive_path": "EasySaveVideo_Spec_v0.3_CN/03_Development_Milestones.md",
+      "size": 19449,
+      "sha256": "e92fd176954ea2a05c9b79c257b48d6eb4638dba7a02e098cee4e778b222659d",
+      "encoding": "UTF-8",
+      "original_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/original-md/EasySaveVideo_Spec_v0.3_CN/03_Development_Milestones.md",
+      "readable_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/readable-utf8/EasySaveVideo_Spec_v0.3_CN/03_Development_Milestones.md"
+    },
+    {
+      "archive_path": "EasySaveVideo_Spec_v0.3_CN/03_Development_Milestones_update1.md",
+      "size": 13501,
+      "sha256": "32d35f5508407f42d9741beaa072a9d2798e639fb6d410f053221cfabc18b78f",
+      "encoding": "UTF-8",
+      "original_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/original-md/EasySaveVideo_Spec_v0.3_CN/03_Development_Milestones_update1.md",
+      "readable_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/readable-utf8/EasySaveVideo_Spec_v0.3_CN/03_Development_Milestones_update1.md"
+    },
+    {
+      "archive_path": "EasySaveVideo_Spec_v0.3_CN/04_Technical_Requirements.md",
+      "size": 26690,
+      "sha256": "a0d525292d875e7215313218ccbfb314bdd40a270b6c3dcbf3ce60c0f8a6e063",
+      "encoding": "UTF-8",
+      "original_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/original-md/EasySaveVideo_Spec_v0.3_CN/04_Technical_Requirements.md",
+      "readable_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/readable-utf8/EasySaveVideo_Spec_v0.3_CN/04_Technical_Requirements.md"
+    },
+    {
+      "archive_path": "EasySaveVideo_Spec_v0.3_CN/05_Test_and_Acceptance_Strategy.md",
+      "size": 24189,
+      "sha256": "541ff19ab3fe1a8b2ca4e5fb428c13bd02486c8787ba888f3c83da670c923e2e",
+      "encoding": "UTF-8",
+      "original_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/original-md/EasySaveVideo_Spec_v0.3_CN/05_Test_and_Acceptance_Strategy.md",
+      "readable_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/readable-utf8/EasySaveVideo_Spec_v0.3_CN/05_Test_and_Acceptance_Strategy.md"
+    },
+    {
+      "archive_path": "EasySaveVideo_Spec_v0.3_CN/06_Decision_Log.md",
+      "size": 26650,
+      "sha256": "11718dc565cbb96de63f50b24a60f578eb9796cc7403c1949a0c557ebc8516c1",
+      "encoding": "UTF-8",
+      "original_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/original-md/EasySaveVideo_Spec_v0.3_CN/06_Decision_Log.md",
+      "readable_path": "/workspace/scratch/df6c1284d5ab/easysavevideo-spec-inputs/readable-utf8/EasySaveVideo_Spec_v0.3_CN/06_Decision_Log.md"
+    }
+  ]
+}

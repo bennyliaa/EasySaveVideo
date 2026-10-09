@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-08T04:33:00.916Z" hostname="05582a867b99" time="0.008">
+  <properties/>
+  <testcase name="unknownVideoIdentityDoesNotClaimDiscoveryVideoWasSaved" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.0"/>
+  <testcase name="finalRecordReadFailureIsSeparateFromMediaExecution" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.0"/>
+  <testcase name="committedCompletionConsumesExactlyOnce" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.001"/>
+  <testcase name="cancelClearsAssociationAndLateSuccessCannotReadOrRecord" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.0"/>
+  <testcase name="historyFailureCannotThrowIntoSaveOrCauseASecondCompletion" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.003"/>
+  <testcase name="bindingFailureAndCapacityRejectionAbandonWithoutOwningTask" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.001"/>
+  <testcase name="historyFailureLabelKeepsMediaSuccessExplicit" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.0"/>
+  <testcase name="acceptedOrCommittingWithProvisionalReceiptIsNotSuccess" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.0"/>
+  <testcase name="noOriginResumeAndRestartNeverInferAnAssociationFromStoredSuccess" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.001"/>
+  <testcase name="taskIdentityIsBoundAndOtherTasksDoNotConsumeTheLink" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.0"/>
+  <testcase name="cancelledAndFailedRecordsNeverEmitSaved" classname="com.easysavevideo.app.save.MediaTaskActivitySaveLinksTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

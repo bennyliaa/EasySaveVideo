@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "scope": "M11_A_CODE_FACTS_ONLY_NOT_ANDROID_RELEASE_ACCEPTANCE",
+  "as_of_utc": "2026-10-07",
+  "tested_base_commit": "bdf31387ec99c86c25847f5bbadd1eff8908f45d",
+  "tested_base_tag": "m10a-purchase-preparation-dev-2026-10-07",
+  "tested_base_tree": "cf6619901e2ab7efd7619445ea101da767962c14",
+  "current_docs_commit": "RESOLVE_WITH_GIT_HEAD_OR_EXTERNAL_RESTORE_RECEIPT",
+  "changes_allowed": [
+    "NOTICE",
+    "docs/m11a/**"
+  ],
+  "protected_base_files": 2704,
+  "root_notice_correction": {
+    "old_sha256": "828a8301e8f479fd0ea30a3f184360ae603d06dd6d4604f7afef608cfa6eef7d",
+    "new_sha256": "c5fc6230229aefad06c032f168479e9af5e62cc88e56778836fca9494c13ff8c",
+    "scope": "Project-authored index/count only; not packaged asset or upstream license text"
+  },
+  "manifest": {
+    "app_authored": {
+      "path": "app/src/main/AndroidManifest.xml",
+      "sha256": "ad03d5abb7aaec1f78f155d6ae7f5b85473e2faea9836da0ed24dfedfcc11426",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.POST_NOTIFICATIONS"
+      ]
+    },
+    "observed_debug": {
+      "path": "docs/m11a/evidence/observed-debug-merged-manifest.xml",
+      "sha256": "26a62b14d780fa81b1c0fb29b0f3baa5240177d08f0649067be08ffcab0f2ddc",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.WAKE_LOCK",
+        "com.easysavevideo.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+      ]
+    },
+    "observed_release": {
+      "path": "docs/m11a/evidence/observed-release-merged-manifest.xml",
+      "sha256": "fe4c408c03b9cfd5e89241402f623f1f604b8935474c93dcaa4a34c4a2c8e878",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.WAKE_LOCK",
+        "com.easysavevideo.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+      ]
+    }
+  },
+  "merged_manifest_evidence": "EXISTING_BUILD_OUTPUT_SNAPSHOT_NOT_REBUILT_OR_FINAL_APK; source/vendor origin checked separately",
+  "runtime_artifacts": 74,
+  "official_components": 72,
+  "internally_authorized_skinkit_artifacts": 2,
+  "app_notice": {
+    "path": "app/src/main/assets/third-party-notices.txt",
+    "sha256": "fc1f40bbd0e1ba6cffdcffc6e5194d11f311032a99c80a36d43b5715c95c1068",
+    "bytes": 210385,
+    "characters": 209911,
+    "coverage": "71 exact GAV markers plus 3 named/versioned Tink supplement markers; not a legal sufficiency proof"
+  },
+  "status": {
+    "apk_aab_assembly": "NOT_RUN",
+    "device_install": "NOT_RUN",
+    "native_saved": "UNKNOWN",
+    "native_played": "UNKNOWN",
+    "release_os_power_adapter": "NOT_CONNECTED",
+    "vault": "DISABLED_NOT_INTEGRATED",
+    "blocked_m7d": "ISOLATED_NOT_REVIEWED_OR_PROBED",
+    "real_store_iap": "NOT_IMPLEMENTED_NOT_ACCEPTED",
+    "current_store_rule_privacy_legal_review": "NOT_PERFORMED",
+    "full_m8": "NOT_COMPLETE",
+    "full_m9": "NOT_COMPLETE",
+    "full_m10": "NOT_COMPLETE",
+    "full_m11": "NOT_COMPLETE"
+  },
+  "prior_verification": "evidence/tested-base-receipt.json",
+  "this_slice_verification": "SOURCE_FACTS_AND_DOCS_ARCHIVE_BYTES_MODES_REFS_FSCK_ONLY_NO_GRADLE_RERUN"
+}

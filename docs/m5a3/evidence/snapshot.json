@@ -1,0 +1,12 @@
+{
+  "review_date_utc": "2026-10-06",
+  "base_commit": "b90194da23c6a6419b4d04d0f16cd5a6a2637fc5",
+  "head_at_capture": "5326eb667b17d1e28c0618f1e68640160415e6e5",
+  "production_count": 32,
+  "test_guard_count": 18,
+  "context_count": 8,
+  "reviewer_ran_gradle": false,
+  "android_native_device": "NOT_RUN",
+  "source_snapshot": "All 32 reviewed production file hashes independently rechecked against frozen commit ebbca1997d02e4b67d9d0cef838b288a317d46c4; later working-tree changes were documentation only at verification.",
+  "reviewed_production_commit": "ebbca1997d02e4b67d9d0cef838b288a317d46c4"
+}

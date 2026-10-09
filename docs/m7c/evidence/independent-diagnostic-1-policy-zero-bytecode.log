@@ -1,0 +1,223 @@
+     345: bipush        8
+     347: aconst_null
+     348: invokestatic  #1615               // Method persist$default:(Lcom/easysavevideo/commons/maintenance/ProviderRepository;Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryResult;
+     351: areturn
+
+  private static final kotlin.Unit completeObservation$lambda$26();
+    Code:
+       0: getstatic     #536                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+       3: areturn
+
+  private static final com.easysavevideo.commons.maintenance.ProviderRepositoryError completeObservation$lambda$32$lambda$31(com.easysavevideo.commons.maintenance.ProviderRepository, com.easysavevideo.commons.maintenance.SignedProviderPackage);
+    Code:
+       0: aload_0
+       1: invokespecial #871                // Method checkedNow:()J
+       4: lstore_2
+       5: aload_0
+       6: aload_1
+       7: aload_0
+       8: getfield      #115                // Field record:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;
+      11: iconst_0
+      12: lload_2
+      13: iconst_4
+      14: aconst_null
+      15: invokestatic  #727                // Method securityError$default:(Lcom/easysavevideo/commons/maintenance/ProviderRepository;Lcom/easysavevideo/commons/maintenance/SignedProviderPackage;Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;ZJILjava/lang/Object;)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;
+      18: dup
+      19: ifnonnull     46
+      22: pop
+      23: aload_0
+      24: aload_1
+      25: invokevirtual #484                // Method com/easysavevideo/commons/maintenance/SignedProviderPackage.getPolicy:()Lcom/easysavevideo/commons/maintenance/ProviderPolicy;
+      28: lload_2
+      29: invokespecial #731                // Method timeError:(Lcom/easysavevideo/commons/maintenance/ProviderPolicy;J)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;
+      32: dup
+      33: ifnonnull     46
+      36: pop
+      37: aload_0
+      38: aload_0
+      39: getfield      #115                // Field record:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;
+      42: lload_2
+      43: invokespecial #735                // Method healthError:(Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;J)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;
+      46: areturn
+
+  private static final com.easysavevideo.commons.maintenance.ProviderRepositoryResult completeObservation$lambda$32(com.easysavevideo.commons.maintenance.ProviderRepository, com.easysavevideo.commons.maintenance.ProviderHealthObservation, kotlin.jvm.functions.Function0, com.easysavevideo.commons.maintenance.ProviderHealthOutcome);
+    Code:
+       0: aload_0
+       1: getfield      #461                // Field observation:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Observation;
+       4: astore        4
+       6: aload         4
+       8: dup
+       9: ifnull        18
+      12: invokevirtual #531                // Method com/easysavevideo/commons/maintenance/ProviderRepository$Observation.getToken:()Lcom/easysavevideo/commons/maintenance/ProviderHealthObservation;
+      15: goto          20
+      18: pop
+      19: aconst_null
+      20: aload_1
+      21: if_acmpeq     35
+      24: aload_0
+      25: getstatic     #1677               // Field com/easysavevideo/commons/maintenance/ProviderRepositoryError.STALE_OBSERVATION:Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;
+      28: invokespecial #641                // Method rejected:(Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryResult$Failure;
+      31: checkcast     #634                // class com/easysavevideo/commons/maintenance/ProviderRepositoryResult
+      34: areturn
+      35: aload_0
+      36: aconst_null
+      37: putfield      #461                // Field observation:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Observation;
+      40: aload_0
+      41: aload_2
+      42: invokespecial #1163               // Method checkpoint:(Lkotlin/jvm/functions/Function0;)V
+      45: aload_0
+      46: invokespecial #1577               // Method checkAvailable:()Lcom/easysavevideo/commons/maintenance/ProviderRepositoryResult$Failure;
+      49: astore        5
+      51: aload         5
+      53: ifnull        69
+      56: aload         5
+      58: astore        7
+      60: iconst_0
+      61: istore        8
+      63: aload         7
+      65: checkcast     #634                // class com/easysavevideo/commons/maintenance/ProviderRepositoryResult
+      68: areturn
+      69: aload_0
+      70: getfield      #115                // Field record:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;
+      73: invokevirtual #465                // Method com/easysavevideo/commons/maintenance/ProviderRepository$Record.getPending:()Z
+      76: ifne          90
+      79: aload_0
+      80: getstatic     #1680               // Field com/easysavevideo/commons/maintenance/ProviderRepositoryError.NO_CANDIDATE:Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;
+      83: invokespecial #641                // Method rejected:(Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryResult$Failure;
+      86: checkcast     #634                // class com/easysavevideo/commons/maintenance/ProviderRepositoryResult
+      89: areturn
+      90: aload_0
+      91: getfield      #720                // Field recoveryRequired:Z
+      94: ifeq          108
+      97: aload_0
+      98: getstatic     #723                // Field com/easysavevideo/commons/maintenance/ProviderRepositoryError.RECOVERY_REQUIRED:Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;
+     101: invokespecial #641                // Method rejected:(Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryResult$Failure;
+     104: checkcast     #634                // class com/easysavevideo/commons/maintenance/ProviderRepositoryResult
+     107: areturn
+     108: aload_0
+     109: getfield      #115                // Field record:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;
+     112: invokevirtual #478                // Method com/easysavevideo/commons/maintenance/ProviderRepository$Record.getCurrent:()Lcom/easysavevideo/commons/maintenance/SignedProviderPackage;
+     115: dup
+     116: ifnonnull     131
+     119: pop
+     120: aload_0
+     121: getstatic     #1677               // Field com/easysavevideo/commons/maintenance/ProviderRepositoryError.STALE_OBSERVATION:Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;
+     124: invokespecial #641                // Method rejected:(Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryResult$Failure;
+     127: checkcast     #634                // class com/easysavevideo/commons/maintenance/ProviderRepositoryResult
+     130: areturn
+     131: astore        5
+     133: aload         4
+     135: invokevirtual #1681               // Method com/easysavevideo/commons/maintenance/ProviderRepository$Observation.getVersion:()J
+     138: aload         5
+     140: invokevirtual #484                // Method com/easysavevideo/commons/maintenance/SignedProviderPackage.getPolicy:()Lcom/easysavevideo/commons/maintenance/ProviderPolicy;
+     143: invokevirtual #131                // Method com/easysavevideo/commons/maintenance/ProviderPolicy.getPackageVersion:()J
+     146: lcmp
+     147: ifne          292
+     150: aload         4
+     152: invokevirtual #1682               // Method com/easysavevideo/commons/maintenance/ProviderRepository$Observation.getPackageDigest:()Ljava/lang/String;
+     155: aload_0
+     156: aload         5
+     158: invokevirtual #488                // Method com/easysavevideo/commons/maintenance/SignedProviderPackage.encodedBytes:()[B
+     161: invokespecial #492                // Method digest:([B)Ljava/lang/String;
+     164: invokestatic  #1686               // Method kotlin/jvm/internal/Intrinsics.areEqual:(Ljava/lang/Object;Ljava/lang/Object;)Z
+     167: ifeq          292
+     170: aload         4
+     172: invokevirtual #1687               // Method com/easysavevideo/commons/maintenance/ProviderRepository$Observation.getGeneration:()J
+     175: aload_0
+     176: getfield      #115                // Field record:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;
+     179: invokevirtual #510                // Method com/easysavevideo/commons/maintenance/ProviderRepository$Record.getGeneration:()J
+     182: lcmp
+     183: ifne          292
+     186: aload         4
+     188: invokevirtual #1688               // Method com/easysavevideo/commons/maintenance/ProviderRepository$Observation.getPolicyVersion:()J
+     191: aload_0
+     192: getfield      #115                // Field record:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;
+     195: invokevirtual #496                // Method com/easysavevideo/commons/maintenance/ProviderRepository$Record.getRepositoryPolicy:()Lcom/easysavevideo/commons/maintenance/SignedRepositoryPolicy;
+     198: dup
+     199: ifnull        218
+     202: invokevirtual #501                // Method com/easysavevideo/commons/maintenance/SignedRepositoryPolicy.getPolicy:()Lcom/easysavevideo/commons/maintenance/RepositoryPolicy;
+     205: dup
+     206: ifnull        218
+     209: invokevirtual #506                // Method com/easysavevideo/commons/maintenance/RepositoryPolicy.getPolicyVersion:()J
+     212: invokestatic  #330                // Method java/lang/Long.valueOf:(J)Ljava/lang/Long;
+     215: goto          223
+     218: pop
+     219: iconst_0
+     220: invokestatic  #1691               // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+     223: dup
+     224: instanceof    #326                // class java/lang/Long
+     227: ifne          235
+     230: pop
+     231: pop2
+     232: goto          292
+     235: checkcast     #1693               // class java/lang/Number
+     238: invokevirtual #1696               // Method java/lang/Number.longValue:()J
+     241: lcmp
+     242: ifne          292
+     245: aload         4
+     247: invokevirtual #1697               // Method com/easysavevideo/commons/maintenance/ProviderRepository$Observation.getPolicyDigest:()Ljava/lang/String;
+     250: aload_0
+     251: getfield      #115                // Field record:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;
+     254: invokevirtual #496                // Method com/easysavevideo/commons/maintenance/ProviderRepository$Record.getRepositoryPolicy:()Lcom/easysavevideo/commons/maintenance/SignedRepositoryPolicy;
+     257: dup
+     258: ifnull        284
+     261: astore        8
+     263: astore        12
+     265: iconst_0
+     266: istore        9
+     268: aload_0
+     269: aload         8
+     271: invokevirtual #507                // Method com/easysavevideo/commons/maintenance/SignedRepositoryPolicy.encodedBytes:()[B
+     274: invokespecial #492                // Method digest:([B)Ljava/lang/String;
+     277: aload         12
+     279: swap
+     280: nop
+     281: goto          286
+     284: pop
+     285: aconst_null
+     286: invokestatic  #1686               // Method kotlin/jvm/internal/Intrinsics.areEqual:(Ljava/lang/Object;Ljava/lang/Object;)Z
+     289: ifne          303
+     292: aload_0
+     293: getstatic     #1677               // Field com/easysavevideo/commons/maintenance/ProviderRepositoryError.STALE_OBSERVATION:Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;
+     296: invokespecial #641                // Method rejected:(Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryResult$Failure;
+     299: checkcast     #634                // class com/easysavevideo/commons/maintenance/ProviderRepositoryResult
+     302: areturn
+     303: aload_0
+     304: aload         5
+     306: aload_0
+     307: getfield      #115                // Field record:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;
+     310: invokespecial #1699               // Method validateNow:(Lcom/easysavevideo/commons/maintenance/SignedProviderPackage;Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;
+     313: astore        6
+     315: aload         6
+     317: ifnull        337
+     320: aload         6
+     322: astore        8
+     324: iconst_0
+     325: istore        9
+     327: aload_0
+     328: aload         8
+     330: invokespecial #641                // Method rejected:(Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryResult$Failure;
+     333: checkcast     #634                // class com/easysavevideo/commons/maintenance/ProviderRepositoryResult
+     336: areturn
+     337: aload_0
+     338: aload_0
+     339: getfield      #115                // Field record:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;
+     342: aload_0
+     343: invokespecial #871                // Method checkedNow:()J
+     346: invokespecial #735                // Method healthError:(Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;J)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;
+     349: astore        6
+     351: aload         6
+     353: ifnull        373
+     356: aload         6
+     358: astore        8
+     360: iconst_0
+     361: istore        9
+     363: aload_0
+     364: aload         8
+     366: invokespecial #641                // Method rejected:(Lcom/easysavevideo/commons/maintenance/ProviderRepositoryError;)Lcom/easysavevideo/commons/maintenance/ProviderRepositoryResult$Failure;
+     369: checkcast     #634                // class com/easysavevideo/commons/maintenance/ProviderRepositoryResult
+     372: areturn
+     373: aload_0
+     374: getfield      #115                // Field record:Lcom/easysavevideo/commons/maintenance/ProviderRepository$Record;
+     377: invokevirtual #777                // Method com/easysavevideo/commons/maintenance/ProviderRepository$Record.getHealth:()Lcom/easysavevideo/commons/maintenance/ProviderHealthRecord;
+     380: dup

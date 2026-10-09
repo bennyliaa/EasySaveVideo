@@ -1,0 +1,10 @@
+{
+  "baseline_admitted_count": 72,
+  "baseline_unique_matched_artifacts": 72,
+  "baseline_hash_errors": [],
+  "projected_admitted_artifact_count": 74,
+  "duplicate_classes": {},
+  "projected_class_count": 17188,
+  "gradle_resolution_executed": false,
+  "note": "External admitted artifacts only. Project jars excluded. Duplicate reports within identical component deduplicated; MR-JAR module-info excluded."
+}

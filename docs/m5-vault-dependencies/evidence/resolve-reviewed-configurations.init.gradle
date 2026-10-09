@@ -1,0 +1,22 @@
+allprojects { project ->
+    afterEvaluate {
+        if (project.path == ':app') {
+            tasks.register('resolveReviewedAdmissionConfigurations') {
+                doLast {
+                    def names = ['androidApis', 'androidJdkImage', 'androidLintTool', 'debugAndroidTestCompileClasspath', 'debugAndroidTestRuntimeClasspath', 'debugAnnotationProcessorClasspath', 'debugCompileClasspath', 'debugLintChecksClasspath', 'debugReverseMetadataValues', 'debugRuntimeClasspath', 'debugUnitTestAnnotationProcessorClasspath', 'debugUnitTestCompileClasspath', 'debugUnitTestRuntimeClasspath', 'kotlin-extension', 'kotlinBuildToolsApiClasspath', 'kotlinCompilerClasspath', 'kotlinCompilerPluginClasspath', 'kotlinCompilerPluginClasspathDebug', 'kotlinCompilerPluginClasspathDebugUnitTest', 'kotlinCompilerPluginClasspathRelease', 'lintChecks', 'releaseAnnotationProcessorClasspath', 'releaseCompileClasspath', 'releaseLintChecksClasspath', 'releaseReverseMetadataValues', 'releaseRuntimeClasspath']
+                    names.each { name ->
+                        def configuration = project.configurations.findByName(name)
+                        if (configuration != null && configuration.canBeResolved) {
+                            configuration.incoming.resolutionResult.allDependencies.each { dependency ->
+                                if (dependency instanceof org.gradle.api.artifacts.result.UnresolvedDependencyResult) {
+                                    throw new GradleException("Unresolved reviewed configuration: " + name, dependency.failure)
+                                }
+                            }
+                            println("Resolved existing locked configuration: " + name)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

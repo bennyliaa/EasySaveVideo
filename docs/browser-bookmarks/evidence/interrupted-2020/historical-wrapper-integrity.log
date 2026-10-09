@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "historical_test_case_bodies": "BYTE_UNCHANGED",
+  "adaptations": "Current manifest/self/output paths and manifest baseline and exact current-scope membership; add OS snapshot type dependency to B3 compilation; current controller mailbox source checks; obsolete report status corrected",
+  "checked": [
+    "check-inherited-capture-preview-admission.py",
+    "check-inherited-editor-admission.py",
+    "check-inherited-purchase-admission.py",
+    "check-inherited-region-recording-admission.py",
+    "inherited-reliability-run.sh",
+    "inherited-filter-run.sh",
+    "inherited-media-run.sh",
+    "inherited-origin-run.sh",
+    "inherited-power-run.sh",
+    "run-channel-matrix.sh",
+    "run-distribution-host.sh",
+    "run-independent-destination-review.sh",
+    "run-independent-entitlement-review.sh",
+    "run-isolation-host.sh",
+    "run-independent-folder-review.sh",
+    "inherited-destination-sqlite.py",
+    "inherited-independent-destination-sqlite.py",
+    "inherited-folder-sqlite.py"
+  ]
+}

@@ -1,0 +1,109 @@
+import java.security.MessageDigest
+
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.plugin.compose")
+}
+android {
+    namespace = "com.easysavevideo.app"
+    compileSdk = 36
+    buildToolsVersion = "36.0.0"
+    defaultConfig {
+        applicationId = "com.easysavevideo.app"
+        minSdk = 31
+        targetSdk = 36
+        versionCode = 2
+        versionName = "0.3.2-commons-dev"
+        // Explicit build identity only. A channel does not select billing or authorize release.
+        val distributionChannel = providers.gradleProperty("esv.distribution.channel").orElse("unconfigured").get()
+        require(distributionChannel in setOf("unconfigured", "google_play", "huawei", "xiaomi", "oppo", "vivo", "tencent_myapp")) {
+            "Unsupported ESV distribution channel; use an exact documented build value"
+        }
+        buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"$distributionChannel\"")
+        val commonsContact = providers.gradleProperty("esv.commons.contact")
+            .orElse(providers.environmentVariable("ESV_COMMONS_CONTACT")).orElse("").get()
+        require(commonsContact.isEmpty() || (commonsContact.length <= 256 &&
+            commonsContact.all { it.code in 33..126 && it !in "()\\\"" })) { "Invalid Commons service contact" }
+        buildConfigField("String", "COMMONS_CONTACT", "\"$commonsContact\"")
+        buildConfigField("boolean", "COMMONS_ENABLED", (commonsContact.isNotEmpty() &&
+            providers.gradleProperty("esv.commons.enabled").orElse("true").get() == "true").toString())
+    }
+    buildFeatures { compose = true; buildConfig = true }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    lint { abortOnError = true; checkReleaseBuilds = true }
+}
+dependencies {
+    implementation(project(":core-model"))
+    implementation(project(":core-domain"))
+    implementation(project(":discovery"))
+    implementation(project(":commons-provider"))
+    implementation(project(":searxng-provider"))
+    implementation(project(":verification-client"))
+    implementation(project(":save"))
+    implementation(project(":recording"))
+    implementation(project(":library"))
+    implementation(project(":hls"))
+    // Exact reviewed dependency admission only. Vault remains unimplemented and disabled.
+    implementation("com.google.crypto.tink:tink-android:1.23.0")
+    implementation("androidx.media3:media3-transformer:1.11.1")
+    implementation("androidx.media3:media3-exoplayer-hls:1.11.1")
+    // Align all app compilation/runtime configurations with the four audited runtime migrations.
+    // These constraints do not add modules or force an older dependency over Media3's requirements.
+    constraints {
+        implementation("androidx.concurrent:concurrent-futures:1.2.0")
+        implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+    }
+    implementation(project(":ui-theme"))
+    implementation(platform("androidx.compose:compose-bom:2025.06.01"))
+    implementation("androidx.activity:activity-compose:1.10.1")
+    implementation("androidx.compose.runtime:runtime")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.ui:ui")
+    testImplementation("junit:junit:4.13.2")
+}
+
+tasks.register("runtimeInventory") {
+    dependsOn(":core-model:jar", ":core-domain:jar", ":ui-theme:jar", ":discovery:jar", ":save:jar", ":recording:jar", ":library:jar", ":hls:jar", ":commons-provider:jar", ":searxng-provider:jar", ":verification-client:jar")
+    doLast {
+        listOf("debugRuntimeClasspath", "releaseRuntimeClasspath").forEach { name ->
+            val output = layout.buildDirectory.file("reports/$name-inventory.tsv").get().asFile
+            output.parentFile.mkdirs()
+            output.writeText(configurations.getByName(name).resolvedConfiguration.resolvedArtifacts
+                .sortedBy { it.moduleVersion.id.toString() }.joinToString("\n", postfix = "\n") { artifact ->
+                    val digest = MessageDigest.getInstance("SHA-256").digest(artifact.file.readBytes())
+                        .joinToString("") { byte -> "%02x".format(byte) }
+                    "${artifact.moduleVersion.id}\t${artifact.file.name}\t$digest\t${artifact.file.absolutePath}"
+                })
+            println("Runtime inventory: ${output.absolutePath}")
+        }
+    }
+}
+
+
+// Exact runtime bytes must remain in the reviewed set. A new candidate cannot silently
+// enter an implementation merely because dependency resolution succeeded.
+val verifyRuntimeAdmission by tasks.registering {
+    doLast {
+        val admitted = rootProject.file("third_party/admitted-runtime.tsv").readLines()
+            .filter { it.isNotBlank() && !it.startsWith("#") }.toSet()
+        listOf("debugRuntimeClasspath", "releaseRuntimeClasspath").forEach { variant ->
+            val actual = configurations.getByName(variant).resolvedConfiguration.resolvedArtifacts
+                .filterNot { it.id.componentIdentifier is org.gradle.api.artifacts.component.ProjectComponentIdentifier }
+                .map { artifact ->
+                    val digest = MessageDigest.getInstance("SHA-256").digest(artifact.file.readBytes())
+                        .joinToString("") { byte -> "%02x".format(byte) }
+                    "${artifact.moduleVersion.id}\t${artifact.file.name}\t$digest"
+                }.toSet()
+            check(actual == admitted) { "Unreviewed runtime graph/bytes for $variant. Review the exact candidate license and update admission evidence before integration." }
+        }
+        println("License admission: exact ${admitted.size} reviewed runtime artifacts verified for both variants")
+    }
+}
+tasks.configureEach {
+    if (name == "preBuild") dependsOn(verifyRuntimeAdmission)
+}

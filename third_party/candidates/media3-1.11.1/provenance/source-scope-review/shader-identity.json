@@ -1,0 +1,135 @@
+[
+  {
+    "aar_entry": "res/raw/fragment_shader_alpha_scale_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_alpha_scale_es2.glsl",
+    "bytes": 1000,
+    "sha256": "c736784c62cb96195f365ba58b8a78649ad4e24f80e3783aa5a7081f6d4af08d",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_copy_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_copy_es2.glsl",
+    "bytes": 905,
+    "sha256": "a5d27f85a7c274cf8c1ad24b97239dc9568126f5380c33ceb83299861aa86f5e",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_hdr_to_ultra_hdr_es3.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_hdr_to_ultra_hdr_es3.glsl",
+    "bytes": 4213,
+    "sha256": "53897d57522ec14fefa935521d336d20a3b8b1d2a479d7ea544a06fda1c45294",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_hsl_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_hsl_es2.glsl",
+    "bytes": 2691,
+    "sha256": "e4f033f15597b0c993346d144755f4b7c6026cd3e6a93e5103158583498927a3",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_lut_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_lut_es2.glsl",
+    "bytes": 4769,
+    "sha256": "288fe88cc44333b0d96fa5eedf19ef67aa89b1f98eb831511a2dad0410137065",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_oetf_es3.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_oetf_es3.glsl",
+    "bytes": 4404,
+    "sha256": "38f1c3a3911ca8901ccf60d8aa602747c6a4d716801479b11b6d88e89fd0a942",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_separable_convolution_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_separable_convolution_es2.glsl",
+    "bytes": 4879,
+    "sha256": "2ffac0c1315439316368e893462b8d36f7116f0866b3e884c8c9a494f2834b14",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_transformation_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_transformation_es2.glsl",
+    "bytes": 1110,
+    "sha256": "c2591b6de6d00d530440368ccd7cf98b34eb663543eb213ef5a682b34a4d2506",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_transformation_external_yuv_es3.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_transformation_external_yuv_es3.glsl",
+    "bytes": 13490,
+    "sha256": "761d1512a5b8d1f9c8364684d78f501f498702fcd1ff13e50a554c168e0bcc87",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_transformation_hdr_internal_es3.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_transformation_hdr_internal_es3.glsl",
+    "bytes": 12848,
+    "sha256": "2c190d499ddb7258122d1fc758832cd925168a04e07f543660effcedb8e2b1c7",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_transformation_sdr_external_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_external_es2.glsl",
+    "bytes": 5305,
+    "sha256": "df2824107316b1a90798c42f4fc88617410b1b105d2206796dd8e8b44e2b9167",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_transformation_sdr_internal_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_internal_es2.glsl",
+    "bytes": 6650,
+    "sha256": "ad7a740ca4c012b03d02cc6d07e002d6bd3035115b935a0a7090fea944329663",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_transformation_sdr_oetf_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_transformation_sdr_oetf_es2.glsl",
+    "bytes": 3316,
+    "sha256": "f3f0583d9d7c385514e8391812e3f7b8908d9923d47db4a0e833748149209dbc",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/fragment_shader_transformation_ultra_hdr_es3.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/fragment_shader_transformation_ultra_hdr_es3.glsl",
+    "bytes": 9642,
+    "sha256": "ffcce12baa4b279bc2d5b722980ab73e6db326269fe6decf6517c5fd48da8ec7",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/insert_overlay_fragment_shader_methods.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/insert_overlay_fragment_shader_methods.glsl",
+    "bytes": 895,
+    "sha256": "943e4effeebc2aca742572e6c215f642d6c340d1c9636a12679214b44524cbe9",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/insert_ultra_hdr.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/insert_ultra_hdr.glsl",
+    "bytes": 2828,
+    "sha256": "e3925fff5d15ff61c656d8da0252705b3ab52d44d3b98ae400b7363cb49e4221",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/vertex_shader_thumbnail_strip_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/vertex_shader_thumbnail_strip_es2.glsl",
+    "bytes": 1197,
+    "sha256": "cf662d1ac24d1f86ba905e015fca8780ecf0e06c050df375aeadf1b35ed8c27b",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/vertex_shader_transformation_es2.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/vertex_shader_transformation_es2.glsl",
+    "bytes": 1164,
+    "sha256": "9f35e3e2b512ba0a465987ace1f97b0b7ce5f667872ed1c0bba0be3c59e2640f",
+    "matches_fixed_upstream": true
+  },
+  {
+    "aar_entry": "res/raw/vertex_shader_transformation_es3.glsl",
+    "upstream_path": "source-scope-review/upstream/libraries/effect/src/main/res/raw/vertex_shader_transformation_es3.glsl",
+    "bytes": 1156,
+    "sha256": "a591055e2b3f3d49cff0ea397296bfe63b3f9a0ece05e3b5914b821f1b902e47",
+    "matches_fixed_upstream": true
+  }
+]

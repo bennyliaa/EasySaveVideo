@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.recording.RecordingTimelineTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:30:24.753Z" hostname="05582a867b99" time="0.005">
+  <properties/>
+  <testcase name="keyframeFlagOnAudioIsInvalidRatherThanOpeningGate" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="t03_firstFrameAndResumeMustActuallyBeKeyframes" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.001"/>
+  <testcase name="t02_rapidPauseResumePreservesAlreadyAcceptedPacketDuration" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="t05_clockRegressionFailsInsteadOfClamping" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="t03_resumeKeyframeArrivingAfterDeadlineCannotReopenGate" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.001"/>
+  <testcase name="stopDrainsOnlyTheActiveEpochBeforeItsCutoff" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.001"/>
+  <testcase name="t01_twentyPlusPause120PlusThirtyProducesFiftySecondTimeline" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="t04_audioAndVideoShareEpochOffsetAndAudioCannotLeadResume" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="t03_missingKeyframeTimesOutEvenWithoutSamples" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="t04_pausedAndLateOldEpochPacketsAreDroppedNotRemapped" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="t06_staticVideoAndPauseDoNotTriggerNoByteWatchdog" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="t05_negativeAndOverflowingSampleTimesFailClosed" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="stoppedPausedEpochCannotAdmitPendingAudio" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="controlsCannotPrecedeAlreadyAdmittedCaptureTimestamp" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.001"/>
+  <testcase name="t05_perTrackDuplicateOrBackwardsPtsAreRejected" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="t05_largeMonotonicOriginsDoNotOverflowRelativeMediaTime" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <testcase name="t02_stopBetweenResumeAndKeyframeKeepsGateClosed" classname="com.easysavevideo.recording.RecordingTimelineTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

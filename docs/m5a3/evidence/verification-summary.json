@@ -1,0 +1,149 @@
+{
+  "date_utc": "2026-10-06T20:58:35.505175+00:00",
+  "kind": "M5_A3_ORDINARY_EXPORT_SHARE_THUMBNAIL_DEVELOPMENT_CHECKPOINT",
+  "base_commit": "b90194da23c6a6419b4d04d0f16cd5a6a2637fc5",
+  "production_source_commit": "ebbca1997d02e4b67d9d0cef838b288a317d46c4",
+  "development_tag": "m5a3-exports-dev-2026-10-06-r1",
+  "gradle_jvm_suites": {
+    "core-model": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core-domain": {
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "library": {
+      "tests": 130,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "recording": {
+      "tests": 71,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "save": {
+      "tests": 86,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "hls": {
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ui-theme": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "discovery": {
+      "tests": 94,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "commons-provider": {
+      "tests": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "tests": 419,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "jvm_total": 929,
+  "debug_compile": "PASS",
+  "release_compile": "PASS",
+  "strict_lint": {
+    "debug": {
+      "Warning": 11,
+      "Hint": 5
+    },
+    "release": {
+      "Warning": 11,
+      "Hint": 5
+    }
+  },
+  "lint_limit_notes": "No detectors disabled. New context-retention warning is an application-context-only singleton; URI KTX suggestion and state boxing hints remain visible.",
+  "library_host_sqlite_contracts": 14,
+  "export_host_sqlite_and_static_contracts": 14,
+  "host_sqlite_boundaries": "Production-extracted DDL/selectors with synthetic records; Android SQLiteOpenHelper/ContentResolver not executed.",
+  "hls_eof_host_tests": 81,
+  "pinned_hls_mp4_roundtrip_host_tests": 15,
+  "legacy_pinned_reader": "PASS synthetic host probe only",
+  "browser_detector_synthetic_checks": 11,
+  "discovery_sqlite_host_contracts": "PASS",
+  "exact_external_runtime_artifacts_per_variant": 72,
+  "duplicate_runtime_classes": 0,
+  "new_external_dependencies": 0,
+  "safety_review_production_files": 32,
+  "focused_ui_review_production_context_and_test_files": 15,
+  "independent_review_hashes_match": true,
+  "save_storage_schema_version": 3,
+  "task_codec_write_version": 5,
+  "task_codec_read_versions": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "owned_evidence_write_version": 3,
+  "export_limits": {
+    "max_bytes": 2147483648,
+    "buffer_bytes": 65536,
+    "active_operations": 32,
+    "review_page": 32,
+    "journal_blob_bytes": 4096,
+    "live_saf_grants": 32,
+    "lifetime_export_count_limit": null
+  },
+  "share_limits": {
+    "copy_bytes": 268435456,
+    "copies": 4,
+    "total_bytes": 536870912,
+    "ttl_millis": 600000,
+    "opens_per_copy": 8,
+    "live_proxy_readers": 2,
+    "proxy_request_bytes": 131072,
+    "underlying_read_bytes": 65536,
+    "read_multiplier_per_descriptor": 8,
+    "nonempty_reads_per_descriptor": 65536,
+    "process_proxy_issuances": 512
+  },
+  "thumbnail_limits": {
+    "width": 256,
+    "height": 144,
+    "pixels": 36864,
+    "frame_bytes": 147456,
+    "cache_entries": 16,
+    "cache_bytes": 2359296,
+    "queued": 16,
+    "native_workers": 1,
+    "timeout_millis": 3000
+  },
+  "real_media_download_delete_export_share": "NOT_RUN",
+  "android_native_provider_oem_permissions_phone_tablet": "NOT_RUN",
+  "android_proxy_seek_dup_release_recipient_compatibility": "NOT_RUN",
+  "apk_aab_install_release": "NOT_RUN",
+  "vault_and_configurable_capture_destinations": "NOT_IMPLEMENTED",
+  "secure_metadata_erasure": "NOT_CLAIMED; ordinary Save provenance retained",
+  "cold_restore_and_cold_build": "Recorded separately in external recovery receipt after final development tag freeze",
+  "test_evidence_correction": "c8e908f2088491fcd8bd57096f376984bbd5d387 uses actual on-disk SQLite backup/close/reopen before 70-warning pagination validation; production unchanged.",
+  "independent_reopen_fixture_r1": "PASS; one focused host test independently rerun"
+}

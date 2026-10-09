@@ -1,0 +1,379 @@
+{
+  "coordinate": "androidx.media3:media3-database:1.11.1",
+  "same_baseline_gav": false,
+  "official_repository_base_url": "https://dl.google.com/dl/android/maven2/androidx/media3/media3-database/1.11.1/",
+  "file_metadata": {
+    "media3-database-1.11.1.module": {
+      "sha256": "be7c65534e7cc505b328243069f98c2390e16505ba371ac70379ff17a04969ab",
+      "bytes": 3268,
+      "path": "official-maven/androidx/media3/media3-database/1.11.1/media3-database-1.11.1.module"
+    },
+    "media3-database-1.11.1.pom": {
+      "sha256": "1b7e2419d3f839764d3646a1d8552092c1e7e58b8e75371502cee9055841a3c9",
+      "bytes": 1723,
+      "path": "official-maven/androidx/media3/media3-database/1.11.1/media3-database-1.11.1.pom"
+    },
+    "media3-database-1.11.1.aar": {
+      "sha256": "520e6f814e42a7d428db187ac073b453c0fcba0f4f5f4edd1cf33fafd2cfb740",
+      "bytes": 7197,
+      "path": "official-maven/androidx/media3/media3-database/1.11.1/media3-database-1.11.1.aar"
+    },
+    "media3-database-1.11.1-sources.jar": {
+      "sha256": "1baca4ff0a32e76d08b92ed5d33e0278aa34a9e9c537edbc2fd39573e8ec46a3",
+      "bytes": 8391,
+      "path": "official-maven/androidx/media3/media3-database/1.11.1/media3-database-1.11.1-sources.jar"
+    }
+  },
+  "pom_licenses": [
+    {
+      "name": "The Apache Software License, Version 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.txt",
+      "distribution": "repo"
+    }
+  ],
+  "source_headers": [
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/DatabaseIOException.java",
+      "sha256": "5561f454fe3012bda718c02d29de2d5b779e75268f99c2299c04987b81a2e8c4",
+      "bytes": 1089,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2019 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/DatabaseProvider.java",
+      "sha256": "03777ec83014266b7147b14fcf0fcc670ca1a7adc1397195529777f88646fea3",
+      "bytes": 2494,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/DefaultDatabaseProvider.java",
+      "sha256": "c2c6e32420611b2617dc355088e0f06eefaca170a34e469616adc176e2bb9e46",
+      "bytes": 1503,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/ExoDatabaseProvider.java",
+      "sha256": "56f64021485e3ffd403603dfdb51b3557d68fc56cbb20ebfb9331c43c80dcca5",
+      "bytes": 975,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/StandaloneDatabaseProvider.java",
+      "sha256": "0f9f0289c513caf555e4402d4d1bd0d524f391b842f1a28ad2bccecea9f5fcf0",
+      "bytes": 3414,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/VersionTable.java",
+      "sha256": "ce7a410398b6f97b5ce4e1587f8c3ce233544901c2606a56a3f1ec371d3a08fa",
+      "bytes": 6448,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2018 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/package-info.java",
+      "sha256": "3173472f900b77db51e72484a57c8438ef955fad907becf80c6d321e0e8f7eae",
+      "bytes": 714,
+      "license_markers": [
+        "Apache-2.0"
+      ],
+      "header": "/*\n * Copyright (C) 2019 The Android Open Source Project\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */"
+    }
+  ],
+  "source_special_attributions": [
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/DatabaseIOException.java",
+      "sha256": "5561f454fe3012bda718c02d29de2d5b779e75268f99c2299c04987b81a2e8c4",
+      "bytes": 1089,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2019 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/DatabaseProvider.java",
+      "sha256": "03777ec83014266b7147b14fcf0fcc670ca1a7adc1397195529777f88646fea3",
+      "bytes": 2494,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/DefaultDatabaseProvider.java",
+      "sha256": "c2c6e32420611b2617dc355088e0f06eefaca170a34e469616adc176e2bb9e46",
+      "bytes": 1503,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/ExoDatabaseProvider.java",
+      "sha256": "56f64021485e3ffd403603dfdb51b3557d68fc56cbb20ebfb9331c43c80dcca5",
+      "bytes": 975,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/StandaloneDatabaseProvider.java",
+      "sha256": "0f9f0289c513caf555e4402d4d1bd0d524f391b842f1a28ad2bccecea9f5fcf0",
+      "bytes": 3414,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/VersionTable.java",
+      "sha256": "ce7a410398b6f97b5ce4e1587f8c3ce233544901c2606a56a3f1ec371d3a08fa",
+      "bytes": 6448,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2018 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/package-info.java",
+      "sha256": "3173472f900b77db51e72484a57c8438ef955fad907becf80c6d321e0e8f7eae",
+      "bytes": 714,
+      "hits": [
+        {
+          "line": 2,
+          "text": "* Copyright (C) 2019 The Android Open Source Project"
+        },
+        {
+          "line": 4,
+          "text": "* Licensed under the Apache License, Version 2.0 (the \"License\");"
+        }
+      ]
+    }
+  ],
+  "source_without_license_header": [],
+  "source_non_code_entries": [
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    }
+  ],
+  "notices": [],
+  "archive_entries": [
+    {
+      "archive": "media3-database-1.11.1.aar",
+      "entry": "R.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "archive": "media3-database-1.11.1.aar",
+      "entry": "AndroidManifest.xml",
+      "sha256": "f1a20fbcbe32b34f8281c18b3e5eb02c3d185b8e849f85db26b3bcc58057e082",
+      "bytes": 838
+    },
+    {
+      "archive": "media3-database-1.11.1.aar",
+      "entry": "classes.jar",
+      "sha256": "d4b0509ee93605d4d43da2d458e78bbf728f865dbcd00aa2a726f4daf91d5da2",
+      "bytes": 6622
+    },
+    {
+      "archive": "media3-database-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/database/DatabaseIOException.class",
+      "sha256": "457b605bf0b6f58d5b2a25db7a1a1e065e720b78e6cfebdbb91e7b95d6d45d50",
+      "bytes": 764
+    },
+    {
+      "archive": "media3-database-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/database/DatabaseProvider.class",
+      "sha256": "a0a1fa5ac2aaba509e7cba1c0e15b380d06ea29a4523690db73b8b37284c53a7",
+      "bytes": 412
+    },
+    {
+      "archive": "media3-database-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/database/DefaultDatabaseProvider.class",
+      "sha256": "c57be05f481efb04ba2099fc045466cea1cdbf3d1815af40949dcd2c5362c6f0",
+      "bytes": 915
+    },
+    {
+      "archive": "media3-database-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/database/ExoDatabaseProvider.class",
+      "sha256": "ff802a8b1b85275704c0abca02ec46c018e87f53090834c8c8d69c2c7f5f68cb",
+      "bytes": 615
+    },
+    {
+      "archive": "media3-database-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/database/StandaloneDatabaseProvider.class",
+      "sha256": "7cd0e736ebbe5b48211d845bb6538e7586173b0234cdd838bd1d3d6cd322058b",
+      "bytes": 3080
+    },
+    {
+      "archive": "media3-database-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/database/VersionTable.class",
+      "sha256": "a0b8cce1b2b4c05dcf12d191d930913dd4623376a1de9068b137cbaa4150120d",
+      "bytes": 4110
+    },
+    {
+      "archive": "media3-database-1.11.1.aar!classes.jar",
+      "entry": "androidx/media3/database/package-info.class",
+      "sha256": "29e1ca448cf06bb966ef7a9ca0f60424ae335b8e39e794cbab1bc7a3d87b73bc",
+      "bytes": 215
+    },
+    {
+      "archive": "media3-database-1.11.1.aar",
+      "entry": "annotations.zip",
+      "sha256": "bb6da1a7e712aae1b44293661d9f0993db0e49f0c4afd072b97f3f1919a5ff48",
+      "bytes": 505
+    },
+    {
+      "archive": "media3-database-1.11.1.aar",
+      "entry": "META-INF/com/android/build/gradle/aar-metadata.properties",
+      "sha256": "08ee81351e24d5fb98490f59522c587e5fbaf50b7794a721d6fb021a08368cc6",
+      "bytes": 157
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "META-INF/MANIFEST.MF",
+      "sha256": "566ad1a80220026d05099562645ce968ff0e7c36cde22634332605bb34cc3eff",
+      "bytes": 25
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/DatabaseIOException.java",
+      "sha256": "5561f454fe3012bda718c02d29de2d5b779e75268f99c2299c04987b81a2e8c4",
+      "bytes": 1089
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/DatabaseProvider.java",
+      "sha256": "03777ec83014266b7147b14fcf0fcc670ca1a7adc1397195529777f88646fea3",
+      "bytes": 2494
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/DefaultDatabaseProvider.java",
+      "sha256": "c2c6e32420611b2617dc355088e0f06eefaca170a34e469616adc176e2bb9e46",
+      "bytes": 1503
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/ExoDatabaseProvider.java",
+      "sha256": "56f64021485e3ffd403603dfdb51b3557d68fc56cbb20ebfb9331c43c80dcca5",
+      "bytes": 975
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/StandaloneDatabaseProvider.java",
+      "sha256": "0f9f0289c513caf555e4402d4d1bd0d524f391b842f1a28ad2bccecea9f5fcf0",
+      "bytes": 3414
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/VersionTable.java",
+      "sha256": "ce7a410398b6f97b5ce4e1587f8c3ce233544901c2606a56a3f1ec371d3a08fa",
+      "bytes": 6448
+    },
+    {
+      "archive": "media3-database-1.11.1-sources.jar",
+      "entry": "androidx/media3/database/package-info.java",
+      "sha256": "3173472f900b77db51e72484a57c8438ef955fad907becf80c6d321e0e8f7eae",
+      "bytes": 714
+    }
+  ],
+  "assets": [],
+  "native_libraries": [],
+  "pom_parent": null,
+  "source_status": "PRESENT",
+  "published_hash_checks": [
+    {
+      "variant": "releaseVariantReleaseApiPublication",
+      "file": "media3-database-1.11.1.aar",
+      "sha256_published": "520e6f814e42a7d428db187ac073b453c0fcba0f4f5f4edd1cf33fafd2cfb740",
+      "sha256_actual": "520e6f814e42a7d428db187ac073b453c0fcba0f4f5f4edd1cf33fafd2cfb740",
+      "matches": true
+    },
+    {
+      "variant": "releaseVariantReleaseRuntimePublication",
+      "file": "media3-database-1.11.1.aar",
+      "sha256_published": "520e6f814e42a7d428db187ac073b453c0fcba0f4f5f4edd1cf33fafd2cfb740",
+      "sha256_actual": "520e6f814e42a7d428db187ac073b453c0fcba0f4f5f4edd1cf33fafd2cfb740",
+      "matches": true
+    },
+    {
+      "variant": "releaseVariantReleaseSourcePublication",
+      "file": "media3-database-1.11.1-sources.jar",
+      "sha256_published": "1baca4ff0a32e76d08b92ed5d33e0278aa34a9e9c537edbc2fd39573e8ec46a3",
+      "sha256_actual": "1baca4ff0a32e76d08b92ed5d33e0278aa34a9e9c537edbc2fd39573e8ec46a3",
+      "matches": true
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" tests="26" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:31:01.939Z" hostname="05582a867b99" time="0.029">
+  <properties/>
+  <testcase name="ipv6CanonicalPort" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.001"/>
+  <testcase name="functionalDataToStringIsRedacted" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.004"/>
+  <testcase name="localeCannotChangeCanonicalHost" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="acceptRejectsAnyIdentityAddressOrGenerationChange" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="captureNormalReadyOnly" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.001"/>
+  <testcase name="httpDefaultPortAndNondefaultPreserved" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="isolatedSurrogateNeverSurvivesTitle" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.001"/>
+  <testcase name="emptyQueryAndFragmentRemainDistinct" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="acceptUsesCurrentSafeTitleWithoutConfusingItWithNavigationAuthority" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="longFallbackHostRemainsWithinLimit" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.002"/>
+  <testcase name="rejectUnsafeSchemesAndCredentials" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.001"/>
+  <testcase name="byteLimitNotOnlyUtf16Limit" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.003"/>
+  <testcase name="titleHtmlIsOnlyPlainText" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="rejectMalformedPortsHostAndSurrogates" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="captureNoIncognitoOrAbsentPage" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="pathQueryFragmentAndEscapesPreserved" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.001"/>
+  <testcase name="captureRejectsUnadmittedUrlAndInactive" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="maximumAsciiAddressRoundtrips" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.01"/>
+  <testcase name="canonicalSchemeHostPortAndEmptyPath" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="captureCanonicalizesAndSanitizesBeforePersistence" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.001"/>
+  <testcase name="blankTitleUsesHost" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="rejectLiteralControlsBidiAndWhitespace" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="captureBindsBothGenerationsContextAndTitle" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.001"/>
+  <testcase name="canonicalIsIdempotent" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <testcase name="titleTruncationPreservesWholeCodepoints" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.001"/>
+  <testcase name="safeTitleStripsControlsAndBidiAndCollapsesSpaces" classname="com.easysavevideo.app.browser.bookmarks.BookmarkPolicyTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

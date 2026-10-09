@@ -1,0 +1,102 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "dev.skinkit",
+    "module": "skinkit-contract",
+    "version": "0.0.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.6.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "skinkit-contract-0.0.1.jar",
+          "url": "skinkit-contract-0.0.1.jar",
+          "size": 153167,
+          "sha512": "204b2f2cd7385b35c167715f818554528f436f7d9038c6784d40169e4748e8b6f4e37e0157986cb6e1496e5a212893c7b7c668730f22e2ef808d47dcf062d85f",
+          "sha256": "4bbb7cf74f53e64f4adc7bd42d10b423f38dc961ba6a0dad145c16327007a083",
+          "sha1": "5867565d4b5000bdcb40c49e63c2d6261bc494ff",
+          "md5": "28e49c8a35ba0e7c95e913a9d5dd55f3"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "skinkit-contract-0.0.1.jar",
+          "url": "skinkit-contract-0.0.1.jar",
+          "size": 153167,
+          "sha512": "204b2f2cd7385b35c167715f818554528f436f7d9038c6784d40169e4748e8b6f4e37e0157986cb6e1496e5a212893c7b7c668730f22e2ef808d47dcf062d85f",
+          "sha256": "4bbb7cf74f53e64f4adc7bd42d10b423f38dc961ba6a0dad145c16327007a083",
+          "sha1": "5867565d4b5000bdcb40c49e63c2d6261bc494ff",
+          "md5": "28e49c8a35ba0e7c95e913a9d5dd55f3"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "skinkit-contract-0.0.1-sources.jar",
+          "url": "skinkit-contract-0.0.1-sources.jar",
+          "size": 11436,
+          "sha512": "01016075da515ab55b41d06211f3414c16cecc62f421ec7d676ed9c69abbb9c33191aa0b54f4b12486597448e669d112c9c2891d8095517d4461b4b819415323",
+          "sha256": "ef8b33eb5fb7e8a6114471d50e26ff52761e373d8490f375cb0856c6d2cd43fc",
+          "sha1": "af0bccf676244052f82477a86fd4328224fecd39",
+          "md5": "aa99f956d4db5fe0269c01fe47fe8469"
+        }
+      ]
+    }
+  ]
+}

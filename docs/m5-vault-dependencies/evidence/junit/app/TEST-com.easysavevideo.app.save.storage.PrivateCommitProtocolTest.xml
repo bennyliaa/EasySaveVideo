@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-10-06T21:08:16.488Z" hostname="723dfa57d2fa" time="0.092">
+  <properties/>
+  <testcase name="digestAndIndexAreIndependentlyRechecked" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.009"/>
+  <testcase name="previewRejectsStagingProvisionalAndMismatchedVisibleReceipt" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.004"/>
+  <testcase name="previewRejectsChangedLengthSymlinkAndDiscardedOwnership" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.004"/>
+  <testcase name="lowSpacePreflightPreservesDataAndNeverCreatesCommitIntent" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.003"/>
+  <testcase name="directoryLeaseExcludesSecondWriterAndReallyReleasesOwnership" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.002"/>
+  <testcase name="directoryLeaseRejectsUnknownSymlinkWithoutTouchingTarget" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.001"/>
+  <testcase name="restartCrashWindowsReuseOnlyTheOwnedEmptyReplacement" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.005"/>
+  <testcase name="neverOverwritesPreexistingFinalOrDeletesItAfterFailure" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.003"/>
+  <testcase name="forgedOwnershipAndSymlinkCannotDeleteUnrelatedFiles" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.001"/>
+  <testcase name="recoveryVerifierCanReadPromotedArtifactButWriterCannot" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.004"/>
+  <testcase name="restartUsesNewInodeAndNeverAppendsOldBytes" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.001"/>
+  <testcase name="operationByteBudgetIsEnforcedBeforeCommit" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.002"/>
+  <testcase name="renameFailurePreservesIntentAndRecoversOnSameFilesystemWithoutFallback" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.002"/>
+  <testcase name="mismatchedIndexIsNeverAcceptedOrSilentlyReplaced" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.003"/>
+  <testcase name="truncatedStagingCannotCreateIntentOrIndex" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.002"/>
+  <testcase name="prepareCrashIsIdempotentAndUsesRandomOwnedNames" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.001"/>
+  <testcase name="streamCleanupPreservesUnknownAndSymlinkedFiles" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.001"/>
+  <testcase name="streamOutputMovesWithinOwnedNamespaceAndLeavesOriginalContent" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.002"/>
+  <testcase name="everyCommitCrashWindowReconcilesOnceWithoutDuplicateMedia" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.038"/>
+  <testcase name="cancellationBeforeIntentNeverPublishesAndOwnedStagingCanBeCleaned" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.002"/>
+  <testcase name="restartAndCleanupPreserveUnknownNonemptyReplacement" classname="com.easysavevideo.app.save.storage.PrivateCommitProtocolTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

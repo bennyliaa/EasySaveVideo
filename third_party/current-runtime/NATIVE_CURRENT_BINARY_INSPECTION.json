@@ -1,0 +1,60 @@
+{
+  "new_static_inspection_only": true,
+  "libraries_not_executed": true,
+  "libraries_not_in_recovery_bundle": true,
+  "from_current_artifact_sha256": "8ca4032b6d79b351f0b59ad4b580eddbb9423e1652f7c958830687f1eee2ec03",
+  "native_libraries": [
+    {
+      "entry": "jni/x86_64/libandroidx.graphics.path.so",
+      "sha256": "4e56c996f13670e70082658de7880c4020eabf4f25e43387f88ed78a713fc9f0",
+      "old_context_sha256": "4e56c996f13670e70082658de7880c4020eabf4f25e43387f88ed78a713fc9f0",
+      "matches_old_context_sha256": true,
+      "readelf_returncode": 0,
+      "needed_lines": [
+        "0x0000000000000001 (NEEDED)             Shared library: [libm.so]",
+        "0x0000000000000001 (NEEDED)             Shared library: [libdl.so]",
+        "0x0000000000000001 (NEEDED)             Shared library: [libc.so]"
+      ],
+      "readelf_dynamic_output": "\nDynamic section at offset 0x2058 contains 28 entries:\n  Tag        Type                         Name/Value\n 0x0000000000000001 (NEEDED)             Shared library: [libm.so]\n 0x0000000000000001 (NEEDED)             Shared library: [libdl.so]\n 0x0000000000000001 (NEEDED)             Shared library: [libc.so]\n 0x000000000000000e (SONAME)             Library soname: [libandroidx.graphics.path.so]\n 0x000000000000001e (FLAGS)              BIND_NOW\n 0x000000006ffffffb (FLAGS_1)            Flags: NOW\n 0x0000000000000007 (RELA)               0x5a0\n 0x0000000000000008 (RELASZ)             1152 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffff9 (RELACOUNT)          48\n 0x0000000000000017 (JMPREL)             0xa20\n 0x0000000000000002 (PLTRELSZ)           168 (bytes)\n 0x0000000000000003 (PLTGOT)             0x6218\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000006 (SYMTAB)             0x330\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000005 (STRTAB)             0x4e8\n 0x000000000000000a (STRSZ)              181 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x478\n 0x0000000000000004 (HASH)               0x498\n 0x000000000000001a (FINI_ARRAY)         0x6048\n 0x000000000000001c (FINI_ARRAYSZ)       16 (bytes)\n 0x000000006ffffff0 (VERSYM)             0x408\n 0x000000006ffffffc (VERDEF)             0x41c\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000006ffffffe (VERNEED)            0x454\n 0x000000006fffffff (VERNEEDNUM)         1\n 0x0000000000000000 (NULL)               0x0\n"
+    },
+    {
+      "entry": "jni/arm64-v8a/libandroidx.graphics.path.so",
+      "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+      "old_context_sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+      "matches_old_context_sha256": true,
+      "readelf_returncode": 0,
+      "needed_lines": [
+        "0x0000000000000001 (NEEDED)             Shared library: [libm.so]",
+        "0x0000000000000001 (NEEDED)             Shared library: [libdl.so]",
+        "0x0000000000000001 (NEEDED)             Shared library: [libc.so]"
+      ],
+      "readelf_dynamic_output": "\nDynamic section at offset 0x1dc0 contains 28 entries:\n  Tag        Type                         Name/Value\n 0x0000000000000001 (NEEDED)             Shared library: [libm.so]\n 0x0000000000000001 (NEEDED)             Shared library: [libdl.so]\n 0x0000000000000001 (NEEDED)             Shared library: [libc.so]\n 0x000000000000000e (SONAME)             Library soname: [libandroidx.graphics.path.so]\n 0x000000000000001e (FLAGS)              BIND_NOW\n 0x000000006ffffffb (FLAGS_1)            Flags: NOW\n 0x0000000000000007 (RELA)               0x568\n 0x0000000000000008 (RELASZ)             1152 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffff9 (RELACOUNT)          48\n 0x0000000000000017 (JMPREL)             0x9e8\n 0x0000000000000002 (PLTRELSZ)           168 (bytes)\n 0x0000000000000003 (PLTGOT)             0x5f80\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000006 (SYMTAB)             0x2f8\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000005 (STRTAB)             0x4b0\n 0x000000000000000a (STRSZ)              181 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x440\n 0x0000000000000004 (HASH)               0x460\n 0x000000000000001a (FINI_ARRAY)         0x5db0\n 0x000000000000001c (FINI_ARRAYSZ)       16 (bytes)\n 0x000000006ffffff0 (VERSYM)             0x3d0\n 0x000000006ffffffc (VERDEF)             0x3e4\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000006ffffffe (VERNEED)            0x41c\n 0x000000006fffffff (VERNEEDNUM)         1\n 0x0000000000000000 (NULL)               0x0\n"
+    },
+    {
+      "entry": "jni/armeabi-v7a/libandroidx.graphics.path.so",
+      "sha256": "41399eba6fc2a60f6f14642375c1824f3cf25eb8fec7397d753730a3ceda3e2b",
+      "old_context_sha256": "41399eba6fc2a60f6f14642375c1824f3cf25eb8fec7397d753730a3ceda3e2b",
+      "matches_old_context_sha256": true,
+      "readelf_returncode": 0,
+      "needed_lines": [
+        "0x00000001 (NEEDED)                     Shared library: [libm.so]",
+        "0x00000001 (NEEDED)                     Shared library: [libdl.so]",
+        "0x00000001 (NEEDED)                     Shared library: [libc.so]"
+      ],
+      "readelf_dynamic_output": "\nDynamic section at offset 0x1580 contains 28 entries:\n  Tag        Type                         Name/Value\n 0x00000001 (NEEDED)                     Shared library: [libm.so]\n 0x00000001 (NEEDED)                     Shared library: [libdl.so]\n 0x00000001 (NEEDED)                     Shared library: [libc.so]\n 0x0000000e (SONAME)                     Library soname: [libandroidx.graphics.path.so]\n 0x0000001e (FLAGS)                      BIND_NOW\n 0x6ffffffb (FLAGS_1)                    Flags: NOW\n 0x00000011 (REL)                        0x458\n 0x00000012 (RELSZ)                      392 (bytes)\n 0x00000013 (RELENT)                     8 (bytes)\n 0x6ffffffa (RELCOUNT)                   48\n 0x00000017 (JMPREL)                     0x610\n 0x00000002 (PLTRELSZ)                   56 (bytes)\n 0x00000003 (PLTGOT)                     0x5664\n 0x00000014 (PLTREL)                     REL\n 0x00000006 (SYMTAB)                     0x210\n 0x0000000b (SYMENT)                     16 (bytes)\n 0x00000005 (STRTAB)                     0x390\n 0x0000000a (STRSZ)                      199 (bytes)\n 0x6ffffef5 (GNU_HASH)                   0x31c\n 0x00000004 (HASH)                       0x338\n 0x0000001a (FINI_ARRAY)                 0x5578\n 0x0000001c (FINI_ARRAYSZ)               8 (bytes)\n 0x6ffffff0 (VERSYM)                     0x2b0\n 0x6ffffffc (VERDEF)                     0x2c4\n 0x6ffffffd (VERDEFNUM)                  2\n 0x6ffffffe (VERNEED)                    0x2fc\n 0x6fffffff (VERNEEDNUM)                 1\n 0x00000000 (NULL)                       0x0\n"
+    },
+    {
+      "entry": "jni/x86/libandroidx.graphics.path.so",
+      "sha256": "eb0570b41fd3bff25d8204a967c03bd7550719e768b791f680cc40cbe35f29af",
+      "old_context_sha256": "eb0570b41fd3bff25d8204a967c03bd7550719e768b791f680cc40cbe35f29af",
+      "matches_old_context_sha256": true,
+      "readelf_returncode": 0,
+      "needed_lines": [
+        "0x00000001 (NEEDED)                     Shared library: [libm.so]",
+        "0x00000001 (NEEDED)                     Shared library: [libdl.so]",
+        "0x00000001 (NEEDED)                     Shared library: [libc.so]"
+      ],
+      "readelf_dynamic_output": "\nDynamic section at offset 0x1de0 contains 28 entries:\n  Tag        Type                         Name/Value\n 0x00000001 (NEEDED)                     Shared library: [libm.so]\n 0x00000001 (NEEDED)                     Shared library: [libdl.so]\n 0x00000001 (NEEDED)                     Shared library: [libc.so]\n 0x0000000e (SONAME)                     Library soname: [libandroidx.graphics.path.so]\n 0x0000001e (FLAGS)                      BIND_NOW\n 0x6ffffffb (FLAGS_1)                    Flags: NOW\n 0x00000011 (REL)                        0x450\n 0x00000012 (RELSZ)                      384 (bytes)\n 0x00000013 (RELENT)                     8 (bytes)\n 0x6ffffffa (RELCOUNT)                   48\n 0x00000017 (JMPREL)                     0x5d0\n 0x00000002 (PLTRELSZ)                   56 (bytes)\n 0x00000003 (PLTGOT)                     0x5ec0\n 0x00000014 (PLTREL)                     REL\n 0x00000006 (SYMTAB)                     0x230\n 0x0000000b (SYMENT)                     16 (bytes)\n 0x00000005 (STRTAB)                     0x398\n 0x0000000a (STRSZ)                      181 (bytes)\n 0x6ffffef5 (GNU_HASH)                   0x32c\n 0x00000004 (HASH)                       0x348\n 0x0000001a (FINI_ARRAY)                 0x5dd8\n 0x0000001c (FINI_ARRAYSZ)               8 (bytes)\n 0x6ffffff0 (VERSYM)                     0x2c0\n 0x6ffffffc (VERDEF)                     0x2d4\n 0x6ffffffd (VERDEFNUM)                  2\n 0x6ffffffe (VERNEED)                    0x30c\n 0x6fffffff (VERNEEDNUM)                 1\n 0x00000000 (NULL)                       0x0\n"
+    }
+  ]
+}

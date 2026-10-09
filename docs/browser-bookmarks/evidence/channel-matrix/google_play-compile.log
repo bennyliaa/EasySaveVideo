@@ -1,0 +1,136 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+Unable to initialize metrics, ensure /home/agent/.android is writable, details: /home/agent/.android/analytics.settings (No such file or directory)
+WARNING: platform-tools package is not installed.
+Add android.sync.suppressAgpWarnings=MISSING_SDK_PACKAGE to the gradle.properties file to suppress this warning.
+
+> Task :core-domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:compileKotlin UP-TO-DATE
+> Task :core-model:compileJava NO-SOURCE
+> Task :core-domain:compileKotlin UP-TO-DATE
+> Task :core-domain:compileJava NO-SOURCE
+> Task :core-domain:processResources NO-SOURCE
+> Task :core-domain:classes UP-TO-DATE
+> Task :core-domain:jar UP-TO-DATE
+> Task :commons-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:compileKotlin UP-TO-DATE
+> Task :discovery:compileJava NO-SOURCE
+> Task :commons-provider:compileKotlin UP-TO-DATE
+> Task :commons-provider:compileJava NO-SOURCE
+> Task :commons-provider:processResources NO-SOURCE
+> Task :commons-provider:classes UP-TO-DATE
+> Task :commons-provider:jar UP-TO-DATE
+> Task :discovery:processResources NO-SOURCE
+> Task :discovery:classes UP-TO-DATE
+> Task :discovery:jar UP-TO-DATE
+> Task :recording:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :recording:compileKotlin UP-TO-DATE
+> Task :recording:compileJava NO-SOURCE
+> Task :save:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :save:compileKotlin UP-TO-DATE
+> Task :save:compileJava NO-SOURCE
+> Task :save:processResources NO-SOURCE
+> Task :save:classes UP-TO-DATE
+> Task :save:jar UP-TO-DATE
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar UP-TO-DATE
+> Task :recording:processResources NO-SOURCE
+> Task :recording:classes UP-TO-DATE
+> Task :recording:jar UP-TO-DATE
+> Task :library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :library:compileKotlin UP-TO-DATE
+> Task :library:compileJava NO-SOURCE
+> Task :library:processResources NO-SOURCE
+> Task :library:classes UP-TO-DATE
+> Task :library:jar UP-TO-DATE
+> Task :hls:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :hls:compileKotlin UP-TO-DATE
+> Task :hls:compileJava NO-SOURCE
+> Task :hls:processResources NO-SOURCE
+> Task :hls:classes UP-TO-DATE
+> Task :hls:jar UP-TO-DATE
+> Task :ui-theme:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :ui-theme:compileKotlin UP-TO-DATE
+> Task :ui-theme:compileJava NO-SOURCE
+> Task :ui-theme:processResources NO-SOURCE
+> Task :ui-theme:classes UP-TO-DATE
+> Task :ui-theme:jar UP-TO-DATE
+
+> Task :app:verifyRuntimeAdmission
+License admission: exact 74 reviewed runtime artifacts verified for both variants
+
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :app:generateDebugBuildConfig
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:processDebugNavigationResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:generateDebugRFile UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:preReleaseBuild
+> Task :app:generateReleaseBuildConfig
+> Task :app:generateReleaseResources UP-TO-DATE
+> Task :app:packageReleaseResources UP-TO-DATE
+> Task :app:processReleaseNavigationResources UP-TO-DATE
+> Task :app:parseReleaseLocalResources UP-TO-DATE
+> Task :app:generateReleaseRFile UP-TO-DATE
+> Task :app:compileDebugKotlin
+> Task :app:compileReleaseKotlin
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:455:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:460:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:462:15 'fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)} passing
+      in a {@link RequestMultiplePermissions} object for the {@link ActivityResultContract} and
+      handling the result in the {@link ActivityResultCallback#onActivityResult(Object) callback}.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/editor/engine/Media3EditorEngine.kt:85:93 'constructor(): Mp4Extractor' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/editor/verification/AndroidEditOutputVerifier.kt:263:85 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/recording/AndroidRecordingSession.kt:739:37 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:382:65 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:484:69 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:672:41 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+
+> Task :app:compileDebugKotlin
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:455:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:460:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:462:15 'fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)} passing
+      in a {@link RequestMultiplePermissions} object for the {@link ActivityResultContract} and
+      handling the result in the {@link ActivityResultCallback#onActivityResult(Object) callback}.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/editor/engine/Media3EditorEngine.kt:85:93 'constructor(): Mp4Extractor' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/editor/verification/AndroidEditOutputVerifier.kt:263:85 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/recording/AndroidRecordingSession.kt:739:37 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:382:65 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:484:69 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:672:41 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+
+> Task :app:compileDebugJavaWithJavac
+> Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :app:compileReleaseJavaWithJavac
+
+[Incubating] Problems report is available at: file:///workspace/scratch/df6c1284d5ab/EasySaveVideo/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 50s
+37 actionable tasks: 7 executed, 30 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.0/userguide/configuration_cache_enabling.html

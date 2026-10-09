@@ -1,0 +1,35 @@
+{
+  "scope": "M1_B1_ORDINARY_BROWSER_BOOKMARKS_ONLY",
+  "baseline": "f78d7cc46c92bdd461e701ac3c39f62e12cb0ce5",
+  "baseline_files": 4061,
+  "changed_files": [
+    "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt"
+  ],
+  "allowed_production_edits": [
+    "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt"
+  ],
+  "new_source_files": [
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/AndroidBookmarkRuntime.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/AndroidBookmarkStorage.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkCodec.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkController.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPanel.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPolicy.kt",
+    "app/src/test/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkCodecTest.kt",
+    "app/src/test/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkControllerTest.kt",
+    "app/src/test/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPolicyTest.kt"
+  ],
+  "unchanged_baseline_files": 4058,
+  "historical_scripts_tests_fixtures_evidence": "BYTE_AND_GIT_MODE_UNCHANGED",
+  "manifest_dependencies_notices_core_modules": "BYTE_AND_GIT_MODE_UNCHANGED",
+  "runtime_artifacts": "EXACT74_SEPARATELY_GATED_BY_STRICT_GRADLE",
+  "vault": "DISABLED_UNCHANGED",
+  "blocked_rule_candidate": "NOT_RETRIED_OR_SUBSTITUTED",
+  "device_acceptance": "NOT_RUN",
+  "apk_aab_assembly": "NOT_RUN",
+  "overall_browser_completion": false
+}

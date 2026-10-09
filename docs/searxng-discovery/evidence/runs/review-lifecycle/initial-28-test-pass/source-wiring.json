@@ -1,0 +1,24 @@
+{
+  "scope": "source wiring only; no native Android/device/UI acceptance",
+  "checks": [
+    "One process-owned hub using applicationContext",
+    "Activity uses shared owner controller",
+    "Activity does not construct its own configuration worker",
+    "Subscription is installed after UI delivery and initialized fields",
+    "Activity detaches without shutting down shared configuration owner",
+    "Busy/not-loaded owner snapshots cannot initialize sources",
+    "Busy shared owner defers runtime initialization",
+    "Advanced source intent forces explicit-search restore",
+    "Accepted write publishes pending latch before invoking subscriber fences",
+    "Replacement subscriber fences before receiving pending owner snapshot",
+    "UI claim invalidation is separate from operation epoch",
+    "Existing cross-instance store lock retained"
+  ],
+  "source_sha256": {
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt": "a108272dd740b9b9ffd9461b313f3044b971320783c7504797d1350856365d7e",
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidSearxngConfigurationOwner.kt": "4ebbc20e3d4d19280cdf0c463d6b646087661580e40476739d4401f1f8effd5f",
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationHub.kt": "2c7c4a861faada461bbdd114578453b4d9a6056c1564071e58244755c9d56717",
+    "app/src/main/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationController.kt": "6dd3a923660f5c04d72fe4947e65bef3dc6870d191153e312e7dbdb8c5f2027e",
+    "app/src/main/kotlin/com/easysavevideo/app/storage/SearxngConfigurationStore.kt": "ba1680b41ec53e6e5310acf6727822800b069e40a17e554b16684e38a92d3a48"
+  }
+}
