@@ -2465,5 +2465,35 @@
             <sha256 value="4bbe2d2528a90f997c40aef3b62b519fd373c56057b54ffb086cc2bef01ef446" origin="Official Maven Central SHA-256 matched; no production runtime dependencies; JVM-only B parser 2026-10-09"/>
          </artifact>
       </component>
+      <component group="com.squareup.okhttp3" name="okhttp" version="4.12.0">
+         <artifact name="okhttp-4.12.0.pom">
+            <sha256 value="7c737040a9419522e7c50cc027416a70fe7c7629e52b219935ade6b4119c7d38" origin="Official Maven Central SHA-256 matched; exact B internal development admission 2026-10-09"/>
+         </artifact>
+         <artifact name="okhttp-4.12.0.jar">
+            <sha256 value="b1050081b14bb7a3a7e55a4d3ef01b5dcfabc453b4573a4fc019767191d5f4e0" origin="Official Maven Central SHA-256 matched; exact B internal development admission 2026-10-09"/>
+         </artifact>
+         <artifact name="okhttp-4.12.0.module">
+            <sha256 value="607e220ff8215b929d829bbf54f332894f1459b4d795979aeafcbcc1cea54cf3" origin="Official Maven Central SHA-256 matched; exact B internal development admission 2026-10-09"/>
+         </artifact>
+      </component>
+      <component group="com.squareup.okio" name="okio" version="3.6.0">
+         <artifact name="okio-3.6.0.pom">
+            <sha256 value="aeb3b70a24c103ed0c54541f35f5c511d27ce60cae376a596d7d653697f8cc95" origin="Official Maven Central SHA-256 matched; exact B internal development admission 2026-10-09"/>
+         </artifact>
+         <artifact name="okio-3.6.0.module">
+            <sha256 value="6a47ac50364e6598459401fb86f9b6cfcdf637b9b3a3045b1cc33cbf4c408218" origin="Official Maven Central SHA-256 matched; exact B internal development admission 2026-10-09"/>
+         </artifact>
+      </component>
+      <component group="com.squareup.okio" name="okio-jvm" version="3.6.0">
+         <artifact name="okio-jvm-3.6.0.pom">
+            <sha256 value="61b4d7c515a0894ffad925fd7052620c1425a86433fd35113b5fab0de890a57f" origin="Official Maven Central SHA-256 matched; exact B internal development admission 2026-10-09"/>
+         </artifact>
+         <artifact name="okio-jvm-3.6.0.jar">
+            <sha256 value="67543f0736fc422ae927ed0e504b98bc5e269fda0d3500579337cb713da28412" origin="Official Maven Central SHA-256 matched; exact B internal development admission 2026-10-09"/>
+         </artifact>
+         <artifact name="okio-jvm-3.6.0.module">
+            <sha256 value="b1c2199e1c0cc969ef61cbbe4af2ecaf9b06411bdde01cbaf6fc9134dfe04e8a" origin="Official Maven Central SHA-256 matched; exact B internal development admission 2026-10-09"/>
+         </artifact>
+      </component>
    </components>
 </verification-metadata>

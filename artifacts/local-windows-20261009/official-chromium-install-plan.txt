@@ -1,0 +1,16 @@
+Chrome Headless Shell 153.0.8010.12 (playwright chromium-headless-shell v1243)
+  Install location:    D:\CodexProjects\EasySaveVideo\Scrapling_Service\browsers\chromium_headless_shell-1243
+  Download url:        https://cdn.playwright.dev/builds/cft/153.0.8010.12/win64/chrome-headless-shell-win64.zip
+
+FFmpeg (playwright ffmpeg v1011)
+  Install location:    D:\CodexProjects\EasySaveVideo\Scrapling_Service\browsers\ffmpeg-1011
+  Download url:        https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-win64.zip
+  Download fallback 1: https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-win64.zip
+  Download fallback 2: https://cdn.playwright.dev/builds/ffmpeg/1011/ffmpeg-win64.zip
+
+Winldd (playwright winldd v1007)
+  Install location:    D:\CodexProjects\EasySaveVideo\Scrapling_Service\browsers\winldd-1007
+  Download url:        https://cdn.playwright.dev/dbazure/download/playwright/builds/winldd/1007/winldd-win64.zip
+  Download fallback 1: https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/winldd/1007/winldd-win64.zip
+  Download fallback 2: https://cdn.playwright.dev/builds/winldd/1007/winldd-win64.zip
+

@@ -16,20 +16,20 @@
       "skipped": 0
     },
     "verification-local": {
-      "tests": 8,
+      "tests": 23,
       "failures": 0,
       "errors": 0,
       "skipped": 0
     }
   },
   "android_compile": "PASS_DEBUG_AND_RELEASE_KOTLIN_ONLY",
-  "app_runtime_admission": 74,
-  "real_scrapling": "NOT_RUN",
-  "full_b_engine": "NOT_IMPLEMENTED",
-  "common_100_ab": "NOT_RUN",
+  "app_runtime_admission": 77,
+  "real_scrapling": "WINDOWS_STATIC_AND_CHROMIUM_DYNAMIC_OWNED_SMOKE_PASS",
+  "full_b_engine": "OKHTTP_JSOUP_AND_WEBVIEW_IMPLEMENTED_COMPILED; ACTUAL_ANDROID_WEBVIEW_NOT_RUN; ZERO_APP_TARGET_ADMISSION",
+  "common_100_ab": "A_WINDOWS_100_AND_B_JVM_STATIC_100; NOT_ANDROID_DYNAMIC_OR_PHONE_AB_ACCEPTANCE",
   "phone_resources_energy_network_time": "N_A_NOT_MEASURED",
   "device_operations": "NOT_RUN_WAIT_USER_NOTIFICATION",
-  "jvm_total": 300,
+  "jvm_total": 315,
   "service_protocol_default_http": {
     "tests": 17,
     "failures": 0,
@@ -41,5 +41,30 @@
     "LocalHtmlEvidenceParserTest": "REAL_JSOUP_NO_NETWORK",
     "other_client_tests": "PROTOCOL_AND_FAKE_TRANSPORT_NO_SCRAPLING"
   },
-  "source_boundaries": "PASS_WITH_WINDOWS_LONG_PATH_WRAPPER"
+  "source_boundaries": "PASS_WITH_WINDOWS_LONG_PATH_WRAPPER",
+  "windows_ipc_tests": 9,
+  "windows_limits_tests": 4,
+  "windows_real_static_tests": 1,
+  "windows_real_dynamic_tests": 1,
+  "debug_loopback_policy": "PROPOSED_NOT_ENABLED",
+  "development_service": "RUNNING_LOOPBACK_127.0.0.1_8765_ZERO_TARGETS_SESSION_95708",
+  "windows_final_tests": {
+    "tests": 15,
+    "failures": 0,
+    "errors": 0
+  },
+  "frozen_recovery_b_component": {
+    "scope": "Actual Jsoup component only; not full engine or Android WebView recovery",
+    "originals": 20,
+    "mutations": 80,
+    "frozen_hashes_match": true,
+    "positive_page_evidence": 20,
+    "counts_by_mutation": {
+      "class-id:VIDEO": 20,
+      "similar-decoy:UNKNOWN": 20,
+      "target-deleted:UNKNOWN": 20,
+      "wrap-reorder:UNKNOWN": 20
+    }
+  },
+  "network_metrics_scope": "Response body quota reservations only; no total wire/header/TLS/server-target-traffic measurement"
 }

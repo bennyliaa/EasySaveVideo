@@ -1,0 +1,45 @@
+{
+  "scope": "local owned frozen fixtures only; public cases 0; host capability records, NOT Android A/B performance acceptance",
+  "engines": {
+    "A-Windows-Scrapling": {
+      "actual_evaluated_cases": 100,
+      "positive_ground_truth": 70,
+      "negative_ground_truth": 20,
+      "unknown_ground_truth": 10,
+      "true_page_evidence": 0,
+      "false_page_evidence": 0,
+      "precision": null,
+      "page_evidence_over_all_positive": 0.0,
+      "outcomes": {
+        "INSUFFICIENT": 90,
+        "REJECTED": 10
+      },
+      "body_hashes_match_frozen_manifest": true,
+      "phone_performance": "NOT_MEASURED",
+      "media_identity": "NOT_VERIFIED",
+      "resource_extraction": "NOT_VERIFIED",
+      "android_dynamic_execution": "NOT_RUN"
+    },
+    "B-JVM-static-v2": {
+      "actual_evaluated_cases": 100,
+      "positive_ground_truth": 70,
+      "negative_ground_truth": 20,
+      "unknown_ground_truth": 10,
+      "true_page_evidence": 25,
+      "false_page_evidence": 0,
+      "precision": 1.0,
+      "page_evidence_over_all_positive": 0.35714285714285715,
+      "outcomes": {
+        "UNKNOWN": 65,
+        "PAGE_EVIDENCE": 25,
+        "DENIED": 10
+      },
+      "body_hashes_match_frozen_manifest": true,
+      "phone_performance": "NOT_MEASURED",
+      "media_identity": "NOT_VERIFIED",
+      "resource_extraction": "NOT_VERIFIED",
+      "android_dynamic_execution": "NOT_RUN"
+    }
+  },
+  "ground_truth_is_engine_output": false
+}

@@ -1,0 +1,10 @@
+Owned A cases completed 20
+Owned A cases completed 40
+Owned A cases completed 60
+Owned A cases completed 80
+Owned A cases completed 100
+{
+  "cases": 100,
+  "physical_fixture_requests": 91,
+  "scope": "Windows real Scrapling only; frozen cases without XHR rules cannot exercise Chromium dynamic evidence; not Android A/B or phone performance"
+}

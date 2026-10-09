@@ -1,0 +1,12 @@
+{
+  "endpoint": "http://127.0.0.1:8765/v1/verify",
+  "bind": "127.0.0.1",
+  "wire_response": "UNSUPPORTED",
+  "admitted_sources": 0,
+  "execution_session": 95708,
+  "runtime_static_dynamic_fixture_smoke": "PASS_SEPARATE_CONSTRUCTOR_TESTS",
+  "android_transport_exception": "NOT_ENABLED",
+  "health_probe": "PASS",
+  "credentials": false,
+  "firewall_changes": false
+}

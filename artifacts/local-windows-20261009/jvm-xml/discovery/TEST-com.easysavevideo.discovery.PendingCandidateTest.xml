@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.easysavevideo.discovery.PendingCandidateTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-09T18:40:00.335Z" hostname="LZF" time="0.007">
+<testsuite name="com.easysavevideo.discovery.PendingCandidateTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-09T19:20:39.152Z" hostname="LZF" time="0.006">
   <properties/>
-  <testcase name="invalidCandidateMetadataIsNotPromotedOrShown" classname="com.easysavevideo.discovery.PendingCandidateTest" time="0.0"/>
+  <testcase name="invalidCandidateMetadataIsNotPromotedOrShown" classname="com.easysavevideo.discovery.PendingCandidateTest" time="0.001"/>
   <testcase name="falseRawConfirmationRemainsRejected" classname="com.easysavevideo.discovery.PendingCandidateTest" time="0.0"/>
-  <testcase name="realValidatorHasExclusiveConfirmationAuthority" classname="com.easysavevideo.discovery.PendingCandidateTest" time="0.001"/>
+  <testcase name="realValidatorHasExclusiveConfirmationAuthority" classname="com.easysavevideo.discovery.PendingCandidateTest" time="0.0"/>
   <testcase name="validatorRejectionNeverFallsBackToSourceClaim" classname="com.easysavevideo.discovery.PendingCandidateTest" time="0.001"/>
   <testcase name="candidatesPreserveMetadataThroughLocalUrlDeduplication" classname="com.easysavevideo.discovery.PendingCandidateTest" time="0.0"/>
   <testcase name="candidateFilteringUsesStableProviderId" classname="com.easysavevideo.discovery.PendingCandidateTest" time="0.001"/>

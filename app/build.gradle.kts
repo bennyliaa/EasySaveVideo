@@ -42,6 +42,7 @@ dependencies {
     implementation(project(":commons-provider"))
     implementation(project(":searxng-provider"))
     implementation(project(":verification-client"))
+    implementation(project(":verification-local"))
     implementation(project(":save"))
     implementation(project(":recording"))
     implementation(project(":library"))

@@ -1,0 +1,11 @@
+{
+  "upstream": "https://github.com/publicsuffix/list",
+  "commit": "ab0530155af1fe4b58194fe6792c4ec9731666bf",
+  "source_sha256": "9f2c779bc514bf01c3361d1274665d91c20f174364bf37d6f9e8be134a6b9a28",
+  "okhttp_psl_update": "40cb04338da423f7f73e83025717652ed35b7896",
+  "embedded_gzip_sha256": "9af43e9995ec749e7a30eec4e5a87770d7e2027847084a07cca82060eff0c791",
+  "ordinary_rules": 9499,
+  "exception_rules": 8,
+  "exact_rule_and_exception_bytes_match": true,
+  "license": "MPL-2.0"
+}

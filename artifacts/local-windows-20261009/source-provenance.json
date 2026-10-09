@@ -1,0 +1,27 @@
+{
+  "upstream_snapshot_label": "12f97d43c11fa19ea7dd08ccc0805a3030c71346",
+  "upstream_history_restored": false,
+  "local_import_root": "4036e12d614436f907814f8702eee95773eac011",
+  "previous_checkpoint": "6b29c1d1abbf9bfcb77bec0e940ca160ed9134e3",
+  "original_backup_untouched": true,
+  "files": [
+    {
+      "file": "EasySaveVideo-Optional-Verification-12f97d43c11f-source.tar.xz.001",
+      "bytes": 16000000,
+      "sha256": "d554b4f6e1861e620180834c4d8a33365262699be7042e6a7452fddbda1a2674",
+      "check": "PASS"
+    },
+    {
+      "file": "EasySaveVideo-Optional-Verification-12f97d43c11f-source.tar.xz.002",
+      "bytes": 10522932,
+      "sha256": "75c0062ad5bee568c1d3e60d451d15a33d75d2f11bee0eab83e349322b1be923",
+      "check": "PASS"
+    },
+    {
+      "file": "EasySaveVideo-12f97d43-verified-source.tar.xz",
+      "bytes": 26522932,
+      "sha256": "163f77e4c435b90b8a6fdc1dd8217b45b8a03e9e8c4c8224ae2272c1793b3481",
+      "check": "PASS"
+    }
+  ]
+}

@@ -1,112 +1,52 @@
-# Windows restore and A/B integration checkpoint
+# Windows A/B implementation and evidence — 2026-10-09 continuation
 
-## Verified recovery
+This is a source/host checkpoint, not Android dynamic, physical-phone energy or public-source acceptance.
+The original source snapshot was restored to this independent checkout. No original directory or uncommitted work was overwritten. Upstream label is `12f97d43c11fa19ea7dd08ccc0805a3030c71346`; its Git history was NOT recovered. Local import root is `4036e12d614436f907814f8702eee95773eac011`; previous checkpoint is `6b29c1d1abbf9bfcb77bec0e940ca160ed9134e3`. Original backup/bundles remain independent.
 
-Workspace: `D:\CodexProjects\EasySaveVideo\esv-source-12f97d43-20261009`.
-Snapshot label: `12f97d43c11fa19ea7dd08ccc0805a3030c71346`.
-Both fragments matched the supplied sizes and SHA-256 values. Combined archive:
-26522932 bytes, SHA-256 `163f77e4c435b90b8a6fdc1dd8217b45b8a03e9e8c4c8224ae2272c1793b3481`.
-Archive validation rejected links, special files, unsafe paths, duplicate/case-colliding paths before extraction.
-Actual counts matched: 7397 entries, 6498 regular files, 151 executable modes.
-No existing project or uncommitted file was overwritten. New local snapshot import commit
-`4036e12d614436f907814f8702eee95773eac011` is **not recovered upstream Git history**.
-The original verified archive remains available separately.
-Original executable modes are also recorded in the new Git baseline; Windows import initially
-lost these Unix mode bits, so their restoration is metadata preservation, not a functional edit.
+## Source provenance
 
-The independent prototype baseline `d48b59b8245f412fa7e9dc22ece2235f6bcb2e02`
-was checked clean. Its generic registry/shared-ledger/consent/fence/draining principles
-were adapted into Discovery's existing synchronous operation/cancellation model;
-the separate standalone suspend prototype was not mistaken for application integration.
-Its 100 labelled fixtures and 80 mutation variants remain unchanged and independently versioned.
+`artifacts/local-windows-20261009/source-provenance.json` records fresh PASS checks for both fragments and the combined 26,522,932-byte archive:
+- 001: 16,000,000 bytes, `d554b4f6e1861e620180834c4d8a33365262699be7042e6a7452fddbda1a2674`.
+- 002: 10,522,932 bytes, `75c0062ad5bee568c1d3e60d451d15a33d75d2f11bee0eab83e349322b1be923`.
+- Combined: `163f77e4c435b90b8a6fdc1dd8217b45b8a03e9e8c4c8224ae2272c1793b3481`.
+The archive contained 7,397 entries / 6,498 regular files and 151 executable-mode entries. Those 151 original Unix modes were restored as metadata, not functional code changes. Library transport remains stopped after its earlier HTTP403; no retry or substitute transfer was used.
 
-## Code integrated and scope
+## Actual A and Windows containment
 
-Discovery now defines `VerificationEngine`, extensible string identities, capabilities,
-request/result identity, conservative evidence/verdict, shared remaining request/body budget,
-monotonic deadline, cancellation, network constraints and scheduling policy. No A/B engine enum.
-The scheduler keeps one active call, rejects identity/evidence corruption, stops on denial/429,
-and prohibits fallback or new work until the prior engine's physical drain is proven complete.
-No engine exception or unknown byte consumption can reset the budget and start another engine.
-The byte ledger is a response-body budget, **not measured total network traffic**.
+Official Scrapling 0.4.15 and its 22 fixed Windows wheels are installed in the separate `Scrapling_Service/.venv`. Official download hashes all matched; full wheel notices and exact lock remain beside the runtime. lxml is official 6.1.3, not the cloud private binary. Playwright 1.63.0 installed official Chromium Headless Shell 153.0.8010.12 / revision1243. Its executable is locally pinned; this local hash is not claimed to be an independently published checksum. Browser notices remain with the private runtime. Runtime/binary redistribution is not admitted and no such binary is in ESV source or APK.
 
-A's existing client is adapted and the application composition root uses the scheduler.
-Shared request ID reaches the strict wire protocol; generation/source/navigation fences remain.
-The existing transport exposes its physical admission state, rather than treating a returned
-future as proof that cleanup finished. Default session-only consent and startup independence remain.
-Total production validation ceiling remains 3000 ms with the existing 1000 ms operation reserve;
-A's initial conservative attempt cap is 1500 ms, not a measured performance result.
+Windows uses suspended-before-assignment CreateProcess, an unnamed Job Object, no breakaway permission, explicit three-handle inheritance allowlist and anonymous stdin/stdout/stderr pipes. Input/response are each capped32KiB, stderr4KiB and deadline/cancellation are monitored. Worker environment contains only explicit runtime necessities and a new scratch directory, no inherited HOME/proxy/credentials/startup hooks. Root and every descendant belong to the job. Cleanup requires root termination, closure of its handle, zero job accounting and writer-thread completion. Unproven cleanup quarantines the owning job and poisons the whole service; capacity cannot respawn.
 
-B has a real Jsoup 1.21.2 static parsing component in the JVM-only `verification-local` module.
-It requires finite strict UTF-8, one main/one video, an explicit primary marker and one usable
-source; missing/hidden/ambiguous/article/JSON-LD-only/JS-only evidence stays unknown.
-Source candidates do not prove playback, downloadability or rights. Matching is compiled,
-bounded structural checking; no downloaded rules, dynamic interpreter or persisted matching memory.
-This is **not yet the complete B engine**: OkHttp transport, WebView execution/lifecycle,
-actual engine registration and B-with-A-disabled application behavior remain unfinished.
-The module is not an Android app dependency; existing app admission remains 74 artifacts.
+Default limits:12s per-process user CPU,768MiB aggregate committed memory,24 active-process quota. Committed memory is not RSS. Windows CPU enforcement is periodically checked, not an exact wall clock. Failed process associations can temporarily remain in accounting until their handles close; do not claim an instantaneous sampled-count ceiling. The initial limit-test failures are retained. Subsequent tests correctly distinguish direct CPython from venv launchers, prove CPU termination, allocation rejection, extra-process rejection and cleanup. No OS security policy was changed. Windows does not claim Linux RLIMIT_FSIZE/NOFILE equivalence.
 
-## Windows platform result and remaining A barrier
+15 final Windows tests PASS:9 pipe/cancel/timeout/overflow/environment tests,4 limits tests,1 actual Scrapling static test and1 actual Scrapling+Chromium dynamic test. The dynamic test passed unchanged sandbox/TLS/ordinary automation/resource route checks; only its owned page/API were served, no media/public target. The earlier17 stdlib protocol/default-HTTP checks passed; historical57 real Linux service tests were not rerun.
 
-Original Linux execution is unsuitable on Windows: worker imports `resource` and uses `prctl`;
-parent relies on `/proc`, pidfd, Linux stopped-state/subreaper proof and POSIX nonblocking pipes/select.
-These files and Linux guarantees were not weakened or replaced.
+Development shell is currently running on `127.0.0.1:8765` (managed terminal session95708). Its zero-admission POST probe returns UNSUPPORTED; no HTTP/CLI field enables sources. Source staging is a NEW `Scrapling_Service/source-windows-20261009`, verified by a file-hash receipt; the previous staging remains untouched. Real fixture capabilities were evaluated by constructor-owned harnesses, not enabled on the idle development endpoint.
 
-New Windows Job Object primitive creates a worker suspended, assigns before resume, prohibits
-breakaway by policy flags, sets kill-on-close, 24 active processes, per-process CPU and aggregate
-job committed-memory limits. A real owned Python root+grandchild probe terminated both and
-observed zero active job processes. Handles authorize termination, not a PID search/kill.
-No other process, emulator, private media or browser was inspected or operated.
+## Actual B and dependency admission
 
-This proves only the narrow process primitive. It does **not** prove Chromium nested-job behavior,
-sandbox/TLS/permission routing, hard-limit stress, IPC stall cancellation, poison/reuse handling,
-clean environment, exact official Windows wheels/browser provenance or a Windows Scrapling run.
-Windows bounded IPC and worker orchestration must be implemented and tested before runtime admission.
-Source-only staging with SHA-256 receipt is prepared under `Scrapling_Service/source-12f97d43-20261009`;
-it is not an installed service and contains no venv/browser/runtime cache.
-No Scrapling service, venv or Chromium was installed or started. User's service directory remains
-`D:\CodexProjects\EasySaveVideo\Scrapling_Service`; prepared source staging is separate from runtime.
-No WSL/system component/security setting was enabled.
+Discovery calls only the generic registry/scheduler contract. Request/generation IDs, shared deadlines/request/body quotas, explicit remote consent, refusal, cancellation, stale-result fencing and physical drain ownership remain neutral. C may register by ID. App composition registers the process-wide B even if A is off. Default source admission is empty, so B cannot silently contact arbitrary pages. No public source is admitted by this work.
 
-The current Android A transport accepts only public HTTPS/443 endpoints and rejects loopback/private
-targets; a loopback-only Windows service cannot be connected by silently substituting cleartext or
-`10.0.2.2`. A debug IPC or approved transport design must be reported before adding a new security
-configuration. No credentials or TLS keys were created. The Windows A capacity benchmark can first
-run locally without changing Android network policy; that does not validate Android A connectivity.
+B now uses actual OkHttp4.12.0, Jsoup1.21.2 and Android WebView. OkHttp refuses private/numeric/DNS-rebound addresses in its production path, requires TLS, selects one permitted DNS address, disables cookies/proxies/redirects/retries/compression, limits HTML bodies and cancels calls. It stops an origin after403/401/429 or a finite challenge marker; failures never become video. Body quota consumption is conservatively RESERVED, not measured total network traffic. HTTP loopback is available only through constructor-owned fixture testing, not a Release endpoint toggle.
 
-## Dependency gates
+Jsoup has two compiled bounded primary-player shapes: explicit primary marker, or a sole controlled player occupying the main region/direct single div. Hidden/ambiguous/related-article shapes abstain. This is original compiled matching, not downloaded scripts/rules or an interpreter. V1 all-abstain host records are retained independently; V2 adds the finite structural strategy without changing corpus labels/bodies.
 
-Jsoup 1.21.2 exact JAR/POM hashes matched official Maven Central SHA-256; MIT text preserved.
-Only this internal parser module is admitted; exact metadata and its dependency lock were added.
-OkHttp 4.12.0/Okio JVM 3.6.0 remain candidates. Their Apache-2.0 notices alone are insufficient:
-OkHttp's embedded Public Suffix List has MPL-2.0 obligations. Full license/NOTICE and official source
-JAR are locally retained. That source JAR contains the compiled list, so exact preferred-source
-provenance and future Android notice/source availability still need completion before app admission.
-JARs in the candidate directory are ignored by Git. No evaluation binary was copied from cloud.
-The project license was not invented or changed, and closed-source requirements remain intact.
+WebView renders only previously fetched inline content under synthetic `https://esv-verification.invalid/`, blocks all network/subresources/mixed content/file/content/storage access, grants no permissions, opens no windows/files, downloads nothing and exposes no JavaScript bridge. Only a fixed compiled DOM observation is evaluated. Timeout, uncompleted JS or cleanup exceptions retain quarantine; destroy alone is not proof of a recovered hung renderer. Actual Android WebView/lifecycle/Activity recreation execution is NOT_RUN. Warm renderer CPU/RAM must be measured on the eventual device.
 
-## Evidence categories
+The resolved Android runtime has exactly77 reviewed bytes: original74 plus Jsoup,OkHttp,Okio JVM3.6.0. Original dependency versions were preserved; only new dependency locks were updated. Square's old Kotlin bridge edges are excluded and existing reviewed Kotlin2.2.10 supplies stdlib. Official checksums, POM/module metadata and graph inventories are retained. Full MIT/Apache/MPL text, notice and exact preferred PSL source are accessible offline in the existing notice UI (<512KiB characters). PSL commit `ab0530155af1fe4b58194fe6792c4ec9731666bf` reproduces all9,499 ordinary and8 exception rule bytes. MPL covered materials remain MPL; ESV original code remains independently closed-source. No new explicit agreement/account/paid service was accepted.
 
-`artifacts/local-windows-20261009` records scoped JVM, protocol/default-HTTP and real Job Object
-probe evidence. The summary JSON supplies actual final counts; build failures during missing cache/
-SDK/checksum preparation are retained separately. Android Kotlin compile is compile-only, not APK,
-device lifecycle, performance or public-source acceptance. Core scheduling tests use fake engines;
-parser tests use actual Jsoup; service protocol tests do not import/execute Scrapling.
-Final scoped JVM totals: 249 Discovery, 43 verification client, 8 real Jsoup component = 300;
-all zero failures/errors/skips. Service protocol/default-HTTP: 17 pass. Real Windows owned-process
-probe: pass. Debug and Release Kotlin compilation and original 74-artifact admission: pass. The full historical
-2309 JVM + 57 real service acceptance was not reexecuted. The boundary checker requires Python
-UTF-8 mode on this Windows GBK locale; its initial locale decode failure is not a code-boundary pass. The unchanged checker subsequently passed all seven checks through the retained Windows extended-path file-open wrapper; this also resolves Python long-path reads without changing OS settings.
+## Same-source host records and limits
 
-Not run: real Scrapling/Chromium; full B network/WebView; A/B on the common 100; frozen-engine recovery
-on the 80 mutations; public URL admission; emulator or physical-device tests; CPU/RAM/energy/total
-network/end-to-end timing. Unmeasured phone values are N/A. Windows and Android resources must not
-be ranked directly; eventual device CPU/RAM includes the WebView renderer and network totals must
-include traffic missed by Network Inspector.
+Both engines actually evaluated the SAME100 authored local fixtures (70 positive,20 negative,10 unknown); every body hash and independent label matches the frozen manifest. Public cases:0. A's adapter:90 INSUFFICIENT,10 REJECTED,0 positive evidence; only91 physical reads because first refusal stops its source. This reflects its strict marker/XHR admission gap, not a general Scrapling capability ranking. B JVM static V2:25 positive page evidence,65 UNKNOWN,10 DENIED;0 false positive page evidence,precision25/25,positive-page-evidence coverage25/70 (35.7%). A is NOT the ground truth. Neither has independently verified media identity, extractability, playback or rights on this corpus.
 
-Android remains API31 minimum. VersionCode is still 2 because no package was assembled or installed.
-Future installation requires a higher versionCode and the same signing certificate, preserving data.
-Wait for the user's notification about emulator-5556; do not start, poll or replace it.
-Vault and M7-D remain outside this work and were not reviewed or reimplemented.
+The100-page corpus's delayed scripts have no admitted A XHR rule. Android WebView was not run, so this is NOT a complete dynamic A/B comparison. The separate real Chromium smoke is not substituted for those20 cases. B's80 controlled mutations are recorded separately as actual Jsoup COMPONENT recovery, not full network/WebView recovery. All Windows/JVM timing fields are HOST values, never phone performance. CPU/RAM/energy/total network/phone end-to-end time are N/A; Windows and Android resource costs must not be directly ranked.
 
-The App composition root is now VerificationEngineRegistration: it accepts local engine registrations even when A is disabled. Discovery uses the common scheduler. Actual B remains unregistered until its transport/WebView and dependency gates are complete.
+Final module counts are authoritative in summary.json (Discovery249,verification-client43,verification-local23). All reported executed JVM failures/errors/skips are0. Debug and Release Kotlin compile plus exact77 runtime admission PASS; source/Release bytecode/notice/SkinKit seven-getter guard PASS through the retained Windows long-path wrapper. Historical2309 JVM/full-App/device/lint acceptance is not claimed.
+
+## Required next acceptance / approval
+
+Minimum Android remains12/API31; versionCode remains2 because no APK/AAB was assembled or installed. No emulator was started or polled. No private media/microphone/recording operation occurred. Vault and M7-D remain excluded.
+
+`DEBUG-LOOPBACK-PROPOSAL.md` specifies the NOT_ENABLED debug-only cleartext exception and device-specific adb reverse. Approval is required before implementing that security exception; user notification and matching signer/higher versionCode are required before any5556 installation. Release stays public HTTPS443, no new trust/firewall/LAN policy. Actual Android dynamic parsing, renderer lifecycle/cancel/rebuild/source-switch acceptance, same-device resources/energy, full80 engine recovery and per-source public robots/access/rate admission remain pending. No safety review rejected any completed action.
+
+Recovery component result:20/80 variants produced page evidence (class/id changes); wrapper/reorder, similar decoy and deleted-target variants abstained. Full-engine recovery remains pending. Contract transport-call/body reservations do not measure total headers/TLS or server target traffic; end-to-end network accounting needs a later admitted protocol/telemetry extension.

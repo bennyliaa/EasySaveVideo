@@ -8,11 +8,16 @@ import com.easysavevideo.discovery.VerificationEngineScheduler
 import com.easysavevideo.discovery.VerificationEngine
 import com.easysavevideo.verification.RemoteVerificationEngine
 import com.easysavevideo.verification.VerificationServiceClient
+import android.content.Context
+import com.easysavevideo.verification.local.LocalVerificationEngine
 
 /** One process-wide physical network slot, surviving endpoint edits and Activity/controller recreation. */
 object VerificationEngineRegistration {
     private val transport by lazy { SystemVerificationTransport() }
     private val scheduler = VerificationEngineScheduler()
+    @Volatile private var local: VerificationEngine? = null
+    @Synchronized fun localEngine(context:Context):VerificationEngine = local ?: LocalVerificationEngine(
+        AndroidLocalVerificationRenderer(context)).also {local=it}
     fun validator(configuration: VerificationConfiguration, timer: DiscoveryTimer,
         localEngines: List<VerificationEngine> = emptyList(),
         isCurrent: (String) -> Boolean): CandidateValidator {

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.easysavevideo.discovery.DiscoveryRetentionTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-09T18:40:00.151Z" hostname="LZF" time="0.164">
+<testsuite name="com.easysavevideo.discovery.DiscoveryRetentionTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-09T19:20:38.977Z" hostname="LZF" time="0.155">
   <properties/>
-  <testcase name="arbitraryTransactionFailurePreservesDataAndMutationLruRecovery" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.004"/>
-  <testcase name="currentAndAllHistoryClearFenceEveryCheckpointAndKeepProgress" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.004"/>
-  <testcase name="pruningDeletesWholeAliasGroupRatherThanLeavingFalsePartialHistory" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.001"/>
-  <testcase name="boundedLongRunHasNoOrphanAliasesAndNoUnboundedProfileOrCheckpointGrowth" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.128"/>
+  <testcase name="arbitraryTransactionFailurePreservesDataAndMutationLruRecovery" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.007"/>
+  <testcase name="currentAndAllHistoryClearFenceEveryCheckpointAndKeepProgress" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.003"/>
+  <testcase name="pruningDeletesWholeAliasGroupRatherThanLeavingFalsePartialHistory" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.0"/>
+  <testcase name="boundedLongRunHasNoOrphanAliasesAndNoUnboundedProfileOrCheckpointGrowth" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.117"/>
   <testcase name="explicitAliasUnionsAreTransitiveAndPreserveOnlyObservedIndependentEvents" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.002"/>
-  <testcase name="protectedOversizeAliasUnionRollsBackEveryFactAndCheckpointWrite" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.004"/>
-  <testcase name="matchingFactsWithoutIdentityEvidenceRemainIndependent" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.0"/>
+  <testcase name="protectedOversizeAliasUnionRollsBackEveryFactAndCheckpointWrite" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.003"/>
+  <testcase name="matchingFactsWithoutIdentityEvidenceRemainIndependent" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.002"/>
   <testcase name="profileMutationLruIgnoresReadsAndBreaksBatchTiesLexically" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.003"/>
   <testcase name="protectedProgressAndCheckpointOverflowRefuseRatherThanForget" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.004"/>
-  <testcase name="progressResetIsExactAcrossProfileProviderAndQuery" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.002"/>
-  <testcase name="allMaterializedCheckpointsProtectTheirProfileAliasClosureAndProgress" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.003"/>
+  <testcase name="progressResetIsExactAcrossProfileProviderAndQuery" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.001"/>
+  <testcase name="allMaterializedCheckpointsProtectTheirProfileAliasClosureAndProgress" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.002"/>
   <testcase name="purePlannerIsStableUnderInputPermutationAndProtectsEntireAliasClosure" classname="com.easysavevideo.discovery.DiscoveryRetentionTest" time="0.008"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

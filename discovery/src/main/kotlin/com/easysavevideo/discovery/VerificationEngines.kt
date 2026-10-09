@@ -120,13 +120,15 @@ class VerificationEngineScheduler(private val monotonicMillis: () -> Long = { Sy
     /** Discovery depends only on this contract; the application composition root registers engines. */
     fun validator(engines: List<VerificationEngine>, generation: String, remoteConsent: Boolean,
         dynamicAllowed: Boolean, selection: EngineSelection = EngineSelection(),
-        isCurrent: () -> Boolean = { true }, epochMillis: () -> Long = System::currentTimeMillis): CandidateValidator =
+        isCurrent: () -> Boolean = { true }, epochMillis: () -> Long = System::currentTimeMillis,
+        admittedNetwork: (CandidateUrl) -> EngineNetworkConstraints = { EngineNetworkConstraints() }): CandidateValidator =
         CandidateValidator { candidate, operation ->
             operation.check(epochMillis())
             val availableMillis = (operation.context.deadlineEpochMillis - epochMillis() - 1000).coerceAtLeast(0)
             if (availableMillis == 0L) null else {
                 val request = EngineRequest(UUID.randomUUID().toString().replace("-",""), generation, candidate,
-                    monotonicMillis() + minOf(3000L,availableMillis), 3, 2_097_152, dynamicAllowed, remoteConsent)
+                    monotonicMillis() + minOf(3000L,availableMillis), 3, 2_097_152, dynamicAllowed, remoteConsent,
+                    admittedNetwork(candidate))
                 val result = verify(request,operation,engines,selection,isCurrent)
                 operation.check(epochMillis())
                 if (!isCurrent()) throw DiscoveryFailure(DiscoveryError.CANCELLED)

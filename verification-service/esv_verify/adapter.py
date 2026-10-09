@@ -76,6 +76,8 @@ def read_fixture(url, allowed_urls, limit, deadline):
             or 'set-cookie' in headers or headers.get('content-encoding', 'identity').lower() != 'identity'):
         raise Rejected()
     if response.status != 200:
+        if response.status in {401, 403, 429}:
+            raise Rejected()
         raise Unavailable()
     if sum(len(k) + len(v) for k, v in headers.items()) > 16384:
         raise Rejected()

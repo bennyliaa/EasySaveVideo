@@ -158,11 +158,19 @@ class VerificationService:
         self._lock = threading.Lock()
         self._active = set()
         self._poisoned = False
+        self._windows = None
+        if os.name == 'nt' and fixture_capability is not None:
+            from .windows_service import WindowsVerificationService
+            self._windows = WindowsVerificationService(fixture_capability, max_workers)
 
     def close(self):
         self._closed.set()
+        if self._windows is not None:
+            self._windows.close()
 
     def verify(self, request, cancelled=lambda: False, accepted_at=None):
+        if self._windows is not None:
+            return self._windows.verify(request, cancelled, accepted_at)
         started = time.monotonic() if accepted_at is None else accepted_at
         deadline = started + request.budgetMs / 1000
         if cancelled() or self._closed.is_set():

@@ -24,9 +24,21 @@ class LocalHtmlEvidenceParser {
         val videos=document.select("video")
         if (mains.size != 1 || videos.size != 1 || document.select("iframe,object,embed").isNotEmpty()) return null
         val video=mains.single().select("video").singleOrNull() ?: return null
-        // This first admitted fixture strategy requires an explicit primary marker.
-        // An unrelated article's sole video must not be promoted to primary evidence.
-        if (video.attr("data-esv-primary") != "true") return null
+        // Two bounded compiled intent shapes: explicit primary marker, or a visible controlled
+        // player occupying the main region itself. An article's incidental video is excluded.
+        val explicit=video.attr("data-esv-primary") == "true"
+        val primaryChildren=mains.single().children().filter {it.tagName() !in setOf("h1","script")}
+        val directPlayer=video.hasAttr("controls") && primaryChildren.size==1 &&
+            (primaryChildren.single()===video || primaryChildren.single().let {
+                it.tagName()=="div" && it.children().size==1 && it.child(0)===video
+            })
+        if (!explicit && !directPlayer) return null
+        if (video.parents().any {it.tagName()=="svg" || (!explicit && it.tagName() in setOf("article","aside")) || it.hasAttr("hidden") ||
+            it.attr("aria-hidden").equals("true",true)}) return null
+        if ((listOf(video)+video.parents()).any {
+            val style=it.attr("style").lowercase(java.util.Locale.ROOT).filterNot(Char::isWhitespace)
+            "display:none" in style || "visibility:hidden" in style
+        }) return null
         if (video.hasAttr("hidden") || video.attr("aria-hidden").equals("true",true)) return null
         val declarations=(listOf(video.attr("src"))+video.select("source").map {it.attr("src")})
             .filter {it.isNotBlank()}.distinct()

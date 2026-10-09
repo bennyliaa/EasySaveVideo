@@ -20,3 +20,5 @@ Official license references: https://jsoup.org/license and
 https://www.mozilla.org/en-US/MPL/2.0/FAQ/ (Q5/Q8/Q11; read actual license for distribution).
 No new signed agreement, account, service, publication or runtime redistribution was performed.
 Do not treat this internal evaluation admission as full Android distribution acceptance.
+
+2026-10-09 continuation: Exact preferred PSL source commit ab0530155af1fe4b58194fe6792c4ec9731666bf recovered from its official upstream. The 9499 ordinary and 8 exception rules match the embedded bytes exactly (PSL-PROVENANCE.json). Internal B implementation admission now includes OkHttp 4.12.0, Okio JVM 3.6.0 and Jsoup 1.21.2 with full licenses, notice and exact corresponding PSL source retained offline. MPL covered files remain MPL; ESV original source remains independently closed-source. Distribution is still unperformed. Runtime Kotlin dependencies are excluded from the Square edge only and supplied by the existing project Kotlin 2.2.10; resolved graph evidence must verify this. No artifact was modified.

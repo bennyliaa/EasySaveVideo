@@ -1,0 +1,22 @@
+F.F.
+======================================================================
+FAIL: test_active_process_ceiling (__main__.WindowsLimitsTests.test_active_process_ceiling)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\CodexProjects\EasySaveVideo\esv-source-12f97d43-20261009\verification-service\tests\windows_limits_tests.py", line 28, in test_active_process_ceiling
+    count=job.active_count();maximum=max(maximum,count);self.assertLessEqual(count,3);time.sleep(.01)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 4 not less than or equal to 3
+
+======================================================================
+FAIL: test_cpu_limit_kills_owned_root (__main__.WindowsLimitsTests.test_cpu_limit_kills_owned_root)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\CodexProjects\EasySaveVideo\esv-source-12f97d43-20261009\verification-service\tests\windows_limits_tests.py", line 14, in test_cpu_limit_kills_owned_root
+    self.assertEqual(0,data.ActiveProcesses)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 4 tests in 2.192s
+
+FAILED (failures=2)

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.verification.local.FrozenRecoveryComponentTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-09T19:30:32.246Z" hostname="LZF" time="0.895">
+  <properties/>
+  <testcase name="authored80MutationsActualJsoupComponent" classname="com.easysavevideo.verification.local.FrozenRecoveryComponentTest" time="0.894"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

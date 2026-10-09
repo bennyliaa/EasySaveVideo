@@ -6,6 +6,17 @@ import org.junit.Test
 class LocalHtmlEvidenceParserTest {
     private val parser=LocalHtmlEvidenceParser()
     private fun parse(html:String)=parser.parse(html.toByteArray(),"https://fixture.example.org/page")
+    @Test fun compiledPrimaryPlayerShapesWithoutPrivateMarker() {
+        assertNotNull(parse("<main><video controls src='/owned.mp4'></video></main>"))
+        assertNotNull(parse("<main><h1>Owned</h1><div><video controls src='/owned.mp4'></video></div></main>"))
+        assertNull(parse("<main><video src='/incidental.mp4'></video></main>"))
+    }
+    @Test fun articleHiddenAndCompetingMainContentAbstain() {
+        assertNull(parse("<main><article><video controls src='/incidental.mp4'></video></article></main>"))
+        assertNull(parse("<main hidden><video controls src='/owned.mp4'></video></main>"))
+        assertNull(parse("<main><div style='display: none'><video controls src='/owned.mp4'></video></div></main>"))
+        assertNull(parse("<main><p>Competing article</p><video controls src='/incidental.mp4'></video></main>"))
+    }
     @Test fun realJsoupPrimaryVideoEvidenceNotPlaybackOrDownload() {
         val evidence=parse("<main><h1>Owned fixture</h1><video data-esv-primary='true' src='/media.mp4'></video></main>")!!
         assertEquals("https://fixture.example.org/media.mp4",evidence.sourceCandidate)
