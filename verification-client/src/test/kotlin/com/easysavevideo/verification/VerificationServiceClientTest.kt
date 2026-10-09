@@ -13,6 +13,17 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class VerificationServiceClientTest {
+    @Test fun sharedEngineIdentityReachesWireAndResponseWithoutChangingLegacyFreshIds() {
+        val transport=TestTransport()
+        val id="b".repeat(32)
+        val result=client(transport).verify(candidate,operation(),id)
+        assertEquals(id,result.requestId)
+        assertEquals(id,StrictJson.read(transport.requests.single().body).objectValue()["requestId"]?.stringOrNull())
+        assertThrows(IllegalArgumentException::class.java) {client(TestTransport()).verify(candidate,operation(),"invalid")}
+    }
+    @Test fun unspecifiedTransportCleanupProofIsUnavailable() {
+        assertFalse(TestTransport().isPhysicallyIdle())
+    }
     private val candidate = CandidateUrl(CANDIDATE, SourceReportedCandidateMetadata("Untrusted search title", "Untrusted source", "Search query private",
         reportedDurationMs = 1234))
     private fun reply(request: VerificationHttpRequest, json: String = jsonFor(request), status: Int = 200,

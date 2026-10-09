@@ -2457,5 +2457,13 @@
             <sha256 value="c538388d760a5c1c98dcf06f6ed3cfe5f11a651827db5cbd2ed8288c795cad42" origin="Exact reviewed ESV Tink 1.23.0 candidate archive 83e851a3, verified before admission"/>
          </artifact>
       </component>
+      <component group="org.jsoup" name="jsoup" version="1.21.2">
+         <artifact name="jsoup-1.21.2.jar">
+            <sha256 value="f05496e255734759f0d4b5632da7b24f81313147c78c69e90ad045d096191344" origin="Official Maven Central SHA-256 matched; exact MIT review; JVM-only B parser 2026-10-09"/>
+         </artifact>
+         <artifact name="jsoup-1.21.2.pom">
+            <sha256 value="4bbe2d2528a90f997c40aef3b62b519fd373c56057b54ffb086cc2bef01ef446" origin="Official Maven Central SHA-256 matched; no production runtime dependencies; JVM-only B parser 2026-10-09"/>
+         </artifact>
+      </component>
    </components>
 </verification-metadata>

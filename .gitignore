@@ -7,3 +7,4 @@ local.properties
 *.hprof
 
 __pycache__/
+third_party/verification-b-candidates/*.jar

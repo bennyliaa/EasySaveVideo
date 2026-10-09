@@ -50,3 +50,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "EasySaveVideo"
 include(":core-model", ":core-domain", ":ui-theme", ":discovery", ":save", ":recording", ":library", ":hls", ":commons-provider", ":searxng-provider", ":verification-client", ":app")
+// JVM-only B parsing evaluation; not yet an Android runtime dependency.
+include(":verification-local")

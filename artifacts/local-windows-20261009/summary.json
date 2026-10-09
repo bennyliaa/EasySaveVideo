@@ -1,0 +1,45 @@
+{
+  "snapshot_label": "12f97d43c11fa19ea7dd08ccc0805a3030c71346",
+  "upstream_git_history_restored": false,
+  "local_import_commit": "4036e12d614436f907814f8702eee95773eac011",
+  "modules": {
+    "discovery": {
+      "tests": 249,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "verification-client": {
+      "tests": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "verification-local": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "android_compile": "PASS_DEBUG_AND_RELEASE_KOTLIN_ONLY",
+  "app_runtime_admission": 74,
+  "real_scrapling": "NOT_RUN",
+  "full_b_engine": "NOT_IMPLEMENTED",
+  "common_100_ab": "NOT_RUN",
+  "phone_resources_energy_network_time": "N_A_NOT_MEASURED",
+  "device_operations": "NOT_RUN_WAIT_USER_NOTIFICATION",
+  "jvm_total": 300,
+  "service_protocol_default_http": {
+    "tests": 17,
+    "failures": 0,
+    "runtime": "STDLIB_ONLY_NO_SCRAPLING"
+  },
+  "windows_job_probe": "REAL_OWNED_ROOT_AND_GRANDCHILD_PASS",
+  "evidence_scopes": {
+    "VerificationEngineSchedulerTest": "FAKE_ENGINES",
+    "LocalHtmlEvidenceParserTest": "REAL_JSOUP_NO_NETWORK",
+    "other_client_tests": "PROTOCOL_AND_FAKE_TRANSPORT_NO_SCRAPLING"
+  },
+  "source_boundaries": "PASS_WITH_WINDOWS_LONG_PATH_WRAPPER"
+}

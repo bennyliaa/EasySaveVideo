@@ -47,6 +47,7 @@ class SystemVerificationTransport internal constructor(
 
     private class Outcome(val value: Result<VerificationHttpResponse>)
     private val active = AtomicReference<Call?>()
+    override fun isPhysicallyIdle(): Boolean = active.get() == null
 
     override fun create(request: VerificationHttpRequest): VerificationHttpCall {
         VerificationUrlPolicy.requireApi(request.endpoint, request.url)

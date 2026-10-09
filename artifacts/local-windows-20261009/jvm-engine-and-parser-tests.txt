@@ -1,0 +1,61 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:compileKotlin UP-TO-DATE
+> Task :core-model:compileJava NO-SOURCE
+> Task :discovery:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:processResources NO-SOURCE
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar UP-TO-DATE
+> Task :discovery:processTestResources NO-SOURCE
+> Task :verification-client:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-client:processResources NO-SOURCE
+> Task :verification-client:processTestResources NO-SOURCE
+> Task :verification-local:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-local:processResources NO-SOURCE
+> Task :verification-local:processTestResources NO-SOURCE
+> Task :discovery:compileKotlin
+> Task :discovery:compileJava NO-SOURCE
+> Task :discovery:classes UP-TO-DATE
+> Task :discovery:jar
+> Task :discovery:compileTestKotlin
+> Task :discovery:compileTestJava NO-SOURCE
+> Task :discovery:testClasses UP-TO-DATE
+> Task :verification-client:compileKotlin
+> Task :discovery:test
+> Task :verification-client:compileJava NO-SOURCE
+> Task :verification-client:classes UP-TO-DATE
+> Task :verification-client:jar
+> Task :verification-local:compileKotlin
+> Task :verification-local:compileJava NO-SOURCE
+> Task :verification-local:classes UP-TO-DATE
+> Task :verification-local:jar
+
+> Task :verification-client:compileTestKotlin
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/verification-client/src/test/kotlin/com/easysavevideo/verification/VerificationFixtureHarness.kt:91:38 'constructor(p0: String!): URL' is deprecated. Deprecated in Java.
+
+> Task :verification-client:compileTestJava NO-SOURCE
+> Task :verification-client:testClasses UP-TO-DATE
+> Task :verification-local:compileTestKotlin
+> Task :verification-client:test
+> Task :verification-local:compileTestJava NO-SOURCE
+> Task :verification-local:testClasses UP-TO-DATE
+> Task :verification-local:test
+Persisted dependency lock state for buildscript of root project 'EasySaveVideo'
+Persisted dependency lock state for project ':core-model'
+Persisted dependency lock state for project ':discovery'
+Persisted dependency lock state for project ':verification-client'
+Persisted dependency lock state for project ':verification-local'
+
+[Incubating] Problems report is available at: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 30s
+14 actionable tasks: 12 executed, 2 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.0/userguide/configuration_cache_enabling.html

@@ -1,0 +1,22 @@
+test_bounded_sizes (test_service.ProtocolTests.test_bounded_sizes) ... ok
+test_credentials_fragment_control_and_odd_url (test_service.ProtocolTests.test_credentials_fragment_control_and_odd_url) ... ok
+test_duplicates_nonfinite_trailing_utf8 (test_service.ProtocolTests.test_duplicates_nonfinite_trailing_utf8) ... ok
+test_exact_keys (test_service.ProtocolTests.test_exact_keys) ... ok
+test_fixture_capability_is_exact (test_service.ProtocolTests.test_fixture_capability_is_exact) ... ok
+test_identity_format (test_service.ProtocolTests.test_identity_format) ... ok
+test_integer_types (test_service.ProtocolTests.test_integer_types) ... ok
+test_public_thumbnail_no_lookup (test_service.ProtocolTests.test_public_thumbnail_no_lookup) ... ok
+test_result_identity_and_metadata_fences (test_service.ProtocolTests.test_result_identity_and_metadata_fences) ... ok
+test_clean_process_imports_no_optional_runtime (test_service.DefaultServiceTests.test_clean_process_imports_no_optional_runtime) ... ok
+test_initial_cancellation_and_deadline (test_service.DefaultServiceTests.test_initial_cancellation_and_deadline) ... ok
+test_no_cli_or_environment_fixture_switch (test_service.DefaultServiceTests.test_no_cli_or_environment_fixture_switch) ... ok
+test_no_runtime_import_dns_process_or_network (test_service.DefaultServiceTests.test_no_runtime_import_dns_process_or_network) ... ok
+test_cannot_bind_public_interface (test_service.HTTPTests.test_cannot_bind_public_interface) ... ok
+test_header_and_body_size (test_service.HTTPTests.test_header_and_body_size) ... ok
+test_real_http_default_contract (test_service.HTTPTests.test_real_http_default_contract) ... ok
+test_reject_duplicate_headers_compression_credentials_and_chunking (test_service.HTTPTests.test_reject_duplicate_headers_compression_credentials_and_chunking) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.544s
+
+OK

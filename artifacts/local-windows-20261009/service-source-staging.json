@@ -1,0 +1,67 @@
+{
+  "stage": "D:\\CodexProjects\\EasySaveVideo\\Scrapling_Service\\source-12f97d43-20261009",
+  "runtime_installed": false,
+  "service_started": false,
+  "files": [
+    {
+      "path": "esv_verify\\__init__.py",
+      "sha256": "f50bbe4e3117bd0780384d6bfa7f3244a4ece2f751e0da58be3af163aef1185d"
+    },
+    {
+      "path": "esv_verify\\__main__.py",
+      "sha256": "15ec0c5d94de680e525040263efb324d3c99e210cc5c28f2745f759fee304ebd"
+    },
+    {
+      "path": "esv_verify\\adapter.py",
+      "sha256": "29d52c9ffb41e2405896c10b9343e41fb80ffd77ff911b08f6357042cbb7cbfe"
+    },
+    {
+      "path": "esv_verify\\capability.py",
+      "sha256": "11e9b20847eed7d114a402c345e7e464380cd9954755851ff91168243b250aea"
+    },
+    {
+      "path": "esv_verify\\protocol.py",
+      "sha256": "5e9e658aff8244f46b208705460d5b0276e587579c34f2f0b9aab04853fbd2b0"
+    },
+    {
+      "path": "esv_verify\\server.py",
+      "sha256": "428f2ac0e9560ad5a4cd484ef4d156071ef1ade1e576c249ac4ce0d21d32ef7f"
+    },
+    {
+      "path": "esv_verify\\service.py",
+      "sha256": "ea7d12017473836860318117a2a25e8932943bb606460ee70037aa214eb13397"
+    },
+    {
+      "path": "esv_verify\\windows_job.py",
+      "sha256": "87253e71a6b7a5e7fb0e408a990f5103b0cf385971e358259237aa0e81b0dd5f"
+    },
+    {
+      "path": "esv_verify\\worker.py",
+      "sha256": "951554159cbc0ff5f685dd8b4f240ec33d4e6d7037cdd578609e2f70a7492d9d"
+    },
+    {
+      "path": "README.md",
+      "sha256": "4baf5bf8b8fcf78cf133198e4b646dd91990fed6ba1744fbdb1382ed14f2c0ce"
+    },
+    {
+      "path": "tests\\accepted-pipe-result.json",
+      "sha256": "dd608c36f7b41cc97063b0c0b38d5f73b34aafcc73f6b77b77a049553f95fb6e"
+    },
+    {
+      "path": "tests\\accepted-result.json",
+      "sha256": "4d4749680ff96162ffa4a9d3def8e09599260b597511a41e5dba9c50d4309185"
+    },
+    {
+      "path": "tests\\test_service.py",
+      "sha256": "0a31aec67b4aede6389f3072b2a345959b3f0eb009ad6a4aa5590ea94d7271c5"
+    },
+    {
+      "path": "tests\\test_worker_pipe.py",
+      "sha256": "20570b28d5961230d4ee888e0da6ea31b25641d58c9d62458594d28ff45c16b6"
+    },
+    {
+      "path": "tests\\windows_job_probe.py",
+      "sha256": "02bbaf5a09ac5ea1c228889638207c52be80087fc8fa44e92367ed480a2ff426"
+    }
+  ]
+}

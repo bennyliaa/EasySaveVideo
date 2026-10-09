@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-10-09T18:40:00.039Z" hostname="LZF" time="0.078">
+  <properties/>
+  <testcase name="inDeadlineServerRetryReplacesAnyEarlierQueryScopedPagingCooldown" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.002"/>
+  <testcase name="providerProgressPollingUsesCachedFactsAndDoesNotResetExpiredOrIncompatibleCursor" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.015"/>
+  <testcase name="clearingHistoryMakesPreviouslyFilteredInventoryBufferedWithoutNewRequests" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.008"/>
+  <testcase name="materializingAfterCooldownReportsTheNewLiveRound" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.001"/>
+  <testcase name="serverRateLimitSurvivesProgressResetQueryChangeAndProviderVersionChange" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.001"/>
+  <testcase name="repeatedCursorCooldownIsQueryScoped" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.003"/>
+  <testcase name="rapidImmediateSuspendResumeRetiresLateCancellationAndSuccess" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.002"/>
+  <testcase name="explicitProviderExhaustionDoesNotBecomeAnEmptyPageCooldown" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.001"/>
+  <testcase name="revisingSortPreservesCurrentAnchorRejectsLateCallbackAndKeepsCursor" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.004"/>
+  <testcase name="changingProviderVersionStartsANewConsecutiveNoNewSequence" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.002"/>
+  <testcase name="uniqueReplacementsAtCapacityCountAsNewEvenWhenInventoryDoesNotGrow" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.004"/>
+  <testcase name="changingModeAfterCooldownReportsTheNewLiveRound" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.001"/>
+  <testcase name="progressResetClearsPagingCooldownAndCounterButPreservesSeenFacts" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.003"/>
+  <testcase name="rejectedProviderDoesNotMakeHealthyAggregateUnsupported" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.012"/>
+  <testcase name="noNewCooldownDoesNotBlockAnotherQuery" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.002"/>
+  <testcase name="progressSnapshotsReflectRegistryChangesWithoutQueryingOrMutatingSources" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.01"/>
+  <testcase name="fullyPinnedPoolRejectsFurtherDemandBeforeAnyRequest" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.002"/>
+  <testcase name="statusExpiresBackoffWithoutCreatingAutomaticDemand" classname="com.easysavevideo.discovery.DiscoveryQualityCoordinatorTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

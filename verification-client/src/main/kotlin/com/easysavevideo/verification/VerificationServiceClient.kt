@@ -35,9 +35,10 @@ class VerificationServiceClient(
         return result.toRaw()
     }
 
-    fun verify(candidate: CandidateUrl, operation: DiscoveryOperation): VerificationResult {
+    fun verify(candidate: CandidateUrl, operation: DiscoveryOperation, identityRequestId: String? = null): VerificationResult {
         checkOperation(operation)
-        val requestId = ByteArray(16).also(RANDOM::nextBytes).joinToString("") { "%02x".format(it) }
+        require(identityRequestId == null || identityRequestId.matches(Regex("[0-9a-f]{32}")))
+        val requestId = identityRequestId ?: ByteArray(16).also(RANDOM::nextBytes).joinToString("") { "%02x".format(it) }
         fun negative(outcome: VerificationOutcome) = VerificationResult(requestId, generation,
             candidate.pageUrl, outcome, candidate.pageUrl, VerificationEvidence.NONE)
         if (VerificationUrlPolicy.candidate(candidate.pageUrl) == null) return negative(VerificationOutcome.REJECTED)

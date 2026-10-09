@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.ProviderRuntimeTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-09T18:40:00.346Z" hostname="LZF" time="0.853">
+  <properties/>
+  <testcase name="blockingPriorAttemptHookCannotBlockRetryOrSiblingDeadline" classname="com.easysavevideo.discovery.ProviderRuntimeTest" time="0.371"/>
+  <testcase name="completedAttemptReleasesUnusedHooksWithoutRacingCancellation" classname="com.easysavevideo.discovery.ProviderRuntimeTest" time="0.0"/>
+  <testcase name="adapterCancellationHookIsInvokedForActualInflightWork" classname="com.easysavevideo.discovery.ProviderRuntimeTest" time="0.002"/>
+  <testcase name="timeoutRacingWorkerCompletionStillDeliversExactlyOneTerminal" classname="com.easysavevideo.discovery.ProviderRuntimeTest" time="0.002"/>
+  <testcase name="actualWorkerValidatesResultsAndCompletesOnce" classname="com.easysavevideo.discovery.ProviderRuntimeTest" time="0.001"/>
+  <testcase name="hungWorkerTimesOutWithoutBlockingSiblingOrReusingItsSlot" classname="com.easysavevideo.discovery.ProviderRuntimeTest" time="0.212"/>
+  <testcase name="cancellationHooksRunOnceAndLateRegistrationIsCancelledImmediately" classname="com.easysavevideo.discovery.ProviderRuntimeTest" time="0.001"/>
+  <testcase name="hungWorkersRetainGlobalPhysicalSlotsAfterLogicalTimeouts" classname="com.easysavevideo.discovery.ProviderRuntimeTest" time="0.263"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

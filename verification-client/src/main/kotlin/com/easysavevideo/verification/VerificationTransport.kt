@@ -10,7 +10,11 @@ import java.net.URI
  * cancel() must be prompt, non-blocking, thread-safe and idempotent. Retain physical admission
  * until the worker and all resource cleanup actually exit. Never publish a live network stream.
  */
-fun interface VerificationTransport { fun create(request: VerificationHttpRequest): VerificationHttpCall }
+fun interface VerificationTransport {
+    fun create(request: VerificationHttpRequest): VerificationHttpCall
+    /** Unknown by default; only the physical admission owner can prove this. */
+    fun isPhysicallyIdle(): Boolean = false
+}
 interface VerificationHttpCall {
     fun execute(): VerificationHttpResponse
     fun cancel()

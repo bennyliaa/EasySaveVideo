@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-09T18:40:00.121Z" hostname="LZF" time="0.025">
+  <properties/>
+  <testcase name="unavailableStoreAtCallbackRollsBackAndStopsRetryUntilExplicitRestore" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.003"/>
+  <testcase name="cancellationAtFinalCommitRollsBackPoolSeenAndCursorTogether" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.004"/>
+  <testcase name="duplicateFailureDuringBackoffCannotMintRetryBudget" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.001"/>
+  <testcase name="deadlineReachedAtFinalCommitRollsBackPoolSeenAndCursorTogether" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.005"/>
+  <testcase name="closeDuringBackoffCancelsPendingRetryAndLateCallbacks" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.001"/>
+  <testcase name="failedSourceDoesNotCancelSiblingAndZeroRegistryNeedsNoRuntime" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.001"/>
+  <testcase name="retryDeadlineAndCooldownNeverCreateAutomaticPostDeadlineWork" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.001"/>
+  <testcase name="oldSuccessCannotCompleteANewerRetryOrPublishItsCursor" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.002"/>
+  <testcase name="incompatibleCursorResetsOnlyItsSourceAndPreservesCommittedSeen" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.001"/>
+  <testcase name="oldFailureCannotRetireANewerRetryOrScheduleAnotherAttempt" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.001"/>
+  <testcase name="cursorAtExactExpiryRestartsButExhaustedWithoutExpiryRemainsExhausted" classname="com.easysavevideo.discovery.DiscoveryReliabilityMatrixTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

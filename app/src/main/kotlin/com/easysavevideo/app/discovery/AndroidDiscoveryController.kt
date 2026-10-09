@@ -205,7 +205,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         savedViewport = null
         timer = JvmDiscoveryTimer()
         val limits = DiscoveryLimits(pageSize = settings.pageSize)
-        val validator = if (demo) null else VerificationServiceRegistration.validator(verification, timer!!) { generation ->
+        val validator = if (demo) null else VerificationEngineRegistration.validator(verification, timer!!) { generation ->
             !closed.get() && !verificationSettings.busy && sourceIntent.get() == expectedIntent &&
                 verificationSettings.current.generation == generation && verificationConfiguration.generation == generation
         }

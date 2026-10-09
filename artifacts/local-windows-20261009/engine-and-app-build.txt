@@ -1,0 +1,192 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:compileKotlin UP-TO-DATE
+> Task :core-model:compileJava NO-SOURCE
+> Task :discovery:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:processResources NO-SOURCE
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar UP-TO-DATE
+> Task :discovery:processTestResources NO-SOURCE
+> Task :verification-client:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-client:processResources NO-SOURCE
+> Task :verification-client:processTestResources NO-SOURCE
+> Task :core-domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:compileKotlin
+> Task :discovery:compileJava NO-SOURCE
+> Task :discovery:classes UP-TO-DATE
+> Task :discovery:jar
+> Task :core-domain:compileKotlin
+> Task :discovery:compileTestKotlin
+> Task :discovery:compileTestJava NO-SOURCE
+> Task :discovery:testClasses UP-TO-DATE
+> Task :verification-client:compileKotlin
+> Task :discovery:test
+> Task :verification-client:compileJava NO-SOURCE
+> Task :verification-client:classes UP-TO-DATE
+> Task :verification-client:jar
+> Task :core-domain:compileJava NO-SOURCE
+> Task :core-domain:processResources NO-SOURCE
+> Task :core-domain:classes UP-TO-DATE
+> Task :core-domain:jar
+> Task :commons-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+
+> Task :verification-client:compileTestKotlin
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/verification-client/src/test/kotlin/com/easysavevideo/verification/VerificationFixtureHarness.kt:91:38 'constructor(p0: String!): URL' is deprecated. Deprecated in Java.
+
+> Task :verification-client:compileTestJava NO-SOURCE
+> Task :verification-client:testClasses UP-TO-DATE
+> Task :verification-client:test
+> Task :commons-provider:processResources NO-SOURCE
+> Task :searxng-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :searxng-provider:compileKotlin
+> Task :searxng-provider:compileJava NO-SOURCE
+> Task :searxng-provider:processResources NO-SOURCE
+> Task :searxng-provider:classes UP-TO-DATE
+> Task :searxng-provider:jar
+> Task :recording:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :commons-provider:compileKotlin
+> Task :commons-provider:compileJava NO-SOURCE
+> Task :commons-provider:classes UP-TO-DATE
+> Task :commons-provider:jar
+> Task :save:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :save:processResources NO-SOURCE
+> Task :recording:processResources NO-SOURCE
+> Task :library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :recording:compileKotlin
+> Task :recording:compileJava NO-SOURCE
+> Task :library:compileKotlin
+> Task :recording:classes UP-TO-DATE
+> Task :save:compileKotlin
+> Task :recording:jar
+> Task :save:compileJava NO-SOURCE
+> Task :save:classes UP-TO-DATE
+> Task :save:jar
+> Task :library:compileJava NO-SOURCE
+> Task :library:processResources NO-SOURCE
+> Task :library:classes UP-TO-DATE
+> Task :library:jar
+> Task :hls:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :hls:processResources NO-SOURCE
+> Task :ui-theme:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :ui-theme:compileKotlin
+> Task :ui-theme:compileJava NO-SOURCE
+> Task :ui-theme:processResources NO-SOURCE
+> Task :ui-theme:classes UP-TO-DATE
+> Task :ui-theme:jar
+> Task :hls:compileKotlin
+> Task :app:verifyRuntimeAdmission FAILED
+
+[Incubating] Problems report is available at: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:verifyRuntimeAdmission' (registered in build file 'app\build.gradle.kts').
+> Could not resolve all artifacts for configuration ':app:debugRuntimeClasspath'.
+   > Did not resolve 'androidx.activity:activity-compose:1.10.1' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.runtime:runtime-saveable:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.foundation:foundation-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-util:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.versionedparcelable:versionedparcelable:1.1.1' which is part of the dependency lock state
+   > Did not resolve 'androidx.activity:activity:1.10.1' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-geometry-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-graphics-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.collection:collection:1.5.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-util-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose:compose-bom:2025.06.01' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.animation:animation-core-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.profileinstaller:profileinstaller:1.4.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-common-jvm:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'org.jspecify:jspecify:1.0.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.interpolator:interpolator:1.0.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.emoji2:emoji2:1.4.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.collection:collection-jvm:1.5.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.customview:customview-poolingcontainer:1.0.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.animation:animation:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.runtime:runtime-saveable-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.runtime:runtime-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-runtime-android:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-livedata-core:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'org.jetbrains.kotlin:kotlin-stdlib-common:2.2.10' which is part of the dependency lock state
+   > Did not resolve 'androidx.savedstate:savedstate:1.2.1' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-text-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-runtime-compose:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.autofill:autofill:1.0.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-unit-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.animation:animation-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.collection:collection-ktx:1.5.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.core:core-ktx:1.13.1' which is part of the dependency lock state
+   > Did not resolve 'androidx.startup:startup-runtime:1.1.1' which is part of the dependency lock state
+   > Did not resolve 'androidx.tracing:tracing:1.0.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.foundation:foundation-layout:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.core:core:1.13.1' which is part of the dependency lock state
+   > Did not resolve 'androidx.savedstate:savedstate-ktx:1.2.1' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-viewmodel-android:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-common:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.core:core-viewtree:1.0.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-geometry:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.activity:activity-ktx:1.10.1' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-graphics:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-unit:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.foundation:foundation-layout-android:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.arch.core:core-common:2.2.0' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.animation:animation-core:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-viewmodel:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-runtime:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.graphics:graphics-path:1.0.1' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.foundation:foundation:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.ui:ui-text:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.compose.runtime:runtime:1.8.3' which is part of the dependency lock state
+   > Did not resolve 'androidx.lifecycle:lifecycle-process:2.8.7' which is part of the dependency lock state
+   > Did not resolve 'androidx.arch.core:core-runtime:2.2.0' which is part of the dependency lock state
+   > Could not resolve androidx.compose:compose-bom:2025.06.01.
+     Required by:
+         project ':app'
+      > No cached version of androidx.compose:compose-bom:2025.06.01 available for offline mode.
+      > No cached version of androidx.compose:compose-bom:2025.06.01 available for offline mode.
+   > Could not resolve androidx.activity:activity-compose:1.10.1.
+     Required by:
+         project ':app'
+      > No cached version of androidx.activity:activity-compose:1.10.1 available for offline mode.
+      > No cached version of androidx.activity:activity-compose:1.10.1 available for offline mode.
+   > Could not resolve androidx.compose.runtime:runtime:1.8.3.
+     Required by:
+         project ':app'
+      > No cached version of androidx.compose.runtime:runtime:1.8.3 available for offline mode.
+      > No cached version of androidx.compose.runtime:runtime:1.8.3 available for offline mode.
+   > Could not resolve androidx.compose.foundation:foundation:1.8.3.
+     Required by:
+         project ':app'
+      > No cached version of androidx.compose.foundation:foundation:1.8.3 available for offline mode.
+      > No cached version of androidx.compose.foundation:foundation:1.8.3 available for offline mode.
+   > Could not resolve androidx.compose.ui:ui:1.8.3.
+     Required by:
+         project ':app'
+      > No cached version of androidx.compose.ui:ui:1.8.3 available for offline mode.
+      > No cached version of androidx.compose.ui:ui:1.8.3 available for offline mode.
+> There are 10 more failures with identical causes.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+
+BUILD FAILED in 57s
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+26 actionable tasks: 24 executed, 2 up-to-date
