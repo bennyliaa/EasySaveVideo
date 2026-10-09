@@ -1,14 +1,19 @@
-# Debug-only Android loopback transport design — proposal, not enabled
+# Minimal debug-only Android loopback design — proposal, NOT enabled
 
-The production client continues to require public HTTPS port 443 and /v1/verify. Release receives no cleartext exception, trust change, local endpoint toggle or additional permissions.
+Verified current state: main AndroidManifest.xml already declares usesCleartextTraffic=true for the existing app/browser. The production VERIFICATION client independently requires public HTTPS443 and /v1/verify. Do not describe the whole existing Release app as globally HTTPS-only. Neither policy was changed.
 
-For the explicitly selected emulator-5556 only, after the user reports it ready and approves the debug transport change:
-1. Keep Windows service bound exclusively to 127.0.0.1:8765.
-2. Use a device-specific adb reverse mapping for tcp:8765; no LAN address or 10.0.2.2 bypass, no firewall edits. Remove that exact mapping at the end.
-3. Add a src/debug-only network-security-config domain exception for 127.0.0.1 cleartext, default cleartext false. A dedicated debug transport validates exactly http://127.0.0.1:8765/v1/verify and uses the existing bounded wire grammar. It cannot reach arbitrary private endpoints.
-4. Keep per-process explicit consent, exact constructor-owned fixture source admission, no cookies, credentials, download, permissions grant, microphone or screen recording. Android source candidates remain the logical fixture identity; the host resolves only constructor-owned fixtures.
-5. Before installation, compare existing package signer and versionCode without replacing app data; new package must have higher versionCode and matching signer. API31 remains minimum.
+Minimal approval requested (recommended):
+- Windows service remains exclusively127.0.0.1:8765.
+- After user notification that emulator-5556 is ready, add ONLY its adb reverse mapping: `adb -s emulator-5556 reverse tcp:8765 tcp:8765`.
+- A dedicated src/debug-only original verification transport/registration targets EXACTLY `http://127.0.0.1:8765/v1/verify`. It rejects any other address/port/path, redirects, cookies, auth, compression and network proxy. It remains off until explicit per-process consent; UI must identify this as LOCAL HTTP, not imply TLS. Reuse bounded identity/protocol codec; do not relax the shared production endpoint validator or SystemVerificationTransport.
+- No Manifest/network-security-config exception is necessary for this existing APK policy. No Release classes, HTTPS/public-address validator, trust anchors, firewall/LAN or system security changes.
 
-No manifest/security configuration, adb mapping, package assembly/install, device start or device polling has been performed. Approval is needed before enabling steps 2–3 because they introduce a debug cleartext transport exception. Host unit tests, source/ABI checks and Kotlin compilation do not depend on this exception.
+Security change requiring approval: ONLY the debug verification client's fixed-loopback HTTP exception plus device-specific reverse transport. Loopback transport is unencrypted and a local process able to access the port may observe/submit local development traffic. This carries only bounded candidate/logical fixture URL, request/generation IDs, budgetMs and dynamicAllowed plus bounded page evidence JSON; no private media, cookies, tokens, credentials or downloaded content. Only constructor-owned fixtures are admitted on the host; ordinary endpoint currently has zero sources. No accounts/credentials/paid services are created.
 
-B's inline-only WebView uses a synthetic reserved origin and blocked network loads; it does not require this transport exception. Actual Android WebView execution, Activity reconstruction, renderer lifecycle and device CPU/RAM/energy remain pending device acceptance. If JS completion cannot be proven, the dynamic physical slot remains quarantined; destroy alone does not assert recovery.
+Rollback: close the debug transport and revoke its per-process consent; remove EXACT device mapping using `adb -s emulator-5556 reverse --remove tcp:8765`; disable/remove the src/debug registration. Stop the owned host service via its managed terminal session if requested. No app-data deletion, uninstall, trust-store change or broad `reverse --remove-all` operation. Restarting the app restores default-off consent.
+
+Optional separate hardening (NOT part of this minimal request): src/debug network-security-config with base cleartext=false and only127.0.0.1 true. This additionally prevents the Debug Browser's other HTTP pages, so it needs a separate product/security decision. Release would remain untouched.
+
+No debug transport exception, manifest configuration, adb mapping, APK/AAB, device install/start/poll has been implemented. Install later requires higher versionCode and the existing matching signer, preserving data; API31 minimum. No private media/microphone/recording access.
+
+B inline-only WebView uses a synthetic reserved origin and blocked network loads, so its rendering itself needs no HTTP exception. Full Android dynamic/lifecycle/renderer/energy acceptance remains pending a device. If completion/cleanup is unproven the physical slot stays quarantined.
