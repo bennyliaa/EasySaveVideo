@@ -1,0 +1,905 @@
+{
+  "modules": {
+    "app": {
+      "tests": 1206,
+      "failures": 33,
+      "errors": 0,
+      "skipped": 0
+    },
+    "commons-provider": {
+      "tests": 247,
+      "failures": 82,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core-domain": {
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "discovery": {
+      "tests": 249,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "hls": {
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "library": {
+      "tests": 246,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "recording": {
+      "tests": 127,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "save": {
+      "tests": 86,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "searxng-provider": {
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ui-theme": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "verification-client": {
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "verification-local": {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "total": {
+    "tests": 2347,
+    "failures": 115,
+    "errors": 0,
+    "skipped": 0
+  },
+  "app_original_failures": 41,
+  "app_remaining_failures": 33,
+  "app_failures_corrected": 8,
+  "failure_categories": {
+    "SYMLINK_PRIVILEGE_UNAVAILABLE": 8,
+    "TRUSTED_FILE_KEY_UNAVAILABLE": 7,
+    "REAL_DIRECTORY_FSYNC_UNAVAILABLE": 19,
+    "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE": 81
+  },
+  "failures": [
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.editor.storage.EditArtifactFilesTest",
+      "test": "symlinksAndTraversalNeverAdmitted",
+      "type": "java.nio.file.FileSystemException",
+      "category": "SYMLINK_PRIVILEGE_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest",
+      "test": "symbolicMediaAndDirectoryLinksAreNeverFollowed",
+      "type": "java.nio.file.FileSystemException",
+      "category": "SYMLINK_PRIVILEGE_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "unconfirmedHelperReadClosePinsFileUntilProcessRecovery",
+      "type": "java.io.IOException",
+      "category": "TRUSTED_FILE_KEY_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "failedDirectorySyncDoesNotPretendCleanupCompleted",
+      "type": "java.io.IOException",
+      "category": "TRUSTED_FILE_KEY_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "privateRandomIdentityAndExactHashSurviveFreshOwner",
+      "type": "java.io.IOException",
+      "category": "TRUSTED_FILE_KEY_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "symlinkAndTraversalNeverTouchOutsideFiles",
+      "type": "java.nio.file.FileSystemException",
+      "category": "SYMLINK_PRIVILEGE_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "inodeReplacementWithSameBytesNeverPassesOrDeletesReplacement",
+      "type": "java.io.IOException",
+      "category": "TRUSTED_FILE_KEY_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "unknownCrashIdentityNeverAuthorizesDeletion",
+      "type": "java.io.IOException",
+      "category": "TRUSTED_FILE_KEY_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "appendedTruncatedAndMutatedRawIsRetained",
+      "type": "java.io.IOException",
+      "category": "TRUSTED_FILE_KEY_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "digestAndIndexAreIndependentlyRechecked",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "previewRejectsStagingProvisionalAndMismatchedVisibleReceipt",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "previewRejectsChangedLengthSymlinkAndDiscardedOwnership",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "lowSpacePreflightPreservesDataAndNeverCreatesCommitIntent",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "directoryLeaseRejectsUnknownSymlinkWithoutTouchingTarget",
+      "type": "java.nio.file.FileSystemException",
+      "category": "SYMLINK_PRIVILEGE_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "restartCrashWindowsReuseOnlyTheOwnedEmptyReplacement",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "neverOverwritesPreexistingFinalOrDeletesItAfterFailure",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "forgedOwnershipAndSymlinkCannotDeleteUnrelatedFiles",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "recoveryVerifierCanReadPromotedArtifactButWriterCannot",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "restartUsesNewInodeAndNeverAppendsOldBytes",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "operationByteBudgetIsEnforcedBeforeCommit",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "renameFailurePreservesIntentAndRecoversOnSameFilesystemWithoutFallback",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "mismatchedIndexIsNeverAcceptedOrSilentlyReplaced",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "truncatedStagingCannotCreateIntentOrIndex",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "prepareCrashIsIdempotentAndUsesRandomOwnedNames",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "streamCleanupPreservesUnknownAndSymlinkedFiles",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "streamOutputMovesWithinOwnedNamespaceAndLeavesOriginalContent",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "everyCommitCrashWindowReconcilesOnceWithoutDuplicateMedia",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "cancellationBeforeIntentNeverPublishesAndOwnedStagingCanBeCleaned",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "restartAndCleanupPreserveUnknownNonemptyReplacement",
+      "type": "java.nio.file.AccessDeniedException",
+      "category": "REAL_DIRECTORY_FSYNC_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.stream.LocalHlsAddressTest",
+      "test": "digestAndIdentityRejectChanges",
+      "type": "java.io.IOException",
+      "category": "TRUSTED_FILE_KEY_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.stream.LocalHlsAddressTest",
+      "test": "rejectsDotSegmentsAcrossDirectorySymlinks",
+      "type": "java.nio.file.FileSystemException",
+      "category": "SYMLINK_PRIVILEGE_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.save.stream.LocalHlsAddressTest",
+      "test": "fileGateRejectsOutsideAndSymlink",
+      "type": "java.nio.file.FileSystemException",
+      "category": "SYMLINK_PRIVILEGE_UNAVAILABLE"
+    },
+    {
+      "module": "app",
+      "class": "com.easysavevideo.app.storage.SearxngConfigurationStoreTest",
+      "test": "directoryOrSymlinkTargetIsNeverReadAsConfigurationOrReplaced",
+      "type": "java.nio.file.FileSystemException",
+      "category": "SYMLINK_PRIVILEGE_UNAVAILABLE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "twelveMixedConclusiveObservationsSuspendWithoutQuarantine",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "closeInsideACallbackBeforeTransactionCannotPublishOrCountAnObservation",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "formatTwoCannotBeSilentlyResetOrMigrated",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "tokenFromAnotherRepositoryOrProcessCannotContribute",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "exactCurrentFallbackGrantCanRestoreOnlyTheSafeLastGood",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "allMutatorsFenceCloseBeforePublishingAndKeepUnpublishedDiskStateClosed",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "inconclusiveObservationsBreakBothStreaksWithoutBecomingStructuralEvidence",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "policyChangeInvalidatesTokenAndStreakButNeverResetsExposureBudget",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "firstSelfTestFailureCanPersistWithoutAnyPreviouslyAcceptedSignedAuthority",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "revokedExpiredOrWrongDigestLastGoodNeverActivatesAfterStructuralRejection",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "managementRollbackCannotActOnAuthorityChangedAfterConfirmation",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "twentyFourHourWindowAndShorterPolicyExpiryStopWithoutAttributingNetworkFailure",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "closeInsideLatePublicationCallbackCannotLeavePromotedStateAfterRestart",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "failedFixedSelfTestIsDurablyIsolatedWithoutReplacingActiveOrHighWater",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "twentyInconclusiveObservationsSuspendAndPolicyReplacementCannotRefillBudget",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "aSingleOutstandingCapabilityCannotBeForgedOrReused",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "probationCountersPersistButRestartNeverResumesUnconfirmedCandidate",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "simultaneousDuplicateCompletionsCountOnlyOnce",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "cancellationConsumesCapabilityWithoutCountingOrPoisoningBeforeTransaction",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "isolationCapacityIsBoundedPermanentAndNeverEvictsSecurityHistory",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "publicationAfterProbationDeadlineNeverPromotesEvenWithNoCallerDeadline",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "callerCallbacksCannotReenterAnyMutationOrAllocateANestedObservation",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "healthCounterChangesNotifyObserversWithoutRevokingUnchangedAuthority",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "threeStructuralFailuresPersistIsolationAndStopWithoutAnExactFallbackGrant",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "healthWriteFaultsAndLateCancellationRemainFailClosedAcrossRestart",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "newerCandidateCannotReceiveAnOlderCandidatesCompletion",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "policyExpiryCannotBeExtendedToRefillAnExistingProbationWindow",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderHealthRepositoryTest",
+      "test": "exactlyThreeConsecutiveFreshSuccessesPromoteWithoutChangingAuthority",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "restoredExpiredStableEnvelopeStillAuthenticatesButDoesNotActivate",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "corruptedHighWaterCannotBeResetEvenIfFramingChecksumIsRecomputed",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "candidateFailurePreservesPreviousStableHistoryAndTrustedAnchor",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "notificationsAreOffLockBoundedAndUnchangedHealthDoesNotNotify",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "missingTruncatedOversizedAndUnknownFormatRecordsFailClosed",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "secondOwnerFailsClosedWithoutOpeningBundledFallback",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "stableRollbackAndRestartNeverLowerHighWater",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "failedCandidateNeverReenablesExpiredLastGood",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "cancellationBeforeTransactionLeavesHealthyStateUntouched",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "everyInjectedAtomicFailureStaysDisabledAcrossRestart",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "signedKillSwitchIsStableImmediatelyAndDoesNotBlockLaterHigherVersion",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "danglingIntentOrTemporaryEvidenceIsNotTreatedAsAbsent",
+      "type": "java.nio.file.FileSystemException",
+      "category": "SYMLINK_PRIVILEGE_UNAVAILABLE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "restoredCandidateCannotEnableOrBePromotedAndRequiresExplicitReject",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "expiryDisablesSnapshotsAndPromotionWithoutDiscardingAuthenticatedHighWater",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "onlyOneCandidateAndExactHealthPromotionPreservesAuthorityGeneration",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "danglingStateMarkersAndWrongFileTypesNeverBecomeFreshBundledState",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderRepositoryTest",
+      "test": "stableManualRollbackRevalidatesExpiryWithoutReplacingCurrentHealthyPolicy",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderUpdateRuntimeTest",
+      "test": "successfulSignedUpdateUsesOneSourceAndCallbackRunsOffCaller",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.ProviderUpdateRuntimeTest",
+      "test": "cancellationAfterDurableWriteCompletesWithoutWaitingForStorageAndCannotActivateOnRestart",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositoryCommonsMaintenanceTest",
+      "test": "healthCheckCancellationCannotPromoteCandidate",
+      "type": "com.easysavevideo.commons.CommonsFailure",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositoryCommonsMaintenanceTest",
+      "test": "successfulMetadataPromotesExactCandidateWithoutCancellingItself",
+      "type": "com.easysavevideo.commons.CommonsFailure",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositoryCommonsMaintenanceTest",
+      "test": "threeRealSemanticFailuresQuarantineAndLeaveNoUnsignedFallback",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositoryCommonsMaintenanceTest",
+      "test": "networkFluctuationDoesNotQuarantineAndSuccessStreakRestarts",
+      "type": "com.easysavevideo.commons.CommonsFailure",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositoryCommonsMaintenanceTest",
+      "test": "remoteDisableRefusesNewLeaseAndRevokesExistingLease",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositoryCommonsMaintenanceTest",
+      "test": "failedMetadataLeavesCandidatePendingForExplicitDecision",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositoryCommonsMaintenanceTest",
+      "test": "oldLeaseCannotProvideHealthForNewPolicyOrCandidate",
+      "type": "com.easysavevideo.commons.CommonsFailure",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositoryCommonsMaintenanceTest",
+      "test": "expiredActiveLeaseIsFencedWithoutNotificationThreadTiming",
+      "type": "com.easysavevideo.commons.CommonsFailure",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "inProcessObservationIsMonotonicAndNegativeClockFailsClosed",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "repositoryDisableDominatesHealthyCandidateRollbackAndLkg",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "revokedPackageKeyCannotReenterThroughNewPackageOrRollbackGrant",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "eachPolicyWriteCancellationFailsClosedBeforeAndAfterRestart",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "corruptPolicySignatureCannotBeHiddenByRecomputedStateChecksum",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "floorNeverDecreasesAndRejectsNewUnsafePackagesWithoutAdvancingPackageHighWater",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "concurrentPolicyAndPackageMutationsSerializeAndLatestRevocationWins",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "stableRollbackRequiresExactSignedTargetAndRetainsBothVersionAnchors",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "policyCancellationBeforeTransactionLeavesOldStablePolicyUnchanged",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "firstPolicyPersistsIndependentlyAndNeverMakesBundledManagedFallback",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "policyVersionCannotReplayOrEquivocateAndPackageVersionIsIndependent",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "grantForSameVersionDifferentEnvelopeCannotAuthorizeRollback",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "firstPackageKillSwitchCannotRollbackToBundled",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "stablePackageDisableCannotRollbackToOldEnabledOrBundledWithOrWithoutGrant",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "newerPolicyMayWithdrawRollbackGrantButNeverItsSecurityRestrictions",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "boundedUpdateRuntimeCanInstallExplicitPolicyKindFromMemoryOnly",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "persistedClockLowerBoundSurvivesRestartAndDoesNotPermitMutationBehindIt",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "expiredTargetRemainsDisabledEvenWithValidGrant",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "policyChangeRevokesExistingLeaseAndFencesHealthPromotion",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "floorAndRevocationAlwaysOverrideValidTargetGrant",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "revokedVersionPersistsAndCannotDisappearFromHigherPolicy",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "policyUpdateAfterRestartCannotMakeRecoveredPendingCandidateUsable",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "eachPolicyWriteFaultFailsClosedBeforeAndAfterRestart",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "rejectedCandidateDoesNotSilentlyActivateUnsignedBundledFallback",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "legacyStateFormatFailsClosedWithoutMigrationOrReset",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "rejectedCandidateLkgNeedsGrantAndRevocationOverridesGrant",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    },
+    {
+      "module": "commons-provider",
+      "class": "com.easysavevideo.commons.maintenance.RepositorySecurityTest",
+      "test": "policyExpiryFailsClosedAndNewerValidPolicyCanRecoverWithoutReset",
+      "type": "java.lang.AssertionError",
+      "category": "DIRECTORY_FSYNC_PREREQUISITE_OR_DEPENDENT_FAILURE"
+    }
+  ],
+  "tests_deleted_skipped_or_assertions_weakened": false,
+  "permissions_or_durability_or_identity_checks_relaxed": false,
+  "new_APK_after_fixes": "NOT_BUILT; signing delivery held because full native filesystem prerequisites are unmet",
+  "Library_upload": "NOT_ATTEMPTED; final-validated-binary prerequisite unmet; prepare_uploads/finalize_uploads tools discovered",
+  "private_key_transferred": false,
+  "reverse_mapping_created": false,
+  "Android_device_tests": "NOT_RUN"
+}

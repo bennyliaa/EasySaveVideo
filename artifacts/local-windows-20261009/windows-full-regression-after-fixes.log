@@ -1,0 +1,615 @@
+
+> Configure project :app
+WARNING: The option setting 'android.aapt2FromMavenOverride=D:\CodexProjects\EasySaveVideo\esv-source-12f97d43-20261009\artifacts\local-windows-20261009\aapt2-official\aapt2.exe' is experimental.
+Add android.sync.suppressAgpWarnings=UNSUPPORTED_PROJECT_OPTION_USE to the gradle.properties file to suppress this warning.
+
+> Task :core-domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :recording:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:compileKotlin
+> Task :core-model:compileJava NO-SOURCE
+> Task :core-domain:compileKotlin
+> Task :core-domain:compileJava NO-SOURCE
+> Task :save:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :save:processResources NO-SOURCE
+> Task :core-domain:processResources NO-SOURCE
+> Task :core-domain:classes UP-TO-DATE
+> Task :recording:compileKotlin
+> Task :core-domain:jar
+> Task :recording:compileJava NO-SOURCE
+> Task :commons-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :save:compileKotlin
+> Task :save:compileJava NO-SOURCE
+> Task :save:classes UP-TO-DATE
+> Task :save:jar
+> Task :commons-provider:processResources NO-SOURCE
+> Task :searxng-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :searxng-provider:processResources NO-SOURCE
+> Task :verification-client:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-client:processResources NO-SOURCE
+> Task :verification-local:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-local:processResources NO-SOURCE
+> Task :discovery:processResources NO-SOURCE
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar
+> Task :recording:processResources NO-SOURCE
+> Task :recording:classes UP-TO-DATE
+> Task :recording:jar
+> Task :library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:compileKotlin
+> Task :discovery:compileJava NO-SOURCE
+> Task :library:compileKotlin
+> Task :searxng-provider:compileKotlin
+> Task :searxng-provider:compileJava NO-SOURCE
+> Task :searxng-provider:classes UP-TO-DATE
+> Task :searxng-provider:jar
+> Task :commons-provider:compileKotlin
+> Task :commons-provider:compileJava NO-SOURCE
+> Task :commons-provider:classes UP-TO-DATE
+> Task :commons-provider:jar
+> Task :verification-client:compileKotlin
+> Task :verification-client:compileJava NO-SOURCE
+> Task :verification-client:classes UP-TO-DATE
+> Task :verification-client:jar
+> Task :discovery:classes UP-TO-DATE
+> Task :discovery:jar
+> Task :library:compileJava NO-SOURCE
+> Task :library:processResources NO-SOURCE
+> Task :library:classes UP-TO-DATE
+> Task :library:jar
+> Task :hls:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-local:compileKotlin
+> Task :verification-local:compileJava NO-SOURCE
+> Task :verification-local:classes UP-TO-DATE
+> Task :verification-local:jar
+> Task :hls:processResources NO-SOURCE
+> Task :ui-theme:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :ui-theme:compileKotlin
+> Task :ui-theme:compileJava NO-SOURCE
+> Task :ui-theme:processResources NO-SOURCE
+> Task :ui-theme:classes UP-TO-DATE
+> Task :ui-theme:jar
+
+> Task :app:verifyRuntimeAdmission
+License admission: exact 77 reviewed runtime artifacts verified for both variants
+
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :hls:compileKotlin
+> Task :app:generateDebugBuildConfig
+> Task :hls:compileJava NO-SOURCE
+> Task :hls:classes UP-TO-DATE
+> Task :hls:jar
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:processDebugNavigationResources
+> Task :app:javaPreCompileDebug
+> Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
+> Task :app:compileDebugNavigationResources
+> Task :app:parseDebugLocalResources
+> Task :app:generateDebugRFile
+> Task :app:mergeDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :app:preDebugUnitTestBuild
+> Task :app:javaPreCompileDebugUnitTest
+> Task :commons-provider:compileTestKotlin
+> Task :commons-provider:compileTestJava NO-SOURCE
+> Task :commons-provider:processTestResources
+> Task :commons-provider:testClasses
+
+> Task :commons-provider:test
+
+ProviderHealthRepositoryTest > twelveMixedConclusiveObservationsSuspendWithoutQuarantine FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > closeInsideACallbackBeforeTransactionCannotPublishOrCountAnObservation FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > formatTwoCannotBeSilentlyResetOrMigrated FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > tokenFromAnotherRepositoryOrProcessCannotContribute FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > exactCurrentFallbackGrantCanRestoreOnlyTheSafeLastGood FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > allMutatorsFenceCloseBeforePublishingAndKeepUnpublishedDiskStateClosed FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > inconclusiveObservationsBreakBothStreaksWithoutBecomingStructuralEvidence FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > policyChangeInvalidatesTokenAndStreakButNeverResetsExposureBudget FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > firstSelfTestFailureCanPersistWithoutAnyPreviouslyAcceptedSignedAuthority FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:33
+
+ProviderHealthRepositoryTest > revokedExpiredOrWrongDigestLastGoodNeverActivatesAfterStructuralRejection FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > managementRollbackCannotActOnAuthorityChangedAfterConfirmation FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > twentyFourHourWindowAndShorterPolicyExpiryStopWithoutAttributingNetworkFailure FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > closeInsideLatePublicationCallbackCannotLeavePromotedStateAfterRestart FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > failedFixedSelfTestIsDurablyIsolatedWithoutReplacingActiveOrHighWater FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > twentyInconclusiveObservationsSuspendAndPolicyReplacementCannotRefillBudget FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > aSingleOutstandingCapabilityCannotBeForgedOrReused FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > probationCountersPersistButRestartNeverResumesUnconfirmedCandidate FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > simultaneousDuplicateCompletionsCountOnlyOnce FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > cancellationConsumesCapabilityWithoutCountingOrPoisoningBeforeTransaction FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > isolationCapacityIsBoundedPermanentAndNeverEvictsSecurityHistory FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:33
+
+ProviderHealthRepositoryTest > publicationAfterProbationDeadlineNeverPromotesEvenWithNoCallerDeadline FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > callerCallbacksCannotReenterAnyMutationOrAllocateANestedObservation FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > healthCounterChangesNotifyObserversWithoutRevokingUnchangedAuthority FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > threeStructuralFailuresPersistIsolationAndStopWithoutAnExactFallbackGrant FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > healthWriteFaultsAndLateCancellationRemainFailClosedAcrossRestart FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > newerCandidateCannotReceiveAnOlderCandidatesCompletion FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > policyExpiryCannotBeExtendedToRefillAnExistingProbationWindow FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderHealthRepositoryTest > exactlyThreeConsecutiveFreshSuccessesPromoteWithoutChangingAuthority FAILED
+    java.lang.AssertionError at ProviderHealthRepositoryTest.kt:29
+
+ProviderRepositoryTest > restoredExpiredStableEnvelopeStillAuthenticatesButDoesNotActivate FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > corruptedHighWaterCannotBeResetEvenIfFramingChecksumIsRecomputed FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > candidateFailurePreservesPreviousStableHistoryAndTrustedAnchor FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > notificationsAreOffLockBoundedAndUnchangedHealthDoesNotNotify FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > missingTruncatedOversizedAndUnknownFormatRecordsFailClosed FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > secondOwnerFailsClosedWithoutOpeningBundledFallback FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > stableRollbackAndRestartNeverLowerHighWater FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > failedCandidateNeverReenablesExpiredLastGood FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > cancellationBeforeTransactionLeavesHealthyStateUntouched FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > everyInjectedAtomicFailureStaysDisabledAcrossRestart FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > signedKillSwitchIsStableImmediatelyAndDoesNotBlockLaterHigherVersion FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > danglingIntentOrTemporaryEvidenceIsNotTreatedAsAbsent FAILED
+    java.nio.file.FileSystemException at ProviderRepositoryTest.kt:339
+
+ProviderRepositoryTest > restoredCandidateCannotEnableOrBePromotedAndRequiresExplicitReject FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > expiryDisablesSnapshotsAndPromotionWithoutDiscardingAuthenticatedHighWater FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > onlyOneCandidateAndExactHealthPromotionPreservesAuthorityGeneration FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > danglingStateMarkersAndWrongFileTypesNeverBecomeFreshBundledState FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderRepositoryTest > stableManualRollbackRevalidatesExpiryWithoutReplacingCurrentHealthyPolicy FAILED
+    java.lang.AssertionError at ProviderRepositoryTest.kt:22
+
+ProviderUpdateRuntimeTest > successfulSignedUpdateUsesOneSourceAndCallbackRunsOffCaller FAILED
+    java.lang.AssertionError at ProviderUpdateRuntimeTest.kt:72
+
+ProviderUpdateRuntimeTest > cancellationAfterDurableWriteCompletesWithoutWaitingForStorageAndCannotActivateOnRestart FAILED
+    java.lang.AssertionError at ProviderUpdateRuntimeTest.kt:235
+
+RepositoryCommonsMaintenanceTest > healthCheckCancellationCannotPromoteCandidate FAILED
+    com.easysavevideo.commons.CommonsFailure at RepositoryCommonsMaintenanceTest.kt:97
+
+RepositoryCommonsMaintenanceTest > successfulMetadataPromotesExactCandidateWithoutCancellingItself FAILED
+    com.easysavevideo.commons.CommonsFailure at RepositoryCommonsMaintenanceTest.kt:60
+
+RepositoryCommonsMaintenanceTest > threeRealSemanticFailuresQuarantineAndLeaveNoUnsignedFallback FAILED
+    java.lang.AssertionError at RepositoryCommonsMaintenanceTest.kt:110
+
+RepositoryCommonsMaintenanceTest > networkFluctuationDoesNotQuarantineAndSuccessStreakRestarts FAILED
+    com.easysavevideo.commons.CommonsFailure at RepositoryCommonsMaintenanceTest.kt:125
+
+RepositoryCommonsMaintenanceTest > remoteDisableRefusesNewLeaseAndRevokesExistingLease FAILED
+    java.lang.AssertionError at RepositoryCommonsMaintenanceTest.kt:28
+
+RepositoryCommonsMaintenanceTest > failedMetadataLeavesCandidatePendingForExplicitDecision FAILED
+    java.lang.AssertionError at RepositoryCommonsMaintenanceTest.kt:77
+
+RepositoryCommonsMaintenanceTest > oldLeaseCannotProvideHealthForNewPolicyOrCandidate FAILED
+    com.easysavevideo.commons.CommonsFailure at RepositoryCommonsMaintenanceTest.kt:139
+
+RepositoryCommonsMaintenanceTest > expiredActiveLeaseIsFencedWithoutNotificationThreadTiming FAILED
+    com.easysavevideo.commons.CommonsFailure at RepositoryCommonsMaintenanceTest.kt:86
+
+RepositorySecurityTest > inProcessObservationIsMonotonicAndNegativeClockFailsClosed FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > repositoryDisableDominatesHealthyCandidateRollbackAndLkg FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > revokedPackageKeyCannotReenterThroughNewPackageOrRollbackGrant FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > eachPolicyWriteCancellationFailsClosedBeforeAndAfterRestart FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > corruptPolicySignatureCannotBeHiddenByRecomputedStateChecksum FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > floorNeverDecreasesAndRejectsNewUnsafePackagesWithoutAdvancingPackageHighWater FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > concurrentPolicyAndPackageMutationsSerializeAndLatestRevocationWins FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > stableRollbackRequiresExactSignedTargetAndRetainsBothVersionAnchors FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > policyCancellationBeforeTransactionLeavesOldStablePolicyUnchanged FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > firstPolicyPersistsIndependentlyAndNeverMakesBundledManagedFallback FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > policyVersionCannotReplayOrEquivocateAndPackageVersionIsIndependent FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > grantForSameVersionDifferentEnvelopeCannotAuthorizeRollback FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > firstPackageKillSwitchCannotRollbackToBundled FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > stablePackageDisableCannotRollbackToOldEnabledOrBundledWithOrWithoutGrant FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > newerPolicyMayWithdrawRollbackGrantButNeverItsSecurityRestrictions FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > boundedUpdateRuntimeCanInstallExplicitPolicyKindFromMemoryOnly FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > persistedClockLowerBoundSurvivesRestartAndDoesNotPermitMutationBehindIt FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > expiredTargetRemainsDisabledEvenWithValidGrant FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > policyChangeRevokesExistingLeaseAndFencesHealthPromotion FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > floorAndRevocationAlwaysOverrideValidTargetGrant FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > revokedVersionPersistsAndCannotDisappearFromHigherPolicy FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > policyUpdateAfterRestartCannotMakeRecoveredPendingCandidateUsable FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > eachPolicyWriteFaultFailsClosedBeforeAndAfterRestart FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > rejectedCandidateDoesNotSilentlyActivateUnsignedBundledFallback FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > legacyStateFormatFailsClosedWithoutMigrationOrReset FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > rejectedCandidateLkgNeedsGrantAndRevocationOverridesGrant FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+RepositorySecurityTest > policyExpiryFailsClosedAndNewerValidPolicyCanRecoverWithoutReset FAILED
+    java.lang.AssertionError at RepositorySecurityTest.kt:30
+
+247 tests completed, 82 failed
+
+> Task :commons-provider:test FAILED
+> Task :core-domain:compileTestKotlin
+> Task :core-domain:compileTestJava NO-SOURCE
+> Task :core-domain:processTestResources NO-SOURCE
+> Task :core-domain:testClasses UP-TO-DATE
+> Task :core-domain:test
+> Task :core-model:compileTestKotlin NO-SOURCE
+> Task :core-model:compileTestJava NO-SOURCE
+> Task :core-model:processTestResources NO-SOURCE
+> Task :core-model:testClasses UP-TO-DATE
+> Task :core-model:test NO-SOURCE
+> Task :app:compileDebugKotlin
+> Task :discovery:compileTestKotlin
+> Task :discovery:compileTestJava NO-SOURCE
+> Task :discovery:processTestResources NO-SOURCE
+> Task :discovery:testClasses UP-TO-DATE
+> Task :discovery:test
+> Task :hls:compileTestKotlin
+> Task :hls:compileTestJava NO-SOURCE
+> Task :hls:processTestResources NO-SOURCE
+> Task :hls:testClasses UP-TO-DATE
+> Task :hls:test
+> Task :library:compileTestKotlin
+> Task :library:compileTestJava NO-SOURCE
+> Task :library:processTestResources NO-SOURCE
+> Task :library:testClasses UP-TO-DATE
+> Task :library:test
+> Task :recording:compileTestKotlin
+> Task :recording:compileTestJava NO-SOURCE
+> Task :recording:processTestResources NO-SOURCE
+> Task :recording:testClasses UP-TO-DATE
+> Task :recording:test
+
+> Task :app:compileDebugKotlin
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:455:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:460:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:462:15 'fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)} passing
+      in a {@link RequestMultiplePermissions} object for the {@link ActivityResultContract} and
+      handling the result in the {@link ActivityResultCallback#onActivityResult(Object) callback}.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidLocalVerificationRenderer.kt:36:68 'var databaseEnabled: Boolean' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/editor/engine/Media3EditorEngine.kt:85:93 'constructor(): Mp4Extractor' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/editor/verification/AndroidEditOutputVerifier.kt:263:85 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/recording/AndroidRecordingSession.kt:739:37 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:382:65 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:484:69 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:672:41 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/storage/OwnedFileStreams.kt:24:19 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'Int?'.
+
+> Task :save:compileTestKotlin
+> Task :save:compileTestJava NO-SOURCE
+> Task :save:processTestResources NO-SOURCE
+> Task :save:testClasses UP-TO-DATE
+> Task :save:test
+> Task :app:compileDebugJavaWithJavac
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:processDebugJavaRes
+> Task :searxng-provider:compileTestKotlin
+> Task :searxng-provider:compileTestJava NO-SOURCE
+> Task :searxng-provider:processTestResources NO-SOURCE
+> Task :searxng-provider:testClasses UP-TO-DATE
+> Task :searxng-provider:test
+> Task :ui-theme:compileTestKotlin
+> Task :ui-theme:compileTestJava NO-SOURCE
+> Task :ui-theme:processTestResources NO-SOURCE
+> Task :ui-theme:testClasses UP-TO-DATE
+> Task :ui-theme:test
+
+> Task :verification-client:compileTestKotlin
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/verification-client/src/test/kotlin/com/easysavevideo/verification/VerificationFixtureHarness.kt:91:38 'constructor(p0: String!): URL' is deprecated. Deprecated in Java.
+
+> Task :verification-client:compileTestJava NO-SOURCE
+> Task :verification-client:processTestResources NO-SOURCE
+> Task :verification-client:testClasses UP-TO-DATE
+> Task :verification-client:test
+> Task :verification-local:compileTestKotlin
+> Task :verification-local:compileTestJava NO-SOURCE
+> Task :verification-local:processTestResources NO-SOURCE
+> Task :verification-local:testClasses UP-TO-DATE
+> Task :verification-local:test
+> Task :app:preReleaseBuild
+> Task :app:generateReleaseBuildConfig
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:processReleaseNavigationResources
+> Task :app:parseReleaseLocalResources
+> Task :app:generateReleaseRFile
+
+> Task :app:compileDebugUnitTestKotlin
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/test/kotlin/com/easysavevideo/app/storage/SearxngConfigurationStoreTest.kt:18:83 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'File?'.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/test/kotlin/com/easysavevideo/app/storage/SearxngConfigurationStoreTest.kt:21:44 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'File?'.
+
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+
+> Task :app:testDebugUnitTest
+
+SearxngConfigurationStoreTest > directoryOrSymlinkTargetIsNeverReadAsConfigurationOrReplaced FAILED
+    java.nio.file.FileSystemException at SearxngConfigurationStoreTest.kt:46
+
+EditArtifactFilesTest > symlinksAndTraversalNeverAdmitted FAILED
+    java.nio.file.FileSystemException at EditArtifactFilesTest.kt:60
+
+OrdinaryMediaFilesTest > symbolicMediaAndDirectoryLinksAreNeverFollowed FAILED
+    java.nio.file.FileSystemException at OrdinaryMediaFilesTest.kt:49
+
+RecordedSegmentFilesTest > unconfirmedHelperReadClosePinsFileUntilProcessRecovery FAILED
+    java.io.IOException at RecordedSegmentFilesTest.kt:54
+
+RecordedSegmentFilesTest > failedDirectorySyncDoesNotPretendCleanupCompleted FAILED
+    java.io.IOException at RecordedSegmentFilesTest.kt:44
+
+RecordedSegmentFilesTest > privateRandomIdentityAndExactHashSurviveFreshOwner FAILED
+    java.io.IOException at RecordedSegmentFilesTest.kt:12
+
+RecordedSegmentFilesTest > symlinkAndTraversalNeverTouchOutsideFiles FAILED
+    java.nio.file.FileSystemException at RecordedSegmentFilesTest.kt:38
+
+RecordedSegmentFilesTest > inodeReplacementWithSameBytesNeverPassesOrDeletesReplacement FAILED
+    java.io.IOException at RecordedSegmentFilesTest.kt:19
+
+RecordedSegmentFilesTest > unknownCrashIdentityNeverAuthorizesDeletion FAILED
+    java.io.IOException at RecordedSegmentFilesTest.kt:33
+
+RecordedSegmentFilesTest > appendedTruncatedAndMutatedRawIsRetained FAILED
+    java.io.IOException at RecordedSegmentFilesTest.kt:26
+
+PrivateCommitProtocolTest > digestAndIndexAreIndependentlyRechecked FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:117
+
+PrivateCommitProtocolTest > previewRejectsStagingProvisionalAndMismatchedVisibleReceipt FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:270
+
+PrivateCommitProtocolTest > previewRejectsChangedLengthSymlinkAndDiscardedOwnership FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:289
+
+PrivateCommitProtocolTest > lowSpacePreflightPreservesDataAndNeverCreatesCommitIntent FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:207
+
+PrivateCommitProtocolTest > directoryLeaseRejectsUnknownSymlinkWithoutTouchingTarget FAILED
+    java.nio.file.FileSystemException at PrivateCommitProtocolTest.kt:198
+
+PrivateCommitProtocolTest > restartCrashWindowsReuseOnlyTheOwnedEmptyReplacement FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:246
+
+PrivateCommitProtocolTest > neverOverwritesPreexistingFinalOrDeletesItAfterFailure FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:88
+
+PrivateCommitProtocolTest > forgedOwnershipAndSymlinkCannotDeleteUnrelatedFiles FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:129
+
+PrivateCommitProtocolTest > recoveryVerifierCanReadPromotedArtifactButWriterCannot FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:177
+
+PrivateCommitProtocolTest > restartUsesNewInodeAndNeverAppendsOldBytes FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:155
+
+PrivateCommitProtocolTest > operationByteBudgetIsEnforcedBeforeCommit FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:222
+
+PrivateCommitProtocolTest > renameFailurePreservesIntentAndRecoversOnSameFilesystemWithoutFallback FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:105
+
+PrivateCommitProtocolTest > mismatchedIndexIsNeverAcceptedOrSilentlyReplaced FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:232
+
+PrivateCommitProtocolTest > truncatedStagingCannotCreateIntentOrIndex FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:167
+
+PrivateCommitProtocolTest > prepareCrashIsIdempotentAndUsesRandomOwnedNames FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:76
+
+PrivateCommitProtocolTest > streamCleanupPreservesUnknownAndSymlinkedFiles FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:42
+
+PrivateCommitProtocolTest > streamOutputMovesWithinOwnedNamespaceAndLeavesOriginalContent FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:27
+
+PrivateCommitProtocolTest > everyCommitCrashWindowReconcilesOnceWithoutDuplicateMedia FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:56
+
+PrivateCommitProtocolTest > cancellationBeforeIntentNeverPublishesAndOwnedStagingCanBeCleaned FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:142
+
+PrivateCommitProtocolTest > restartAndCleanupPreserveUnknownNonemptyReplacement FAILED
+    java.nio.file.AccessDeniedException at PrivateCommitProtocolTest.kt:258
+
+LocalHlsAddressTest > digestAndIdentityRejectChanges FAILED
+    java.io.IOException at LocalHlsAddressTest.kt:87
+
+LocalHlsAddressTest > rejectsDotSegmentsAcrossDirectorySymlinks FAILED
+    java.nio.file.FileSystemException at LocalHlsAddressTest.kt:78
+
+LocalHlsAddressTest > fileGateRejectsOutsideAndSymlink FAILED
+    java.nio.file.FileSystemException at LocalHlsAddressTest.kt:66
+
+1206 tests completed, 33 failed
+
+> Task :app:testDebugUnitTest FAILED
+> Task :app:compileReleaseKotlin
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:455:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:460:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt:462:15 'fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)} passing
+      in a {@link RequestMultiplePermissions} object for the {@link ActivityResultContract} and
+      handling the result in the {@link ActivityResultCallback#onActivityResult(Object) callback}.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidLocalVerificationRenderer.kt:36:68 'var databaseEnabled: Boolean' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/editor/engine/Media3EditorEngine.kt:85:93 'constructor(): Mp4Extractor' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/editor/verification/AndroidEditOutputVerifier.kt:263:85 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/recording/AndroidRecordingSession.kt:739:37 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:382:65 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:484:69 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt:672:41 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/main/kotlin/com/easysavevideo/app/storage/OwnedFileStreams.kt:24:19 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'Int?'.
+
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+[Incubating] Problems report is available at: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/build/reports/problems/problems-report.html
+Execution failed for task ':commons-provider:test'.
+> There were failing tests. See the report at: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/commons-provider/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':app:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 2m 3s
+81 actionable tasks: 81 executed

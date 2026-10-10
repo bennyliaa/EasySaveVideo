@@ -78,7 +78,20 @@ class FileSearxngConfigurationStore(private val file: File) : SearxngConfigurati
 
     private fun loadLocked(): SearxngConfigurationRead {
         val attributes = try { Files.readAttributes(file.toPath(), BasicFileAttributes::class.java, LinkOption.NOFOLLOW_LINKS) }
-        catch (_: NoSuchFileException) { return SearxngConfigurationRead.Missing }
+        catch (_: NoSuchFileException) {
+            // Windows reports ENOENT for a child of a regular-file ancestor. Missing is only
+            // established after the nearest existing ancestor is a real directory.
+            var ancestor=file.absoluteFile.parentFile
+            while(ancestor!=null) {
+                try {
+                    val parent=Files.readAttributes(ancestor.toPath(),BasicFileAttributes::class.java,LinkOption.NOFOLLOW_LINKS)
+                    if(!parent.isDirectory || parent.isSymbolicLink) return SearxngConfigurationRead.Unavailable
+                    return SearxngConfigurationRead.Missing
+                } catch(_:NoSuchFileException) {ancestor=ancestor.parentFile}
+                catch(_:Exception) {return SearxngConfigurationRead.Unavailable}
+            }
+            return SearxngConfigurationRead.Unavailable
+        }
         catch (_: Exception) { return SearxngConfigurationRead.Unavailable }
         if (!attributes.isRegularFile || attributes.size() !in 1..SearxngConfigurationCodec.MAX_BYTES.toLong())
             return SearxngConfigurationRead.Malformed

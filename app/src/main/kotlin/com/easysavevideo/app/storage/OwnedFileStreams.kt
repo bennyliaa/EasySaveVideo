@@ -17,12 +17,16 @@ internal class OwnedFileStreamRelease(
     private val onUnconfirmed: () -> Nothing,
 ) {
     private var released = false
+    private val depth = ThreadLocal.withInitial { 0 }
 
     fun close(closeChannel: () -> Unit, closeStream: () -> Unit, descriptorClosed: () -> Boolean) {
+        val priorDepth=depth.get()
+        depth.set(priorDepth+1)
         try {
             closeChannel()
             closeStream()
         } finally {
+            if(priorDepth==0) depth.remove() else depth.set(priorDepth)
             synchronized(ownershipLock) {
                 val confirmed = try { descriptorClosed() } catch (_: IOException) { false }
                 if (confirmed && !released) {
@@ -31,7 +35,10 @@ internal class OwnedFileStreamRelease(
                 }
             }
         }
-        if (!synchronized(ownershipLock) { released }) onUnconfirmed()
+        // Windows descriptor.closeAll invokes attached stream.close before closing its native
+        // handle. That nested callback must return so the outer close can establish FD evidence.
+        // It neither publishes release nor stands in for an outer successful close.
+        if (priorDepth==0 && !synchronized(ownershipLock) { released }) onUnconfirmed()
     }
 }
 

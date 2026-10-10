@@ -1,0 +1,4 @@
+regular=true symbolic=false fileKeyPresent=false
+outputValidBefore=true
+outputValidAfter=false
+inputValidAfter=false

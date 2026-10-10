@@ -1,0 +1,11 @@
+Compiled from "ThemeProvider.kt"
+public interface dev.skinkit.contract.ThemeProvider {
+  public abstract dev.skinkit.contract.ThemeSnapshotInfo getSnapshot();
+  public abstract dev.skinkit.contract.ColorValue getColor(dev.skinkit.contract.ColorToken);
+  public abstract dev.skinkit.contract.TypographyValue getTypography(dev.skinkit.contract.TypographyToken);
+  public abstract dev.skinkit.contract.DimensionValue getDimension(dev.skinkit.contract.DimensionToken);
+  public abstract dev.skinkit.contract.DrawableValue getDrawable(dev.skinkit.contract.DrawableToken);
+  public abstract dev.skinkit.contract.IconValue getIcon(dev.skinkit.contract.IconToken);
+  public abstract dev.skinkit.contract.AnimationValue getAnimation(dev.skinkit.contract.AnimationToken);
+  public abstract <S extends dev.skinkit.contract.ComponentStyle> S getComponentStyle(dev.skinkit.contract.ComponentToken<S>);
+}
