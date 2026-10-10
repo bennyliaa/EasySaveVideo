@@ -1,0 +1,55 @@
+{
+  "mode": "OFFLINE_DRY_RUN_ONLY",
+  "enabled": false,
+  "production_catalogue": [],
+  "strategy_source_set": "verification-local/src/test only; absent from APK",
+  "future_pages": {
+    "count": 4,
+    "targets": [],
+    "selection": "Select four current canonical Commons File pages separately before any future network authorization: two explicit video declarations, one audio-WebM negative, one image/poster-only negative. No URLs were chosen or fetched."
+  },
+  "limits": {
+    "concurrency": 1,
+    "minimum_interval_millis": 5000,
+    "total_requests_including_robots_and_any_retries": 12,
+    "request_timeout_millis": 20000,
+    "decompressed_html_max_bytes": 2097152,
+    "redirects": 0,
+    "automatic_retries": 0
+  },
+  "network": {
+    "page_origin": "https://commons.wikimedia.org:443",
+    "page_path_prefix": "/wiki/File:",
+    "query_allowed": false,
+    "fragment_allowed": false,
+    "cookies": false,
+    "javascript": false,
+    "webview": false,
+    "chromium": false,
+    "subresource_fetch": false,
+    "media_download": false,
+    "thumbnail_download": false
+  },
+  "identity": {
+    "configuration_keys": [
+      "esv.commons.contact",
+      "ESV_COMMONS_CONTACT"
+    ],
+    "format": "existing CommonsClientConfig EasySaveVideo/<applicationVersion> (<approvedPublicContact>)",
+    "local_status": "CONTACT_REQUIRED",
+    "values_printed_or_saved": false,
+    "browser_impersonation": false
+  },
+  "preflight": "Future separately authorized execution must freshly review source-specific robots directives for the truthful UA, access terms, global rate limits and actual service state before page traffic. Fetch robots counts towards 12. Cached API access does not authorize HTML crawling. Current generic B identity header/262144 cap/identity encoding are not approved Commons live transport. Before live use align truthful identity and bounded gzip decoded+wire accounting with reviewed policy; no transport changes in this checkpoint.",
+  "stop_on": [
+    "403 or other access refusal",
+    "429 (honor Retry-After, no automatic retry)",
+    "503 or service error",
+    "captcha/challenge",
+    "cancellation",
+    "deadline",
+    "request or decoded-body budget exhaustion",
+    "redirect"
+  ],
+  "evidence": "Static HTML video-page declaration only; playback/save rights/media extraction remain unverified; all fixtures authored locally, not downloaded captures."
+}

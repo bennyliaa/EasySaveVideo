@@ -1,0 +1,58 @@
+[
+  {
+    "file": "ambiguous.html",
+    "bytes": 527,
+    "sha256": "9fd1d3b0da031baa9f1d33b42fc4d54ada3326d7ecdb78f7777eaec6a7f9ea81",
+    "label": "NO_CONFIRMED_VIDEO_PAGE_EVIDENCE",
+    "provenance": "locally authored synthetic fixture; no remote capture"
+  },
+  {
+    "file": "audio-webm.html",
+    "bytes": 182,
+    "sha256": "e9c3abfd1035bec3c867a928f48c60f3e49d906bf07835c1beef46d0da3cb0d5",
+    "label": "NO_CONFIRMED_VIDEO_PAGE_EVIDENCE",
+    "provenance": "locally authored synthetic fixture; no remote capture"
+  },
+  {
+    "file": "hidden.html",
+    "bytes": 289,
+    "sha256": "9df4195681bf37883f6b1564acf5af27db2dcfa22c5f6264968e6a787eb0895e",
+    "label": "NO_CONFIRMED_VIDEO_PAGE_EVIDENCE",
+    "provenance": "locally authored synthetic fixture; no remote capture"
+  },
+  {
+    "file": "no-video.html",
+    "bytes": 155,
+    "sha256": "8850a7e2e2a691d7d5a5a813eb8e74e9a99e482de5eccd208446c37470ae54cd",
+    "label": "NO_CONFIRMED_VIDEO_PAGE_EVIDENCE",
+    "provenance": "locally authored synthetic fixture; no remote capture"
+  },
+  {
+    "file": "poster-only.html",
+    "bytes": 120,
+    "sha256": "5d9d493bb04ddf7f67aa58f14c2ba8cd5801109107698582df5fb5c8fdb20a2e",
+    "label": "NO_CONFIRMED_VIDEO_PAGE_EVIDENCE",
+    "provenance": "locally authored synthetic fixture; no remote capture"
+  },
+  {
+    "file": "revised.html",
+    "bytes": 335,
+    "sha256": "e2a282279b351af7f6e9ce5138f2f5322f8152af6eed1c3f6963a7a47be04fe4",
+    "label": "HTML_VIDEO_DECLARATION",
+    "provenance": "locally authored synthetic fixture; no remote capture"
+  },
+  {
+    "file": "script-only.html",
+    "bytes": 99,
+    "sha256": "f448160d993f06b995b28c9520f048e59935aa385fa8ad817eb37b14ffbbf147",
+    "label": "NO_CONFIRMED_VIDEO_PAGE_EVIDENCE",
+    "provenance": "locally authored synthetic fixture; no remote capture"
+  },
+  {
+    "file": "video.html",
+    "bytes": 282,
+    "sha256": "a5ed06f40d77c8324a70b15e0acb5a5a7d4f866e71f80fd885f0f7c992c2f746",
+    "label": "HTML_VIDEO_DECLARATION",
+    "provenance": "locally authored synthetic fixture; no remote capture"
+  }
+]
