@@ -1,0 +1,10 @@
+{
+  "same_100_packaged_hashes_and_labels": "PASS",
+  "media_binary_packaged": false,
+  "device_execution": "NOT_RUN_SIGNATURE_BLOCKED",
+  "APK_sha256": {
+    "app/build/outputs/apk/debug/app-debug.apk": "7b72ba554d12a4cf3c72bef9ab0be008c164e3fb936b7dd077e99cbecd7d5a71",
+    "app\\build\\outputs\\apk\\androidTest\\debug\\app-debug-androidTest.apk": "f5a9395d227da9b340ed814b8dc789ebe6e5d85103161ffb05e44e43886dbe4d"
+  },
+  "original_source_commit": "11433acdb88937a7cb0b52c5fa4ef172d7f5748f"
+}

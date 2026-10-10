@@ -1,0 +1,188 @@
+
+> Configure project :app
+WARNING: The option setting 'android.aapt2FromMavenOverride=D:\CodexProjects\EasySaveVideo\esv-source-12f97d43-20261009\artifacts\local-windows-20261009\aapt2-official\aapt2.exe' is experimental.
+Add android.sync.suppressAgpWarnings=UNSUPPORTED_PROJECT_OPTION_USE to the gradle.properties file to suppress this warning.
+
+> Task :app:verifyRuntimeAdmission
+License admission: exact 77 reviewed runtime artifacts verified for both variants
+
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :core-domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:compileKotlin UP-TO-DATE
+> Task :core-model:compileJava NO-SOURCE
+> Task :core-domain:compileKotlin UP-TO-DATE
+> Task :core-domain:compileJava NO-SOURCE
+> Task :core-domain:processResources NO-SOURCE
+> Task :core-domain:classes UP-TO-DATE
+> Task :core-domain:jar UP-TO-DATE
+> Task :commons-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:compileKotlin UP-TO-DATE
+> Task :discovery:compileJava NO-SOURCE
+> Task :commons-provider:compileKotlin UP-TO-DATE
+> Task :commons-provider:compileJava NO-SOURCE
+> Task :commons-provider:processResources NO-SOURCE
+> Task :commons-provider:classes UP-TO-DATE
+> Task :commons-provider:jar UP-TO-DATE
+> Task :searxng-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :searxng-provider:compileKotlin UP-TO-DATE
+> Task :searxng-provider:compileJava NO-SOURCE
+> Task :searxng-provider:processResources NO-SOURCE
+> Task :searxng-provider:classes UP-TO-DATE
+> Task :searxng-provider:jar UP-TO-DATE
+> Task :verification-client:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-client:compileKotlin UP-TO-DATE
+> Task :verification-client:compileJava NO-SOURCE
+> Task :verification-client:processResources NO-SOURCE
+> Task :verification-client:classes UP-TO-DATE
+> Task :verification-client:jar UP-TO-DATE
+> Task :verification-local:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-local:compileKotlin UP-TO-DATE
+> Task :verification-local:compileJava NO-SOURCE
+> Task :verification-local:processResources NO-SOURCE
+> Task :verification-local:classes UP-TO-DATE
+> Task :verification-local:jar UP-TO-DATE
+> Task :discovery:processResources NO-SOURCE
+> Task :discovery:classes UP-TO-DATE
+> Task :discovery:jar UP-TO-DATE
+> Task :recording:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :recording:compileKotlin UP-TO-DATE
+> Task :recording:compileJava NO-SOURCE
+> Task :save:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :save:compileKotlin UP-TO-DATE
+> Task :save:compileJava NO-SOURCE
+> Task :save:processResources NO-SOURCE
+> Task :save:classes UP-TO-DATE
+> Task :save:jar UP-TO-DATE
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar UP-TO-DATE
+> Task :recording:processResources NO-SOURCE
+> Task :recording:classes UP-TO-DATE
+> Task :recording:jar UP-TO-DATE
+> Task :library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :library:compileKotlin UP-TO-DATE
+> Task :library:compileJava NO-SOURCE
+> Task :library:processResources NO-SOURCE
+> Task :library:classes UP-TO-DATE
+> Task :library:jar UP-TO-DATE
+> Task :hls:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :hls:compileKotlin UP-TO-DATE
+> Task :hls:compileJava NO-SOURCE
+> Task :hls:processResources NO-SOURCE
+> Task :hls:classes UP-TO-DATE
+> Task :hls:jar UP-TO-DATE
+> Task :ui-theme:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :ui-theme:compileKotlin UP-TO-DATE
+> Task :ui-theme:compileJava NO-SOURCE
+> Task :ui-theme:processResources NO-SOURCE
+> Task :ui-theme:classes UP-TO-DATE
+> Task :ui-theme:jar UP-TO-DATE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:packageDebugResources
+> Task :app:processDebugNavigationResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:generateDebugRFile UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:generateDebugGlobalSynthetics UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:compileDebugNavigationResources
+> Task :app:compileDebugKotlin
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeDebugJniLibFolders
+> Task :app:mergeDebugResources
+> Task :app:mergeDebugNativeLibs
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so. Run with --info option to learn more.
+
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:mergeDebugAndroidTestManifest
+> Task :app:processDebugAndroidTestManifest
+> Task :app:generateDebugAndroidTestBuildConfig
+> Task :app:generateDebugAndroidTestResources
+> Task :app:packageDebugAndroidTestResources
+> Task :app:processDebugAndroidTestNavigationResources
+> Task :app:parseDebugAndroidTestLocalResources
+> Task :app:generateDebugAndroidTestRFile
+> Task :app:javaPreCompileDebugAndroidTest
+> Task :app:generateDebugAndroidTestAssets UP-TO-DATE
+> Task :app:processDebugResources
+> Task :app:mergeDebugAndroidTestAssets
+> Task :app:dexBuilderDebug
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:mergeProjectDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+> Task :app:compileDebugAndroidTestKotlin
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/androidTest/kotlin/com/easysavevideo/app/validation/OwnedVerificationInstrumentation.kt:97:41 The corresponding parameter in the supertype 'VerificationEngine' is named 'request'. This may cause problems when calling this function with named arguments.
+w: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/app/src/androidTest/kotlin/com/easysavevideo/app/validation/OwnedVerificationInstrumentation.kt:97:57 The corresponding parameter in the supertype 'VerificationEngine' is named 'operation'. This may cause problems when calling this function with named arguments.
+
+> Task :app:compileDebugAndroidTestJavaWithJavac
+> Task :app:compressDebugAndroidTestAssets
+> Task :app:generateDebugAndroidTestGlobalSynthetics
+> Task :app:processDebugAndroidTestJavaRes
+> Task :app:checkDebugAndroidTestDuplicateClasses
+> Task :app:desugarDebugAndroidTestFileDependencies
+> Task :app:mergeDebugAndroidTestJavaResource
+> Task :app:mergeExtDexDebugAndroidTest
+> Task :app:checkDebugAndroidTestAarMetadata
+> Task :app:mergeLibDexDebugAndroidTest
+> Task :app:mapDebugAndroidTestSourceSetPaths
+> Task :app:compileDebugAndroidTestNavigationResources
+> Task :app:mergeDebugAndroidTestResources
+> Task :app:mergeDebugAndroidTestJniLibFolders
+> Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningDebugAndroidTest
+> Task :app:writeDebugAndroidTestSigningConfigVersions
+> Task :app:preReleaseBuild
+> Task :app:generateReleaseBuildConfig
+> Task :app:generateReleaseResources UP-TO-DATE
+> Task :app:packageReleaseResources
+> Task :app:processReleaseNavigationResources UP-TO-DATE
+> Task :app:parseReleaseLocalResources UP-TO-DATE
+> Task :app:generateReleaseRFile UP-TO-DATE
+> Task :app:processDebugAndroidTestResources
+> Task :app:dexBuilderDebugAndroidTest
+> Task :app:mergeProjectDexDebugAndroidTest
+> Task :app:packageDebugAndroidTest
+> Task :app:createDebugAndroidTestApkListingFileRedirect
+> Task :app:assembleDebugAndroidTest
+> Task :app:compileReleaseKotlin
+
+[Incubating] Problems report is available at: file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 37s
+103 actionable tasks: 57 executed, 46 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.0/userguide/configuration_cache_enabling.html

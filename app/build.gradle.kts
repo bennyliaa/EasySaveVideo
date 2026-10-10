@@ -12,8 +12,9 @@ android {
         applicationId = "com.easysavevideo.app"
         minSdk = 31
         targetSdk = 36
-        versionCode = 2
+        versionCode = 3
         versionName = "0.3.2-commons-dev"
+        testInstrumentationRunner = "com.easysavevideo.app.validation.OwnedVerificationInstrumentation"
         // Explicit build identity only. A channel does not select billing or authorize release.
         val distributionChannel = providers.gradleProperty("esv.distribution.channel").orElse("unconfigured").get()
         require(distributionChannel in setOf("unconfigured", "google_play", "huawei", "xiaomi", "oppo", "vivo", "tencent_myapp")) {
@@ -36,6 +37,10 @@ android {
     lint { abortOnError = true; checkReleaseBuilds = true }
 }
 dependencies {
+    debugImplementation("com.squareup.okhttp3:okhttp:4.12.0") {
+        // Already reviewed runtime bytes; only Debug adapter compilation needs direct visibility.
+        exclude(group = "org.jetbrains.kotlin")
+    }
     implementation(project(":core-model"))
     implementation(project(":core-domain"))
     implementation(project(":discovery"))

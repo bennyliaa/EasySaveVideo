@@ -1,0 +1,36 @@
+{
+  "scope": "emulator-5556 only; DeviceA12 Android12 API31",
+  "installed_version_code": 2,
+  "prepared_version_code": 3,
+  "installed_certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+  "local_debug_certificate_sha256": "5e841a04968f3f790f6996ca5e286d8c2734338542486909f9a136717dde808f",
+  "same_signature_gate": "BLOCKED",
+  "app_or_test_apk_installed": false,
+  "instrumentation_executed": false,
+  "adb_reverse_created": false,
+  "emulator_kept_running": true,
+  "no_wipe_uninstall_clear_permission_grant_media_read_recording_or_microphone": true,
+  "original_installed_apk_sha256": "003cd099b0999293c3ddfd318dcd8d1edf755973352e794cbf9fa15ae849aa03",
+  "app_uid": 10146,
+  "user_state_fingerprints": {
+    "prefs": {
+      "same": true,
+      "before_sha256": "df3d88e76d495d8a0743fb9e6f12777b597747ee6c9681dabd6b4f9c3587f14d",
+      "after_sha256": "df3d88e76d495d8a0743fb9e6f12777b597747ee6c9681dabd6b4f9c3587f14d"
+    },
+    "db": {
+      "same": true,
+      "before_sha256": "ad78ae7dce076dde9c343ef2cfeac3287ee1015febf75c85836a69019e551b16",
+      "after_sha256": "ad78ae7dce076dde9c343ef2cfeac3287ee1015febf75c85836a69019e551b16"
+    }
+  },
+  "snapshot_policy": "cold boot -no-snapshot-load -no-snapshot-save; no wipe",
+  "temporary_owned_server": "STOPPED; default zero admission restored and verified HTTP200 UNSUPPORTED",
+  "device_B_OkHttp_Jsoup_WebView": "NOT_RUN",
+  "device_A_and_B_fallback": "NOT_RUN",
+  "device_lifecycle_resource_tests": "NOT_RUN",
+  "emulator_CPU_RAM_network_time": "NOT_MEASURED",
+  "phone_performance_energy": "NOT_MEASURED",
+  "required_next_input": "original signing key or APK versionCode>2 signed by installed certificate; do not transmit password in chat",
+  "port_enumeration_diagnostic": "Get-NetTCPConnection denied in restricted environment; not retried or replaced"
+}

@@ -25,6 +25,7 @@ class AndroidLocalVerificationRenderer(context:Context):LocalDynamicRenderer {
         val done=CountDownLatch(1);val cleaned=CountDownLatch(1)
         val view=AtomicReference<WebView?>();val value=AtomicReference<ByteArray?>()
         val completedScript=AtomicBoolean(false);val stopped=AtomicBoolean(false)
+        val observationStarted=AtomicBoolean(false)
         fun current()=!stopped.get() && !operation.cancellation.isCancelled &&
             System.nanoTime()/1_000_000<request.deadlineMonotonicMillis
         main.post {
@@ -65,15 +66,26 @@ class AndroidLocalVerificationRenderer(context:Context):LocalDynamicRenderer {
                     }
                     override fun onPageFinished(w:WebView,url:String) {
                         if(!current()) {done.countDown();return}
-                        // Fixed compiled DOM observation, never remotely supplied evaluation code.
-                        w.evaluateJavascript("(function(){var s=document.documentElement.outerHTML;return s.length<=65536?s:null})()") { encoded ->
-                            completedScript.set(true)
-                            if(current() && encoded.length<=400000) {
+                        // One bounded observation series; timers/selectors are compiled, not supplied by pages.
+                        if(observationStarted.getAndSet(true)) return
+                        val observationEnd=minOf(request.deadlineMonotonicMillis-100,System.nanoTime()/1_000_000+800)
+                        var attempts=0
+                        fun observe() {
+                            if(!current()) {done.countDown();return}
+                            attempts++
+                            completedScript.set(false)
+                            w.evaluateJavascript("(function(){var s=document.documentElement.outerHTML;return s.length<=65536?s:null})()") { encoded ->
+                                completedScript.set(true)
+                                if(!current() || encoded.length>400000) {done.countDown();return@evaluateJavascript}
                                 val text=try {JSONTokener(encoded).nextValue() as? String} catch(_:Exception){null}
-                                text?.toByteArray(Charsets.UTF_8)?.takeIf {it.size<=65536}?.let(value::set)
+                                val bytes=text?.toByteArray(Charsets.UTF_8)?.takeIf {it.size<=65536}
+                                if(bytes==null) {done.countDown();return@evaluateJavascript}
+                                if(text?.contains("<video",ignoreCase=true)==true || attempts>=16 || System.nanoTime()/1_000_000>=observationEnd) {
+                                    value.set(bytes);done.countDown()
+                                } else main.postDelayed({observe()},50)
                             }
-                            done.countDown()
                         }
+                        observe()
                     }
                 }
                 web.loadDataWithBaseURL("https://esv-verification.invalid/",html.toString(Charsets.UTF_8),"text/html","utf-8",null)

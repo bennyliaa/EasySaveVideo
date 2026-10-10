@@ -1,0 +1,4 @@
+    userId=10146
+    versionCode=2 minSdk=31 targetSdk=36
+    firstInstallTime=2026-10-07 23:06:31
+    lastUpdateTime=2026-10-07 23:37:43

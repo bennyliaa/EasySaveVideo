@@ -1,0 +1,34 @@
+[
+  {
+    "module": "app",
+    "scope": "new Debug tests only",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "module": "discovery",
+    "scope": "module suite",
+    "tests": 249,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "module": "verification-client",
+    "scope": "module suite",
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "module": "verification-local",
+    "scope": "module suite",
+    "tests": 24,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+]

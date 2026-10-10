@@ -1,0 +1,215 @@
+{
+  "tests": 1206,
+  "failures": 41,
+  "errors": 0,
+  "skipped": 0,
+  "failures_detail": [
+    {
+      "class": "com.easysavevideo.app.editor.storage.EditArtifactFilesTest",
+      "test": "symlinksAndTraversalNeverAdmitted",
+      "type": "java.nio.file.FileSystemException"
+    },
+    {
+      "class": "com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest",
+      "test": "symbolicMediaAndDirectoryLinksAreNeverFollowed",
+      "type": "java.nio.file.FileSystemException"
+    },
+    {
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "unconfirmedHelperReadClosePinsFileUntilProcessRecovery",
+      "type": "java.io.IOException"
+    },
+    {
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "failedDirectorySyncDoesNotPretendCleanupCompleted",
+      "type": "java.io.IOException"
+    },
+    {
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "privateRandomIdentityAndExactHashSurviveFreshOwner",
+      "type": "java.io.IOException"
+    },
+    {
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "symlinkAndTraversalNeverTouchOutsideFiles",
+      "type": "java.nio.file.FileSystemException"
+    },
+    {
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "inodeReplacementWithSameBytesNeverPassesOrDeletesReplacement",
+      "type": "java.io.IOException"
+    },
+    {
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "unknownCrashIdentityNeverAuthorizesDeletion",
+      "type": "java.io.IOException"
+    },
+    {
+      "class": "com.easysavevideo.app.recording.segments.RecordedSegmentFilesTest",
+      "test": "appendedTruncatedAndMutatedRawIsRetained",
+      "type": "java.io.IOException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "digestAndIndexAreIndependentlyRechecked",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "previewRejectsStagingProvisionalAndMismatchedVisibleReceipt",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "previewRejectsChangedLengthSymlinkAndDiscardedOwnership",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "lowSpacePreflightPreservesDataAndNeverCreatesCommitIntent",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "directoryLeaseRejectsUnknownSymlinkWithoutTouchingTarget",
+      "type": "java.nio.file.FileSystemException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "restartCrashWindowsReuseOnlyTheOwnedEmptyReplacement",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "neverOverwritesPreexistingFinalOrDeletesItAfterFailure",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "forgedOwnershipAndSymlinkCannotDeleteUnrelatedFiles",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "recoveryVerifierCanReadPromotedArtifactButWriterCannot",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "restartUsesNewInodeAndNeverAppendsOldBytes",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "operationByteBudgetIsEnforcedBeforeCommit",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "renameFailurePreservesIntentAndRecoversOnSameFilesystemWithoutFallback",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "mismatchedIndexIsNeverAcceptedOrSilentlyReplaced",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "truncatedStagingCannotCreateIntentOrIndex",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "prepareCrashIsIdempotentAndUsesRandomOwnedNames",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "streamCleanupPreservesUnknownAndSymlinkedFiles",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "streamOutputMovesWithinOwnedNamespaceAndLeavesOriginalContent",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "everyCommitCrashWindowReconcilesOnceWithoutDuplicateMedia",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "cancellationBeforeIntentNeverPublishesAndOwnedStagingCanBeCleaned",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.storage.PrivateCommitProtocolTest",
+      "test": "restartAndCleanupPreserveUnknownNonemptyReplacement",
+      "type": "java.nio.file.AccessDeniedException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.stream.LocalHlsAddressTest",
+      "test": "digestAndIdentityRejectChanges",
+      "type": "java.io.IOException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.stream.LocalHlsAddressTest",
+      "test": "rejectsDotSegmentsAcrossDirectorySymlinks",
+      "type": "java.nio.file.FileSystemException"
+    },
+    {
+      "class": "com.easysavevideo.app.save.stream.LocalHlsAddressTest",
+      "test": "fileGateRejectsOutsideAndSymlink",
+      "type": "java.nio.file.FileSystemException"
+    },
+    {
+      "class": "com.easysavevideo.app.storage.OwnedFileStreamReleaseReviewTest",
+      "test": "ordinaryReaderClosePreservesTheSourceAndAllowsAFullReopen",
+      "type": "java.lang.AssertionError"
+    },
+    {
+      "class": "com.easysavevideo.app.storage.OwnedFileStreamsTest",
+      "test": "allFourOwnersCloseWithoutPriorChannelAccess",
+      "type": "com.easysavevideo.app.storage.OwnedFileStreamsTest$Unconfirmed"
+    },
+    {
+      "class": "com.easysavevideo.app.storage.OwnedFileStreamsTest",
+      "test": "allFourOwnersReleaseAfterStreamFirstCloseWithAnExistingChannel",
+      "type": "com.easysavevideo.app.storage.OwnedFileStreamsTest$Unconfirmed"
+    },
+    {
+      "class": "com.easysavevideo.app.storage.OwnedFileStreamsTest",
+      "test": "allFourOwnersTolerateConcurrentStreamAndChannelCloseWithoutLockInversion",
+      "type": "com.easysavevideo.app.storage.OwnedFileStreamsTest$Unconfirmed"
+    },
+    {
+      "class": "com.easysavevideo.app.storage.OwnedFileStreamsTest",
+      "test": "outputAppendSemanticsAndMediaBytesArePreserved",
+      "type": "com.easysavevideo.app.storage.OwnedFileStreamsTest$Unconfirmed"
+    },
+    {
+      "class": "com.easysavevideo.app.storage.OwnedFileStreamsTest",
+      "test": "allFourOwnersTolerateConcurrentRepeatedStreamClose",
+      "type": "com.easysavevideo.app.storage.OwnedFileStreamsTest$Unconfirmed"
+    },
+    {
+      "class": "com.easysavevideo.app.storage.OwnedFileStreamsTest",
+      "test": "allFourOwnersReleaseAfterChannelFirstClose",
+      "type": "com.easysavevideo.app.storage.OwnedFileStreamsTest$Unconfirmed"
+    },
+    {
+      "class": "com.easysavevideo.app.storage.SearxngConfigurationStoreTest",
+      "test": "readFailureIsDistinctFromMissingAndNoFileIsErased",
+      "type": "java.lang.AssertionError"
+    },
+    {
+      "class": "com.easysavevideo.app.storage.SearxngConfigurationStoreTest",
+      "test": "directoryOrSymlinkTargetIsNeverReadAsConfigurationOrReplaced",
+      "type": "java.nio.file.FileSystemException"
+    }
+  ],
+  "scope": "full existing App JVM suite on Windows; failures retained; no permission escalation or security gate weakening for failing filesystem cases",
+  "suspended_vault_or_dynamic_interpreter_review_classes_present": []
+}

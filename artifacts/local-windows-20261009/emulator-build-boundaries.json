@@ -1,0 +1,8 @@
+{
+  "debug_only_adapter_and_activity_release_class_absence": "PASS",
+  "main_manifest_security_bytes_unchanged": "PASS",
+  "debug_manifest_contains_no_cleartext_or_trust_changes": "PASS",
+  "default_service_zero_admission_probe": "PASS",
+  "old_class_output_path_assumption": "FAILED; AGP9 uses built_in_kotlinc; final check uses actual compiled directories",
+  "emulator_runtime_B_and_A": "NOT_RUN_SIGNATURE_BLOCKED"
+}
