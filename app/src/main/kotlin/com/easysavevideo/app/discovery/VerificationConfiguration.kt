@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import com.easysavevideo.verification.VerificationEndpoint
 import java.security.MessageDigest
 import java.util.UUID
+import com.easysavevideo.discovery.CompiledVerificationSources
+import com.easysavevideo.discovery.VerificationSourceSelection
 
 /** Session-only consent: neither service endpoint nor acknowledgement is persisted or restored. */
 class VerificationConfiguration internal constructor(
@@ -13,6 +15,7 @@ class VerificationConfiguration internal constructor(
     val endpoint: VerificationEndpoint?,
     val dynamicAllowed: Boolean,
     val generation: String,
+    val localSources: VerificationSourceSelection = requireNotNull(CompiledVerificationSources().configure(emptySet(), false)),
 ) {
     override fun toString() = "VerificationConfiguration([redacted])"
 }
@@ -34,6 +37,7 @@ object VerificationConfigurationPolicy {
 class VerificationConfigurationController(
     private val onChanging: () -> Unit,
     private val onChanged: (VerificationConfiguration) -> Unit,
+    private val compiledSources: CompiledVerificationSources = CompiledVerificationSources(),
 ) {
     @Volatile var current = VerificationConfigurationPolicy.empty()
         private set
@@ -51,12 +55,21 @@ class VerificationConfigurationController(
         if (!isCurrent(claim) || !acknowledged || state.revision == Long.MAX_VALUE) return false
         val endpoint = VerificationConfigurationPolicy.endpoint(url) ?: return false
         return change(VerificationConfiguration(state.revision + 1, endpoint, dynamicAllowed,
-            VerificationConfigurationPolicy.digest("verification-v1|${UUID.randomUUID()}")))
+            VerificationConfigurationPolicy.digest("verification-v1|${UUID.randomUUID()}"), state.localSources))
+    }
+    val availableLocalSourceIds: Set<String> get() = compiledSources.availableIds
+    /** Session-only trusted catalogue IDs; this cannot admit an arbitrary user URL. */
+    fun configureLocalSources(claim: VerificationConfigurationClaim, ids: Set<String>, acknowledged: Boolean): Boolean {
+        if (!isCurrent(claim) || state.revision == Long.MAX_VALUE) return false
+        val selection = compiledSources.configure(ids, acknowledged) ?: return false
+        if (selection.ids == state.localSources.ids) return false
+        return change(VerificationConfiguration(state.revision + 1, state.endpoint, state.dynamicAllowed,
+            VerificationConfigurationPolicy.digest("local-source-selection-v1|${UUID.randomUUID()}"), selection))
     }
     fun disable(claim: VerificationConfigurationClaim): Boolean {
         if (!isCurrent(claim) || state.endpoint == null || state.revision == Long.MAX_VALUE) return false
         return change(VerificationConfiguration(state.revision + 1, null, false,
-            VerificationConfigurationPolicy.digest("verification-off-v1|${UUID.randomUUID()}")))
+            VerificationConfigurationPolicy.digest("verification-off-v1|${UUID.randomUUID()}"), state.localSources))
     }
     private fun change(value: VerificationConfiguration): Boolean {
         changing = true; busy = true

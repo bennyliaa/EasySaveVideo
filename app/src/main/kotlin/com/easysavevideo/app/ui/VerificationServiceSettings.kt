@@ -40,6 +40,8 @@ import com.easysavevideo.app.theme.LocalEsvVisuals
 fun VerificationServiceSettings(controller: VerificationConfigurationController) {
     val v = LocalEsvVisuals.current
     val state = controller.state
+    var localIds by remember(state.generation) { mutableStateOf(state.localSources.ids) }
+    var localAcknowledged by remember(state.generation) { mutableStateOf(false) }
     var edit by remember(controller) { mutableStateOf<VerificationConfigurationClaim?>(null) }
     LaunchedEffect(state.generation) { if (edit?.let(controller::isCurrent) == false) edit = null }
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -47,6 +49,26 @@ fun VerificationServiceSettings(controller: VerificationConfigurationController)
         EsvText(if (state.endpoint == null) "已关闭；未配置默认服务。" else "本次应用会话已启用；应用进程重启后关闭。", style = v.captionTextStyle)
         EsvText("搜索来源只给出候选。启用后，主动查找每批最多尝试验证一个候选；其余及验证不足的候选仍显示为未验证。服务不可达不影响浏览、下载或录制。", style = v.captionTextStyle)
         EsvText("当前仅完成隔离开发接口；没有已部署或通过公开站点验收的服务。网页证据不代表可播放、可下载或有保存权限，缺失时长保持未知。", style = v.captionTextStyle, color = v.colors.error)
+        EsvText("本地验证来源准入：${state.localSources.status}", style = v.captionTextStyle)
+        EsvText("只能选择应用内已批准的来源策略；不接受任意域名，不自动接纳搜索结果或跳转目标。默认没有来源准入，后备成功不作保证。", style = v.captionTextStyle)
+        if (controller.availableLocalSourceIds.isEmpty()) {
+            EsvText("尚无已批准的本地验证来源；需要先确定具体来源及访问授权。", style = v.captionTextStyle)
+        }
+        controller.availableLocalSourceIds.sorted().forEach { id ->
+            VerificationCheckbox("已批准来源：$id", id in localIds, !controller.busy) { checked ->
+                localIds = if (checked) localIds + id else localIds - id
+                localAcknowledged = false
+            }
+        }
+        if (controller.availableLocalSourceIds.isNotEmpty()) {
+            VerificationCheckbox("同意本次会话按所选来源的有限策略验证候选页面", localAcknowledged, !controller.busy) {
+                localAcknowledged = it
+            }
+            EsvButton("应用来源选择", enabled = !controller.busy && localIds != state.localSources.ids &&
+                (localIds.isEmpty() || localAcknowledged), onClick = {
+                    controller.configureLocalSources(controller.claim(), localIds, localAcknowledged)
+                })
+        }
         EsvButton("配置本次会话的验证服务", onClick = { edit = controller.claim() })
         if (state.endpoint != null) EsvButton("关闭验证并清除会话端点", onClick = { controller.disable(controller.claim()) })
     }

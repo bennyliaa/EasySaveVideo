@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.easysavevideo.app.theme.*
 import com.easysavevideo.discovery.PendingVideoCandidate
+import com.easysavevideo.discovery.SourceAdmissionStatus
 
 /** Text-only reports: no image, page, media, or metadata network request occurs in these cards. */
 @Composable
 fun PendingCandidateCards(candidates: List<PendingVideoCandidate>, columns: Int,
+    admission: Map<String, SourceAdmissionStatus> = emptyMap(),
     onVerify: (PendingVideoCandidate) -> Unit, onOpen: (PendingVideoCandidate) -> Unit) {
     val v = LocalEsvVisuals.current
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -32,7 +34,8 @@ fun PendingCandidateCards(candidates: List<PendingVideoCandidate>, columns: Int,
                     EsvText("来源：${candidate.provenance.sorted().joinToString()}", style = v.captionTextStyle)
                     candidate.sourceReported?.description?.take(320)?.let { EsvText(it, style = v.captionTextStyle) }
                     EsvText("视频、时长、许可：未核验", style = v.captionTextStyle)
-                    EsvText("本地引擎 B 尚未配置来源准入；默认拒绝。页面证据不代表可播放、下载或保存。", style = v.captionTextStyle)
+                    EsvText("本地验证须有明确来源准入；未配置或不匹配时拒绝。页面证据不代表可播放、下载或保存。", style = v.captionTextStyle)
+                    EsvText("来源准入：${admission[candidate.candidateId] ?: SourceAdmissionStatus.UNCONFIGURED}", style = v.captionTextStyle)
                     candidate.verification?.let { summary ->
                         EsvText("验证状态：${summary.outcome} · ${summary.evidence}", style = v.captionTextStyle)
                     }

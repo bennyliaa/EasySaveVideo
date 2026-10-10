@@ -46,6 +46,8 @@ data class DiscoveryUiState(
     val needsExplicitSearch: Boolean = false,
     val verificationSummary: VerificationSummary? = null,
     val verificationGeneration: Long = -1L,
+    val localSourceAdmission: SourceAdmissionStatus = SourceAdmissionStatus.UNCONFIGURED,
+    val pendingAdmission: Map<String, SourceAdmissionStatus> = emptyMap(),
 ) { override fun toString() = "DiscoveryUiState([redacted])" }
 
 class AndroidDiscoveryController(context: Context, private val errors: ErrorSink) : AutoCloseable {
@@ -257,7 +259,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         if (closed.get()) return
         sourceIntent.incrementAndGet(); filterIntentGeneration++; filterSourceChangePending = true
         coordinator?.suspendSourcesImmediately()
-        state = state.copy(page = null, results = emptyList(), pendingCandidates = emptyList(), verificationSummary = null,
+        state = state.copy(page = null, results = emptyList(), pendingCandidates = emptyList(), pendingAdmission = emptyMap(), verificationSummary = null,
             controlTarget = null, historyStatistics = null,
             notice = "正在核对来源配置；原查询不会自动发送。")
     }
@@ -540,7 +542,8 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             admittedProviderDescriptors = registry.all().map { it.descriptor }, powerScenarioId = appliedPowerScenario,
             osPower = appliedOsPower,
             sourceRevision = managementRevision, configurationIntent = appliedSourceIntent,
-            pendingCandidates = c.pendingCandidates(), verificationGeneration = c.verificationGeneration(), verificationSummary = c.verificationSummary(), needsExplicitSearch = updated?.queryAuthorized == false))
+            pendingCandidates = c.pendingCandidates(), pendingAdmission = c.pendingCandidates().associate { it.candidateId to verificationConfiguration.localSources.status(CandidateUrl(it.canonicalPageUrl)) },
+            localSourceAdmission = verificationConfiguration.localSources.status, verificationGeneration = c.verificationGeneration(), verificationSummary = c.verificationSummary(), needsExplicitSearch = updated?.queryAuthorized == false))
     }
     private fun profile(query: String, filters: SearchFilters): SearchProfile = DiscoveryPresentationPolicy.profile(
         query, Locale.getDefault().toLanguageTag(), filters, settings.repeatPolicy, demo).copy(sortOrder = sortOrder)

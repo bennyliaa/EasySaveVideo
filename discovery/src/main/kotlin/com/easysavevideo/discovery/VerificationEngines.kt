@@ -9,7 +9,7 @@ enum class EngineEvidence { NONE, HTML_VIDEO, DYNAMIC_VIDEO }
 enum class EngineVerdict { VIDEO, NON_VIDEO, UNKNOWN }
 /** Target access still requires an admitted source policy; this does not grant one. */
 class EngineNetworkConstraints(allowedOrigins: Set<String> = emptySet(), val requireTls: Boolean = true,
-    val maxRedirects: Int = 0, val maxHeaderBytes: Int = 16384) {
+    val maxRedirects: Int = 0, val maxHeaderBytes: Int = 16384, val sourceAdmissionRequired: Boolean = false) {
     val allowedOrigins: Set<String> = java.util.Collections.unmodifiableSet(LinkedHashSet(allowedOrigins))
     val downloadsAllowed: Boolean get() = false
     val cookiesAllowed: Boolean get() = false
@@ -69,6 +69,11 @@ class VerificationEngineScheduler(private val monotonicMillis: () -> Long = { Sy
             else -> null
         }
         fence()?.let { return terminal(it) }
+        if (request.network.sourceAdmissionRequired) {
+            val origin = VerificationOriginPolicy.origin(request.candidate.pageUrl)
+            if (origin == null || origin !in request.network.allowedOrigins || !request.network.requireTls ||
+                request.network.maxRedirects != 0) return terminal(EngineOutcome.DENIED)
+        }
         if (!active.compareAndSet(false, true)) return terminal(EngineOutcome.UNAVAILABLE)
         var executing: VerificationEngine? = null
         try {

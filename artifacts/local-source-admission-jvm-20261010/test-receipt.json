@@ -1,0 +1,28 @@
+{
+  "base_commit": "b9d978f233638d508de63387b8a0609842b14848",
+  "command": "gradlew.bat --offline :discovery:test :verification-local:test --console=plain",
+  "ESV_OWNED_CORPUS": "original ab-validation-20261008/corpus, 100+80 unchanged authored files",
+  "modules": {
+    "discovery": {
+      "tests": 274,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "verification-local": {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "new_admission_tests": 11,
+  "B_execution": "actual test task in initial changed-code run; final new-test-only run reused successful unchanged B results",
+  "Android_compile_gate_and_UI_tests": "NOT_RUN",
+  "actual_production_sources": 0,
+  "runtime_dependencies": "77 unchanged",
+  "public_requests": 0,
+  "service_settings_changes": false,
+  "remote_push": false,
+  "historical_Windows115_failures": "unchanged"
+}

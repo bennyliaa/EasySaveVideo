@@ -29,6 +29,7 @@ object VerificationEngineRegistration {
         }, { isCurrent(configuration.generation) }, { transport.isPhysicallyIdle() })) }
         localEngines.forEach(registry::register)
         return scheduler.validator(registry.all(), configuration.generation, remoteConsent = configuration.endpoint != null,
-            dynamicAllowed = configuration.dynamicAllowed, isCurrent = { isCurrent(configuration.generation) })
+            dynamicAllowed = configuration.dynamicAllowed, isCurrent = { isCurrent(configuration.generation) },
+            admittedNetwork = configuration.localSources::network)
     }
 }

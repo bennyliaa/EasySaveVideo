@@ -142,6 +142,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                 "为保护已生成页面及其历史和来源进度，本次写入未越过本地容量上限。", style = v.captionTextStyle)
             state.notice?.let { EsvText(it, style = v.captionTextStyle) }
             if (state.needsExplicitSearch) EsvText("来源配置已变化，旧结果和续页已失效。请核对来源与筛选，然后主动点击查找。", style = v.captionTextStyle)
+            EsvText("本地验证来源准入：${state.localSourceAdmission}；不保证后备验证成功。", style = v.captionTextStyle)
             state.verificationSummary?.let { summary ->
                 EsvText("页面验证：${summary.outcome} · ${summary.evidence}。不代表可播放、下载或保存。", style = v.captionTextStyle)
             }
@@ -152,7 +153,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
             BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
                 val columns = if (maxWidth >= 720.dp) maxOf(settings.columns, (maxWidth.value / 220).toInt().coerceIn(2, 6)) else settings.columns
                 if ((showPending || state.results.isEmpty()) && state.pendingCandidates.isNotEmpty()) {
-                    PendingCandidateCards(state.pendingCandidates, columns, onVerify = { candidate ->
+                    PendingCandidateCards(state.pendingCandidates, columns, admission = state.pendingAdmission, onVerify = { candidate ->
                         controller.verifyCandidate(state.controlTarget, candidate) }) { candidate ->
                         controller.candidateUrl(state.controlTarget, candidate)?.let(onLink)
                     }

@@ -32,8 +32,7 @@ class LocalVerificationEngine(private val renderer: LocalDynamicRenderer? = null
     override fun close() {closed.set(true);activeCall.get()?.cancel();executor.shutdownNow()}
     override fun isPhysicallyIdle() = !busy.get() && (renderer?.isPhysicallyIdle() != false)
     private fun addressDenied(a:InetAddress)= if(fixtureLoopbackOnly) !a.isLoopbackAddress else
-        a.isAnyLocalAddress || a.isLoopbackAddress || a.isLinkLocalAddress || a.isSiteLocalAddress || a.isMulticastAddress ||
-            (a.address.size==16 && (a.address[0].toInt() and 0xfe)==0xfc)
+        !VerificationOriginPolicy.publicAddress(a.address)
 
     override fun verify(request: EngineRequest, operation: DiscoveryOperation): EngineResult {
         fun result(outcome: EngineOutcome, bytes:Long=0, calls:Int=0, known:Boolean=true,
