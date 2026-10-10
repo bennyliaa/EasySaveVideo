@@ -8,6 +8,8 @@ local.properties
 artifacts/local-windows-20261009/*.apk
 artifacts/local-windows-20261009/aapt2-official/*.exe
 artifacts/local-windows-20261009/aapt2-official/*.jar
+artifacts/local-windows-20261009/*.stdout.log
+artifacts/local-windows-20261009/*.stderr.log
 
 __pycache__/
 third_party/verification-b-candidates/*.jar
