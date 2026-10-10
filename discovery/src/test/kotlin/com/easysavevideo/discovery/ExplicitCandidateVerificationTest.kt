@@ -1,0 +1,100 @@
+package com.easysavevideo.discovery
+
+import org.junit.Assert.*
+import org.junit.Test
+
+class ExplicitCandidateVerificationTest {
+    private class Fixture(initialResults: List<VideoSearchResult> = emptyList()) {
+        val clock = FakeClock()
+        val timer = FakeTimer(clock)
+        val runtime = FakeRuntime()
+        val registry = ProviderRegistry(listOf(StubProvider()))
+        val store = InMemoryDiscoveryStore()
+        val coordinator = VideoDiscoveryCoordinator(registry, runtime, store, timer, clock)
+        val profile = SearchProfile("profile", "query", filters = SearchFilters(safeSearch = false))
+        val candidate = PendingCandidatePolicy.normalize(CandidateUrl("https://video.example/watch?id=1"), "source", profile.filters)!!
+        val stamp: SessionStamp
+        init {
+            coordinator.setVisibility(true, true)
+            stamp = coordinator.start("session", profile)
+            runtime.calls[0].callback(ProviderOutcome.Success(ValidatedProviderPage(initialResults, null, null, true, listOf(candidate))))
+        }
+    }
+    @Test fun repeatedClicksUseOneExistingRuntimeAttempt() {
+        val f = Fixture()
+        assertTrue(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        assertFalse(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        assertEquals(2, f.runtime.calls.size)
+        assertEquals(0, f.runtime.calls[1].operation.context.retryBudget)
+        assertTrue(f.coordinator.pendingCandidates().single().verificationActive)
+        f.runtime.complete(1, 1)
+        assertTrue(f.coordinator.pendingCandidates().isEmpty())
+        assertEquals(1, f.coordinator.status().availableCount)
+        f.store.transaction {
+            assertTrue(progress("profile", "source", f.profile.queryKey)!!.exhausted)
+        }
+    }
+    @Test fun suspendedOrUnknownCandidateMakesNoRequestAndRetainsPending() {
+        val f = Fixture()
+        f.coordinator.setVisibility(false, false)
+        assertFalse(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        assertEquals(1, f.runtime.calls.size)
+        assertEquals(1, f.coordinator.pendingCandidates().size)
+    }
+    @Test fun backgroundCancelsAndLateSuccessCannotPublish() {
+        val f = Fixture(); assertTrue(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        f.coordinator.suspendImmediately(); f.coordinator.setVisibility(false, false)
+        assertTrue(f.runtime.calls[1].cancelled)
+        f.runtime.complete(1, 1)
+        assertEquals(0, f.coordinator.status().availableCount)
+        assertEquals(EngineOutcome.CANCELLED, f.coordinator.pendingCandidates().single().verification!!.outcome)
+    }
+    @Test fun sourceAndSessionChangesRejectLateResults() {
+        for (changeSession in listOf(false, true)) {
+            val f = Fixture(); assertTrue(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+            if (changeSession) f.coordinator.start("session", f.profile.copy(query = "new"))
+            else f.coordinator.suspendSourcesImmediately()
+            f.runtime.complete(1, 1)
+            assertEquals(0, f.coordinator.status().availableCount)
+            assertFalse(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        }
+    }
+    @Test fun noRetryOnFailedExplicitAttemptAndCandidateRemains() {
+        val f = Fixture(); assertTrue(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        f.runtime.fail(1, true)
+        f.timer.advance(3000)
+        assertEquals(2, f.runtime.calls.size)
+        assertEquals(1, f.coordinator.pendingCandidates().size)
+        assertFalse(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+    }
+    @Test fun confirmationPreservesExistingPageAndSortContext() {
+        val f = Fixture(listOf(result(2)))
+        val original = f.coordinator.page(0)!!
+        val order = f.coordinator.currentCheckpoint()!!.profile.sortOrder
+        assertTrue(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        f.runtime.complete(1, 1)
+        assertEquals(original, f.coordinator.page(0))
+        assertEquals(order, f.coordinator.currentCheckpoint()!!.profile.sortOrder)
+        assertEquals(2, f.coordinator.currentCheckpoint()!!.pool.entries.size)
+    }
+    @Test fun zeroValidationBudgetKeepsAllPendingWithoutCallingValidator() {
+        var calls = 0
+        val pipeline = ValidationPipeline(CandidateValidator { _, _ -> calls++; null }, clock = FakeClock(),
+            retainFailedValidationCandidates = true, maxValidationsPerPage = 0)
+        val page = pipeline.validate("source", ProviderPage(candidates = listOf(CandidateUrl("https://video.example/watch"))),
+            SearchFilters(safeSearch = false), operation())
+        assertEquals(0, calls); assertEquals(1, page.pendingCandidates.size); assertTrue(page.results.isEmpty())
+    }
+    @Test fun technicalEvidenceWithoutRawConfirmationNeverCreatesResult() {
+        val validator = object : CandidateValidator {
+            override fun validate(candidate: CandidateUrl, operation: DiscoveryOperation): RawVideoResult? = null
+            override fun validateEvidence(candidate: CandidateUrl, operation: DiscoveryOperation) =
+                CandidateValidation(null, VerificationSummary("local", EngineOutcome.UNKNOWN, EngineEvidence.NONE))
+        }
+        val page = ValidationPipeline(validator, clock = FakeClock(), retainFailedValidationCandidates = true)
+            .validate("source", ProviderPage(candidates = listOf(CandidateUrl("https://video.example/watch"))),
+                SearchFilters(safeSearch = false), operation())
+        assertTrue(page.results.isEmpty()); assertEquals(1, page.pendingCandidates.size)
+        assertEquals(EngineEvidence.NONE, page.verificationReports.single().summary.evidence)
+    }
+}

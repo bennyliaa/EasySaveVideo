@@ -22,10 +22,19 @@ class CandidateUrlPool(private val capacity: Int = 500) {
 /** A real adapter must supply evidence. An absent validator must never manufacture video metadata. */
 fun interface CandidateValidator {
     fun validate(candidate: CandidateUrl, operation: DiscoveryOperation): RawVideoResult?
+    fun validateEvidence(candidate: CandidateUrl, operation: DiscoveryOperation): CandidateValidation =
+        CandidateValidation(validate(candidate, operation))
 }
+/** Bounded technical evidence only: no resource, playback or saving authority. */
+data class VerificationSummary(val engineId: String, val outcome: EngineOutcome, val evidence: EngineEvidence) {
+    init { require(engineId.matches(Regex("[a-z][a-z0-9-]{0,63}"))) }
+}
+data class CandidateValidation(val raw: RawVideoResult?, val summary: VerificationSummary? = null)
+data class CandidateVerificationReport(val candidateId: String, val summary: VerificationSummary)
 data class ValidatedProviderPage(
     val results: List<VideoSearchResult>, val nextCursor: String?, val cursorExpiresAtEpochMillis: Long?, val exhausted: Boolean,
     val pendingCandidates: List<PendingVideoCandidate> = emptyList(),
+    val verificationReports: List<CandidateVerificationReport> = emptyList(),
 ) { override fun toString(): String = "ValidatedProviderPage(count=${results.size})" }
 
 class ValidationPipeline(
@@ -53,6 +62,7 @@ class ValidationPipeline(
             operation.check(clock.nowMillis())
             ResultNormalizer.normalize(raw, providerId, filters)?.let(results::add)
         }
+        val reports = mutableListOf<CandidateVerificationReport>()
         var attempts = 0
         try {
             while (true) {
@@ -63,7 +73,7 @@ class ValidationPipeline(
                     continue
                 }
                 attempts++
-                val raw = try { validator.validate(candidate, operation) }
+                val validation = try { validator.validateEvidence(candidate, operation) }
                 catch (failure: Exception) {
                     if (failure is InterruptedException) {
                         Thread.currentThread().interrupt()
@@ -72,9 +82,14 @@ class ValidationPipeline(
                     operation.check(clock.nowMillis())
                     if (!retainFailedValidationCandidates || failure is DiscoveryFailure &&
                         failure.code in setOf(DiscoveryError.CANCELLED, DiscoveryError.DEADLINE_EXCEEDED)) throw failure
-                    null
+                    CandidateValidation(null)
                 }
                 operation.check(clock.nowMillis())
+                val raw = validation.raw
+                validation.summary?.let { summary ->
+                    val id = digest(framed("candidate-url-v1", candidate.pageUrl))
+                    reports += CandidateVerificationReport(id, summary)
+                }
                 val result = raw?.let { ResultNormalizer.normalize(
                     if (retainFailedValidationCandidates && it.sourceNamespace == null) it.copy(sourceNamespace = providerId) else it,
                     providerId, filters) }
@@ -84,7 +99,7 @@ class ValidationPipeline(
             }
         } finally { pool.clear() }
         operation.check(clock.nowMillis())
-        return ValidatedProviderPage(results.toList(), page.nextCursor, page.cursorExpiresAtEpochMillis, page.exhausted, pending.toList())
+        return ValidatedProviderPage(results.toList(), page.nextCursor, page.cursorExpiresAtEpochMillis, page.exhausted, pending.toList(), reports.toList())
     }
 }
 

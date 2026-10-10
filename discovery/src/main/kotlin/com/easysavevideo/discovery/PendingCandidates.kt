@@ -8,6 +8,8 @@ data class PendingVideoCandidate(
     val canonicalPageUrl: String,
     val sourceReported: SourceReportedCandidateMetadata?,
     val provenance: Set<String>,
+    val verification: VerificationSummary? = null,
+    val verificationActive: Boolean = false,
 ) { override fun toString(): String = "PendingVideoCandidate([redacted])" }
 
 object PendingCandidatePolicy {
@@ -53,6 +55,9 @@ internal class PendingCandidatePool(private val capacity: Int) {
             }
         }
         return added
+    }
+    fun mark(id: String, active: Boolean, summary: VerificationSummary? = null) {
+        values[id]?.let { values[id] = it.copy(verificationActive = active, verification = summary ?: it.verification) }
     }
     fun removeProvider(id: String?) {
         if (id == null) { clear(); return }

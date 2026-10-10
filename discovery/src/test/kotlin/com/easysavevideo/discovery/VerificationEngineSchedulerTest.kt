@@ -42,6 +42,12 @@ class VerificationEngineSchedulerTest {
         assertEquals(EngineOutcome.DENIED,VerificationEngineScheduler {0}.verify(request(),operation(),listOf(a,b)).outcome)
         assertEquals(0,b.calls)
     }
+    @Test fun rateLimitStopsFallback() {
+        val a=Engine("a") {result(it,"a",EngineOutcome.RATE_LIMITED)}
+        val b=Engine("b") {result(it,"b")}
+        assertEquals(EngineOutcome.RATE_LIMITED,VerificationEngineScheduler {0}.verify(request(),operation(),listOf(a,b)).outcome)
+        assertEquals(0,b.calls)
+    }
     @Test fun staleAndFalseConfirmationRejected() {
         for (corrupt in listOf<(EngineRequest)->EngineResult>(
             {result(it,"a").copy(generation="stale")},

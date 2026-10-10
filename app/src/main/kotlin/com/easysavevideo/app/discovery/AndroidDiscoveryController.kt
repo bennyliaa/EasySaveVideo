@@ -44,6 +44,7 @@ data class DiscoveryUiState(
     val configurationIntent: Long = 0L,
     val pendingCandidates: List<PendingVideoCandidate> = emptyList(),
     val needsExplicitSearch: Boolean = false,
+    val verificationSummary: VerificationSummary? = null,
 ) { override fun toString() = "DiscoveryUiState([redacted])" }
 
 class AndroidDiscoveryController(context: Context, private val errors: ErrorSink) : AutoCloseable {
@@ -284,6 +285,18 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         if (!closed.get() && !filterControlsBusy && !state.storageUnavailable && target != null &&
             target == state.controlTarget && state.pendingCandidates.any { it == candidate }) candidate.canonicalPageUrl else null
 
+    fun verifyCandidate(target: DiscoveryControlTarget?, candidate: PendingVideoCandidate) {
+        if (candidateUrl(target, candidate) == null || candidate.verificationActive || candidate.verification != null ||
+            !foreground || !visible) return
+        submit {
+            val c = coordinator ?: return@submit
+            val checkpoint = c.currentCheckpoint() ?: return@submit
+            if (target != state.controlTarget || candidateUrl(target, candidate) == null) return@submit
+            if (!c.verifyPending(checkpoint.stamp, candidate.candidateId))
+                notice = "当前未启动验证：请确认前台状态、来源及剩余预算；候选仍保留。"
+            refresh()
+        }
+    }
     /** Capture the revision before flags: a newer owner/lifecycle event can only add a veto. */
     private fun applyLifecycle(c: VideoDiscoveryCoordinator) {
         val generation = c.currentSuspensionGeneration()
@@ -522,7 +535,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             admittedProviderDescriptors = registry.all().map { it.descriptor }, powerScenarioId = appliedPowerScenario,
             osPower = appliedOsPower,
             sourceRevision = managementRevision, configurationIntent = appliedSourceIntent,
-            pendingCandidates = c.pendingCandidates(), needsExplicitSearch = updated?.queryAuthorized == false))
+            pendingCandidates = c.pendingCandidates(), verificationSummary = c.verificationSummary(), needsExplicitSearch = updated?.queryAuthorized == false))
     }
     private fun profile(query: String, filters: SearchFilters): SearchProfile = DiscoveryPresentationPolicy.profile(
         query, Locale.getDefault().toLanguageTag(), filters, settings.repeatPolicy, demo).copy(sortOrder = sortOrder)
