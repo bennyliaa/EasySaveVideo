@@ -9,7 +9,11 @@ class VerificationEngineSchedulerTest {
         val cancellation=DiscoveryCancellation()
         return DiscoveryOperation(OperationContext("test",10000,cancellation),cancellation)
     }
-    private fun request()=EngineRequest("request","generation",CandidateUrl("https://fixture.example.org/page"),1000,3,1000,false,false)
+    private fun request()=EngineRequest("request","generation",CandidateUrl("https://fixture.example.org/page"),1000,3,1000,false,false,
+        EngineNetworkConstraints(setOf("https://fixture.example.org:443")))
+    private fun registered(vararg engines: VerificationEngine): List<VerificationEngine> = VerificationEngineRegistry().apply {
+        engines.forEach { register(it, if(it.sendsDataToAnotherProcess) EngineAccessBoundary.REMOTE_SERVICE else EngineAccessBoundary.LOCAL_TARGET) }
+    }.all()
     private class Engine(override val id: String, override val sendsDataToAnotherProcess: Boolean=false,
         val action: (EngineRequest)->EngineResult) : VerificationEngine {
         override val capabilities=setOf(EngineCapability.STATIC_PAGE)
@@ -23,7 +27,7 @@ class VerificationEngineSchedulerTest {
     @Test fun thirdEngineAndRemoteConsent() {
         val a=Engine("remote",true) {result(it,"remote")}
         val c=Engine("future-c") {result(it,"future-c")}
-        val registry=VerificationEngineRegistry().apply {register(a);register(c)}
+        val registry=VerificationEngineRegistry().apply {register(a,EngineAccessBoundary.REMOTE_SERVICE);register(c,EngineAccessBoundary.LOCAL_TARGET)}
         val value=VerificationEngineScheduler {0}.verify(request(),operation(),registry.all())
         assertEquals("future-c",value.engineId);assertEquals(0,a.calls)
     }
@@ -33,19 +37,19 @@ class VerificationEngineSchedulerTest {
             assertEquals(2,it.maxRequests);assertEquals(700L,it.maxBytes);assertEquals(1000L,it.deadlineMonotonicMillis)
             result(it,"b").copy(requestsConsumed=1,bytesConsumed=200)
         }
-        val value=VerificationEngineScheduler {0}.verify(request(),operation(),listOf(a,b))
+        val value=VerificationEngineScheduler {0}.verify(request(),operation(),registered(a,b))
         assertEquals(2,value.requestsConsumed);assertEquals(500L,value.bytesConsumed)
     }
     @Test fun denialStopsFallback() {
         val a=Engine("a") {result(it,"a",EngineOutcome.DENIED)}
         val b=Engine("b") {result(it,"b")}
-        assertEquals(EngineOutcome.DENIED,VerificationEngineScheduler {0}.verify(request(),operation(),listOf(a,b)).outcome)
+        assertEquals(EngineOutcome.DENIED,VerificationEngineScheduler {0}.verify(request(),operation(),registered(a,b)).outcome)
         assertEquals(0,b.calls)
     }
     @Test fun rateLimitStopsFallback() {
         val a=Engine("a") {result(it,"a",EngineOutcome.RATE_LIMITED)}
         val b=Engine("b") {result(it,"b")}
-        assertEquals(EngineOutcome.RATE_LIMITED,VerificationEngineScheduler {0}.verify(request(),operation(),listOf(a,b)).outcome)
+        assertEquals(EngineOutcome.RATE_LIMITED,VerificationEngineScheduler {0}.verify(request(),operation(),registered(a,b)).outcome)
         assertEquals(0,b.calls)
     }
     @Test fun staleAndFalseConfirmationRejected() {
@@ -53,7 +57,7 @@ class VerificationEngineSchedulerTest {
             {result(it,"a").copy(generation="stale")},
             {result(it,"a",EngineOutcome.ERROR).copy(evidence=EngineEvidence.HTML_VIDEO,raw=RawVideoResult(it.candidate.pageUrl,true))})) {
             val a=Engine("a",action=corrupt)
-            assertEquals(EngineOutcome.ERROR,VerificationEngineScheduler {0}.verify(request(),operation(),listOf(a)).outcome)
+            assertEquals(EngineOutcome.ERROR,VerificationEngineScheduler {0}.verify(request(),operation(),registered(a)).outcome)
         }
     }
     @Test fun cancellationAndDeadlineNoPublication() {
@@ -66,16 +70,16 @@ class VerificationEngineSchedulerTest {
         a=Engine("a") {a.idle=false;result(it,"a",EngineOutcome.UNAVAILABLE)}
         val b=Engine("b") {result(it,"b")}
         val scheduler=VerificationEngineScheduler {0}
-        scheduler.verify(request(),operation(),listOf(a,b))
+        scheduler.verify(request(),operation(),registered(a,b))
         assertEquals(0,b.calls)
-        scheduler.verify(request(),operation(),listOf(b));assertEquals(0,b.calls)
+        scheduler.verify(request(),operation(),registered(b));assertEquals(0,b.calls)
         a.idle=true
-        scheduler.verify(request(),operation(),listOf(b));assertEquals(1,b.calls)
+        scheduler.verify(request(),operation(),registered(b));assertEquals(1,b.calls)
     }
     @Test fun exceptionAndUnknownConsumptionDoNotStartFallback() {
         val b=Engine("b") {result(it,"b")}
         for (a in listOf(Engine("throws") {error("test")},Engine("unknown") {result(it,"unknown").copy(consumptionKnown=false)})) {
-            assertEquals(EngineOutcome.ERROR,VerificationEngineScheduler {0}.verify(request(),operation(),listOf(a,b)).outcome)
+            assertEquals(EngineOutcome.ERROR,VerificationEngineScheduler {0}.verify(request(),operation(),registered(a,b)).outcome)
         }
         assertEquals(0,b.calls)
     }

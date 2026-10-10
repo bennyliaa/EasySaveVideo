@@ -102,7 +102,7 @@ class OwnedVerificationInstrumentation:Instrumentation() {
             val switched=AtomicBoolean(true);val switchOp=operation()
             val switchB=LocalVerificationEngine(fixtureLoopbackOnly=true)
             val switchResult=java.util.concurrent.atomic.AtomicReference<EngineResult?>()
-            val switchThread=Thread {switchResult.set(VerificationEngineScheduler().verify(request("/slow.html"),switchOp,listOf(switchB),isCurrent={switched.get()}))}
+            val switchThread=Thread {switchResult.set(VerificationEngineScheduler().verify(request("/slow.html"),switchOp,VerificationEngineRegistry().apply { register(switchB,EngineAccessBoundary.OWNED_LOOPBACK_FIXTURE) }.all(),isCurrent={switched.get()}))}
             switchThread.start();Thread.sleep(100);switched.set(false);switchOp.cancellation.cancel();switchThread.join(2000)
             if(switchThread.isAlive || switchResult.get()?.outcome!=EngineOutcome.CANCELLED || switchResult.get()?.raw!=null)recordFailure("SOURCE_SWITCH_STALE_PUBLICATION")
             switchB.close()
@@ -117,8 +117,8 @@ class OwnedVerificationInstrumentation:Instrumentation() {
                         } finally {local.close()}
                     }
                 }
-                val q=request("/static-00.html").copy(candidate=CandidateUrl("https://fixture.example.org/fallback-owned.html"))
-                val fallback=VerificationEngineScheduler().verify(q,operation(),listOf(a,mapper),EngineSelection(listOf(a.id)))
+                val q=request("/static-00.html").copy(candidate=CandidateUrl("https://fixture.example.org/fallback-owned.html"), network=EngineNetworkConstraints(setOf("https://fixture.example.org:443")))
+                val fallback=VerificationEngineScheduler().verify(q,operation(),VerificationEngineRegistry().apply { register(a,EngineAccessBoundary.REMOTE_SERVICE);register(mapper,EngineAccessBoundary.LOCAL_TARGET) }.all(),EngineSelection(listOf(a.id)))
                 if(fallback.outcome!=EngineOutcome.PAGE_EVIDENCE || fallback.engineId!=mapper.id)recordFailure("A_UNSUPPORTED_B_FALLBACK")
                 report.put("fallback_outcome",fallback.outcome.name)
             }

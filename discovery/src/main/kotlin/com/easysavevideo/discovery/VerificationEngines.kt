@@ -41,12 +41,23 @@ interface VerificationEngine {
     /** Must enforce deadline/cancel/byte budgets and finish cleanup before returning. */
     fun verify(request: EngineRequest, operation: DiscoveryOperation): EngineResult
 }
+enum class EngineAccessBoundary { UNDECLARED, REMOTE_SERVICE, LOCAL_TARGET, OWNED_LOOPBACK_FIXTURE }
+
+/** Only the trusted composition root assigns boundaries; engine declarations are not authority. */
 class VerificationEngineRegistry {
+    private class Registered(val boundary: EngineAccessBoundary, val engine: VerificationEngine) : VerificationEngine by engine
+    companion object {
+        internal fun boundary(engine: VerificationEngine): EngineAccessBoundary =
+            (engine as? Registered)?.boundary ?: EngineAccessBoundary.UNDECLARED
+    }
     private val engines = linkedMapOf<String, VerificationEngine>()
-    @Synchronized fun register(engine: VerificationEngine) {
+    @Synchronized fun register(engine: VerificationEngine, boundary: EngineAccessBoundary = EngineAccessBoundary.UNDECLARED) {
         require(engine.id.matches(Regex("[a-z][a-z0-9-]{0,63}")))
         require(engine.id !in engines && engines.size < 16)
-        engines[engine.id] = engine
+        require(boundary != EngineAccessBoundary.REMOTE_SERVICE || engine.sendsDataToAnotherProcess)
+        require(boundary != EngineAccessBoundary.LOCAL_TARGET || !engine.sendsDataToAnotherProcess)
+        require(boundary != EngineAccessBoundary.OWNED_LOOPBACK_FIXTURE || !engine.sendsDataToAnotherProcess)
+        engines[engine.id] = Registered(boundary, engine)
     }
     @Synchronized fun all(): List<VerificationEngine> = engines.values.toList()
 }
@@ -69,11 +80,6 @@ class VerificationEngineScheduler(private val monotonicMillis: () -> Long = { Sy
             else -> null
         }
         fence()?.let { return terminal(it) }
-        if (request.network.sourceAdmissionRequired) {
-            val origin = VerificationOriginPolicy.origin(request.candidate.pageUrl)
-            if (origin == null || origin !in request.network.allowedOrigins || !request.network.requireTls ||
-                request.network.maxRedirects != 0) return terminal(EngineOutcome.DENIED)
-        }
         if (!active.compareAndSet(false, true)) return terminal(EngineOutcome.UNAVAILABLE)
         var executing: VerificationEngine? = null
         try {
@@ -91,6 +97,22 @@ class VerificationEngineScheduler(private val monotonicMillis: () -> Long = { Sy
             for (engine in candidates) {
                 fence()?.let { return terminal(it) }
                 if (requestsLeft == 0 || bytesLeft == 0L) break
+                when (VerificationEngineRegistry.boundary(engine)) {
+                    EngineAccessBoundary.UNDECLARED -> return terminal(EngineOutcome.DENIED)
+                    EngineAccessBoundary.LOCAL_TARGET -> {
+                        val origin = VerificationOriginPolicy.origin(request.candidate.pageUrl)
+                        if (origin == null || origin !in request.network.allowedOrigins || !request.network.requireTls ||
+                            request.network.maxRedirects != 0) return terminal(EngineOutcome.DENIED)
+                    }
+                    EngineAccessBoundary.OWNED_LOOPBACK_FIXTURE -> {
+                        val uri = try { java.net.URI(request.candidate.pageUrl) } catch (_: Exception) { return terminal(EngineOutcome.DENIED) }
+                        val origin = "http://127.0.0.1:${uri.port}"
+                        if (uri.scheme != "http" || uri.host != "127.0.0.1" || uri.port !in 1..65535 ||
+                            uri.rawUserInfo != null || uri.rawFragment != null || origin !in request.network.allowedOrigins ||
+                            request.network.maxRedirects != 0) return terminal(EngineOutcome.DENIED)
+                    }
+                    EngineAccessBoundary.REMOTE_SERVICE -> if (!request.remoteConsent) return terminal(EngineOutcome.DENIED)
+                }
                 if (!engine.isAvailable()) continue
                 executing = engine
                 val result = try { engine.verify(request.copy(maxRequests=requestsLeft,maxBytes=bytesLeft), operation) }

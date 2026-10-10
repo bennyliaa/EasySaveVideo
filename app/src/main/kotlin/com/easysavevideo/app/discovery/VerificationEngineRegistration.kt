@@ -3,6 +3,7 @@ package com.easysavevideo.app.discovery
 import com.easysavevideo.app.discovery.network.SystemVerificationTransport
 import com.easysavevideo.discovery.CandidateValidator
 import com.easysavevideo.discovery.DiscoveryTimer
+import com.easysavevideo.discovery.EngineAccessBoundary
 import com.easysavevideo.discovery.VerificationEngineRegistry
 import com.easysavevideo.discovery.VerificationEngineScheduler
 import com.easysavevideo.discovery.VerificationEngine
@@ -26,8 +27,8 @@ object VerificationEngineRegistration {
             VerificationServiceClient(endpoint, configuration.generation, transport,
                 dynamicAllowed = configuration.dynamicAllowed && dynamicAllowed, isCurrent = { isCurrent(configuration.generation) },
                 timer = timer, deadlineMillis = budget)
-        }, { isCurrent(configuration.generation) }, { transport.isPhysicallyIdle() })) }
-        localEngines.forEach(registry::register)
+        }, { isCurrent(configuration.generation) }, { transport.isPhysicallyIdle() }), EngineAccessBoundary.REMOTE_SERVICE) }
+        localEngines.forEach { registry.register(it, EngineAccessBoundary.LOCAL_TARGET) }
         return scheduler.validator(registry.all(), configuration.generation, remoteConsent = configuration.endpoint != null,
             dynamicAllowed = configuration.dynamicAllowed, isCurrent = { isCurrent(configuration.generation) },
             admittedNetwork = configuration.localSources::network)

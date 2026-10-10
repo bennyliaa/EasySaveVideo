@@ -71,7 +71,7 @@ class VerificationSourceAdmissionTest {
         }
         val candidate=CandidateUrl("https://unapproved.example.org/page")
         val request=EngineRequest("request","generation",candidate,1000,3,1000,false,true,selected().network(candidate))
-        assertEquals(EngineOutcome.DENIED,VerificationEngineScheduler {0}.verify(request,operation(),listOf(permissive)).outcome)
+        assertEquals(EngineOutcome.DENIED,VerificationEngineScheduler {0}.verify(request,operation(),VerificationEngineRegistry().apply {register(permissive,EngineAccessBoundary.LOCAL_TARGET)}.all()).outcome)
         assertEquals(0,calls)
     }
     @Test fun fallbackKeepsExactAdmissionAndRemainingBudget() {
@@ -92,7 +92,7 @@ class VerificationSourceAdmissionTest {
             assertEquals(2,it.maxRequests);assertEquals(800L,it.maxBytes)
             EngineResult(it.requestId,it.generation,"third",EngineOutcome.UNKNOWN)
         }
-        assertEquals("third",VerificationEngineScheduler {0}.verify(request,operation(),listOf(a,b)).engineId)
+        assertEquals("third",VerificationEngineScheduler {0}.verify(request,operation(),VerificationEngineRegistry().apply {register(a,EngineAccessBoundary.LOCAL_TARGET);register(b,EngineAccessBoundary.LOCAL_TARGET)}.all()).engineId)
     }
     @Test fun compiledCatalogueRejectsOriginPathsQueriesAndPlainHttp() {
         for (origin in listOf("http://owned.example.org", "https://owned.example.org/path", "https://owned.example.org/?q=1",

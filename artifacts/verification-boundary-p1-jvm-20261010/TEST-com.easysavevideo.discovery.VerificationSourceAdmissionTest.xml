@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.VerificationSourceAdmissionTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-10T06:39:01.459Z" hostname="LZF" time="0.032">
+  <properties/>
+  <testcase name="privateLoopbackAndNonGlobalAddressBytesFailClosedWithoutDns" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.0"/>
+  <testcase name="redirectTargetMustBeReadmittedAndNoRedirectIsImplicitlyAllowed" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.001"/>
+  <testcase name="fallbackKeepsExactAdmissionAndRemainingBudget" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.001"/>
+  <testcase name="compiledCatalogueRejectsOriginPathsQueriesAndPlainHttp" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.0"/>
+  <testcase name="defaultHasNoAdmissionAndNoArbitraryStringCanConfigureIt" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.001"/>
+  <testcase name="selectionNeedsAcknowledgementAndDefensiveCopies" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.0"/>
+  <testcase name="configuredAdmissionStillRespectsCancellationAndDeadline" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.001"/>
+  <testcase name="idnAndAsciiFormsNormalizeToSameExactOrigin" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.024"/>
+  <testcase name="unadmittedSourceCannotFallThroughToAnyEngine" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.002"/>
+  <testcase name="exactHostPortNoSubdomainOrSuffixGrant" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.001"/>
+  <testcase name="schemeUserinfoPortAndMalformedHostAreUnsupported" classname="com.easysavevideo.discovery.VerificationSourceAdmissionTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

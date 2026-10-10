@@ -1,0 +1,29 @@
+{
+  "base_commit": "67230066558bfd9f08e87169ce50c269b82238fc",
+  "finding": "P1 local-source empty policy accidentally disabled consented A before engine selection",
+  "fix": "Private registered wrapper assigned by trusted composition root; REMOTE_SERVICE keeps consent/client/service scope; LOCAL_TARGET mandatory exact local admission; raw/unclassified/self-claimed remote denied; explicit owned loopback fixture registration only in test composition",
+  "command": "gradlew.bat --offline :discovery:test :verification-local:test --console=plain",
+  "exit_code": 0,
+  "modules": {
+    "discovery": {
+      "tests": 282,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "verification-local": {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "new_boundary_tests": 8,
+  "B_task": "actually rerun in initial changed-code invocation; final new-test-only invocation UP-TO-DATE at unchanged code/test bytes",
+  "original_corpus": "original100+80 supplied, zero skipped",
+  "Android_gate_compile_instrumentation": "NOT_RUN; fixture source callsites adjusted by inspection only",
+  "new_production_sources": 0,
+  "push": false,
+  "dependencies": 77,
+  "historical_Windows115_failures": "unchanged"
+}

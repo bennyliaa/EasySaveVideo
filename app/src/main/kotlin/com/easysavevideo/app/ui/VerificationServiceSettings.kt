@@ -50,6 +50,7 @@ fun VerificationServiceSettings(controller: VerificationConfigurationController)
         EsvText("搜索来源只给出候选。启用后，主动查找每批最多尝试验证一个候选；其余及验证不足的候选仍显示为未验证。服务不可达不影响浏览、下载或录制。", style = v.captionTextStyle)
         EsvText("当前仅完成隔离开发接口；没有已部署或通过公开站点验收的服务。网页证据不代表可播放、可下载或有保存权限，缺失时长保持未知。", style = v.captionTextStyle, color = v.colors.error)
         EsvText("本地验证来源准入：${state.localSources.status}", style = v.captionTextStyle)
+        EsvText("远程服务独立遵循本次会话同意与服务来源规则；本地准入约束本地访问及后备验证。", style = v.captionTextStyle)
         EsvText("只能选择应用内已批准的来源策略；不接受任意域名，不自动接纳搜索结果或跳转目标。默认没有来源准入，后备成功不作保证。", style = v.captionTextStyle)
         if (controller.availableLocalSourceIds.isEmpty()) {
             EsvText("尚无已批准的本地验证来源；需要先确定具体来源及访问授权。", style = v.captionTextStyle)

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.VerificationAccessBoundaryTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-10T06:39:01.412Z" hostname="LZF" time="0.032">
+  <properties/>
+  <testcase name="admittedLocalFallbackRetainsOriginAndCumulativeBudget" classname="com.easysavevideo.discovery.VerificationAccessBoundaryTest" time="0.025"/>
+  <testcase name="selfClaimedRemoteOrUnknownRegistrationCannotGrantServiceAccess" classname="com.easysavevideo.discovery.VerificationAccessBoundaryTest" time="0.003"/>
+  <testcase name="serviceRefusalOr429NeverFallsBackEvenWhenLocalAdmitted" classname="com.easysavevideo.discovery.VerificationAccessBoundaryTest" time="0.002"/>
+  <testcase name="explicitOwnedFixtureScopeCannotAuthorizePublicOrOtherLoopbackTargets" classname="com.easysavevideo.discovery.VerificationAccessBoundaryTest" time="0.0"/>
+  <testcase name="localBoundaryRequiresAdmissionEvenWhenLegacyFlagIsFalse" classname="com.easysavevideo.discovery.VerificationAccessBoundaryTest" time="0.001"/>
+  <testcase name="serviceUnavailableDoesNotStartUnadmittedLocalEngine" classname="com.easysavevideo.discovery.VerificationAccessBoundaryTest" time="0.0"/>
+  <testcase name="localBoundaryCannotSelfClaimRemoteAndNoConsentCannotCallService" classname="com.easysavevideo.discovery.VerificationAccessBoundaryTest" time="0.0"/>
+  <testcase name="consentedRemoteServiceRunsWhenLocalCatalogueEmpty" classname="com.easysavevideo.discovery.VerificationAccessBoundaryTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
