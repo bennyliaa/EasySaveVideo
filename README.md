@@ -12,7 +12,7 @@ Private Android 12+ (API31) phone/tablet project. Kotlin + Compose Foundation + 
 - `recording/`: platform-neutral capture lifecycle, bounded timeline and resume policy
 - `library/`: platform-neutral ordinary catalog, naming/paging/folder rules and per-item leases
 - `ui-theme/`: app-owned complete SkinKit defaults and immutable snapshots
-- `docs/reference/`: original specifications (Architecture update_1 retains UTF-16LE original)
+- [docs/requirement and design/](docs/requirement%20and%20design/): original specifications (Architecture update_1 retains UTF-16LE original)
 - `docs/m1/`: reconstruction and foundation verification
 - `docs/m2/`: historical Discovery framework development evidence
 - `docs/m2-commons/`: first real metadata-source integration, migration, rights UI and development evidence

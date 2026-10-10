@@ -1,7 +1,7 @@
 # EasySaveVideo implementation constraints
 
 - This checkout is reconstructed on 2026-10-06 because the earlier M0 checkout was absent. Do not represent this Git history as a recovery of 3907618 or prior commits.
-- Original eight specifications are preserved under docs/reference; Architecture update_1 is UTF-16LE. Milestones update1 defines M0–M12 and supersedes old milestone ordering.
+- Original eight specifications are preserved under docs/requirement and design; Architecture update_1 is UTF-16LE. Milestones update1 defines M0–M12 and supersedes old milestone ordering.
 - Latest user decision overrides original minSdk30: Android 12 / API31 minimum, phone and tablet, Kotlin/Compose, package com.easysavevideo.app.
 - Core is platform-neutral. Android/Store/Provider types may not enter core modules.
 - All unreviewed source/library candidates are prohibited from integration. No Yue/NewPipe/Captord/Scrapling copied code or dependencies. Browser is original SystemWebView adapter. Reuse only approved official artifacts and internally authorized SkinKit 0.0.1 Contract/Default; no public license is invented for user code.
