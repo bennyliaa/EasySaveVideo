@@ -154,7 +154,7 @@ class VideoDiscoveryCoordinator(
         if (closed || !gateOpen || checkpoint.stamp != stamp || !checkpoint.queryAuthorized ||
             candidateId in explicitlyAttempted || explicitlyAttempted.size >= limits.poolCapacity) return false
         val candidate = pendingPool.snapshot().find { it.candidateId == candidateId } ?: return false
-        val source = registry.all().find { it.descriptor.id in candidate.provenance && it.descriptor.id !in active && it.refusal(checkpoint.profile) == null } ?: return false
+        val source = registry.all().find { it.descriptor.id in candidate.provenance && !active.containsKey(it.descriptor.id) && it.refusal(checkpoint.profile) == null } ?: return false
         if (!scheduler.roundActive) scheduler.beginRound(availableCount())
         if (!scheduler.canLaunch(source.descriptor.id, availableCount())) return false
         val provider = object : VideoSearchProvider {
@@ -661,6 +661,9 @@ class VideoDiscoveryCoordinator(
         // they never refund spent requests. Policy changes retire it and need fresh explicit demand.
         if (endRound) scheduler.suspend() else scheduler.pause()
         val cancelled = active.values.toList(); active.clear()
+        cancelled.forEach { request ->
+            request.explicitCandidateId?.let { pendingPool.mark(it, false, VerificationSummary("scheduler", EngineOutcome.CANCELLED, EngineEvidence.NONE)) }
+        }
         cancelled.forEach { it.operation.cancellation.cancel(); it.retry?.cancel(); it.handle?.cancel() }
     }
     private fun failStoreOperation(failure: Exception) {
