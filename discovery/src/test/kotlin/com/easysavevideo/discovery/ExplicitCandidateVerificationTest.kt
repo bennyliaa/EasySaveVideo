@@ -4,7 +4,7 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ExplicitCandidateVerificationTest {
-    private class Fixture(initialResults: List<VideoSearchResult> = emptyList()) {
+    private class Fixture(initialResults: List<VideoSearchResult> = emptyList(), initialSummary: VerificationSummary? = null) {
         val clock = FakeClock()
         val timer = FakeTimer(clock)
         val runtime = FakeRuntime()
@@ -17,8 +17,54 @@ class ExplicitCandidateVerificationTest {
         init {
             coordinator.setVisibility(true, true)
             stamp = coordinator.start("session", profile)
-            runtime.calls[0].callback(ProviderOutcome.Success(ValidatedProviderPage(initialResults, null, null, true, listOf(candidate))))
+            runtime.calls[0].callback(ProviderOutcome.Success(ValidatedProviderPage(initialResults, null, null, true, listOf(candidate), initialSummary?.let { listOf(CandidateVerificationReport(candidate.candidateId, it)) } ?: emptyList())))
         }
+    }
+    @Test fun queryChangeClearsSummaryAndOldWorkerCannotRestoreIt() {
+        val summary = VerificationSummary("local", EngineOutcome.UNKNOWN, EngineEvidence.NONE)
+        val f = Fixture(initialSummary = summary)
+        assertEquals(summary, f.coordinator.verificationSummary())
+        assertTrue(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        val old = f.runtime.calls[1]
+        f.coordinator.invalidateVerificationSummary()
+        assertNull(f.coordinator.verificationSummary())
+        f.coordinator.start("session", f.profile.copy(query = "new"))
+        old.callback(ProviderOutcome.Success(ValidatedProviderPage(emptyList(), null, null, true,
+            listOf(f.candidate), listOf(CandidateVerificationReport(f.candidate.candidateId, summary)))))
+        assertNull(f.coordinator.verificationSummary())
+    }
+    @Test fun sourceFenceImmediatelyClearsSummaryAndRejectsLateReport() {
+        val summary = VerificationSummary("local", EngineOutcome.UNKNOWN, EngineEvidence.NONE)
+        val f = Fixture(initialSummary = summary)
+        assertTrue(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        f.coordinator.suspendSourcesImmediately()
+        assertNull(f.coordinator.verificationSummary())
+        f.runtime.calls[1].callback(ProviderOutcome.Success(ValidatedProviderPage(emptyList(), null, null, true,
+            listOf(f.candidate), listOf(CandidateVerificationReport(f.candidate.candidateId, summary)))))
+        assertNull(f.coordinator.verificationSummary())
+    }
+    @Test fun backgroundFenceClearsSummaryAndResumeDoesNotRestoreOldCallback() {
+        val summary = VerificationSummary("local", EngineOutcome.UNKNOWN, EngineEvidence.NONE)
+        val f = Fixture(initialSummary = summary)
+        assertTrue(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        val old = f.runtime.calls[1]
+        f.coordinator.suspendImmediately()
+        assertNull(f.coordinator.verificationSummary())
+        f.coordinator.setVisibility(false, false)
+        f.coordinator.setVisibility(true, true)
+        old.callback(ProviderOutcome.Success(ValidatedProviderPage(emptyList(), null, null, true,
+            listOf(f.candidate), listOf(CandidateVerificationReport(f.candidate.candidateId, summary)))))
+        assertNull(f.coordinator.verificationSummary())
+    }
+    @Test fun atomicInvalidationRejectsOldGenerationAndAllowsOnlyNewPublication() {
+        val fence = VerificationSummaryFence()
+        val summary = VerificationSummary("local", EngineOutcome.UNKNOWN, EngineEvidence.NONE)
+        val old = fence.generation
+        assertTrue(fence.publish(old, summary))
+        fence.invalidate()
+        assertFalse(fence.publish(old, summary)); assertNull(fence.snapshot())
+        assertTrue(fence.publish(fence.generation, summary))
+        assertEquals(summary, fence.snapshot())
     }
     @Test fun repeatedClicksUseOneExistingRuntimeAttempt() {
         val f = Fixture()

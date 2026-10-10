@@ -34,7 +34,9 @@ class VideoDiscoveryCoordinator(
         var retry: CancellationHandle? = null,
         var inFlight: Boolean = false,
         val explicitCandidateId: String? = null,
+        val summaryGeneration: Long = 0,
     )
+    private val summaryFence = VerificationSummaryFence()
     private val lock = Any()
     private var store: DiscoveryStore = durableStore
     private var incognitoStore: InMemoryDiscoveryStore? = null
@@ -70,7 +72,7 @@ class VideoDiscoveryCoordinator(
 
     fun start(sessionId: String, profile: SearchProfile, incognito: Boolean = false): SessionStamp = synchronized(lock) {
         check(!closed)
-        cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); lastVerification = null; sessionProgress.clear()
+        cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear()
         incognitoStore?.clear()
         incognitoStore = if (incognito) InMemoryDiscoveryStore() else null
         store = incognitoStore ?: durableStore
@@ -89,7 +91,7 @@ class VideoDiscoveryCoordinator(
 
     /** Resume only a complete committed checkpoint. In-flight operations are never restored. */
     fun restore(sessionId: String, requireExplicitSearch: Boolean = false): Boolean = synchronized(lock) {
-        check(!closed); cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); lastVerification = null; sessionProgress.clear(); current = null; incognitoStore?.clear(); incognitoStore = null; store = durableStore
+        check(!closed); cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); current = null; incognitoStore?.clear(); incognitoStore = null; store = durableStore
         try {
             val previous = store.transaction { checkpoint(sessionId) } ?: return false
             epoch = maxOf(epoch, previous.stamp.epoch) + 1
@@ -111,6 +113,7 @@ class VideoDiscoveryCoordinator(
     fun currentSuspensionGeneration(): Long = lifecycleSuspensionGeneration.get()
 
     fun suspendImmediately(): Long {
+        summaryFence.invalidate()
         val generation = lifecycleSuspensionGeneration.incrementAndGet()
         active.values.forEach { it.operation.cancellation.cancel() }
         return generation
@@ -121,6 +124,7 @@ class VideoDiscoveryCoordinator(
      * This latch is separate from lifecycle and cannot reopen foreground/visibility/Save/Record gates.
      */
     fun suspendPowerImmediately(): Long {
+        summaryFence.invalidate()
         val generation = powerSuspensionGeneration.incrementAndGet()
         active.values.forEach { it.operation.cancellation.cancel() }
         return generation
@@ -147,8 +151,9 @@ class VideoDiscoveryCoordinator(
     /** Explicit demand uses the existing runtime/pipeline, scheduler budget and commit fences.
      * One attempt per candidate per session; repeated clicks never refund or resend requests. */
     private val explicitlyAttempted = mutableSetOf<String>()
-    private var lastVerification: VerificationSummary? = null
-    fun verificationSummary(): VerificationSummary? = synchronized(lock) { lastVerification }
+    fun invalidateVerificationSummary() { summaryFence.invalidate() }
+    fun verificationGeneration(): Long = summaryFence.generation
+    fun verificationSummary(): VerificationSummary? = summaryFence.snapshot()
     fun verifyPending(stamp: SessionStamp, candidateId: String): Boolean = synchronized(lock) {
         val checkpoint = current ?: return false
         if (closed || !gateOpen || checkpoint.stamp != stamp || !checkpoint.queryAuthorized ||
@@ -168,7 +173,7 @@ class VideoDiscoveryCoordinator(
             clock.nowMillis() + minOf(4000L, limits.requestDeadlineMillis), cancellation, 0,
             resourceBudget = ResourceBudget(1, limits.maxResponseBytes)), cancellation)
         val request = ActiveRequest(provider, provider.descriptor, SearchRequest(checkpoint.stamp, checkpoint.profile, null),
-            checkpoint.pool.viewRevision, operation, explicitCandidateId = candidateId)
+            checkpoint.pool.viewRevision, operation, explicitCandidateId = candidateId, summaryGeneration = summaryFence.generation)
         explicitlyAttempted += candidateId
         pendingPool.mark(candidateId, true)
         active[provider.descriptor.id] = request
@@ -178,6 +183,7 @@ class VideoDiscoveryCoordinator(
     }
     /** Irreversible for this coordinator: lifecycle/power callbacks cannot reopen an edited source set. */
     fun suspendSourcesImmediately() {
+        summaryFence.invalidate()
         sourceConfigurationSuspended.set(true)
         active.values.forEach { it.operation.cancellation.cancel() }
     }
@@ -476,7 +482,7 @@ class VideoDiscoveryCoordinator(
                 val operation = DiscoveryOperation(OperationContext("discovery-${++operationSequence}",
                     clock.nowMillis() + limits.requestDeadlineMillis, cancellation, limits.maxRetries,
                     resourceBudget = ResourceBudget(scheduler.powerPolicy.concurrency, limits.maxResponseBytes)), cancellation)
-                val request = ActiveRequest(provider, provider.descriptor, SearchRequest(checkpoint.stamp, checkpoint.profile, progress), checkpoint.pool.viewRevision, operation)
+                val request = ActiveRequest(provider, provider.descriptor, SearchRequest(checkpoint.stamp, checkpoint.profile, progress), checkpoint.pool.viewRevision, operation, summaryGeneration = summaryFence.generation)
                 active[provider.descriptor.id] = request
                 launch(request, available)
             }
@@ -607,7 +613,7 @@ class VideoDiscoveryCoordinator(
                 sessionProgress[id] = ProviderProgress(checkpoint.profile.profileId, id, checkpoint.profile.queryKey, request.descriptor.version,
                     request.descriptor.cursorSchemaVersion, page.nextCursor, page.cursorExpiresAtEpochMillis, page.exhausted, clock.nowMillis())
             current = accepted.first
-            page.verificationReports.lastOrNull()?.let { lastVerification = it.summary }
+            page.verificationReports.lastOrNull()?.let { summaryFence.publish(request.summaryGeneration, it.summary) }
             val candidateAdds = pendingPool.add(page.pendingCandidates,
                 accepted.first.pool.entries.map { it.result.canonicalPageUrl }.toSet())
             request.explicitCandidateId?.let { candidateId ->
@@ -657,6 +663,7 @@ class VideoDiscoveryCoordinator(
         cancelled.forEach { it.operation.cancellation.cancel(); it.retry?.cancel(); it.handle?.cancel() }
     }
     private fun cancelAll(endRound: Boolean = true) {
+        summaryFence.invalidate()
         // Remove identities before callbacks. Lifecycle and media priority pause the existing round;
         // they never refund spent requests. Policy changes retire it and need fresh explicit demand.
         if (endRound) scheduler.suspend() else scheduler.pause()
@@ -673,6 +680,6 @@ class VideoDiscoveryCoordinator(
     }
     private fun failStorage() { terminalState = DiscoveryState.FAILED; lastError = DiscoveryError.STORAGE_UNAVAILABLE; cancelAll() }
     override fun close() = synchronized(lock) {
-        closed = true; cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); lastVerification = null; sessionProgress.clear(); incognitoStore?.clear(); incognitoStore = null; current = null
+        closed = true; cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); incognitoStore?.clear(); incognitoStore = null; current = null
     }
 }

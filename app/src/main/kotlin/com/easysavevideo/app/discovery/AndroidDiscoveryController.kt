@@ -45,6 +45,7 @@ data class DiscoveryUiState(
     val pendingCandidates: List<PendingVideoCandidate> = emptyList(),
     val needsExplicitSearch: Boolean = false,
     val verificationSummary: VerificationSummary? = null,
+    val verificationGeneration: Long = -1L,
 ) { override fun toString() = "DiscoveryUiState([redacted])" }
 
 class AndroidDiscoveryController(context: Context, private val errors: ErrorSink) : AutoCloseable {
@@ -156,6 +157,8 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         val filters = DiscoveryFilterPresentationPolicy.validate(expected).filters ?: return false
         val intentGeneration = filterIntentGeneration
         filterSearchPending = true
+        coordinator?.invalidateVerificationSummary()
+        state = state.copy(verificationSummary = null)
         submit {
             var applied: SearchProfile? = null
             try {
@@ -254,7 +257,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         if (closed.get()) return
         sourceIntent.incrementAndGet(); filterIntentGeneration++; filterSourceChangePending = true
         coordinator?.suspendSourcesImmediately()
-        state = state.copy(page = null, results = emptyList(), pendingCandidates = emptyList(),
+        state = state.copy(page = null, results = emptyList(), pendingCandidates = emptyList(), verificationSummary = null,
             controlTarget = null, historyStatistics = null,
             notice = "正在核对来源配置；原查询不会自动发送。")
     }
@@ -306,6 +309,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         c.setVisibility(active, shown, generation)
     }
     fun setVisibility(isForeground: Boolean, discoveryVisible: Boolean) {
+        if (!isForeground || !discoveryVisible) state = state.copy(verificationSummary = null)
         foreground = isForeground; visible = discoveryVisible
         if (!isForeground || !discoveryVisible) coordinator?.suspendImmediately()
         osSignals.setActive(isForeground && discoveryVisible)
@@ -377,6 +381,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             return // Invalid local text cannot cancel or suspend the current valid search.
         }
         coordinator?.suspendImmediately()
+        state = state.copy(verificationSummary = null)
         submit {
             if (!initialized || unavailable) return@submit
             pageIndex = 0; pageDemandPending = true; notice = null
@@ -535,13 +540,15 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             admittedProviderDescriptors = registry.all().map { it.descriptor }, powerScenarioId = appliedPowerScenario,
             osPower = appliedOsPower,
             sourceRevision = managementRevision, configurationIntent = appliedSourceIntent,
-            pendingCandidates = c.pendingCandidates(), verificationSummary = c.verificationSummary(), needsExplicitSearch = updated?.queryAuthorized == false))
+            pendingCandidates = c.pendingCandidates(), verificationGeneration = c.verificationGeneration(), verificationSummary = c.verificationSummary(), needsExplicitSearch = updated?.queryAuthorized == false))
     }
     private fun profile(query: String, filters: SearchFilters): SearchProfile = DiscoveryPresentationPolicy.profile(
         query, Locale.getDefault().toLanguageTag(), filters, settings.repeatPolicy, demo).copy(sortOrder = sortOrder)
     private val uiDelivery = DiscoveryLatestDelivery<DiscoveryUiState>(
         enqueue = { action -> main.post(action) }, consume = { value ->
-            if (!closed.get() && DiscoverySourceUiFence.accepts(value.configurationIntent, sourceIntent.get())) state = value })
+            if (!closed.get() && DiscoverySourceUiFence.accepts(value.configurationIntent, sourceIntent.get()))
+                state = if (coordinator?.verificationGeneration() == value.verificationGeneration) value
+                    else value.copy(verificationSummary = null) })
     init {
         // Subscribe after every field is initialized. Pending writes fence replacement owners before any restore.
         verificationSubscription = verificationOwner.subscribe(::fenceSourceConfiguration, ::loadedVerificationConfiguration)

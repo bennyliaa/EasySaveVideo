@@ -1,0 +1,15 @@
+{
+  "base_commit": "9d1020a35d742a5bc1264f8fd8bdff24e42a2597",
+  "command": "gradlew.bat --offline :discovery:test --console=plain",
+  "exit_code": 0,
+  "tests": 262,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "scope": "full Discovery JVM module only",
+  "new_tests": 4,
+  "generation_policy": "atomic generation/value invalidation on query intent, source, lifecycle/power and cancelAll; request captures generation; late completion cannot republish; Android snapshot delivery compares coordinator generation",
+  "Android_compile_gate_device": "NOT_RUN",
+  "previous_Windows115_failures": "unchanged, not rerun",
+  "remote_push": false
+}
