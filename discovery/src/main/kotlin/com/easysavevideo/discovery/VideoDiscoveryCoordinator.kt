@@ -637,6 +637,17 @@ class VideoDiscoveryCoordinator(
                 terminalState = DiscoveryState.CAPACITY_REACHED; lastError = failure.code; cancelAll()
             } else if (failure.code != DiscoveryError.CANCELLED) finishFailure(request, failure.code)
         } catch (_: Exception) { active.remove(id); failStorage() }
+        finally {
+            // The request may already have left active when a final commit guard throws.
+            // Always finish its candidate directly; cancellation cleanup cannot recover that identity.
+            request.explicitCandidateId?.let { candidateId ->
+                val candidate = pendingPool.snapshot().find { it.candidateId == candidateId }
+                val summary = if (request.operation.cancellation.isCancelled || !gateOpen)
+                    VerificationSummary("scheduler", EngineOutcome.CANCELLED, EngineEvidence.NONE)
+                else candidate?.verification ?: VerificationSummary("scheduler", EngineOutcome.UNKNOWN, EngineEvidence.NONE)
+                pendingPool.mark(candidateId, false, summary)
+            }
+        }
     }
 
     private fun finishFailure(request: ActiveRequest, error: DiscoveryError, retryAtEpochMillis: Long? = null) {

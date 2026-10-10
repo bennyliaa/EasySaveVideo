@@ -1,0 +1,15 @@
+{
+  "base_commit": "e8f726d78cb873de0b9ea8a88742c8ff56135520",
+  "finding": "P2 explicit candidate left active when final commit cancellation removed request before cancelAll",
+  "fix": "acceptPage finally always ends explicit candidate directly even when request removed; cancellation marked CANCELLED, existing evidence retained on noncancel success",
+  "command": "gradlew.bat --offline :discovery:test --console=plain",
+  "exit_code": 0,
+  "tests": 263,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "new_regression": "blocked beforeCommit, suspendImmediately while transaction holds coordinator/store locks, release; no pool/Seen publication, candidate inactive/CANCELLED, no duplicate after foreground resume",
+  "Android_gate_or_device": "NOT_RUN",
+  "push": false,
+  "historical_Windows115": "unchanged"
+}

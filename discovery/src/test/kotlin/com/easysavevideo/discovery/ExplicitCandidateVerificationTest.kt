@@ -4,12 +4,11 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ExplicitCandidateVerificationTest {
-    private class Fixture(initialResults: List<VideoSearchResult> = emptyList(), initialSummary: VerificationSummary? = null) {
+    private class Fixture(initialResults: List<VideoSearchResult> = emptyList(), initialSummary: VerificationSummary? = null, val store: DiscoveryStore = InMemoryDiscoveryStore()) {
         val clock = FakeClock()
         val timer = FakeTimer(clock)
         val runtime = FakeRuntime()
         val registry = ProviderRegistry(listOf(StubProvider()))
-        val store = InMemoryDiscoveryStore()
         val coordinator = VideoDiscoveryCoordinator(registry, runtime, store, timer, clock)
         val profile = SearchProfile("profile", "query", filters = SearchFilters(safeSearch = false))
         val candidate = PendingCandidatePolicy.normalize(CandidateUrl("https://video.example/watch?id=1"), "source", profile.filters)!!
@@ -19,6 +18,56 @@ class ExplicitCandidateVerificationTest {
             stamp = coordinator.start("session", profile)
             runtime.calls[0].callback(ProviderOutcome.Success(ValidatedProviderPage(initialResults, null, null, true, listOf(candidate), initialSummary?.let { listOf(CandidateVerificationReport(candidate.candidateId, it)) } ?: emptyList())))
         }
+    }
+    @Test fun cancellationWhileCommitIsBlockedEndsCandidateWithoutPublicationOrRetry() {
+        val backing = InMemoryDiscoveryStore()
+        val entered = java.util.concurrent.CountDownLatch(1)
+        val release = java.util.concurrent.CountDownLatch(1)
+        val armed = java.util.concurrent.atomic.AtomicBoolean(false)
+        val store = object : DiscoveryStore {
+            override fun <T> transaction(block: DiscoveryTransaction.() -> T): T = backing.transaction {
+                val tx = this
+                val wrapped = object : DiscoveryTransaction by tx {
+                    override fun beforeCommit(check: () -> Unit) {
+                        tx.beforeCommit {
+                            if (armed.get()) {
+                                entered.countDown()
+                                require(release.await(5, java.util.concurrent.TimeUnit.SECONDS))
+                            }
+                            check()
+                        }
+                    }
+                }
+                wrapped.block()
+            }
+        }
+        val f = Fixture(store = store)
+        assertTrue(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        armed.set(true)
+        val failure = java.util.concurrent.atomic.AtomicReference<Throwable?>()
+        val worker = Thread {
+            try { f.runtime.complete(1, 1) } catch (error: Throwable) { failure.set(error) }
+        }
+        worker.start()
+        try {
+            assertTrue(entered.await(5, java.util.concurrent.TimeUnit.SECONDS))
+            f.coordinator.suspendImmediately()
+        } finally { release.countDown(); worker.join(5000) }
+        assertFalse(worker.isAlive); assertNull(failure.get())
+        armed.set(false)
+        // acceptPage has removed active before the queued lifecycle cancellation is applied.
+        assertFalse(f.coordinator.pendingCandidates().single().verificationActive)
+        assertEquals(EngineOutcome.CANCELLED, f.coordinator.pendingCandidates().single().verification!!.outcome)
+        assertNull(f.coordinator.verificationSummary())
+        assertEquals(0, f.coordinator.status().availableCount)
+        backing.transaction {
+            assertTrue(checkpoint("session")!!.pool.entries.isEmpty())
+            assertNull(seen("profile", result(1).fingerprint))
+        }
+        f.coordinator.setVisibility(false, false)
+        f.coordinator.setVisibility(true, true)
+        assertFalse(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        assertEquals(2, f.runtime.calls.size)
     }
     @Test fun queryChangeClearsSummaryAndOldWorkerCannotRestoreIt() {
         val summary = VerificationSummary("local", EngineOutcome.UNKNOWN, EngineEvidence.NONE)
