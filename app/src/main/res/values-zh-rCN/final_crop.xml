@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_crop_full">完整画面</string>
+    <string name="final_crop_summary">保留范围：左 %1$.1f%% · 上 %2$.1f%% · 右 %3$.1f%% · 下 %4$.1f%%</string>
+    <string name="final_crop_diagram">按显示方向绘制的画面裁切示意图</string>
+    <string name="final_pending_entry">待填写</string>
+    <string name="final_crop_move">整体移动</string>
+    <string name="final_crop_left">左边</string>
+    <string name="final_crop_top">上边</string>
+    <string name="final_crop_right">右边</string>
+    <string name="final_crop_bottom">下边</string>
+    <string name="final_crop_top_left">左上角</string>
+    <string name="final_crop_top_right">右上角</string>
+    <string name="final_crop_bottom_left">左下角</string>
+    <string name="final_crop_bottom_right">右下角</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.editor.ui.EditorStatusResourcesTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-11T17:00:28.506Z" hostname="redacted" time="0.003">
+  <properties />
+  <testcase name="completionRequiresPublishedReference" classname="com.easysavevideo.app.editor.ui.EditorStatusResourcesTest" time="0.003" />
+  <system-out />
+  <system-err />
+</testsuite>

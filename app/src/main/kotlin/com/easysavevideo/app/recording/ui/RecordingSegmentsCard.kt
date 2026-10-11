@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.easysavevideo.app.recording.recordingAudioStatusLabel
+import com.easysavevideo.app.recording.recordingAudioStatusResource
+import com.easysavevideo.app.recording.recordingSegmentsPhaseResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import com.easysavevideo.app.recording.recordingDurationLabel
 import com.easysavevideo.app.theme.*
 import com.easysavevideo.recording.MAX_RECORDING_RESUME_BOUNDARIES
@@ -28,7 +32,8 @@ fun RecordingSegmentsCard(
     val v = LocalEsvVisuals.current
     Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium),
         verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-        EsvText(recordingSegmentsPhaseLabel(state.phase), style = v.titleTextStyle)
+        val phaseLabel = stringResource(recordingSegmentsPhaseResource(state.phase, state.verifiedOutputAvailable))
+        EsvText(phaseLabel, style = v.titleTextStyle, modifier = Modifier.semantics { stateDescription = phaseLabel })
         if (retainedSessionCount > 0) EsvText("共有 $retainedSessionCount 组待查看的私有片段。", style = v.captionTextStyle)
         if ((retainedSessionCount > 1 || retainedSessionCount > 0 && state.closedSegments.isEmpty()) && !state.active && onNextSegments != null)
             EsvButton("下一组保留片段", onNextSegments, modifier = Modifier.fillMaxWidth())
@@ -38,7 +43,7 @@ fun RecordingSegmentsCard(
             EsvText(recordingEffectiveCropSummary(it), style = v.captionTextStyle)
         }
         EsvText("有效录制时长 ${recordingDurationLabel(state.effectiveDurationUs)}（仅实际录入，不含暂停）", style = v.captionTextStyle)
-        EsvText(recordingAudioStatusLabel(state.audioStatus), style = v.captionTextStyle)
+        EsvText(stringResource(recordingAudioStatusResource(state.audioStatus)), style = v.captionTextStyle)
         EsvText("有效恢复 ${state.effectiveResumeCount} / $MAX_RECORDING_RESUME_BOUNDARIES 次（按实际录入确认）", style = v.captionTextStyle)
         if (state.effectiveResumeCount >= 28) EsvText(
             if (state.effectiveResumeCount >= MAX_RECORDING_RESUME_BOUNDARIES) "已达到恢复上限，请停止并保存已录片段。"
@@ -56,7 +61,7 @@ fun RecordingSegmentsCard(
             EsvText("片段 ${segment.ordinal + 1} · 有效 $seconds 秒 · $status", style = v.captionTextStyle)
         }
         EsvText("只有合成结果通过独立验证并提交媒体库才算保存成功。零散私有片段不会作为成功成片展示、预览或分享。", style = v.captionTextStyle, color = v.colors.muted)
-        state.notice?.let { EsvText(it, color = v.colors.error, style = v.captionTextStyle) }
+        state.notice?.let { EsvDiagnosticNotice(it) }
         if (state.phase == RecordingSegmentsPhase.RECORDING) EsvButton("暂停并关闭当前片段", onPause,
             enabled = canPauseResume, modifier = Modifier.fillMaxWidth())
         if (state.phase == RecordingSegmentsPhase.PAUSED && state.effectiveResumeCount < MAX_RECORDING_RESUME_BOUNDARIES)

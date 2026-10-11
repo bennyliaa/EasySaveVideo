@@ -60,8 +60,8 @@ fun SaveTaskScreen(
             EsvText(stringResource(R.string.flow_savetaskscreen_8), style = v.captionTextStyle, color = v.colors.muted)
             EsvText(stringResource(R.string.flow_savetaskscreen_9), style = v.captionTextStyle, color = v.colors.muted)
             }
-            if (runtime.draining) EsvText(if (runtime.networkDraining) "系统资源未能确认关闭。已保留文件；请完全退出应用后重新打开并恢复。"
-                else "系统媒体资源尚在退出。迟到结果不会保存；资源确认关闭前不能开始新的录制或校验。", color = v.colors.error)
+            if (runtime.draining) EsvText(if (runtime.networkDraining) stringResource(R.string.final_copy_46)
+                else stringResource(R.string.final_copy_47), color = v.colors.error)
             runtime.notice?.let { text ->
                 EsvText(text, color = v.colors.error)
                 EsvButton(stringResource(R.string.flow_savetaskscreen_10), onClick = runtime::dismissNotice)
@@ -110,13 +110,13 @@ fun SaveTaskScreen(
                         }
                         record.error?.let { EsvText(stringResource(saveFailureTextResource(it)), color = v.colors.error, style = v.captionTextStyle) }
                         if (record.task.state == TaskState.WAITING_USER) EsvText(if (record.request.method == TaskMethod.RECORD && record.transfer == null)
-                            "录制会话已中断，旧系统授权不能继续使用。可放弃此任务，然后主动申请新的录制会话。"
+                            stringResource(R.string.final_copy_48)
                         else when (record.waitReason) {
-                            SaveWaitReason.BACKGROUND -> "应用退到后台，任务已暂停。请保持前台并手动继续。"
-                            SaveWaitReason.AUTHENTICATION -> "需要有效会话。先打开并登录资源同源页面，再手动继续。"
-                            SaveWaitReason.NETWORK -> "网络暂不可用。恢复网络后可手动继续。"
-                            SaveWaitReason.STORAGE -> "请腾出存储空间后手动继续。"
-                            else -> "中断的任务已保留。手动继续将重新检查文件与提交状态。"
+                            SaveWaitReason.BACKGROUND -> stringResource(R.string.final_copy_49)
+                            SaveWaitReason.AUTHENTICATION -> stringResource(R.string.final_copy_50)
+                            SaveWaitReason.NETWORK -> stringResource(R.string.final_copy_51)
+                            SaveWaitReason.STORAGE -> stringResource(R.string.final_copy_52)
+                            else -> stringResource(R.string.final_copy_53)
                         }, style = v.captionTextStyle)
                         if (record.task.taskId in runtime.pendingCommands) EsvText(stringResource(R.string.flow_savetaskscreen_20), style = v.captionTextStyle)
                         Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -150,16 +150,16 @@ fun SaveSelectionDialog(runtime: AndroidSaveRuntime, browser: SystemBrowserHost)
                 Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                     EsvText(candidate.label)
                     EsvText(buildList {
-                        add(URI(candidate.url.value).host ?: "未知来源")
-                        add(if (candidate.width != null && candidate.height != null) "${candidate.width} × ${candidate.height}" else "清晰度未知")
-                        add(candidate.durationMillis?.let { "${it / 1000} 秒" } ?: "时长未知")
+                        add(URI(candidate.url.value).host ?: stringResource(R.string.final_copy_54))
+                        add(if (candidate.width != null && candidate.height != null) "${candidate.width} × ${candidate.height}" else stringResource(R.string.final_copy_55))
+                        add(candidate.durationMillis?.let { "${it / 1000} 秒" } ?: stringResource(R.string.final_copy_56))
                     }.joinToString(" · "), style = v.captionTextStyle, color = v.colors.muted)
                     EsvButton(when {
-                        candidate.protected -> "受保护内容不可保存"
-                        !candidate.supported -> "此格式尚未支持"
-                        !runtime.canSave(candidate.method) -> "②需要流媒体权益"
-                        candidate.method == TaskMethod.STREAM -> "检查②静态 HLS"
-                        else -> "开始①直接下载"
+                        candidate.protected -> stringResource(R.string.final_copy_57)
+                        !candidate.supported -> stringResource(R.string.final_copy_58)
+                        !runtime.canSave(candidate.method) -> stringResource(R.string.final_copy_59)
+                        candidate.method == TaskMethod.STREAM -> stringResource(R.string.final_copy_60)
+                        else -> stringResource(R.string.final_copy_61)
                     },
                         onClick = { runtime.choose(candidate, browser) },
                         enabled = candidate.supported && !candidate.protected && runtime.canSave(candidate.method) && selection.isCurrent())

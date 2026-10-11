@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_diagnostic_summary">有补充诊断信息。实际结果请查看任务状态。</string>
+    <string name="final_diagnostic_show">查看诊断原文</string>
+    <string name="final_diagnostic_hide">收起诊断原文</string>
+</resources>

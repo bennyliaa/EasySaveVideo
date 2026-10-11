@@ -84,57 +84,57 @@ fun RecordingScreen(
                 Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner))
                     .padding(v.spacingMedium), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                     EsvText(stringResource(R.string.advanced_copy_13), style = v.titleTextStyle)
-                    EsvText("整屏录制可能包含当前网页、其他应用和通知。切换应用或标签会改变画面。请先隐藏敏感内容，并确认你有权录制。")
-                    EsvText(if (showingAdvanced) "高级录制请求整个默认显示屏。请核对系统确认页的共享范围；部分设备可能覆盖这一请求。本应用不能仅凭尺寸确认应用或内容身份，不承诺单应用区域录制。"
-                        else "范围由系统确认页选择；本应用无法可靠识别最终范围时会显示未知。系统允许时可选择单个应用。这里不会承诺捕获隐藏标签或后台网页。", style = v.captionTextStyle, color = v.colors.muted)
+                    EsvText(stringResource(R.string.final_copy_65))
+                    EsvText(if (showingAdvanced) stringResource(R.string.final_copy_66)
+                        else stringResource(R.string.final_copy_67), style = v.captionTextStyle, color = v.colors.muted)
                     if (showingAdvanced) {
-                        EsvText("系统捕获的完整内容会短暂经过内存 / GPU；只将确认后的选区编码为私有片段。没有整屏临时录制文件，也不会在裁切失败时回退保存整屏。", style = v.captionTextStyle)
-                        EsvText(if (previewMode) recordingPreviewScopeDisclosure else "比例示意模式的选区只定义比例，不绑定应用、网页或先前屏幕；将对稍后系统授权的完整画面按这些坐标裁切，请核对系统授权范围。", style = v.captionTextStyle)
-                        EsvText("选区基于完整显示屏，包含系统栏坐标。尺寸、旋转或边距变化会安全停止，需要重新选区和授权。控制条是否进入选区内画面尚未实机验证，不承诺自动排除。", style = v.captionTextStyle, color = v.colors.muted)
+                        EsvText(stringResource(R.string.final_copy_68), style = v.captionTextStyle)
+                        EsvText(if (previewMode) recordingPreviewScopeDisclosure else stringResource(R.string.final_copy_69), style = v.captionTextStyle)
+                        EsvText(stringResource(R.string.final_copy_70), style = v.captionTextStyle, color = v.colors.muted)
                     }
-                    EsvText("仅支持系统允许的内部播放声音，不使用麦克风。音频可能来自其他允许捕获的应用；视频范围选择不保证相同的音频范围。来源策略、静音或系统限制可能使成片无声。", style = v.captionTextStyle, color = v.colors.muted)
-                    EsvText("尊重安全窗口和受保护内容限制，不绕过保护。黑屏或静音不代表已识别 DRM。", style = v.captionTextStyle, color = v.colors.muted)
-                    EsvText("录制使用独立的前台服务，离开此页不会停止已开始的会话。可回到这里或使用系统录制通知停止。通知若未获允许，仍可在系统的活动应用入口结束服务。", style = v.captionTextStyle, color = v.colors.muted)
+                    EsvText(stringResource(R.string.final_copy_71), style = v.captionTextStyle, color = v.colors.muted)
+                    EsvText(stringResource(R.string.final_copy_72), style = v.captionTextStyle, color = v.colors.muted)
+                    EsvText(stringResource(R.string.final_copy_73), style = v.captionTextStyle, color = v.colors.muted)
                     EsvText(if (showingAdvanced) "开发版本：高级录制会话从开始起最多 2 小时（含暂停），单次暂停最多 10 分钟；当前合成输出有效总时长最多 30 分钟（不含暂停）。私有片段合计最多 2 GiB，单片段最多 2 GiB。最多 32 次真正恢复录入（初始片段加最多 32 个后续片段）。设备与真实权限验收尚未执行。"
                         else "开发版本：会话资源上限 2 小时、单次暂停最多 10 分钟、单文件最多 2 GiB；这些不是已经实测的可保存时长。每会话最多 32 次真正恢复录入，超出时安全停止并尝试保存已录部分。尺寸变化或系统结束共享会触发安全收尾。会检查全部样本结构，并实际解码首、中、末及每次恢复关键帧所在的画面组。校验最多 60 秒，较长成片可能超时而不发布；不保证每帧均已解码。设备与真实权限验收尚未执行。", style = v.captionTextStyle, color = v.colors.muted)
-                    if (showingAdvanced) EsvText("配置帧率不是实际帧率保证。观测到的可变帧率或不兼容片段可能无法进入当前 M6-A 固定帧率编辑流程；处理失败保留私有片段供恢复检查，不会假报成功。只有支持且验证入库的视频才能二次裁切、压缩或预览。", style = v.captionTextStyle, color = v.colors.muted)
+                    if (showingAdvanced) EsvText(stringResource(R.string.final_copy_74), style = v.captionTextStyle, color = v.colors.muted)
                 }
                 if (!active && !consent.requestInFlight) {
                     if (regionSetup != null) {
                         EsvText(stringResource(R.string.advanced_copy_14), style = v.titleTextStyle)
-                        EsvButton((if (!advancedMode) "已选：" else "") + "基础录制（范围由系统选择）", { selectMode(RecordingSelectionMode.BASIC) }, modifier = Modifier.fillMaxWidth())
-                        EsvButton((if (mode == RecordingSelectionMode.PROPORTIONAL) "已选：" else "") + "高级录制：比例示意选区（无画面预览）", { selectMode(RecordingSelectionMode.PROPORTIONAL) }, modifier = Modifier.fillMaxWidth())
+                        EsvButton((if (!advancedMode) stringResource(R.string.final_copy_75) else "") + stringResource(R.string.final_copy_76), { selectMode(RecordingSelectionMode.BASIC) }, modifier = Modifier.fillMaxWidth())
+                        EsvButton((if (mode == RecordingSelectionMode.PROPORTIONAL) stringResource(R.string.final_copy_75) else "") + stringResource(R.string.final_copy_77), { selectMode(RecordingSelectionMode.PROPORTIONAL) }, modifier = Modifier.fillMaxWidth())
                         if (onStartAuthorizedPreview != null) EsvButton(
-                            (if (previewMode) "已选：" else "") + "高级录制：授权帧选区（当前 ESV 浏览器）",
+                            (if (previewMode) stringResource(R.string.final_copy_75) else "") + stringResource(R.string.final_copy_78),
                             { selectMode(RecordingSelectionMode.AUTHORIZED_FRAME) }, modifier = Modifier.fillMaxWidth())
                         if (advancedMode) {
-                            EsvText("高级录制同时需要基础录制与区域录制权益；暂停 / 继续另需分段权益。停止和放弃始终可用。", style = v.captionTextStyle, color = v.colors.muted)
+                            EsvText(stringResource(R.string.final_copy_79), style = v.captionTextStyle, color = v.colors.muted)
                             regionSetup.unavailableReason?.let { EsvText(it, style = v.captionTextStyle, color = v.colors.error) }
                             if (previewMode) {
                                 EsvText(recordingPreviewScopeDisclosure, style = v.captionTextStyle)
-                                EsvText("下一步将先返回当前 ESV 浏览器，再申请本次系统授权。授权后只展示一张冻结画面，等你核对来源并确认选区；这时尚未录制。黑屏、画面错误或不想继续时可以取消，不会改用比例示意图。", style = v.captionTextStyle)
+                                EsvText(stringResource(R.string.final_copy_80), style = v.captionTextStyle)
                             } else {
-                                EsvButton(if (selectionCurrent) "调整已确认的比例选区" else "选择 / 重新选择比例范围", { editingSetup = regionSetup },
+                                EsvButton(if (selectionCurrent) stringResource(R.string.final_copy_81) else stringResource(R.string.final_copy_82), { editingSetup = regionSetup },
                                     enabled = regionSetup.geometry != null && regionSetup.scopeEvidence != null, modifier = Modifier.fillMaxWidth())
                                 selectedRecipe?.let { selected ->
                                     EsvText(recordingRegionSummary(selected.bounds), style = v.captionTextStyle)
                                     EsvText(recordingEffectiveCropSummary(selected), style = v.captionTextStyle)
-                                    if (!selectionCurrent) EsvText("此选区的显示几何已失效，请重新选择。", color = v.colors.error, style = v.captionTextStyle)
-                                } ?: EsvText("先确认输出选区，也可在选择器中选择全屏；全屏仍须满足当前处理尺寸限制。", style = v.captionTextStyle, color = v.colors.muted)
+                                    if (!selectionCurrent) EsvText(stringResource(R.string.final_copy_83), color = v.colors.error, style = v.captionTextStyle)
+                                } ?: EsvText(stringResource(R.string.final_copy_84), style = v.captionTextStyle, color = v.colors.muted)
                             }
                         }
                     }
                     EsvText(stringResource(R.string.advanced_copy_15), style = v.titleTextStyle)
-                    EsvButton(if (audioChoice == RecordingAudioChoice.INTERNAL) "已选：内部声音（需允许）" else "内部声音（需允许）",
+                    EsvButton(if (audioChoice == RecordingAudioChoice.INTERNAL) stringResource(R.string.final_copy_85) else stringResource(R.string.final_copy_86),
                         onClick = { onCreationSelectionChanged(); audioChoice = RecordingAudioChoice.INTERNAL }, modifier = Modifier.fillMaxWidth())
-                    EsvButton(if (audioChoice == RecordingAudioChoice.NONE) "已选：无声音" else "无声音",
+                    EsvButton(if (audioChoice == RecordingAudioChoice.NONE) stringResource(R.string.final_copy_87) else stringResource(R.string.final_copy_88),
                         onClick = { onCreationSelectionChanged(); audioChoice = RecordingAudioChoice.NONE }, modifier = Modifier.fillMaxWidth())
                     if (!(if (advancedMode) regionSetup?.canStart == true else canStart)) EsvText(stringResource(R.string.advanced_copy_16), style = v.captionTextStyle, color = v.colors.muted)
-                    if (!consent.audioPermissionDenied) EsvButton(if (previewMode) "我已了解，返回浏览器并申请授权帧" else "我已了解，申请系统录制授权", onClick = { audioChoice?.let(::begin) },
+                    if (!consent.audioPermissionDenied) EsvButton(if (previewMode) stringResource(R.string.final_copy_89) else stringResource(R.string.final_copy_90), onClick = { audioChoice?.let(::begin) },
                         enabled = startAllowed && audioChoice != null, modifier = Modifier.fillMaxWidth())
                 }
                 if (consent.requestInFlight) {
-                    EsvText(if (consent.waitingForAudio) "等待内部声音权限选择，尚未录制。" else "等待本次系统授权结果，尚未录制。")
+                    EsvText(if (consent.waitingForAudio) stringResource(R.string.final_copy_91) else stringResource(R.string.final_copy_92))
                     EsvButton(stringResource(R.string.advanced_copy_17), onClick = consent::cancel)
                 }
                 if (consent.audioPermissionDenied) {
@@ -143,8 +143,8 @@ fun RecordingScreen(
                         enabled = startAllowed && !consent.requestInFlight)
                     EsvButton(stringResource(R.string.advanced_copy_19), onClick = consent::cancel)
                 }
-                consent.notice?.let { EsvText(it, color = v.colors.error, style = v.captionTextStyle) }
-                notice?.let { EsvText(it, color = v.colors.error, style = v.captionTextStyle) }
+                consent.notice?.let { EsvDiagnosticNotice(it) }
+                notice?.let { EsvDiagnosticNotice(it) }
                 segments?.let { current ->
                     RecordingSegmentsCard(current, canPauseResume, onPause, onResume, onStopAndSave, onDiscard,
                         onRetrySegments, onDiscardSegments, onOpenVerifiedEditor, retainedSessionCount, onNextSegments)
@@ -152,30 +152,30 @@ fun RecordingScreen(
                 if (segments == null) snapshot?.let { current ->
                     Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner))
                         .padding(v.spacingMedium), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                        EsvText(recordingStateLabel(current.state), style = v.titleTextStyle)
+                        EsvText(stringResource(recordingStateResource(current.state)), style = v.titleTextStyle)
                         EsvText(stringResource(R.string.advanced_copy_20), style = v.captionTextStyle)
                         current.actualProfile?.let { profile ->
                             EsvText("实际编码画布 ${profile.width} × ${profile.height} · ${profile.frameRate} fps 配置", style = v.captionTextStyle)
                         }
                         EsvText(effectiveDurationUs?.let { "有效录制时长 ${recordingDurationLabel(it)}（不含暂停）" }
-                            ?: "有效录制时长等待实际样本确认", style = v.captionTextStyle)
-                        EsvText(recordingAudioStatusLabel(current.audioStatus), style = v.captionTextStyle)
+                            ?: stringResource(R.string.final_copy_93), style = v.captionTextStyle)
+                        EsvText(stringResource(recordingAudioStatusResource(current.audioStatus)), style = v.captionTextStyle)
                         EsvText("有效恢复 ${current.effectiveResumeCount} / 32 次（按实际录入的恢复关键帧计数）", style = v.captionTextStyle)
                         if (current.effectiveResumeCount >= 28) EsvText(
-                            if (current.effectiveResumeCount == 32) "已达到恢复上限。再次继续将安全停止并尝试保存已录部分，不会继续录入。"
+                            if (current.effectiveResumeCount == 32) stringResource(R.string.final_copy_94)
                             else "接近恢复上限，还可真正恢复 ${32 - current.effectiveResumeCount} 次。", color = v.colors.error, style = v.captionTextStyle)
                         (current.outcome as? RecordingOutcome.Completed)?.expectation?.let {
-                            EsvText(recordingAudioOutcomeLabel(it.audioOutcome), style = v.captionTextStyle)
+                            EsvText(stringResource(recordingAudioOutcomeResource(it.audioOutcome)), style = v.captionTextStyle)
                         }
-                        current.stopReason?.let { EsvText(recordingStopReasonLabel(it), style = v.captionTextStyle) }
-                        current.error?.let { EsvText(recordingErrorLabel(it), style = v.captionTextStyle, color = v.colors.error) }
+                        current.stopReason?.let { EsvText(stringResource(recordingStopReasonResource(it)), style = v.captionTextStyle) }
+                        current.error?.let { EsvText(stringResource(recordingErrorResource(it)), style = v.captionTextStyle, color = v.colors.error) }
                         if (current.state == RecordingState.RECORDING) EsvButton(stringResource(R.string.advanced_copy_21), onClick = onPause, enabled = canPauseResume)
                         if (current.state == RecordingState.PAUSED) {
                             if (current.effectiveResumeCount >= 32) EsvButton(stringResource(R.string.advanced_copy_22), onClick = onStopAndSave)
                             else EsvButton(stringResource(R.string.advanced_copy_23), onClick = onResume, enabled = canPauseResume)
                         }
                         if (current.state in setOf(RecordingState.RECORDING, RecordingState.PAUSED) && !canPauseResume)
-                            EsvText("暂停 / 继续按现有组合权益检查；开始录制权益本身不保证这两个操作可用。停止和放弃始终可用。", style = v.captionTextStyle, color = v.colors.muted)
+                            EsvText(stringResource(R.string.final_copy_95), style = v.captionTextStyle, color = v.colors.muted)
                         if (recordingCanStop(current.state)) EsvButton(stringResource(R.string.advanced_copy_24), onClick = onStopAndSave, modifier = Modifier.fillMaxWidth())
                         if (active && current.state != RecordingState.CANCELLING) EsvButton(stringResource(R.string.advanced_copy_25), onClick = onDiscard, modifier = Modifier.fillMaxWidth())
                         if (current.state == RecordingState.CAPTURE_FINISHED)

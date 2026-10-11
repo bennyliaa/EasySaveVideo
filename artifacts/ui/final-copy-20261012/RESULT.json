@@ -1,0 +1,62 @@
+{
+  "base_source_commit": "f8aab9376c69f58dee2fc0b60332b5b69cc18aa5",
+  "new_resource_pairs": 183,
+  "resource_contract": "PASS",
+  "debug_release_compile": "PASS",
+  "lint": {
+    "debug": {
+      "errors_fatal": 0,
+      "warnings": 57
+    },
+    "release": {
+      "errors_fatal": 0,
+      "warnings": 57
+    }
+  },
+  "jvm_tests": 41,
+  "jvm_reports": [
+    {
+      "name": "com.easysavevideo.app.editor.ui.EditorPresentationTest",
+      "tests": "17",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.editor.ui.EditorStatusResourcesTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.recording.RecordingStatusResourcesTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.recording.ui.RecordingPresentationTest",
+      "tests": "19",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.FinalResourceContractTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "scope_complete_bilingual": false,
+  "new_apk_build": "NOT_RUN",
+  "source_upload": "NOT_RUN",
+  "device_acceptance": "NOT_RUN",
+  "accessibility_device_acceptance": "NOT_RUN",
+  "full_windows_suite": "NOT_RUN",
+  "fixed_code4_source": "d9bdf34567bf2d138e796a50560419d359385cf4",
+  "separate_code4_transport_ref": "f549a7a6b7b9857d3f2f7f82badc173765e1bbab"
+}

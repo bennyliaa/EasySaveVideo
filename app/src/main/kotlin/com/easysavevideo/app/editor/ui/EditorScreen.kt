@@ -77,10 +77,10 @@ fun EditorScreen(
                             EsvButton(stringResource(R.string.advanced_copy_2), onBack, modifier = Modifier.weight(1f))
                             EsvButton(stringResource(R.string.advanced_copy_3), onCancel, modifier = Modifier.weight(1f))
                         }
-                        EsvText("对已入库的普通视频做时长裁剪、顺序拼接、二次画面裁切与压缩。新文件验证并入库后才算完成，原件始终保留。", style = v.captionTextStyle, color = v.colors.muted)
-                        EsvText("时间裁剪向内对齐实际来源帧：入点和出点各可能缩短最多一个帧间隔。会记录实际执行边界，不承诺任意微秒边界精确。", style = v.captionTextStyle, color = v.colors.muted)
-                        EsvText("当前上限：8 个片段、单来源及成片 30 分钟、请求片段至少 0.25 秒，帧对齐后至少 3 帧。支持范围与输出参数会在开始前再次验证。", style = v.captionTextStyle, color = v.colors.muted)
-                        EsvText("M6-B 录制页提供比例示意选区与私有片段编排，尚无实际画面截图框选。这里的二次裁切不改变此前系统捕获范围，也不是区域独占录屏。Vault 未启用。", style = v.captionTextStyle, color = v.colors.muted)
+                        EsvText(stringResource(R.string.final_copy_0), style = v.captionTextStyle, color = v.colors.muted)
+                        EsvText(stringResource(R.string.final_copy_1), style = v.captionTextStyle, color = v.colors.muted)
+                        EsvText(stringResource(R.string.final_copy_2), style = v.captionTextStyle, color = v.colors.muted)
+                        EsvText(stringResource(R.string.final_copy_3), style = v.captionTextStyle, color = v.colors.muted)
                     }
                 }
                 item(key = "status") {
@@ -88,9 +88,9 @@ fun EditorScreen(
                         EsvText(status, modifier = Modifier.semantics { stateDescription = status },
                             color = if (state.phase == EditorPhase.FAILED || state.phase == EditorPhase.BLOCKED) v.colors.error else v.colors.text)
                         if (!state.foreground) EsvText(stringResource(R.string.advanced_copy_4), style = v.captionTextStyle, color = v.colors.muted)
-                        state.notice?.let { EsvText(it, style = v.captionTextStyle) }
+                        state.notice?.let { EsvDiagnosticNotice(it) }
                         if (state.phase == EditorPhase.SUCCEEDED && state.completedReference != null) {
-                            EsvButton("预览已入库的新视频", { onPreview(state.completedReference) },
+                            EsvButton(stringResource(R.string.final_copy_4), { onPreview(state.completedReference) },
                                 enabled = state.foreground && !state.busy, modifier = Modifier.fillMaxWidth())
                         }
                     }
@@ -99,26 +99,26 @@ fun EditorScreen(
                     EsvText("片段顺序（${draft.segments.size} / ${EditLimits.MAX_SEGMENTS}）", style = v.titleTextStyle)
                 }
                 if (draft.segments.isEmpty()) item(key = "empty") {
-                    EsvText("从下方添加视频。同一来源可以重复添加，每个片段分别设置入点、出点与画面裁切。", color = v.colors.muted)
+                    EsvText(stringResource(R.string.final_copy_5), color = v.colors.muted)
                 }
                 items(draft.segments, key = { "segment:${it.id}" }) { segment ->
                     val index = draft.segments.indexOfFirst { it.id == segment.id }
                     val selected = draft.selectedSegmentId == segment.id
                     EditorCard(selected = selected) {
                         EsvText("${index + 1}. ${segment.item.displayName}", style = v.titleTextStyle, maxLines = 2)
-                        EsvText("${segment.startSeconds} → ${segment.endSeconds.ifEmpty { "待填写" }} 秒 · ${cropSummary(segment.crop)}",
+                        EsvText("${segment.startSeconds} → ${segment.endSeconds.ifEmpty { stringResource(R.string.final_pending_entry) }} 秒 · ${cropSummary(segment.crop)}",
                             style = v.captionTextStyle, color = v.colors.muted)
                         Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                            EsvButton(if (selected) "正在编辑" else "编辑此片段", {
+                            EsvButton(if (selected) stringResource(R.string.final_copy_6) else stringResource(R.string.final_copy_7), {
                                 onDraftChange(draft.copy(selectedSegmentId = segment.id))
                             }, enabled = editable, modifier = Modifier.weight(1f))
-                            EsvButton("移除此片段", { onDraftChange(removeEditorSegment(draft, segment.id)) },
+                            EsvButton(stringResource(R.string.final_copy_8), { onDraftChange(removeEditorSegment(draft, segment.id)) },
                                 enabled = editable, modifier = Modifier.weight(1f))
                         }
                         Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                            EsvButton("上移", { onDraftChange(moveEditorSegment(draft, segment.id, -1)) },
+                            EsvButton(stringResource(R.string.final_copy_9), { onDraftChange(moveEditorSegment(draft, segment.id, -1)) },
                                 enabled = editable && index > 0, modifier = Modifier.weight(1f))
-                            EsvButton("下移", { onDraftChange(moveEditorSegment(draft, segment.id, 1)) },
+                            EsvButton(stringResource(R.string.final_copy_10), { onDraftChange(moveEditorSegment(draft, segment.id, 1)) },
                                 enabled = editable && index < draft.segments.lastIndex, modifier = Modifier.weight(1f))
                         }
                     }
@@ -129,37 +129,37 @@ fun EditorScreen(
                         EditorCard {
                             EsvText("编辑片段 ${draft.segments.indexOf(segment) + 1}", style = v.titleTextStyle)
                             EsvText(segment.item.displayName, maxLines = 2)
-                            EsvButton("打开原件只读预览", { onPreview(segment.reference) },
+                            EsvButton(stringResource(R.string.final_copy_11), { onPreview(segment.reference) },
                                 enabled = state.foreground && !state.busy && !pendingSubmit, modifier = Modifier.fillMaxWidth())
-                            EsvText("原件预览用于确认内容；这里没有处理后实时预览。成片预览只在验证入库成功后提供。", style = v.captionTextStyle, color = v.colors.muted)
+                            EsvText(stringResource(R.string.final_copy_12), style = v.captionTextStyle, color = v.colors.muted)
                             Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                EditorTimeField(segment.startSeconds, "入点（秒）", editable, Modifier.weight(1f)) { value ->
+                                EditorTimeField(segment.startSeconds, stringResource(R.string.final_copy_13), editable, Modifier.weight(1f)) { value ->
                                     onDraftChange(updateEditorSegment(draft, segment.id) { it.copy(startSeconds = value) })
                                 }
-                                EditorTimeField(segment.endSeconds, "出点（秒，不含此点）", editable, Modifier.weight(1f)) { value ->
+                                EditorTimeField(segment.endSeconds, stringResource(R.string.final_copy_14), editable, Modifier.weight(1f)) { value ->
                                     onDraftChange(updateEditorSegment(draft, segment.id) { it.copy(endSeconds = value) })
                                 }
                             }
                             val verifiedDuration = geometry?.durationUs
                             val duration = verifiedDuration ?: segment.item.durationMillis?.let { it * 1_000 }
-                            EsvText(if (duration == null) "来源时长待验证，请填写出点。" else "${if (verifiedDuration == null) "媒体库记录" else "已验证"}时长：${editorSeconds(duration)} 秒",
+                            EsvText(if (duration == null) stringResource(R.string.final_copy_15) else "${if (verifiedDuration == null) stringResource(R.string.final_copy_16) else stringResource(R.string.final_copy_17)}时长：${editorSeconds(duration)} 秒",
                                 style = v.captionTextStyle, color = v.colors.muted)
                             editorSegmentError(segment, geometry)?.let { EsvText(it, style = v.captionTextStyle, color = v.colors.error) }
-                            EsvButton("恢复此片段完整时长", {
+                            EsvButton(stringResource(R.string.final_copy_18), {
                                 if (duration != null) onDraftChange(updateEditorSegment(draft, segment.id) {
                                     it.copy(startSeconds = "0", endSeconds = editorSeconds(duration))
                                 })
                             }, enabled = editable && duration != null, modifier = Modifier.fillMaxWidth())
                             if (geometry == null) {
-                                EsvText("显示尺寸与方向尚未验证；画面裁切暂不可用，不根据媒体库宽高猜测旋转方向。完整画面仍可提交验证。", style = v.captionTextStyle, color = v.colors.muted)
+                                EsvText(stringResource(R.string.final_copy_19), style = v.captionTextStyle, color = v.colors.muted)
                             } else {
                                 EsvText("显示方向：${geometry.width} × ${geometry.height} · ${cropSummary(segment.crop)}", style = v.captionTextStyle)
                                 CropSchematic(segment.crop, geometry, enabled = false, onChange = {}, modifier = Modifier.fillMaxWidth().height(220.dp))
-                                EsvText("上图是按已验证显示方向绘制的裁切示意图，不是视频画面。", style = v.captionTextStyle, color = v.colors.muted)
+                                EsvText(stringResource(R.string.final_copy_20), style = v.captionTextStyle, color = v.colors.muted)
                             }
-                            EsvButton("调整画面裁切…", { cropSegmentId = segment.id },
+                            EsvButton(stringResource(R.string.final_copy_21), { cropSegmentId = segment.id },
                                 enabled = editable && geometry != null, modifier = Modifier.fillMaxWidth())
-                            EsvButton("此片段恢复完整画面", {
+                            EsvButton(stringResource(R.string.final_copy_22), {
                                 onDraftChange(updateEditorSegment(draft, segment.id) { it.copy(crop = NormalizedCrop.FULL) })
                             }, enabled = editable && segment.crop != NormalizedCrop.FULL, modifier = Modifier.fillMaxWidth())
                         }
@@ -167,7 +167,7 @@ fun EditorScreen(
                 }
                 if (state.executionRanges.isNotEmpty()) item(key = "execution_boundaries") {
                     EditorCard {
-                        EsvText("请求与执行边界", style = v.titleTextStyle)
+                        EsvText(stringResource(R.string.final_copy_23), style = v.titleTextStyle)
                         state.executionRanges.forEachIndexed { index, range ->
                             EsvText("片段 ${index + 1}：请求 ${editorSeconds(range.requestedStartUs)}–${editorSeconds(range.requestedEndUs)} 秒", style = v.captionTextStyle)
                             EsvText("向内对齐后执行 ${editorSeconds(range.executionStartUs)}–${editorSeconds(range.executionEndUs)} 秒 · ${range.frameCount} 帧", style = v.captionTextStyle)
@@ -178,37 +178,37 @@ fun EditorScreen(
                 item(key = "compression") {
                     EditorCard {
                         EsvText(stringResource(R.string.advanced_copy_7), style = v.titleTextStyle)
-                        EsvButton((if (draft.compression == EditCompression.ORIGINAL_QUALITY) "已选 · " else "") + "原质量", {
+                        EsvButton((if (draft.compression == EditCompression.ORIGINAL_QUALITY) stringResource(R.string.final_copy_24) else "") + stringResource(R.string.final_copy_25), {
                             onDraftChange(draft.copy(compression = EditCompression.ORIGINAL_QUALITY))
                         }, enabled = editable, modifier = Modifier.fillMaxWidth())
-                        EsvText("保留可支持的裁切分辨率；当前处理仍会重新编码，不能保证无损或与原件完全一致。", style = v.captionTextStyle, color = v.colors.muted)
-                        EsvButton((if (draft.compression == EditCompression.SAVE_SPACE) "已选 · " else "") + "节省空间", {
+                        EsvText(stringResource(R.string.final_copy_27), style = v.captionTextStyle, color = v.colors.muted)
+                        EsvButton((if (draft.compression == EditCompression.SAVE_SPACE) stringResource(R.string.final_copy_24) else "") + stringResource(R.string.final_copy_26), {
                             onDraftChange(draft.copy(compression = EditCompression.SAVE_SPACE))
                         }, enabled = editable, modifier = Modifier.fillMaxWidth())
-                        EsvText("使用较低的输出分辨率与码率策略。实际大小取决于内容、来源与设备，不保证比原件小，不提供未经测量的大小估算。", style = v.captionTextStyle, color = v.colors.muted)
-                        EsvText("单来源与输出最多 2 GiB，不同来源合计最多 4 GiB；最长边 1920 像素，总像素不超过 1920 × 1080，最高 60 fps。节省空间最长边 1280 像素。", style = v.captionTextStyle, color = v.colors.muted)
-                        EsvText("M6-A 仅接受验证通过的 H.264/8-bit SDR/固定帧率视频。多段须兼容；静音或一致的 AAC-LC 音轨配置会被检查。不兼容时明确停止。", style = v.captionTextStyle, color = v.colors.muted)
+                        EsvText(stringResource(R.string.final_copy_28), style = v.captionTextStyle, color = v.colors.muted)
+                        EsvText(stringResource(R.string.final_copy_29), style = v.captionTextStyle, color = v.colors.muted)
+                        EsvText(stringResource(R.string.final_copy_30), style = v.captionTextStyle, color = v.colors.muted)
                     }
                 }
                 item(key = "submit") {
                     EditorCard {
                         error?.let { EsvText(it, color = v.colors.error, style = v.captionTextStyle) }
-                        EsvButton(if (pendingSubmit || state.busy) "正在处理，请等待状态更新" else "创建新视频", {
+                        EsvButton(if (pendingSubmit || state.busy) stringResource(R.string.final_copy_31) else stringResource(R.string.final_copy_32), {
                             if (guard.trySubmit(state.submissionRevision, editable && error == null)) {
                                 pendingSubmissionRevision = state.submissionRevision
                                 onSubmit(draft)
                             }
                         }, enabled = editable && error == null, modifier = Modifier.fillMaxWidth())
                         EsvButton(stringResource(R.string.advanced_copy_3), onCancel, modifier = Modifier.fillMaxWidth())
-                        EsvText("提交会重新核对所选项目的准确版本，不会静默换用更新后的原件。离开页面或重复点击不代表已经取消或完成。", style = v.captionTextStyle, color = v.colors.muted)
+                        EsvText(stringResource(R.string.final_copy_33), style = v.captionTextStyle, color = v.colors.muted)
                     }
                 }
                 item(key = "sources_header") {
                     Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                         EsvText(stringResource(R.string.advanced_copy_8), style = v.titleTextStyle)
-                        EsvText("以下为打开编辑器时可用的媒体库列表快照。要选择其他文件夹或页面，请返回媒体库。", style = v.captionTextStyle, color = v.colors.muted)
+                        EsvText(stringResource(R.string.final_copy_34), style = v.captionTextStyle, color = v.colors.muted)
                         if (state.availableItems.isEmpty()) EsvText(stringResource(R.string.advanced_copy_6), color = v.colors.muted)
-                        if (draft.segments.size >= EditLimits.MAX_SEGMENTS) EsvText("已达到 8 个片段上限；先移除片段再添加。", color = v.colors.muted)
+                        if (draft.segments.size >= EditLimits.MAX_SEGMENTS) EsvText(stringResource(R.string.final_copy_35), color = v.colors.muted)
                     }
                 }
                 items(state.availableItems, key = { "source:${it.itemId}:${it.revision}:${it.representationGeneration}" }) { item ->
@@ -216,7 +216,7 @@ fun EditorScreen(
                     EditorCard {
                         EsvText(item.displayName, maxLines = 2)
                         sourceError?.let { EsvText(it, style = v.captionTextStyle, color = v.colors.muted) }
-                        EsvButton("添加为末尾片段", { onDraftChange(addEditorSegment(draft, item)) },
+                        EsvButton(stringResource(R.string.final_copy_36), { onDraftChange(addEditorSegment(draft, item)) },
                             enabled = editable && sourceError == null && draft.segments.size < EditLimits.MAX_SEGMENTS,
                             modifier = Modifier.fillMaxWidth())
                     }
@@ -276,18 +276,18 @@ private fun EditorCropDialog(
                 .verticalScroll(rememberScrollState()).padding(v.spacingMedium),
                 verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvText(stringResource(R.string.advanced_copy_9), style = v.titleTextStyle)
-                EsvText("按显示方向调整，上下左右均相对于正常观看的画面。外侧留白不属于视频。", style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(stringResource(R.string.final_copy_37), style = v.captionTextStyle, color = v.colors.muted)
                 if (geometry != null) {
                     CropSchematic(crop, geometry, adjustable, { crop = it }, Modifier.fillMaxWidth().height(300.dp))
-                    EsvText("示意图，不是视频画面。拖动框内移动；拖动四角或四边中点缩放。", style = v.captionTextStyle, color = v.colors.muted)
+                    EsvText(stringResource(R.string.final_copy_38), style = v.captionTextStyle, color = v.colors.muted)
                 } else EsvText(stringResource(R.string.advanced_copy_10), color = v.colors.error)
                 EsvText(cropSummary(crop), style = v.captionTextStyle)
                 cropError?.let { EsvText(it, style = v.captionTextStyle, color = v.colors.error) }
-                EsvText("也可选择一个控制点，再用下方方向按钮微调：", style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(stringResource(R.string.final_copy_39), style = v.captionTextStyle, color = v.colors.muted)
                 EditorCropHandle.entries.chunked(3).forEach { row ->
                     Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                         row.forEach { target ->
-                            EsvButton((if (handle == target) "已选 " else "") + cropHandleLabel(target), { handle = target },
+                            EsvButton((if (handle == target) stringResource(R.string.final_copy_40) else "") + cropHandleLabel(target), { handle = target },
                                 enabled = adjustable, modifier = Modifier.weight(1f))
                         }
                     }
@@ -301,12 +301,12 @@ private fun EditorCropDialog(
                     EsvButton("1% ↓", { crop = dragEditorCrop(crop, handle, 0.0, 0.01) }, enabled = adjustable, modifier = Modifier.weight(1f))
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                    EsvButton("恢复完整画面", { crop = NormalizedCrop.FULL }, enabled = adjustable, modifier = Modifier.weight(1f))
-                    EsvButton("重置本次调整", { crop = segment.crop }, enabled = adjustable, modifier = Modifier.weight(1f))
+                    EsvButton(stringResource(R.string.final_copy_41), { crop = NormalizedCrop.FULL }, enabled = adjustable, modifier = Modifier.weight(1f))
+                    EsvButton(stringResource(R.string.final_copy_42), { crop = segment.crop }, enabled = adjustable, modifier = Modifier.weight(1f))
                 }
-                EsvText("确认只更新此片段参数。输出会向内对齐偶数像素，实际边缘可能略有变化；原件不变。", style = v.captionTextStyle, color = v.colors.muted)
-                EsvButton("确认裁切", { onConfirm(crop) }, enabled = adjustable && cropError == null, modifier = Modifier.fillMaxWidth())
-                EsvButton("取消，不保留本次调整", onCancel, modifier = Modifier.fillMaxWidth())
+                EsvText(stringResource(R.string.final_copy_43), style = v.captionTextStyle, color = v.colors.muted)
+                EsvButton(stringResource(R.string.final_copy_44), { onConfirm(crop) }, enabled = adjustable && cropError == null, modifier = Modifier.fillMaxWidth())
+                EsvButton(stringResource(R.string.final_copy_45), onCancel, modifier = Modifier.fillMaxWidth())
             }
         }
     }
@@ -323,8 +323,10 @@ private fun CropSchematic(
     val v = LocalEsvVisuals.current
     val currentCrop by rememberUpdatedState(crop)
     val currentChange by rememberUpdatedState(onChange)
+    val diagramDescription = stringResource(R.string.final_crop_diagram)
+    val cropDescription = cropSummary(crop)
     Canvas(modifier.background(v.colors.bg, RoundedCornerShape(v.corner))
-        .semantics { contentDescription = "按显示方向绘制的画面裁切示意图"; stateDescription = cropSummary(crop) }
+        .semantics { contentDescription = diagramDescription; stateDescription = cropDescription }
         .pointerInput(geometry, enabled) {
             if (!enabled) return@pointerInput
             var target: EditorCropHandle? = null
@@ -371,18 +373,19 @@ private fun CropSchematic(
     }
 }
 
-private fun cropSummary(crop: NormalizedCrop): String = if (crop == NormalizedCrop.FULL) "完整画面" else
-    String.format(Locale.ROOT, "保留范围：左 %.1f%% · 上 %.1f%% · 右 %.1f%% · 下 %.1f%%",
-        crop.left * 100, crop.top * 100, crop.right * 100, crop.bottom * 100)
+@Composable
+private fun cropSummary(crop: NormalizedCrop): String = if (crop == NormalizedCrop.FULL) stringResource(R.string.final_crop_full) else
+    stringResource(R.string.final_crop_summary, crop.left * 100, crop.top * 100, crop.right * 100, crop.bottom * 100)
 
+@Composable
 private fun cropHandleLabel(handle: EditorCropHandle): String = when (handle) {
-    EditorCropHandle.MOVE -> "整体移动"
-    EditorCropHandle.LEFT -> "左边"
-    EditorCropHandle.TOP -> "上边"
-    EditorCropHandle.RIGHT -> "右边"
-    EditorCropHandle.BOTTOM -> "下边"
-    EditorCropHandle.TOP_LEFT -> "左上角"
-    EditorCropHandle.TOP_RIGHT -> "右上角"
-    EditorCropHandle.BOTTOM_LEFT -> "左下角"
-    EditorCropHandle.BOTTOM_RIGHT -> "右下角"
+    EditorCropHandle.MOVE -> stringResource(R.string.final_crop_move)
+    EditorCropHandle.LEFT -> stringResource(R.string.final_crop_left)
+    EditorCropHandle.TOP -> stringResource(R.string.final_crop_top)
+    EditorCropHandle.RIGHT -> stringResource(R.string.final_crop_right)
+    EditorCropHandle.BOTTOM -> stringResource(R.string.final_crop_bottom)
+    EditorCropHandle.TOP_LEFT -> stringResource(R.string.final_crop_top_left)
+    EditorCropHandle.TOP_RIGHT -> stringResource(R.string.final_crop_top_right)
+    EditorCropHandle.BOTTOM_LEFT -> stringResource(R.string.final_crop_bottom_left)
+    EditorCropHandle.BOTTOM_RIGHT -> stringResource(R.string.final_crop_bottom_right)
 }

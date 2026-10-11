@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_diagnostic_summary">Additional diagnostic information is available. Check the task status for its outcome.</string>
+    <string name="final_diagnostic_show">Show original diagnostic</string>
+    <string name="final_diagnostic_hide">Hide original diagnostic</string>
+</resources>

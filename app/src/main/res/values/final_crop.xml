@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_crop_full">Full frame</string>
+    <string name="final_crop_summary">Crop: left %1$.1f%% · top %2$.1f%% · right %3$.1f%% · bottom %4$.1f%%</string>
+    <string name="final_crop_diagram">Crop diagram in display orientation</string>
+    <string name="final_pending_entry">Not entered</string>
+    <string name="final_crop_move">Move region</string>
+    <string name="final_crop_left">Left edge</string>
+    <string name="final_crop_top">Top edge</string>
+    <string name="final_crop_right">Right edge</string>
+    <string name="final_crop_bottom">Bottom edge</string>
+    <string name="final_crop_top_left">Top-left corner</string>
+    <string name="final_crop_top_right">Top-right corner</string>
+    <string name="final_crop_bottom_left">Bottom-left corner</string>
+    <string name="final_crop_bottom_right">Bottom-right corner</string>
+</resources>
