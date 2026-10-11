@@ -1,0 +1,57 @@
+[
+  {
+    "path": "commons-provider/src/main/kotlin/com/easysavevideo/commons/CommonsVideoSearchProvider.kt",
+    "sha256": "69dd250c86574ecede862798e6f54a51db6736bff90989b46ca89516b2bbc133",
+    "bytes": 4745
+  },
+  {
+    "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/ResultNormalizer.kt",
+    "sha256": "d02b8b9c65226ac8ed01040c4bd8e0c09bcf39cc74fdd43b1b9ff0654be938c8",
+    "bytes": 3320
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt",
+    "sha256": "1ee8afbc5c52eb3314a9e8b0d0b45cef21a26ce9413454a068d0a02f5e39df70",
+    "bytes": 30219
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryOriginTracker.kt",
+    "sha256": "b5d1d0c11f41ba9292bab14aebb66285ab394f44918a426810602442995b616d",
+    "bytes": 10289
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/PageSaveDetector.kt",
+    "sha256": "03a3803e3143b965d77dd44ece478b425a4259ea8cfca1adac3b3b81348aed33",
+    "bytes": 9063
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
+    "sha256": "22682300f38ce003de5802f59b714c095c76320c796185ed68a3fb5579743074",
+    "bytes": 54794
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveModels.kt",
+    "sha256": "13d36addcba452e2c79f61e871498ffa6fadeb2dfdc3794cd7ef78dfc22b6d67",
+    "bytes": 15537
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveCoordinator.kt",
+    "sha256": "3e976e6b816bca803b0e4a85d821a78407eac0f88fe479648be9f90c6c05847e",
+    "bytes": 33986
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/MediaTaskActivitySaveOutcome.kt",
+    "sha256": "a4fc2844349cbde01fe5e06186ad32af4f569b7ba5544cc1adb4b7e752aa838b",
+    "bytes": 2024
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/MediaTaskActivitySaveLinks.kt",
+    "sha256": "320fc7db1648e1a6349dcc057a0db24ff9ced1e5819812e29de7899ce91b12ba",
+    "bytes": 1850
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
+    "sha256": "ede623b24562ccd7452423735485d3f9e462b0186c41ae57fe12dbc335536424",
+    "bytes": 36343
+  }
+]
