@@ -1,0 +1,49 @@
+{
+  "base": "fbbb0b2aacf5e1967584bdaa858250e73f6df605",
+  "scope": "Source-only width/font adaptive Discovery grid/search/pager and task header wrapping; existing tokens/state/callbacks",
+  "jvm_unique_tests": 44,
+  "reports": [
+    {
+      "name": "com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest",
+      "tests": "26",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.save.SaveUiPolicyTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.DiscoveryResponsiveLayoutTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "layout_matrix": "240/320/360/600/840/1200dp, fonts100/130/150/200/300 percent, preferences1..6; monotonic font and width capacity, invalid inputs, matched resource arguments",
+  "initial_debug_release_compile": "EXECUTED_PASS",
+  "final_resource_only_compile": "UP_TO_DATE_REUSE",
+  "strict_runtime_artifacts": 90,
+  "lint": {
+    "debug": {
+      "Warning": 58,
+      "Hint": 7
+    },
+    "release": {
+      "Warning": 58,
+      "Hint": 7
+    }
+  },
+  "initial_new_lint_warning": "One new PluralsCandidate warning; corrected English count-label phrasing before final lint. No suppression.",
+  "initial_wrong_save_class_filter": "NOT_RUN, then actual SaveUiPolicyTest11 passed separately",
+  "initial_evidence_copy": "FAIL_WINDOWS_DEFAULT_GBK_READING_UTF8_LINT_XML; corrected explicit UTF8, no build/test failure",
+  "APK_assembly_install_device_visuals": "NOT_RUN",
+  "physical_power_and_public_web": "NOT_MEASURED_NOT_RUN",
+  "code4_contains_this_increment": false,
+  "full_UI_PPT_completion": false
+}
