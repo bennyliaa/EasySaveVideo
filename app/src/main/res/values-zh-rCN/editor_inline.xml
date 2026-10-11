@@ -1,0 +1,8 @@
+<resources>
+    <string name="editor_inline_heading">只读预览</string>
+    <string name="editor_inline_readonly">只有明确点击预览后才打开。播放不应用编辑，原件保持不变。</string>
+    <string name="editor_inline_background">后台已关闭预览，返回后请再次选择预览。</string>
+    <string name="editor_inline_busy">媒体处理或恢复期间预览不可用。</string>
+    <string name="editor_inline_empty">请选择已验证输入或已发布产物预览，不自动打开媒体。</string>
+    <string name="editor_inline_close">关闭预览</string>
+</resources>

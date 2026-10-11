@@ -70,6 +70,19 @@ fun LibraryMediaPreview(
     PublishedMediaPreviewScreen(reference, isForeground, { openPublishedMedia(reference) }, onBack, onReleaseUnconfirmed)
 }
 
+/** Caller must supply an explicit current published reference and retire this body when hidden. */
+@Composable
+fun InlineLibraryMediaPreview(
+    reference: MediaReadRef,
+    isForeground: Boolean,
+    openPublishedMedia: (MediaReadRef) -> FileInputStream,
+    onReleaseUnconfirmed: () -> Unit,
+) {
+    Column {
+        if (isForeground) AwaitPublishedPreviewBody(reference, { openPublishedMedia(reference) }, onReleaseUnconfirmed)
+    }
+}
+
 @Composable
 private fun PublishedMediaPreviewScreen(
     identity: Any,

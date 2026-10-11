@@ -314,7 +314,7 @@ class MainActivity : ComponentActivity() {
                 else if (route == EsvDestination.EDITOR && editor != null) EditorScreen(editor.state,
                     onDraftChange = editor::changeDraft, onSubmit = editor::submit, onCancel = editor::cancel,
                     onBack = { editor.cancel(); backTo(EsvDestination.LIBRARY); library?.refresh() },
-                    onPreview = { libraryPreviewReference = it })
+                    openPreviewMedia = saves::openLibraryMedia, onPreviewReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
                 else if (route == EsvDestination.LIBRARY && library != null) {
                     val thumbnails = remember(library) { AndroidLibraryThumbnails(saves::openLibraryMedia, saves::retainLibraryNativeReader) }
                     DisposableEffect(thumbnails) { onDispose { thumbnails.close() } }

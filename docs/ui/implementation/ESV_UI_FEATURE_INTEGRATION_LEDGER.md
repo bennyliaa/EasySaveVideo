@@ -1,7 +1,7 @@
 # UI capability integration ledger
 
-Reconciled against main 766789ff93ea60bb2dd6164903f45a9a2f2cbe98 plus the bounded
-Editor existing-binding / responsive-control source increment. COMPLETE SOURCE
+Reconciled against main 920668f107ec089a9a54da62e6821d982af95d5d plus the bounded
+Editor inline-preview / panel source increment. COMPLETE SOURCE
 means implementation plus scoped source validation. PARTIAL means callable code
 or bounded checks exist; it does not close full PPT/media/device acceptance.
 NOT ACCEPTED means the specified acceptance is unperformed. DISABLED is intentional.
@@ -103,7 +103,7 @@ permission to develop or model-test:
 | PPT11 / C-05 | SOURCE IMPLEMENTED: Wide webpage/candidate inspector; Compact modal shares movable composition and runtime selection | Actual page/media inspection and render transitions NOT RUN; HLS retains existing modal; settings/bookmarks force single-modal fallback |
 | PPT6–8 / UI-R04 | SOURCE IMPLEMENTED: bounded scrolling header/pager, minimum content space and conservative low-height/large-font fallback | Keyboard/font200/compact-height render matrix NOT RUN |
 | C-03 | Discovery thumbnail area currently renders a theme icon placeholder; approved loading/unknown/failed thumbnail presentation and reader binding remain | Owned local fixture/reader contracts can be developed without public fetching. Arbitrary real thumbnail URLs need source/rights/admission review; reference PPT photos remain unlicensed runtime assets |
-| PPT17 / C-08 | Complete expanded editor preview/segments/inspector composition is not accepted | Layout source can use existing typed UI state; real decoding/encoding needs verified owned media and permitted Tools capability |
+| PPT17 / C-08 | SOURCE IMPLEMENTED: wide preview / segments / inspector; Compact/low-height/font fallback; explicit verified-reference read-only inline preview | Native read/playback/release, Tools/new-output and actual render transitions NOT RUN; PPT pixel parity not accepted |
 
 Standard control styles remain existing Material3 adapters driven by one SkinKit
 snapshot. No parallel palette, typography, component theme, dependency, reference
@@ -179,3 +179,47 @@ segments-and-inspector composition remains future source and rendering work, not
 closed by this increment. No private media, device capture, native processing,
 real published output/preview or Tools acceptance was performed. No APK/device
 step; code4 remains frozen on d9bdf345.
+
+## Editor inline preview and panel source increment
+
+PPT17 text and framework section3/C-08 require preview, segments and an inspector;
+new outputs preserve originals and execution retains Tools admission. Existing
+System MediaPlayer / exact Library reader / resource exclusion and actual-release
+behavior are reused, without a new dependency or codec/edit algorithm. The native
+player body is byte-identical to the previous source. No PPT assets extracted.
+
+Preview begins only from a user preview action on the selected input with verified
+display geometry, or the successful published output reference. There is no
+automatic first-item read or autoplay. Current catalog authority is still checked
+by the existing reader. Background, processing, blocked or invalid selection
+retires preview; close, draft changes, crop, submit, cancel and navigation also
+retire it. Disposal/Surface destruction uses the existing close protocol: actual
+native release, not timeout, relinquishes descriptors/ownership. Unconfirmed
+release retains the sticky recovery fence. Reopening requires an explicit action.
+
+Wide panes share one runtime draft, submit latch and selected stable segment ID.
+The preview movable composition is called once in either layout; Compact keeps
+its bounded preview outside lazy-list caching. Header/preview budgets account for
+SkinKit spacing, with remaining space for scrolling controls. Low height and large
+font conservatively collapse three columns. Width changes issue no edit task,
+probe, save or draft command. Existing crop/quality/source controls and Tools gates
+remain in place; preview shows originals or published output, never an unrendered
+edit result.
+
+Validation: 54 JVM passes, dual Kotlin compile/lint PASS
+({'Warning': 58, 'Hint': 8}), paired6 resources, exact runtime graph90. Evidence:
+artifacts/ui/editor-panels-20261012. The first compile receiver error and corrected
+run are preserved. Source/model coverage does not prove actual native playback,
+release, window/state transfer, pixel parity, font200/TalkBack or real Tools/output
+acceptance: all NOT RUN. No device, private media, recording or APK step; code4
+remains frozen on d9bdf345. Earlier future-layout notes are historical: this group
+implements the panel/preview source binding, while execution/render acceptance
+remains open.
+
+Known existing reconstruction gap: MainActivity.onSaveInstanceState saves only
+the destination; AndroidEditRuntime has no draft checkpoint/restore contract.
+Same-runtime responsive composition uses one draft, but Activity/process rebuild
+recovery is NOT IMPLEMENTED and is not covered by the model/window-layout PASS.
+A bounded exact-reference draft recovery interface is still needed; this group
+does not invent automatic media reopening. Preview requests are intentionally
+ephemeral and require a user action after rebuilding.

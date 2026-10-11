@@ -1,0 +1,23 @@
+{
+  "status": "PASS_EXISTING_PLAYER_ADMISSION_PLAYBACK_NATIVE_RELEASE_AND_EDITOR_RUNTIME_UNCHANGED",
+  "base": "920668f107ec089a9a54da62e6821d982af95d5d",
+  "protected": [
+    "app/src/main/kotlin/com/easysavevideo/app/editor/AndroidEditRuntime.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/editor/engine",
+    "app/src/main/kotlin/com/easysavevideo/app/editor/workflow",
+    "app/src/main/kotlin/com/easysavevideo/app/editor/storage",
+    "app/src/main/kotlin/com/easysavevideo/app/editor/verification",
+    "app/src/main/kotlin/com/easysavevideo/app/recording",
+    "app/build.gradle.kts",
+    "gradle/verification-metadata.xml",
+    "third_party/admitted-runtime.tsv",
+    "app/src/debug/kotlin/com/easysavevideo/app/entitlements",
+    "app/src/release/kotlin/com/easysavevideo/app/entitlements"
+  ],
+  "player_body_sha256": "422ea916a3447feb3e7706355acf1eb32c9f9b40642d45ce194903dc19a77a8d",
+  "PPT17_text": "Preview area, segment strip and inspector; business crop/segments; Material3 controls; new output preserves original; pure editing requires Tools capabilities",
+  "reference": "Original local docs/ui PPT slide17 text read only, no image/asset extraction",
+  "preview_contract": "Explicit request; selected exact input MediaReadRef plus verified display geometry OR SUCCEEDED/published exact reference; controlled reader rejects revoked catalog authority; no path/URI/provisional output",
+  "lifecycle": "Background/busy/blocked/invalid identity removes active body and clears request; draft change, crop action, submit, cancel/back/close retire request. Movable composition carries one preview between layouts. Disposal/Surface destruction closes existing session; actual native release clears ownership, uncertainty remains sticky. No autoplay. Requires a new explicit action after retirement.",
+  "native_acceptance": "NOT_RUN; structural reuse is not an Android/OEM release pass"
+}

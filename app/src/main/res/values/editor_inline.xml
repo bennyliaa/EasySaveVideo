@@ -1,0 +1,8 @@
+<resources>
+    <string name="editor_inline_heading">Read-only preview</string>
+    <string name="editor_inline_readonly">Open only after an explicit preview action. Playback does not apply edits; originals remain unchanged.</string>
+    <string name="editor_inline_background">Preview closed in background. Choose preview again after returning.</string>
+    <string name="editor_inline_busy">Preview is unavailable while media processing or recovery is active.</string>
+    <string name="editor_inline_empty">Choose a verified input or published output to preview. No media is opened automatically.</string>
+    <string name="editor_inline_close">Close preview</string>
+</resources>
