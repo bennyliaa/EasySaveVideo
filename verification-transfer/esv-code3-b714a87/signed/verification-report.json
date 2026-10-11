@@ -1,0 +1,50 @@
+{
+  "scope": "Signing, official APK signature verification, payload integrity and ZIP alignment audit only; no installation or Android runtime acceptance",
+  "source_commit": "b714a87601d0725385c11f4587704f78587938b5",
+  "unsigned_transport_commit": "d75caba186c1630549a930c9ee965333f887a699",
+  "artifact": {
+    "file": "esv-b714a87-code3-debug-signed.apk",
+    "bytes": 39965102,
+    "sha256": "b377703b0e49237b94dd7669bb79a065deaf6af74e5d60c4eaf621b40747b531",
+    "package": "com.easysavevideo.app",
+    "version_code": 3,
+    "version_name": "0.3.2-commons-dev",
+    "min_sdk": 31,
+    "target_sdk": 36
+  },
+  "signature": {
+    "verified": true,
+    "checked_min_api": 31,
+    "checked_max_api": 36,
+    "api31_verified": true,
+    "v1_verified": false,
+    "v2_verified": false,
+    "v3_verified": true,
+    "v4_verified": false,
+    "signer_count": 1,
+    "certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+    "signed_bytes": 39965102,
+    "signed_sha256": "b377703b0e49237b94dd7669bb79a065deaf6af74e5d60c4eaf621b40747b531",
+    "warning_count": 0,
+    "new_key_generated": false,
+    "private_key_exported": false,
+    "original_input_preserved": true
+  },
+  "input_sha256": "dbe085f50b6e6c15eac627469a3c4a6a782c9dea0e8bce1932b2e0ce10e57e00",
+  "official_signer_and_verifier": "Google Android apksig 9.4.0 installed library",
+  "apksig_jar_sha256": "7ae2e5980c77d853e3513074ee7c822bbdcdcde1668889d17faa7fe8bc8aa821",
+  "payload_entry_count": 192,
+  "payload_names_bytes_hashes_and_compression_all_identical": true,
+  "package_metadata_identical": true,
+  "original_input_preserved": true,
+  "alignment": {
+    "passed": true,
+    "method": "Independent ZIP local-file-header offsets, all nonempty stored entries modulo 4 and stored lib/*.so modulo 16384",
+    "stored_entries_checked": 128,
+    "native_libraries_checked": 4,
+    "official_zipalign_cli_run_in_cloud": false,
+    "limitation": "This is an independent ZIP alignment audit, not a cloud zipalign CLI result. The receiving PC can repeat official zipalign -c -P 16 4."
+  },
+  "signing_configuration": "Same existing matched debug identity; sourced official AGP default debug configuration; no new key or private-key export",
+  "private_credentials_in_report": false
+}
