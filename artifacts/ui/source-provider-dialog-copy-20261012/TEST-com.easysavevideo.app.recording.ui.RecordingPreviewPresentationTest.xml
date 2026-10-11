@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-11T17:17:31.586Z" hostname="redacted" time="0.01">
+  <properties />
+  <testcase name="sourceAspectFitAndLetterboxHitTestMatchShownRasterExtent" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.005" />
+  <testcase name="tooSmallSelectionRemainsCorrectableButCannotBeConfirmed" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.001" />
+  <testcase name="unconfirmedDisposalCannotCreateAConfirmation" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.0" />
+  <testcase name="explicitModesAndDisclosureDoNotClaimOtherAppOrLivePreview" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.001" />
+  <testcase name="expiredOrFutureSnapshotCannotConfirm" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.0" />
+  <testcase name="lifecycleCancellationCanRevokeAConfirmClickBeforeRetirement" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.001" />
+  <testcase name="drawingReadinessEnabledAndExplicitIdentityAreAllRequired" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.0" />
+  <testcase name="previewUsesOriginalSourcePixelEdgesNotBoundedRasterPixels" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.0" />
+  <testcase name="cancelBackgroundOrDismissNeverProducesConfirmation" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.0" />
+  <testcase name="explicitConfirmationIsOneShotAndRetirementCannotConfirmAgain" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.0" />
+  <testcase name="highResolutionFullFrameMustShrinkRatherThanDowngradeOutput" classname="com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

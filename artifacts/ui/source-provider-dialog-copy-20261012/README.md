@@ -1,0 +1,9 @@
+# Source, provider and recording-dialog copy checkpoint
+
+This source-only increment starts from 1306f3a36d35fda4db486ddb59ec57cbae687027 and adds 276 matched English/Simplified Chinese resource pairs. Discovery filters and provider policy accept a finite compiled renderer; their default Chinese renderer preserves existing pure consumers. Region validation now exposes typed problems, retaining existing geometry, scope and frame-expiry checks. Query text, URLs, titles, provider data and original diagnostics remain arguments rather than translated user data. No remote rules, executable scripts, permissions or network sources were added.
+
+The baseline inventory has 369 regex hits, grouped into 356 entries: 183 owned static literals, 52 owned parameterized templates, 115 legacy pure-helper/runtime consumers and 6 interpolation fragments. Classification does not claim that legacy consumers are unused. Remaining policy/helper copy elsewhere is still a localization acceptance item; this is not certification of a fully bilingual application.
+
+Validation: 82 selected JVM tests passed (0 failures, errors or skipped); debug/release compilation and lint passed, with 0 error/fatal issues and 58 warnings in each lint report. The initial nullable-version format-argument compilation failed and was corrected before the passing run. RESULT.json and selected reports preserve these distinctions.
+
+No APK was built or installed from this increment. The separate signed code4 package installed on emulator-5556 is based on d9bdf34567bf2d138e796a50560419d359385cf4 and therefore excludes this and the preceding source-only localization increments. Minimum Android remains API 31 / Android 12. Emulator results cannot establish physical-device energy usage. Full A/B 100-sample comparison, public-source acceptance and physical CPU/RAM/network/energy measurements remain unperformed in this checkpoint.

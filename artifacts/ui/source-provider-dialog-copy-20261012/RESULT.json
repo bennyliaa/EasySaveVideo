@@ -1,0 +1,67 @@
+{
+  "base_source_commit": "1306f3a36d35fda4db486ddb59ec57cbae687027",
+  "resource_pairs": 276,
+  "resource_keys_and_parameters": "PASS",
+  "selected_screens_remaining_cjk_source_lines": [],
+  "debug_release_compile": "PASS",
+  "initial_compile_attempt": "FAIL_NULLABLE_VERSION_FORMAT_ARGUMENT_CORRECTED",
+  "lint": {
+    "debug": {
+      "errors_fatal": 0,
+      "warnings": 58
+    },
+    "release": {
+      "errors_fatal": 0,
+      "warnings": 58
+    }
+  },
+  "jvm_tests": 82,
+  "jvm_reports": [
+    {
+      "name": "com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest",
+      "tests": "26",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.discovery.ProviderManagementPresentationTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.recording.ui.RecordingPresentationTest",
+      "tests": "19",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.recording.ui.RecordingPreviewPresentationTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.recording.ui.RecordingPreviewWindowFocusFenceTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.SourceProviderDialogResourcesTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "device_validation_of_this_increment": "NOT_RUN",
+  "new_apk_build": "NOT_RUN",
+  "source_upload": "PENDING_AUDIT",
+  "fixed_code4_source": "d9bdf34567bf2d138e796a50560419d359385cf4"
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="filter_copy_0">SearXNG candidate source %1$s</string>
+    <string name="filter_copy_1">Local synthetic source (isolated demo)</string>
+    <string name="filter_copy_2">Minimum duration must be nonnegative seconds with up to three decimal places; leave blank for no limit.</string>
+    <string name="filter_copy_3">Maximum duration must be nonnegative seconds with up to three decimal places; leave blank for no limit.</string>
+    <string name="filter_copy_4">Minimum duration exceeds maximum duration. The applied profile is unchanged.</string>
+    <string name="filter_copy_5">Invalid source filter. The applied profile is unchanged.</string>
+    <string name="filter_copy_6">All currently enabled sources (still zero sources if none are enabled)</string>
+    <string name="filter_copy_7">%1$s (disabled or unknown; filter retained)</string>
+    <string name="filter_copy_8"> seconds</string>
+    <string name="filter_copy_9">No limit</string>
+    <string name="filter_copy_10">Minimum %1$s;</string>
+    <string name="filter_copy_11">Maximum %1$s;</string>
+    <string name="filter_copy_12">Include</string>
+    <string name="filter_copy_13">Exclude</string>
+    <string name="filter_copy_14">%1$s unknown duration</string>
+    <string name="filter_copy_15">Local synthetic demo: source/duration filters apply only to synthetic records, not proof of real-source capabilities.</string>
+    <string name="filter_copy_16">Publication date unknown; safe search has not been validated against real content.</string>
+    <string name="filter_copy_17">%1$s: safe-search capability unverified; no query is sent while it is enabled.</string>
+    <string name="filter_copy_18">Results are source-reported webpages awaiting verification. Duration is unknown; excluding unknown duration hides them.</string>
+    <string name="filter_copy_19">Video, images, duration and licensing are unverified. Thumbnails and pages are not fetched automatically.</string>
+    <string name="filter_copy_20">%1$s: safe search unsupported; no query is sent while it is enabled.</string>
+    <string name="filter_copy_21">Duration is source-reported and may be unknown. Duration limits and the unknown-duration switch filter locally without rewriting the query.</string>
+    <string name="filter_copy_22">Publication date unknown: this adapter does not provide it. Authors and licensing are source-reported; check each file.</string>
+    <string name="filter_copy_23">Native video SAVED and PLAYED remain UNKNOWN. Opening a page or saving from it cannot prove the selected discovery video was saved or played.</string>
+</resources>

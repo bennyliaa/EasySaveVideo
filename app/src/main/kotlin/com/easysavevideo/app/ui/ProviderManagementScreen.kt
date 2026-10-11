@@ -9,6 +9,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
+import com.easysavevideo.app.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
@@ -34,7 +37,9 @@ fun ProviderManagementScreen(
     onBack: () -> Unit,
 ) {
     val v = LocalEsvVisuals.current
-    val view = ProviderManagementPresentationPolicy.present(state, configuration, commonsEnabled)
+    val resources = LocalContext.current.resources
+    val text = ProviderCopyText { key, args -> resources.getString(key.resource, *args) }
+    val view = ProviderManagementPresentationPolicy.present(state, configuration, commonsEnabled, text)
     var confirmation by remember { mutableStateOf<ProviderManagementOperation?>(null) }
     val latestRefresh by rememberUpdatedState(onAutoRefresh)
     LaunchedEffect(state.active, confirmation) {
@@ -54,12 +59,12 @@ fun ProviderManagementScreen(
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                     EsvThemeIcon(null, Modifier.size(v.iconSize))
-                    EsvText("Provider 管理", style = v.titleTextStyle, modifier = Modifier.weight(1f))
-                    EsvButton("返回", onClick = onBack)
+                    EsvText(stringResource(R.string.provider_dialog_0), style = v.titleTextStyle, modifier = Modifier.weight(1f))
+                    EsvButton(stringResource(R.string.provider_dialog_1), onClick = onBack)
                 }
-                EsvText("Wikimedia Commons · 唯一内置来源", style = v.bodyTextStyle)
+                EsvText(stringResource(R.string.provider_dialog_2), style = v.bodyTextStyle)
                 EsvText(view.summary, style = v.titleTextStyle)
-                EsvText("前台每 5 秒只刷新本地快照；无远程检查。显示值是上次读取状态，执行恢复时会重新校验。", style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(stringResource(R.string.provider_dialog_3), style = v.captionTextStyle, color = v.colors.muted)
                 view.notice?.let { EsvText(it, color = v.colors.muted,
                     modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }) }
                 if (wide) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
@@ -79,7 +84,7 @@ fun ProviderManagementScreen(
                     HealthSection(view)
                     QuarantineSection(view, state.snapshot != null)
                 }
-                EsvText(ProviderManagementPresentationPolicy.LIFECYCLE_NOTICE, style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(stringResource(R.string.provider_copy_4), style = v.captionTextStyle, color = v.colors.muted)
             }
         }
     }
@@ -93,19 +98,19 @@ fun ProviderManagementScreen(
             Column(Modifier.fillMaxWidth().heightIn(max = 620.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
                 .padding(v.spacingLarge).verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
-                EsvText(if (action == ProviderManagementOperation.REJECT_CANDIDATE) "拒绝候选 v${snapshot?.pendingVersion}？" else "执行当前获准的本地回滚？",
+                EsvText(if (action == ProviderManagementOperation.REJECT_CANDIDATE) stringResource(R.string.provider_dialog_4, snapshot?.pendingVersion?.toString() ?: stringResource(R.string.discovery_copy_94)) else stringResource(R.string.provider_dialog_5),
                     style = v.titleTextStyle)
                 EsvText(if (action == ProviderManagementOperation.REJECT_CANDIDATE)
-                    "将结束此候选试用并记录本地显式拒绝。只尝试仓库允许的上一状态，仍可能保持停用；不会重新安装已隔离版本。"
-                    else "只回到仓库当前获准的历史目标，并消耗这个回滚位置。有效授权、过期和隔离检查仍然生效，结果仍可能停用。")
-                EsvText(ProviderManagementPresentationPolicy.RECOVERY_NOTICE, style = v.captionTextStyle)
-                EsvButton("确认本地操作", enabled = allowed, onClick = {
+                    stringResource(R.string.provider_dialog_6)
+                    else stringResource(R.string.provider_dialog_7))
+                EsvText(stringResource(R.string.provider_copy_3), style = v.captionTextStyle)
+                EsvButton(stringResource(R.string.provider_dialog_8), enabled = allowed, onClick = {
                     confirmation = null
                     if (allowed) {
                         if (action == ProviderManagementOperation.REJECT_CANDIDATE) onRejectCandidate() else onRollback()
                     }
                 }, modifier = Modifier.fillMaxWidth())
-                EsvButton("取消", onClick = { confirmation = null }, modifier = Modifier.fillMaxWidth())
+                EsvButton(stringResource(R.string.provider_dialog_9), onClick = { confirmation = null }, modifier = Modifier.fillMaxWidth())
             }
         }
     }
@@ -114,42 +119,42 @@ fun ProviderManagementScreen(
 @Composable
 private fun ConfigurationSection(view: ProviderManagementPresentation, configuration: ProviderManagementConfiguration,
     enabled: Boolean, canToggle: Boolean, onEnable: (Boolean) -> Unit) {
-    ProviderSection("构建与本地配置", view.configuration) {
-        if (configuration.contactConfigured) EsvButton("${if (enabled) "关闭" else "开启"}本地 Commons 来源",
+    ProviderSection(stringResource(R.string.provider_dialog_10), view.configuration) {
+        if (configuration.contactConfigured) EsvButton(stringResource(R.string.provider_dialog_13, if (enabled) stringResource(R.string.provider_dialog_11) else stringResource(R.string.provider_dialog_12)),
             onClick = { onEnable(!enabled) }, enabled = canToggle, modifier = Modifier.fillMaxWidth())
-        EsvText("本地开关沿用发现页设置，不能覆盖签名安全策略、隔离或缺失的构建配置。", style = LocalEsvVisuals.current.captionTextStyle)
+        EsvText(stringResource(R.string.provider_dialog_14), style = LocalEsvVisuals.current.captionTextStyle)
     }
 }
 
 @Composable
 private fun VersionSection(view: ProviderManagementPresentation, state: ProviderManagementState,
     onRefresh: () -> Unit, onConfirm: (ProviderManagementOperation) -> Unit) {
-    ProviderSection("版本与恢复", view.versions) {
-        EsvButton("刷新本地状态", onClick = onRefresh, enabled = state.active && !state.busy, modifier = Modifier.fillMaxWidth())
-        if (view.canRejectCandidate) EsvButton("拒绝候选 / 尝试安全恢复",
+    ProviderSection(stringResource(R.string.provider_dialog_15), view.versions) {
+        EsvButton(stringResource(R.string.provider_dialog_16), onClick = onRefresh, enabled = state.active && !state.busy, modifier = Modifier.fillMaxWidth())
+        if (view.canRejectCandidate) EsvButton(stringResource(R.string.provider_dialog_17),
             onClick = { onConfirm(ProviderManagementOperation.REJECT_CANDIDATE) }, modifier = Modifier.fillMaxWidth())
-        if (view.canRollback) EsvButton("回滚到当前获准的历史目标",
+        if (view.canRollback) EsvButton(stringResource(R.string.provider_dialog_18),
             onClick = { onConfirm(ProviderManagementOperation.ROLLBACK) }, modifier = Modifier.fillMaxWidth())
         if (state.snapshot != null && !view.canRejectCandidate && !view.canRollback)
-            EsvText("当前没有可执行的候选恢复或回滚操作。", style = LocalEsvVisuals.current.captionTextStyle)
-        EsvText(ProviderManagementPresentationPolicy.RECOVERY_NOTICE, style = LocalEsvVisuals.current.captionTextStyle)
+            EsvText(stringResource(R.string.provider_dialog_19), style = LocalEsvVisuals.current.captionTextStyle)
+        EsvText(stringResource(R.string.provider_copy_3), style = LocalEsvVisuals.current.captionTextStyle)
     }
 }
 
 @Composable
 private fun HealthSection(view: ProviderManagementPresentation) {
-    ProviderSection("本地试用观察", view.health) {
-        EsvText(ProviderManagementPresentationPolicy.SELF_TEST_NOTICE, style = LocalEsvVisuals.current.captionTextStyle)
-        EsvText(ProviderManagementPresentationPolicy.LIMIT_NOTICE, style = LocalEsvVisuals.current.captionTextStyle)
+    ProviderSection(stringResource(R.string.provider_dialog_20), view.health) {
+        EsvText(stringResource(R.string.provider_copy_0), style = LocalEsvVisuals.current.captionTextStyle)
+        EsvText(stringResource(R.string.provider_copy_2), style = LocalEsvVisuals.current.captionTextStyle)
     }
 }
 
 @Composable
 private fun QuarantineSection(view: ProviderManagementPresentation, loaded: Boolean) {
-    ProviderSection("本地隔离记录", view.quarantine.ifEmpty {
-        listOf(if (loaded) "没有本地隔离记录；不代表任何网站已通过兼容验证。" else "尚未读取本地隔离记录。")
+    ProviderSection(stringResource(R.string.provider_dialog_21), view.quarantine.ifEmpty {
+        listOf(if (loaded) stringResource(R.string.provider_dialog_22) else stringResource(R.string.provider_dialog_23))
     }) {
-        EsvText(ProviderManagementPresentationPolicy.QUARANTINE_NOTICE, style = LocalEsvVisuals.current.captionTextStyle)
+        EsvText(stringResource(R.string.provider_copy_1), style = LocalEsvVisuals.current.captionTextStyle)
     }
 }
 

@@ -34,6 +34,8 @@ import com.easysavevideo.app.discovery.DiscoveryLocalAction
 import com.easysavevideo.app.discovery.DiscoveryFilterDraft
 import com.easysavevideo.app.discovery.DiscoveryFilterClaim
 import com.easysavevideo.app.discovery.DiscoveryFilterTextField
+import androidx.compose.ui.platform.LocalContext
+import com.easysavevideo.app.discovery.FilterCopyText
 import com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicy
 import com.easysavevideo.app.discovery.RightsPresentationPolicy
 import com.easysavevideo.app.theme.*
@@ -62,8 +64,10 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
     val appliedReadable = state.ready && !state.storageUnavailable
     val draft = DiscoveryFilterPresentationPolicy.reconcile(storedDraft, state.profile, state.demo, appliedReadable)
     val editClaim = state.controlTarget?.let { DiscoveryFilterClaim(it, state.demo, draft) }
-    val validation = DiscoveryFilterPresentationPolicy.validate(draft)
-    val choices = DiscoveryFilterPresentationPolicy.admittedSources(state.admittedProviderDescriptors, state.demo)
+    val copyResources = LocalContext.current.resources
+    val filterCopy = FilterCopyText { key, args -> copyResources.getString(key.resource, *args) }
+    val validation = DiscoveryFilterPresentationPolicy.validate(draft, filterCopy)
+    val choices = DiscoveryFilterPresentationPolicy.admittedSources(state.admittedProviderDescriptors, state.demo, filterCopy)
     val editable = state.ready && !state.storageUnavailable && !controller.filterControlsBusy &&
         storedDraft == draft && editClaim != null
     val canSearch = editable && DiscoveryFilterPresentationPolicy.canSubmit(draft)
@@ -134,28 +138,28 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
             }
             if (controller.filterSearchPending) EsvText(stringResource(R.string.flow_discoveryscreen_6), style = v.captionTextStyle)
             else if (appliedReadable && DiscoveryFilterPresentationPolicy.isDirty(draft)) EsvText(
-                "草稿尚未应用；当前结果仍对应已应用关键词“${state.profile.query}”及其筛选。", style = v.captionTextStyle)
+                stringResource(R.string.discovery_copy_0, state.profile.query), style = v.captionTextStyle)
             validation.error?.let { EsvText(it, style = v.captionTextStyle, color = v.colors.error) }
             if (state.demo) EsvText(stringResource(R.string.flow_discoveryscreen_7), color = v.colors.error, style = v.captionTextStyle)
             if (!state.demo && state.commonsConfigured && state.commonsEnabled) EsvText(stringResource(R.string.flow_discoveryscreen_8), style = v.captionTextStyle)
             if (appliedReadable && !state.demo && state.profile.filters.safeSearch && state.commonsConfigured && state.commonsEnabled) EsvText(
-                "Wikimedia Commons 暂不支持安全搜索。保持开启时，不会向该来源发送查询。", style = v.captionTextStyle, color = v.colors.error)
+                stringResource(R.string.discovery_copy_1), style = v.captionTextStyle, color = v.colors.error)
             EsvText(statusText(state.status, state.storageUnavailable, state.ready), style = v.captionTextStyle, color = v.colors.muted)
             if (state.saveActive || state.recordingActive) EsvText(
-                if (state.recordingActive) "实际录制或录制资源仍在运行，发现补充已暂停；离开录制页面不会解除暂停。"
-                else "实际保存、准备或资源清理仍在运行，发现补充已暂停；离开任务页面不会解除暂停。",
+                if (state.recordingActive) stringResource(R.string.discovery_copy_2)
+                else stringResource(R.string.discovery_copy_3),
                 style = v.captionTextStyle, color = v.colors.muted)
             if (state.status?.state == DiscoveryState.CAPACITY_REACHED) EsvText(
-                "为保护已生成页面及其历史和来源进度，本次写入未越过本地容量上限。", style = v.captionTextStyle)
+                stringResource(R.string.discovery_copy_4), style = v.captionTextStyle)
             state.notice?.let { EsvText(it, style = v.captionTextStyle) }
             if (state.needsExplicitSearch) EsvText(stringResource(R.string.flow_discoveryscreen_9), style = v.captionTextStyle)
-            EsvText("本地验证来源准入：${state.localSourceAdmission}；不保证后备验证成功。", style = v.captionTextStyle)
+            EsvText(stringResource(R.string.discovery_copy_5, state.localSourceAdmission), style = v.captionTextStyle)
             state.verificationSummary?.let { summary ->
-                EsvText("页面验证：${summary.outcome} · ${summary.evidence}。不代表可播放、下载或保存。", style = v.captionTextStyle)
+                EsvText(stringResource(R.string.discovery_copy_6, summary.outcome, summary.evidence), style = v.captionTextStyle)
             }
             if (state.pendingCandidates.isNotEmpty()) Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvButton("已核验来源结果 (${state.results.size})", onClick = { showPending = false })
-                EsvButton("待验证网页 (${state.pendingCandidates.size})", onClick = { showPending = true })
+                EsvButton(stringResource(R.string.discovery_copy_7, state.results.size), onClick = { showPending = false })
+                EsvButton(stringResource(R.string.discovery_copy_8, state.pendingCandidates.size), onClick = { showPending = true })
             }
             BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
                 val columns = if (maxWidth >= 720.dp) maxOf(settings.columns, (maxWidth.value / 220).toInt().coerceIn(2, 6)) else settings.columns
@@ -166,9 +170,9 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                     }
                 } else if (state.results.isEmpty()) Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(v.spacingLarge),
                     verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    EsvText(if (state.storageUnavailable) "发现数据暂不可用" else if (state.status?.state == DiscoveryState.NO_SOURCES) "当前无已启用来源" else stringResource(R.string.flow_discovery_no_results), style = v.titleTextStyle)
+                    EsvText(if (state.storageUnavailable) stringResource(R.string.discovery_copy_9) else if (state.status?.state == DiscoveryState.NO_SOURCES) stringResource(R.string.discovery_copy_10) else stringResource(R.string.flow_discovery_no_results), style = v.titleTextStyle)
                     Spacer(Modifier.height(v.spacingMedium))
-                    EsvText(if (state.storageUnavailable) "本地原始数据已保留。" else if (state.status?.state == DiscoveryState.NO_SOURCES) stringResource(R.string.flow_discovery_browser_fallback) else if (state.profile.filters.safeSearch && !state.demo) "当前来源的安全搜索能力可能不可核验；保持开启时不会向不支持的来源发送查询。请在选项查看说明。" else "输入关键词查找开放媒体资料；可调整筛选或重复策略后重试。", color = v.colors.muted)
+                    EsvText(if (state.storageUnavailable) stringResource(R.string.discovery_copy_11) else if (state.status?.state == DiscoveryState.NO_SOURCES) stringResource(R.string.flow_discovery_browser_fallback) else if (state.profile.filters.safeSearch && !state.demo) stringResource(R.string.discovery_copy_12) else stringResource(R.string.discovery_copy_13), color = v.colors.muted)
                     Spacer(Modifier.height(v.spacingMedium))
                     EsvButton(stringResource(R.string.flow_discoveryscreen_14), onClick = onBrowser)
                 } else LazyVerticalGrid(GridCells.Fixed(columns), state = grid, modifier = Modifier.fillMaxSize(),
@@ -177,12 +181,12 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                         Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.corner))
                             .background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                             Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(v.backdrop, RoundedCornerShape(v.corner)), contentAlignment = Alignment.Center) {
-                                EsvThemeIcon("视频封面占位", Modifier.size(v.iconSize))
+                                EsvThemeIcon(stringResource(R.string.discovery_copy_14), Modifier.size(v.iconSize))
                             }
                             EsvText(result.title ?: stringResource(R.string.flow_title_unknown), style = v.bodyTextStyle)
                             EsvText(result.sourceName, style = v.captionTextStyle, color = v.colors.muted)
                             if (result.provenance.any { it.startsWith("searxng-") }) EsvText(
-                                "网页视频证据；播放、下载及保存权限尚未验证", style = v.captionTextStyle, color = v.colors.muted)
+                                stringResource(R.string.discovery_copy_15), style = v.captionTextStyle, color = v.colors.muted)
                             EsvText(result.durationMs?.let { "${it / 60_000}:${(it / 1_000 % 60).toString().padStart(2, '0')}" } ?: stringResource(R.string.flow_duration_unknown), style = v.captionTextStyle)
                             RightsPresentationPolicy.summary(result.rights).forEach { EsvText(it, style = v.captionTextStyle) }
                             EsvButton(stringResource(R.string.flow_discoveryscreen_15), onClick = { rightsDetails = result }, modifier = Modifier.fillMaxWidth())
@@ -193,7 +197,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
             }
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalAlignment = Alignment.CenterVertically) {
                 EsvButton(stringResource(R.string.flow_discoveryscreen_17), onClick = { controller.movePage(-1) }, enabled = state.pageIndex > 0)
-                EsvText("第 ${state.pageIndex + 1} 页", style = v.captionTextStyle)
+                EsvText(stringResource(R.string.discovery_copy_16, state.pageIndex + 1), style = v.captionTextStyle)
                 EsvButton(stringResource(R.string.flow_discoveryscreen_19), onClick = { controller.movePage(1) }, enabled = state.results.isNotEmpty())
                 EsvButton(stringResource(R.string.flow_discoveryscreen_20), onClick = controller::retry, enabled = state.ready && !state.storageUnavailable)
             }
@@ -210,10 +214,10 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                 EsvButton((if (state.profile.sortOrder == order) "✓ " else "") + DiscoveryPresentationPolicy.sortLabel(order),
                     onClick = { controller.updateSort(order) }, enabled = state.ready && !state.storageUnavailable)
             }
-            EsvText("未知日期或时长排后；优先新内容策略先分已展示与未展示。来源顺序不代表统一相关度分数。", style = v.captionTextStyle)
+            EsvText(stringResource(R.string.discovery_copy_17), style = v.captionTextStyle)
             EsvText(stringResource(R.string.flow_discoveryscreen_25), style = v.captionTextStyle)
             RepeatPolicy.entries.forEach { policy -> EsvButton((if (settings.repeatPolicy == policy) "✓ " else "") + policyText(policy), onClick = { onSettings(settings.copy(repeatPolicy = policy)) }) }
-            EsvText("每页 ${settings.pageSize}；手机 ${settings.columns} 列，平板随宽度增加。", style = v.captionTextStyle)
+            EsvText(stringResource(R.string.discovery_copy_18, settings.pageSize, settings.columns), style = v.captionTextStyle)
             Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvButton(stringResource(R.string.flow_discoveryscreen_27), onClick = { onSettings(settings.copy(pageSize = (settings.pageSize - 10).coerceAtLeast(10))) }, enabled = settings.pageSize > 10)
                 EsvButton(stringResource(R.string.flow_discoveryscreen_28), onClick = { onSettings(settings.copy(pageSize = (settings.pageSize + 10).coerceAtMost(100))) }, enabled = settings.pageSize < 100)
@@ -223,48 +227,48 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                 EsvButton(stringResource(R.string.flow_discoveryscreen_30), onClick = { onSettings(settings.copy(columns = settings.columns + 1)) }, enabled = settings.columns < 6)
             }
             DiscoveryMode.entries.forEach { mode -> EsvButton((if (settings.mode == mode) "✓ " else "") + when(mode) {
-                DiscoveryMode.POWER_SAVING -> "省电：并发 1"; DiscoveryMode.BALANCED -> "平衡：并发 2"; DiscoveryMode.AGGRESSIVE -> "积极：并发最多 3"
+                DiscoveryMode.POWER_SAVING -> stringResource(R.string.discovery_copy_19); DiscoveryMode.BALANCED -> stringResource(R.string.discovery_copy_20); DiscoveryMode.AGGRESSIVE -> stringResource(R.string.discovery_copy_21)
             }, onClick = { onSettings(settings.copy(mode = mode)) }) }
             DiscoveryPowerControls(state, controller)
             EsvText(stringResource(R.string.flow_discoveryscreen_31), style = v.titleTextStyle)
             if (appliedReadable) {
-                EsvText("来源：${DiscoveryFilterPresentationPolicy.sourceSummary(state.profile.filters, choices)}", style = v.captionTextStyle)
-                EsvText(DiscoveryFilterPresentationPolicy.durationSummary(state.profile.filters), style = v.captionTextStyle)
-                EsvText("已应用安全搜索：${if (state.profile.filters.safeSearch) "开" else "关"}", style = v.captionTextStyle)
+                EsvText(stringResource(R.string.discovery_copy_22, DiscoveryFilterPresentationPolicy.sourceSummary(state.profile.filters, choices, filterCopy)), style = v.captionTextStyle)
+                EsvText(DiscoveryFilterPresentationPolicy.durationSummary(state.profile.filters, filterCopy), style = v.captionTextStyle)
+                EsvText(stringResource(R.string.discovery_copy_25, if (state.profile.filters.safeSearch) stringResource(R.string.discovery_copy_23) else stringResource(R.string.discovery_copy_24)), style = v.captionTextStyle)
             } else EsvText(stringResource(R.string.flow_discoveryscreen_34), style = v.captionTextStyle)
             EsvText(stringResource(R.string.flow_discoveryscreen_35), style = v.titleTextStyle)
-            EsvText("关键词与以下筛选仅在点击“查找”或“应用草稿查找”后一起生效。关闭选项或切换页面会保留草稿；应用重建或重启后恢复已应用资料。", style = v.captionTextStyle)
-            EsvButton((if (draft.sourceNamespaces.isEmpty()) "✓ " else "") + "全部当前启用来源", onClick = {
+            EsvText(stringResource(R.string.discovery_copy_26), style = v.captionTextStyle)
+            EsvButton((if (draft.sourceNamespaces.isEmpty()) "✓ " else "") + stringResource(R.string.discovery_copy_27), onClick = {
                 edit(draft.copy(sourceNamespaces = emptySet()))
             }, enabled = editable)
             if (choices.isEmpty()) EsvText(stringResource(R.string.flow_discoveryscreen_37), style = v.captionTextStyle)
             choices.forEach { choice ->
                 val selected = DiscoveryFilterPresentationPolicy.isSelected(draft.sourceNamespaces, choice.namespace)
-                EsvButton((if (selected) "✓ " else "加入筛选：") + "${choice.label} [${choice.namespace}]", onClick = {
+                EsvButton((if (selected) "✓ " else stringResource(R.string.discovery_copy_28)) + "${choice.label} [${choice.namespace}]", onClick = {
                     edit(DiscoveryFilterPresentationPolicy.addSource(draft, choice))
                 }, enabled = editable && !selected && draft.sourceNamespaces.size < 100)
-                if (selected) EsvButton(if (draft.sourceNamespaces.size == 1) "移除此限制，恢复全部来源" else "移除 ${choice.namespace} 限制", onClick = {
+                if (selected) EsvButton(if (draft.sourceNamespaces.size == 1) stringResource(R.string.discovery_copy_29) else stringResource(R.string.discovery_copy_30, choice.namespace), onClick = {
                     edit(DiscoveryFilterPresentationPolicy.removeSource(draft, choice.namespace))
                 }, enabled = editable)
             }
             DiscoveryFilterPresentationPolicy.unavailableNamespaces(draft.sourceNamespaces, choices).forEach { namespace ->
-                EsvText("$namespace：未启用、已过时或命名空间未知，筛选仍保留；可能没有匹配结果。", style = v.captionTextStyle, color = v.colors.error)
-                EsvButton(if (draft.sourceNamespaces.size == 1) "移除 $namespace，恢复全部来源" else "移除 $namespace 限制", onClick = {
+                EsvText(stringResource(R.string.discovery_copy_31, namespace), style = v.captionTextStyle, color = v.colors.error)
+                EsvButton(if (draft.sourceNamespaces.size == 1) stringResource(R.string.discovery_copy_32, namespace) else stringResource(R.string.discovery_copy_30, namespace), onClick = {
                     edit(DiscoveryFilterPresentationPolicy.removeSource(draft, namespace))
                 }, enabled = editable)
             }
             EsvText(stringResource(R.string.flow_discoveryscreen_39), style = v.captionTextStyle)
-            DurationFilterField("最短时长（秒；留空不限）", draft.minimumSeconds, editable) {
+            DurationFilterField(stringResource(R.string.discovery_copy_33), draft.minimumSeconds, editable) {
                 editText(DiscoveryFilterTextField.MINIMUM_SECONDS, it)
             }
-            DurationFilterField("最长时长（秒；留空不限）", draft.maximumSeconds, editable) {
+            DurationFilterField(stringResource(R.string.discovery_copy_34), draft.maximumSeconds, editable) {
                 editText(DiscoveryFilterTextField.MAXIMUM_SECONDS, it)
             }
-            EsvText("可填写最多三位小数；边界包含本身。未知时长不能证明符合时长范围，由下面的开关单独决定。", style = v.captionTextStyle)
-            EsvButton("草稿包含未知时长：${if (draft.includeUnknownDuration) "开" else "关"}", onClick = {
+            EsvText(stringResource(R.string.discovery_copy_35), style = v.captionTextStyle)
+            EsvButton(stringResource(R.string.discovery_copy_36, if (draft.includeUnknownDuration) stringResource(R.string.discovery_copy_23) else stringResource(R.string.discovery_copy_24)), onClick = {
                 edit(draft.copy(includeUnknownDuration = !draft.includeUnknownDuration))
             }, enabled = editable)
-            EsvButton("草稿安全搜索：${if (draft.safeSearch) "开" else "关"}", onClick = {
+            EsvButton(stringResource(R.string.discovery_copy_37, if (draft.safeSearch) stringResource(R.string.discovery_copy_23) else stringResource(R.string.discovery_copy_24)), onClick = {
                 if (draft.safeSearch) editClaim?.takeIf(::currentClaimValid)?.let { safeDisableConfirm = it }
                 else edit(draft.copy(safeSearch = true))
             }, enabled = editable)
@@ -274,77 +278,77 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                 edit(DiscoveryFilterPresentationPolicy.fromProfile(state.profile, state.demo))
             }, enabled = editable && DiscoveryFilterPresentationPolicy.isDirty(draft))
             EsvText(stringResource(R.string.flow_discoveryscreen_45), style = v.titleTextStyle)
-            choices.forEach { choice -> DiscoveryFilterPresentationPolicy.capabilityText(choice).forEach {
+            choices.forEach { choice -> DiscoveryFilterPresentationPolicy.capabilityText(choice, filterCopy).forEach {
                 EsvText(it, style = v.captionTextStyle)
             } }
             DiscoveryFilterPresentationPolicy.unknownDescriptorIds(state.admittedProviderDescriptors, choices).forEach {
-                EsvText("来源 $it 的结果命名空间与筛选能力未知，未提供新的可选命名空间。", style = v.captionTextStyle)
+                EsvText(stringResource(R.string.discovery_copy_38, it), style = v.captionTextStyle)
             }
-            EsvText(DiscoveryFilterPresentationPolicy.nativeHistoryNotice(), style = v.captionTextStyle)
-            EsvText(if (state.commonsConfigured) "Wikimedia Commons：已配置元数据来源" else "Wikimedia Commons：本构建未配置服务联系信息，零来源模式", style = v.captionTextStyle)
+            EsvText(DiscoveryFilterPresentationPolicy.nativeHistoryNotice(filterCopy), style = v.captionTextStyle)
+            EsvText(if (state.commonsConfigured) stringResource(R.string.discovery_copy_39) else stringResource(R.string.discovery_copy_40), style = v.captionTextStyle)
             EsvButton(stringResource(R.string.flow_discoveryscreen_47), onClick = { options = false; onManageProviders() })
-            if (state.commonsConfigured) EsvButton("Commons 来源：${if (state.commonsEnabled) "开" else "关"}",
+            if (state.commonsConfigured) EsvButton(stringResource(R.string.discovery_copy_41, if (state.commonsEnabled) stringResource(R.string.discovery_copy_23) else stringResource(R.string.discovery_copy_24)),
                 onClick = { controller.enableCommons(!state.commonsEnabled) })
             SearxngSourceSettings(controller.sourceSettings)
             VerificationServiceSettings(controller.verificationSettings)
             EsvText(stringResource(R.string.flow_discoveryscreen_49), style = v.titleTextStyle)
-            EsvText("本地统计快照。一个资料对应一组关键词、筛选和语言；Seen 统计记录身份及其别名，不是播放次数或媒体文件数量。", style = v.captionTextStyle)
-            EsvText("从发现打开页面后的短期关联，只能确认保存来自该页面，不能证明所选媒体就是同一发现视频。当前发现视频的保存和播放状态都保持未知，不会据此隐藏视频。页面跳转、清历史或重启会使关联失效，媒体保存本身不受影响。", style = v.captionTextStyle)
-            if (state.demo) EsvText("当前是隔离演示数据：以下统计、历史清除和进度重置仅作用于当前演示内存记录，不影响真实本地发现数据。", style = v.captionTextStyle, color = v.colors.error)
+            EsvText(stringResource(R.string.discovery_copy_42), style = v.captionTextStyle)
+            EsvText(stringResource(R.string.discovery_copy_43), style = v.captionTextStyle)
+            if (state.demo) EsvText(stringResource(R.string.discovery_copy_44), style = v.captionTextStyle, color = v.colors.error)
             val statistics = state.historyStatistics
             if (statistics != null) {
-                EsvText(DiscoveryPresentationPolicy.statisticsText("当前资料", statistics.currentProfile), style = v.captionTextStyle)
-                EsvText(DiscoveryPresentationPolicy.statisticsText("全部资料", statistics.allProfiles), style = v.captionTextStyle)
-            } else EsvText(if (state.historyStatisticsUnavailable || state.storageUnavailable) "本地统计暂不可读，未将未知数据显示为零。"
-                else "本地统计尚未读取。", style = v.captionTextStyle)
+                EsvText(DiscoveryPresentationPolicy.statisticsText(stringResource(R.string.discovery_copy_45), statistics.currentProfile), style = v.captionTextStyle)
+                EsvText(DiscoveryPresentationPolicy.statisticsText(stringResource(R.string.discovery_copy_46), statistics.allProfiles), style = v.captionTextStyle)
+            } else EsvText(if (state.historyStatisticsUnavailable || state.storageUnavailable) stringResource(R.string.discovery_copy_47)
+                else stringResource(R.string.discovery_copy_48), style = v.captionTextStyle)
             EsvButton(stringResource(R.string.flow_discoveryscreen_53), onClick = { controller.refreshHistoryStatistics(state.controlTarget) },
                 enabled = state.controlTarget != null && !state.storageUnavailable)
             EsvText(DiscoveryPresentationPolicy.retentionNotice(), style = v.captionTextStyle)
-            EsvButton("清除当前资料的 Seen 历史…", onClick = {
+            EsvButton(stringResource(R.string.discovery_copy_49), onClick = {
                 state.controlTarget?.let { localControlConfirm = DiscoveryControlRequest(it, DiscoveryLocalAction.CLEAR_CURRENT_HISTORY) }
             }, enabled = state.controlTarget != null && !state.storageUnavailable)
-            EsvButton("清除全部资料的 Seen 历史…", onClick = {
+            EsvButton(stringResource(R.string.discovery_copy_50), onClick = {
                 state.controlTarget?.let { localControlConfirm = DiscoveryControlRequest(it, DiscoveryLocalAction.CLEAR_ALL_HISTORY) }
             }, enabled = state.controlTarget != null && !state.storageUnavailable)
             state.status?.providers?.forEach { progress ->
                 EsvText(DiscoveryPresentationPolicy.providerProgressText(progress), style = v.captionTextStyle)
-                EsvButton("重置来源 ${progress.providerId} 的当前资料进度…", onClick = {
+                EsvButton(stringResource(R.string.discovery_copy_51, progress.providerId), onClick = {
                     state.controlTarget?.let { localControlConfirm = DiscoveryControlRequest(it, DiscoveryLocalAction.RESET_PROVIDER_PROGRESS, progress.providerId) }
                 }, enabled = state.controlTarget != null && !state.storageUnavailable)
             }
-            EsvText("读取统计、清除历史和重置进度不会请求来源。重置后可主动点击“重试 / 补充”。切到浏览器或应用后台会立即取消发现任务。实际保存、录制与资源清理期间暂停发现补充；切换页面不会解除暂停。", style = v.captionTextStyle)
-            if (BuildDiscovery.supportsDemo) EsvButton(if (state.demo) "关闭演示数据" else "显式启用演示数据（Debug）", onClick = { controller.enableDemo(!state.demo); options = false })
+            EsvText(stringResource(R.string.discovery_copy_52), style = v.captionTextStyle)
+            if (BuildDiscovery.supportsDemo) EsvButton(if (state.demo) stringResource(R.string.discovery_copy_53) else stringResource(R.string.discovery_copy_54), onClick = { controller.enableDemo(!state.demo); options = false })
         }
     }
     safeDisableConfirm?.let { captured -> Dialog(onDismissRequest = { safeDisableConfirm = null }) {
         val valid = currentClaimValid(captured)
         Column(Modifier.background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingLarge),
             verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
-            EsvText("在草稿中关闭安全搜索？", style = v.titleTextStyle)
-            EsvText("当前来源无法保证过滤不适宜内容。SearXNG 及其上游的安全搜索能力也尚未核验；关闭后可能出现不适宜内容。此处仅修改草稿，之后点击“查找”或“应用草稿查找”才会提交关键词与全部草稿筛选。")
-            if (!valid) EsvText("资料或草稿已变化，请关闭后重新确认。", style = v.captionTextStyle, color = v.colors.error)
-            EsvButton("确认关闭草稿安全搜索", onClick = {
+            EsvText(stringResource(R.string.discovery_copy_55), style = v.titleTextStyle)
+            EsvText(stringResource(R.string.discovery_copy_56))
+            if (!valid) EsvText(stringResource(R.string.discovery_copy_57), style = v.captionTextStyle, color = v.colors.error)
+            EsvButton(stringResource(R.string.discovery_copy_58), onClick = {
                 controller.confirmFilterSafety(captured)
                 safeDisableConfirm = null
             }, enabled = valid)
-            EsvButton("保持开启", onClick = { safeDisableConfirm = null })
+            EsvButton(stringResource(R.string.discovery_copy_59), onClick = { safeDisableConfirm = null })
         }
     } }
     rightsDetails?.let { result -> Dialog(onDismissRequest = { rightsDetails = null }) {
         Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
             .padding(v.spacingLarge).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-            EsvText("来源与许可资料", style = v.titleTextStyle)
-            EsvButton("关闭", onClick = { rightsDetails = null })
-            EsvText("以下是来源报告，需逐文件核对；元数据、完整署名或许可标签均不代表已经获准下载或使用。", style = v.captionTextStyle, color = v.colors.error)
-            if (result.rights.snapshots.isEmpty()) EsvText("此结果没有可核对的作者与许可资料。")
-            if (result.rights.warnings.isNotEmpty()) EsvText("记录警示：${result.rights.warnings.joinToString { it.name }}", style = v.captionTextStyle)
+            EsvText(stringResource(R.string.discovery_copy_60), style = v.titleTextStyle)
+            EsvButton(stringResource(R.string.discovery_copy_61), onClick = { rightsDetails = null })
+            EsvText(stringResource(R.string.discovery_copy_62), style = v.captionTextStyle, color = v.colors.error)
+            if (result.rights.snapshots.isEmpty()) EsvText(stringResource(R.string.discovery_copy_63))
+            if (result.rights.warnings.isNotEmpty()) EsvText(stringResource(R.string.discovery_copy_64, result.rights.warnings.joinToString { it.name }), style = v.captionTextStyle)
             result.rights.snapshots.forEach { snapshot ->
                 RightsPresentationPolicy.details(snapshot).forEach { EsvText(it, style = v.captionTextStyle) }
-                listOf("来源文件页" to snapshot.sourcePageUrl, "许可链接" to snapshot.licenseUrl,
-                    "元数据使用说明" to snapshot.metadataTermsUrl).forEach { (label, url) ->
+                listOf(stringResource(R.string.discovery_copy_65) to snapshot.sourcePageUrl, stringResource(R.string.discovery_copy_66) to snapshot.licenseUrl,
+                    stringResource(R.string.discovery_copy_67) to snapshot.metadataTermsUrl).forEach { (label, url) ->
                     RightsPresentationPolicy.safeLink(url)?.let { safe ->
                         EsvText("$label：$safe", style = v.captionTextStyle)
-                        EsvButton("打开$label", onClick = { rightsDetails = null; onLink(safe) })
+                        EsvButton(stringResource(R.string.discovery_copy_68, label), onClick = { rightsDetails = null; onLink(safe) })
                     }
                 }
             }
@@ -357,12 +361,12 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
         Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
             .padding(v.spacingLarge).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
             EsvText(DiscoveryPresentationPolicy.controlTitle(request), style = v.titleTextStyle)
-            if (state.demo) EsvText("本次仅影响当前演示的历史或来源进度，不影响真实本地发现数据；“全部资料”在此仅指演示资料。", style = v.captionTextStyle)
+            if (state.demo) EsvText(stringResource(R.string.discovery_copy_69), style = v.captionTextStyle)
             EsvText(DiscoveryPresentationPolicy.controlConsequence(request), style = v.captionTextStyle)
-            if (!valid) EsvText("查询或本地视图已变化，请关闭后重新选择操作。", style = v.captionTextStyle, color = v.colors.error)
-            EsvButton(if (request.action == DiscoveryLocalAction.RESET_PROVIDER_PROGRESS) "确认重置此来源进度" else "确认清除 Seen 历史",
+            if (!valid) EsvText(stringResource(R.string.discovery_copy_70), style = v.captionTextStyle, color = v.colors.error)
+            EsvButton(if (request.action == DiscoveryLocalAction.RESET_PROVIDER_PROGRESS) stringResource(R.string.discovery_copy_71) else stringResource(R.string.discovery_copy_72),
                 onClick = { localControlConfirm = null; controller.confirmLocalControl(request) }, enabled = valid)
-            EsvButton("取消", onClick = { localControlConfirm = null })
+            EsvButton(stringResource(R.string.discovery_copy_73), onClick = { localControlConfirm = null })
         }
     } }
 
@@ -378,23 +382,25 @@ private fun DurationFilterField(label: String, value: String, enabled: Boolean, 
         textStyle = v.bodyTextStyle.copy(color = v.colors.text), cursorBrush = SolidColor(v.colors.accent),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done))
 }
+@Composable
 private fun policyText(policy: RepeatPolicy): String = when(policy) {
-    RepeatPolicy.PREFER_NEW -> "优先新内容"; RepeatPolicy.HIDE_WATCHED -> "隐藏打开或播放过的内容"
-    RepeatPolicy.HIDE_SHOWN -> "隐藏展示过的内容"; RepeatPolicy.SHOW_ALL -> "显示全部（仍去重）"
+    RepeatPolicy.PREFER_NEW -> stringResource(R.string.discovery_copy_74); RepeatPolicy.HIDE_WATCHED -> stringResource(R.string.discovery_copy_75)
+    RepeatPolicy.HIDE_SHOWN -> stringResource(R.string.discovery_copy_76); RepeatPolicy.SHOW_ALL -> stringResource(R.string.discovery_copy_77)
 }
+@Composable
 private fun statusText(status: DiscoveryStatus?, failed: Boolean, ready: Boolean): String {
-    if (failed) return "本地数据不可用，已暂停发现；浏览器仍可用"
-    if (!ready) return "正在恢复本地发现数据"
-    if (status?.state == DiscoveryState.UNSUPPORTED_FILTER && status.lastError == DiscoveryError.INVALID_QUERY) return "关键词无效或规范化后过长，请修改后重试"
-    if (status?.state == DiscoveryState.UNSUPPORTED_FILTER && status.lastError == DiscoveryError.SOURCE_CONFIGURATION) return "来源配置不可用，浏览器仍可使用"
+    if (failed) return stringResource(R.string.discovery_copy_78)
+    if (!ready) return stringResource(R.string.discovery_copy_79)
+    if (status?.state == DiscoveryState.UNSUPPORTED_FILTER && status.lastError == DiscoveryError.INVALID_QUERY) return stringResource(R.string.discovery_copy_80)
+    if (status?.state == DiscoveryState.UNSUPPORTED_FILTER && status.lastError == DiscoveryError.SOURCE_CONFIGURATION) return stringResource(R.string.discovery_copy_81)
     val title = when(status?.state) {
-        DiscoveryState.NO_SOURCES -> "无搜索来源"; DiscoveryState.FILLING -> "正在补充结果"
-        DiscoveryState.BUFFERED -> "结果已就绪"; DiscoveryState.BACKOFF -> "来源暂缓，请稍后重试"
-        DiscoveryState.EXHAUSTED -> "本轮已结束"; DiscoveryState.SUSPENDED -> "发现已暂停"
-        DiscoveryState.UNSUPPORTED_FILTER -> "来源不支持当前筛选，不会发送查询"
-        DiscoveryState.FAILED -> "发现暂不可用"; DiscoveryState.CAPACITY_REACHED -> "已达到本地容量保护上限"
-        else -> "等待查找"
+        DiscoveryState.NO_SOURCES -> stringResource(R.string.discovery_copy_82); DiscoveryState.FILLING -> stringResource(R.string.discovery_copy_83)
+        DiscoveryState.BUFFERED -> stringResource(R.string.discovery_copy_84); DiscoveryState.BACKOFF -> stringResource(R.string.discovery_copy_85)
+        DiscoveryState.EXHAUSTED -> stringResource(R.string.discovery_copy_86); DiscoveryState.SUSPENDED -> stringResource(R.string.discovery_copy_87)
+        DiscoveryState.UNSUPPORTED_FILTER -> stringResource(R.string.discovery_copy_88)
+        DiscoveryState.FAILED -> stringResource(R.string.discovery_copy_89); DiscoveryState.CAPACITY_REACHED -> stringResource(R.string.discovery_copy_90)
+        else -> stringResource(R.string.discovery_copy_91)
     }
-    return "$title · 可供后续页 ${status?.availableCount ?: 0} · 本轮已尝试 ${status?.requestsThisRound ?: 0}；" +
-        "当前每轮上限 ${if (status?.powerPolicyUpdatePending == true) "等待策略确认" else status?.powerPolicy?.maxRequestsPerRound?.toString() ?: "未知"}"
+    return stringResource(R.string.discovery_copy_92, title, status?.availableCount ?: 0, status?.requestsThisRound ?: 0) +
+        stringResource(R.string.discovery_copy_95, if (status?.powerPolicyUpdatePending == true) stringResource(R.string.discovery_copy_93) else status?.powerPolicy?.maxRequestsPerRound?.toString() ?: stringResource(R.string.discovery_copy_94))
 }

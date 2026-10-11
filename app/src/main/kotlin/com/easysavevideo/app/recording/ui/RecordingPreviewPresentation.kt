@@ -14,14 +14,17 @@ internal fun recordingSelectionModeLabel(mode: RecordingSelectionMode): String =
 internal const val recordingPreviewScopeDisclosure =
     "授权帧模式仅用于当前可见的 ESV 浏览器：展示本次系统授权流中的一张冻结画面，不是实时预览，也不支持预览任意其他应用。尺寸相同不能证明来源正确，请亲自核对画面。"
 
-internal fun recordingPreviewSelectionError(
+internal fun recordingPreviewSelectionError(snapshot: RegionPreviewSnapshot, bounds: RegionNormalizedRect, nowUs: Long): String? =
+    recordingPreviewProblem(snapshot, bounds, nowUs)?.chinese
+
+internal fun recordingPreviewProblem(
     snapshot: RegionPreviewSnapshot,
     bounds: RegionNormalizedRect,
     nowUs: Long,
-): String? = when {
+): RecordingRegionProblem? = when {
     nowUs < snapshot.capturedAtMonotonicUs || nowUs >= snapshot.expiresAtMonotonicUs ->
-        "这张授权帧已失效，请取消并重新申请；不会沿用旧帧或旧选区。"
-    else -> recordingRegionError(bounds, RecordingRegionSetup(
+        RecordingRegionProblem.FRAME_EXPIRED
+    else -> recordingRegionProblem(bounds, RecordingRegionSetup(
         snapshot.observation.geometry, snapshot.observation.scopeEvidence,
     ))
 }

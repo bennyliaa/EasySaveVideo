@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="region_problem_0">Default display dimensions are not observed yet; the region cannot be confirmed.</string>
+    <string name="region_problem_1">The current default-display consent mode is unconfirmed.</string>
+    <string name="region_problem_2">The inward-aligned region must be at least 128 × 128 pixels and meet encoding dimension limits. Adjust the selection.</string>
+    <string name="region_problem_3">The region exceeds current processing limits: longest edge 1920 pixels and at most 1920 × 1080 pixels. Reduce it; there is no automatic scaling or lower-quality fallback.</string>
+    <string name="region_problem_4">This authorized frame expired. Cancel and request again; neither the old frame nor the old region will be reused.</string>
+    <string name="region_summary">Region: left %1$.1f%% · top %2$.1f%% · right %3$.1f%% · bottom %4$.1f%%</string>
+    <string name="region_pixel_summary">Inward even-pixel region: left %1$d · top %2$d · right %3$d · bottom %4$d (right/bottom exclusive) · %5$d × %6$d pixels</string>
+    <string name="region_preview_scope">Authorized-frame mode is for the currently visible ESV browser only. It shows one frozen frame from this system consent flow, not a live preview or a preview of arbitrary other apps. Matching dimensions do not prove the correct source; check the image yourself.</string>
+</resources>

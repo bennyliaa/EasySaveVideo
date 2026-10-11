@@ -63,15 +63,18 @@ class RecordingSegmentsPresentation(
 }
 
 /** M6-A's supported processing subset is checked before requesting system consent. No scaling fallback. */
-fun recordingRegionError(bounds: RegionNormalizedRect, setup: RecordingRegionSetup): String? {
-    val geometry = setup.geometry ?: return "尚未获得默认显示屏尺寸，不能确认选区。"
-    val evidence = setup.scopeEvidence ?: return "当前默认显示屏授权方式尚未确认。"
+fun recordingRegionError(bounds: RegionNormalizedRect, setup: RecordingRegionSetup): String? =
+    recordingRegionProblem(bounds, setup)?.chinese
+
+fun recordingRegionProblem(bounds: RegionNormalizedRect, setup: RecordingRegionSetup): RecordingRegionProblem? {
+    val geometry = setup.geometry ?: return RecordingRegionProblem.GEOMETRY_UNAVAILABLE
+    val evidence = setup.scopeEvidence ?: return RecordingRegionProblem.SCOPE_UNCONFIRMED
     val recipe = try { RegionCaptureRecipe(bounds, geometry, evidence) } catch (_: IllegalArgumentException) {
-        return "选区向内对齐后须至少为 128 × 128 像素，且符合编码尺寸上限。请调整选区。"
+        return RecordingRegionProblem.BOUNDS_INVALID
     }
     val pixels = recipe.pixelCrop
     return if (max(pixels.width, pixels.height) > 1920 || pixels.width.toLong() * pixels.height > 1920L * 1080)
-        "此选区超出当前处理范围：最长边 1920 像素，总像素不超过 1920 × 1080。请缩小选区；不会自动缩放或改录整屏。" else null
+        RecordingRegionProblem.PROCESSING_LIMIT else null
 }
 
 fun recordingSelectionIsCurrent(recipe: RegionCaptureRecipe?, setup: RecordingRegionSetup?): Boolean =

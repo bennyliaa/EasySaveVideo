@@ -34,15 +34,15 @@ object DiscoveryFilterPresentationPolicy {
     private const val DEMO_NAMESPACE = "local-demo"
 
     /** A descriptor ID is not generally a result namespace. Only these existing bridges prove it. */
-    fun admittedSources(descriptors: List<ProviderDescriptor>, demo: Boolean): List<DiscoverySourceChoice> =
+    fun admittedSources(descriptors: List<ProviderDescriptor>, demo: Boolean, text: FilterCopyText = FilterCopyText.CHINESE): List<DiscoverySourceChoice> =
         descriptors.mapNotNull { descriptor ->
             when {
                 !demo && descriptor.id == CommonsIdentity.PROVIDER_ID ->
                     DiscoverySourceChoice(CommonsIdentity.PROVIDER_ID, CommonsIdentity.SOURCE)
                 !demo && descriptor.id in setOf("searxng-1", "searxng-2", "searxng-3") ->
-                    DiscoverySourceChoice(descriptor.id, "SearXNG 候选来源 ${descriptor.id.last()}")
+                    DiscoverySourceChoice(descriptor.id, text.get(FilterCopy.C0, descriptor.id.last()))
                 demo && descriptor.id == DEMO_NAMESPACE ->
-                    DiscoverySourceChoice(DEMO_NAMESPACE, "本地合成来源（隔离演示）", synthetic = true)
+                    DiscoverySourceChoice(DEMO_NAMESPACE, text.get(FilterCopy.C1), synthetic = true)
                 else -> null
             }
         }.distinctBy { it.namespace }
@@ -101,18 +101,18 @@ object DiscoveryFilterPresentationPolicy {
         return whole * 1_000 + fraction
     }
 
-    fun validate(draft: DiscoveryFilterDraft): DiscoveryFilterValidation {
+    fun validate(draft: DiscoveryFilterDraft, text: FilterCopyText = FilterCopyText.CHINESE): DiscoveryFilterValidation {
         val minimum = try { milliseconds(draft.minimumSeconds) } catch (_: IllegalArgumentException) {
-            return DiscoveryFilterValidation(null, "最短时长须为非负秒数，最多三位小数；留空表示不限。")
+            return DiscoveryFilterValidation(null, text.get(FilterCopy.C2))
         }
         val maximum = try { milliseconds(draft.maximumSeconds) } catch (_: IllegalArgumentException) {
-            return DiscoveryFilterValidation(null, "最长时长须为非负秒数，最多三位小数；留空表示不限。")
+            return DiscoveryFilterValidation(null, text.get(FilterCopy.C3))
         }
         if (minimum != null && maximum != null && minimum > maximum)
-            return DiscoveryFilterValidation(null, "最短时长不能大于最长时长；未改动已应用资料。")
+            return DiscoveryFilterValidation(null, text.get(FilterCopy.C4))
         val filters = try { SearchFilters(draft.sourceNamespaces.toSet(), minimum, maximum,
             draft.includeUnknownDuration, draft.safeSearch) } catch (_: IllegalArgumentException) {
-            return DiscoveryFilterValidation(null, "来源筛选无效；未改动已应用资料。")
+            return DiscoveryFilterValidation(null, text.get(FilterCopy.C5))
         }
         return DiscoveryFilterValidation(filters)
     }
@@ -136,33 +136,33 @@ object DiscoveryFilterPresentationPolicy {
     fun unavailableNamespaces(namespaces: Set<String>, choices: List<DiscoverySourceChoice>): List<String> =
         namespaces.filter { selected -> choices.none { it.namespace.equals(selected, ignoreCase = true) } }.sorted()
 
-    fun sourceSummary(filters: SearchFilters, choices: List<DiscoverySourceChoice>): String =
-        if (filters.sourceNamespaces.isEmpty()) "全部当前启用来源（没有启用来源时仍为零来源）"
+    fun sourceSummary(filters: SearchFilters, choices: List<DiscoverySourceChoice>, text: FilterCopyText = FilterCopyText.CHINESE): String =
+        if (filters.sourceNamespaces.isEmpty()) text.get(FilterCopy.C6)
         else filters.sourceNamespaces.sorted().joinToString("、") { namespace ->
             choices.firstOrNull { it.namespace.equals(namespace, ignoreCase = true) }?.let { "${it.label} [$namespace]" }
-                ?: "$namespace（未启用或未知；筛选已保留）"
+                ?: text.get(FilterCopy.C7, namespace)
         }
 
-    fun durationSummary(filters: SearchFilters): String =
-        "最短 ${filters.minimumDurationMs?.let { seconds(it) + " 秒" } ?: "不限"}；" +
-            "最长 ${filters.maximumDurationMs?.let { seconds(it) + " 秒" } ?: "不限"}；" +
-            "${if (filters.includeUnknownDuration) "包含" else "排除"}未知时长"
+    fun durationSummary(filters: SearchFilters, text: FilterCopyText = FilterCopyText.CHINESE): String =
+        text.get(FilterCopy.C10, filters.minimumDurationMs?.let { seconds(it) + text.get(FilterCopy.C8) } ?: text.get(FilterCopy.C9)) +
+            text.get(FilterCopy.C11, filters.maximumDurationMs?.let { seconds(it) + text.get(FilterCopy.C8) } ?: text.get(FilterCopy.C9)) +
+            text.get(FilterCopy.C14, if (filters.includeUnknownDuration) text.get(FilterCopy.C12) else text.get(FilterCopy.C13))
 
-    fun capabilityText(choice: DiscoverySourceChoice): List<String> = if (choice.synthetic) listOf(
-        "本地合成演示：来源与时长筛选只处理合成记录，不能据此证明真实来源能力。",
-        "发布日期未知；安全搜索没有经过真实内容验证。",
+    fun capabilityText(choice: DiscoverySourceChoice, text: FilterCopyText = FilterCopyText.CHINESE): List<String> = if (choice.synthetic) listOf(
+        text.get(FilterCopy.C15),
+        text.get(FilterCopy.C16),
     ) else if (choice.namespace in setOf("searxng-1", "searxng-2", "searxng-3")) listOf(
-        "${choice.label}：安全搜索能力尚未核验；开启时不会向该来源发送查询。",
-        "返回内容仅为来源报告的待验证网页；时长按未知处理，排除未知时长时不展示。",
-        "未验证视频、图片、时长或许可；不会自动获取缩略图或网页。",
+        text.get(FilterCopy.C17, choice.label),
+        text.get(FilterCopy.C18),
+        text.get(FilterCopy.C19),
     ) else listOf(
-        "${choice.label}：不支持安全搜索；开启时不会向此来源发送查询。",
-        "时长来自来源报告，可能未知；最短、最长与未知时长开关在本地筛选，不改写关键词。",
-        "发布日期未知：当前适配器未提供。作者与许可为来源报告，需逐文件核对。",
+        text.get(FilterCopy.C20, choice.label),
+        text.get(FilterCopy.C21),
+        text.get(FilterCopy.C22),
     )
 
     fun unknownDescriptorIds(descriptors: List<ProviderDescriptor>, choices: List<DiscoverySourceChoice>): List<String> =
         descriptors.map { it.id }.distinct().filter { id -> choices.none { it.namespace == id } }
 
-    fun nativeHistoryNotice(): String = "原生视频的 SAVED（保存）与 PLAYED（播放）仍为 UNKNOWN（未知）。打开网页或来自该页的保存不能证明所选发现视频已保存或播放。"
+    fun nativeHistoryNotice(text: FilterCopyText = FilterCopyText.CHINESE): String = text.get(FilterCopy.C23)
 }

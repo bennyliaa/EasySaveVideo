@@ -13,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
+import com.easysavevideo.app.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -144,7 +146,7 @@ fun AuthorizedRecordingRegionDialog(
             if (remaining > 0) delay((remaining + 999) / 1000)
             maskAndCancel()
         }
-        val error = recordingPreviewSelectionError(snapshot, bounds, previewNowUs())
+        val error = recordingPreviewProblem(snapshot, bounds, previewNowUs())?.let { stringResource(it.resource) }
         val adjustable = foreground && enabled && drawing != null
         val recipe = if (error == null) RegionCaptureRecipe(bounds, snapshot.observation.geometry,
             snapshot.observation.scopeEvidence) else null
@@ -154,25 +156,25 @@ fun AuthorizedRecordingRegionDialog(
                 .background(v.colors.surface, RoundedCornerShape(v.corner))
                 .verticalScroll(rememberScrollState()).padding(v.spacingMedium),
                 verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvText("授权帧模式：核对画面并选择范围", style = v.titleTextStyle)
-                EsvText("这是本次授权流的一张冻结帧，尚未开始编码或录音。它不会跟随网页更新；确认后才录制之后的画面。", style = v.captionTextStyle)
-                EsvText(recordingPreviewScopeDisclosure, style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(stringResource(R.string.provider_dialog_48), style = v.titleTextStyle)
+                EsvText(stringResource(R.string.provider_dialog_49), style = v.captionTextStyle)
+                EsvText(stringResource(R.string.region_preview_scope), style = v.captionTextStyle, color = v.colors.muted)
                 drawing?.let { pixels ->
                     FrozenRecordingRegionImage(pixels, snapshot, bounds, recipe, adjustable,
                         canDraw = ::secureAndForeground, onChange = { bounds = it },
                         modifier = Modifier.fillMaxWidth().height(340.dp))
-                } ?: EsvText("正在建立安全的本次授权帧显示，尚未录制。", style = v.captionTextStyle)
-                EsvButton("黑屏 / 来源不对 / 不想继续：取消", ::maskAndCancel, modifier = Modifier.fillMaxWidth())
+                } ?: EsvText(stringResource(R.string.provider_dialog_50), style = v.captionTextStyle)
+                EsvButton(stringResource(R.string.provider_dialog_51), ::maskAndCancel, modifier = Modifier.fillMaxWidth())
                 val geometry = snapshot.observation.geometry
-                EsvText("实际来源坐标 ${geometry.width} × ${geometry.height} · 冻结帧 ${snapshot.rasterWidth} × ${snapshot.rasterHeight} · 方向 ${geometry.rotationDegrees}°", style = v.captionTextStyle)
-                EsvText("图像按完整来源比例居中显示，外侧留白不属于画面。系统栏坐标包含在内；拖动框内移动，拖动四边或四角缩放。", style = v.captionTextStyle, color = v.colors.muted)
-                EsvText(recordingRegionSummary(bounds), style = v.captionTextStyle)
-                recipe?.let { EsvText(recordingEffectiveCropSummary(it), style = v.captionTextStyle) }
+                EsvText(stringResource(R.string.provider_dialog_52, geometry.width, geometry.height, snapshot.rasterWidth, snapshot.rasterHeight, geometry.rotationDegrees), style = v.captionTextStyle)
+                EsvText(stringResource(R.string.provider_dialog_53), style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(localizedRecordingRegionSummary(bounds), style = v.captionTextStyle)
+                recipe?.let { EsvText(localizedRecordingEffectiveCropSummary(it), style = v.captionTextStyle) }
                 error?.let { EsvText(it, color = v.colors.error, style = v.captionTextStyle) }
                 RecordingRegionHandle.entries.chunked(3).forEach { row ->
                     Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                         row.forEach { target ->
-                            EsvButton((if (target == handle) "已选 " else "") + recordingRegionHandleLabel(target),
+                            EsvButton((if (target == handle) stringResource(R.string.provider_dialog_29) else "") + recordingRegionHandleLabel(target),
                                 { handle = target }, enabled = drawing != null && enabled, modifier = Modifier.weight(1f))
                         }
                     }
@@ -188,13 +190,13 @@ fun AuthorizedRecordingRegionDialog(
                     EsvButton("1% ↓", { bounds = dragRecordingRegion(bounds, handle, 0.0, 0.01) }, enabled = canAdjust, modifier = Modifier.weight(1f))
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                    EsvButton("选择全屏", { bounds = RegionNormalizedRect.FULL }, enabled = canAdjust, modifier = Modifier.weight(1f))
-                    EsvButton("重置本次调整", { bounds = RegionNormalizedRect.FULL; handle = RecordingRegionHandle.MOVE }, enabled = canAdjust, modifier = Modifier.weight(1f))
+                    EsvButton(stringResource(R.string.provider_dialog_30), { bounds = RegionNormalizedRect.FULL }, enabled = canAdjust, modifier = Modifier.weight(1f))
+                    EsvButton(stringResource(R.string.provider_dialog_31), { bounds = RegionNormalizedRect.FULL; handle = RecordingRegionHandle.MOVE }, enabled = canAdjust, modifier = Modifier.weight(1f))
                 }
-                EsvText("完整授权画面仅短暂经过内存 / GPU；冻结帧不会写入文件、缓存或媒体库，也不提供导出或分享。只对确认后的向内偶数像素选区编码；失败不会改录整屏。", style = v.captionTextStyle)
-                EsvText("内部声音不受视频矩形限制，可能包含其他允许捕获的应用。本次确认不证明来源身份；系统栏、通知及之后的画面变化仍可能被录入。", style = v.captionTextStyle, color = v.colors.muted)
-                EsvText("离开前台、锁屏、尺寸变化、授权结束或本帧超时会取消本次选择。必须重新申请，不能恢复旧帧。", style = v.captionTextStyle, color = v.colors.muted)
-                EsvButton("我已核对这张授权帧，确认选区并开始", {
+                EsvText(stringResource(R.string.provider_dialog_54), style = v.captionTextStyle)
+                EsvText(stringResource(R.string.provider_dialog_55), style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(stringResource(R.string.provider_dialog_56), style = v.captionTextStyle, color = v.colors.muted)
+                EsvButton(stringResource(R.string.provider_dialog_57), {
                     if (fence.confirm(snapshot, bounds, previewNowUs(), secureAndForeground(), drawing != null)) {
                         view.alpha = 0f
                         showing = false
@@ -221,10 +223,12 @@ private fun FrozenRecordingRegionImage(
     val geometry = snapshot.observation.geometry
     val currentBounds by rememberUpdatedState(bounds)
     val currentChange by rememberUpdatedState(onChange)
+    val frameLabel = stringResource(R.string.provider_dialog_58)
+    val regionLabel = localizedRecordingRegionSummary(bounds)
     Canvas(modifier.background(v.colors.bg, RoundedCornerShape(v.corner))
         .semantics {
-            contentDescription = "本次系统授权的实际冻结画面；不是实时预览。请核对来源，不正确时取消。"
-            stateDescription = recordingRegionSummary(bounds)
+            contentDescription = frameLabel
+            stateDescription = regionLabel
         }
         .pointerInput(snapshot, enabled) {
             if (!enabled) return@pointerInput

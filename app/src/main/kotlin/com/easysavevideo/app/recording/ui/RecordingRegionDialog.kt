@@ -9,6 +9,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
+import com.easysavevideo.app.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -39,28 +41,28 @@ fun RecordingRegionDialog(
     val geometry = openedSetup.geometry
     val unchanged = geometry != null && currentSetup != null && currentSetup.geometry == geometry && currentSetup.scopeEvidence == openedSetup.scopeEvidence
     val adjustable = enabled && unchanged
-    val error = if (!unchanged) "显示尺寸、方向、边距或捕获方式已改变。请取消后重新选择；不会沿用旧选区。"
-        else recordingRegionError(bounds, openedSetup)
+    val error = if (!unchanged) stringResource(R.string.provider_dialog_24)
+        else recordingRegionProblem(bounds, openedSetup)?.let { stringResource(it.resource) }
     val recipe = if (error == null && geometry != null && openedSetup.scopeEvidence != null)
         RegionCaptureRecipe(bounds, geometry, openedSetup.scopeEvidence) else null
     Dialog(onDismissRequest = onCancel, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Box(Modifier.fillMaxSize().systemBarsPadding().padding(v.spacingMedium), contentAlignment = Alignment.Center) {
             Column(Modifier.widthIn(max = 840.dp).fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner))
                 .verticalScroll(rememberScrollState()).padding(v.spacingMedium), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvText("比例示意模式：选择录制范围", style = v.titleTextStyle)
-                EsvText("这是按当前默认显示屏尺寸绘制的比例示意图，不是实时预览。屏幕边框包含系统栏坐标；外侧留白不属于屏幕。", style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(stringResource(R.string.provider_dialog_25), style = v.titleTextStyle)
+                EsvText(stringResource(R.string.provider_dialog_26), style = v.captionTextStyle, color = v.colors.muted)
                 geometry?.let {
                     RecordingRegionSchematic(bounds, it, recipe, adjustable, { next -> bounds = next }, Modifier.fillMaxWidth().height(300.dp))
-                    EsvText("完整显示屏 ${it.width} × ${it.height} · 方向 ${it.rotationDegrees}° · 边距 左${it.insets.left} 上${it.insets.top} 右${it.insets.right} 下${it.insets.bottom}", style = v.captionTextStyle)
+                    EsvText(stringResource(R.string.provider_dialog_27, it.width, it.height, it.rotationDegrees, it.insets.left, it.insets.top, it.insets.right, it.insets.bottom), style = v.captionTextStyle)
                 }
-                EsvText("拖动框内移动，拖动四边或四角缩放。也可选择控制点后用方向按钮微调。", style = v.captionTextStyle, color = v.colors.muted)
-                EsvText(recordingRegionSummary(bounds), style = v.captionTextStyle)
-                recipe?.let { EsvText(recordingEffectiveCropSummary(it), style = v.captionTextStyle) }
+                EsvText(stringResource(R.string.provider_dialog_28), style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(localizedRecordingRegionSummary(bounds), style = v.captionTextStyle)
+                recipe?.let { EsvText(localizedRecordingEffectiveCropSummary(it), style = v.captionTextStyle) }
                 error?.let { EsvText(it, color = v.colors.error, style = v.captionTextStyle) }
                 RecordingRegionHandle.entries.chunked(3).forEach { row ->
                     Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                         row.forEach { target ->
-                            EsvButton((if (target == handle) "已选 " else "") + recordingRegionHandleLabel(target), { handle = target },
+                            EsvButton((if (target == handle) stringResource(R.string.provider_dialog_29) else "") + recordingRegionHandleLabel(target), { handle = target },
                                 enabled = adjustable, modifier = Modifier.weight(1f))
                         }
                     }
@@ -74,16 +76,16 @@ fun RecordingRegionDialog(
                     EsvButton("1% ↓", { bounds = dragRecordingRegion(bounds, handle, 0.0, 0.01) }, enabled = adjustable, modifier = Modifier.weight(1f))
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                    EsvButton("选择全屏", { bounds = RegionNormalizedRect.FULL }, enabled = adjustable, modifier = Modifier.weight(1f))
-                    EsvButton("重置本次调整", { bounds = initialBounds }, enabled = adjustable, modifier = Modifier.weight(1f))
+                    EsvButton(stringResource(R.string.provider_dialog_30), { bounds = RegionNormalizedRect.FULL }, enabled = adjustable, modifier = Modifier.weight(1f))
+                    EsvButton(stringResource(R.string.provider_dialog_31), { bounds = initialBounds }, enabled = adjustable, modifier = Modifier.weight(1f))
                 }
-                EsvText("本应用请求捕获整个默认显示屏；请核对系统共享范围，部分设备可能覆盖该请求。完整捕获内容会短暂经过内存 / GPU；编码与私有片段只保留上述选区，不会先保存整屏文件或失败后改存整屏。", style = v.captionTextStyle)
-                EsvText("选区只定义比例，不绑定应用、网页或先前屏幕；将对你稍后在系统中授权的完整画面按这些坐标裁切，请核对系统授权范围。", style = v.captionTextStyle)
-                EsvText("这里选择的是视频输出范围。内部声音不受矩形限制，可能包含其他允许捕获的应用；不会改用麦克风。", style = v.captionTextStyle, color = v.colors.muted)
-                EsvText("确认只保存本次选择，稍后仍需你明确选择声音并在系统页面授权。尺寸、方向或边距变化时安全停止，下一次需要重新选区。", style = v.captionTextStyle, color = v.colors.muted)
-                EsvButton("确认输出选区", { if (adjustable && recipe != null) onConfirm(recipe.copy(selectedAtMonotonicUs = System.nanoTime().coerceAtLeast(0) / 1_000)) },
+                EsvText(stringResource(R.string.provider_dialog_32), style = v.captionTextStyle)
+                EsvText(stringResource(R.string.provider_dialog_33), style = v.captionTextStyle)
+                EsvText(stringResource(R.string.provider_dialog_34), style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(stringResource(R.string.provider_dialog_35), style = v.captionTextStyle, color = v.colors.muted)
+                EsvButton(stringResource(R.string.provider_dialog_36), { if (adjustable && recipe != null) onConfirm(recipe.copy(selectedAtMonotonicUs = System.nanoTime().coerceAtLeast(0) / 1_000)) },
                     enabled = adjustable && recipe != null, modifier = Modifier.fillMaxWidth())
-                EsvButton("取消，不保留本次调整", onCancel, modifier = Modifier.fillMaxWidth())
+                EsvButton(stringResource(R.string.provider_dialog_37), onCancel, modifier = Modifier.fillMaxWidth())
             }
         }
     }
@@ -101,8 +103,10 @@ private fun RecordingRegionSchematic(
     val v = LocalEsvVisuals.current
     val currentBounds by rememberUpdatedState(bounds)
     val currentChange by rememberUpdatedState(onChange)
+    val diagramLabel = stringResource(R.string.provider_dialog_38)
+    val regionLabel = localizedRecordingRegionSummary(bounds)
     Canvas(modifier.background(v.colors.bg, RoundedCornerShape(v.corner))
-        .semantics { contentDescription = "包含系统栏的完整默认显示屏比例示意图，不绑定应用，不是实时预览"; stateDescription = recordingRegionSummary(bounds) }
+        .semantics { contentDescription = diagramLabel; stateDescription = regionLabel }
         .pointerInput(geometry, enabled) {
             if (!enabled) return@pointerInput
             var target: RecordingRegionHandle? = null
@@ -161,14 +165,15 @@ private fun RecordingRegionSchematic(
     }
 }
 
+@Composable
 internal fun recordingRegionHandleLabel(handle: RecordingRegionHandle): String = when (handle) {
-    RecordingRegionHandle.MOVE -> "整体移动"
-    RecordingRegionHandle.LEFT -> "左边"
-    RecordingRegionHandle.TOP -> "上边"
-    RecordingRegionHandle.RIGHT -> "右边"
-    RecordingRegionHandle.BOTTOM -> "下边"
-    RecordingRegionHandle.TOP_LEFT -> "左上角"
-    RecordingRegionHandle.TOP_RIGHT -> "右上角"
-    RecordingRegionHandle.BOTTOM_LEFT -> "左下角"
-    RecordingRegionHandle.BOTTOM_RIGHT -> "右下角"
+    RecordingRegionHandle.MOVE -> stringResource(R.string.provider_dialog_39)
+    RecordingRegionHandle.LEFT -> stringResource(R.string.provider_dialog_40)
+    RecordingRegionHandle.TOP -> stringResource(R.string.provider_dialog_41)
+    RecordingRegionHandle.RIGHT -> stringResource(R.string.provider_dialog_42)
+    RecordingRegionHandle.BOTTOM -> stringResource(R.string.provider_dialog_43)
+    RecordingRegionHandle.TOP_LEFT -> stringResource(R.string.provider_dialog_44)
+    RecordingRegionHandle.TOP_RIGHT -> stringResource(R.string.provider_dialog_45)
+    RecordingRegionHandle.BOTTOM_LEFT -> stringResource(R.string.provider_dialog_46)
+    RecordingRegionHandle.BOTTOM_RIGHT -> stringResource(R.string.provider_dialog_47)
 }

@@ -39,8 +39,8 @@ fun RecordingSegmentsCard(
             EsvButton("下一组保留片段", onNextSegments, modifier = Modifier.fillMaxWidth())
         EsvText("请求的系统捕获范围：整个默认显示屏。实际应用 / 内容身份无法仅凭画面尺寸确认。", style = v.captionTextStyle)
         state.recipe?.let {
-            EsvText(recordingRegionSummary(it.bounds), style = v.captionTextStyle)
-            EsvText(recordingEffectiveCropSummary(it), style = v.captionTextStyle)
+            EsvText(localizedRecordingRegionSummary(it.bounds), style = v.captionTextStyle)
+            EsvText(localizedRecordingEffectiveCropSummary(it), style = v.captionTextStyle)
         }
         EsvText("有效录制时长 ${recordingDurationLabel(state.effectiveDurationUs)}（仅实际录入，不含暂停）", style = v.captionTextStyle)
         EsvText(stringResource(recordingAudioStatusResource(state.audioStatus)), style = v.captionTextStyle)
