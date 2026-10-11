@@ -38,6 +38,7 @@ import com.easysavevideo.app.save.VerifiedMediaPreview
 import com.easysavevideo.app.save.LibraryMediaPreview
 import com.easysavevideo.app.library.AndroidLibraryRuntime
 import com.easysavevideo.app.editor.ui.EditorScreen
+import com.easysavevideo.app.editor.ui.EditorDraftCheckpointCodec
 import com.easysavevideo.app.library.LibraryScreen
 import com.easysavevideo.app.library.LibraryUnavailableScreen
 import com.easysavevideo.app.library.LibraryExportDialog
@@ -100,6 +101,7 @@ class MainActivity : ComponentActivity() {
     private var libraryPreviewReference by mutableStateOf<MediaReadRef?>(null)
     private var libraryExportReference by mutableStateOf<MediaReadRef?>(null)
     private var pendingLibraryDocumentResult: Pair<Int, Intent?>? = null
+    private var pendingEditorCheckpoint by mutableStateOf<String?>(null)
     private val showingRecording get() = activeDestination == EsvDestination.RECORD
     private var recordingSelectionMode by mutableStateOf(RecordingSelectionMode.BASIC)
     private var previewReceipt by mutableStateOf<MediaCommitReceipt?>(null)
@@ -134,6 +136,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         initialDestination = EsvDestination.fromRoute(savedInstanceState?.getString("esv_destination"))
         activeDestination = initialDestination
+        pendingEditorCheckpoint = runCatching { savedInstanceState?.getString("esv_editor_draft_v1") }
+            .getOrElse { "!" }?.let { if (it.length <= EditorDraftCheckpointCodec.MAX_ENCODED) it else "!" }
         WindowCompat.setDecorFitsSystemWindows(window, false)
         errorSink = AndroidErrorSink(applicationContext)
         bookmarks = AndroidBookmarkRuntime.get(applicationContext)
@@ -201,6 +205,13 @@ class MainActivity : ComponentActivity() {
                 val library = remember(repository) { repository?.let(::AndroidLibraryRuntime) }
                 val exports = saves.libraryExports
                 val editor = saves.editor
+                LaunchedEffect(editor, pendingEditorCheckpoint) {
+                    val checkpoint = pendingEditorCheckpoint
+                    if (editor != null && checkpoint != null) {
+                        pendingEditorCheckpoint = null
+                        editor.restoreDraftCheckpoint(checkpoint)
+                    }
+                }
                 val previewRuntime = saves.segmentRecording
                 SideEffect { previewRuntime?.setPreviewHostFocused(hasFocusedWindow) }
                 val previewHost = previewRuntime?.previewActive == true
@@ -312,8 +323,9 @@ class MainActivity : ComponentActivity() {
                 else if (libraryReference != null) LibraryMediaPreview(libraryReference, isForeground, saves::openLibraryMedia,
                     onBack = { libraryPreviewReference = null }, onReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
                 else if (route == EsvDestination.EDITOR && editor != null) EditorScreen(editor.state,
-                    onDraftChange = editor::changeDraft, onSubmit = editor::submit, onCancel = editor::cancel,
-                    onBack = { editor.cancel(); backTo(EsvDestination.LIBRARY); library?.refresh() },
+                    onDraftChange = editor::changeDraft, onSubmit = editor::submit,
+                    onCancel = { editor.cancelDraftRestoration(); editor.cancel() },
+                    onBack = { editor.cancelDraftRestoration(); editor.cancel(); backTo(EsvDestination.LIBRARY); library?.refresh() },
                     openPreviewMedia = saves::openLibraryMedia, onPreviewReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
                 else if (route == EsvDestination.LIBRARY && library != null) {
                     val thumbnails = remember(library) { AndroidLibraryThumbnails(saves::openLibraryMedia, saves::retainLibraryNativeReader) }
@@ -530,6 +542,9 @@ class MainActivity : ComponentActivity() {
     }
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("esv_destination", activeDestination.route)
+        val editor = if (::saves.isInitialized) saves.editor else null
+        val checkpoint = if (editor != null) editor.savedDraftCheckpoint() else pendingEditorCheckpoint
+        checkpoint?.let { outState.putString("esv_editor_draft_v1", it) }
         super.onSaveInstanceState(outState)
     }
     override fun onWindowFocusChanged(hasFocus: Boolean) {

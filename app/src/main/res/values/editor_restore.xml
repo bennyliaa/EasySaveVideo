@@ -1,0 +1,11 @@
+<resources>
+    <string name="editor_restore_checking">Checking saved draft inputs. No media or task is opened.</string>
+    <string name="editor_restore_owner">Current editing state takes priority. The saved draft did not replace it.</string>
+    <string name="editor_restore_review">Draft parameters restored. Select a segment to verify its media format before editing. Preview and tasks remain stopped.</string>
+    <string name="editor_restore_interrupted">Draft parameters restored for review. The previous operation was not restarted or marked complete.</string>
+    <string name="editor_restore_invalid">The saved draft is invalid or unsupported. Select inputs again.</string>
+    <string name="editor_restore_stale">A saved input changed or is unavailable. The old reference was not granted access.</string>
+    <string name="editor_restore_unavailable">Draft recovery is unavailable. No task or media access was started.</string>
+    <string name="editor_restore_capability">Draft parameters restored, but the required Tools capability is unavailable. No edit was started.</string>
+    <string name="editor_restore_newer">A newer user choice takes priority. The old draft was skipped.</string>
+</resources>

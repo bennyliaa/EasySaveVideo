@@ -1,0 +1,28 @@
+{
+  "status": "PASS_STATIC_RESTORE_BOUNDARY_REVIEW",
+  "base": "7f8bd6b11c77e9b253570438dfccc411bbb01bc5",
+  "protected_paths_unchanged": [
+    "app/src/main/kotlin/com/easysavevideo/app/editor/engine",
+    "app/src/main/kotlin/com/easysavevideo/app/editor/workflow",
+    "app/src/main/kotlin/com/easysavevideo/app/editor/storage",
+    "app/src/main/kotlin/com/easysavevideo/app/editor/verification",
+    "app/src/main/kotlin/com/easysavevideo/app/recording",
+    "app/src/main/kotlin/com/easysavevideo/app/save/VerifiedMediaPreview.kt",
+    "app/build.gradle.kts",
+    "gradle/verification-metadata.xml",
+    "third_party/admitted-runtime.tsv",
+    "app/src/debug/kotlin/com/easysavevideo/app/entitlements",
+    "app/src/release/kotlin/com/easysavevideo/app/entitlements"
+  ],
+  "checkpoint": "Version1 finite binary schema, max8192 decoded bytes /12000 Base64 chars, max EditLimits.MAX_SEGMENTS; exact refs/segment IDs/order/time/crop/quality/selection and prior-busy Boolean only. No display names/paths/URLs/context/player/descriptor/output/task ID or owner. No dynamic rules or dependencies.",
+  "source_correction": "AndroidSaveRuntime.get is a process singleton and owns editor; same-process Activity rotation can retain the current owner/draft already. Previous gap report overstated this. Missing cold SavedState reconstruction path is implemented here; actual Activity/process recreation NOT_RUN.",
+  "owner": "Current nonempty draft/busy/active owner is retained. Mutation token invalidates pending metadata result after user open/change/submit/cancel/back, even when draft later becomes empty. No restore path replaces a task or calls submit. Existing foreground cancellation/publication owner logic retained.",
+  "cold_restore": "Waits for existing journal recovery, validates finite payload then catalog READY/exact revision/generation and source eligibility using metadata-only repository.item. Checks fresh existing Tools FeatureGate/capabilities. Native profile and geometry remain unverified until explicit user action. No automatic probe, reader, player, destination selection, permission request, task restart or success.",
+  "uncertainty": "Prior busy checkpoint yields review/interrupted feedback, never SUCCEEDED or output reference. Recovery failure/invalid/stale/unavailable/capability denial are explicit. Actual native/Tools/device acceptance NOT_RUN.",
+  "original_owner_function_body_hashes": {
+    "private fun submitSelected(": "d673bb4ce9df4422d6d05b7a52c379b9f89dcfdf89e1b8659f72f472e02b8b81",
+    "fun cancel()": "e86cb96113fb254de671a7407d3c42bcbc408e8863a619768bd4babe631d0d41",
+    "private fun featuresAllowed(": "c79496d07d7c40031d74d65715fd773bcfefe5fd37c2675c18b2ac378698b3c0",
+    "private fun releaseGlobal(": "d9f7752a223ee4e87c73717282d7bb4fce94546ac0d913180a81b2b188670408"
+  }
+}

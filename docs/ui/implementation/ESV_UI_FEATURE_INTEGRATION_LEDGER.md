@@ -1,7 +1,7 @@
 # UI capability integration ledger
 
-Reconciled against main 920668f107ec089a9a54da62e6821d982af95d5d plus the bounded
-Editor inline-preview / panel source increment. COMPLETE SOURCE
+Reconciled against main 7f8bd6b11c77e9b253570438dfccc411bbb01bc5 plus the bounded
+Editor SavedState checkpoint / cold-recovery source increment. COMPLETE SOURCE
 means implementation plus scoped source validation. PARTIAL means callable code
 or bounded checks exist; it does not close full PPT/media/device acceptance.
 NOT ACCEPTED means the specified acceptance is unperformed. DISABLED is intentional.
@@ -216,10 +216,42 @@ remains frozen on d9bdf345. Earlier future-layout notes are historical: this gro
 implements the panel/preview source binding, while execution/render acceptance
 remains open.
 
-Known existing reconstruction gap: MainActivity.onSaveInstanceState saves only
-the destination; AndroidEditRuntime has no draft checkpoint/restore contract.
-Same-runtime responsive composition uses one draft, but Activity/process rebuild
-recovery is NOT IMPLEMENTED and is not covered by the model/window-layout PASS.
-A bounded exact-reference draft recovery interface is still needed; this group
-does not invent automatic media reopening. Preview requests are intentionally
-ephemeral and require a user action after rebuilding.
+Updated reconstruction status: bounded SavedState draft checkpoint/cold restore
+is now SOURCE IMPLEMENTED by the following group. Correction: AndroidSaveRuntime
+is a process singleton; same-process Activity rotation could already retain its
+editor owner/draft. The previous note overstated this as an Activity-wide gap.
+Actual Android recreation remains NOT RUN. Preview requests stay ephemeral.
+
+## Bounded editor draft checkpoint and cold recovery
+
+MainActivity saves a versioned pure-data checkpoint, capped at8KiB decoded /
+12000 encoded characters and the existing segment limit. It includes exact
+MediaReadRef IDs/revision/generation, stable segment IDs/order/selection, time,
+crop and quality parameters plus prior-busy feedback; no names, paths, output,
+player, Context, descriptor, permission or task owner is serialized. Pending
+metadata recovery is also retained across saving before it finishes.
+
+The application singleton/current owner always wins over old SavedState. Cold
+restore waits for existing journal recovery, resolves exact READY/current catalog
+metadata and source bounds, then evaluates fresh Tools FeatureGate/capabilities.
+It creates only an unverified draft: no geometry, completed reference, execution
+ranges, restored task phase or success. Native profile review waits for a new
+user segment/draft/submit action. Restore never opens a reader, probes, plays,
+requests a destination/permission or starts a task. Old missing/deleted/changed
+refs fail closed, with no fallback item. Invalid/unavailable/capability/interrupted
+results have paired explicit feedback. Original files remain untouched.
+
+A mutation token fences asynchronous restore against every newer user selection,
+change, submit or cancel/back, even if the user subsequently clears the draft.
+Busy work stays with its existing owner and foreground/publication fences; old
+checkpoint state cannot duplicate or resume it. This is not an automatically
+resumed editing task or output recovery guarantee.
+
+Validation: 61 scoped JVM passes, dual Kotlin compile/lint PASS
+({'Warning': 58, 'Hint': 8}), paired9 resources, strict graph90. Evidence:
+artifacts/ui/editor-restoration-20261012. Pure tests cover parameters/order/selection,
+malformed/bounded payload, stale/deleted/missing refs, metadata-only resolution,
+new-choice/cleared-draft precedence, single admission, interrupted/capability
+feedback and unexecutable partial input. Android Bundle/Activity/process recreation,
+actual Tools/native media/output/render acceptance remain NOT RUN. No device,
+private-media read, new library/DB/SDK, recording or APK step; code4 remains frozen.

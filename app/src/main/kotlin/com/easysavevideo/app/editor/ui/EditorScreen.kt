@@ -102,6 +102,9 @@ fun EditorScreen(
                     color = if (state.phase == EditorPhase.FAILED || state.phase == EditorPhase.BLOCKED) v.colors.error else v.colors.text)
                 if (!state.foreground) EsvText(stringResource(R.string.advanced_copy_4), style = v.captionTextStyle, color = v.colors.muted)
                 state.notice?.let { EsvDiagnosticNotice(it) }
+                editorRestorationResource(state.draftRestoration)?.let {
+                    EsvText(stringResource(it), style = v.captionTextStyle, color = v.colors.muted)
+                }
                 if (publishedReference != null) {
                     EsvButton(stringResource(R.string.final_copy_4), { requestPreview(publishedReference) },
                         enabled = state.foreground && !state.busy, modifier = Modifier.fillMaxWidth())

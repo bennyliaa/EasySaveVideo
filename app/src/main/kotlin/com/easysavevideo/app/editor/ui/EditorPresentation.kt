@@ -94,6 +94,7 @@ class EditorViewState(
     /** Increment after EVERY submit attempt, even one rejected before a task starts. */
     val submissionRevision: Long = 0,
     executionRanges: List<EditorExecutionRange> = emptyList(),
+    val draftRestoration: EditorDraftRestoration = EditorDraftRestoration.NONE,
 ) {
     val availableItems: List<MediaItem> = Collections.unmodifiableList(ArrayList(availableItems.take(100)))
     val displayGeometries: Map<MediaReadRef, EditorDisplayGeometry> =
@@ -112,8 +113,9 @@ class EditorViewState(
         completedReference: MediaReadRef? = this.completedReference,
         submissionRevision: Long = this.submissionRevision,
         executionRanges: List<EditorExecutionRange> = this.executionRanges,
+        draftRestoration: EditorDraftRestoration = this.draftRestoration,
     ) = EditorViewState(draft, availableItems, foreground, phase, displayGeometries, notice,
-        completedReference, submissionRevision, executionRanges)
+        completedReference, submissionRevision, executionRanges, draftRestoration)
     override fun toString() = "EditorViewState(phase=$phase, [redacted])"
 }
 

@@ -1,0 +1,11 @@
+<resources>
+    <string name="editor_restore_checking">正在核对已保存草稿的输入，未打开媒体或任务。</string>
+    <string name="editor_restore_owner">优先保留当前编辑状态，已保存草稿未覆盖它。</string>
+    <string name="editor_restore_review">已恢复草稿参数。请选择片段，重新核对媒体格式后编辑；预览和任务保持停止。</string>
+    <string name="editor_restore_interrupted">已恢复草稿参数供核对，未重启此前操作，也未将其标为完成。</string>
+    <string name="editor_restore_invalid">已保存草稿无效或版本不支持，请重新选择输入。</string>
+    <string name="editor_restore_stale">已保存的输入已变化或不可用，未为旧引用重新授予读取权限。</string>
+    <string name="editor_restore_unavailable">草稿恢复暂不可用，未启动任务或媒体读取。</string>
+    <string name="editor_restore_capability">已恢复草稿参数，但所需 Tools 能力不可用，未开始编辑。</string>
+    <string name="editor_restore_newer">优先保留用户的新选择，旧草稿已跳过。</string>
+</resources>

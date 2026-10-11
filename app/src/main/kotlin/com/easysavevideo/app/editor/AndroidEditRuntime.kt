@@ -51,6 +51,10 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
             notice = "已请求停止，但后台处理或文件资源仍未确认退出。相关文件保留，不能开始新编辑。可继续等待，或完全退出应用后重新打开进行恢复检查。")
     })
     private var recovered = false
+    private val draftRestoreGuard = EditorDraftRestoreGuard()
+    private var pendingDraftCheckpoint: String? = null
+    private var restoringDraftCheckpoint: String? = null
+    private var restoredNeedsExplicitAction = false
     var state by mutableStateOf(EditorViewState(foreground = false)); private set
     init {
         worker.execute {
@@ -61,17 +65,20 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
                     notice = recovery.fold({ if (it.interrupted + it.cleanupPending > 0)
                         "上次编辑被中断，原件保留。未验证的新文件不会自动入库；待清理项 ${it.cleanupPending} 个。" else null },
                         { "编辑恢复检查未完成。原件保留，编辑暂不可用。" }))
-                if (recovered && state.foreground) inspectMissingSources()
+                val checkpoint = pendingDraftCheckpoint; pendingDraftCheckpoint = null
+                if (checkpoint != null) restoreDraftCheckpoint(checkpoint)
+                else if (recovered && state.foreground) inspectMissingSources()
             }
         }
     }
     fun open(item: MediaItem, available: List<MediaItem>) {
         requireMain()
         if (state.busy || state.phase == EditorPhase.BLOCKED) return
+        draftRestoreGuard.userChanged(); restoredNeedsExplicitAction = false; pendingDraftCheckpoint = null; restoringDraftCheckpoint = null
         val draft = if (state.draft.segments.isEmpty() || state.phase == EditorPhase.SUCCEEDED) addEditorSegment(EditorDraft(), item)
             else if (state.draft.segments.any { it.reference == item.readRef() }) state.draft else addEditorSegment(state.draft, item)
         state = state.copy(draft = draft, displayGeometries = state.displayGeometries.filterKeys { ref -> draft.segments.any { it.reference == ref } }, availableItems = available.filter { it.lifecycle == MediaLifecycle.READY },
-            phase = EditorPhase.IDLE, completedReference = null, executionRanges = emptyList())
+            phase = EditorPhase.IDLE, completedReference = null, executionRanges = emptyList(), draftRestoration = EditorDraftRestoration.NONE)
     }
     fun setForeground(value: Boolean) {
         requireMain(); state = state.copy(foreground = value)
@@ -81,13 +88,14 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
     fun changeDraft(draft: EditorDraft) {
         requireMain()
         if (!state.editable || activeCancellation != null) return
+        draftRestoreGuard.userChanged(); restoredNeedsExplicitAction = false; pendingDraftCheckpoint = null; restoringDraftCheckpoint = null
         state = state.copy(draft = draft, displayGeometries = state.displayGeometries.filterKeys { ref -> draft.segments.any { it.reference == ref } },
-            phase = EditorPhase.IDLE, notice = null, completedReference = null, executionRanges = emptyList())
+            phase = EditorPhase.IDLE, notice = null, completedReference = null, executionRanges = emptyList(), draftRestoration = EditorDraftRestoration.NONE)
         inspectMissingSources()
     }
     /** Metadata inspection is free; no edit capability is exercised until explicit Submit. */
     private fun inspectMissingSources() {
-        if (!state.foreground || !recovered || state.busy || activeCancellation != null) return
+        if (restoredNeedsExplicitAction || !state.foreground || !recovered || state.busy || activeCancellation != null) return
         val refs = state.draft.segments.map { it.reference }.distinct().filter { it !in state.displayGeometries }
         if (refs.isEmpty()) return
         val generation = ++admissionGeneration
@@ -140,6 +148,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
     fun submit(draft: EditorDraft) {
         requireMain()
         if (!state.editable || state.draft != draft) return
+        draftRestoreGuard.userChanged(); restoredNeedsExplicitAction = false; pendingDraftCheckpoint = null; restoringDraftCheckpoint = null
         val generation = admissionGeneration
         destinations.select(isCurrent = { state.foreground && state.editable && state.draft == draft && admissionGeneration == generation },
             accepted = { admission -> submitSelected(draft, admission) })
@@ -212,6 +221,56 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
                 }
             }
         }
+    }
+    /** Restores editable parameters only. Never calls a reader, probe, destination, task or player. */
+    internal fun restoreDraftCheckpoint(encoded: String) {
+        requireMain()
+        fun ownerPresent() = state.draft.segments.isNotEmpty() || state.busy || activeCancellation != null || state.phase == EditorPhase.BLOCKED
+        if (state.phase == EditorPhase.BLOCKED) { state = state.copy(draftRestoration = EditorDraftRestoration.UNAVAILABLE); return }
+        if (ownerPresent()) { state = state.copy(draftRestoration = EditorDraftRestoration.OWNER_KEPT); return }
+        val checkpoint = EditorDraftCheckpointCodec.decode(encoded)
+        if (checkpoint == null) { state = state.copy(draftRestoration = EditorDraftRestoration.INVALID); return }
+        if (!recovered) { pendingDraftCheckpoint = encoded; state = state.copy(draftRestoration = EditorDraftRestoration.RESTORING); return }
+        val token = draftRestoreGuard.begin(ownerPresent())
+        if (token == null) { state = state.copy(draftRestoration = EditorDraftRestoration.USER_CHANGED); return }
+        restoredNeedsExplicitAction = true
+        restoringDraftCheckpoint = encoded
+        state = state.copy(draftRestoration = EditorDraftRestoration.RESTORING)
+        try { worker.execute {
+            val resolution = runCatching { resolveEditorCheckpoint(checkpoint, storage.library::item) }
+            main.post {
+                restoringDraftCheckpoint = null
+                if (!draftRestoreGuard.canApply(token, ownerPresent())) {
+                    state = state.copy(draftRestoration = EditorDraftRestoration.USER_CHANGED)
+                    return@post
+                }
+                val draft = resolution.getOrNull()
+                if (draft == null) {
+                    state = state.copy(draftRestoration = if (resolution.isSuccess) EditorDraftRestoration.STALE else EditorDraftRestoration.UNAVAILABLE)
+                    return@post
+                }
+                // Capability review uses fresh catalog metadata; native profile review waits for user action.
+                val request = runCatching { draft.toEditRequest("draft-review") }.getOrNull()
+                val required = if (request == null) setOf(Feature.VIDEO_CROP, Feature.VIDEO_MERGE, Feature.VIDEO_COMPRESS)
+                    else editorFeatures(request, draft.segments.associate { it.reference to (it.item.durationMillis?.times(1_000) ?: -1L) })
+                val status = editorCheckpointRestorationStatus(checkpoint.priorBusy, featuresAllowed(required))
+                state = state.copy(draft = draft, availableItems = draft.segments.map { it.item }.distinctBy { it.itemId },
+                    phase = EditorPhase.IDLE, displayGeometries = emptyMap(), completedReference = null,
+                    executionRanges = emptyList(), draftRestoration = status)
+            }
+        } } catch (_: java.util.concurrent.RejectedExecutionException) {
+            restoringDraftCheckpoint = null
+            state = state.copy(draftRestoration = EditorDraftRestoration.UNAVAILABLE)
+        }
+    }
+    internal fun savedDraftCheckpoint(): String? {
+        requireMain()
+        return if (state.draft.segments.isNotEmpty()) EditorDraftCheckpointCodec.capture(state)
+            else pendingDraftCheckpoint ?: restoringDraftCheckpoint
+    }
+    internal fun cancelDraftRestoration() {
+        requireMain(); draftRestoreGuard.userChanged(); pendingDraftCheckpoint = null; restoringDraftCheckpoint = null
+        if (state.draftRestoration == EditorDraftRestoration.RESTORING) state = state.copy(draftRestoration = EditorDraftRestoration.USER_CHANGED)
     }
     fun cancel() {
         requireMain(); admissionGeneration++
