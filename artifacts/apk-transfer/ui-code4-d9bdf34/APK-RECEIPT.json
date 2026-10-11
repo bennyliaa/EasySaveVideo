@@ -1,0 +1,28 @@
+{
+  "status": "PASS_UNSIGNED_PACKAGE_CHECKS",
+  "source_commit": "d9bdf34567bf2d138e796a50560419d359385cf4",
+  "package": "com.easysavevideo.app",
+  "versionCode": 4,
+  "versionName": "0.4.0-ui-dev",
+  "minSdk": 31,
+  "targetSdk": 36,
+  "variant": "release",
+  "signed": false,
+  "apk": "esv-ui-code4-d9bdf34-release-unsigned.apk",
+  "bytes": 34849762,
+  "sha256": "827ded5c6cd6f3bb69919292062fc448015fe8a7d55925b763cf7da3cdc2b2a9",
+  "build_flags": [
+    "-Pesv.commons.contact=",
+    "-Pesv.commons.enabled=false",
+    "-Pesv.distribution.channel=unconfigured"
+  ],
+  "commons_contact_empty": true,
+  "commons_disabled": true,
+  "distribution_unconfigured": true,
+  "notices_characters": 550003,
+  "no_private_media_keys_python_or_scrapling": true,
+  "expected_existing_signer_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+  "device_install": "NOT_RUN",
+  "P1_android_click_acceptance": "NOT_RUN",
+  "phone_power": "NOT_MEASURED"
+}
