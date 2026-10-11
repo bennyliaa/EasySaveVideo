@@ -1,0 +1,189 @@
+{
+  "scope": "Actual emulator-5556 limited PC acceptance. No real-device, public-site, download-success, media-playback or battery acceptance.",
+  "source_git_commit": "b714a87601d0725385c11f4587704f78587938b5",
+  "signed_return_git_commit": "0ef80ea13e6b5b01aab98000e87186838d598401",
+  "device": "emulator-5556",
+  "android": "12",
+  "api": 31,
+  "package": "com.easysavevideo.app",
+  "old_version_code": 2,
+  "installed_version_code": 3,
+  "min_sdk": 31,
+  "target_sdk": 36,
+  "installed_apk_sha256": "b377703b0e49237b94dd7669bb79a065deaf6af74e5d60c4eaf621b40747b531",
+  "installed_apk_bytes": 39965102,
+  "certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+  "checks": {
+    "incoming_manifest_and_102_chunks": "PASS",
+    "full_apk_hash_and_192_unchanged_payloads": "PASS",
+    "official_pc_apksigner_api31": "PASS",
+    "official_pc_apksigner_api31_to_36": "PASS",
+    "official_pc_zipalign_16kib": "PASS",
+    "match_existing_installed_public_certificate": "PASS",
+    "adb_install_replace_preserve_data": "PASS",
+    "three_existing_config_db_hashes_before_launch": "PASS",
+    "search_zero_sources_no_false_success": "PASS",
+    "system_webview_owned_loopback_dynamic_dom": "PASS",
+    "save_no_media_explicit_failure": "PASS",
+    "connection_failure_save_disabled": "PASS",
+    "save_task_screen_existing_records_observed": "PASS_METADATA_ONLY_NOT_NEW_SUCCESS",
+    "close_only_new_test_tab_restore_existing_address": "PASS",
+    "cold_restart_saved_query_restore": "PASS",
+    "library_entry_and_thumbnail": "NOT_RUN_PRIVATE_MEDIA_BOUNDARY",
+    "download_save_success_and_playback": "NOT_RUN",
+    "activity_recreation_and_full_cancellation_suite": "NOT_RUN",
+    "same_100_case_ab_benchmark": "NOT_RUN_THIS_STAGE",
+    "real_public_site_benchmark": "NOT_RUN",
+    "physical_phone_cpu_ram_battery_network_total_time": "NOT_MEASURED"
+  },
+  "data_preservation_scope": "Install -r; before first launch, hashes for the existing WebView shared preferences, discovery database and journal were identical. Other application files were not byte-audited. Existing completed-task metadata remained visible; no media bytes were read.",
+  "production_source_admission": "No enabled search sources; local verification UNCONFIGURED. Owned fixture success is not public-site success or B production acceptance.",
+  "library_boundary": "Existing completed recordings are still cataloged. LibraryScreen schedules foreground thumbnails that read media, so Library/preview was not opened under the explicit no-private-images/videos constraint.",
+  "cleanup": "One-shot owned response server exited; test tab closed and prior address restored; only ESV on emulator-5556 was manipulated. No uninstall, clear-data, mic, screen recording, Vault or M7-D actions.",
+  "setup_attempts": [
+    {
+      "status": "FAILED_SETUP_CORRECTED",
+      "detail": "First inline Python fixture preparation had a shell quoting SyntaxError; a saved Python script then prepared the same authored bytes successfully."
+    },
+    {
+      "status": "NOT_CONFIRMED_REPLACED_BY_ACTUAL_COLD_CHECK",
+      "detail": "am kill after HOME did not produce a cold launch; this was not counted as restart. With no recording service present, force-stop without clear-data plus am start produced LaunchState COLD."
+    },
+    {
+      "status": "TOOL_UNAVAILABLE_NOT_A_PRODUCT_TEST",
+      "detail": "Toybox sqlite3 is absent. No workaround or private-media read was used."
+    }
+  ],
+  "raw_ui_policy": "Raw UI XML/screenshots remain local only because they include existing application query/address/task metadata. This sanitized receipt records results and their file hashes without those values.",
+  "local_evidence_hashes": {
+    "device-data-after-install-before-launch.txt": {
+      "bytes": 299,
+      "sha256": "1c5bdf1ed861de368d930b0df172b6db3da2c09a9249a6cf765962adaeb5f9c3"
+    },
+    "device-data-before-install.txt": {
+      "bytes": 299,
+      "sha256": "1c5bdf1ed861de368d930b0df172b6db3da2c09a9249a6cf765962adaeb5f9c3"
+    },
+    "device-package-after-install.txt": {
+      "bytes": 81,
+      "sha256": "d36d0125916adc0af45ba06ebf45b575eb97d048779a40e521cba99dd8a11c91"
+    },
+    "device-package-before.txt": {
+      "bytes": 77,
+      "sha256": "bffff7176ab1e3aaedf97583966c6a4460e07ea7a7e4a01933ec05c523727590"
+    },
+    "install-replace.txt": {
+      "bytes": 38,
+      "sha256": "c4aa470acafcf8576c15b0f0b5ae7e852d1ec5413372d0e6a9272e788e1306d3"
+    },
+    "installed-code2-public-cert.txt": {
+      "bytes": 311,
+      "sha256": "30fdbe654717ee7866c1c31a71fc62ff7653a2dc633ed19e715d3142de2acf8d"
+    },
+    "launch-main.txt": {
+      "bytes": 183,
+      "sha256": "7a8ed22a6574e8250eca072053beb63fe0ce85e5bcb389fa3dada7170d328653"
+    },
+    "owned-browser-response.http": {
+      "bytes": 499,
+      "sha256": "fc77a77bb5c448a6a7888f973fb34eba44982e3ccdd0da0443f6b16a5cb3b5b6"
+    },
+    "pc-apksigner-api31-36.txt": {
+      "bytes": 972,
+      "sha256": "66fdc4d5fcb3eeaf6e45e9886ec2ba7a744e427daf531c358983d7bcf3d63314"
+    },
+    "pc-apksigner-api31.txt": {
+      "bytes": 972,
+      "sha256": "66fdc4d5fcb3eeaf6e45e9886ec2ba7a744e427daf531c358983d7bcf3d63314"
+    },
+    "pc-package.txt": {
+      "bytes": 241,
+      "sha256": "aeb18759083ebf43fb9d4aa32a7f3e89fc919b92a2f72f0ae66bdd9455676c1f"
+    },
+    "pc-zipalign-16kb.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-restart-services.txt": {
+      "bytes": 68,
+      "sha256": "44009d1664d1b66d17ec4859a9e03642b0125d242c05eac9c101806e2397fb7c"
+    },
+    "restart-main-cold.txt": {
+      "bytes": 183,
+      "sha256": "73af6bc75fbb40c3f7cdc758602b3a45c91c5f181d427da824aec25776dac07d"
+    },
+    "restart-main.txt": {
+      "bytes": 251,
+      "sha256": "a69dbde4f37b8396fd0cb9ef4074822208ab437f5a43f2c6a39f750d26080a4c"
+    },
+    "ui-01-launch.xml": {
+      "bytes": 13691,
+      "sha256": "943ac861002c295f38a7095c09445d1e75b3e182beeb3288d9c8a8556769384f"
+    },
+    "ui-02-search-no-sources.xml": {
+      "bytes": 13256,
+      "sha256": "8b306e02c7c4ccaed8d5305c5e4e12dc430589b9fa71b100a0f7ffc99af59f0e"
+    },
+    "ui-03-browser.xml": {
+      "bytes": 16016,
+      "sha256": "1b2867c981f39eca274e264a67f29b8ad95b6c7a4ac5782b848b4f7f86dbb85e"
+    },
+    "ui-04-browser-tabs.xml": {
+      "bytes": 16339,
+      "sha256": "dded292b8fca36ca55406b389113de17950dcae8d31f6b3e1d463f09d358c3a8"
+    },
+    "ui-05-owned-browser-loaded.xml": {
+      "bytes": 14354,
+      "sha256": "03d8d2016756b92e321932011ae0d57241491334a07f7e31e78952e39be9a5d3"
+    },
+    "ui-05-owned-browser.png": {
+      "bytes": 143143,
+      "sha256": "4c68f5eeeafe0a611187a521706564c63977c1dfc535717dfbafd05b563e82af"
+    },
+    "ui-06-save-no-media.xml": {
+      "bytes": 17199,
+      "sha256": "8cae6d9a7a95d2cdf09e40765b73bca85fac8e1679dd6d26f49b20f3d2a9201b"
+    },
+    "ui-07-save-tasks.xml": {
+      "bytes": 9346,
+      "sha256": "ff7857cbc202ae115e1da2f55a91c0bd55c249ee6ceb1e5722a0826a4c331644"
+    },
+    "ui-08-save-tasks-status.xml": {
+      "bytes": 10861,
+      "sha256": "56de6240c1fd3058af1fb26bde690363f95217a26bb2e07a02949a12aa1abc31"
+    },
+    "ui-09-browser-connection-failure.xml": {
+      "bytes": 15954,
+      "sha256": "76959ee0791fa500431cec5b5ad4e8f85389c9ab439b930b594aa22ef0d173b4"
+    },
+    "ui-10-test-tab-cleanup-before.xml": {
+      "bytes": 16270,
+      "sha256": "9dcc4ab578440bbe7c7897a62a8936430ecd0ca09222c5554438cb90ec150c25"
+    },
+    "ui-11-test-tab-closed.xml": {
+      "bytes": 16335,
+      "sha256": "bf69a38af912c670a8e2c3f29748cb24f380e1c4a0700ecfaf18cc27814b9b5d"
+    },
+    "ui-12-restart-discovery.xml": {
+      "bytes": 13256,
+      "sha256": "8b306e02c7c4ccaed8d5305c5e4e12dc430589b9fa71b100a0f7ffc99af59f0e"
+    },
+    "ui-13-cold-discovery.png": {
+      "bytes": 168099,
+      "sha256": "16d10091fb10f8bf91c9f64b854a8c3da42b41c3c406e13f91699723a8953942"
+    },
+    "ui-13-cold-restart.xml": {
+      "bytes": 13256,
+      "sha256": "8b306e02c7c4ccaed8d5305c5e4e12dc430589b9fa71b100a0f7ffc99af59f0e"
+    }
+  },
+  "post_disconnect_notice_recheck": {
+    "status": "PASS",
+    "device_state": "device",
+    "installed_version_code": 3,
+    "min_sdk": 31,
+    "app_process_present": true,
+    "recording_services": "none",
+    "repeat_install": "NOT_RUN"
+  }
+}
