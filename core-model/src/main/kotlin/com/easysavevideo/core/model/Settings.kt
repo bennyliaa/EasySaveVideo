@@ -23,7 +23,24 @@ data class AppSettings(
     val schemaVersion: Int = 1,
     val browser: BrowserSettings = BrowserSettings(),
     val discovery: DiscoverySettings = DiscoverySettings(),
+    val appearance: AppearanceSettings = AppearanceSettings(),
 ) { init { require(schemaVersion == 1) } }
+
+/** Stable values are additive; existing v1 browser/discovery preferences remain readable. */
+enum class ThemeMode(val key: String) {
+    SYSTEM("system"), LIGHT("light"), DARK("dark");
+    fun useDark(systemDark: Boolean): Boolean = when (this) {
+        SYSTEM -> systemDark
+        LIGHT -> false
+        DARK -> true
+    }
+    companion object { fun fromKey(key: String?) = entries.firstOrNull { it.key == key } ?: SYSTEM }
+}
+enum class AppLanguage(val tag: String) {
+    SYSTEM(""), CHINESE("zh-CN"), ENGLISH("en");
+    companion object { fun fromTag(tag: String?) = entries.firstOrNull { it.tag == tag } ?: SYSTEM }
+}
+data class AppearanceSettings(val themeMode: ThemeMode = ThemeMode.SYSTEM, val language: AppLanguage = AppLanguage.SYSTEM)
 interface SettingsStore {
     fun load(): AppSettings
     fun save(settings: AppSettings)

@@ -114,12 +114,12 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
             fun color(light: Long, dark: Long) = ColorValue.argb(
                 (if (mode == ColorMode.DARK) dark else light).toInt(),
             )
-            val canvas = color(0xfff5f7fc, 0xff10141d)
-            val card = color(0xffffffff, 0xff1a202c)
-            val ink = color(0xff182135, 0xffeef2ff)
-            val secondaryInk = color(0xff48566c, 0xffbac6dd)
-            val primary = color(0xff2856b6, 0xffa9c6ff)
-            val onPrimary = color(0xffffffff, 0xff102653)
+            val canvas = color(0xfff5f8fa, 0xff0e1b22)
+            val card = color(0xffffffff, 0xff152832)
+            val ink = color(0xff142b36, 0xffe5f2f5)
+            val secondaryInk = color(0xff485d66, 0xffa7bcc5)
+            val primary = color(0xff087582, 0xff62d9df)
+            val onPrimary = color(0xffffffff, 0xff07343a)
             val line = color(0xff6e7a90, 0xff8a97ad)
             val danger = color(0xffb42336, 0xffffb3bd)
             val normalType = TypographyValue(FontRef.System(), 16.0, 400, 24.0)
@@ -134,9 +134,9 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
             builder.put(mode, onAccent, onPrimary)
             builder.put(mode, error, danger)
             builder.put(mode, border, line)
-            builder.put(mode, title, TypographyValue(FontRef.System(), 28.0, 700, 36.0))
+            builder.put(mode, title, TypographyValue(FontRef.System(), 24.0, 700, 32.0))
             builder.put(mode, body, normalType)
-            builder.put(mode, caption, TypographyValue(FontRef.System(), 14.0, 400, 20.0))
+            builder.put(mode, caption, TypographyValue(FontRef.System(), 12.0, 400, 16.0))
             builder.put(mode, spacingSmall, dimension(8.0, DimensionPurpose.SPACING))
             builder.put(mode, spacingMedium, dimension(16.0, DimensionPurpose.SPACING))
             builder.put(mode, spacingLarge, dimension(24.0, DimensionPurpose.SPACING))
@@ -154,11 +154,11 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
             builder.put(mode, animation, AnimationValue.Disabled)
             builder.put(mode, button, ButtonStyle.of(mapOf(
                 VisualState.NORMAL to ButtonVisual(primary, onPrimary, buttonType),
-                VisualState.PRESSED to ButtonVisual(color(0xff1a438f, 0xffc3d8ff), onPrimary, buttonType),
-                VisualState.FOCUSED to ButtonVisual(color(0xff173977, 0xffd1e0ff), onPrimary, buttonType),
+                VisualState.PRESSED to ButtonVisual(color(0xff075e69, 0xff8fe4e8), onPrimary, buttonType),
+                VisualState.FOCUSED to ButtonVisual(color(0xff064b55, 0xffa4ecef), onPrimary, buttonType),
                 VisualState.DISABLED to ButtonVisual(
                     color(0xffe2e7f0, 0xff303b50),
-                    color(0xff48566c, 0xffbec9df),
+                    color(0xff485d66, 0xffbec9df),
                     buttonType,
                 ),
             ), controlCorner))

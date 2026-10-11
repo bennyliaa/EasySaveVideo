@@ -14,6 +14,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -57,7 +61,7 @@ import dev.skinkit.contract.TypographyValue
 import dev.skinkit.contract.VisualConfiguration
 import dev.skinkit.contract.VisualState
 
-/** The Foundation bridge is app-owned; it adds no Material or Material3 dependency. */
+/** One detached SkinKit snapshot supplies Foundation and Material3 alike. */
 data class EsvComposeColors(
     val bg: Color,
     val surface: Color,
@@ -137,7 +141,44 @@ fun EsvThemeHost(
     SideEffect { currentTheme.provider.updateConfiguration(configuration) }
 
     val visuals = remember(currentTheme, generation) { currentTheme.readSnapshot().toComposeVisuals() }
-    CompositionLocalProvider(LocalEsvVisuals provides visuals, content = content)
+    val colors = visuals.colors
+    val scheme = lightColorScheme(
+        primary = colors.accent, onPrimary = colors.onAccent,
+        primaryContainer = colors.surface, onPrimaryContainer = colors.text,
+        inversePrimary = colors.accent,
+        secondary = colors.accent, onSecondary = colors.onAccent,
+        secondaryContainer = colors.surface, onSecondaryContainer = colors.text,
+        tertiary = colors.accent, onTertiary = colors.onAccent,
+        tertiaryContainer = colors.surface, onTertiaryContainer = colors.text,
+        background = colors.bg, onBackground = colors.text,
+        surface = colors.surface, onSurface = colors.text,
+        surfaceVariant = colors.bg, onSurfaceVariant = colors.muted,
+        surfaceTint = colors.accent,
+        inverseSurface = colors.text, inverseOnSurface = colors.surface,
+        error = colors.error, onError = colors.surface,
+        errorContainer = colors.surface, onErrorContainer = colors.error,
+        outline = colors.border, outlineVariant = colors.border,
+        scrim = colors.text,
+        surfaceBright = colors.surface, surfaceDim = colors.bg,
+        surfaceContainer = colors.surface, surfaceContainerHigh = colors.surface,
+        surfaceContainerHighest = colors.surface, surfaceContainerLow = colors.bg,
+        surfaceContainerLowest = colors.bg,
+    )
+    val typography = Typography(
+        displayLarge = visuals.titleTextStyle, displayMedium = visuals.titleTextStyle,
+        displaySmall = visuals.titleTextStyle, headlineLarge = visuals.titleTextStyle,
+        headlineMedium = visuals.titleTextStyle, headlineSmall = visuals.titleTextStyle,
+        titleLarge = visuals.titleTextStyle, titleMedium = visuals.bodyTextStyle,
+        titleSmall = visuals.bodyTextStyle, bodyLarge = visuals.bodyTextStyle,
+        bodyMedium = visuals.bodyTextStyle, bodySmall = visuals.captionTextStyle,
+        labelLarge = visuals.bodyTextStyle, labelMedium = visuals.captionTextStyle,
+        labelSmall = visuals.captionTextStyle,
+    )
+    val shape = RoundedCornerShape(visuals.corner)
+    CompositionLocalProvider(LocalEsvVisuals provides visuals) {
+        MaterialTheme(colorScheme = scheme, typography = typography,
+            shapes = Shapes(shape, shape, shape, shape, shape), content = content)
+    }
 }
 
 @Composable

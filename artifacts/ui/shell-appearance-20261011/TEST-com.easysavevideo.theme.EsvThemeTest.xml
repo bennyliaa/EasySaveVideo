@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.theme.EsvThemeTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-11T15:43:33.745Z" hostname="redacted-local-host" time="0.105">
+  <properties/>
+  <testcase name="buttonStatesAreDistinctAndDisabledTakesPrecedence" classname="com.easysavevideo.theme.EsvThemeTest" time="0.058"/>
+  <testcase name="defaultsAreCompleteWithoutSafeFallbackAcrossConfigurationMatrix" classname="com.easysavevideo.theme.EsvThemeTest" time="0.022"/>
+  <testcase name="textAndEveryButtonStateMeetNormalTextContrast" classname="com.easysavevideo.theme.EsvThemeTest" time="0.007"/>
+  <testcase name="readFailureStillReleasesThePin" classname="com.easysavevideo.theme.EsvThemeTest" time="0.004"/>
+  <testcase name="observerReplaysPublishesOnlyChangesAndStopsAfterClose" classname="com.easysavevideo.theme.EsvThemeTest" time="0.004"/>
+  <testcase name="oldPinnedGenerationAndDetachedFrameStayStableAcrossLightDarkChanges" classname="com.easysavevideo.theme.EsvThemeTest" time="0.001"/>
+  <testcase name="frameReadsAllSevenCategoriesThroughExactlyOnePinAndReleasesIt" classname="com.easysavevideo.theme.EsvThemeTest" time="0.001"/>
+  <testcase name="allSevenCategoriesHaveRequiredAppOwnedTokens" classname="com.easysavevideo.theme.EsvThemeTest" time="0.001"/>
+  <testcase name="scaledTextRemainsLogicalAndSpacingDoesNotScale" classname="com.easysavevideo.theme.EsvThemeTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

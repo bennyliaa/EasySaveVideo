@@ -2520,5 +2520,200 @@
             <sha256 value="e1454ee5a077185a30d95f37135be1f5d9cdd146105da4b93937538972c470a1" origin="User-authorized SkinKit 1.0.0 external binary Kit; pinned ZIP"/>
          </artifact>
       </component>
+      <component group="androidx.compose.material" name="material-icons-core" version="1.7.8">
+         <artifact name="material-icons-core-1.7.8.module">
+            <sha256 value="f9d63655bac19ff7f27abf68a9c0f38f5e42c85e365655b990e6e1a317f92e2f" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.compose.material" name="material-icons-core-android" version="1.7.8">
+         <artifact name="material-icons-core-android-1.7.8.module">
+            <sha256 value="99a1ca83e54261a65eb96d44ea02fae43588be45ade5e97963d73e8489ea4a54" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="material-icons-core-release.aar">
+            <sha256 value="332c06b25e662cc417fb087e76b8faa5cb249f4992ffa3360084a3d4ab882284" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.compose.material" name="material-ripple" version="1.8.3">
+         <artifact name="material-ripple-1.8.3.module">
+            <sha256 value="632a536c4afc137bd4fe07fd148266e913b3e8044469aebdc4f8f7a2005cf6ba" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.compose.material" name="material-ripple-android" version="1.8.3">
+         <artifact name="material-ripple-android-1.8.3.module">
+            <sha256 value="d8edfb61e976fe413c30bb7a5581af693115f6bf100f1bb25871525c797d83c2" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="material-ripple-release.aar">
+            <sha256 value="5709ee08c1236f0a0575bf015cf18c302c2b55ba2bf3e0cbdd157cee7cb076bb" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.compose.material3" name="material3" version="1.3.2">
+         <artifact name="material3-1.3.2.module">
+            <sha256 value="a44e5fb483d2b7557f14860b7c3f92d28d3249a9400cba73c6a57ba75a01f413" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.compose.material3" name="material3-android" version="1.3.2">
+         <artifact name="material3-android-1.3.2.module">
+            <sha256 value="0161280e41b42bad9282e65b51a7abb5098552a8c826be6deb6d21230ff1b4cb" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="material3-release.aar">
+            <sha256 value="847666d9fc2d4348b6ec76a6a6094f14fb60de631ee4f6992004ec71a4f44336" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.compose.material3" name="material3-window-size-class" version="1.3.2">
+         <artifact name="material3-window-size-class-1.3.2.module">
+            <sha256 value="a1fec0066163a0e29bb2f42872d54bb0ec66e02d8e9f0f8865d5a6215b7f9be5" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.compose.material3" name="material3-window-size-class-android" version="1.3.2">
+         <artifact name="material3-window-size-class-android-1.3.2.module">
+            <sha256 value="c05bb8ae8b68d45c655150298ca6add682bc6a99ee2c79c0b2b24f47466afb26" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="material3-window-size-class-release.aar">
+            <sha256 value="f4f44a2841318b6cef325d16ad6522f0dd489f50f4f4cfc0faf4cd0ddc06c523" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.lifecycle" name="lifecycle-common-java8" version="2.8.7">
+         <artifact name="lifecycle-common-java8-2.8.7.jar">
+            <sha256 value="c6deada2fac53b8ea6523dbda77597b128006674616f140f04df23264c6d1aa3" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="lifecycle-common-java8-2.8.7.module">
+            <sha256 value="e27df2ab2f9c1c02fc16fe87e19da0ebb79b4b3f1e2bd2af17364bed59a0a2a9" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.lifecycle" name="lifecycle-viewmodel-compose" version="2.8.7">
+         <artifact name="lifecycle-viewmodel-compose-2.8.7.module">
+            <sha256 value="051a91eedd88c18b522c4b7b540f9361085ef446f2223ca16589d98ed626ac78" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.lifecycle" name="lifecycle-viewmodel-compose-android" version="2.8.7">
+         <artifact name="lifecycle-viewmodel-compose-android-2.8.7.module">
+            <sha256 value="032b0fa892cc04ced39c4c5f0c73e5a0148da0847bf4bfb76fc275e143d48e88" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="lifecycle-viewmodel-compose-release.aar">
+            <sha256 value="072532de580b03628c212388c9ce2ff066731f28031fb75ebd8505446455e5d1" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.navigation" name="navigation-common" version="2.8.9">
+         <artifact name="navigation-common-2.8.9.aar">
+            <sha256 value="3541faa3a231c5834149648870e57e3385ce5be31ba659b70ab278319f65b9ff" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="navigation-common-2.8.9.module">
+            <sha256 value="3863de56ae29e7b291b5ced2baff99074030e6c279818cc921990b72faab09c8" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.navigation" name="navigation-common-ktx" version="2.8.9">
+         <artifact name="navigation-common-ktx-2.8.9.aar">
+            <sha256 value="aaa35fa240544d1d2ff459c5c31c147637105370a8ef403071ec5ca060029cf4" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="navigation-common-ktx-2.8.9.module">
+            <sha256 value="adf807e2610c10fda0582459816199a68be0b2bdd1d5d5cd00bc08be7d4461ea" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.navigation" name="navigation-compose" version="2.8.9">
+         <artifact name="navigation-compose-2.8.9.aar">
+            <sha256 value="d805b7340a2c1794a8baa93d0623ae502e22921679a3aa8422a1a6b855bad4c2" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="navigation-compose-2.8.9.module">
+            <sha256 value="f3f1ccaeda11d6121bc170c3c2df2d5deed5eb79bfbe463f011fab1bc94d64ea" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.navigation" name="navigation-runtime" version="2.8.9">
+         <artifact name="navigation-runtime-2.8.9.aar">
+            <sha256 value="3f24fb9da8786c6c5e356a86d77f63e2ce3473851cfc28d931f15157a0c35a5c" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="navigation-runtime-2.8.9.module">
+            <sha256 value="59553eba4a8bb9b92c3a82367c5dc34f9c442fcc04b7a903f84647352d1c97a4" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.navigation" name="navigation-runtime-ktx" version="2.8.9">
+         <artifact name="navigation-runtime-ktx-2.8.9.aar">
+            <sha256 value="62a9f256528e8505f276f06e5a7bea3ae4b3c56a13aabf54ff69e410750aa3cb" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="navigation-runtime-ktx-2.8.9.module">
+            <sha256 value="2421e09be7bf3da2c520155e670385712f5194a529dc71cb657e04ea53912619" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.window" name="window" version="1.0.0">
+         <artifact name="window-1.0.0.aar">
+            <sha256 value="3212985be4127373ca4d0ea7f8b81a250ae2105e924f7940105d067a0f9ac130" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="window-1.0.0.module">
+            <sha256 value="536773d2b2d65c26ce06b8c95e0fb415f1ad25d9b87330170f508689d3ad5ffb" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="org.jetbrains.kotlin" name="kotlin-stdlib-jdk7" version="1.9.10">
+         <artifact name="kotlin-stdlib-jdk7-1.9.10.jar">
+            <sha256 value="ac6361bf9ad1ed382c2103d9712c47cdec166232b4903ed596e8876b0681c9b7" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="kotlin-stdlib-jdk7-1.9.10.pom">
+            <sha256 value="c7fa67c7961320b89d85a3ca59a2e18c2c65850845595dcae4b46af6945edcd5" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="org.jetbrains.kotlin" name="kotlin-stdlib-jdk8" version="1.9.10">
+         <artifact name="kotlin-stdlib-jdk8-1.9.10.jar">
+            <sha256 value="a4c74d94d64ce1abe53760fe0389dd941f6fc558d0dab35e47c085a11ec80f28" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="kotlin-stdlib-jdk8-1.9.10.pom">
+            <sha256 value="5f4b94dd3065a7764c37fa15de2ad6d81f40d59f8cb33f17d181c6384fb7a72e" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="org.jetbrains.kotlinx" name="kotlinx-serialization-bom" version="1.6.3">
+         <artifact name="kotlinx-serialization-bom-1.6.3.pom">
+            <sha256 value="29d69842bb7d449be2aa4ade6a4a7ce6aa55827d0ab13d168745fe6d95739332" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="org.jetbrains.kotlinx" name="kotlinx-serialization-core" version="1.6.3">
+         <artifact name="kotlinx-serialization-core-1.6.3.module">
+            <sha256 value="361e9e31eb7296174b74085ac49edd84a4f3900ba9431a4e40cd1c23de76a328" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="org.jetbrains.kotlinx" name="kotlinx-serialization-core-jvm" version="1.6.3">
+         <artifact name="kotlinx-serialization-core-jvm-1.6.3.jar">
+            <sha256 value="29c821a8d4e25cbfe4f2ce96cdd4526f61f8f4e69a135f9612a34a81d93b65f1" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+         <artifact name="kotlinx-serialization-core-jvm-1.6.3.module">
+            <sha256 value="329104dbd34e4bde905611d427c7584e53c3f8c411836fb9f699ac9dba5baa6c" origin="Official repository readback; UI scoped admission 2026-10-11"/>
+         </artifact>
+      </component>
+      <component group="androidx.annotation" name="annotation" version="1.6.0">
+         <artifact name="annotation-1.6.0.module">
+            <sha256 value="6146b6138643b2ac0590df509dd51abaea769c79fd7602eb217168fe5af78cd2" origin="Official metadata byte readback; evicted-version resolution only"/>
+         </artifact>
+      </component>
+      <component group="org.jetbrains.kotlin" name="kotlin-stdlib-common" version="1.8.22">
+         <artifact name="kotlin-stdlib-common-1.8.22.pom">
+            <sha256 value="a72b11df08b5322d7a5e8e620789ee3e4cfef38e86c430e7d113bfa9e54c581e" origin="Official metadata byte readback; evicted-version resolution only"/>
+         </artifact>
+      </component>
+      <component group="androidx.lifecycle" name="lifecycle-common-java8" version="2.6.1">
+         <artifact name="lifecycle-common-java8-2.6.1.module">
+            <sha256 value="1beb0b9fffb630a005deca1d3583d2acbec8685d6de809a3a6e0e433f418b6c3" origin="Official metadata byte readback; evicted-version resolution only"/>
+         </artifact>
+      </component>
+      <component group="androidx.annotation" name="annotation-experimental" version="1.3.1">
+         <artifact name="annotation-experimental-1.3.1.module">
+            <sha256 value="9b6974a7dfe26d3c209dd63e16f8ee2461b57a091789160ca1eb492bb1bf3f84" origin="Official metadata byte readback; evicted-version resolution only"/>
+         </artifact>
+      </component>
+      <component group="androidx.lifecycle" name="lifecycle-viewmodel-compose-desktop" version="2.8.7">
+         <artifact name="lifecycle-viewmodel-compose-desktop-2.8.7.module">
+            <sha256 value="84450bb22ee6ce369c3ff52042e1d308cac63991782dacd95b8e5e357a97a221" origin="Official metadata byte readback; evicted-version resolution only"/>
+         </artifact>
+      </component>
+      <component group="androidx.compose.material" name="material-icons-core-desktop" version="1.7.8">
+         <artifact name="material-icons-core-desktop-1.7.8.module">
+            <sha256 value="6593704fdf2912efa250d32c44e5fdabe484c3e052e0f5387e09991dcd32e1ee" origin="Official metadata byte readback; evicted-version resolution only"/>
+         </artifact>
+      </component>
+      <component group="androidx.compose.material3" name="material3-desktop" version="1.3.2">
+         <artifact name="material3-desktop-1.3.2.module">
+            <sha256 value="a8e2e72360cb06e042734d78b3516030a7a901770a07ce8b5a3f791191c4b343" origin="Official metadata byte readback; evicted-version resolution only"/>
+         </artifact>
+      </component>
+      <component group="androidx.compose.material3" name="material3-window-size-class-desktop" version="1.3.2">
+         <artifact name="material3-window-size-class-desktop-1.3.2.module">
+            <sha256 value="6413cba310bef4b77062715d5b14f8ef9772095d57ab5191dda00bfa846bcd34" origin="Official metadata byte readback; evicted-version resolution only"/>
+         </artifact>
+      </component>
    </components>
 </verification-metadata>

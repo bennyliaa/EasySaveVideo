@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit
 
 /** Primitive settings only. All calls are made on the bounded single IO executor. */
 class AndroidSettingsStore(context: Context) : SettingsStore {
+    private val application = context.applicationContext
     private val prefs = context.getSharedPreferences("browser_settings_v1", Context.MODE_PRIVATE)
     override fun load(): AppSettings = AppSettings(browser = BrowserSettings(
         restoreTabs = prefs.getBoolean("restore_tabs", true),
@@ -23,6 +24,12 @@ class AndroidSettingsStore(context: Context) : SettingsStore {
         pageSize = prefs.getInt("discovery_page_size", 20).coerceIn(1, 100),
         repeatPolicy = RepeatPolicy.entries.firstOrNull { it.name == prefs.getString("discovery_repeat", null) } ?: RepeatPolicy.PREFER_NEW,
         mode = DiscoveryMode.entries.firstOrNull { it.name == prefs.getString("discovery_mode", null) } ?: DiscoveryMode.BALANCED,
+    ), appearance = AppearanceSettings(
+        ThemeMode.fromKey(prefs.getString("ui_theme_mode", null)),
+        if (Build.VERSION.SDK_INT >= 33) {
+            val locales = application.getSystemService(android.app.LocaleManager::class.java).applicationLocales
+            AppLanguage.fromTag(if (locales.isEmpty) "" else locales[0].toLanguageTag())
+        } else AppLanguage.fromTag(prefs.getString("ui_language", null)),
     ))
     override fun save(settings: AppSettings) {
         check(prefs.edit().putBoolean("restore_tabs", settings.browser.restoreTabs)
@@ -30,7 +37,15 @@ class AndroidSettingsStore(context: Context) : SettingsStore {
             .putBoolean("javascript", settings.browser.javaScriptEnabled)
             .putBoolean("third_party_cookies", settings.browser.acceptThirdPartyCookies)
             .putInt("discovery_columns", settings.discovery.columns).putInt("discovery_page_size", settings.discovery.pageSize)
-            .putString("discovery_repeat", settings.discovery.repeatPolicy.name).putString("discovery_mode", settings.discovery.mode.name).commit())
+            .putString("discovery_repeat", settings.discovery.repeatPolicy.name).putString("discovery_mode", settings.discovery.mode.name)
+            .putString("ui_theme_mode", settings.appearance.themeMode.key)
+            .apply { if (Build.VERSION.SDK_INT < 33) putString("ui_language", settings.appearance.language.tag) }.commit())
+        if (Build.VERSION.SDK_INT >= 33) {
+            // The platform is the sole locale persistence owner on API33+.
+            val manager = application.getSystemService(android.app.LocaleManager::class.java)
+            val requested = android.os.LocaleList.forLanguageTags(settings.appearance.language.tag)
+            if (manager.applicationLocales != requested) manager.applicationLocales = requested
+        }
     }
 }
 

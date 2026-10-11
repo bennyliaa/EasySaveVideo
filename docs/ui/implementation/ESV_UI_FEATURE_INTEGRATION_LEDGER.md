@@ -15,4 +15,10 @@ REAL below means an existing callable implementation, not fresh end-to-end accep
 | Entitlements24 | BuildEntitlements/FeatureGate; REAL gating, Store unavailable | No prices/SKUs invented; no real purchase or arbitrary release unlock |
 | A/B source verification22 | Existing optional service client and bounded local engine; UNCONFIGURED by default | Explain configuration/consent; no new site/service activation |
 
-Existing MainActivity booleans are legacy switching, not an official navigation implementation. The navigation milestone must replace their authority, preserve task/runtime owners and independently prove return/restoration behavior. Theme upgrade alone does not close UI-B–E.
+The 2026-10-11 shell slice replaces the six MainActivity navigation Boolean
+authorities with one AndroidX NavController; read-only visibility predicates
+derive from its finite current route. Four roots plus Settings/Browser/Sources/
+Editor are bound to existing screens. Appearance/language settings and bilingual
+shell resources are implemented. Phone/tablet input uses official WindowSizeClass.
+See UI_SHELL_APPEARANCE_SLICE_20261011.md for exact dependency admission, scoped
+checks and device NOT_RUN items. This does not close all UI-B–E/PPT page work.

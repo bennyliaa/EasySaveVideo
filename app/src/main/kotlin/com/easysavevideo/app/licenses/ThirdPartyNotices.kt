@@ -20,8 +20,7 @@ fun ThirdPartyNotices(onClose: () -> Unit) {
         val worker = Thread({
             val result = try {
                 context.assets.open("third-party-notices.txt").bufferedReader().use { reader ->
-                    val text = reader.readText()
-                    check(text.length <= 512 * 1024)
+                    val text = readNoticeText(reader)
                     text.chunked(4_096)
                 }
             } catch (_: Exception) { null }

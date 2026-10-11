@@ -70,6 +70,9 @@ dependencies {
     implementation("androidx.compose.runtime:runtime")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material3:material3:1.3.2")
+    implementation("androidx.compose.material3:material3-window-size-class:1.3.2")
+    implementation("androidx.navigation:navigation-compose:2.8.9")
     testImplementation("junit:junit:4.13.2")
 }
 

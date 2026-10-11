@@ -23,6 +23,9 @@ import com.easysavevideo.app.browser.SystemBrowserHost
 import com.easysavevideo.app.browser.bookmarks.AndroidBookmarkRuntime
 import com.easysavevideo.app.storage.*
 import com.easysavevideo.app.theme.EsvThemeHost
+import com.easysavevideo.app.ui.shell.*
+import androidx.navigation.compose.rememberNavController
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import com.easysavevideo.app.ui.BrowserScreen
 import com.easysavevideo.app.ui.DiscoveryScreen
 import com.easysavevideo.app.ui.ProviderManagementScreen
@@ -62,7 +65,26 @@ import com.easysavevideo.core.domain.EntitlementManager
 import com.easysavevideo.core.domain.FeatureGate
 import com.easysavevideo.app.entitlements.BuildEntitlements
 
+@OptIn(androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi::class)
 class MainActivity : ComponentActivity() {
+    private var navController: androidx.navigation.NavHostController? = null
+    private var initialDestination = EsvDestination.DISCOVER
+    private var activeDestination by mutableStateOf(EsvDestination.DISCOVER)
+    private fun navigate(destination: EsvDestination) {
+        discovery.setVisibility(isForeground, false)
+        providerManagement.setActive(false)
+        if (destination != EsvDestination.LIBRARY) libraryExportReference = null
+        navController?.navigate(destination.route) {
+            launchSingleTop = true
+            if (destination in EsvDestination.roots) {
+                popUpTo(EsvDestination.DISCOVER.route) { saveState = true }
+                restoreState = true
+            }
+        }
+    }
+    private fun backTo(destination: EsvDestination = EsvDestination.DISCOVER) {
+        if (navController?.popBackStack() != true) navigate(destination)
+    }
     private lateinit var browser: SystemBrowserHost
     private lateinit var bookmarks: AndroidBookmarkRuntime
     private lateinit var persistence: BrowserPersistence
@@ -70,19 +92,19 @@ class MainActivity : ComponentActivity() {
     private lateinit var saves: AndroidSaveRuntime
     private lateinit var folderPickerHost: AndroidFolderPickerHost
     private var discoveryPrioritySubscription: AutoCloseable? = null
-    private var showingSaveTasks by mutableStateOf(false)
-    private var showingLibrary by mutableStateOf(false)
-    private var showingEditor by mutableStateOf(false)
+    private val showingSaveTasks get() = activeDestination == EsvDestination.TASKS
+    private val showingLibrary get() = activeDestination == EsvDestination.LIBRARY || activeDestination == EsvDestination.EDITOR
+    private val showingEditor get() = activeDestination == EsvDestination.EDITOR
     private var libraryPreviewReference by mutableStateOf<MediaReadRef?>(null)
     private var libraryExportReference by mutableStateOf<MediaReadRef?>(null)
     private var pendingLibraryDocumentResult: Pair<Int, Intent?>? = null
-    private var showingRecording by mutableStateOf(false)
+    private val showingRecording get() = activeDestination == EsvDestination.RECORD
     private var recordingSelectionMode by mutableStateOf(RecordingSelectionMode.BASIC)
     private var previewReceipt by mutableStateOf<MediaCommitReceipt?>(null)
     private lateinit var recordingConsent: RecordingConsentController
     private lateinit var discovery: AndroidDiscoveryController
-    private var showingDiscovery by mutableStateOf(true)
-    private var showingProviderManagement by mutableStateOf(false)
+    private val showingDiscovery get() = activeDestination == EsvDestination.DISCOVER
+    private val showingProviderManagement get() = activeDestination == EsvDestination.SOURCES
     private lateinit var providerManagement: ProviderManagementController
     private var providerManagementState by mutableStateOf(ProviderManagementState())
     private var isForeground by mutableStateOf(false)
@@ -108,9 +130,8 @@ class MainActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        showingDiscovery = savedInstanceState?.getBoolean("showing_discovery", true) ?: true
-        showingProviderManagement = savedInstanceState?.getBoolean("showing_provider_management", false) ?: false
-        showingLibrary = savedInstanceState?.getBoolean("showing_library", false) ?: false
+        initialDestination = EsvDestination.fromRoute(savedInstanceState?.getString("esv_destination"))
+        activeDestination = initialDestination
         WindowCompat.setDecorFitsSystemWindows(window, false)
         errorSink = AndroidErrorSink(applicationContext)
         bookmarks = AndroidBookmarkRuntime.get(applicationContext)
@@ -124,7 +145,9 @@ class MainActivity : ComponentActivity() {
         discoveryPrioritySubscription = saves.addMediaTaskActivityListener { activity ->
             discovery.setTaskPriority(activity.saveActive, activity.recordingActive)
         }
-        showingRecording = savedInstanceState?.getBoolean("showing_recording", false) ?: (saves.currentRecordingId != null)
+        if (savedInstanceState == null && saves.currentRecordingId != null) {
+            initialDestination = EsvDestination.RECORD; activeDestination = initialDestination
+        }
         recordingConsent = RecordingConsentController(this, saves::receiveProjectionGrant, saves::abandonRecordingRequest,
             saves::isRecordingRequestAllowed, saves::recordingAudioPermissionDenied, saves::requiresDefaultDisplayRecording)
         persistence = BrowserPersistence(applicationContext, errorSink) {
@@ -139,13 +162,24 @@ class MainActivity : ComponentActivity() {
             onChooseFiles = { choice -> filePrompt = choice },
             onDiscoverySaveCompleted = discovery::completeOriginSave)
         setContent {
-            EsvThemeHost {
+            EsvLocaleHost(settings.appearance.language) {
+            EsvThemeHost(darkTheme = settings.appearance.themeMode.useDark(isSystemInDarkTheme())) {
+                val controller = rememberNavController()
+                val windowSize = calculateWindowSizeClass(this@MainActivity)
+                DisposableEffect(controller) {
+                    navController = controller
+                    val listener = androidx.navigation.NavController.OnDestinationChangedListener { _, destination, _ ->
+                        activeDestination = EsvDestination.fromRoute(destination.route)
+                    }
+                    controller.addOnDestinationChangedListener(listener)
+                    onDispose { controller.removeOnDestinationChangedListener(listener); navController = null }
+                }
                 val destinations = saves.destinations
                 DisposableEffect(destinations) {
                     destinations?.attachFolderPicker(folderPickerHost)
                     onDispose { destinations?.detachFolderPicker(folderPickerHost) }
                 }
-                val dark = isSystemInDarkTheme()
+                val dark = settings.appearance.themeMode.useDark(isSystemInDarkTheme())
                 SideEffect {
                     val lightBars = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
                     window.insetsController?.setSystemBarsAppearance(if (dark) 0 else lightBars, lightBars)
@@ -171,7 +205,7 @@ class MainActivity : ComponentActivity() {
                 val authorizedPreviewFrame = previewRuntime?.previewFrame
                 LaunchedEffect(previewRuntime?.previewReturnToControls) {
                     if (previewRuntime?.previewReturnToControls == true) {
-                        showingRecording = true; showingSaveTasks = false
+                        navigate(EsvDestination.RECORD)
                         previewRuntime.acknowledgePreviewReturn()
                     }
                 }
@@ -229,10 +263,7 @@ class MainActivity : ComponentActivity() {
                         }
                         recordedEditorNotice = null
                         libraryExportReference = null
-                        showingRecording = false
-                        showingSaveTasks = false
-                        showingLibrary = true
-                        showingEditor = true
+                        navigate(EsvDestination.EDITOR)
                     }
                 }
                 LaunchedEffect(editor, isForeground, showingEditor, libraryPreviewReference) {
@@ -263,6 +294,12 @@ class MainActivity : ComponentActivity() {
                 }
                 val libraryReference = libraryPreviewReference
                 val receipt = previewReceipt
+                EsvAppShell(controller, initialDestination, windowSize,
+                    chromeVisible = !previewHost && receipt == null && libraryReference == null && !fullscreen,
+                    navigationEnabled = editor?.state?.busy != true && filePrompt == null &&
+                        saves.selection == null && saves.hlsPreparation == null && !saves.preparingStream &&
+                        libraryExportReference == null && destinations?.asking != true && destinations?.admitting != true,
+                    onNavigate = ::navigate) { route ->
                 if (previewHost) BrowserScreen(browser, settings,
                     onSettings = { /* The bounded preview transition keeps the current browser host. */ },
                     filePrompt = null, onFileCancel = {}, onFileConfirm = {}, openExternal = {},
@@ -272,18 +309,18 @@ class MainActivity : ComponentActivity() {
                     onBack = { previewReceipt = null }, onReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
                 else if (libraryReference != null) LibraryMediaPreview(libraryReference, isForeground, saves::openLibraryMedia,
                     onBack = { libraryPreviewReference = null }, onReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
-                else if (showingEditor && editor != null) EditorScreen(editor.state,
+                else if (route == EsvDestination.EDITOR && editor != null) EditorScreen(editor.state,
                     onDraftChange = editor::changeDraft, onSubmit = editor::submit, onCancel = editor::cancel,
-                    onBack = { editor.cancel(); showingEditor = false; library?.refresh() },
+                    onBack = { editor.cancel(); backTo(EsvDestination.LIBRARY); library?.refresh() },
                     onPreview = { libraryPreviewReference = it })
-                else if (showingLibrary && library != null) {
+                else if (route == EsvDestination.LIBRARY && library != null) {
                     val thumbnails = remember(library) { AndroidLibraryThumbnails(saves::openLibraryMedia, saves::retainLibraryNativeReader) }
                     DisposableEffect(thumbnails) { onDispose { thumbnails.close() } }
                     LibraryScreen(library,
-                        onBack = { libraryExportReference = null; showingLibrary = false },
+                        onBack = { libraryExportReference = null; backTo() },
                         onPreview = { libraryPreviewReference = it },
                         onEdit = if (editor == null) null else { item ->
-                            editor.open(item, library.state.items); showingEditor = true; libraryExportReference = null
+                            editor.open(item, library.state.items); navigate(EsvDestination.EDITOR); libraryExportReference = null
                         },
                         onExport = if (exports == null) null else { ref -> libraryExportReference = ref },
                         exports = exports, thumbnails = thumbnails)
@@ -311,8 +348,8 @@ class MainActivity : ComponentActivity() {
                             }, onDismiss = { libraryExportReference = null })
                     }
                 }
-                else if (showingLibrary) LibraryUnavailableScreen(onBack = { showingLibrary = false })
-                else if (showingRecording) RecordingScreen(saves.recordingSnapshot,
+                else if (route == EsvDestination.LIBRARY) LibraryUnavailableScreen(onBack = { backTo() })
+                else if (route == EsvDestination.RECORD) RecordingScreen(saves.recordingSnapshot,
                     initialSelectionMode = recordingSelectionMode,
                     onSelectionModeChange = { recordingSelectionMode = it },
                     onCreationSelectionChanged = { saves.destinations?.cancelSelection() },
@@ -338,7 +375,7 @@ class MainActivity : ComponentActivity() {
                     onDiscard = { recordingConsent.cancel(); saves.currentRecordingId?.let(saves::cancel) },
                     onBack = {
                         pendingRecordedEditorReference = null; recordedEditorNotice = null
-                        showingRecording = false; showingSaveTasks = true
+                        navigate(EsvDestination.TASKS)
                     }, notice = recordedEditorNotice ?: saves.notice,
                     regionSetup = RecordingRegionSetup(regionGeometry, DefaultDisplayCaptureGeometry.scopeEvidence(),
                         canStart = saves.ready && saves.segmentRecording?.ready == true && saves.canRegionRecording() && saves.currentRecordingId == null,
@@ -366,8 +403,7 @@ class MainActivity : ComponentActivity() {
                             DefaultDisplayCaptureGeometry.read(this@MainActivity) == geometry && browser.state.selectedTab == tab &&
                             browser.saveInspectionRevision == pageRevision }) { admission ->
                             saves.preparePreviewRecording(choice, admission)?.also {
-                            showingRecording = false; showingSaveTasks = false; showingLibrary = false
-                            showingEditor = false; showingDiscovery = false
+                            navigate(EsvDestination.BROWSER)
                             libraryPreviewReference = null; previewReceipt = null; libraryExportReference = null
                             filePrompt = null; browser.cancelFiles()
                             }
@@ -387,47 +423,52 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     })
-                else if (showingSaveTasks) SaveTaskScreen(saves, browser,
-                    onBack = { showingSaveTasks = false },
-                    onRecord = { showingRecording = true },
-                    onLibrary = { showingLibrary = true; discovery.setVisibility(false, false) },
+                else if (route == EsvDestination.TASKS) SaveTaskScreen(saves, browser,
+                    onBack = { backTo() },
+                    onRecord = { navigate(EsvDestination.RECORD) },
+                    onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) },
                     onPreview = { record -> previewReceipt = record.receipt })
-                else if (showingProviderManagement) ProviderManagementScreen(providerManagementState,
+                else if (route == EsvDestination.SOURCES) ProviderManagementScreen(providerManagementState,
                     CommonsSourceRegistration.managementConfiguration, discovery.state.commonsEnabled,
                     canToggleCommons = discovery.state.ready && !discovery.state.storageUnavailable,
                     onEnableCommons = discovery::enableCommons, onRefresh = providerManagement::inspect,
                     onAutoRefresh = providerManagement::refreshAutomatically,
                     onRejectCandidate = providerManagement::rejectCandidate, onRollback = providerManagement::rollback,
-                    onBack = { providerManagement.setActive(false); showingProviderManagement = false })
-                else if (showingDiscovery) DiscoveryScreen(discovery, settings.discovery, isForeground,
+                    onBack = { providerManagement.setActive(false); backTo(EsvDestination.SETTINGS) })
+                else if (route == EsvDestination.DISCOVER) DiscoveryScreen(discovery, settings.discovery, isForeground,
                     onSettings = { value ->
                         settingsChanged = true; settings = settings.copy(discovery = value)
                         persistence.saveSettings(settings); discovery.updateSettings(value)
                     }, onManageProviders = ::openProviderManagement,
-                    onBrowser = { showingDiscovery = false; discovery.setVisibility(isForeground, false) },
+                    onBrowser = { navigate(EsvDestination.BROWSER); discovery.setVisibility(isForeground, false) },
                     onOpen = { page, result ->
                         val originTarget = discovery.captureOriginTarget(page, result)
-                        discovery.setVisibility(isForeground, false); showingDiscovery = false
+                        discovery.setVisibility(isForeground, false); navigate(EsvDestination.BROWSER)
                         if (browser.openDiscoveryResult(originTarget, page, result)) discovery.recordSeen(page, result, SeenEvent.OPENED)
-                    }, onLibrary = { showingLibrary = true; discovery.setVisibility(false, false) }, onLink = { url ->
-                        discovery.setVisibility(isForeground, false); showingDiscovery = false; browser.navigate(url)
+                    }, onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) }, onLink = { url ->
+                        discovery.setVisibility(isForeground, false); navigate(EsvDestination.BROWSER); browser.navigate(url)
                     })
+                else if (route == EsvDestination.SETTINGS) EsvSettingsScreen(settings,
+                    onChange = { value -> settingsChanged = true; settings = value; persistence.saveSettings(value) },
+                    onSources = ::openProviderManagement, onBack = { backTo() })
+                else if (route == EsvDestination.EDITOR) LibraryUnavailableScreen(onBack = { backTo(EsvDestination.LIBRARY) })
                 else BrowserScreen(browser, settings, onSettings = {
                     settingsChanged = true; settings = it; browser.applySettings(it.browser); persistence.saveSettings(it)
                 }, filePrompt = filePrompt,
                     onFileCancel = { filePrompt = null; browser.cancelFiles() },
                     onFileConfirm = { choice -> filePrompt = null; chooseFile(choice) },
                     openExternal = ::openSystemBrowser,
-                    onDiscovery = { showingDiscovery = true; discovery.setVisibility(isForeground, true) },
+                    onDiscovery = { navigate(EsvDestination.DISCOVER); discovery.setVisibility(isForeground, true) },
                     onManageProviders = ::openProviderManagement,
                     onSave = { saves.inspectFromUserClick(browser) },
-                    onSaveTasks = { showingSaveTasks = true },
-                    onLibrary = { showingLibrary = true; discovery.setVisibility(false, false) },
+                    onSaveTasks = { navigate(EsvDestination.TASKS) },
+                    onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) },
                     saveScanning = saves.scanning,
                     saveNotice = saves.notice,
                     onDismissSaveNotice = saves::dismissNotice, destinations = saves.destinations, bookmarks = bookmarks)
+                }
                 BackHandler(enabled = previewHost) {
-                    recordingConsent.cancel(); previewRuntime?.cancelPreview(); showingRecording = true
+                    recordingConsent.cancel(); previewRuntime?.cancelPreview(); navigate(EsvDestination.RECORD)
                 }
                 if (!previewHost) {
                     SaveSelectionDialog(saves, browser)
@@ -436,9 +477,10 @@ class MainActivity : ComponentActivity() {
                 if (authorizedPreviewFrame != null && isForeground) {
                     AuthorizedRecordingRegionDialog(authorizedPreviewFrame, enabled = previewRuntime.previewActive,
                         onConfirm = previewRuntime::confirmPreview,
-                        onCancel = { previewRuntime.cancelPreview(); showingRecording = true },
+                        onCancel = { previewRuntime.cancelPreview(); navigate(EsvDestination.RECORD) },
                         onRetired = previewRuntime::previewUiRetired)
                 }
+            }
             }
         }
         persistence.start { loaded, checkpoint, failed ->
@@ -463,7 +505,7 @@ class MainActivity : ComponentActivity() {
     }
     private fun openProviderManagement() {
         discovery.setVisibility(isForeground, false)
-        showingProviderManagement = true
+        navigate(EsvDestination.SOURCES)
     }
     private fun chooseFile(choice: SystemBrowserHost.FileChoice) {
         if (!browser.beginFilePicker(choice)) return
@@ -485,10 +527,7 @@ class MainActivity : ComponentActivity() {
         catch (_: ActivityNotFoundException) { browser.showNotice("未找到可打开该网页的系统浏览器。") }
     }
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBoolean("showing_discovery", showingDiscovery)
-        outState.putBoolean("showing_provider_management", showingProviderManagement)
-        outState.putBoolean("showing_recording", showingRecording)
-        outState.putBoolean("showing_library", showingLibrary)
+        outState.putString("esv_destination", activeDestination.route)
         super.onSaveInstanceState(outState)
     }
     override fun onWindowFocusChanged(hasFocus: Boolean) {

@@ -1,0 +1,50 @@
+{
+  "status": "PASS_SCOPED_DESKTOP_CHECKS",
+  "jvm_tests": [
+    {
+      "name": "com.easysavevideo.core.model.AppearanceSettingsTest",
+      "tests": "3",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-11T15:43:26.621Z"
+    },
+    {
+      "name": "com.easysavevideo.theme.EsvThemeTest",
+      "tests": "9",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-11T15:43:33.745Z"
+    },
+    {
+      "name": "com.easysavevideo.app.licenses.NoticeTextTest",
+      "tests": "3",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-11T15:49:58.070Z"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.shell.EsvDestinationTest",
+      "tests": "2",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-11T15:49:58.098Z"
+    }
+  ],
+  "total_tests": 17,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "runtime_files": 90,
+  "fresh_compile": "Debug/Release executed in final-validation-2 after last source change",
+  "theme_appearance_tests": "First validation executed 3 appearance +9 SkinKit; final reused up-to-date results without code changes",
+  "lint": "Debug and Release ran; zero Error/Fatal; warnings retained",
+  "device_ui": "NOT_RUN",
+  "apk_install": "NOT_RUN",
+  "battery": "NOT_MEASURED",
+  "full_windows_suite": "NOT_RUN; previous unrelated 115 failures are not overridden",
+  "intermediate_failures": "Strict metadata blockers, temporary missing resource, overlapping Gradle R.jar lock. All local logs retained; final supersedes only scoped checks."
+}
