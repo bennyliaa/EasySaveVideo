@@ -69,9 +69,13 @@ failed attempts. The full Windows test suite was not rerun; historical unrelated
 Device UI, rotation/process recreation, font scale 200%, tablet geometry,
 navigation resource release and recording consent transitions: **NOT RUN** for
 this slice. No new APK is assembled/installed. The handed-back OPPO must not be
-touched. emulator-5556 retains its current code3 package and data; its existing
+touched. At this historical checkpoint emulator-5556 retained code3 and data; its existing
 signer differs from the local debug signer. A future installation needs code>3
 and the existing compatible signing process. No new key or key transfer.
+
+Later code4 compatible installation and bounded acceptance are recorded in
+ESV_UI_FEATURE_INTEGRATION_LEDGER.md. The NOT_RUN items above describe this
+historical shell slice and do not override that subsequent bounded evidence.
 
 No real-public-source benchmark or true-phone power acceptance is claimed.
 CPU/RAM/battery/network/100-sample results for this UI slice are **NOT MEASURED**.

@@ -1,0 +1,23 @@
+{
+  "device": "emulator-5556",
+  "installed_source": "d9bdf34567bf2d138e796a50560419d359385cf4",
+  "action": "One existing app refresh-system-signals button; no query, system configuration or injected signal",
+  "observed_fixed_UI_messages": [
+    "已取得近期系统观察。五分钟未更新的单项观察会到期；刷新只更新信号，不会自动补充。",
+    "系统观察允许既有预算，不会扩大静态模式或其他上限。"
+  ],
+  "budgets": [
+    {
+      "concurrency": 2,
+      "round_attempts": 6,
+      "low_watermark": 40,
+      "high_watermark": 100
+    }
+  ],
+  "individual_app_signal_states_and_freshness": "NOT_EXPOSED_BY_INSTALLED_UI; no private app-state extraction or instrumentation used",
+  "policy_update_pending": false,
+  "all_observations_reported_recent": true,
+  "no_system_network_power_settings_changed": true,
+  "P1_at_refresh_time": "NOT_RUN_UNTIL_NATURAL_NONZERO_BUDGET",
+  "individual_freshness_note": "Production renderer shows all-recent only if battery/saver/thermal/network ages are FRESH; that aggregate was directly observed. Individual values remain not exposed; no private-state extraction."
+}

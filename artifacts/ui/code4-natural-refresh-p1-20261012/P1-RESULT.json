@@ -1,0 +1,18 @@
+{
+  "device": "emulator-5556",
+  "installed_source": "d9bdf34567bf2d138e796a50560419d359385cf4",
+  "signed_ref": "d44be6f9cfd01a35529d1fb47e19bf0dabd6bb73",
+  "scope": "One natural nonzero-budget zero-provider P1 follow-up; no simulation or gate changes",
+  "provider_configuration_changed": false,
+  "external_source_requests": 0,
+  "individual_signal_state_and_age": "NOT_EXPOSED_BY_INSTALLED_UI; aggregate observation recent and no pending policy update before test",
+  "status": "PASS",
+  "explicit_queries": 2,
+  "repeat_discover_clicks": 3,
+  "title_clicks": 1,
+  "result": "Search enabled; exact next owned draft applied; actual NO_SOURCES rather than SUSPENDED; zero attempted source requests",
+  "prior_attempt": "Registry confirmation scrolling-direction locator failed before any query; local failed record retained. Correct direction confirmed empty registry before two owned queries.",
+  "historical_zero_budget_cause": "UNKNOWN: prior per-signal data was not recorded; current refreshed observations cannot retroactively identify the old cause.",
+  "screenshots_uploaded": false,
+  "further_device_operations": "STOPPED"
+}

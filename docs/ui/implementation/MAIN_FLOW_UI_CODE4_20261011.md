@@ -1,5 +1,8 @@
 # Main-flow UI slice and code4 preparation
 
+Historical code4 preparation record. Current status is maintained in
+ESV_UI_FEATURE_INTEGRATION_LEDGER.md; later source work is not in code4.
+
 Base: b22ae74 (the independently committed repeated-root P1 fix). Four existing
 feature pages are refined: Discovery → Browser inspection/explicit selection →
 Save tasks → ordinary Library. This is a callable real implementation chain,
@@ -49,23 +52,29 @@ focused group; no global pass claim is made.
 ## APK and device handoff
 
 App versionCode=4, versionName=0.4.0-ui-dev, minSdk31 (Android12), target/compile36.
-An unsigned Release APK will be built from the exact committed source, with
+An unsigned Release APK was built from exact source d9bdf34567bf2d138e796a50560419d359385cf4, with
 Commons disabled/contact empty and distribution channel unconfigured. These
 build flags create a zero-source, no-account/no-billing device UI acceptance
 package. Normal TLS, original source/rights/feature gates and recording consent
 remain. It is an internal development artifact, not production/store acceptance.
 
-No OPPO operation, APK installation, microphone action, recording or user media
-read is performed. emulator-5556 can receive only a code>3 package signed through
+Subsequent signed return d44be6f9cfd01a35529d1fb47e19bf0dabd6bb73 passed official
+Windows signature/alignment checks. One compatible code3→code4 install-r on
+emulator-5556 preserved data. No OPPO operation, microphone, recording or private
+media content read occurred. Future packages need a higher versionCode through
 the existing compatible signing process. The expected existing public signer
 certificate SHA256 is 18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5;
 no private key is read, exported or created. Unsigned payload and manifest/hash
 receipt are handed off through the user-authorized private ESV repository in a
 separate delivery branch. Main remains source/docs/test evidence only.
 
-After signed return, device acceptance must include the P1 repeated Discover /
-app-name clicks then explicit query, source-free address fallback, route returns,
-theme/language, rotation/process restoration, phone/tablet/compact-height and
+The bounded result has13 PASS and3 initially unaccepted scopes; see
+artifacts/ui/code4-bounded-device-acceptance-20261012/RESULT.json. Subsequent normal
+signal-refresh/P1 evidence is separate; the old budget0 snapshot cannot identify
+a particular signal cause. Subsequent natural-refresh evidence records P1 PASS
+without provider/gate/system changes, separate from that historical result.
+Source-free address draft, route returns, theme/language and rotation/process
+checks are bounded passes. Full acceptance still needs phone/tablet/compact-height and
 font200%/TalkBack. Save/record background work and preview/resource release need
 their existing authorized fixture/capability boundaries; do not start recording
 or read private media. Device power/100-sample/public-web acceptance is NOT_RUN /

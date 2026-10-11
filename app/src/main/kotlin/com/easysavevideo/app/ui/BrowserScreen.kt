@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -99,7 +100,8 @@ fun BrowserScreen(
                             if (tab.context.tabId == state.selectedTabId) visuals.colors.accent else visuals.colors.border,
                             RoundedCornerShape(visuals.corner)).padding(visuals.spacingSmall), verticalAlignment = Alignment.CenterVertically) {
                             EsvButton(tab.title?.take(28) ?: tab.address?.value?.take(28) ?: stringResource(R.string.flow_new_tab),
-                                onClick = { editing = false; browser.selectTab(tab.context.tabId) })
+                                onClick = { editing = false; browser.selectTab(tab.context.tabId) },
+                                modifier = Modifier.semantics { this.selected = tab.context.tabId == state.selectedTabId })
                             EsvButton(stringResource(R.string.flow_browserscreen_3), onClick = { browser.closeTab(tab.context.tabId) },
                                 modifier = Modifier.semantics { contentDescription = closeTabDescription })
                         }
