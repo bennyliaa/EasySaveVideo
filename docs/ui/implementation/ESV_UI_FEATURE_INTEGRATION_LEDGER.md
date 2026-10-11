@@ -1,7 +1,7 @@
 # UI capability integration ledger
 
-Reconciled against main fbbb0b2aacf5e1967584bdaa858250e73f6df605 plus the bounded
-discovery/task layout source increment. COMPLETE SOURCE
+Reconciled against main 43ef4ef57fadf3f61115424a10e4255cd78a5a9e plus the bounded
+Discovery filter / Tasks detail responsive source increment. COMPLETE SOURCE
 means implementation plus scoped source validation. PARTIAL means callable code
 or bounded checks exist; it does not close full PPT/media/device acceptance.
 NOT ACCEPTED means the specified acceptance is unperformed. DISABLED is intentional.
@@ -98,10 +98,10 @@ permission to develop or model-test:
 
 | Reference | Concrete missing layout/interface work | Dependency distinction |
 |---|---|---|
-| PPT8 / C-03,C-04 | Expanded discovery still uses a modal options dialog rather than the collapsible filter side panel | Can reuse existing filter state/intents; no source activation is required for layout/model work |
-| PPT12–14 / C-06 | Tasks still shows all detail inline in one list; separate selected-task detail and expanded list/detail composition are absent | Existing stable task IDs/records suffice for source binding and owned metadata model tests; a real completed task/output is needed only for actual save/output acceptance |
+| PPT8 / C-03,C-04 | SOURCE IMPLEMENTED: collapsible Expanded filter pane and Compact modal share movable content, existing draft/controller and scroll state | Actual rendered transitions and focus acceptance NOT RUN |
+| PPT12–14 / C-06 | SOURCE IMPLEMENTED: selected stable task ID resolves current snapshot; Expanded list/detail, Compact original full action cards | Missing/duplicate ID never guesses; actual task/output acceptance NOT RUN |
 | PPT11 / C-05 | Wide browser inspection/selection still uses modal selection rather than a co-present inspector | Source composition can reuse the same session/revision-fenced selection state; real inspection requires an admitted owned page/media fixture and execution permission |
-| PPT6–8 / UI-R04 | Compact-height discovery header/status/IME and pager still lack a complete vertical-space budget | Can implement bounded scrolling/collapsing using the same controls and snapshot; actual keyboard/200%/compact-height screenshots are separate device acceptance |
+| PPT6–8 / UI-R04 | SOURCE IMPLEMENTED: bounded scrolling header/pager, minimum content space and conservative low-height/large-font fallback | Keyboard/font200/compact-height render matrix NOT RUN |
 | C-03 | Discovery thumbnail area currently renders a theme icon placeholder; approved loading/unknown/failed thumbnail presentation and reader binding remain | Owned local fixture/reader contracts can be developed without public fetching. Arbitrary real thumbnail URLs need source/rights/admission review; reference PPT photos remain unlicensed runtime assets |
 | PPT17 / C-08 | Complete expanded editor preview/segments/inspector composition is not accepted | Layout source can use existing typed UI state; real decoding/encoding needs verified owned media and permitted Tools capability |
 
@@ -111,3 +111,23 @@ image extraction, fake progress, new entitlement or permission was introduced.
 Contrast/TalkBack/focus/touch-target and full phone/tablet/font200 render matrices
 remain concrete acceptance work; their lack does not block the source layout
 items above or justify marking them complete.
+
+## Responsive filter and selected-task source increment
+
+Discovery and Tasks now use remaining width, height, text scale and SkinKit gaps
+for conservative split-pane selection. Layout changes issue no query, save or
+source-enable command. Discovery moves the same filter composition between its
+sidebar and dialog with movableContentOf; the existing controller owns filter
+state. Tasks saves only a selected task ID and resolves the latest record snapshot.
+Missing or duplicate IDs display no guessed record. Compact preserves existing
+action paths. Original filter and task-detail control bodies match the baseline
+after indentation normalization (CONTROL-BODY-COMPARISON.json).
+
+Scoped validation:75 JVM passes, both Kotlin variants compiled, both final lint
+variants passed without Error/Fatal, strict runtime graph90. The first lint run
+failed on SuspiciousIndentation; corrected source and failed evidence are retained
+in artifacts/ui/responsive-panes-20261012. Source/model tests do not prove actual
+window transition state, focus, TalkBack, font200 or phone/tablet rendering. Those
+are NOT RUN. No APK rebuild or device operation; installed code4 remains based on
+d9bdf345 and excludes this group. Wide browser inspector, thumbnail reader and
+expanded editor remain pending; real media/save/output acceptance remains open.

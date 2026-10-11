@@ -1,0 +1,6 @@
+{
+  "filter_controls_body_sha256": "4924fa871f443b6d65ffe79b7760c3b6ddbe9f08a3c04bbef9a98f072129abde",
+  "task_detail_body_sha256": "9ab4f417cfec46404e2756901cd881105f21b332bb93119bfabea873f1e234d6",
+  "status": "PASS_EXACT_BODY_AFTER_INDENT_NORMALIZATION",
+  "scope": "Root layout modifiers differ; original inner controls, action callbacks, confirmation/success/preview/pending gates retained verbatim."
+}

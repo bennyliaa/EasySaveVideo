@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.ui.ResponsivePaneStateTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-11T18:41:00.986Z" hostname="LZF" time="0.007">
+  <properties/>
+  <testcase name="splitAlwaysLeavesBothPaneWidthBudgets" classname="com.easysavevideo.app.ui.ResponsivePaneStateTest" time="0.001"/>
+  <testcase name="missingSelectionDoesNotGuessFirstRecordAndCanResolveWhenItReturns" classname="com.easysavevideo.app.ui.ResponsivePaneStateTest" time="0.001"/>
+  <testcase name="lowHeightBudgetsLeavePositiveContentSpaceWithoutShrinkingFonts" classname="com.easysavevideo.app.ui.ResponsivePaneStateTest" time="0.0"/>
+  <testcase name="selectedStableIdResolvesLatestRevisionAfterReorderingAndModeChanges" classname="com.easysavevideo.app.ui.ResponsivePaneStateTest" time="0.001"/>
+  <testcase name="invalidGeometryCannotEnableASecondPane" classname="com.easysavevideo.app.ui.ResponsivePaneStateTest" time="0.0"/>
+  <testcase name="paneMessagesHaveMatchedLocaleKeysAndNoReplacementCharacters" classname="com.easysavevideo.app.ui.ResponsivePaneStateTest" time="0.004"/>
+  <testcase name="expandedRequiresBothWidthAndHeightAndLargeFontsFallBack" classname="com.easysavevideo.app.ui.ResponsivePaneStateTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

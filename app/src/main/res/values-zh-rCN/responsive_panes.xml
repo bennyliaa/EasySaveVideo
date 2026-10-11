@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="task_detail_select">查看详情</string>
+    <string name="task_detail_selected">已选中详情</string>
+    <string name="task_detail_empty">选择任务以查看其当前详情。</string>
+    <string name="task_detail_unavailable">选中任务当前不可用；已保留选中任务 ID。</string>
+    <string name="task_detail_clear">清除选择</string>
+    <string name="task_detail_heading">任务详情</string>
+</resources>

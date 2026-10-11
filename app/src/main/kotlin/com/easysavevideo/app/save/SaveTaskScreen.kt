@@ -7,6 +7,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.selected
+import com.easysavevideo.app.ui.responsivePaneLayout
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.easysavevideo.app.browser.SystemBrowserHost
@@ -40,11 +45,14 @@ fun SaveTaskScreen(
 ) {
     val v = LocalEsvVisuals.current
     var showLimits by rememberSaveable { mutableStateOf(false) }
+    var selectedTaskId by rememberSaveable { mutableStateOf<String?>(null) }
+    val listState = rememberLazyListState()
+    val headerScroll = rememberScrollState()
+    val detailScroll = remember(selectedTaskId) { androidx.compose.foundation.ScrollState(0) }
+    val detail = selectedTaskDetail(runtime.records, selectedTaskId)
     BackHandler(onBack = onBack)
-    EsvBackdrop(Modifier.fillMaxSize()) {
-        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(v.spacingMedium),
-            verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
-            item { Column(verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
+    val header: @Composable () -> Unit = {
+        Column(verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvText(stringResource(R.string.flow_savetaskscreen_0), style = v.titleTextStyle)
                 EsvButton(stringResource(R.string.flow_savetaskscreen_1), onClick = onBack)
@@ -70,65 +78,97 @@ fun SaveTaskScreen(
             runtime.destinations?.let { OrdinaryDestinationHistory(it) }
             if (!runtime.ready) EsvText(stringResource(R.string.flow_savetaskscreen_11))
             else if (runtime.records.isEmpty()) EsvText(stringResource(R.string.flow_savetaskscreen_12))
-            } }
-                items(runtime.records, key = { it.task.taskId }) { record ->
-                    Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium),
-                        verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                        EsvText("${stringResource(taskMethodTextResource(record.request.method))} · ${stringResource(taskStateTextResource(record))}", style = v.titleTextStyle)
-                        EsvText(stringResource(R.string.flow_task_id, record.task.taskId.take(8)), style = v.captionTextStyle, color = v.colors.muted)
-                        if (record.task.state == TaskState.SUCCEEDED) {
-                            runtime.discoverySaveOutcomes[record.task.taskId]?.let { outcome ->
-                                EsvText(mediaTaskDiscoveryOutcomeLabel(outcome), style = v.captionTextStyle, color = v.colors.muted)
-                            }
-                            val evidence = record.verification
-                            val disposition = record.receipt?.let { runtime.mediaDispositions[it.mediaId] }
-                            EsvText(when (disposition) {
-                                MediaLifecycle.READY -> stringResource(R.string.flow_disposition_ready)
-                                MediaLifecycle.DELETE_PENDING -> stringResource(R.string.flow_disposition_pending)
-                                MediaLifecycle.DELETED -> stringResource(R.string.flow_disposition_deleted)
-                                null -> stringResource(R.string.flow_disposition_unknown)
-                            })
-                            if (evidence != null) EsvText("${formatBytes(evidence.sizeBytes)} · ${evidence.width} × ${evidence.height} · ${evidence.durationMillis / 1000} 秒 · 音轨 ${evidence.audioTrackCount}", style = v.captionTextStyle)
-                            onPreview?.let { preview -> EsvButton(stringResource(R.string.flow_savetaskscreen_16), onClick = { preview(record) }, enabled = disposition == MediaLifecycle.READY && runtime.currentRecordingId == null && !runtime.draining) }
-                            EsvText(stringResource(R.string.flow_savetaskscreen_17), style = v.captionTextStyle, color = v.colors.muted)
-                        } else if (record.task.state in setOf(TaskState.RUNNING, TaskState.WAITING_USER, TaskState.QUEUED)) {
-                            val checkpoint = record.checkpoint
-                            val bytes = record.transfer?.bytesOnDisk
-                            EsvText(if (bytes != null) {
-                                    stringResource(R.string.flow_output_pending, formatBytes(bytes))
-                                }
-                                else if (checkpoint != null) stringResource(R.string.flow_transfer_progress, formatBytes(checkpoint.offset), formatBytes(checkpoint.totalBytes))
-                                else if (record.request.method == TaskMethod.RECORD) stringResource(R.string.flow_record_progress)
-                                else stringResource(R.string.flow_progress_unknown), style = v.captionTextStyle)
-                        }
-                        record.transfer?.recordingExpectation?.let { recording ->
-                            EsvText("有效录制时长 ${recordingDurationLabel(recording.effectiveDurationUs)} · ${recording.actualProfile.width} × ${recording.actualProfile.height}", style = v.captionTextStyle)
-                            EsvText(recordingAudioOutcomeLabel(recording.audioOutcome), style = v.captionTextStyle)
-                            EsvText(recordingStopReasonLabel(recording.stopReason), style = v.captionTextStyle)
-                        }
-                        if (record.request.method == TaskMethod.RECORD && !record.task.state.isTerminal) onRecord?.let { open ->
-                            EsvButton(stringResource(R.string.flow_savetaskscreen_19), onClick = open)
-                        }
-                        record.error?.let { EsvText(stringResource(saveFailureTextResource(it)), color = v.colors.error, style = v.captionTextStyle) }
-                        if (record.task.state == TaskState.WAITING_USER) EsvText(if (record.request.method == TaskMethod.RECORD && record.transfer == null)
-                            stringResource(R.string.final_copy_48)
-                        else when (record.waitReason) {
-                            SaveWaitReason.BACKGROUND -> stringResource(R.string.final_copy_49)
-                            SaveWaitReason.AUTHENTICATION -> stringResource(R.string.final_copy_50)
-                            SaveWaitReason.NETWORK -> stringResource(R.string.final_copy_51)
-                            SaveWaitReason.STORAGE -> stringResource(R.string.final_copy_52)
-                            else -> stringResource(R.string.final_copy_53)
-                        }, style = v.captionTextStyle)
-                        if (record.task.taskId in runtime.pendingCommands) EsvText(stringResource(R.string.flow_savetaskscreen_20), style = v.captionTextStyle)
-                        Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                            if (record.task.state == TaskState.WAITING_USER &&
-                                (record.request.method != TaskMethod.RECORD || record.transfer != null)) EsvButton(stringResource(if (record.request.method == TaskMethod.RECORD) R.string.flow_reverify else R.string.flow_resume), onClick = { runtime.resume(record.task.taskId, browser) },
-                                enabled = !runtime.draining && record.task.taskId !in runtime.pendingCommands)
-                            if (!record.task.state.isTerminal) EsvButton(stringResource(R.string.flow_savetaskscreen_21), onClick = { runtime.cancel(record.task.taskId) },
-                                enabled = record.task.taskId !in runtime.pendingCommands)
-                        }
-                    }
+        }
+    }
+    EsvBackdrop(Modifier.fillMaxSize()) {
+      BoxWithConstraints(Modifier.fillMaxSize().imePadding().padding(v.spacingMedium)) {
+        val layout = responsivePaneLayout(maxWidth.value, maxHeight.value, LocalDensity.current.fontScale, v.spacingMedium.value)
+        Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
+          Column(Modifier.fillMaxWidth().heightIn(max = layout.headerMaxHeightDp.dp).verticalScroll(headerScroll)) { header() }
+          Row(Modifier.weight(1f).fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
+            val listModifier = if (layout.split) Modifier.width(layout.sideWidthDp.dp).fillMaxHeight() else Modifier.fillMaxSize()
+            LazyColumn(listModifier, state = listState, verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
+              items(runtime.records, key = { it.task.taskId }) { record ->
+                Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                  if (layout.split) Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium)) {
+                    EsvText("${stringResource(taskMethodTextResource(record.request.method))} · ${stringResource(taskStateTextResource(record))}", style = v.bodyTextStyle)
+                    EsvText(stringResource(R.string.flow_task_id, record.task.taskId.take(8)), style = v.captionTextStyle, color = v.colors.muted)
+                  } else SaveTaskDetail(record, runtime, browser, onRecord, onPreview)
+                  EsvButton(stringResource(if (record.task.taskId == selectedTaskId) R.string.task_detail_selected else R.string.task_detail_select),
+                    onClick = { selectedTaskId = record.task.taskId }, modifier = Modifier.fillMaxWidth().semantics { selected = record.task.taskId == selectedTaskId })
                 }
+              }
+            }
+            if (layout.split) Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(detailScroll), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+              EsvText(stringResource(R.string.task_detail_heading), style = v.titleTextStyle)
+              if (detail != null) SaveTaskDetail(detail, runtime, browser, onRecord, onPreview)
+              else EsvText(stringResource(if (selectedTaskId == null) R.string.task_detail_empty else R.string.task_detail_unavailable))
+              if (selectedTaskId != null) EsvButton(stringResource(R.string.task_detail_clear), onClick = { selectedTaskId = null })
+            }
+          }
+        }
+      }
+    }
+}
+
+@Composable
+private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, browser: SystemBrowserHost,
+    onRecord: (() -> Unit)?, onPreview: ((SaveRecord) -> Unit)?) {
+    val v = LocalEsvVisuals.current
+    Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium),
+        verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+        EsvText("${stringResource(taskMethodTextResource(record.request.method))} · ${stringResource(taskStateTextResource(record))}", style = v.titleTextStyle)
+        EsvText(stringResource(R.string.flow_task_id, record.task.taskId.take(8)), style = v.captionTextStyle, color = v.colors.muted)
+        if (record.task.state == TaskState.SUCCEEDED) {
+            runtime.discoverySaveOutcomes[record.task.taskId]?.let { outcome ->
+                EsvText(mediaTaskDiscoveryOutcomeLabel(outcome), style = v.captionTextStyle, color = v.colors.muted)
+            }
+            val evidence = record.verification
+            val disposition = record.receipt?.let { runtime.mediaDispositions[it.mediaId] }
+            EsvText(when (disposition) {
+                MediaLifecycle.READY -> stringResource(R.string.flow_disposition_ready)
+                MediaLifecycle.DELETE_PENDING -> stringResource(R.string.flow_disposition_pending)
+                MediaLifecycle.DELETED -> stringResource(R.string.flow_disposition_deleted)
+                null -> stringResource(R.string.flow_disposition_unknown)
+            })
+            if (evidence != null) EsvText("${formatBytes(evidence.sizeBytes)} · ${evidence.width} × ${evidence.height} · ${evidence.durationMillis / 1000} 秒 · 音轨 ${evidence.audioTrackCount}", style = v.captionTextStyle)
+            onPreview?.let { preview -> EsvButton(stringResource(R.string.flow_savetaskscreen_16), onClick = { preview(record) }, enabled = disposition == MediaLifecycle.READY && runtime.currentRecordingId == null && !runtime.draining) }
+            EsvText(stringResource(R.string.flow_savetaskscreen_17), style = v.captionTextStyle, color = v.colors.muted)
+        } else if (record.task.state in setOf(TaskState.RUNNING, TaskState.WAITING_USER, TaskState.QUEUED)) {
+            val checkpoint = record.checkpoint
+            val bytes = record.transfer?.bytesOnDisk
+            EsvText(if (bytes != null) {
+                    stringResource(R.string.flow_output_pending, formatBytes(bytes))
+                }
+                else if (checkpoint != null) stringResource(R.string.flow_transfer_progress, formatBytes(checkpoint.offset), formatBytes(checkpoint.totalBytes))
+                else if (record.request.method == TaskMethod.RECORD) stringResource(R.string.flow_record_progress)
+                else stringResource(R.string.flow_progress_unknown), style = v.captionTextStyle)
+        }
+        record.transfer?.recordingExpectation?.let { recording ->
+            EsvText("有效录制时长 ${recordingDurationLabel(recording.effectiveDurationUs)} · ${recording.actualProfile.width} × ${recording.actualProfile.height}", style = v.captionTextStyle)
+            EsvText(recordingAudioOutcomeLabel(recording.audioOutcome), style = v.captionTextStyle)
+            EsvText(recordingStopReasonLabel(recording.stopReason), style = v.captionTextStyle)
+        }
+        if (record.request.method == TaskMethod.RECORD && !record.task.state.isTerminal) onRecord?.let { open ->
+            EsvButton(stringResource(R.string.flow_savetaskscreen_19), onClick = open)
+        }
+        record.error?.let { EsvText(stringResource(saveFailureTextResource(it)), color = v.colors.error, style = v.captionTextStyle) }
+        if (record.task.state == TaskState.WAITING_USER) EsvText(if (record.request.method == TaskMethod.RECORD && record.transfer == null)
+            stringResource(R.string.final_copy_48)
+        else when (record.waitReason) {
+            SaveWaitReason.BACKGROUND -> stringResource(R.string.final_copy_49)
+            SaveWaitReason.AUTHENTICATION -> stringResource(R.string.final_copy_50)
+            SaveWaitReason.NETWORK -> stringResource(R.string.final_copy_51)
+            SaveWaitReason.STORAGE -> stringResource(R.string.final_copy_52)
+            else -> stringResource(R.string.final_copy_53)
+        }, style = v.captionTextStyle)
+        if (record.task.taskId in runtime.pendingCommands) EsvText(stringResource(R.string.flow_savetaskscreen_20), style = v.captionTextStyle)
+        Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+            if (record.task.state == TaskState.WAITING_USER &&
+                (record.request.method != TaskMethod.RECORD || record.transfer != null)) EsvButton(stringResource(if (record.request.method == TaskMethod.RECORD) R.string.flow_reverify else R.string.flow_resume), onClick = { runtime.resume(record.task.taskId, browser) },
+                enabled = !runtime.draining && record.task.taskId !in runtime.pendingCommands)
+            if (!record.task.state.isTerminal) EsvButton(stringResource(R.string.flow_savetaskscreen_21), onClick = { runtime.cancel(record.task.taskId) },
+                enabled = record.task.taskId !in runtime.pendingCommands)
         }
     }
 }

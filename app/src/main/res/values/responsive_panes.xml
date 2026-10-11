@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="task_detail_select">Show details</string>
+    <string name="task_detail_selected">Details selected</string>
+    <string name="task_detail_empty">Select a task to show its current details.</string>
+    <string name="task_detail_unavailable">The selected task is not currently available. Its selection ID is preserved.</string>
+    <string name="task_detail_clear">Clear selection</string>
+    <string name="task_detail_heading">Task details</string>
+</resources>
