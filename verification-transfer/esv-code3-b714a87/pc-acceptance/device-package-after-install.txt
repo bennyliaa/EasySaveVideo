@@ -1,0 +1,4 @@
+
+    versionCode=3 minSdk=31 targetSdk=36
+    versionName=0.3.2-commons-dev
+
