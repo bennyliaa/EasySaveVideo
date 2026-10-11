@@ -164,6 +164,43 @@ class BoundedThumbnailSessionTest {
         h.drain(); assertEquals(2, h.decoder.calls)
     }
 
+    @Test fun offscreenQueuedItemNeverDecodesAndActiveCancellationDoesNotFakeRelease() {
+        val h = Harness(); val first = media("one"); val second = media("two")
+        h.session.updatePage(listOf(first,second),true); h.session.request(first);h.session.request(second)
+        h.session.cancel(second)
+        assertEquals(0,h.session.queuedCount)
+        h.session.cancel(first)
+        assertTrue(h.session.hasActiveJob)
+        assertEquals(1,h.ui.timers.size)
+        h.work.runNext(); h.ui.posts()
+        assertTrue(h.decoder.cancellationObserved)
+        assertTrue(h.decoder.frames.single().closed)
+        assertFalse(h.session.hasActiveJob)
+        assertEquals(0,h.session.retainedCount)
+        assertEquals(1,h.decoder.calls)
+    }
+    @Test fun offscreenCompletedCacheRemainsBoundedAndDoesNotDecodeAgain() {
+        val h = Harness(); val item = media("one")
+        h.session.updatePage(listOf(item),true);h.session.request(item);h.drain()
+        h.session.cancel(item);h.session.request(item);h.drain()
+        assertEquals(1,h.decoder.calls)
+        assertEquals(1,h.session.retainedCount)
+        assertEquals(147_456,h.session.retainedBytes)
+        h.session.updatePage(listOf(item),false)
+        assertEquals(0,h.session.retainedCount)
+        assertTrue(h.decoder.frames.single().closed)
+    }
+    @Test fun returningVisibleWaitsForOldCancelledCompletionBeforeReplacement() {
+        val h = Harness(); val item = media("one")
+        h.session.updatePage(listOf(item),true);h.session.request(item);h.session.cancel(item);h.session.request(item)
+        assertEquals(1,h.work.pending.size)
+        assertEquals(1,h.session.queuedCount)
+        h.drain()
+        assertEquals(2,h.decoder.calls)
+        assertTrue(h.decoder.frames.first().closed)
+        assertTrue(h.session.state(item) is ThumbnailState.Ready)
+        assertEquals(1,h.work.maxPending)
+    }
     private class Frame(override val width: Int = 256, override val height: Int = 144, private val bytes: Long = 147_456) : ThumbnailFrame {
         override val allocationBytes get() = bytes
         var closed = false

@@ -1,0 +1,11 @@
+<resources>
+    <string name="thumbnail_ready">Local video thumbnail</string>
+    <string name="thumbnail_waiting">Loading thumbnail</string>
+    <string name="thumbnail_inactive">Thumbnail not loaded</string>
+    <string name="thumbnail_stalled">Media resources have not confirmed release. Exit safely and retry.</string>
+    <string name="thumbnail_unavailable">Thumbnail unavailable; you can open read-only preview.</string>
+    <string name="thumbnail_description">Video thumbnail: %1$s</string>
+    <string name="thumbnail_load_visible">Load visible thumbnails</string>
+    <string name="thumbnail_stop">Stop thumbnails</string>
+    <string name="thumbnail_module_unavailable">Thumbnail module unavailable</string>
+</resources>

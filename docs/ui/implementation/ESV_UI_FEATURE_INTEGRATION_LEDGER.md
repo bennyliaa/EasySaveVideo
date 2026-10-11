@@ -255,3 +255,63 @@ new-choice/cleared-draft precedence, single admission, interrupted/capability
 feedback and unexecutable partial input. Android Bundle/Activity/process recreation,
 actual Tools/native media/output/render acceptance remain NOT RUN. No device,
 private-media read, new library/DB/SDK, recording or APK step; code4 remains frozen.
+
+
+## Final source closure: existing media-library thumbnails
+
+Baseline: 6279da19f6dc361f81cbd75140556a06332ab0c8. Existing library index,
+thumbnail decoder/cache and exact published-reader/native-release gates are reused.
+The UI now defaults to placeholders and requires an explicit Load visible thumbnails
+action. Only actual grid viewport media keys admit requests; lazy prefetched or
+disposed items cancel queued work and flag active work for cancellation. Active
+ownership and watchdog remain until real completion; completed frames stay only in
+the existing bounded page LRU. Background resets the ephemeral opt-in. Modal,
+move, loading/busy and native-release gates suspend admission. No network image
+loader, scan, permission, dependency, private-media access or replacement engine.
+Nine paired English/Chinese resource keys cover controls, accessibility and feedback.
+Preview/export/edit callbacks keep the existing exact current-reference and Tools
+gates; no failure produces fabricated media or success.
+
+Validation: 55 scoped JVM passes, Debug/Release Kotlin compile PASS and dual
+lint {'debug': {'Warning': 58, 'Hint': 8}, 'release': {'Warning': 58, 'Hint': 8}}. Evidence: artifacts/ui/final-library-closure-20261012. No full-suite,
+real media, Android rendering, device or APK acceptance is inferred from these tests.
+
+### Completed source wiring in this review round
+
+- Discovery adaptive grid/filter panel, Tasks stable-selection list/detail and
+  Browser shared wide candidate inspector/compact dialog reuse existing policies.
+- Editor adaptive controls/panels, explicit existing native preview and bounded
+  pure-data cold draft checkpoint are connected; current singleton owner wins.
+- Library existing reader/thumbnail module is connected with explicit viewport
+  admission, offscreen cancellation and bounded cache; preview/export/edit remain
+  real capability/current-reference actions.
+
+### Remaining source gaps and latest-package acceptance
+
+- Wide Library still uses its existing modal detail view rather than simultaneous
+  folder/list/detail panes. Header/grid typography and full docs/ui pixel parity
+  are not closed by this final bounded wiring group.
+- Discovery thumbnails remain theme placeholders until an admitted source/reader
+  contract exists; no network loader or permission is invented to fill them.
+- A future authorized package must have versionCode greater than4, compatible
+  signing, minSdk31 and preserve data. Installed code4/source d9bdf345 stays frozen;
+  the source changes in this review round have not been installed or device tested.
+- On that package: Compact/Medium/Expanded and low-height/font200/TalkBack,
+  viewport cancellation/cache/render behavior, background/navigation/Activity and
+  cold-process recovery, actual native release, stale references, preview,
+  export destination/cancellation, Tools output and recording consent need explicit
+  device acceptance. CPU/RAM/power/network/total time are NOT MEASURED.
+
+### Test-material and configuration dependencies
+
+- Current tests use pure models/fake frames/catalog references, not private media.
+  Future native acceptance requires explicitly approved local synthetic media and
+  compatible Tools/native capabilities; export requires a user-selected destination.
+- Public-source benchmarks require per-source permission/robots/rate-limit checks;
+  local fixtures do not prove public-site parsing or the100-labelled A/B corpus.
+- Store billing remains unconfigured; Vault and dynamic interpreter work remain
+  shelved. No test result or UI completion enables these features.
+
+This is a recoverable source checkpoint with finite validation, not final phone,
+performance, public-web or complete design acceptance. No device/APK/private-media
+operation was performed in this group.

@@ -5,6 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.res.stringResource
+import com.easysavevideo.app.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
@@ -20,19 +23,26 @@ import com.easysavevideo.library.thumbnail.ThumbnailUnavailable
 
 /** Non-interactive, accessible ordinary-library image; failure never substitutes fabricated media. */
 @Composable
-fun LibraryThumbnail(item: MediaItem, thumbnails: AndroidLibraryThumbnails, modifier: Modifier = Modifier) {
+fun LibraryThumbnail(item: MediaItem, thumbnails: AndroidLibraryThumbnails, modifier: Modifier = Modifier, visible: Boolean = false) {
     val v = LocalEsvVisuals.current
     val state = thumbnails.state(item)
-    SideEffect { thumbnails.request(item) }
-    val description = when (state) {
-        is ThumbnailState.Ready -> "本地视频缩略图"
-        ThumbnailState.Waiting -> "正在生成缩略图"
-        is ThumbnailState.Unavailable -> if (state.reason == ThumbnailUnavailable.RELEASE_UNCONFIRMED)
-            "缩略图资源尚未确认退出，请完全退出应用后重试" else "缩略图暂不可用，可打开详情预览"
+    SideEffect { if (visible) thumbnails.request(item) else thumbnails.cancel(item) }
+    DisposableEffect(thumbnails, item.itemId, item.revision, item.representationGeneration) {
+        onDispose { thumbnails.cancel(item) }
     }
+    val description = stringResource(when (state) {
+        is ThumbnailState.Ready -> R.string.thumbnail_ready
+        ThumbnailState.Waiting -> R.string.thumbnail_waiting
+        is ThumbnailState.Unavailable -> when (state.reason) {
+            ThumbnailUnavailable.INACTIVE -> R.string.thumbnail_inactive
+            ThumbnailUnavailable.RELEASE_UNCONFIRMED -> R.string.thumbnail_stalled
+            else -> R.string.thumbnail_unavailable
+        }
+    })
+    val contentLabel = stringResource(R.string.thumbnail_description, item.displayName)
     Box(modifier.fillMaxWidth().aspectRatio(16f / 9f).background(v.colors.surface)
         .semantics(mergeDescendants = true) {
-            contentDescription = "视频缩略图：${item.displayName}"
+            contentDescription = contentLabel
             stateDescription = description
         }, contentAlignment = Alignment.Center) {
         if (state is ThumbnailState.Ready) {

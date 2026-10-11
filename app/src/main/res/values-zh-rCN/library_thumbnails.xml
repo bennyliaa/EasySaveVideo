@@ -1,0 +1,11 @@
+<resources>
+    <string name="thumbnail_ready">本地视频缩略图</string>
+    <string name="thumbnail_waiting">正在加载缩略图</string>
+    <string name="thumbnail_inactive">尚未加载缩略图</string>
+    <string name="thumbnail_stalled">媒体资源尚未确认退出，请安全退出后重试。</string>
+    <string name="thumbnail_unavailable">缩略图暂不可用，可打开只读预览。</string>
+    <string name="thumbnail_description">视频缩略图：%1$s</string>
+    <string name="thumbnail_load_visible">加载可见缩略图</string>
+    <string name="thumbnail_stop">停止缩略图</string>
+    <string name="thumbnail_module_unavailable">缩略图模块不可用</string>
+</resources>

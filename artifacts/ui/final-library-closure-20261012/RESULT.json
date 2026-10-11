@@ -1,0 +1,119 @@
+{
+  "status": "PASS_SOURCE_AND_SCOPED_JVM_ONLY",
+  "base": "6279da19f6dc361f81cbd75140556a06332ab0c8",
+  "tests": [
+    {
+      "name": "com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest",
+      "tests": "17",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.library.thumbnail.ThumbnailNativeResourceGateTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.library.thumbnail.ThumbnailReadResourcesTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryExportSelectionTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryPresentationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryRuntimeTest",
+      "tests": "19",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryThumbnailUiPolicyTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "total_passed": 55,
+  "dual_kotlin_compile": "PASS",
+  "lint": {
+    "debug": {
+      "Warning": 58,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 58,
+      "Hint": 8
+    }
+  },
+  "new_dependencies": 0,
+  "runtime_artifact_graph": "existing strict locked graph90; no dependency changes",
+  "paired_resource_keys": 9,
+  "ownership_proof": [
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+      "sha256": "542f31f5e2894bd8e05a2815cfdbe8ef7e76b0999949b808acefa3ec50e880bb",
+      "unchanged_from": "6279da19f6dc361f81cbd75140556a06332ab0c8"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/AndroidLibraryThumbnails.kt",
+      "section_start": "private class AndroidThumbnailBackend",
+      "through": "end_of_file",
+      "sha256": "e329a31812f0c0dd102fa4d8f513e8d3e8a21793da94b389342832f2ba6bcd8d",
+      "unchanged_from": "6279da19f6dc361f81cbd75140556a06332ab0c8"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/LibraryScreen.kt",
+      "section_start": "private fun DetailDialog",
+      "through": "end_of_file",
+      "sha256": "948f9e1672c1ef119e34bc52475598af83d47d1664fcd29f82f724eb67e52b49",
+      "unchanged_from": "6279da19f6dc361f81cbd75140556a06332ab0c8"
+    },
+    {
+      "path": "library/src/main/kotlin/com/easysavevideo/library/thumbnail/BoundedThumbnailSession.kt",
+      "section_start": "    private fun pump()",
+      "through": "end_of_file",
+      "sha256": "124aa6da435e090eed61b15de29c334637ebb01baa6d4a611ee130110da82e0d",
+      "unchanged_from": "6279da19f6dc361f81cbd75140556a06332ab0c8"
+    }
+  ],
+  "thumbnail_budget": {
+    "max_entries": 16,
+    "max_queue": 16,
+    "max_frame_pixels": 36864,
+    "max_frame_bytes": 147456,
+    "max_cache_bytes": 2359296,
+    "watchdog_millis": 3000,
+    "meaning": "Application frame/cache limits; not measured Android/GPU/GC memory. Cancellation never confirms native release."
+  },
+  "not_run": [
+    "latest-package device UI/window/font200/TalkBack",
+    "real thumbnail/native reader/decode/release",
+    "real playback/export/edit Tools and published output",
+    "Activity/process recreation",
+    "public web/media acceptance",
+    "recording and consent flow"
+  ],
+  "not_measured": [
+    "real-device CPU/RAM/power/network/total time"
+  ],
+  "device_apk_private_media_operations": 0
+}

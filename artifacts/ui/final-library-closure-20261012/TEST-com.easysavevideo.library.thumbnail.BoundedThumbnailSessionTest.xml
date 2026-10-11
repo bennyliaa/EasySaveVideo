@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-10-11T19:39:39.249Z" hostname="REDACTED" time="0.061">
+  <properties />
+  <testcase name="rejectedWorkerSubmissionDoesNotClaimSuccessOrStayActive" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.041" />
+  <testcase name="offscreenCompletedCacheRemainsBoundedAndDoesNotDecodeAgain" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.003" />
+  <testcase name="deleteAndRenameImmediatelyDropCachedOldAuthority" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.001" />
+  <testcase name="sameReferenceReturningAfterBackgroundDoesNotAcceptOldSessionResult" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.001" />
+  <testcase name="decoderFailureIsHonestAndDoesNotLoopOnRecomposition" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.0" />
+  <testcase name="timeoutDoesNotFreeActiveJobOrSubmitReplacement" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.001" />
+  <testcase name="unconfirmedReleaseFencesFollowingJobsAndNeverProducesAFrame" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.0" />
+  <testcase name="oneActiveJobAndExplicitQueueLimitStayBounded" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.005" />
+  <testcase name="actualOversizePixelsOrAllocationAreRejectedEvenFromSuccessfulDecoder" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.001" />
+  <testcase name="cacheEvictsOldestWithinBothEntryAndByteBudgets" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.0" />
+  <testcase name="offscreenQueuedItemNeverDecodesAndActiveCancellationDoesNotFakeRelease" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.0" />
+  <testcase name="returningVisibleWaitsForOldCancelledCompletionBeforeReplacement" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.001" />
+  <testcase name="arbitraryStaleNonReadyAndUnknownSelectionsNeverOpenSource" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.0" />
+  <testcase name="disposeCancelsQueuedWorkButRetainsWatchdogForHungNativeOwner" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.0" />
+  <testcase name="lateCompletionCannotPublishAfterRevisionChangeOrMove" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.001" />
+  <testcase name="exactReadyItemIsDecodedOffUiAndCachedOnlyAfterCompletion" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.0" />
+  <testcase name="oldWatchdogCannotFenceNewJobAfterConfirmedCompletion" classname="com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

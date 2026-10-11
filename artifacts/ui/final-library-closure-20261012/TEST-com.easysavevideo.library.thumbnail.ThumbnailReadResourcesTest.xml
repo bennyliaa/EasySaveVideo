@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.library.thumbnail.ThumbnailReadResourcesTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-11T19:39:39.320Z" hostname="REDACTED" time="0.002">
+  <properties />
+  <testcase name="partialConstructionStillReleasesOnlyAcquiredReadAuthorities" classname="com.easysavevideo.library.thumbnail.ThumbnailReadResourcesTest" time="0.001" />
+  <testcase name="releaseRunsNativeThenDescriptorThenCatalogFenceExactlyOnce" classname="com.easysavevideo.library.thumbnail.ThumbnailReadResourcesTest" time="0.0" />
+  <testcase name="failedFenceCloseIsNotReportedAsConfirmed" classname="com.easysavevideo.library.thumbnail.ThumbnailReadResourcesTest" time="0.001" />
+  <testcase name="failedNativeReleaseRetainsDescriptorAndCatalogFenceWithoutSpeculativeRetry" classname="com.easysavevideo.library.thumbnail.ThumbnailReadResourcesTest" time="0.0" />
+  <testcase name="failedDescriptorCloseRetainsCatalogFence" classname="com.easysavevideo.library.thumbnail.ThumbnailReadResourcesTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

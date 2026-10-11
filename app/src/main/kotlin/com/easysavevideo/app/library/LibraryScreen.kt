@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,6 +30,8 @@ import com.easysavevideo.app.library.export.AndroidExportRuntime
 import com.easysavevideo.app.library.thumbnail.AndroidLibraryThumbnails
 import com.easysavevideo.app.library.thumbnail.LibraryThumbnail
 import com.easysavevideo.app.library.thumbnail.OrdinaryMediaNativeResources
+import com.easysavevideo.app.library.thumbnail.libraryThumbnailAdmission
+import com.easysavevideo.app.library.thumbnail.libraryVisibleThumbnailIds
 import kotlinx.coroutines.delay
 import com.easysavevideo.library.*
 import java.text.DateFormat
@@ -49,13 +52,19 @@ fun LibraryScreen(
     val state = runtime.state
     val v = LocalEsvVisuals.current
     var grid by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(false) }
+    var thumbnailsRequested by remember(thumbnails) { mutableStateOf(false) }
+    val gridState = rememberLazyGridState()
+    val visibleThumbnailIds by remember { derivedStateOf {
+        libraryVisibleThumbnailIds(gridState.layoutInfo.visibleItemsInfo.map { it.key })
+    } }
     val interactive = state.foreground && state.ready && !state.busy && !state.loading
     var thumbnailAdmissionReady by remember(thumbnails) { mutableStateOf(false) }
     var thumbnailAdmissionFenced by remember(thumbnails) { mutableStateOf(false) }
-    LaunchedEffect(thumbnails, state.foreground) {
+    LaunchedEffect(state.foreground) { if (!state.foreground) thumbnailsRequested = false }
+    LaunchedEffect(thumbnails, state.foreground, thumbnailsRequested) {
         thumbnailAdmissionReady = false
         thumbnailAdmissionFenced = false
-        if (thumbnails != null && state.foreground) {
+        if (thumbnails != null && state.foreground && thumbnailsRequested) {
             // Closing a preview is asynchronous. Never poison this new page with sticky BUSY
             // results while the old native owner is still genuinely releasing its resources.
             while (OrdinaryMediaNativeResources.isOccupied && !OrdinaryMediaNativeResources.requiresRestart) delay(50)
@@ -63,7 +72,10 @@ fun LibraryScreen(
             thumbnailAdmissionReady = !thumbnailAdmissionFenced
         }
     }
-    SideEffect { thumbnails?.updatePage(state.items, enabled = interactive && state.move == null && thumbnailAdmissionReady) }
+    val thumbnailEnabled = libraryThumbnailAdmission(thumbnailsRequested, state.foreground, state.ready,
+        state.busy, state.loading, state.selected != null || state.deletion != null || state.editor != null,
+        state.move != null, thumbnailAdmissionReady)
+    SideEffect { thumbnails?.updatePage(state.items, enabled = thumbnailEnabled) }
     BackHandler {
         when {
             state.move != null -> runtime.cancelMove()
@@ -74,6 +86,7 @@ fun LibraryScreen(
     EsvBackdrop(Modifier.fillMaxSize()) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
             LazyVerticalGrid(
+                state = gridState,
                 columns = if (grid && state.move == null) GridCells.Adaptive(240.dp) else GridCells.Fixed(1),
                 modifier = Modifier.widthIn(max = 1_200.dp).fillMaxSize(),
                 contentPadding = PaddingValues(v.spacingMedium),
@@ -91,7 +104,10 @@ fun LibraryScreen(
                         EsvText(stringResource(R.string.flow_libraryscreen_4), style = v.captionTextStyle, color = v.colors.muted)
                         EsvText(stringResource(R.string.flow_libraryscreen_5), style = v.captionTextStyle, color = v.colors.muted)
                         if (thumbnailAdmissionFenced) EsvText(stringResource(R.string.flow_libraryscreen_6), style = v.captionTextStyle, color = v.colors.error)
-                        else if (state.foreground && !thumbnailAdmissionReady) EsvText(stringResource(R.string.flow_libraryscreen_7), style = v.captionTextStyle, color = v.colors.muted)
+                        else if (thumbnailsRequested && state.foreground && !thumbnailAdmissionReady) EsvText(stringResource(R.string.flow_libraryscreen_7), style = v.captionTextStyle, color = v.colors.muted)
+                        EsvButton(stringResource(if (thumbnailsRequested) R.string.thumbnail_stop else R.string.thumbnail_load_visible),
+                            onClick = { thumbnailsRequested = !thumbnailsRequested }, enabled = interactive && state.move == null && thumbnails != null)
+                        if (thumbnails == null) EsvText(stringResource(R.string.thumbnail_module_unavailable), style = v.captionTextStyle, color = v.colors.muted)
                         exports?.let { LibraryExportStatus(it, state.foreground) }
                         if (state.move == null) {
                             LibraryField(state.query.text, runtime::search, stringResource(R.string.flow_library_search), enabled = state.foreground && !state.busy)
@@ -163,7 +179,8 @@ fun LibraryScreen(
                     }
                     items(state.items, key = { "media:${it.itemId}" }) { media ->
                         LibraryCard {
-                            thumbnails?.let { LibraryThumbnail(media, it, Modifier.fillMaxWidth()) }
+                            thumbnails?.let { LibraryThumbnail(media, it, Modifier.fillMaxWidth(),
+                                visible = thumbnailEnabled && media.itemId in visibleThumbnailIds) }
                             EsvText(media.displayName, style = v.titleTextStyle, maxLines = 2)
                             EsvText("MP4 · ${libraryDuration(media.durationMillis)} · ${libraryBytes(media.sizeBytes)}", style = v.captionTextStyle)
                             EsvText(libraryResolution(media), style = v.captionTextStyle, color = v.colors.muted)

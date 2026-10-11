@@ -70,6 +70,7 @@ class AndroidLibraryThumbnails(
 
     fun updatePage(items: List<MediaItem>, enabled: Boolean) = session.updatePage(items, enabled)
     fun request(item: MediaItem) = session.request(item)
+    fun cancel(item: MediaItem) = session.cancel(item)
     fun state(item: MediaItem): ThumbnailState<AndroidThumbnailFrame> {
         @Suppress("UNUSED_VARIABLE") val observed = version
         return session.state(item)

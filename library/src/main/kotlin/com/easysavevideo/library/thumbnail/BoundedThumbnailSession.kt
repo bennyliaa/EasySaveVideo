@@ -131,6 +131,18 @@ class BoundedThumbnailSession<F : ThumbnailFrame>(
         changed?.invoke()
     }
 
+    /** Offscreen cancellation drops queued work; active native ownership lasts until real completion. */
+    fun cancel(item: MediaItem) {
+        ui.requireCurrentThread()
+        if (disposed || item.lifecycle != MediaLifecycle.READY) return
+        val ref = item.readRef()
+        val removed = queue.removeAll { it.reference == ref }
+        val stateRemoved = states.remove(ref) != null
+        val cancelled = active?.takeIf { it.reference == ref }?.cancelled?.getAndSet(true) == false
+        // Retain completed frames only in the existing bounded page LRU; do not pretend release.
+        if (removed || stateRemoved || cancelled) changed?.invoke()
+    }
+
     private fun pump() {
         if (disposed || !enabled || fenced || active != null) return
         val job = queue.removeFirstOrNull() ?: return
