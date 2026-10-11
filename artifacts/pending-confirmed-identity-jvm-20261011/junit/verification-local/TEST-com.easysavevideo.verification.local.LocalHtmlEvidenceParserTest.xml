@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-11T06:38:02.752Z" hostname="LZF" time="0.015">
+  <properties/>
+  <testcase name="ambiguityHiddenMissingAndUnsafeSourcesRemainUnknown" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.003"/>
+  <testcase name="evidenceIsRedactedAndDoesNotInventMetadata" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.001"/>
+  <testcase name="explicitlyAdMarkedPlayerAbstainsEvenWithPrimaryMarker" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.001"/>
+  <testcase name="realJsoupPrimaryVideoEvidenceNotPlaybackOrDownload" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.003"/>
+  <testcase name="deletedTargetAndSimilarFilenameNeverConfirm" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.001"/>
+  <testcase name="compiledPrimaryPlayerShapesWithoutPrivateMarker" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.001"/>
+  <testcase name="articleHiddenAndCompetingMainContentAbstain" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.002"/>
+  <testcase name="malformedUtf8AndFiniteSize" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.0"/>
+  <testcase name="structuredDeclarationsAndScriptsAloneRemainUnknown" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.0"/>
+  <testcase name="articleWithoutPrimaryMarkerRemainsUnknown" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.001"/>
+  <testcase name="wrappedAndClassChangedTargetRetainsEvidence" classname="com.easysavevideo.verification.local.LocalHtmlEvidenceParserTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

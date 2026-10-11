@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.verification.local.FrozenCorpusHostTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-11T06:37:58.985Z" hostname="LZF" time="2.644">
+  <properties/>
+  <testcase name="same100FrozenBodiesActualStaticB" classname="com.easysavevideo.verification.local.FrozenCorpusHostTest" time="2.644"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

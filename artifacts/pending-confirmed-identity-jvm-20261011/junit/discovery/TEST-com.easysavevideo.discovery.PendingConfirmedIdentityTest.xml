@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.discovery.PendingConfirmedIdentityTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-11T06:38:06.321Z" hostname="LZF" time="0.004">
+  <properties/>
+  <testcase name="sourceIdentityAndCandidateIdentityCannotSubstituteForConfirmedUrlAlias" classname="com.easysavevideo.discovery.PendingConfirmedIdentityTest" time="0.001"/>
+  <testcase name="mergedAlternateUrlDoesNotEnterPendingPool" classname="com.easysavevideo.discovery.PendingConfirmedIdentityTest" time="0.001"/>
+  <testcase name="queryPathAndFragmentDifferencesAreNotGuessedEquivalent" classname="com.easysavevideo.discovery.PendingConfirmedIdentityTest" time="0.001"/>
+  <testcase name="clearingMatchedCandidateFreesBoundedCapacityForUnconfirmedPage" classname="com.easysavevideo.discovery.PendingConfirmedIdentityTest" time="0.001"/>
+  <testcase name="existingActiveCandidateIsRemovedAfterExactAliasConfirmation" classname="com.easysavevideo.discovery.PendingConfirmedIdentityTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

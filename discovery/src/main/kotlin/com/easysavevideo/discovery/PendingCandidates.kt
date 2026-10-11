@@ -41,11 +41,16 @@ internal class PendingCandidatePool(private val capacity: Int) {
     init { require(capacity in 1..500) }
     val size: Int get() = values.size
     fun snapshot(): List<PendingVideoCandidate> = values.values.map { it.copy(provenance = it.provenance.toSet()) }
-    fun add(candidates: List<PendingVideoCandidate>, confirmedUrls: Set<String>): Int {
+    fun add(candidates: List<PendingVideoCandidate>, confirmedUrls: Set<String>,
+            confirmedIdentityAliases: Set<String> = emptySet()): Int {
         var added = 0
-        values.entries.removeAll { it.value.canonicalPageUrl in confirmedUrls }
+        // A merged confirmed result retains one page URL, but may retain several exact
+        // URL identities. Suppress only exact url-v1 aliases, never source-reported IDs.
+        fun confirmed(candidate: PendingVideoCandidate) = candidate.canonicalPageUrl in confirmedUrls ||
+            digest(framed("url-v1", candidate.canonicalPageUrl)) in confirmedIdentityAliases
+        values.entries.removeAll { confirmed(it.value) }
         for (candidate in candidates) {
-            if (candidate.canonicalPageUrl in confirmedUrls) continue
+            if (confirmed(candidate)) continue
             val old = values[candidate.candidateId]
             if (old != null) {
                 // Keep the first report; merging a report never upgrades its evidence level.

@@ -4,6 +4,18 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ExplicitCandidateVerificationTest {
+    @Test fun confirmedMergedUrlAliasNeverSchedulesExplicitVerification() {
+        val filters = SearchFilters(safeSearch = false)
+        val pool = ResultPool()
+        val results = listOf("https://video.example/retained", "https://video.example/watch?id=1").map {
+            ResultNormalizer.normalize(RawVideoResult(it, true, sourceNamespace = "site", sourceVideoId = "same"), "source", filters)!!
+        }
+        val merged = pool.admit(PoolState(), results, 1000).state.entries.single().result
+        val f = Fixture(initialResults = listOf(merged))
+        assertTrue(f.coordinator.pendingCandidates().isEmpty())
+        assertFalse(f.coordinator.verifyPending(f.stamp, f.candidate.candidateId))
+        assertEquals(1, f.runtime.calls.size)
+    }
     private class Fixture(initialResults: List<VideoSearchResult> = emptyList(), initialSummary: VerificationSummary? = null, val store: DiscoveryStore = InMemoryDiscoveryStore()) {
         val clock = FakeClock()
         val timer = FakeTimer(clock)

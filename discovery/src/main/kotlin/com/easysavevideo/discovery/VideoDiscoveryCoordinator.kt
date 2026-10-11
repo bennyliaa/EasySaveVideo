@@ -615,7 +615,8 @@ class VideoDiscoveryCoordinator(
             current = accepted.first
             page.verificationReports.lastOrNull()?.let { summaryFence.publish(request.summaryGeneration, it.summary) }
             val candidateAdds = pendingPool.add(page.pendingCandidates,
-                accepted.first.pool.entries.map { it.result.canonicalPageUrl }.toSet())
+                accepted.first.pool.entries.map { it.result.canonicalPageUrl }.toSet(),
+                accepted.first.pool.entries.flatMap { it.result.identityAliases }.toSet())
             request.explicitCandidateId?.let { candidateId ->
                 pendingPool.mark(candidateId, false, page.verificationReports.find { it.candidateId == candidateId }?.summary
                     ?: VerificationSummary("scheduler", EngineOutcome.UNKNOWN, EngineEvidence.NONE))
