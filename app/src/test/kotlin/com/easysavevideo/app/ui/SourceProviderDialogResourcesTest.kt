@@ -33,6 +33,14 @@ class SourceProviderDialogResourcesTest {
     private val providerText = ProviderCopyText { key, args -> String.format(Locale.US, en.getValue("provider_copy_${key.ordinal}"), *args) }
     private val filterText = FilterCopyText { key, args -> String.format(Locale.US, en.getValue("filter_copy_${key.ordinal}"), *args) }
 
+    @Test fun englishOversizedRegionNoticePreservesFullScreenFallbackBoundary() {
+        val notice = en.getValue("region_problem_3")
+        assertTrue(notice.contains("no automatic scaling or full-screen recording fallback"))
+        assertFalse(notice.contains("lower-quality fallback"))
+        assertTrue(notice.contains("1920 pixels"))
+        assertTrue(notice.contains("1920 × 1080 pixels"))
+    }
+
     @Test fun languageKeysAndParametersMatchAcrossEveryNewResource() {
         val zh = strings("values-zh-rCN")
         assertEquals(276, en.size)

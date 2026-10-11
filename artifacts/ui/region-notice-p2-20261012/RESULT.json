@@ -1,0 +1,14 @@
+{
+  "base": "6b2c7c17890b9aadc728e7c8a72ee362bced5cd9",
+  "scope": "English region_problem_3 translation only; no execution-gate change",
+  "jvm_tests": 5,
+  "failures": 0,
+  "errors": 0,
+  "resource_key_and_parameter_contract": "PASS",
+  "debug_main_kotlin_compile": "UP_TO_DATE",
+  "debug_test_kotlin_compile": "EXECUTED_PASS",
+  "new_apk_build": "NOT_RUN",
+  "device_package_unchanged": "code4/d9bdf34567bf2d138e796a50560419d359385cf4",
+  "prior_increment_compile_evidence": "Actual debug/release compilation passed after nullable argument fix; final validation reused UP_TO_DATE compilation",
+  "prior_increment_lint": "58 warning plus 7 informational/hint entries per variant; zero error/fatal"
+}
