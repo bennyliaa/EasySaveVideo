@@ -1,0 +1,53 @@
+{
+  "base_commit": "d9a56e743b01707a6caa536cea1e5b9283ae5100",
+  "authorized_tasks": [
+    ":app:verifyRuntimeAdmission",
+    ":app:compileDebugKotlin",
+    ":app:compileReleaseKotlin",
+    ":app:lintDebug",
+    ":app:lintRelease"
+  ],
+  "strict": true,
+  "initial_run": {
+    "exit_code": 1,
+    "runtime_admission": "PASS: exact77",
+    "debug_kotlin": "PASS: executed",
+    "release_kotlin": "PASS: executed",
+    "debug_lint": "FAILED: child lintAnalyzeDebug missing lock configurations for four already admitted GAVs",
+    "release_lint": "NOT_RUN"
+  },
+  "fix": "Only add debugLintChecksClasspath/releaseLintChecksClasspath membership for existing jsoup1.21.2/okhttp4.12.0/okio3.6.0/okio-jvm3.6.0; no new GAV/version/artifact trust",
+  "final_run": {
+    "exit_code": 0,
+    "runtime_admission": "PASS: executed exact77",
+    "debug_kotlin": "PASS: UP-TO-DATE successful initial result reused",
+    "release_kotlin": "PASS: UP-TO-DATE successful initial result reused",
+    "debug_lint": "PASS: executed",
+    "release_lint": "PASS: executed",
+    "lint_severity_counts": {
+      "debug": {
+        "warning": 30
+      },
+      "release": {
+        "warning": 30
+      }
+    }
+  },
+  "session_environment": {
+    "raw_restoration_check": false,
+    "cause_confirmed": "PowerShell coerced null saved value to empty string for .NET setter; absent variables became empty in the temporary child shell",
+    "persistent_environment_changes": false,
+    "process": "ended; no machine/user environment writes",
+    "corrected_pattern": "SetEnvironmentVariable(key,[NullString]::Value,Process) for prior null; regular setter otherwise",
+    "typed_null_probe": "PASS; original pattern false/empty reproduced, typed null restores actual absence",
+    "raw_false_evidence": "preserved unchanged"
+  },
+  "metadata_runtime77_settings": "byte-for-byte unchanged",
+  "new_dependency_admission": false,
+  "APKs_installed_or_devices_accessed": false,
+  "JVM_tests_this_change": "NOT_RUN: lint lock membership only",
+  "phone_energy": "NOT_MEASURED",
+  "historical_Windows115_failures": "not cleared",
+  "push": false,
+  "app_lock_sha256": "658e73e12a886391f61680c0fb36d01a03ec8513dea3c77a5fe766b731983f52"
+}

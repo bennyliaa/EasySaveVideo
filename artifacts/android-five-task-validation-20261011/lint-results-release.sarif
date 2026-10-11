@@ -1,0 +1,2225 @@
+{
+    "$schema" : "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+    "version" : "2.1.0",
+    "runs" : [
+        {
+            "tool": {
+                "driver": {
+                    "name": "Android Lint",
+                    "fullName": "Android Lint (in gradle)",
+                    "version": "9.4.0",
+                    "semanticVersion": "9.4.0",
+                    "organization": "Google",
+                    "informationUri": "https://developer.android.com/studio/write/lint",
+                    "fullDescription": {
+                        "text": "Static analysis originally for Android source code but now performing general analysis"
+                    },
+                    "language": "en-US",
+                    "rules": [
+                        {
+                            "id": "AutoboxingStateCreation",
+                            "shortDescription": {
+                                "text": "State<T> will autobox values assigned to this state. Use a specialized state type instead.",
+                                "markdown": "`State<T>` will autobox values assigned to this state. Use a specialized state type instead."
+                            },
+                            "fullDescription": {
+                                "text": "Calling mutableStateOf<T>() when T is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for Int, Long, Float, and Double when the state does not need to track null values and does not override the default SnapshotMutationPolicy. See mutableIntStateOf(), mutableLongStateOf(), mutableFloatStateOf(), and mutableDoubleStateOf() for more information.",
+                                "markdown": "Calling `mutableStateOf<T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+                            },
+                            "defaultConfiguration": {
+                                "level": "note",
+                                "rank": 80
+                            },
+                            "properties": {
+                                "tags": [
+                                    "Performance"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "GradleDependency",
+                            "shortDescription": {
+                                "text": "Obsolete Gradle Dependency"
+                            },
+                            "fullDescription": {
+                                "text": "This detector looks for usages of libraries where the version you are using is not the current stable release. Using older versions is fine, and there are cases where you deliberately want to stick with an older version. However, you may simply not be aware that a more recent version is available, and that is what this lint check helps find."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning",
+                                "rank": 70
+                            },
+                            "properties": {
+                                "tags": [
+                                    "Correctness"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "NewerVersionAvailable",
+                            "shortDescription": {
+                                "text": "Newer Library Versions Available"
+                            },
+                            "fullDescription": {
+                                "text": "This detector checks with a central repository to see if there are newer versions available for the dependencies used by this project. This is similar to the GradleDependency check, which checks for newer versions available in the Android SDK tools and libraries, but this works with any MavenCentral dependency, and connects to the library every time, which makes it more flexible but also much slower.",
+                                "markdown": "This detector checks with a central repository to see if there are newer versions available for the dependencies used by this project. This is similar to the `GradleDependency` check, which checks for newer versions available in the Android SDK tools and libraries, but this works with any MavenCentral dependency, and connects to the library every time, which makes it more flexible but also **much** slower."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning",
+                                "rank": 70
+                            },
+                            "properties": {
+                                "tags": [
+                                    "Correctness"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "OldTargetApi",
+                            "shortDescription": {
+                                "text": "Target SDK attribute is not targeting latest version"
+                            },
+                            "fullDescription": {
+                                "text": "When your application or sdk runs on a version of Android that is more recent than your targetSdk specifies that it has been tested with, various compatibility modes kick in. This ensures that your application continues to work, but it may look out of place. For example, if the targetSdk is less than 14, your app may get an option button in the UI.\n\nTo fix this issue, set the targetSdk to the highest available value. Then test your app to make sure everything works correctly. You may want to consult the compatibility notes to see what changes apply to each version you are adding support for: https://developer.android.com/reference/android/os/Build.VERSION_CODES.html as well as follow this guide:\nhttps://developer.android.com/distribute/best-practices/develop/target-sdk.html",
+                                "markdown": "When your application or sdk runs on a version of Android that is more recent than your `targetSdk` specifies that it has been tested with, various compatibility modes kick in. This ensures that your application continues to work, but it may look out of place. For example, if the `targetSdk` is less than 14, your app may get an option button in the UI.\n\nTo fix this issue, set the `targetSdk` to the highest available value. Then test your app to make sure everything works correctly. You may want to consult the compatibility notes to see what changes apply to each version you are adding support for: https://developer.android.com/reference/android/os/Build.VERSION_CODES.html as well as follow this guide:\nhttps://developer.android.com/distribute/best-practices/develop/target-sdk.html"
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning",
+                                "rank": 50
+                            },
+                            "properties": {
+                                "tags": [
+                                    "Correctness"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "SetJavaScriptEnabled",
+                            "shortDescription": {
+                                "text": "Using setJavaScriptEnabled",
+                                "markdown": "Using `setJavaScriptEnabled`"
+                            },
+                            "fullDescription": {
+                                "text": "Your code should not invoke setJavaScriptEnabled if you are not sure that your app really requires JavaScript support.",
+                                "markdown": "Your code should not invoke `setJavaScriptEnabled` if you are not sure that your app really requires JavaScript support."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning",
+                                "rank": 50
+                            },
+                            "properties": {
+                                "tags": [
+                                    "Security"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "StaticFieldLeak",
+                            "shortDescription": {
+                                "text": "Static Field Leaks"
+                            },
+                            "fullDescription": {
+                                "text": "A static field will leak contexts.\n\nNon-static inner classes have an implicit reference to their outer class. If that outer class is for example a Fragment or Activity, then this reference means that the long-running handler/loader/task will hold a reference to the activity which prevents it from getting garbage collected.\n\nSimilarly, direct field references to activities and fragments from these longer running instances can cause leaks.\n\nViewModel classes should never point to Views or non-application Contexts.",
+                                "markdown": "A static field will leak contexts.\n\nNon-static inner classes have an implicit reference to their outer class. If that outer class is for example a `Fragment` or `Activity`, then this reference means that the long-running handler/loader/task will hold a reference to the activity which prevents it from getting garbage collected.\n\nSimilarly, direct field references to activities and fragments from these longer running instances can cause leaks.\n\nViewModel classes should never point to Views or non-application Contexts."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning",
+                                "rank": 50
+                            },
+                            "properties": {
+                                "tags": [
+                                    "Performance"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "UsableSpace",
+                            "shortDescription": {
+                                "text": "Using getUsableSpace()"
+                            },
+                            "fullDescription": {
+                                "text": "When you need to allocate disk space for large files, consider using the new allocateBytes(FileDescriptor, long) API, which will automatically clear cached files belonging to other apps (as needed) to meet your request.\n\nWhen deciding if the device has enough disk space to hold your new data, call getAllocatableBytes(UUID) instead of using getUsableSpace(), since the former will consider any cached data that the system is willing to clear on your behalf.\n\nNote that these methods require API level 26. If your app is running on older devices, you will probably need to use both APIs, conditionally switching on Build.VERSION.SDK_INT. Lint only looks in the same compilation unit to see if you are already using both APIs, so if it warns even though you are already using the new API, consider moving the calls to the same file or suppressing the warning.",
+                                "markdown": "When you need to allocate disk space for large files, consider using the new `allocateBytes(FileDescriptor, long)` API, which will automatically clear cached files belonging to other apps (as needed) to meet your request.\n\nWhen deciding if the device has enough disk space to hold your new data, call `getAllocatableBytes(UUID)` instead of using `getUsableSpace()`, since the former will consider any cached data that the system is willing to clear on your behalf.\n\nNote that these methods require API level 26. If your app is running on older devices, you will probably need to use both APIs, conditionally switching on `Build.VERSION.SDK_INT`. Lint only looks in the same compilation unit to see if you are already using both APIs, so if it warns even though you are already using the new API, consider moving the calls to the same file or suppressing the warning."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning",
+                                "rank": 80
+                            },
+                            "properties": {
+                                "tags": [
+                                    "Performance"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "UseKtx",
+                            "shortDescription": {
+                                "text": "Use KTX extension function"
+                            },
+                            "fullDescription": {
+                                "text": "The Android KTX libraries decorates the Android platform SDK as well as various libraries with more convenient extension functions available from Kotlin, allowing you to use default parameters, named parameters, and more."
+                            },
+                            "defaultConfiguration": {
+                                "level": "warning",
+                                "rank": 50
+                            },
+                            "properties": {
+                                "tags": [
+                                    "Productivity"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "originalUriBaseIds": {
+                "%SRCROOT%": {
+                    "uri": "file:///D:/CodexProjects/EasySaveVideo/esv-source-12f97d43-20261009/"
+                }
+            },
+            "results": [
+                {
+                    "ruleId": "OldTargetApi",
+                    "ruleIndex": 3,
+                    "message": {
+                        "text": "Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details.",
+                        "markdown": "Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/build.gradle.kts"
+                                },
+                                "region": {
+                                    "startLine": 14,
+                                    "startColumn": 9,
+                                    "endLine": 14,
+                                    "endColumn": 23,
+                                    "charOffset": 327,
+                                    "charLength": 14,
+                                    "snippet": {
+                                        "text": "targetSdk = 36"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 12,
+                                    "endLine": 17,
+                                    "snippet": {
+                                        "text": "        applicationId = \"com.easysavevideo.app\"\n        minSdk = 31\n        targetSdk = 36\n        versionCode = 3\n        versionName = \"0.3.2-commons-dev\"\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Update targetSdkVersion to 37"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/build.gradle.kts"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 14,
+                                                "startColumn": 21,
+                                                "charOffset": 339,
+                                                "endLine": 14,
+                                                "endColumn": 23,
+                                                "charLength": 2
+                                            },
+                                            "insertedContent": {
+                                                "text": "37\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "a42726681ef7accb"
+                    }
+                },
+                {
+                    "ruleId": "GradleDependency",
+                    "ruleIndex": 1,
+                    "message": {
+                        "text": "A newer version of compileSdk than 36 is available: 37",
+                        "markdown": "A newer version of `compileSdk` than 36 is available: 37"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/build.gradle.kts"
+                                },
+                                "region": {
+                                    "startLine": 9,
+                                    "startColumn": 5,
+                                    "endLine": 9,
+                                    "endColumn": 20,
+                                    "charOffset": 182,
+                                    "charLength": 15,
+                                    "snippet": {
+                                        "text": "compileSdk = 36"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 7,
+                                    "endLine": 12,
+                                    "snippet": {
+                                        "text": "android {\n    namespace = \"com.easysavevideo.app\"\n    compileSdk = 36\n    buildToolsVersion = \"36.0.0\"\n    defaultConfig {\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Set compileSdk to 37"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/build.gradle.kts"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 9,
+                                                "startColumn": 18,
+                                                "charOffset": 195,
+                                                "endLine": 9,
+                                                "endColumn": 20,
+                                                "charLength": 2
+                                            },
+                                            "insertedContent": {
+                                                "text": "37\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "c6e2365591e04b60"
+                    }
+                },
+                {
+                    "ruleId": "GradleDependency",
+                    "ruleIndex": 1,
+                    "message": {
+                        "text": "A newer version of androidx.concurrent:concurrent-futures than 1.2.0 is available: 1.3.0"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/build.gradle.kts"
+                                },
+                                "region": {
+                                    "startLine": 62,
+                                    "startColumn": 24,
+                                    "endLine": 62,
+                                    "endColumn": 70,
+                                    "charOffset": 3169,
+                                    "charLength": 46,
+                                    "snippet": {
+                                        "text": "\"androidx.concurrent:concurrent-futures:1.2.0\""
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 60,
+                                    "endLine": 65,
+                                    "snippet": {
+                                        "text": "    // These constraints do not add modules or force an older dependency over Media3's requirements.\n    constraints {\n        implementation(\"androidx.concurrent:concurrent-futures:1.2.0\")\n        implementation(\"com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava\")\n        implementation(\"org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0\")\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Change to 1.3.0"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/build.gradle.kts"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 62,
+                                                "startColumn": 64,
+                                                "charOffset": 3209,
+                                                "endLine": 62,
+                                                "endColumn": 69,
+                                                "charLength": 5
+                                            },
+                                            "insertedContent": {
+                                                "text": "1.3.0\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "e53a5a352c2d5871"
+                    }
+                },
+                {
+                    "ruleId": "GradleDependency",
+                    "ruleIndex": 1,
+                    "message": {
+                        "text": "A newer version of androidx.compose:compose-bom than 2025.06.01 is available: 2026.09.00"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/build.gradle.kts"
+                                },
+                                "region": {
+                                    "startLine": 68,
+                                    "startColumn": 29,
+                                    "endLine": 68,
+                                    "endColumn": 70,
+                                    "charOffset": 3557,
+                                    "charLength": 41,
+                                    "snippet": {
+                                        "text": "\"androidx.compose:compose-bom:2025.06.01\""
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 66,
+                                    "endLine": 71,
+                                    "snippet": {
+                                        "text": "    }\n    implementation(project(\":ui-theme\"))\n    implementation(platform(\"androidx.compose:compose-bom:2025.06.01\"))\n    implementation(\"androidx.activity:activity-compose:1.10.1\")\n    implementation(\"androidx.compose.runtime:runtime\")\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Change to 2026.09.00"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/build.gradle.kts"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 68,
+                                                "startColumn": 59,
+                                                "charOffset": 3587,
+                                                "endLine": 68,
+                                                "endColumn": 69,
+                                                "charLength": 10
+                                            },
+                                            "insertedContent": {
+                                                "text": "2026.09.00\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "94ba362d31f0e0ba"
+                    }
+                },
+                {
+                    "ruleId": "GradleDependency",
+                    "ruleIndex": 1,
+                    "message": {
+                        "text": "A newer version of androidx.activity:activity-compose than 1.10.1 is available: 1.13.0"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/build.gradle.kts"
+                                },
+                                "region": {
+                                    "startLine": 69,
+                                    "startColumn": 20,
+                                    "endLine": 69,
+                                    "endColumn": 63,
+                                    "charOffset": 3620,
+                                    "charLength": 43,
+                                    "snippet": {
+                                        "text": "\"androidx.activity:activity-compose:1.10.1\""
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 67,
+                                    "endLine": 72,
+                                    "snippet": {
+                                        "text": "    implementation(project(\":ui-theme\"))\n    implementation(platform(\"androidx.compose:compose-bom:2025.06.01\"))\n    implementation(\"androidx.activity:activity-compose:1.10.1\")\n    implementation(\"androidx.compose.runtime:runtime\")\n    implementation(\"androidx.compose.foundation:foundation\")\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Change to 1.13.0"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/build.gradle.kts"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 69,
+                                                "startColumn": 56,
+                                                "charOffset": 3656,
+                                                "endLine": 69,
+                                                "endColumn": 62,
+                                                "charLength": 6
+                                            },
+                                            "insertedContent": {
+                                                "text": "1.13.0\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "d1042f9eba9de02e"
+                    }
+                },
+                {
+                    "ruleId": "NewerVersionAvailable",
+                    "ruleIndex": 2,
+                    "message": {
+                        "text": "A newer version of org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm than 1.9.0 is available: 1.11.0"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/build.gradle.kts"
+                                },
+                                "region": {
+                                    "startLine": 64,
+                                    "startColumn": 24,
+                                    "endLine": 64,
+                                    "endColumn": 81,
+                                    "charOffset": 3342,
+                                    "charLength": 57,
+                                    "snippet": {
+                                        "text": "\"org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0\""
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 62,
+                                    "endLine": 67,
+                                    "snippet": {
+                                        "text": "        implementation(\"androidx.concurrent:concurrent-futures:1.2.0\")\n        implementation(\"com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava\")\n        implementation(\"org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0\")\n        implementation(\"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0\")\n    }\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Change to 1.11.0"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/build.gradle.kts"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 64,
+                                                "startColumn": 75,
+                                                "charOffset": 3393,
+                                                "endLine": 64,
+                                                "endColumn": 80,
+                                                "charLength": 5
+                                            },
+                                            "insertedContent": {
+                                                "text": "1.11.0\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "dc32f7bae79a6cb2"
+                    }
+                },
+                {
+                    "ruleId": "NewerVersionAvailable",
+                    "ruleIndex": 2,
+                    "message": {
+                        "text": "A newer version of org.jetbrains.kotlinx:kotlinx-coroutines-android than 1.9.0 is available: 1.11.0"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/build.gradle.kts"
+                                },
+                                "region": {
+                                    "startLine": 65,
+                                    "startColumn": 24,
+                                    "endLine": 65,
+                                    "endColumn": 80,
+                                    "charOffset": 3424,
+                                    "charLength": 56,
+                                    "snippet": {
+                                        "text": "\"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0\""
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 63,
+                                    "endLine": 68,
+                                    "snippet": {
+                                        "text": "        implementation(\"com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava\")\n        implementation(\"org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0\")\n        implementation(\"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0\")\n    }\n    implementation(project(\":ui-theme\"))\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Change to 1.11.0"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/build.gradle.kts"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 65,
+                                                "startColumn": 74,
+                                                "charOffset": 3474,
+                                                "endLine": 65,
+                                                "endColumn": 79,
+                                                "charLength": 5
+                                            },
+                                            "insertedContent": {
+                                                "text": "1.11.0\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "1feb0bd6b42a689f"
+                    }
+                },
+                {
+                    "ruleId": "SetJavaScriptEnabled",
+                    "ruleIndex": 4,
+                    "message": {
+                        "text": "Using setJavaScriptEnabled can introduce XSS vulnerabilities into your application, review carefully",
+                        "markdown": "Using `setJavaScriptEnabled` can introduce XSS vulnerabilities into your application, review carefully"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidLocalVerificationRenderer.kt"
+                                },
+                                "region": {
+                                    "startLine": 36,
+                                    "startColumn": 21,
+                                    "endLine": 36,
+                                    "endColumn": 43,
+                                    "charOffset": 1819,
+                                    "charLength": 22,
+                                    "snippet": {
+                                        "text": "javaScriptEnabled=true"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 34,
+                                    "endLine": 39,
+                                    "snippet": {
+                                        "text": "                val web=WebView(context);view.set(web)\n                web.settings.apply {\n                    javaScriptEnabled=true;domStorageEnabled=false;databaseEnabled=false\n                    allowFileAccess=false;allowContentAccess=false\n                    @Suppress(\"DEPRECATION\")\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "1a65b7c29c1c18b5"
+                    }
+                },
+                {
+                    "ruleId": "StaticFieldLeak",
+                    "ruleIndex": 5,
+                    "message": {
+                        "text": "Do not place Android context classes in static fields (static reference to LibraryShareOwner which has field context pointing to Context); this is a memory leak",
+                        "markdown": "Do not place Android context classes in static fields (static reference to `LibraryShareOwner` which has field `context` pointing to `Context`); this is a memory leak"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/library/share/LibraryShareOwner.kt"
+                                },
+                                "region": {
+                                    "startLine": 332,
+                                    "startColumn": 9,
+                                    "endLine": 332,
+                                    "endColumn": 67,
+                                    "charOffset": 18608,
+                                    "charLength": 58,
+                                    "snippet": {
+                                        "text": "@Volatile private var singleton: LibraryShareOwner? = null"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 330,
+                                    "endLine": 335,
+                                    "snippet": {
+                                        "text": "    }\n    companion object {\n        @Volatile private var singleton: LibraryShareOwner? = null\n        @Volatile private var failedOwner: Any? = null\n        fun get(context: Context): LibraryShareOwner = singleton ?: synchronized(this) {\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "1af77dc38d5c056c"
+                    }
+                },
+                {
+                    "ruleId": "AutoboxingStateCreation",
+                    "ruleIndex": 0,
+                    "message": {
+                        "text": "Prefer mutableLongStateOf instead of mutableStateOf",
+                        "markdown": "Prefer `mutableLongStateOf` instead of `mutableStateOf`"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/AndroidLibraryThumbnails.kt"
+                                },
+                                "region": {
+                                    "startLine": 59,
+                                    "startColumn": 28,
+                                    "endLine": 59,
+                                    "endColumn": 42,
+                                    "charOffset": 2913,
+                                    "charLength": 14,
+                                    "snippet": {
+                                        "text": "mutableStateOf"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 57,
+                                    "endLine": 62,
+                                    "snippet": {
+                                        "text": "    private val backend = AndroidThumbnailBackend(openPublishedMedia, retainNativeReader)\n    private val ui = AndroidThumbnailUiDispatcher(backend::captureCompletionRelease)\n    private var version by mutableStateOf(0L)\n    private var disposed = false\n    private val session = BoundedThumbnailSession(backend, backend, ui,\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with mutableLongStateOf"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/AndroidLibraryThumbnails.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 59,
+                                                "startColumn": 28,
+                                                "charOffset": 2913,
+                                                "endLine": 59,
+                                                "endColumn": 42,
+                                                "charLength": 14
+                                            },
+                                            "insertedContent": {
+                                                "text": "androidx.compose.runtime.mutableLongStateOf\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "68685e51b3aefa7e"
+                    }
+                },
+                {
+                    "ruleId": "AutoboxingStateCreation",
+                    "ruleIndex": 0,
+                    "message": {
+                        "text": "Prefer mutableIntStateOf instead of mutableStateOf",
+                        "markdown": "Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt"
+                                },
+                                "region": {
+                                    "startLine": 113,
+                                    "startColumn": 28,
+                                    "endLine": 113,
+                                    "endColumn": 42,
+                                    "charOffset": 6329,
+                                    "charLength": 14,
+                                    "snippet": {
+                                        "text": "mutableStateOf"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 111,
+                                    "endLine": 116,
+                                    "snippet": {
+                                        "text": "    var selection by mutableStateOf<PageSaveSelection?>(null); private set\n    var records by mutableStateOf<List<SaveRecord>>(emptyList()); private set\n    var activeTaskCount by mutableStateOf(0); private set\n    var mediaDispositions by mutableStateOf<Map<String, MediaLifecycle>>(emptyMap()); private set\n    var notice by mutableStateOf<String?>(null); private set\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with mutableIntStateOf"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 113,
+                                                "startColumn": 28,
+                                                "charOffset": 6329,
+                                                "endLine": 113,
+                                                "endColumn": 42,
+                                                "charLength": 14
+                                            },
+                                            "insertedContent": {
+                                                "text": "androidx.compose.runtime.mutableIntStateOf\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "d411894c1a86d23f"
+                    }
+                },
+                {
+                    "ruleId": "AutoboxingStateCreation",
+                    "ruleIndex": 0,
+                    "message": {
+                        "text": "Prefer mutableIntStateOf instead of mutableStateOf",
+                        "markdown": "Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/recording/AndroidSegmentRecordingRuntime.kt"
+                                },
+                                "region": {
+                                    "startLine": 84,
+                                    "startColumn": 33,
+                                    "endLine": 84,
+                                    "endColumn": 47,
+                                    "charOffset": 4274,
+                                    "charLength": 14,
+                                    "snippet": {
+                                        "text": "mutableStateOf"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 82,
+                                    "endLine": 87,
+                                    "snippet": {
+                                        "text": "    })\n    var ready by mutableStateOf(false); private set\n    var retainedSessionCount by mutableStateOf(0); private set\n    var presentation by mutableStateOf<RecordingSegmentsPresentation?>(null); private set\n    var completedReference by mutableStateOf<MediaReadRef?>(null); private set\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with mutableIntStateOf"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/recording/AndroidSegmentRecordingRuntime.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 84,
+                                                "startColumn": 33,
+                                                "charOffset": 4274,
+                                                "endLine": 84,
+                                                "endColumn": 47,
+                                                "charLength": 14
+                                            },
+                                            "insertedContent": {
+                                                "text": "androidx.compose.runtime.mutableIntStateOf\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "2dc9f9555a1da575"
+                    }
+                },
+                {
+                    "ruleId": "AutoboxingStateCreation",
+                    "ruleIndex": 0,
+                    "message": {
+                        "text": "Prefer mutableLongStateOf instead of mutableStateOf",
+                        "markdown": "Prefer `mutableLongStateOf` instead of `mutableStateOf`"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/theme/EsvComposeTheme.kt"
+                                },
+                                "region": {
+                                    "startLine": 129,
+                                    "startColumn": 48,
+                                    "endLine": 129,
+                                    "endColumn": 62,
+                                    "charOffset": 4958,
+                                    "charLength": 14,
+                                    "snippet": {
+                                        "text": "mutableStateOf"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 127,
+                                    "endLine": 132,
+                                    "snippet": {
+                                        "text": "    )\n    val currentTheme = theme ?: remember { EsvTheme(configuration) }\n    var generation by remember(currentTheme) { mutableStateOf(currentTheme.provider.snapshot.generation) }\n\n    DisposableEffect(currentTheme) {\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with mutableLongStateOf"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/theme/EsvComposeTheme.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 129,
+                                                "startColumn": 48,
+                                                "charOffset": 4958,
+                                                "endLine": 129,
+                                                "endColumn": 62,
+                                                "charLength": 14
+                                            },
+                                            "insertedContent": {
+                                                "text": "androidx.compose.runtime.mutableLongStateOf\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "c8816ee8438d2d6b"
+                    }
+                },
+                {
+                    "ruleId": "AutoboxingStateCreation",
+                    "ruleIndex": 0,
+                    "message": {
+                        "text": "Prefer mutableIntStateOf instead of mutableStateOf",
+                        "markdown": "Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt"
+                                },
+                                "region": {
+                                    "startLine": 42,
+                                    "startColumn": 25,
+                                    "endLine": 42,
+                                    "endColumn": 39,
+                                    "charOffset": 1739,
+                                    "charLength": 14,
+                                    "snippet": {
+                                        "text": "mutableStateOf"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 40,
+                                    "endLine": 45,
+                                    "snippet": {
+                                        "text": "    var notice by mutableStateOf<String?>(null); private set\n    var fullScreenView by mutableStateOf<View?>(null); private set\n    var viewRevision by mutableStateOf(0); private set\n    var platformAvailable by mutableStateOf(true); private set\n    var bookmarkNavigationRevision by mutableStateOf(0L); private set\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with mutableIntStateOf"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 42,
+                                                "startColumn": 25,
+                                                "charOffset": 1739,
+                                                "endLine": 42,
+                                                "endColumn": 39,
+                                                "charLength": 14
+                                            },
+                                            "insertedContent": {
+                                                "text": "androidx.compose.runtime.mutableIntStateOf\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "0d7f337bdf70f71d"
+                    }
+                },
+                {
+                    "ruleId": "AutoboxingStateCreation",
+                    "ruleIndex": 0,
+                    "message": {
+                        "text": "Prefer mutableLongStateOf instead of mutableStateOf",
+                        "markdown": "Prefer `mutableLongStateOf` instead of `mutableStateOf`"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt"
+                                },
+                                "region": {
+                                    "startLine": 44,
+                                    "startColumn": 39,
+                                    "endLine": 44,
+                                    "endColumn": 53,
+                                    "charOffset": 1871,
+                                    "charLength": 14,
+                                    "snippet": {
+                                        "text": "mutableStateOf"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 42,
+                                    "endLine": 47,
+                                    "snippet": {
+                                        "text": "    var viewRevision by mutableStateOf(0); private set\n    var platformAvailable by mutableStateOf(true); private set\n    var bookmarkNavigationRevision by mutableStateOf(0L); private set\n    private data class Entry(val context: BrowserContextRef, val view: WebView, var request: BrowserRequest? = null, var suppressed: Boolean = false, var admission: NavigationAdmission? = null, var bookmarkAddress: String? = null)\n    private val entries = LinkedHashMap<String, Entry>(4, 0.75f, true)\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with mutableLongStateOf"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 44,
+                                                "startColumn": 39,
+                                                "charOffset": 1871,
+                                                "endLine": 44,
+                                                "endColumn": 53,
+                                                "charLength": 14
+                                            },
+                                            "insertedContent": {
+                                                "text": "androidx.compose.runtime.mutableLongStateOf\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "eb9aca2bbfdac4c1"
+                    }
+                },
+                {
+                    "ruleId": "AutoboxingStateCreation",
+                    "ruleIndex": 0,
+                    "message": {
+                        "text": "Prefer mutableFloatStateOf instead of mutableStateOf",
+                        "markdown": "Prefer `mutableFloatStateOf` instead of `mutableStateOf`"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/save/VerifiedMediaPreview.kt"
+                                },
+                                "region": {
+                                    "startLine": 126,
+                                    "startColumn": 45,
+                                    "endLine": 126,
+                                    "endColumn": 59,
+                                    "charOffset": 5570,
+                                    "charLength": 14,
+                                    "snippet": {
+                                        "text": "mutableStateOf"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 124,
+                                    "endLine": 129,
+                                    "snippet": {
+                                        "text": "    val v = LocalEsvVisuals.current\n    var playback by remember(identity) { mutableStateOf(PreviewPlayback.OPENING) }\n    var aspectRatio by remember(identity) { mutableStateOf(16f / 9f) }\n    var releaseUnconfirmed by remember(identity) { mutableStateOf(false) }\n    val currentReleaseFailure by rememberUpdatedState(onReleaseUnconfirmed)\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with mutableFloatStateOf"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/save/VerifiedMediaPreview.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 126,
+                                                "startColumn": 45,
+                                                "charOffset": 5570,
+                                                "endLine": 126,
+                                                "endColumn": 59,
+                                                "charLength": 14
+                                            },
+                                            "insertedContent": {
+                                                "text": "androidx.compose.runtime.mutableFloatStateOf\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "f81e6496e3f35f3c"
+                    }
+                },
+                {
+                    "ruleId": "UsableSpace",
+                    "ruleIndex": 6,
+                    "message": {
+                        "text": "Consider also using StorageManager#getAllocatableBytes and allocateBytes which will consider clearable cached data",
+                        "markdown": "Consider also using `StorageManager#getAllocatableBytes` and `allocateBytes` which will consider clearable cached data"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/editor/storage/EditArtifactFiles.kt"
+                                },
+                                "region": {
+                                    "startLine": 33,
+                                    "startColumn": 43,
+                                    "endLine": 33,
+                                    "endColumn": 54,
+                                    "charOffset": 1509,
+                                    "charLength": 11,
+                                    "snippet": {
+                                        "text": "usableSpace"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 31,
+                                    "endLine": 36,
+                                    "snippet": {
+                                        "text": "    }\n    fun staging(artifactId: String): File = path(staging, artifactId, \".part\").also(::regular)\n    fun availableBytes(): Long = (staging.usableSpace - 16L * 1024 * 1024).coerceAtLeast(0)\n    fun sync(artifactId: String) { FileOutputStream(staging(artifactId), true).use { it.fd.sync() } }\n    fun promote(artifactId: String, mediaId: String, bytes: Long, sha256: String, checkActive: () -> Unit = {}) {\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "1e0c4bb308687c06"
+                    }
+                },
+                {
+                    "ruleId": "UsableSpace",
+                    "ruleIndex": 6,
+                    "message": {
+                        "text": "Consider also using StorageManager#getAllocatableBytes and allocateBytes which will consider clearable cached data",
+                        "markdown": "Consider also using `StorageManager#getAllocatableBytes` and `allocateBytes` which will consider clearable cached data"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/save/storage/PrivateCommitProtocol.kt"
+                                },
+                                "region": {
+                                    "startLine": 60,
+                                    "startColumn": 50,
+                                    "endLine": 60,
+                                    "endColumn": 61,
+                                    "charOffset": 2855,
+                                    "charLength": 11,
+                                    "snippet": {
+                                        "text": "usableSpace"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 58,
+                                    "endLine": 63,
+                                    "snippet": {
+                                        "text": "    private val nowMillis: () -> Long = System::currentTimeMillis,\n    private val fault: CommitFault = CommitFault {},\n    private val freeSpace: (File) -> Long = { it.usableSpace },\n) {\n    private val root = checkedDirectory(root)\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "6517aab4421e6730"
+                    }
+                },
+                {
+                    "ruleId": "UsableSpace",
+                    "ruleIndex": 6,
+                    "message": {
+                        "text": "Consider also using StorageManager#getAllocatableBytes and allocateBytes which will consider clearable cached data",
+                        "markdown": "Consider also using `StorageManager#getAllocatableBytes` and `allocateBytes` which will consider clearable cached data"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/save/storage/PrivateCommitProtocol.kt"
+                                },
+                                "region": {
+                                    "startLine": 60,
+                                    "startColumn": 50,
+                                    "endLine": 60,
+                                    "endColumn": 61,
+                                    "charOffset": 2855,
+                                    "charLength": 11,
+                                    "snippet": {
+                                        "text": "usableSpace"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 58,
+                                    "endLine": 63,
+                                    "snippet": {
+                                        "text": "    private val nowMillis: () -> Long = System::currentTimeMillis,\n    private val fault: CommitFault = CommitFault {},\n    private val freeSpace: (File) -> Long = { it.usableSpace },\n) {\n    private val root = checkedDirectory(root)\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "6517aab4421e6730"
+                    }
+                },
+                {
+                    "ruleId": "UsableSpace",
+                    "ruleIndex": 6,
+                    "message": {
+                        "text": "Consider also using StorageManager#getAllocatableBytes and allocateBytes which will consider clearable cached data",
+                        "markdown": "Consider also using `StorageManager#getAllocatableBytes` and `allocateBytes` which will consider clearable cached data"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/recording/segments/RecordedSegmentFiles.kt"
+                                },
+                                "region": {
+                                    "startLine": 32,
+                                    "startColumn": 45,
+                                    "endLine": 32,
+                                    "endColumn": 56,
+                                    "charOffset": 1488,
+                                    "charLength": 11,
+                                    "snippet": {
+                                        "text": "usableSpace"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 30,
+                                    "endLine": 35,
+                                    "snippet": {
+                                        "text": "        if (identity(it) != expectedIdentity) fail()\n    }\n    fun bytesAvailable(): Long = (directory.usableSpace - 64L * 1024 * 1024).coerceAtLeast(0)\n    fun seal(id: String, expectedIdentity: String, expectedBytes: Long, checkpoint: () -> Unit = {}): String {\n        val file = resolve(id, expectedIdentity)\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "c60219b9a92ef2f8"
+                    }
+                },
+                {
+                    "ruleId": "UseKtx",
+                    "ruleIndex": 7,
+                    "message": {
+                        "text": "Use the KTX extension function SharedPreferences.edit instead?",
+                        "markdown": "Use the KTX extension function `SharedPreferences.edit` instead?"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt"
+                                },
+                                "region": {
+                                    "startLine": 466,
+                                    "startColumn": 15,
+                                    "endLine": 466,
+                                    "endColumn": 96,
+                                    "charOffset": 27354,
+                                    "charLength": 81,
+                                    "snippet": {
+                                        "text": "appContext.getSharedPreferences(\"discovery_sources\", Context.MODE_PRIVATE).edit()"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 464,
+                                    "endLine": 469,
+                                    "snippet": {
+                                        "text": "    }\n    fun enableCommons(enable: Boolean) = changeSources {\n        check(appContext.getSharedPreferences(\"discovery_sources\", Context.MODE_PRIVATE).edit()\n            .putBoolean(\"commons_enabled\", enable).commit())\n        commonsEnabled = enable; initialize(demo)\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with the edit extension function"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 466,
+                                                "startColumn": 90,
+                                                "charOffset": 27429,
+                                                "endLine": 466,
+                                                "endColumn": 95,
+                                                "charLength": 5
+                                            },
+                                            "insertedContent": {
+                                                "text": "edit\n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 466,
+                                                "startColumn": 95,
+                                                "charOffset": 27434,
+                                                "endLine": 466,
+                                                "endColumn": 96,
+                                                "charLength": 1
+                                            },
+                                            "insertedContent": {
+                                                "text": "(commit = true) {\n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 467,
+                                                "startColumn": 13,
+                                                "charOffset": 27448,
+                                                "endLine": 467,
+                                                "endColumn": 14,
+                                                "charLength": 1
+                                            },
+                                            "insertedContent": {
+                                                "text": "\n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 467,
+                                                "startColumn": 51,
+                                                "charOffset": 27486,
+                                                "endLine": 467,
+                                                "endColumn": 60,
+                                                "charLength": 9
+                                            },
+                                            "insertedContent": {
+                                                "text": "}\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "186bf5d5be5c5dc7"
+                    }
+                },
+                {
+                    "ruleId": "UseKtx",
+                    "ruleIndex": 7,
+                    "message": {
+                        "text": "Use the KTX extension function String.toUri instead?",
+                        "markdown": "Use the KTX extension function `String.toUri` instead?"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidExportPort.kt"
+                                },
+                                "region": {
+                                    "startLine": 59,
+                                    "startColumn": 43,
+                                    "endLine": 59,
+                                    "endColumn": 56,
+                                    "charOffset": 3212,
+                                    "charLength": 13,
+                                    "snippet": {
+                                        "text": "Uri.parse(it)"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 57,
+                                    "endLine": 62,
+                                    "snippet": {
+                                        "text": "    fun destinationLabel(operationId: String): String {\n        val target = journal.target(operationId) ?: return \"所选文件提供方\"\n        val authority = target.uri?.let { Uri.parse(it).authority } ?: return \"所选文件提供方\"\n        val fallback = safeExportLabel(authority, 80).ifBlank { \"所选文件提供方\" }\n        return try {\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with the toUri extension function"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidExportPort.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 59,
+                                                "startColumn": 43,
+                                                "charOffset": 3212,
+                                                "endLine": 59,
+                                                "endColumn": 56,
+                                                "charLength": 13
+                                            },
+                                            "insertedContent": {
+                                                "text": "it.toUri()\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "97f627168d3020a3"
+                    }
+                },
+                {
+                    "ruleId": "UseKtx",
+                    "ruleIndex": 7,
+                    "message": {
+                        "text": "Use the KTX extension function String.toUri instead?",
+                        "markdown": "Use the KTX extension function `String.toUri` instead?"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidExportPort.kt"
+                                },
+                                "region": {
+                                    "startLine": 260,
+                                    "startColumn": 77,
+                                    "endLine": 260,
+                                    "endColumn": 98,
+                                    "charOffset": 16243,
+                                    "charLength": 21,
+                                    "snippet": {
+                                        "text": "Uri.parse(target.uri)"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 258,
+                                    "endLine": 263,
+                                    "snippet": {
+                                        "text": "    private fun requireSaf(target: AndroidExportJournal.Target): Uri {\n        require(target.kind == ExportKind.SAF && target.uri != null)\n        folderId(target.operationId)?.let { return folders.requireChild(it, Uri.parse(target.uri)) }\n        val uri = synchronized(lock) { liveSaf[target.operationId] } ?: throw IOException(\"SAF_GRANT_UNAVAILABLE\")\n        require(uri.toString() == target.uri)\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with the toUri extension function"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidExportPort.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 260,
+                                                "startColumn": 77,
+                                                "charOffset": 16243,
+                                                "endLine": 260,
+                                                "endColumn": 98,
+                                                "charLength": 21
+                                            },
+                                            "insertedContent": {
+                                                "text": "target.uri.toUri()\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "a2f0c77ee722065f"
+                    }
+                },
+                {
+                    "ruleId": "UseKtx",
+                    "ruleIndex": 7,
+                    "message": {
+                        "text": "Use the KTX extension function String.toUri instead?",
+                        "markdown": "Use the KTX extension function `String.toUri` instead?"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidFolderGrantRegistry.kt"
+                                },
+                                "region": {
+                                    "startLine": 44,
+                                    "startColumn": 19,
+                                    "endLine": 44,
+                                    "endColumn": 37,
+                                    "charOffset": 2335,
+                                    "charLength": 18,
+                                    "snippet": {
+                                        "text": "Uri.parse(row.uri)"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 42,
+                                    "endLine": 47,
+                                    "snippet": {
+                                        "text": "        val row = requireNotNull(storage.folderGrants.get(id))\n        require(!row.invalidated)\n        val uri = Uri.parse(row.uri)\n        requireValidTree(uri)\n        require(row.flags == READ_WRITE)\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with the toUri extension function"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidFolderGrantRegistry.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 44,
+                                                "startColumn": 19,
+                                                "charOffset": 2335,
+                                                "endLine": 44,
+                                                "endColumn": 37,
+                                                "charLength": 18
+                                            },
+                                            "insertedContent": {
+                                                "text": "row.uri.toUri()\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "fb882c300cbc4c49"
+                    }
+                },
+                {
+                    "ruleId": "UseKtx",
+                    "ruleIndex": 7,
+                    "message": {
+                        "text": "Use the KTX extension function SharedPreferences.edit instead?",
+                        "markdown": "Use the KTX extension function `SharedPreferences.edit` instead?"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidFolderPickerHost.kt"
+                                },
+                                "region": {
+                                    "startLine": 25,
+                                    "startColumn": 17,
+                                    "endLine": 25,
+                                    "endColumn": 35,
+                                    "charOffset": 1379,
+                                    "charLength": 18,
+                                    "snippet": {
+                                        "text": "preferences.edit()"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 23,
+                                    "endLine": 28,
+                                    "snippet": {
+                                        "text": "                catch (_: Exception) { throw FolderPickerFailure(FolderPickerError.INVALID_STATE) }\n            FolderPickerRequestCodes.consume(next) {\n                preferences.edit().putInt(\"next\", it).commit()\n            }\n        }, { code -> host.startActivityForResult(intent, code) }, callback)\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with the edit extension function"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidFolderPickerHost.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 25,
+                                                "startColumn": 29,
+                                                "charOffset": 1391,
+                                                "endLine": 25,
+                                                "endColumn": 34,
+                                                "charLength": 5
+                                            },
+                                            "insertedContent": {
+                                                "text": "edit\n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 25,
+                                                "startColumn": 34,
+                                                "charOffset": 1396,
+                                                "endLine": 25,
+                                                "endColumn": 35,
+                                                "charLength": 1
+                                            },
+                                            "insertedContent": {
+                                                "text": "(commit = true) {\n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 25,
+                                                "startColumn": 35,
+                                                "charOffset": 1397,
+                                                "endLine": 25,
+                                                "endColumn": 36,
+                                                "charLength": 1
+                                            },
+                                            "insertedContent": {
+                                                "text": "\n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 25,
+                                                "startColumn": 54,
+                                                "charOffset": 1416,
+                                                "endLine": 25,
+                                                "endColumn": 63,
+                                                "charLength": 9
+                                            },
+                                            "insertedContent": {
+                                                "text": "}\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "a02a7c9b1dad9863"
+                    }
+                },
+                {
+                    "ruleId": "UseKtx",
+                    "ruleIndex": 7,
+                    "message": {
+                        "text": "Use the KTX extension function SharedPreferences.edit instead?",
+                        "markdown": "Use the KTX extension function `SharedPreferences.edit` instead?"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/storage/AndroidStores.kt"
+                                },
+                                "region": {
+                                    "startLine": 28,
+                                    "startColumn": 15,
+                                    "endLine": 28,
+                                    "endColumn": 27,
+                                    "charOffset": 1508,
+                                    "charLength": 12,
+                                    "snippet": {
+                                        "text": "prefs.edit()"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 26,
+                                    "endLine": 31,
+                                    "snippet": {
+                                        "text": "    ))\n    override fun save(settings: AppSettings) {\n        check(prefs.edit().putBoolean(\"restore_tabs\", settings.browser.restoreTabs)\n            .putInt(\"active_views\", settings.browser.maxActiveWebViews)\n            .putBoolean(\"javascript\", settings.browser.javaScriptEnabled)\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with the edit extension function"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/storage/AndroidStores.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 28,
+                                                "startColumn": 21,
+                                                "charOffset": 1514,
+                                                "endLine": 28,
+                                                "endColumn": 26,
+                                                "charLength": 5
+                                            },
+                                            "insertedContent": {
+                                                "text": "edit\n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 28,
+                                                "startColumn": 26,
+                                                "charOffset": 1519,
+                                                "endLine": 28,
+                                                "endColumn": 27,
+                                                "charLength": 1
+                                            },
+                                            "insertedContent": {
+                                                "text": "(commit = true) {\n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 28,
+                                                "startColumn": 27,
+                                                "charOffset": 1520,
+                                                "endLine": 28,
+                                                "endColumn": 28,
+                                                "charLength": 1
+                                            },
+                                            "insertedContent": {
+                                                "text": "\n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 33,
+                                                "startColumn": 139,
+                                                "charOffset": 2079,
+                                                "endLine": 33,
+                                                "endColumn": 148,
+                                                "charLength": 9
+                                            },
+                                            "insertedContent": {
+                                                "text": "}\n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 29,
+                                                "startColumn": 1,
+                                                "charOffset": 1578
+                                            },
+                                            "insertedContent": {
+                                                "text": "    \n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 30,
+                                                "startColumn": 1,
+                                                "charOffset": 1650
+                                            },
+                                            "insertedContent": {
+                                                "text": "    \n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 31,
+                                                "startColumn": 1,
+                                                "charOffset": 1724
+                                            },
+                                            "insertedContent": {
+                                                "text": "    \n"
+                                            }
+                                        },
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 32,
+                                                "startColumn": 1,
+                                                "charOffset": 1813
+                                            },
+                                            "insertedContent": {
+                                                "text": "    \n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "3a9ed5beee64a47f"
+                    }
+                },
+                {
+                    "ruleId": "UseKtx",
+                    "ruleIndex": 7,
+                    "message": {
+                        "text": "Use the KTX extension function String.toUri instead?",
+                        "markdown": "Use the KTX extension function `String.toUri` instead?"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt"
+                                },
+                                "region": {
+                                    "startLine": 484,
+                                    "startColumn": 56,
+                                    "endLine": 484,
+                                    "endColumn": 80,
+                                    "charOffset": 34209,
+                                    "charLength": 24,
+                                    "snippet": {
+                                        "text": "Uri.parse(address.value)"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 482,
+                                    "endLine": 487,
+                                    "snippet": {
+                                        "text": "    private fun openSystemBrowser() {\n        val address = browser.state.selectedTab?.address ?: return\n        try { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(address.value)).addCategory(Intent.CATEGORY_BROWSABLE)) }\n        catch (_: ActivityNotFoundException) { browser.showNotice(\"未找到可打开该网页的系统浏览器。\") }\n    }\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with the toUri extension function"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 484,
+                                                "startColumn": 56,
+                                                "charOffset": 34209,
+                                                "endLine": 484,
+                                                "endColumn": 80,
+                                                "charLength": 24
+                                            },
+                                            "insertedContent": {
+                                                "text": "address.value.toUri()\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "1f8ab399f20fe90e"
+                    }
+                },
+                {
+                    "ruleId": "UseKtx",
+                    "ruleIndex": 7,
+                    "message": {
+                        "text": "Use the KTX extension function String.toUri instead?",
+                        "markdown": "Use the KTX extension function `String.toUri` instead?"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/editor/engine/Media3EditorEngine.kt"
+                                },
+                                "region": {
+                                    "startLine": 179,
+                                    "startColumn": 52,
+                                    "endLine": 179,
+                                    "endColumn": 101,
+                                    "charOffset": 12701,
+                                    "charLength": 49,
+                                    "snippet": {
+                                        "text": "Uri.parse(EditorCatalogDataSource.address(index))"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 177,
+                                    "endLine": 182,
+                                    "snippet": {
+                                        "text": "            val effects: List<Effect> = listOf(Crop(coordinates[0], coordinates[1], coordinates[2], coordinates[3]),\n                Presentation.createForWidthAndHeight(plan.expectation.width, plan.expectation.height, Presentation.LAYOUT_SCALE_TO_FIT))\n            val media = MediaItem.Builder().setUri(Uri.parse(EditorCatalogDataSource.address(index))).setMimeType(MimeTypes.VIDEO_MP4)\n                .setClippingConfiguration(MediaItem.ClippingConfiguration.Builder().setStartPositionUs(planned.executionStartUs)\n                    .setEndPositionUs(planned.executionEndUsExclusive).setStartsAtKeyFrame(false).build()).build()\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with the toUri extension function"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/editor/engine/Media3EditorEngine.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 179,
+                                                "startColumn": 52,
+                                                "charOffset": 12701,
+                                                "endLine": 179,
+                                                "endColumn": 101,
+                                                "charLength": 49
+                                            },
+                                            "insertedContent": {
+                                                "text": "EditorCatalogDataSource.address(index).toUri()\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "784d6e12ceae2d74"
+                    }
+                },
+                {
+                    "ruleId": "UseKtx",
+                    "ruleIndex": 7,
+                    "message": {
+                        "text": "Use the KTX extension function String.toUri instead?",
+                        "markdown": "Use the KTX extension function `String.toUri` instead?"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/save/stream/Media3LocalHlsEngine.kt"
+                                },
+                                "region": {
+                                    "startLine": 253,
+                                    "startColumn": 55,
+                                    "endLine": 253,
+                                    "endColumn": 96,
+                                    "charOffset": 13776,
+                                    "charLength": 41,
+                                    "snippet": {
+                                        "text": "Uri.parse(LocalHlsAddress.segment(index))"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 251,
+                                    "endLine": 256,
+                                    "snippet": {
+                                        "text": "                val source = pass.sources.createDataSource()\n                try {\n                    val length = source.open(DataSpec(Uri.parse(LocalHlsAddress.segment(index))))\n                    val extractorInput = DefaultExtractorInput(source, 0, length)\n                    while (true) {\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with the toUri extension function"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/save/stream/Media3LocalHlsEngine.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 253,
+                                                "startColumn": 55,
+                                                "charOffset": 13776,
+                                                "endLine": 253,
+                                                "endColumn": 96,
+                                                "charLength": 41
+                                            },
+                                            "insertedContent": {
+                                                "text": "LocalHlsAddress.segment(index).toUri()\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "2cf4de722a79bcfa"
+                    }
+                },
+                {
+                    "ruleId": "UseKtx",
+                    "ruleIndex": 7,
+                    "message": {
+                        "text": "Use the KTX extension function String.toUri instead?",
+                        "markdown": "Use the KTX extension function `String.toUri` instead?"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uriBaseId": "%SRCROOT%",
+                                    "uri": "app/src/main/kotlin/com/easysavevideo/app/save/stream/Media3LocalHlsEngine.kt"
+                                },
+                                "region": {
+                                    "startLine": 367,
+                                    "startColumn": 79,
+                                    "endLine": 367,
+                                    "endColumn": 114,
+                                    "charOffset": 21423,
+                                    "charLength": 35,
+                                    "snippet": {
+                                        "text": "Uri.parse(LocalHlsAddress.PLAYLIST)"
+                                    }
+                                },
+                                "contextRegion": {
+                                    "startLine": 365,
+                                    "endLine": 370,
+                                    "snippet": {
+                                        "text": "                session.transformer.set(transformer)\n                session.checkpoint()\n                val item = EditedMediaItem.Builder(MediaItem.Builder().setUri(Uri.parse(LocalHlsAddress.PLAYLIST))\n                    .setMimeType(MimeTypes.APPLICATION_M3U8).build()).build()\n                val types = observed.keys\n"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "fixes": [
+                        {
+                            "description": {
+                                "text": "Replace with the toUri extension function"
+                            },
+                            "artifactChanges": [
+                                {
+                                    "artifactLocation": {
+                                        "uriBaseId": "%SRCROOT%",
+                                        "uri": "app/src/main/kotlin/com/easysavevideo/app/save/stream/Media3LocalHlsEngine.kt"
+                                    },
+                                    "replacements": [
+                                        {
+                                            "deletedRegion": {
+                                                "startLine": 367,
+                                                "startColumn": 79,
+                                                "charOffset": 21423,
+                                                "endLine": 367,
+                                                "endColumn": 114,
+                                                "charLength": 35
+                                            },
+                                            "insertedContent": {
+                                                "text": "LocalHlsAddress.PLAYLIST.toUri()\n"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "sourceContext/v1": "41a1f47ca613885a"
+                    }
+                }
+            ]
+        }
+    ]
+}
