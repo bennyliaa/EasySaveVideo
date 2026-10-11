@@ -2498,5 +2498,27 @@
             <sha256 value="b1c2199e1c0cc969ef61cbbe4af2ecaf9b06411bdde01cbaf6fc9134dfe04e8a" origin="Official Maven Central SHA-256 matched; exact B internal development admission 2026-10-09"/>
          </artifact>
       </component>
+      <component group="dev.skinkit" name="skinkit-contract" version="1.0.0">
+         <artifact name="skinkit-contract-1.0.0.jar">
+            <sha256 value="4bbb7cf74f53e64f4adc7bd42d10b423f38dc961ba6a0dad145c16327007a083" origin="User-authorized SkinKit 1.0.0 external binary Kit; pinned ZIP"/>
+         </artifact>
+         <artifact name="skinkit-contract-1.0.0.module">
+            <sha256 value="c88c285730d1ec458745ebf3a20ad649f1d7d48c855c925689c514bdcf60f234" origin="User-authorized SkinKit 1.0.0 external binary Kit; pinned ZIP"/>
+         </artifact>
+         <artifact name="skinkit-contract-1.0.0.pom">
+            <sha256 value="1890d35fb2b124bfa68e5aef74e5b83d4cf33619f932e77ddc7e89ded6b2c944" origin="User-authorized SkinKit 1.0.0 external binary Kit; pinned ZIP"/>
+         </artifact>
+      </component>
+      <component group="dev.skinkit" name="skinkit-default" version="1.0.0">
+         <artifact name="skinkit-default-1.0.0.jar">
+            <sha256 value="b0f7b327ec9c9228de6fed2409b883b5f55973d1f65c3d69a96c45a8f2ee15df" origin="User-authorized SkinKit 1.0.0 external binary Kit; pinned ZIP"/>
+         </artifact>
+         <artifact name="skinkit-default-1.0.0.module">
+            <sha256 value="8419920a7ce52dcea4aa8198166aaf046363eec9c1c06a1ff7c1126c856e58a0" origin="User-authorized SkinKit 1.0.0 external binary Kit; pinned ZIP"/>
+         </artifact>
+         <artifact name="skinkit-default-1.0.0.pom">
+            <sha256 value="e1454ee5a077185a30d95f37135be1f5d9cdd146105da4b93937538972c470a1" origin="User-authorized SkinKit 1.0.0 external binary Kit; pinned ZIP"/>
+         </artifact>
+      </component>
    </components>
 </verification-metadata>

@@ -1,0 +1,143 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :app:dependencyInsight
+dev.skinkit:skinkit-contract:1.0.0
+  Variant runtimeElements:
+    | Attribute Name                                  | Provided     | Requested    |
+    |-------------------------------------------------|--------------|--------------|
+    | org.gradle.dependency.bundling                  | external     |              |
+    | org.gradle.jvm.version                          | 17           |              |
+    | org.gradle.libraryelements                      | jar          |              |
+    | org.gradle.status                               | release      |              |
+    | org.gradle.category                             | library      | library      |
+    | org.gradle.jvm.environment                      | standard-jvm | android      |
+    | org.gradle.usage                                | java-runtime | java-runtime |
+    | org.jetbrains.kotlin.platform.type              | jvm          | androidJvm   |
+    | com.android.build.api.attributes.AgpVersionAttr |              | 9.4.0        |
+    | com.android.build.api.attributes.BuildTypeAttr  |              | debug        |
+   Selection reasons:
+      - By ancestor
+      - By constraint: Dependency version enforced by Dependency Locking
+
+dev.skinkit:skinkit-contract:{strictly 1.0.0} -> 1.0.0
+\--- debugRuntimeClasspath
+
+dev.skinkit:skinkit-contract:1.0.0
++--- project ':ui-theme'
+|    \--- debugRuntimeClasspath
+\--- dev.skinkit:skinkit-default:1.0.0
+     +--- debugRuntimeClasspath (requested dev.skinkit:skinkit-default:{strictly 1.0.0})
+     \--- project ':ui-theme' (*)
+
+dev.skinkit:skinkit-default:1.0.0
+  Variant runtimeElements:
+    | Attribute Name                                  | Provided     | Requested    |
+    |-------------------------------------------------|--------------|--------------|
+    | org.gradle.dependency.bundling                  | external     |              |
+    | org.gradle.jvm.version                          | 17           |              |
+    | org.gradle.libraryelements                      | jar          |              |
+    | org.gradle.status                               | release      |              |
+    | org.gradle.category                             | library      | library      |
+    | org.gradle.jvm.environment                      | standard-jvm | android      |
+    | org.gradle.usage                                | java-runtime | java-runtime |
+    | org.jetbrains.kotlin.platform.type              | jvm          | androidJvm   |
+    | com.android.build.api.attributes.AgpVersionAttr |              | 9.4.0        |
+    | com.android.build.api.attributes.BuildTypeAttr  |              | debug        |
+   Selection reasons:
+      - By ancestor
+      - By constraint: Dependency version enforced by Dependency Locking
+
+dev.skinkit:skinkit-default:{strictly 1.0.0} -> 1.0.0
+\--- debugRuntimeClasspath
+
+dev.skinkit:skinkit-default:1.0.0
+\--- project ':ui-theme'
+     \--- debugRuntimeClasspath
+
+(*) - Indicates repeated occurrences of a transitive dependency subtree. Gradle expands transitive dependency subtrees only once per project; repeat occurrences only display the root of the subtree, followed by this annotation.
+
+A web-based, searchable dependency report is available by adding the --scan option.
+
+> Task :commons-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:compileKotlin UP-TO-DATE
+> Task :core-model:compileJava NO-SOURCE
+> Task :discovery:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:compileKotlin UP-TO-DATE
+> Task :discovery:compileJava NO-SOURCE
+> Task :commons-provider:compileKotlin UP-TO-DATE
+> Task :commons-provider:compileJava NO-SOURCE
+> Task :commons-provider:processResources NO-SOURCE
+> Task :commons-provider:classes UP-TO-DATE
+> Task :commons-provider:jar UP-TO-DATE
+> Task :core-domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-domain:compileKotlin UP-TO-DATE
+> Task :core-domain:compileJava NO-SOURCE
+> Task :core-domain:processResources NO-SOURCE
+> Task :core-domain:classes UP-TO-DATE
+> Task :core-domain:jar UP-TO-DATE
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar UP-TO-DATE
+> Task :discovery:processResources NO-SOURCE
+> Task :discovery:classes UP-TO-DATE
+> Task :discovery:jar UP-TO-DATE
+> Task :hls:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :hls:compileKotlin UP-TO-DATE
+> Task :hls:compileJava NO-SOURCE
+> Task :hls:processResources NO-SOURCE
+> Task :hls:classes UP-TO-DATE
+> Task :hls:jar UP-TO-DATE
+> Task :library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :library:compileKotlin UP-TO-DATE
+> Task :library:compileJava NO-SOURCE
+> Task :library:processResources NO-SOURCE
+> Task :library:classes UP-TO-DATE
+> Task :library:jar UP-TO-DATE
+> Task :recording:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :recording:compileKotlin UP-TO-DATE
+> Task :recording:compileJava NO-SOURCE
+> Task :recording:processResources NO-SOURCE
+> Task :recording:classes UP-TO-DATE
+> Task :recording:jar UP-TO-DATE
+> Task :save:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :save:compileKotlin UP-TO-DATE
+> Task :save:compileJava NO-SOURCE
+> Task :save:processResources NO-SOURCE
+> Task :save:classes UP-TO-DATE
+> Task :save:jar UP-TO-DATE
+> Task :searxng-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :searxng-provider:compileKotlin UP-TO-DATE
+> Task :searxng-provider:compileJava NO-SOURCE
+> Task :searxng-provider:processResources NO-SOURCE
+> Task :searxng-provider:classes UP-TO-DATE
+> Task :searxng-provider:jar UP-TO-DATE
+> Task :ui-theme:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :ui-theme:compileKotlin UP-TO-DATE
+> Task :ui-theme:compileJava NO-SOURCE
+> Task :ui-theme:processResources NO-SOURCE
+> Task :ui-theme:classes UP-TO-DATE
+> Task :ui-theme:jar UP-TO-DATE
+> Task :verification-client:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-client:compileKotlin UP-TO-DATE
+> Task :verification-client:compileJava NO-SOURCE
+> Task :verification-client:processResources NO-SOURCE
+> Task :verification-client:classes UP-TO-DATE
+> Task :verification-client:jar UP-TO-DATE
+
+> Task :app:runtimeInventory
+Runtime inventory: [ESV_WORKSPACE]\app\build\reports\debugRuntimeClasspath-inventory.tsv
+Runtime inventory: [ESV_WORKSPACE]\app\build\reports\releaseRuntimeClasspath-inventory.tsv
+
+[Incubating] Problems report is available at: file:///[ESV_WORKSPACE]/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 12s
+24 actionable tasks: 2 executed, 22 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.0/userguide/configuration_cache_enabling.html

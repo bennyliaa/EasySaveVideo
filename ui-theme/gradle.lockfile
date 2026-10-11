@@ -2,8 +2,8 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 # To regenerate this file, run: ./gradlew :ui-theme:dependencies --write-locks
-dev.skinkit:skinkit-contract:0.0.1=compileClasspath,testCompileClasspath,testRuntimeClasspath
-dev.skinkit:skinkit-default:0.0.1=compileClasspath,testCompileClasspath,testRuntimeClasspath
+dev.skinkit:skinkit-contract:1.0.0=compileClasspath,testCompileClasspath,testRuntimeClasspath
+dev.skinkit:skinkit-default:1.0.0=compileClasspath,testCompileClasspath,testRuntimeClasspath
 junit:junit:4.13.2=testCompileClasspath,testRuntimeClasspath
 org.hamcrest:hamcrest-core:1.3=testCompileClasspath,testRuntimeClasspath
 org.jetbrains.kotlin:kotlin-build-tools-api:2.2.10=kotlinBuildToolsApiClasspath

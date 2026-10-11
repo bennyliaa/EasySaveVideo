@@ -1,0 +1,948 @@
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.AnimationToken extends dev.skinkit.contract.ThemeToken {
+  public static final dev.skinkit.contract.AnimationToken$Companion Companion;
+  public dev.skinkit.contract.AnimationToken(java.lang.String, boolean, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.AnimationToken$Companion {
+  public final dev.skinkit.contract.AnimationToken create$skinkit_contract(java.lang.String, boolean);
+  public dev.skinkit.contract.AnimationToken$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Values.kt"
+public interface dev.skinkit.contract.AnimationValue {
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.AnimationValue$Declarative implements dev.skinkit.contract.AnimationValue {
+  public dev.skinkit.contract.AnimationValue$Declarative(dev.skinkit.contract.CapabilityRequirement, dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.AnimationValue$Static);
+  public final dev.skinkit.contract.CapabilityRequirement getFormat();
+  public final dev.skinkit.contract.LocalResourceRef getResource();
+  public final dev.skinkit.contract.AnimationValue$Static getFallback();
+  public final dev.skinkit.contract.CapabilityRequirement component1();
+  public final dev.skinkit.contract.LocalResourceRef component2();
+  public final dev.skinkit.contract.AnimationValue$Static component3();
+  public final dev.skinkit.contract.AnimationValue$Declarative copy(dev.skinkit.contract.CapabilityRequirement, dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.AnimationValue$Static);
+  public static dev.skinkit.contract.AnimationValue$Declarative copy$default(dev.skinkit.contract.AnimationValue$Declarative, dev.skinkit.contract.CapabilityRequirement, dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.AnimationValue$Static, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.AnimationValue$Disabled implements dev.skinkit.contract.AnimationValue {
+  public static final dev.skinkit.contract.AnimationValue$Disabled INSTANCE;
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.AnimationValue$Static implements dev.skinkit.contract.AnimationValue {
+  public dev.skinkit.contract.AnimationValue$Static(dev.skinkit.contract.DrawableValue);
+  public final dev.skinkit.contract.DrawableValue getDrawable();
+  public final dev.skinkit.contract.DrawableValue component1();
+  public final dev.skinkit.contract.AnimationValue$Static copy(dev.skinkit.contract.DrawableValue);
+  public static dev.skinkit.contract.AnimationValue$Static copy$default(dev.skinkit.contract.AnimationValue$Static, dev.skinkit.contract.DrawableValue, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.BuiltInIcon extends java.lang.Enum<dev.skinkit.contract.BuiltInIcon> implements dev.skinkit.contract.IconSource {
+  public static final dev.skinkit.contract.BuiltInIcon CLOSE;
+  public static final dev.skinkit.contract.BuiltInIcon CHECK;
+  public static final dev.skinkit.contract.BuiltInIcon ADD;
+  public static final dev.skinkit.contract.BuiltInIcon SEARCH;
+  public static final dev.skinkit.contract.BuiltInIcon MORE;
+  public static final dev.skinkit.contract.BuiltInIcon WARNING;
+  public static dev.skinkit.contract.BuiltInIcon[] values();
+  public static dev.skinkit.contract.BuiltInIcon valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.BuiltInIcon> getEntries();
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.ButtonStyle implements dev.skinkit.contract.ComponentStyle {
+  public static final dev.skinkit.contract.ButtonStyle$Companion Companion;
+  public dev.skinkit.contract.ButtonStyle(dev.skinkit.contract.StyleValues);
+  public dev.skinkit.contract.StyleValues getFields();
+  public final dev.skinkit.contract.DimensionValue getCorner();
+  public final dev.skinkit.contract.ButtonVisual forState(dev.skinkit.contract.VisualState);
+  public static final dev.skinkit.contract.ButtonStyle of(java.util.Map<dev.skinkit.contract.VisualState, dev.skinkit.contract.ButtonVisual>, dev.skinkit.contract.DimensionValue);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.ButtonStyle$Companion {
+  public final dev.skinkit.contract.ButtonStyle of(java.util.Map<dev.skinkit.contract.VisualState, dev.skinkit.contract.ButtonVisual>, dev.skinkit.contract.DimensionValue);
+  public dev.skinkit.contract.ButtonStyle$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.ButtonVisual {
+  public dev.skinkit.contract.ButtonVisual(dev.skinkit.contract.ColorValue, dev.skinkit.contract.ColorValue, dev.skinkit.contract.TypographyValue);
+  public final dev.skinkit.contract.ColorValue getBackground();
+  public final dev.skinkit.contract.ColorValue getForeground();
+  public final dev.skinkit.contract.TypographyValue getTypography();
+  public final dev.skinkit.contract.ColorValue component1();
+  public final dev.skinkit.contract.ColorValue component2();
+  public final dev.skinkit.contract.TypographyValue component3();
+  public final dev.skinkit.contract.ButtonVisual copy(dev.skinkit.contract.ColorValue, dev.skinkit.contract.ColorValue, dev.skinkit.contract.TypographyValue);
+  public static dev.skinkit.contract.ButtonVisual copy$default(dev.skinkit.contract.ButtonVisual, dev.skinkit.contract.ColorValue, dev.skinkit.contract.ColorValue, dev.skinkit.contract.TypographyValue, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.CandidateFailureCode extends java.lang.Enum<dev.skinkit.contract.CandidateFailureCode> {
+  public static final dev.skinkit.contract.CandidateFailureCode MISSING;
+  public static final dev.skinkit.contract.CandidateFailureCode TYPE_MISMATCH;
+  public static final dev.skinkit.contract.CandidateFailureCode SCHEMA_INCOMPATIBLE;
+  public static final dev.skinkit.contract.CandidateFailureCode CAPABILITY_UNSUPPORTED;
+  public static final dev.skinkit.contract.CandidateFailureCode RESOURCE_UNAVAILABLE;
+  public static final dev.skinkit.contract.CandidateFailureCode INVALID_VALUE;
+  public static final dev.skinkit.contract.CandidateFailureCode EXPLICIT_DISABLED_NOT_ALLOWED;
+  public static dev.skinkit.contract.CandidateFailureCode[] values();
+  public static dev.skinkit.contract.CandidateFailureCode valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.CandidateFailureCode> getEntries();
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.CapabilityCheck {
+  public dev.skinkit.contract.CapabilityCheck(java.util.List<dev.skinkit.contract.CapabilityRequirement>, java.util.List<dev.skinkit.contract.CapabilityRequirement>);
+  public final java.util.List<dev.skinkit.contract.CapabilityRequirement> getRequiredMissing();
+  public final java.util.List<dev.skinkit.contract.CapabilityRequirement> getOptionalMissing();
+  public final boolean getCanActivate();
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.CapabilityDescriptor {
+  public dev.skinkit.contract.CapabilityDescriptor(java.lang.String, dev.skinkit.contract.Version, dev.skinkit.contract.CapabilityOwner, boolean, java.util.Map<java.lang.String, java.lang.Long>);
+  public dev.skinkit.contract.CapabilityDescriptor(java.lang.String, dev.skinkit.contract.Version, dev.skinkit.contract.CapabilityOwner, boolean, java.util.Map, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final java.lang.String getCapabilityId();
+  public final dev.skinkit.contract.Version getVersion();
+  public final dev.skinkit.contract.CapabilityOwner getOwner();
+  public final boolean getSupported();
+  public final java.util.Map<java.lang.String, java.lang.Long> getLimits();
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.CapabilityOwner extends java.lang.Enum<dev.skinkit.contract.CapabilityOwner> {
+  public static final dev.skinkit.contract.CapabilityOwner HOST;
+  public static final dev.skinkit.contract.CapabilityOwner ADAPTER;
+  public static final dev.skinkit.contract.CapabilityOwner MODULE;
+  public static dev.skinkit.contract.CapabilityOwner[] values();
+  public static dev.skinkit.contract.CapabilityOwner valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.CapabilityOwner> getEntries();
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.CapabilityRequirement {
+  public dev.skinkit.contract.CapabilityRequirement(java.lang.String, dev.skinkit.contract.VersionRange, boolean, java.util.Map<java.lang.String, java.lang.Long>);
+  public dev.skinkit.contract.CapabilityRequirement(java.lang.String, dev.skinkit.contract.VersionRange, boolean, java.util.Map, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final java.lang.String getCapabilityId();
+  public final dev.skinkit.contract.VersionRange getVersions();
+  public final boolean getRequired();
+  public final java.util.Map<java.lang.String, java.lang.Long> getLimits();
+  public final boolean isSatisfiedBy(dev.skinkit.contract.CapabilityDescriptor);
+  public dev.skinkit.contract.CapabilityRequirement(java.lang.String, dev.skinkit.contract.VersionRange, boolean);
+  public dev.skinkit.contract.CapabilityRequirement(java.lang.String, dev.skinkit.contract.VersionRange);
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.CapabilitySnapshot {
+  public dev.skinkit.contract.CapabilitySnapshot(java.util.List<dev.skinkit.contract.CapabilityDescriptor>);
+  public final java.util.List<dev.skinkit.contract.CapabilityDescriptor> getCapabilities();
+  public final dev.skinkit.contract.CapabilityCheck check(java.util.List<dev.skinkit.contract.CapabilityRequirement>);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.CardStyle implements dev.skinkit.contract.ComponentStyle {
+  public static final dev.skinkit.contract.CardStyle$Companion Companion;
+  public dev.skinkit.contract.CardStyle(dev.skinkit.contract.StyleValues);
+  public dev.skinkit.contract.StyleValues getFields();
+  public final dev.skinkit.contract.ColorValue getBackground();
+  public final dev.skinkit.contract.ColorValue getForeground();
+  public final dev.skinkit.contract.DimensionValue getCorner();
+  public static final dev.skinkit.contract.CardStyle of(dev.skinkit.contract.ColorValue, dev.skinkit.contract.ColorValue, dev.skinkit.contract.DimensionValue);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.CardStyle$Companion {
+  public final dev.skinkit.contract.CardStyle of(dev.skinkit.contract.ColorValue, dev.skinkit.contract.ColorValue, dev.skinkit.contract.DimensionValue);
+  public dev.skinkit.contract.CardStyle$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.ColorMode extends java.lang.Enum<dev.skinkit.contract.ColorMode> {
+  public static final dev.skinkit.contract.ColorMode LIGHT;
+  public static final dev.skinkit.contract.ColorMode DARK;
+  public static dev.skinkit.contract.ColorMode[] values();
+  public static dev.skinkit.contract.ColorMode valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.ColorMode> getEntries();
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.ColorRole extends java.lang.Enum<dev.skinkit.contract.ColorRole> {
+  public static final dev.skinkit.contract.ColorRole FOREGROUND;
+  public static final dev.skinkit.contract.ColorRole BACKGROUND;
+  public static final dev.skinkit.contract.ColorRole ACCENT;
+  public static final dev.skinkit.contract.ColorRole BORDER;
+  public static dev.skinkit.contract.ColorRole[] values();
+  public static dev.skinkit.contract.ColorRole valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.ColorRole> getEntries();
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.ColorSpace extends java.lang.Enum<dev.skinkit.contract.ColorSpace> {
+  public static final dev.skinkit.contract.ColorSpace SRGB;
+  public static dev.skinkit.contract.ColorSpace[] values();
+  public static dev.skinkit.contract.ColorSpace valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.ColorSpace> getEntries();
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.ColorToken extends dev.skinkit.contract.ThemeToken {
+  public static final dev.skinkit.contract.ColorToken$Companion Companion;
+  public final dev.skinkit.contract.ColorRole getRole();
+  public dev.skinkit.contract.ColorToken(java.lang.String, boolean, dev.skinkit.contract.ColorRole, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.ColorToken$Companion {
+  public final dev.skinkit.contract.ColorToken create$skinkit_contract(java.lang.String, boolean, dev.skinkit.contract.ColorRole);
+  public dev.skinkit.contract.ColorToken$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.ColorValue {
+  public static final dev.skinkit.contract.ColorValue$Companion Companion;
+  public dev.skinkit.contract.ColorValue(dev.skinkit.contract.Rgba, java.util.Map<dev.skinkit.contract.VisualState, dev.skinkit.contract.Rgba>, dev.skinkit.contract.ColorSpace);
+  public dev.skinkit.contract.ColorValue(dev.skinkit.contract.Rgba, java.util.Map, dev.skinkit.contract.ColorSpace, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final dev.skinkit.contract.Rgba getRgba();
+  public final dev.skinkit.contract.ColorSpace getColorSpace();
+  public final java.util.Map<dev.skinkit.contract.VisualState, dev.skinkit.contract.Rgba> getVariants();
+  public final dev.skinkit.contract.ColorValue forState(dev.skinkit.contract.VisualState);
+  public final int toArgb();
+  public boolean equals(java.lang.Object);
+  public int hashCode();
+  public java.lang.String toString();
+  public dev.skinkit.contract.ColorValue(dev.skinkit.contract.Rgba, java.util.Map<dev.skinkit.contract.VisualState, dev.skinkit.contract.Rgba>);
+  public dev.skinkit.contract.ColorValue(dev.skinkit.contract.Rgba);
+  public static final dev.skinkit.contract.ColorValue argb(int);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.ColorValue$Companion {
+  public final dev.skinkit.contract.ColorValue argb(int);
+  public dev.skinkit.contract.ColorValue$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.ComponentSchema<S extends dev.skinkit.contract.ComponentStyle> {
+  public static final dev.skinkit.contract.ComponentSchema$Companion Companion;
+  public final java.lang.String getId();
+  public final dev.skinkit.contract.Version getVersion();
+  public final java.lang.Class<S> getStyleClass();
+  public final dev.skinkit.contract.StateDomain getStates();
+  public final dev.skinkit.contract.SafeStyleFactory<S> getSafeFactory();
+  public final boolean isStandard$skinkit_contract();
+  public dev.skinkit.contract.ComponentSchema(java.lang.String, dev.skinkit.contract.Version, java.lang.Class<S>, java.util.List<? extends dev.skinkit.contract.StyleField<?>>, dev.skinkit.contract.StateDomain, dev.skinkit.contract.SafeStyleFactory<S>, dev.skinkit.contract.ComponentStyleFactory<S>);
+  public final java.util.List<dev.skinkit.contract.StyleField<?>> getFields();
+  public final S freeze(S);
+  public final S create(dev.skinkit.contract.StyleValues);
+  public final java.util.List<java.lang.String> validate(S);
+  public final java.util.List<java.lang.String> validate(dev.skinkit.contract.StyleValues);
+  public static final dev.skinkit.contract.ComponentSchema<dev.skinkit.contract.ButtonStyle> button(dev.skinkit.contract.SafeStyleFactory<dev.skinkit.contract.ButtonStyle>);
+  public static final dev.skinkit.contract.ComponentSchema<dev.skinkit.contract.CardStyle> card(dev.skinkit.contract.SafeStyleFactory<dev.skinkit.contract.CardStyle>);
+  public dev.skinkit.contract.ComponentSchema(java.lang.String, dev.skinkit.contract.Version, java.lang.Class, java.util.List, dev.skinkit.contract.StateDomain, dev.skinkit.contract.SafeStyleFactory, dev.skinkit.contract.ComponentStyleFactory, boolean, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.ComponentSchema$Companion {
+  public final dev.skinkit.contract.ComponentSchema<dev.skinkit.contract.ButtonStyle> button(dev.skinkit.contract.SafeStyleFactory<dev.skinkit.contract.ButtonStyle>);
+  public final dev.skinkit.contract.ComponentSchema<dev.skinkit.contract.CardStyle> card(dev.skinkit.contract.SafeStyleFactory<dev.skinkit.contract.CardStyle>);
+  public dev.skinkit.contract.ComponentSchema$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Components.kt"
+public interface dev.skinkit.contract.ComponentStyle {
+  public abstract dev.skinkit.contract.StyleValues getFields();
+}
+Compiled from "Components.kt"
+public interface dev.skinkit.contract.ComponentStyleFactory<S extends dev.skinkit.contract.ComponentStyle> {
+  public abstract S create(dev.skinkit.contract.StyleValues);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.ComponentToken<S extends dev.skinkit.contract.ComponentStyle> extends dev.skinkit.contract.ThemeToken {
+  public static final dev.skinkit.contract.ComponentToken$Companion Companion;
+  public final dev.skinkit.contract.ComponentSchema<S> getSchema();
+  public dev.skinkit.contract.ComponentToken(java.lang.String, boolean, dev.skinkit.contract.ComponentSchema, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.ComponentToken$Companion {
+  public final dev.skinkit.contract.ComponentToken create$skinkit_contract(java.lang.String, boolean, dev.skinkit.contract.ComponentSchema);
+  public dev.skinkit.contract.ComponentToken$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.ContrastPair {
+  public dev.skinkit.contract.ContrastPair(dev.skinkit.contract.ColorToken, dev.skinkit.contract.ColorToken, double);
+  public final dev.skinkit.contract.ColorToken getForeground();
+  public final dev.skinkit.contract.ColorToken getBackground();
+  public final double getMinimumRatio();
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.Diagnostic {
+  public dev.skinkit.contract.Diagnostic(dev.skinkit.contract.DiagnosticCode, java.lang.String, dev.skinkit.contract.VisualConfiguration, java.lang.String, boolean, java.lang.String);
+  public dev.skinkit.contract.Diagnostic(dev.skinkit.contract.DiagnosticCode, java.lang.String, dev.skinkit.contract.VisualConfiguration, java.lang.String, boolean, java.lang.String, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final dev.skinkit.contract.DiagnosticCode getCode();
+  public final java.lang.String getTokenId();
+  public final dev.skinkit.contract.VisualConfiguration getConfiguration();
+  public final java.lang.String getMessage();
+  public final boolean getRequired();
+  public final java.lang.String getField();
+  public final dev.skinkit.contract.DiagnosticCode component1();
+  public final java.lang.String component2();
+  public final dev.skinkit.contract.VisualConfiguration component3();
+  public final java.lang.String component4();
+  public final boolean component5();
+  public final java.lang.String component6();
+  public final dev.skinkit.contract.Diagnostic copy(dev.skinkit.contract.DiagnosticCode, java.lang.String, dev.skinkit.contract.VisualConfiguration, java.lang.String, boolean, java.lang.String);
+  public static dev.skinkit.contract.Diagnostic copy$default(dev.skinkit.contract.Diagnostic, dev.skinkit.contract.DiagnosticCode, java.lang.String, dev.skinkit.contract.VisualConfiguration, java.lang.String, boolean, java.lang.String, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+  public dev.skinkit.contract.Diagnostic(dev.skinkit.contract.DiagnosticCode, java.lang.String, dev.skinkit.contract.VisualConfiguration, java.lang.String, boolean);
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.DiagnosticCode extends java.lang.Enum<dev.skinkit.contract.DiagnosticCode> {
+  public static final dev.skinkit.contract.DiagnosticCode DEFAULT_MISSING;
+  public static final dev.skinkit.contract.DiagnosticCode INVALID_VALUE;
+  public static final dev.skinkit.contract.DiagnosticCode CONTRAST_REJECTED;
+  public static final dev.skinkit.contract.DiagnosticCode COMPONENT_INCOMPLETE;
+  public static final dev.skinkit.contract.DiagnosticCode RESOURCE_UNAVAILABLE;
+  public static final dev.skinkit.contract.DiagnosticCode SAFE_FALLBACK_USED;
+  public static final dev.skinkit.contract.DiagnosticCode ANIMATION_UNSUPPORTED;
+  public static final dev.skinkit.contract.DiagnosticCode OBSERVER_FAILED;
+  public static dev.skinkit.contract.DiagnosticCode[] values();
+  public static dev.skinkit.contract.DiagnosticCode valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.DiagnosticCode> getEntries();
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.DimensionPurpose extends java.lang.Enum<dev.skinkit.contract.DimensionPurpose> {
+  public static final dev.skinkit.contract.DimensionPurpose SPACING;
+  public static final dev.skinkit.contract.DimensionPurpose PADDING;
+  public static final dev.skinkit.contract.DimensionPurpose CORNER;
+  public static final dev.skinkit.contract.DimensionPurpose BORDER;
+  public static final dev.skinkit.contract.DimensionPurpose ICON;
+  public static final dev.skinkit.contract.DimensionPurpose TEXT;
+  public static final dev.skinkit.contract.DimensionPurpose LINE_HEIGHT;
+  public static dev.skinkit.contract.DimensionPurpose[] values();
+  public static dev.skinkit.contract.DimensionPurpose valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.DimensionPurpose> getEntries();
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.DimensionToken extends dev.skinkit.contract.ThemeToken {
+  public static final dev.skinkit.contract.DimensionToken$Companion Companion;
+  public final dev.skinkit.contract.DimensionPurpose getPurpose();
+  public dev.skinkit.contract.DimensionToken(java.lang.String, boolean, dev.skinkit.contract.DimensionPurpose, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.DimensionToken$Companion {
+  public final dev.skinkit.contract.DimensionToken create$skinkit_contract(java.lang.String, boolean, dev.skinkit.contract.DimensionPurpose);
+  public dev.skinkit.contract.DimensionToken$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.DimensionValue {
+  public dev.skinkit.contract.DimensionValue(double, dev.skinkit.contract.LogicalUnit, dev.skinkit.contract.DimensionPurpose);
+  public final double getAmount();
+  public final dev.skinkit.contract.LogicalUnit getUnit();
+  public final dev.skinkit.contract.DimensionPurpose getPurpose();
+  public final double scaled(double);
+  public final double component1();
+  public final dev.skinkit.contract.LogicalUnit component2();
+  public final dev.skinkit.contract.DimensionPurpose component3();
+  public final dev.skinkit.contract.DimensionValue copy(double, dev.skinkit.contract.LogicalUnit, dev.skinkit.contract.DimensionPurpose);
+  public static dev.skinkit.contract.DimensionValue copy$default(dev.skinkit.contract.DimensionValue, double, dev.skinkit.contract.LogicalUnit, dev.skinkit.contract.DimensionPurpose, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.DrawableToken extends dev.skinkit.contract.ThemeToken {
+  public static final dev.skinkit.contract.DrawableToken$Companion Companion;
+  public dev.skinkit.contract.DrawableToken(java.lang.String, boolean, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.DrawableToken$Companion {
+  public final dev.skinkit.contract.DrawableToken create$skinkit_contract(java.lang.String, boolean);
+  public dev.skinkit.contract.DrawableToken$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Values.kt"
+public interface dev.skinkit.contract.DrawableValue {
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.DrawableValue$Local implements dev.skinkit.contract.DrawableValue {
+  public dev.skinkit.contract.DrawableValue$Local(dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.DrawableValue$Solid, dev.skinkit.contract.ScaleMode);
+  public dev.skinkit.contract.DrawableValue$Local(dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.DrawableValue$Solid, dev.skinkit.contract.ScaleMode, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final dev.skinkit.contract.LocalResourceRef getResource();
+  public final dev.skinkit.contract.DrawableValue$Solid getFallback();
+  public final dev.skinkit.contract.ScaleMode getScaleMode();
+  public final dev.skinkit.contract.LocalResourceRef component1();
+  public final dev.skinkit.contract.DrawableValue$Solid component2();
+  public final dev.skinkit.contract.ScaleMode component3();
+  public final dev.skinkit.contract.DrawableValue$Local copy(dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.DrawableValue$Solid, dev.skinkit.contract.ScaleMode);
+  public static dev.skinkit.contract.DrawableValue$Local copy$default(dev.skinkit.contract.DrawableValue$Local, dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.DrawableValue$Solid, dev.skinkit.contract.ScaleMode, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+  public dev.skinkit.contract.DrawableValue$Local(dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.DrawableValue$Solid);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.DrawableValue$Solid implements dev.skinkit.contract.DrawableValue {
+  public dev.skinkit.contract.DrawableValue$Solid(dev.skinkit.contract.ColorValue);
+  public final dev.skinkit.contract.ColorValue getColor();
+  public final dev.skinkit.contract.ColorValue component1();
+  public final dev.skinkit.contract.DrawableValue$Solid copy(dev.skinkit.contract.ColorValue);
+  public static dev.skinkit.contract.DrawableValue$Solid copy$default(dev.skinkit.contract.DrawableValue$Solid, dev.skinkit.contract.ColorValue, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.ExtensionDescriptor {
+  public dev.skinkit.contract.ExtensionDescriptor(java.lang.String, java.lang.String, dev.skinkit.contract.Version, dev.skinkit.contract.VersionRange, dev.skinkit.contract.TokenRegistry, java.util.List<? extends dev.skinkit.contract.TypedFieldMapping<?, ?, ?>>, dev.skinkit.contract.ResourceLimits, java.util.Map<java.lang.String, java.lang.String>);
+  public dev.skinkit.contract.ExtensionDescriptor(java.lang.String, java.lang.String, dev.skinkit.contract.Version, dev.skinkit.contract.VersionRange, dev.skinkit.contract.TokenRegistry, java.util.List, dev.skinkit.contract.ResourceLimits, java.util.Map, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final java.lang.String getAppId();
+  public final java.lang.String getExtensionId();
+  public final dev.skinkit.contract.Version getExtensionVersion();
+  public final dev.skinkit.contract.VersionRange getContractRange();
+  public final dev.skinkit.contract.TokenRegistry getRegistry();
+  public final dev.skinkit.contract.ResourceLimits getResourceLimits();
+  public final java.util.List<dev.skinkit.contract.ThemeToken> getTokens();
+  public final java.util.List<dev.skinkit.contract.TypedFieldMapping<?, ?, ?>> getCommonMappings();
+  public final java.util.Map<java.lang.String, java.lang.String> getEditorMetadata();
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.FallbackLayer extends java.lang.Enum<dev.skinkit.contract.FallbackLayer> {
+  public static final dev.skinkit.contract.FallbackLayer APP_EXTENSION;
+  public static final dev.skinkit.contract.FallbackLayer COMMON;
+  public static final dev.skinkit.contract.FallbackLayer APP_DEFAULT;
+  public static final dev.skinkit.contract.FallbackLayer SAFE_BUILT_IN;
+  public static dev.skinkit.contract.FallbackLayer[] values();
+  public static dev.skinkit.contract.FallbackLayer valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.FallbackLayer> getEntries();
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.FallbackProtocol {
+  public static final dev.skinkit.contract.FallbackProtocol INSTANCE;
+  public static final java.util.List<dev.skinkit.contract.FallbackLayer> ORDER;
+  public static final java.util.List<dev.skinkit.contract.FallbackLayer> eligibleLayers(dev.skinkit.contract.ThemeToken, boolean);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.FieldType<V> {
+  public static final dev.skinkit.contract.FieldType$Companion Companion;
+  public static final dev.skinkit.contract.FieldType<dev.skinkit.contract.ColorValue> COLOR;
+  public static final dev.skinkit.contract.FieldType<dev.skinkit.contract.TypographyValue> TYPOGRAPHY;
+  public static final dev.skinkit.contract.FieldType<dev.skinkit.contract.DimensionValue> DIMENSION;
+  public static final dev.skinkit.contract.FieldType<dev.skinkit.contract.DrawableValue> DRAWABLE;
+  public static final dev.skinkit.contract.FieldType<dev.skinkit.contract.IconValue> ICON;
+  public static final dev.skinkit.contract.FieldType<dev.skinkit.contract.AnimationValue> ANIMATION;
+  public final java.lang.String getName();
+  public final java.lang.Class<V> getValueClass();
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.FieldType$Companion {
+  public dev.skinkit.contract.FieldType$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Values.kt"
+public interface dev.skinkit.contract.FontRef {
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.FontRef$Local implements dev.skinkit.contract.FontRef {
+  public dev.skinkit.contract.FontRef$Local(dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.FontRef$System);
+  public dev.skinkit.contract.FontRef$Local(dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.FontRef$System, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final dev.skinkit.contract.LocalResourceRef getResource();
+  public final dev.skinkit.contract.FontRef$System getFallback();
+  public final dev.skinkit.contract.LocalResourceRef component1();
+  public final dev.skinkit.contract.FontRef$System component2();
+  public final dev.skinkit.contract.FontRef$Local copy(dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.FontRef$System);
+  public static dev.skinkit.contract.FontRef$Local copy$default(dev.skinkit.contract.FontRef$Local, dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.FontRef$System, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+  public dev.skinkit.contract.FontRef$Local(dev.skinkit.contract.LocalResourceRef);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.FontRef$System implements dev.skinkit.contract.FontRef {
+  public dev.skinkit.contract.FontRef$System(java.lang.String);
+  public dev.skinkit.contract.FontRef$System(java.lang.String, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final java.lang.String getFamily();
+  public final java.lang.String component1();
+  public final dev.skinkit.contract.FontRef$System copy(java.lang.String);
+  public static dev.skinkit.contract.FontRef$System copy$default(dev.skinkit.contract.FontRef$System, java.lang.String, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+  public dev.skinkit.contract.FontRef$System();
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.HostContractException extends java.lang.IllegalArgumentException {
+  public dev.skinkit.contract.HostContractException(java.lang.String);
+}
+Compiled from "Values.kt"
+public interface dev.skinkit.contract.IconSource {
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.IconToken extends dev.skinkit.contract.ThemeToken {
+  public static final dev.skinkit.contract.IconToken$Companion Companion;
+  public dev.skinkit.contract.IconToken(java.lang.String, boolean, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.IconToken$Companion {
+  public final dev.skinkit.contract.IconToken create$skinkit_contract(java.lang.String, boolean);
+  public dev.skinkit.contract.IconToken$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.IconValue {
+  public dev.skinkit.contract.IconValue(dev.skinkit.contract.IconSource, dev.skinkit.contract.DimensionValue, dev.skinkit.contract.TintPolicy);
+  public dev.skinkit.contract.IconValue(dev.skinkit.contract.IconSource, dev.skinkit.contract.DimensionValue, dev.skinkit.contract.TintPolicy, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final dev.skinkit.contract.IconSource getSource();
+  public final dev.skinkit.contract.DimensionValue getSize();
+  public final dev.skinkit.contract.TintPolicy getTint();
+  public final dev.skinkit.contract.IconSource component1();
+  public final dev.skinkit.contract.DimensionValue component2();
+  public final dev.skinkit.contract.TintPolicy component3();
+  public final dev.skinkit.contract.IconValue copy(dev.skinkit.contract.IconSource, dev.skinkit.contract.DimensionValue, dev.skinkit.contract.TintPolicy);
+  public static dev.skinkit.contract.IconValue copy$default(dev.skinkit.contract.IconValue, dev.skinkit.contract.IconSource, dev.skinkit.contract.DimensionValue, dev.skinkit.contract.TintPolicy, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+  public dev.skinkit.contract.IconValue(dev.skinkit.contract.IconSource, dev.skinkit.contract.DimensionValue);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.LocalIcon implements dev.skinkit.contract.IconSource {
+  public dev.skinkit.contract.LocalIcon(dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.BuiltInIcon);
+  public final dev.skinkit.contract.LocalResourceRef getResource();
+  public final dev.skinkit.contract.BuiltInIcon getFallback();
+  public final dev.skinkit.contract.LocalResourceRef component1();
+  public final dev.skinkit.contract.BuiltInIcon component2();
+  public final dev.skinkit.contract.LocalIcon copy(dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.BuiltInIcon);
+  public static dev.skinkit.contract.LocalIcon copy$default(dev.skinkit.contract.LocalIcon, dev.skinkit.contract.LocalResourceRef, dev.skinkit.contract.BuiltInIcon, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.LocalResourceRef {
+  public dev.skinkit.contract.LocalResourceRef(java.lang.String, java.lang.String);
+  public final java.lang.String getOwner();
+  public final java.lang.String getName();
+  public final java.lang.String component1();
+  public final java.lang.String component2();
+  public final dev.skinkit.contract.LocalResourceRef copy(java.lang.String, java.lang.String);
+  public static dev.skinkit.contract.LocalResourceRef copy$default(dev.skinkit.contract.LocalResourceRef, java.lang.String, java.lang.String, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.LogicalUnit extends java.lang.Enum<dev.skinkit.contract.LogicalUnit> {
+  public static final dev.skinkit.contract.LogicalUnit LENGTH;
+  public static final dev.skinkit.contract.LogicalUnit SCALED_TEXT;
+  public static dev.skinkit.contract.LogicalUnit[] values();
+  public static dev.skinkit.contract.LogicalUnit valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.LogicalUnit> getEntries();
+}
+Compiled from "Values.kt"
+public interface dev.skinkit.contract.Patch<T> {
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.Patch$ExplicitDisabled implements dev.skinkit.contract.Patch {
+  public static final dev.skinkit.contract.Patch$ExplicitDisabled INSTANCE;
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.Patch$Missing implements dev.skinkit.contract.Patch {
+  public static final dev.skinkit.contract.Patch$Missing INSTANCE;
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.Patch$Value<T> implements dev.skinkit.contract.Patch<T> {
+  public dev.skinkit.contract.Patch$Value(T);
+  public final T getValue();
+  public final T component1();
+  public final dev.skinkit.contract.Patch$Value<T> copy(T);
+  public static dev.skinkit.contract.Patch$Value copy$default(dev.skinkit.contract.Patch$Value, java.lang.Object, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "ThemeProvider.kt"
+public interface dev.skinkit.contract.PinnedThemeSource {
+  public abstract dev.skinkit.contract.ThemeReadView pin();
+  public abstract dev.skinkit.contract.Subscription observeSnapshot(dev.skinkit.contract.SnapshotObserver);
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.ResourceLimits {
+  public dev.skinkit.contract.ResourceLimits(long, int, int);
+  public final long getMaximumBytes();
+  public final int getMaximumWidth();
+  public final int getMaximumHeight();
+  public final long component1();
+  public final int component2();
+  public final int component3();
+  public final dev.skinkit.contract.ResourceLimits copy(long, int, int);
+  public static dev.skinkit.contract.ResourceLimits copy$default(dev.skinkit.contract.ResourceLimits, long, int, int, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.Rgba {
+  public static final dev.skinkit.contract.Rgba$Companion Companion;
+  public dev.skinkit.contract.Rgba(double, double, double, double);
+  public dev.skinkit.contract.Rgba(double, double, double, double, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final double getRed();
+  public final double getGreen();
+  public final double getBlue();
+  public final double getAlpha();
+  public final int toArgb();
+  public final double component1();
+  public final double component2();
+  public final double component3();
+  public final double component4();
+  public final dev.skinkit.contract.Rgba copy(double, double, double, double);
+  public static dev.skinkit.contract.Rgba copy$default(dev.skinkit.contract.Rgba, double, double, double, double, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+  public dev.skinkit.contract.Rgba(double, double, double);
+  public static final dev.skinkit.contract.Rgba argb(int);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.Rgba$Companion {
+  public final dev.skinkit.contract.Rgba argb(int);
+  public dev.skinkit.contract.Rgba$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Components.kt"
+public interface dev.skinkit.contract.SafeStyleFactory<S extends dev.skinkit.contract.ComponentStyle> {
+  public abstract S create(dev.skinkit.contract.VisualConfiguration);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.ScaleMode extends java.lang.Enum<dev.skinkit.contract.ScaleMode> {
+  public static final dev.skinkit.contract.ScaleMode FIT;
+  public static final dev.skinkit.contract.ScaleMode FILL;
+  public static final dev.skinkit.contract.ScaleMode CENTER;
+  public static final dev.skinkit.contract.ScaleMode TILE;
+  public static dev.skinkit.contract.ScaleMode[] values();
+  public static dev.skinkit.contract.ScaleMode valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.ScaleMode> getEntries();
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.SkinKitContract {
+  public static final dev.skinkit.contract.SkinKitContract INSTANCE;
+  public static final java.lang.String VERSION;
+}
+Compiled from "ThemeProvider.kt"
+public interface dev.skinkit.contract.SnapshotObserver {
+  public abstract void onSnapshot(dev.skinkit.contract.ThemeSnapshotInfo);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.StandardFields {
+  public static final dev.skinkit.contract.StandardFields INSTANCE;
+  public static final dev.skinkit.contract.StyleField<dev.skinkit.contract.ColorValue> BACKGROUND;
+  public static final dev.skinkit.contract.StyleField<dev.skinkit.contract.ColorValue> FOREGROUND;
+  public static final dev.skinkit.contract.StyleField<dev.skinkit.contract.TypographyValue> TYPOGRAPHY;
+  public static final dev.skinkit.contract.StyleField<dev.skinkit.contract.DimensionValue> CORNER;
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.StateDomain {
+  public static final dev.skinkit.contract.StateDomain$Companion Companion;
+  public static final dev.skinkit.contract.StateDomain NORMAL;
+  public static final dev.skinkit.contract.StateDomain BUTTON;
+  public dev.skinkit.contract.StateDomain(java.util.Set<? extends dev.skinkit.contract.VisualState>, java.util.List<? extends dev.skinkit.contract.VisualState>);
+  public dev.skinkit.contract.StateDomain(java.util.Set, java.util.List, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final java.util.Set<dev.skinkit.contract.VisualState> getRequiredStates();
+  public final java.util.List<dev.skinkit.contract.VisualState> getPriority();
+  public final dev.skinkit.contract.VisualState resolve(java.util.Set<? extends dev.skinkit.contract.VisualState>);
+  public dev.skinkit.contract.StateDomain(java.util.Set<? extends dev.skinkit.contract.VisualState>);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.StateDomain$Companion {
+  public dev.skinkit.contract.StateDomain$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.StyleField<V> {
+  public dev.skinkit.contract.StyleField(java.lang.String, dev.skinkit.contract.FieldType<V>, boolean, boolean);
+  public dev.skinkit.contract.StyleField(java.lang.String, dev.skinkit.contract.FieldType, boolean, boolean, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final java.lang.String getId();
+  public final dev.skinkit.contract.FieldType<V> getType();
+  public final boolean getShared();
+  public final boolean getRequired();
+  public java.lang.String toString();
+  public dev.skinkit.contract.StyleField(java.lang.String, dev.skinkit.contract.FieldType<V>, boolean);
+  public dev.skinkit.contract.StyleField(java.lang.String, dev.skinkit.contract.FieldType<V>);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.StyleValues {
+  public static final dev.skinkit.contract.StyleValues$Companion Companion;
+  public final java.util.Set<dev.skinkit.contract.StyleField<?>> getFields();
+  public final <V> V get(dev.skinkit.contract.StyleField<V>, dev.skinkit.contract.VisualState);
+  public final <V> dev.skinkit.contract.Patch<V> patch(dev.skinkit.contract.StyleField<V>, dev.skinkit.contract.VisualState);
+  public final java.util.Set<dev.skinkit.contract.VisualState> states(dev.skinkit.contract.StyleField<?>);
+  public final java.lang.Object raw$skinkit_contract(dev.skinkit.contract.StyleField<?>, dev.skinkit.contract.VisualState);
+  public final boolean has(dev.skinkit.contract.StyleField<?>, dev.skinkit.contract.VisualState);
+  public static final dev.skinkit.contract.StyleValues$Builder builder();
+  public dev.skinkit.contract.StyleValues(java.util.Map, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.StyleValues$Builder {
+  public dev.skinkit.contract.StyleValues$Builder();
+  public final <V> dev.skinkit.contract.StyleValues$Builder put(dev.skinkit.contract.StyleField<V>, dev.skinkit.contract.VisualState, V);
+  public final <V> dev.skinkit.contract.StyleValues$Builder putShared(dev.skinkit.contract.StyleField<V>, V);
+  public final dev.skinkit.contract.StyleValues build();
+}
+Compiled from "Components.kt"
+public final class dev.skinkit.contract.StyleValues$Companion {
+  public final dev.skinkit.contract.StyleValues$Builder builder();
+  public dev.skinkit.contract.StyleValues$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "ThemeProvider.kt"
+public interface dev.skinkit.contract.Subscription extends java.lang.AutoCloseable {
+  public abstract void close();
+}
+Compiled from "ThemeProvider.kt"
+public interface dev.skinkit.contract.ThemeProvider {
+  public abstract dev.skinkit.contract.ThemeSnapshotInfo getSnapshot();
+  public abstract dev.skinkit.contract.ColorValue getColor(dev.skinkit.contract.ColorToken);
+  public abstract dev.skinkit.contract.TypographyValue getTypography(dev.skinkit.contract.TypographyToken);
+  public abstract dev.skinkit.contract.DimensionValue getDimension(dev.skinkit.contract.DimensionToken);
+  public abstract dev.skinkit.contract.DrawableValue getDrawable(dev.skinkit.contract.DrawableToken);
+  public abstract dev.skinkit.contract.IconValue getIcon(dev.skinkit.contract.IconToken);
+  public abstract dev.skinkit.contract.AnimationValue getAnimation(dev.skinkit.contract.AnimationToken);
+  public abstract <S extends dev.skinkit.contract.ComponentStyle> S getComponentStyle(dev.skinkit.contract.ComponentToken<S>);
+}
+Compiled from "ThemeProvider.kt"
+public interface dev.skinkit.contract.ThemeReadView extends dev.skinkit.contract.ThemeProvider,java.lang.AutoCloseable {
+  public abstract dev.skinkit.contract.VisualConfiguration getConfiguration();
+  public abstract void release();
+  public default void close();
+  public static void access$close$jd(dev.skinkit.contract.ThemeReadView);
+}
+Compiled from "ThemeProvider.kt"
+public final class dev.skinkit.contract.ThemeReadView$DefaultImpls {
+  public static void close(dev.skinkit.contract.ThemeReadView);
+}
+Compiled from "ThemeProvider.kt"
+public final class dev.skinkit.contract.ThemeSnapshotInfo {
+  public dev.skinkit.contract.ThemeSnapshotInfo(long, java.lang.String, java.lang.String, java.lang.String);
+  public final long getGeneration();
+  public final java.lang.String getThemeId();
+  public final java.lang.String getThemeVersion();
+  public final java.lang.String getContractVersion();
+  public final long component1();
+  public final java.lang.String component2();
+  public final java.lang.String component3();
+  public final java.lang.String component4();
+  public final dev.skinkit.contract.ThemeSnapshotInfo copy(long, java.lang.String, java.lang.String, java.lang.String);
+  public static dev.skinkit.contract.ThemeSnapshotInfo copy$default(dev.skinkit.contract.ThemeSnapshotInfo, long, java.lang.String, java.lang.String, java.lang.String, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Tokens.kt"
+public abstract class dev.skinkit.contract.ThemeToken {
+  public final java.lang.String getId();
+  public final dev.skinkit.contract.ValueKind getKind();
+  public final boolean getRequired();
+  public java.lang.String toString();
+  public dev.skinkit.contract.ThemeToken(java.lang.String, dev.skinkit.contract.ValueKind, boolean, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Values.kt"
+public interface dev.skinkit.contract.TintPolicy {
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.TintPolicy$Color implements dev.skinkit.contract.TintPolicy {
+  public dev.skinkit.contract.TintPolicy$Color(dev.skinkit.contract.ColorValue);
+  public final dev.skinkit.contract.ColorValue getColor();
+  public final dev.skinkit.contract.ColorValue component1();
+  public final dev.skinkit.contract.TintPolicy$Color copy(dev.skinkit.contract.ColorValue);
+  public static dev.skinkit.contract.TintPolicy$Color copy$default(dev.skinkit.contract.TintPolicy$Color, dev.skinkit.contract.ColorValue, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.TintPolicy$Original implements dev.skinkit.contract.TintPolicy {
+  public static final dev.skinkit.contract.TintPolicy$Original INSTANCE;
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.TokenRegistry {
+  public static final dev.skinkit.contract.TokenRegistry$Companion Companion;
+  public final java.lang.String getAppId();
+  public final java.util.List<dev.skinkit.contract.ContrastPair> getContrastPairs();
+  public final java.util.List<dev.skinkit.contract.ThemeToken> getTokens();
+  public final boolean contains(dev.skinkit.contract.ThemeToken);
+  public final void requireOwned(dev.skinkit.contract.ThemeToken);
+  public static final dev.skinkit.contract.TokenRegistry$Builder builder(java.lang.String);
+  public dev.skinkit.contract.TokenRegistry(java.lang.String, java.util.Map, java.util.List, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.TokenRegistry$Builder {
+  public dev.skinkit.contract.TokenRegistry$Builder(java.lang.String);
+  public final java.lang.String getAppId();
+  public final dev.skinkit.contract.ColorToken color(java.lang.String, boolean, dev.skinkit.contract.ColorRole);
+  public static dev.skinkit.contract.ColorToken color$default(dev.skinkit.contract.TokenRegistry$Builder, java.lang.String, boolean, dev.skinkit.contract.ColorRole, int, java.lang.Object);
+  public final dev.skinkit.contract.ColorToken color(java.lang.String, dev.skinkit.contract.ColorRole, boolean);
+  public static dev.skinkit.contract.ColorToken color$default(dev.skinkit.contract.TokenRegistry$Builder, java.lang.String, dev.skinkit.contract.ColorRole, boolean, int, java.lang.Object);
+  public final dev.skinkit.contract.TypographyToken typography(java.lang.String, boolean);
+  public static dev.skinkit.contract.TypographyToken typography$default(dev.skinkit.contract.TokenRegistry$Builder, java.lang.String, boolean, int, java.lang.Object);
+  public final dev.skinkit.contract.DimensionToken dimension(java.lang.String, boolean, dev.skinkit.contract.DimensionPurpose);
+  public static dev.skinkit.contract.DimensionToken dimension$default(dev.skinkit.contract.TokenRegistry$Builder, java.lang.String, boolean, dev.skinkit.contract.DimensionPurpose, int, java.lang.Object);
+  public final dev.skinkit.contract.DimensionToken dimension(java.lang.String, dev.skinkit.contract.DimensionPurpose, boolean);
+  public static dev.skinkit.contract.DimensionToken dimension$default(dev.skinkit.contract.TokenRegistry$Builder, java.lang.String, dev.skinkit.contract.DimensionPurpose, boolean, int, java.lang.Object);
+  public final dev.skinkit.contract.DrawableToken drawable(java.lang.String, boolean);
+  public static dev.skinkit.contract.DrawableToken drawable$default(dev.skinkit.contract.TokenRegistry$Builder, java.lang.String, boolean, int, java.lang.Object);
+  public final dev.skinkit.contract.IconToken icon(java.lang.String, boolean);
+  public static dev.skinkit.contract.IconToken icon$default(dev.skinkit.contract.TokenRegistry$Builder, java.lang.String, boolean, int, java.lang.Object);
+  public final dev.skinkit.contract.AnimationToken animation(java.lang.String, boolean);
+  public static dev.skinkit.contract.AnimationToken animation$default(dev.skinkit.contract.TokenRegistry$Builder, java.lang.String, boolean, int, java.lang.Object);
+  public final <S extends dev.skinkit.contract.ComponentStyle> dev.skinkit.contract.ComponentToken<S> component(java.lang.String, dev.skinkit.contract.ComponentSchema<S>, boolean);
+  public static dev.skinkit.contract.ComponentToken component$default(dev.skinkit.contract.TokenRegistry$Builder, java.lang.String, dev.skinkit.contract.ComponentSchema, boolean, int, java.lang.Object);
+  public final dev.skinkit.contract.TokenRegistry$Builder contrastPair(dev.skinkit.contract.ColorToken, dev.skinkit.contract.ColorToken, double);
+  public static dev.skinkit.contract.TokenRegistry$Builder contrastPair$default(dev.skinkit.contract.TokenRegistry$Builder, dev.skinkit.contract.ColorToken, dev.skinkit.contract.ColorToken, double, int, java.lang.Object);
+  public final dev.skinkit.contract.TokenRegistry build();
+  public final dev.skinkit.contract.ColorToken color(java.lang.String, boolean);
+  public final dev.skinkit.contract.ColorToken color(java.lang.String);
+  public final dev.skinkit.contract.ColorToken color(java.lang.String, dev.skinkit.contract.ColorRole);
+  public final dev.skinkit.contract.TypographyToken typography(java.lang.String);
+  public final dev.skinkit.contract.DimensionToken dimension(java.lang.String, boolean);
+  public final dev.skinkit.contract.DimensionToken dimension(java.lang.String);
+  public final dev.skinkit.contract.DimensionToken dimension(java.lang.String, dev.skinkit.contract.DimensionPurpose);
+  public final dev.skinkit.contract.DrawableToken drawable(java.lang.String);
+  public final dev.skinkit.contract.IconToken icon(java.lang.String);
+  public final dev.skinkit.contract.AnimationToken animation(java.lang.String);
+  public final <S extends dev.skinkit.contract.ComponentStyle> dev.skinkit.contract.ComponentToken<S> component(java.lang.String, dev.skinkit.contract.ComponentSchema<S>);
+  public final dev.skinkit.contract.TokenRegistry$Builder contrastPair(dev.skinkit.contract.ColorToken, dev.skinkit.contract.ColorToken);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.TokenRegistry$Companion {
+  public final dev.skinkit.contract.TokenRegistry$Builder builder(java.lang.String);
+  public dev.skinkit.contract.TokenRegistry$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.TypedFieldMapping<V, S extends dev.skinkit.contract.ComponentStyle, T extends dev.skinkit.contract.ComponentStyle> {
+  public dev.skinkit.contract.TypedFieldMapping(dev.skinkit.contract.ComponentToken<S>, dev.skinkit.contract.StyleField<V>, dev.skinkit.contract.ComponentToken<T>, dev.skinkit.contract.StyleField<V>);
+  public final dev.skinkit.contract.ComponentToken<S> getSource();
+  public final dev.skinkit.contract.StyleField<V> getSourceField();
+  public final dev.skinkit.contract.ComponentToken<T> getTarget();
+  public final dev.skinkit.contract.StyleField<V> getTargetField();
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.TypographyToken extends dev.skinkit.contract.ThemeToken {
+  public static final dev.skinkit.contract.TypographyToken$Companion Companion;
+  public dev.skinkit.contract.TypographyToken(java.lang.String, boolean, kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.TypographyToken$Companion {
+  public final dev.skinkit.contract.TypographyToken create$skinkit_contract(java.lang.String, boolean);
+  public dev.skinkit.contract.TypographyToken$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.TypographyValue {
+  public dev.skinkit.contract.TypographyValue(dev.skinkit.contract.FontRef, double, int, double);
+  public final dev.skinkit.contract.FontRef getFont();
+  public final double getFontSize();
+  public final int getWeight();
+  public final double getLineHeight();
+  public final double effectiveSize(double);
+  public final double effectiveLineHeight(double);
+  public final dev.skinkit.contract.FontRef component1();
+  public final double component2();
+  public final int component3();
+  public final double component4();
+  public final dev.skinkit.contract.TypographyValue copy(dev.skinkit.contract.FontRef, double, int, double);
+  public static dev.skinkit.contract.TypographyValue copy$default(dev.skinkit.contract.TypographyValue, dev.skinkit.contract.FontRef, double, int, double, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.ValidationReport {
+  public dev.skinkit.contract.ValidationReport(java.util.List<dev.skinkit.contract.Diagnostic>);
+  public final java.util.List<dev.skinkit.contract.Diagnostic> getDiagnostics();
+  public final boolean isComplete();
+  public final void requireComplete();
+}
+Compiled from "Tokens.kt"
+public final class dev.skinkit.contract.ValueKind extends java.lang.Enum<dev.skinkit.contract.ValueKind> {
+  public static final dev.skinkit.contract.ValueKind COLOR;
+  public static final dev.skinkit.contract.ValueKind TYPOGRAPHY;
+  public static final dev.skinkit.contract.ValueKind DIMENSION;
+  public static final dev.skinkit.contract.ValueKind DRAWABLE;
+  public static final dev.skinkit.contract.ValueKind ICON;
+  public static final dev.skinkit.contract.ValueKind ANIMATION;
+  public static final dev.skinkit.contract.ValueKind COMPONENT;
+  public final java.lang.String getPrefix();
+  public static dev.skinkit.contract.ValueKind[] values();
+  public static dev.skinkit.contract.ValueKind valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.ValueKind> getEntries();
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.ValuesKt {
+  public static final <K, V> java.util.Map<K, V> frozenMap(java.util.Map<K, ? extends V>);
+  public static final <T> java.util.List<T> frozenList(java.util.Collection<? extends T>);
+  public static final <T> java.util.Set<T> frozenSet(java.util.Collection<? extends T>);
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.Version implements java.lang.Comparable<dev.skinkit.contract.Version> {
+  public static final dev.skinkit.contract.Version$Companion Companion;
+  public dev.skinkit.contract.Version(int, int, int);
+  public final int getMajor();
+  public final int getMinor();
+  public final int getPatch();
+  public int compareTo(dev.skinkit.contract.Version);
+  public java.lang.String toString();
+  public final int component1();
+  public final int component2();
+  public final int component3();
+  public final dev.skinkit.contract.Version copy(int, int, int);
+  public static dev.skinkit.contract.Version copy$default(dev.skinkit.contract.Version, int, int, int, int, java.lang.Object);
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+  public static final dev.skinkit.contract.Version parse(java.lang.String);
+  public int compareTo(java.lang.Object);
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.Version$Companion {
+  public final dev.skinkit.contract.Version parse(java.lang.String);
+  public dev.skinkit.contract.Version$Companion(kotlin.jvm.internal.DefaultConstructorMarker);
+}
+Compiled from "Protocols.kt"
+public final class dev.skinkit.contract.VersionRange {
+  public dev.skinkit.contract.VersionRange(dev.skinkit.contract.Version, dev.skinkit.contract.Version);
+  public final dev.skinkit.contract.Version getMinimum();
+  public final dev.skinkit.contract.Version getMaximumExclusive();
+  public final boolean contains(dev.skinkit.contract.Version);
+  public final dev.skinkit.contract.Version component1();
+  public final dev.skinkit.contract.Version component2();
+  public final dev.skinkit.contract.VersionRange copy(dev.skinkit.contract.Version, dev.skinkit.contract.Version);
+  public static dev.skinkit.contract.VersionRange copy$default(dev.skinkit.contract.VersionRange, dev.skinkit.contract.Version, dev.skinkit.contract.Version, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.VisualConfiguration {
+  public dev.skinkit.contract.VisualConfiguration(dev.skinkit.contract.ColorMode, double, boolean);
+  public dev.skinkit.contract.VisualConfiguration(dev.skinkit.contract.ColorMode, double, boolean, int, kotlin.jvm.internal.DefaultConstructorMarker);
+  public final dev.skinkit.contract.ColorMode getColorMode();
+  public final double getFontScale();
+  public final boolean getReducedMotion();
+  public final dev.skinkit.contract.ColorMode component1();
+  public final double component2();
+  public final boolean component3();
+  public final dev.skinkit.contract.VisualConfiguration copy(dev.skinkit.contract.ColorMode, double, boolean);
+  public static dev.skinkit.contract.VisualConfiguration copy$default(dev.skinkit.contract.VisualConfiguration, dev.skinkit.contract.ColorMode, double, boolean, int, java.lang.Object);
+  public java.lang.String toString();
+  public int hashCode();
+  public boolean equals(java.lang.Object);
+  public dev.skinkit.contract.VisualConfiguration(dev.skinkit.contract.ColorMode, double);
+  public dev.skinkit.contract.VisualConfiguration(dev.skinkit.contract.ColorMode);
+  public dev.skinkit.contract.VisualConfiguration();
+}
+Compiled from "Values.kt"
+public final class dev.skinkit.contract.VisualState extends java.lang.Enum<dev.skinkit.contract.VisualState> {
+  public static final dev.skinkit.contract.VisualState NORMAL;
+  public static final dev.skinkit.contract.VisualState DISABLED;
+  public static final dev.skinkit.contract.VisualState PRESSED;
+  public static final dev.skinkit.contract.VisualState FOCUSED;
+  public static final dev.skinkit.contract.VisualState SELECTED;
+  public static final dev.skinkit.contract.VisualState HOVERED;
+  public static dev.skinkit.contract.VisualState[] values();
+  public static dev.skinkit.contract.VisualState valueOf(java.lang.String);
+  public static kotlin.enums.EnumEntries<dev.skinkit.contract.VisualState> getEntries();
+}

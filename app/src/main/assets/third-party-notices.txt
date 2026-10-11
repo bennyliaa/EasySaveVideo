@@ -711,12 +711,12 @@ Copyright 2018-2020 The JSpecify Authors.
 A1: Apache-2.0 license/attribution/NOTICE/modification obligations; final actual Release package review remains pending.
 
 
-dev.skinkit:skinkit-contract:0.0.1
-User-owned local publication; existing UI reuse authorized. No public open-source license assigned. External distribution ownership record remains unresolved. See SKINKIT_RECOVERY_PROVENANCE.json.
+dev.skinkit:skinkit-contract:1.0.0
+User-authorized external binary Kit1.0.0. Engineering license draft retained in skinkit-1.0.0-license.txt. No public open-source license assigned; production legal identity and publication remain separate gates.
 
 
-dev.skinkit:skinkit-default:0.0.1
-User-owned local publication; existing UI reuse authorized. No public open-source license assigned. External distribution ownership record remains unresolved. See SKINKIT_RECOVERY_PROVENANCE.json.
+dev.skinkit:skinkit-default:1.0.0
+User-authorized external binary Kit1.0.0. Engineering license draft retained in skinkit-1.0.0-license.txt. No public open-source license assigned; production legal identity and publication remain separate gates.
 
 
 

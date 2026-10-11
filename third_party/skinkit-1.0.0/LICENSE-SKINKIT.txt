@@ -1,0 +1,25 @@
+SkinKit 1.0.0 — engineering license draft, 2026-10-11
+Licensor: individual developer; legal name pending before store publication.
+
+The demo App is distributed by a one-time paid download. A lawful purchase
+includes extraction and commercial use of the binary SDK and documentation,
+and future updates of the SkinKit App, SDK and interface documentation without
+an additional export charge or in-app purchase. No support SLA is promised.
+
+SkinKit-owned bundled artwork and example materials may be integrated into
+commercial host applications and distributed as part of those applications.
+The artwork and example materials themselves may not be sold separately or
+redistributed for a separate fee, or used to build similar theme packs for
+commercial sale. Ordinary commercial host applications and their integration
+or adaptation wrappers remain permitted; this restriction is not a general
+prohibition on theme libraries or SDKs.
+These restrictions do not override rights already granted by a third-party
+license, including existing CC0 and Apache-2.0 materials. The original notices,
+license texts and dependency inventory remain applicable. Generated artwork
+is not represented as exclusive or guaranteed to support exclusive rights.
+
+This engineering draft records the project owner's approved commercial scope.
+It has not been represented as an external legal review. Production store
+identity, store terms and production signing remain separate publication gates.
+The binary package contains host integration examples, not SDK implementation
+source. Binary delivery and paid store acquisition are not a DRM guarantee.
