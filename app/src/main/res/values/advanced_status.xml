@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="advanced_copy_1">Video tools</string>
+    <string name="advanced_copy_2">Back to library</string>
+    <string name="advanced_copy_3">Cancel / safely stop</string>
+    <string name="advanced_copy_4">Editing and submission are unavailable while the app is in the background. Cancel and Back remain available.</string>
+    <string name="advanced_copy_6">No videos are available to add.</string>
+    <string name="advanced_copy_7">Output quality</string>
+    <string name="advanced_copy_8">Add library video</string>
+    <string name="advanced_copy_9">Crop video</string>
+    <string name="advanced_copy_10">The source display orientation has not been verified. Cropping cannot be confirmed yet.</string>
+    <string name="advanced_copy_11">Recording</string>
+    <string name="advanced_copy_12">Back to save tasks</string>
+    <string name="advanced_copy_13">Authorize each recording on the system screen</string>
+    <string name="advanced_copy_14">Recording mode</string>
+    <string name="advanced_copy_15">Choose the audio source for this recording</string>
+    <string name="advanced_copy_16">Recording requires the corresponding entitlements and ready storage and recording resources. This development build has no real purchase flow.</string>
+    <string name="advanced_copy_17">Cancel this authorization request</string>
+    <string name="advanced_copy_18">Internal audio permission was not granted. Recording will not automatically switch to silent mode.</string>
+    <string name="advanced_copy_19">Cancel</string>
+    <string name="advanced_copy_20">System-selected capture scope: unknown</string>
+    <string name="advanced_copy_21">Pause</string>
+    <string name="advanced_copy_22">Resume limit reached; stop and save</string>
+    <string name="advanced_copy_23">Resume recording</string>
+    <string name="advanced_copy_24">Stop and verify before saving</string>
+    <string name="advanced_copy_25">Discard this recording without saving</string>
+    <string name="advanced_copy_26">Capture is closed. Local validation, submission and publication are still required. Check the result in save tasks.</string>
+    <string name="editor_status_0">Ready: edit parameters to create a new ordinary library video.</string>
+    <string name="editor_status_1">Verifying source format and display orientation; output has not started.</string>
+    <string name="editor_status_2">Checking sources, entitlements, space and resources; not complete yet.</string>
+    <string name="editor_status_3">Processing video. Progress is unknown. Keep the app in the foreground.</string>
+    <string name="editor_status_4">Verifying the new video; it is not in the library yet.</string>
+    <string name="editor_status_5">Publishing to the ordinary library; completion is not confirmed yet.</string>
+    <string name="editor_status_6">Safe stop requested. Waiting for actual exit; originals are retained.</string>
+    <string name="editor_status_7">Waiting for native media resources to exit. Not complete; a new task cannot start.</string>
+    <string name="editor_status_8">Resource release or the result is unconfirmed. Editing is unavailable; follow the instructions below.</string>
+    <string name="editor_status_9">The new video was verified and added to the library. Originals are retained.</string>
+    <string name="editor_status_10">Library publication is unconfirmed. The result cannot be previewed as completed.</string>
+    <string name="editor_status_11">Editing did not complete. Originals are retained.</string>
+    <string name="editor_status_12">Editing stopped safely. Originals are retained.</string>
+</resources>

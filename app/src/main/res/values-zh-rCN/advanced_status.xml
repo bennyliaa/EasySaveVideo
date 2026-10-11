@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="advanced_copy_1">视频工具 · M6-A</string>
+    <string name="advanced_copy_2">返回媒体库</string>
+    <string name="advanced_copy_3">取消 / 安全停止</string>
+    <string name="advanced_copy_4">应用不在前台，编辑和提交暂不可用。取消与返回仍可使用。</string>
+    <string name="advanced_copy_6">当前没有可添加的视频。</string>
+    <string name="advanced_copy_7">输出质量</string>
+    <string name="advanced_copy_8">添加媒体库视频</string>
+    <string name="advanced_copy_9">画面裁切</string>
+    <string name="advanced_copy_10">来源显示方向尚未验证，暂不能确认裁切。</string>
+    <string name="advanced_copy_11">③ 录制</string>
+    <string name="advanced_copy_12">返回保存任务</string>
+    <string name="advanced_copy_13">每次录制都由你在系统页面授权</string>
+    <string name="advanced_copy_14">录制方式</string>
+    <string name="advanced_copy_15">请选择本次声音来源</string>
+    <string name="advanced_copy_16">开始录制需要相应权益，且存储与录制资源必须就绪。本开发版本没有真实购买入口。</string>
+    <string name="advanced_copy_17">放弃本次授权请求</string>
+    <string name="advanced_copy_18">内部声音权限未允许。不会自动改为无声音。</string>
+    <string name="advanced_copy_19">取消</string>
+    <string name="advanced_copy_20">系统选择的捕获范围：未知</string>
+    <string name="advanced_copy_21">暂停</string>
+    <string name="advanced_copy_22">已达恢复上限，停止并保存</string>
+    <string name="advanced_copy_23">继续录制</string>
+    <string name="advanced_copy_24">停止并验证保存</string>
+    <string name="advanced_copy_25">放弃本次录制，不保存</string>
+    <string name="advanced_copy_26">捕获已关闭；仍需本地校验、提交和发布。请在保存任务查看结果。</string>
+    <string name="editor_status_0">就绪：编辑参数后创建一个新的普通媒体库视频。</string>
+    <string name="editor_status_1">正在验证来源格式和显示方向，尚未开始输出…</string>
+    <string name="editor_status_2">正在检查来源、权益、空间与资源，尚未完成…</string>
+    <string name="editor_status_3">正在处理视频，进度未知。请保持应用在前台。</string>
+    <string name="editor_status_4">正在验证新视频，尚未入库…</string>
+    <string name="editor_status_5">正在提交到普通媒体库，尚未确认完成…</string>
+    <string name="editor_status_6">已请求安全停止，正在等待实际退出；原件保留。</string>
+    <string name="editor_status_7">正在等待原生媒体资源实际退出；仍未完成，不能开始新任务。</string>
+    <string name="editor_status_8">媒体资源退出或结果状态尚未确认，编辑暂不可用。请按下方提示处理。</string>
+    <string name="editor_status_9">新视频已验证并入库，原件保留。</string>
+    <string name="editor_status_10">结果尚未确认入库，不能预览为已完成视频。</string>
+    <string name="editor_status_11">本次编辑未完成，原件保留。</string>
+    <string name="editor_status_12">本次编辑已安全停止，原件保留。</string>
+</resources>

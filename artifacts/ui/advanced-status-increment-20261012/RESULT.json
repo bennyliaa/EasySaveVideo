@@ -1,0 +1,44 @@
+{
+  "base_source_commit": "d9bdf34567bf2d138e796a50560419d359385cf4",
+  "resource_pairs": 38,
+  "resource_check": "PASS",
+  "debug_release_compile": "PASS",
+  "lint": {
+    "debug": {
+      "errors_fatal": 0,
+      "warnings": 57
+    },
+    "release": {
+      "errors_fatal": 0,
+      "warnings": 57
+    }
+  },
+  "jvm_reports": [
+    {
+      "name": "com.easysavevideo.app.editor.ui.EditorPresentationTest",
+      "tests": "17",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.editor.ui.EditorStatusResourcesTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.recording.ui.RecordingPresentationTest",
+      "tests": "19",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "new_apk_build": "NOT_RUN",
+  "upload": "NOT_RUN",
+  "device_acceptance": "NOT_RUN",
+  "accessibility_device_acceptance": "NOT_RUN",
+  "scope": "Incremental editor phase resources and selected recording/editor controls. Other runtime notices, entitlement summaries and advanced copy remain partial."
+}
