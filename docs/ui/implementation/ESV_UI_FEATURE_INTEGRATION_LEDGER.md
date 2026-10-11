@@ -288,9 +288,9 @@ real media, Android rendering, device or APK acceptance is inferred from these t
 
 ### Remaining source gaps and latest-package acceptance
 
-- Wide Library still uses its existing modal detail view rather than simultaneous
-  folder/list/detail panes. Header/grid typography and full docs/ui pixel parity
-  are not closed by this final bounded wiring group.
+- Updated by the next local source group: Wide Library list/detail panes are
+  SOURCE IMPLEMENTED. Header/grid typography and full docs/ui pixel parity
+  remain unaccepted; the earlier modal-only source gap is now closed.
 - Discovery thumbnails remain theme placeholders until an admitted source/reader
   contract exists; no network loader or permission is invented to fill them.
 - A future authorized package must have versionCode greater than4, compatible
@@ -315,3 +315,43 @@ real media, Android rendering, device or APK acceptance is inferred from these t
 This is a recoverable source checkpoint with finite validation, not final phone,
 performance, public-web or complete design acceptance. No device/APK/private-media
 operation was performed in this group.
+
+
+## Local follow-up: wide Library list/detail panes
+
+Baseline08ec37b5fbf759a78f4e2198cad6f54b33469d42. Actual available width/height,
+SkinKit spacing and font scale decide whether the existing folder/media list and
+shared metadata/action detail body appear side by side. Large fonts or low height
+fall back to Compact's existing modal path. One runtime selection and one lazy-grid
+state are shared; no first/neighbor item is selected, and resize issues no catalog,
+reader, preview, edit or output command. Detail is metadata only and independently
+scrolls. Back clears selection before folder/route navigation.
+
+Explicit Wide refresh of the same first-page query retains the chosen stable ID.
+The accepted current snapshot updates revision/generation/name/counts. Missing or
+non-READY selection keeps that identity as missing, displays paired feedback and
+offers only explicit close; no adjacent-row fallback. Failed/loading snapshots
+offer no media actions. Current-reference consumption is unchanged and single-use;
+rename/move/delete admission also requires the exact current snapshot. Dismissal,
+background or changed query clears identity; stale async results cannot select it
+again. Compact default refresh still clears selection. Deletion/name consent dialogs
+stay modal and are never restored or rebound by refresh.
+
+The previously admitted explicit thumbnail load/visible-item/cancel/cache/native
+release policy is reused unchanged. A wide metadata selection is not a modal;
+actual consent dialogs/move/busy/loading still suspend thumbnails. No second
+thumbnail renderer, private-media read, network loader, scan, permission or new
+dependency. Discovery stays a truthful placeholder pending admitted Provider URL/
+reader/network contracts.
+
+Validation: 38 scoped JVM passes, dual Kotlin compile PASS, dual lint {'debug': {'Warning': 58, 'Hint': 8}, 'release': {'Warning': 58, 'Hint': 8}};
+four paired resources and strict runtime graph90. Source proof records unchanged
+native modules, reference consumption, durable mutations and shared detail actions.
+Evidence: artifacts/ui/library-panels-20261012. This is model/source acceptance only.
+Actual render/resize/font200/TalkBack, native media release, Tools/export/recording,
+latest-package acceptance and100-sample public A/B validation remain NOT RUN;
+phone CPU/RAM/power/network/total time remain NOT MEASURED. Future native tests
+need explicitly authorized synthetic local media, existing compatible Tools and
+user-selected export destinations. Code4 stays frozen, minSdk31 unchanged, no APK
+or device operation. This checkpoint is local only: prior main push rejection was
+respected; no push or alternate upload was attempted.

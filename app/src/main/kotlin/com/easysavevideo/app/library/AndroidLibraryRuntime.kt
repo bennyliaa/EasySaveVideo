@@ -83,10 +83,10 @@ class AndroidLibraryRuntime internal constructor(
         if (value) refresh() else cancelDeletePoll()
     }
 
-    fun refresh() {
+    fun refresh(preserveSelection: Boolean = false) {
         ui.requireCurrentThread()
         if (!available() || state.busy) return
-        load(state.query.copy(cursor = null), retryPending = true)
+        load(state.query.copy(cursor = null), retryPending = true, preserveSelection = preserveSelection)
     }
 
     fun search(text: String) {
@@ -186,7 +186,7 @@ class AndroidLibraryRuntime internal constructor(
     fun rename() {
         ui.requireCurrentThread()
         if (!available() || state.busy) return
-        val selected = state.selected ?: return
+        val selected = currentActionSelection() ?: return
         state = state.copy(editor = LibraryNameEditor(selected, state.query.folderId, selected.name), deletion = null)
     }
 
@@ -224,7 +224,7 @@ class AndroidLibraryRuntime internal constructor(
     fun startMove() {
         ui.requireCurrentThread()
         if (!available() || state.busy) return
-        val selected = state.selected ?: return
+        val selected = currentActionSelection() ?: return
         state = state.copy(move = LibraryMoveSelection(selected, state.query.folderId), selected = null, editor = null, deletion = null)
         load(state.query.copy(folderId = null, text = "", cursor = null))
     }
@@ -259,7 +259,7 @@ class AndroidLibraryRuntime internal constructor(
     fun requestDelete() {
         ui.requireCurrentThread()
         if (!available() || state.busy) return
-        val selected = state.selected ?: return
+        val selected = currentActionSelection() ?: return
         if (state.pendingDeletes.size >= LibraryLimits.MAX_DELETE_BATCH) {
             state = state.copy(notice = "已有较多删除等待清理，请等待完成后再删除其他项目。")
             return
@@ -302,14 +302,14 @@ class AndroidLibraryRuntime internal constructor(
     private data class Loaded(val page: LibraryPage, val folder: LibraryFolder?, val folders: List<LibraryFolder>, val pending: Set<String>, val deleteReport: PendingDeleteReport?, val deleteUnknown: Boolean)
     private data class MutationResult(val pendingDeleteId: String? = null)
 
-    private fun load(query: LibraryQuery, retryPending: Boolean = false) {
+    private fun load(query: LibraryQuery, retryPending: Boolean = false, preserveSelection: Boolean = false) {
         invalidateRead()
         if (!available()) return
         val token = generation
         val pending = state.pendingDeletes
         val sameQuery = query == state.query
         val sameFolder = query.folderId == state.query.folderId
-        state = state.copy(query = query, loading = true, ready = sameQuery && state.ready, selected = null, editor = null, deletion = null,
+        state = state.copy(query = query, loading = true, ready = sameQuery && state.ready, selected = state.selected.takeIf { preserveSelection && sameQuery }, editor = null, deletion = null,
             items = if (sameQuery) state.items else emptyList(), nextCursor = if (sameQuery) state.nextCursor else null,
             folders = if (sameFolder) state.folders else emptyList(), folder = if (sameFolder) state.folder else null,
             folderPage = if (sameFolder) state.folderPage else 0)
@@ -336,6 +336,7 @@ class AndroidLibraryRuntime internal constructor(
                 loaded.fold(onSuccess = { result ->
                     state = state.copy(items = result.page.items.toList(), folders = result.folders,
                         folder = result.folder, nextCursor = result.page.nextCursor, loading = false, ready = true,
+                        selected = libraryCurrentDetail(state.selected, result.page.items, result.folders) ?: state.selected,
                         folderPage = state.folderPage.coerceAtMost((result.folders.size - 1).coerceAtLeast(0) / FOLDER_PAGE_SIZE),
                         pendingDeletes = result.pending,
                         pendingDeleteCount = result.deleteReport?.pending?.coerceAtLeast(result.pending.size) ?: state.pendingDeleteCount.coerceAtLeast(result.pending.size),
@@ -408,6 +409,12 @@ class AndroidLibraryRuntime internal constructor(
     }
 
     private fun cancelDeletePoll() { deletePoll?.let(ui::remove); deletePoll = null }
+    private fun currentActionSelection(): LibrarySelection? {
+        if (!state.ready || state.loading) return null
+        val selected = state.selected ?: return null
+        if (libraryCurrentDetail(selected, state.items, state.folders) != selected) { staleSelection(); return null }
+        return selected
+    }
     private fun staleSelection() { state = state.copy(selected = null, editor = null, deletion = null, notice = "所选项目已变化，请重新打开并确认。") }
     private fun available() = !disposed && state.foreground
     private fun invalidateRead() {

@@ -1,0 +1,155 @@
+{
+  "status": "PASS_SOURCE_AND_SCOPED_MODELS_ONLY",
+  "base": "08ec37b5fbf759a78f4e2198cad6f54b33469d42",
+  "total_passed": 38,
+  "tests": [
+    {
+      "name": "com.easysavevideo.app.library.LibraryExportSelectionTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryPanelPolicyTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryPresentationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryRuntimeTest",
+      "tests": "23",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryThumbnailUiPolicyTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "dual_kotlin_compile": "PASS",
+  "lint": {
+    "debug": {
+      "Warning": 58,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 58,
+      "Hint": 8
+    }
+  },
+  "strict_runtime_artifacts": 90,
+  "new_dependencies": 0,
+  "paired_resource_keys": 4,
+  "source_proof": [
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+      "sha256": "542f31f5e2894bd8e05a2815cfdbe8ef7e76b0999949b808acefa3ec50e880bb",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/AndroidLibraryThumbnails.kt",
+      "sha256": "126010a544e0743fcde164a7005421ff46dff37b59f8fe55110ab40051863a7e",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/LibraryThumbnail.kt",
+      "sha256": "2a85c30651f0bb5a2c53e89bfb036630f5a6ed94e9c234e8714968e9f17b019a",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/LibraryThumbnailUiPolicy.kt",
+      "sha256": "ef391c2f76782dd61e88c496d0f07af10bfde7018453fde6ed14a5e6390ed948",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/OrdinaryMediaNativeResources.kt",
+      "sha256": "09046cd00ead9ca59151bea801e93e2bd620bedb02730edbcc37234902e65544",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "library/src/main/kotlin/com/easysavevideo/library/thumbnail/BoundedThumbnailSession.kt",
+      "sha256": "6427927e42ee1f47afa41dbfc8026dd80ba3d3c24515b93f103077949463cb09",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/AndroidLibraryRuntime.kt",
+      "function": "takeSelectedReadRef",
+      "sha256": "a26020df36cc85c146daa21274efb88c6c26b9a392bad42dd521aa12db7b4e6e",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/AndroidLibraryRuntime.kt",
+      "function": "confirmDelete",
+      "sha256": "f1768162565ca92cc142e47596c220aaa5b0469518fc8f24bd1e82328ace73ff",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/AndroidLibraryRuntime.kt",
+      "function": "confirmMove",
+      "sha256": "a46712ec3f2961ea434cebbba3fdd9ce10dab0b7fad34017543603e7e9bfac7a",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/AndroidLibraryRuntime.kt",
+      "function": "submitName",
+      "sha256": "31684a8241d17baeaac7a90d1e0a6016d91ef252bd7900f752557a5fcec8ff9c",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/AndroidLibraryRuntime.kt",
+      "function": "mutate",
+      "sha256": "aff9e6a2478134b0d515ba3aede23c70397bf2366e298063a17fdab86d0dcd8b",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/AndroidLibraryRuntime.kt",
+      "function": "setForeground",
+      "sha256": "e27fcd0531a5dce26a92107604f8f06f9767a87cc760788c33cde39124ebe489",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/AndroidLibraryRuntime.kt",
+      "function": "close",
+      "sha256": "38203c0e379e9b56ef29eaae185dc973f29409a6b7ab92628fdf1d921e349058",
+      "unchanged_from": "08ec37b5fbf759a78f4e2198cad6f54b33469d42"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/LibraryScreen.kt",
+      "section": "shared detail metadata/actions body",
+      "comparison": "identical after indentation normalization",
+      "sha256": "aad0684e0427b123746f62c07f52ecb9180e54cfcfc282047bdd688eff8d6f24"
+    }
+  ],
+  "semantics": [
+    "expanded uses actual width/height/font-scale budget; compact uses existing modal",
+    "same-query explicit wide refresh retains stable ID, resolves latest current metadata; missing remains missing",
+    "default refresh/search/sort/page/folder switches keep prior clear-selection behavior",
+    "new user dismissal/background invalidates retained selection; no automatic reader/task/output/permission",
+    "existing explicit thumbnail opt-in/viewport/cache/cancel gates reused; side detail is metadata only"
+  ],
+  "not_run": [
+    "Android window/layout/font200/TalkBack/resize rendering",
+    "native thumbnail/player/reader/release",
+    "actual export/edit/recording",
+    "device/new APK acceptance",
+    "public sources and labelled100 A/B benchmark"
+  ],
+  "not_measured": [
+    "phone CPU/RAM/power/network/total time"
+  ],
+  "remote_push": "NOT_RUN; prior auto-review rejection respected; local checkpoint only",
+  "device_apk_private_media_operations": 0
+}

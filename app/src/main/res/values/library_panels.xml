@@ -1,0 +1,6 @@
+<resources>
+    <string name="library_detail_heading">Details</string>
+    <string name="library_detail_select">Select an item to view its details.</string>
+    <string name="library_detail_waiting">Waiting for the current catalog snapshot.</string>
+    <string name="library_detail_missing">Selected item is no longer in this snapshot. Select another item explicitly.</string>
+</resources>

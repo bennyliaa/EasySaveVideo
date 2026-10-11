@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.window.Dialog
 import com.easysavevideo.app.theme.*
 import androidx.compose.ui.res.stringResource
@@ -72,177 +73,214 @@ fun LibraryScreen(
             thumbnailAdmissionReady = !thumbnailAdmissionFenced
         }
     }
-    val thumbnailEnabled = libraryThumbnailAdmission(thumbnailsRequested, state.foreground, state.ready,
-        state.busy, state.loading, state.selected != null || state.deletion != null || state.editor != null,
-        state.move != null, thumbnailAdmissionReady)
-    SideEffect { thumbnails?.updatePage(state.items, enabled = thumbnailEnabled) }
     BackHandler {
         when {
+            state.deletion != null -> runtime.cancelDelete()
+            state.editor != null -> runtime.cancelEditor()
+            state.selected != null -> runtime.dismissSelection()
             state.move != null -> runtime.cancelMove()
             state.query.folderId != null -> runtime.up()
             else -> onBack()
         }
     }
     EsvBackdrop(Modifier.fillMaxSize()) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-            LazyVerticalGrid(
-                state = gridState,
-                columns = if (grid && state.move == null) GridCells.Adaptive(240.dp) else GridCells.Fixed(1),
-                modifier = Modifier.widthIn(max = 1_200.dp).fillMaxSize(),
-                contentPadding = PaddingValues(v.spacingMedium),
-                horizontalArrangement = Arrangement.spacedBy(v.spacingMedium),
-                verticalArrangement = Arrangement.spacedBy(v.spacingMedium),
-            ) {
-                item(key = "header", span = { GridItemSpan(maxLineSpan) }) {
-                    Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                        EsvText(stringResource(R.string.flow_libraryscreen_0), style = v.titleTextStyle)
-                        Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                            EsvButton(stringResource(R.string.flow_libraryscreen_1), onClick = onBack)
-                            EsvButton(stringResource(R.string.flow_libraryscreen_2), onClick = runtime::unavailableVault, enabled = false)
-                            EsvButton(stringResource(R.string.flow_libraryscreen_3), onClick = runtime::refresh, enabled = state.foreground && !state.busy && !state.loading)
-                        }
-                        EsvText(stringResource(R.string.flow_libraryscreen_4), style = v.captionTextStyle, color = v.colors.muted)
-                        EsvText(stringResource(R.string.flow_libraryscreen_5), style = v.captionTextStyle, color = v.colors.muted)
-                        if (thumbnailAdmissionFenced) EsvText(stringResource(R.string.flow_libraryscreen_6), style = v.captionTextStyle, color = v.colors.error)
-                        else if (thumbnailsRequested && state.foreground && !thumbnailAdmissionReady) EsvText(stringResource(R.string.flow_libraryscreen_7), style = v.captionTextStyle, color = v.colors.muted)
-                        EsvButton(stringResource(if (thumbnailsRequested) R.string.thumbnail_stop else R.string.thumbnail_load_visible),
-                            onClick = { thumbnailsRequested = !thumbnailsRequested }, enabled = interactive && state.move == null && thumbnails != null)
-                        if (thumbnails == null) EsvText(stringResource(R.string.thumbnail_module_unavailable), style = v.captionTextStyle, color = v.colors.muted)
-                        exports?.let { LibraryExportStatus(it, state.foreground) }
-                        if (state.move == null) {
-                            LibraryField(state.query.text, runtime::search, stringResource(R.string.flow_library_search), enabled = state.foreground && !state.busy)
-                            Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                EsvButton(stringResource(R.string.flow_sort_name) + if (state.query.sort == LibrarySort.NAME) " ✓" else "",
-                                    { runtime.sort(LibrarySort.NAME) }, enabled = interactive, modifier = Modifier.weight(1f))
-                                EsvButton(stringResource(R.string.flow_sort_date) + if (state.query.sort == LibrarySort.DATE) " ✓" else "",
-                                    { runtime.sort(LibrarySort.DATE) }, enabled = interactive, modifier = Modifier.weight(1f))
-                            }
-                            Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                EsvButton(sortLabel(LibrarySort.DURATION, state.query.sort), { runtime.sort(LibrarySort.DURATION) }, enabled = interactive, modifier = Modifier.weight(1f))
-                                EsvButton(sortLabel(LibrarySort.SIZE, state.query.sort), { runtime.sort(LibrarySort.SIZE) }, enabled = interactive, modifier = Modifier.weight(1f))
-                            }
-                            Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                EsvButton(if (state.query.direction == SortDirection.DESCENDING) "降序 ↓" else "升序 ↑", runtime::reverseSort, enabled = interactive)
-                                EsvButton(stringResource(if (grid) R.string.flow_list else R.string.flow_grid), { grid = !grid })
-                                EsvButton(stringResource(R.string.flow_libraryscreen_8), runtime::createFolder, enabled = interactive)
-                            }
-                        }
-                        EsvText(if (state.query.folderId == null) "位置：媒体库根目录" else "位置：${state.folder?.displayName ?: "正在读取文件夹…"}", style = v.titleTextStyle)
-                        if (state.query.folderId != null) Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                            EsvButton(stringResource(R.string.flow_libraryscreen_9), runtime::up, enabled = interactive)
-                            EsvButton(stringResource(R.string.flow_libraryscreen_10), { runtime.enterFolder(null) }, enabled = interactive)
-                        }
-                        state.move?.let { move ->
-                            EsvText("移动：${move.target.name}")
-                            EsvText(stringResource(R.string.flow_libraryscreen_12), style = v.captionTextStyle, color = v.colors.muted)
-                            EsvButton(stringResource(R.string.flow_libraryscreen_13), runtime::confirmMove,
-                                enabled = interactive && !(move.target is LibrarySelection.Folder && move.target.id == state.query.folderId), modifier = Modifier.fillMaxWidth())
-                            EsvButton(stringResource(R.string.flow_libraryscreen_14), runtime::cancelMove, enabled = !state.busy)
-                        }
-                        if (state.busy) EsvText(stringResource(R.string.flow_libraryscreen_15), color = v.colors.muted)
-                        else if (state.loading) EsvText(stringResource(R.string.flow_libraryscreen_16), color = v.colors.muted)
-                        else if (!state.ready) EsvText(stringResource(R.string.flow_libraryscreen_17), color = v.colors.muted)
-                        state.notice?.let {
-                            EsvText(it, style = v.captionTextStyle)
-                            EsvButton(stringResource(R.string.flow_libraryscreen_18), runtime::dismissNotice)
-                        }
-                        if (state.pendingDeleteCount > 0) EsvText("${state.pendingDeleteCount} 个已确认删除的项目仍待清理；尚未完成。", color = v.colors.error, style = v.captionTextStyle)
-                    }
-                }
-                if (state.folders.isNotEmpty()) {
-                    item(key = "folder_header", span = { GridItemSpan(maxLineSpan) }) {
-                        EsvText("文件夹（${state.folders.size}）", style = v.titleTextStyle)
-                    }
-                    items(state.folders.drop(state.folderPage * AndroidLibraryRuntime.FOLDER_PAGE_SIZE).take(AndroidLibraryRuntime.FOLDER_PAGE_SIZE), key = { "folder:${it.folderId}" }, span = { GridItemSpan(maxLineSpan) }) { folder ->
-                        LibraryCard {
-                            EsvText(folder.displayName, style = v.titleTextStyle, maxLines = 2)
-                            EsvText("${folder.itemCount} 个视频 · ${folder.childFolderCount} 个子文件夹", style = v.captionTextStyle, color = v.colors.muted)
-                            Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                EsvButton(stringResource(R.string.flow_libraryscreen_22), { runtime.enterFolder(folder.folderId) }, enabled = interactive)
-                                if (state.move == null) EsvButton(stringResource(R.string.flow_libraryscreen_23), { runtime.select(folder) }, enabled = interactive)
-                            }
-                        }
-                    }
-                    item(key = "folder_paging", span = { GridItemSpan(maxLineSpan) }) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                            EsvButton(stringResource(R.string.flow_libraryscreen_24), { runtime.folderPage(state.folderPage - 1) }, enabled = interactive && state.folderPage > 0)
-                            EsvButton(stringResource(R.string.flow_libraryscreen_25), { runtime.folderPage(state.folderPage + 1) }, enabled = interactive && (state.folderPage + 1) * AndroidLibraryRuntime.FOLDER_PAGE_SIZE < state.folders.size)
-                        }
-                    }
-                }
-                if (state.move == null) {
-                    item(key = "media_header", span = { GridItemSpan(maxLineSpan) }) {
-                        EsvText(if (state.query.text.isEmpty()) "视频" else "当前文件夹搜索结果", style = v.titleTextStyle)
-                    }
-                    if (state.ready && !state.loading && state.items.isEmpty()) item(key = "empty_media", span = { GridItemSpan(maxLineSpan) }) {
-                        EsvText(if (state.query.text.isEmpty()) "此文件夹暂无已入库视频。" else stringResource(R.string.flow_library_no_match), color = v.colors.muted)
-                    }
-                    items(state.items, key = { "media:${it.itemId}" }) { media ->
-                        LibraryCard {
-                            thumbnails?.let { LibraryThumbnail(media, it, Modifier.fillMaxWidth(),
-                                visible = thumbnailEnabled && media.itemId in visibleThumbnailIds) }
-                            EsvText(media.displayName, style = v.titleTextStyle, maxLines = 2)
-                            EsvText("MP4 · ${libraryDuration(media.durationMillis)} · ${libraryBytes(media.sizeBytes)}", style = v.captionTextStyle)
-                            EsvText(libraryResolution(media), style = v.captionTextStyle, color = v.colors.muted)
-                            EsvText(libraryDate(media), style = v.captionTextStyle, color = v.colors.muted)
-                            EsvButton(stringResource(R.string.flow_libraryscreen_27), { runtime.select(media) }, enabled = interactive, modifier = Modifier.fillMaxWidth())
-                        }
-                    }
-                    item(key = "media_paging", span = { GridItemSpan(maxLineSpan) }) {
+        BoxWithConstraints(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+            val layout = libraryPanelLayout(maxWidth.value, maxHeight.value, LocalDensity.current.fontScale, v.spacingMedium.value)
+            val expanded = layout.expanded
+            val thumbnailEnabled = libraryThumbnailAdmission(thumbnailsRequested, state.foreground, state.ready,
+                state.busy, state.loading, (!expanded && state.selected != null) || state.deletion != null || state.editor != null,
+                state.move != null, thumbnailAdmissionReady)
+            SideEffect { thumbnails?.updatePage(state.items, enabled = thumbnailEnabled) }
+            Row(Modifier.widthIn(max = if (expanded) maxWidth else 1_200.dp).fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
+                LazyVerticalGrid(
+                    state = gridState,
+                    columns = if (grid && state.move == null) GridCells.Adaptive(240.dp) else GridCells.Fixed(1),
+                    modifier = Modifier.weight(1f).fillMaxHeight(),
+                    contentPadding = PaddingValues(v.spacingMedium),
+                    horizontalArrangement = Arrangement.spacedBy(v.spacingMedium),
+                    verticalArrangement = Arrangement.spacedBy(v.spacingMedium),
+                ) {
+                    item(key = "header", span = { GridItemSpan(maxLineSpan) }) {
                         Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                            EsvText("第 ${(state.query.cursor?.offset ?: 0) / state.query.pageSize + 1} 页 · 每页最多 ${state.query.pageSize} 个视频", style = v.captionTextStyle, color = v.colors.muted)
+                            EsvText(stringResource(R.string.flow_libraryscreen_0), style = v.titleTextStyle)
                             Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                EsvButton(stringResource(R.string.flow_libraryscreen_29), runtime::previousPage, enabled = interactive && state.query.cursor != null)
-                                EsvButton(stringResource(R.string.flow_libraryscreen_30), runtime::nextPage, enabled = interactive && state.nextCursor != null)
+                                EsvButton(stringResource(R.string.flow_libraryscreen_1), onClick = onBack)
+                                EsvButton(stringResource(R.string.flow_libraryscreen_2), onClick = runtime::unavailableVault, enabled = false)
+                                EsvButton(stringResource(R.string.flow_libraryscreen_3), onClick = { runtime.refresh(preserveSelection = expanded) }, enabled = state.foreground && !state.busy && !state.loading)
                             }
-                            EsvText(stringResource(R.string.flow_libraryscreen_31), style = v.captionTextStyle, color = v.colors.muted)
+                            EsvText(stringResource(R.string.flow_libraryscreen_4), style = v.captionTextStyle, color = v.colors.muted)
+                            EsvText(stringResource(R.string.flow_libraryscreen_5), style = v.captionTextStyle, color = v.colors.muted)
+                            if (thumbnailAdmissionFenced) EsvText(stringResource(R.string.flow_libraryscreen_6), style = v.captionTextStyle, color = v.colors.error)
+                            else if (thumbnailsRequested && state.foreground && !thumbnailAdmissionReady) EsvText(stringResource(R.string.flow_libraryscreen_7), style = v.captionTextStyle, color = v.colors.muted)
+                            EsvButton(stringResource(if (thumbnailsRequested) R.string.thumbnail_stop else R.string.thumbnail_load_visible),
+                                onClick = { thumbnailsRequested = !thumbnailsRequested }, enabled = interactive && state.move == null && thumbnails != null)
+                            if (thumbnails == null) EsvText(stringResource(R.string.thumbnail_module_unavailable), style = v.captionTextStyle, color = v.colors.muted)
+                            exports?.let { LibraryExportStatus(it, state.foreground) }
+                            if (state.move == null) {
+                                LibraryField(state.query.text, runtime::search, stringResource(R.string.flow_library_search), enabled = state.foreground && !state.busy)
+                                Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                    EsvButton(stringResource(R.string.flow_sort_name) + if (state.query.sort == LibrarySort.NAME) " ✓" else "",
+                                        { runtime.sort(LibrarySort.NAME) }, enabled = interactive, modifier = Modifier.weight(1f))
+                                    EsvButton(stringResource(R.string.flow_sort_date) + if (state.query.sort == LibrarySort.DATE) " ✓" else "",
+                                        { runtime.sort(LibrarySort.DATE) }, enabled = interactive, modifier = Modifier.weight(1f))
+                                }
+                                Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                    EsvButton(sortLabel(LibrarySort.DURATION, state.query.sort), { runtime.sort(LibrarySort.DURATION) }, enabled = interactive, modifier = Modifier.weight(1f))
+                                    EsvButton(sortLabel(LibrarySort.SIZE, state.query.sort), { runtime.sort(LibrarySort.SIZE) }, enabled = interactive, modifier = Modifier.weight(1f))
+                                }
+                                Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                    EsvButton(if (state.query.direction == SortDirection.DESCENDING) "降序 ↓" else "升序 ↑", runtime::reverseSort, enabled = interactive)
+                                    EsvButton(stringResource(if (grid) R.string.flow_list else R.string.flow_grid), { grid = !grid })
+                                    EsvButton(stringResource(R.string.flow_libraryscreen_8), runtime::createFolder, enabled = interactive)
+                                }
+                            }
+                            EsvText(if (state.query.folderId == null) "位置：媒体库根目录" else "位置：${state.folder?.displayName ?: "正在读取文件夹…"}", style = v.titleTextStyle)
+                            if (state.query.folderId != null) Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                EsvButton(stringResource(R.string.flow_libraryscreen_9), runtime::up, enabled = interactive)
+                                EsvButton(stringResource(R.string.flow_libraryscreen_10), { runtime.enterFolder(null) }, enabled = interactive)
+                            }
+                            state.move?.let { move ->
+                                EsvText("移动：${move.target.name}")
+                                EsvText(stringResource(R.string.flow_libraryscreen_12), style = v.captionTextStyle, color = v.colors.muted)
+                                EsvButton(stringResource(R.string.flow_libraryscreen_13), runtime::confirmMove,
+                                    enabled = interactive && !(move.target is LibrarySelection.Folder && move.target.id == state.query.folderId), modifier = Modifier.fillMaxWidth())
+                                EsvButton(stringResource(R.string.flow_libraryscreen_14), runtime::cancelMove, enabled = !state.busy)
+                            }
+                            if (state.busy) EsvText(stringResource(R.string.flow_libraryscreen_15), color = v.colors.muted)
+                            else if (state.loading) EsvText(stringResource(R.string.flow_libraryscreen_16), color = v.colors.muted)
+                            else if (!state.ready) EsvText(stringResource(R.string.flow_libraryscreen_17), color = v.colors.muted)
+                            state.notice?.let {
+                                EsvText(it, style = v.captionTextStyle)
+                                EsvButton(stringResource(R.string.flow_libraryscreen_18), runtime::dismissNotice)
+                            }
+                            if (state.pendingDeleteCount > 0) EsvText("${state.pendingDeleteCount} 个已确认删除的项目仍待清理；尚未完成。", color = v.colors.error, style = v.captionTextStyle)
                         }
                     }
+                    if (state.folders.isNotEmpty()) {
+                        item(key = "folder_header", span = { GridItemSpan(maxLineSpan) }) {
+                            EsvText("文件夹（${state.folders.size}）", style = v.titleTextStyle)
+                        }
+                        items(state.folders.drop(state.folderPage * AndroidLibraryRuntime.FOLDER_PAGE_SIZE).take(AndroidLibraryRuntime.FOLDER_PAGE_SIZE), key = { "folder:${it.folderId}" }, span = { GridItemSpan(maxLineSpan) }) { folder ->
+                            LibraryCard {
+                                EsvText(folder.displayName, style = v.titleTextStyle, maxLines = 2)
+                                EsvText("${folder.itemCount} 个视频 · ${folder.childFolderCount} 个子文件夹", style = v.captionTextStyle, color = v.colors.muted)
+                                Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                    EsvButton(stringResource(R.string.flow_libraryscreen_22), { runtime.enterFolder(folder.folderId) }, enabled = interactive)
+                                    if (state.move == null) EsvButton(stringResource(R.string.flow_libraryscreen_23), { runtime.select(folder) }, enabled = interactive)
+                                }
+                            }
+                        }
+                        item(key = "folder_paging", span = { GridItemSpan(maxLineSpan) }) {
+                            Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                EsvButton(stringResource(R.string.flow_libraryscreen_24), { runtime.folderPage(state.folderPage - 1) }, enabled = interactive && state.folderPage > 0)
+                                EsvButton(stringResource(R.string.flow_libraryscreen_25), { runtime.folderPage(state.folderPage + 1) }, enabled = interactive && (state.folderPage + 1) * AndroidLibraryRuntime.FOLDER_PAGE_SIZE < state.folders.size)
+                            }
+                        }
+                    }
+                    if (state.move == null) {
+                        item(key = "media_header", span = { GridItemSpan(maxLineSpan) }) {
+                            EsvText(if (state.query.text.isEmpty()) "视频" else "当前文件夹搜索结果", style = v.titleTextStyle)
+                        }
+                        if (state.ready && !state.loading && state.items.isEmpty()) item(key = "empty_media", span = { GridItemSpan(maxLineSpan) }) {
+                            EsvText(if (state.query.text.isEmpty()) "此文件夹暂无已入库视频。" else stringResource(R.string.flow_library_no_match), color = v.colors.muted)
+                        }
+                        items(state.items, key = { "media:${it.itemId}" }) { media ->
+                            LibraryCard {
+                                thumbnails?.let { LibraryThumbnail(media, it, Modifier.fillMaxWidth(),
+                                    visible = thumbnailEnabled && media.itemId in visibleThumbnailIds) }
+                                EsvText(media.displayName, style = v.titleTextStyle, maxLines = 2)
+                                EsvText("MP4 · ${libraryDuration(media.durationMillis)} · ${libraryBytes(media.sizeBytes)}", style = v.captionTextStyle)
+                                EsvText(libraryResolution(media), style = v.captionTextStyle, color = v.colors.muted)
+                                EsvText(libraryDate(media), style = v.captionTextStyle, color = v.colors.muted)
+                                EsvButton(stringResource(R.string.flow_libraryscreen_27), { runtime.select(media) }, enabled = interactive, modifier = Modifier.fillMaxWidth())
+                            }
+                        }
+                        item(key = "media_paging", span = { GridItemSpan(maxLineSpan) }) {
+                            Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                EsvText("第 ${(state.query.cursor?.offset ?: 0) / state.query.pageSize + 1} 页 · 每页最多 ${state.query.pageSize} 个视频", style = v.captionTextStyle, color = v.colors.muted)
+                                Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                    EsvButton(stringResource(R.string.flow_libraryscreen_29), runtime::previousPage, enabled = interactive && state.query.cursor != null)
+                                    EsvButton(stringResource(R.string.flow_libraryscreen_30), runtime::nextPage, enabled = interactive && state.nextCursor != null)
+                                }
+                                EsvText(stringResource(R.string.flow_libraryscreen_31), style = v.captionTextStyle, color = v.colors.muted)
+                            }
+                        }
+                    }
+                }
+                if (expanded) Column(Modifier.width(layout.detailWidthDp.dp).fillMaxHeight()
+                    .background(v.colors.surface, RoundedCornerShape(v.corner))
+                    .verticalScroll(rememberScrollState()).padding(v.spacingMedium),
+                    verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
+                    EsvText(stringResource(R.string.library_detail_heading), style = v.titleTextStyle)
+                    SelectedDetailContent(runtime, onPreview, onExport, onEdit)
+                }
+                when {
+                    state.deletion != null -> DeleteDialog(runtime, state.deletion)
+                    state.editor != null -> NameDialog(runtime, state.editor)
+                    !expanded && state.selected != null -> DetailDialog(runtime, onPreview, onExport, onEdit)
                 }
             }
         }
-    }
-    when {
-        state.deletion != null -> DeleteDialog(runtime, state.deletion)
-        state.editor != null -> NameDialog(runtime, state.editor)
-        state.selected != null -> DetailDialog(runtime, state.selected, onPreview, onExport, onEdit)
     }
 }
 
 @Composable
-private fun DetailDialog(runtime: AndroidLibraryRuntime, selection: LibrarySelection, onPreview: (MediaReadRef) -> Unit, onExport: ((MediaReadRef) -> Unit)?, onEdit: ((MediaItem) -> Unit)?) {
+private fun DetailDialog(runtime: AndroidLibraryRuntime, onPreview: (MediaReadRef) -> Unit, onExport: ((MediaReadRef) -> Unit)?, onEdit: ((MediaItem) -> Unit)?) {
+    LibraryDialog(runtime::dismissSelection) { SelectedDetailContent(runtime, onPreview, onExport, onEdit) }
+}
+
+@Composable
+private fun ColumnScope.SelectedDetailContent(runtime: AndroidLibraryRuntime, onPreview: (MediaReadRef) -> Unit, onExport: ((MediaReadRef) -> Unit)?, onEdit: ((MediaItem) -> Unit)?) {
+    val state = runtime.state
     val v = LocalEsvVisuals.current
-    LibraryDialog(runtime::dismissSelection) {
-        EsvText(selection.name, style = v.titleTextStyle)
-        when (selection) {
-            is LibrarySelection.Media -> {
-                val media = selection.item
-                EsvText("已验证的本地 MP4 · ${libraryBytes(media.sizeBytes)}")
-                EsvText("${libraryDuration(media.durationMillis)} · ${libraryResolution(media)}")
-                EsvText(libraryDate(media), style = v.captionTextStyle)
-                if (media.dateKind == MediaDateKind.IMPORTED) EsvText(stringResource(R.string.flow_libraryscreen_34), style = v.captionTextStyle, color = v.colors.muted)
-                EsvText(stringResource(R.string.flow_libraryscreen_35), style = v.captionTextStyle, color = v.colors.muted)
-                if (onEdit != null) EsvButton(stringResource(R.string.flow_libraryscreen_36), {
-                    if (runtime.takeSelectedReadRef(selection) == media.readRef()) onEdit(media)
-                }, modifier = Modifier.fillMaxWidth())
-                EsvButton(stringResource(R.string.flow_libraryscreen_37), { runtime.takeSelectedReadRef(selection)?.let(onPreview) }, modifier = Modifier.fillMaxWidth())
-                EsvButton(stringResource(if (onExport == null) R.string.flow_export_unavailable else R.string.flow_export), {
-                    if (onExport == null) runtime.unavailableExport()
-                    else runtime.takeSelectedReadRef(selection)?.let(onExport)
-                }, enabled = onExport != null, modifier = Modifier.fillMaxWidth())
-                if (onExport == null) EsvText(stringResource(R.string.flow_libraryscreen_38), style = v.captionTextStyle, color = v.colors.muted)
-            }
-            is LibrarySelection.Folder -> {
-                EsvText("${selection.folder.itemCount} 个视频 · ${selection.folder.childFolderCount} 个子文件夹")
-                if (selection.folder.itemCount > 0 || selection.folder.childFolderCount > 0) EsvText(stringResource(R.string.flow_libraryscreen_40), style = v.captionTextStyle, color = v.colors.muted)
-            }
+    val selected = state.selected
+    val current = libraryCurrentDetail(selected, state.items, state.folders)
+    when {
+        selected == null -> EsvText(stringResource(R.string.library_detail_select), color = v.colors.muted)
+        state.loading || state.busy || !state.ready -> {
+            EsvText(stringResource(R.string.library_detail_waiting), color = v.colors.muted)
+            EsvButton(stringResource(R.string.flow_libraryscreen_43), runtime::dismissSelection)
         }
-        EsvButton(stringResource(R.string.flow_libraryscreen_41), runtime::rename, modifier = Modifier.fillMaxWidth())
-        EsvButton(stringResource(R.string.flow_libraryscreen_42), runtime::startMove, modifier = Modifier.fillMaxWidth())
-        EsvButton(if (selection is LibrarySelection.Folder) "删除空文件夹…" else "删除本地视频…", runtime::requestDelete, modifier = Modifier.fillMaxWidth())
-        EsvButton(stringResource(R.string.flow_libraryscreen_43), runtime::dismissSelection, modifier = Modifier.fillMaxWidth())
-        runtime.state.notice?.let { EsvText(it, style = v.captionTextStyle) }
+        current == null -> {
+            EsvText(stringResource(R.string.library_detail_missing), color = v.colors.muted)
+            EsvButton(stringResource(R.string.flow_libraryscreen_43), runtime::dismissSelection)
+        }
+        else -> DetailContent(runtime, current, onPreview, onExport, onEdit)
     }
+}
+
+@Composable
+private fun ColumnScope.DetailContent(runtime: AndroidLibraryRuntime, selection: LibrarySelection, onPreview: (MediaReadRef) -> Unit, onExport: ((MediaReadRef) -> Unit)?, onEdit: ((MediaItem) -> Unit)?) {
+    val v = LocalEsvVisuals.current
+    EsvText(selection.name, style = v.titleTextStyle)
+    when (selection) {
+        is LibrarySelection.Media -> {
+            val media = selection.item
+            EsvText("已验证的本地 MP4 · ${libraryBytes(media.sizeBytes)}")
+            EsvText("${libraryDuration(media.durationMillis)} · ${libraryResolution(media)}")
+            EsvText(libraryDate(media), style = v.captionTextStyle)
+            if (media.dateKind == MediaDateKind.IMPORTED) EsvText(stringResource(R.string.flow_libraryscreen_34), style = v.captionTextStyle, color = v.colors.muted)
+            EsvText(stringResource(R.string.flow_libraryscreen_35), style = v.captionTextStyle, color = v.colors.muted)
+            if (onEdit != null) EsvButton(stringResource(R.string.flow_libraryscreen_36), {
+                if (runtime.takeSelectedReadRef(selection) == media.readRef()) onEdit(media)
+            }, modifier = Modifier.fillMaxWidth())
+            EsvButton(stringResource(R.string.flow_libraryscreen_37), { runtime.takeSelectedReadRef(selection)?.let(onPreview) }, modifier = Modifier.fillMaxWidth())
+            EsvButton(stringResource(if (onExport == null) R.string.flow_export_unavailable else R.string.flow_export), {
+                if (onExport == null) runtime.unavailableExport()
+                else runtime.takeSelectedReadRef(selection)?.let(onExport)
+            }, enabled = onExport != null, modifier = Modifier.fillMaxWidth())
+            if (onExport == null) EsvText(stringResource(R.string.flow_libraryscreen_38), style = v.captionTextStyle, color = v.colors.muted)
+        }
+        is LibrarySelection.Folder -> {
+            EsvText("${selection.folder.itemCount} 个视频 · ${selection.folder.childFolderCount} 个子文件夹")
+            if (selection.folder.itemCount > 0 || selection.folder.childFolderCount > 0) EsvText(stringResource(R.string.flow_libraryscreen_40), style = v.captionTextStyle, color = v.colors.muted)
+        }
+    }
+    EsvButton(stringResource(R.string.flow_libraryscreen_41), runtime::rename, modifier = Modifier.fillMaxWidth())
+    EsvButton(stringResource(R.string.flow_libraryscreen_42), runtime::startMove, modifier = Modifier.fillMaxWidth())
+    EsvButton(if (selection is LibrarySelection.Folder) "删除空文件夹…" else "删除本地视频…", runtime::requestDelete, modifier = Modifier.fillMaxWidth())
+    EsvButton(stringResource(R.string.flow_libraryscreen_43), runtime::dismissSelection, modifier = Modifier.fillMaxWidth())
+    runtime.state.notice?.let { EsvText(it, style = v.captionTextStyle) }
 }
 
 @Composable

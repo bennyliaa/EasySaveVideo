@@ -312,6 +312,50 @@ class LibraryRuntimeTest {
         h.runtime.close()
     }
 
+    @Test fun wideRefreshRetainsIdentityButConsumesOnlyLatestReference() {
+        val h=Harness();val old=media("one");h.repo.media[old.itemId]=old;h.start();h.runtime.select(old)
+        val latest=old.copy(revision=2,representationGeneration=3,displayName="Latest")
+        h.repo.media[old.itemId]=latest
+        h.runtime.refresh(preserveSelection=true)
+        assertEquals(old.itemId,h.runtime.state.selected?.id)
+        assertNull(h.runtime.takeSelectedReadRef(LibrarySelection.Media(old)))
+        h.drain()
+        assertEquals(LibrarySelection.Media(latest),h.runtime.state.selected)
+        assertNull(h.runtime.takeSelectedReadRef(LibrarySelection.Media(old)))
+        assertEquals(latest.readRef(),h.runtime.takeSelectedReadRef(LibrarySelection.Media(latest)))
+        assertEquals(0,h.repo.renameCalls);assertEquals(0,h.repo.moveCalls);assertEquals(0,h.repo.deleteCalls)
+        h.runtime.close()
+    }
+    @Test fun wideRefreshMissingSelectionDoesNotJumpOrAuthorizeOperations() {
+        val h=Harness();val one=media("one");val other=media("other")
+        h.repo.media[one.itemId]=one;h.repo.media[other.itemId]=other;h.start();h.runtime.select(one)
+        h.repo.media.remove(one.itemId);h.runtime.refresh(preserveSelection=true);h.drain()
+        assertEquals(one.itemId,h.runtime.state.selected?.id)
+        assertNull(libraryCurrentDetail(h.runtime.state.selected,h.runtime.state.items,h.runtime.state.folders))
+        assertNull(h.runtime.takeSelectedReadRef(LibrarySelection.Media(one)))
+        h.runtime.rename();assertNull(h.runtime.state.editor)
+        assertEquals(0,h.repo.renameCalls);assertEquals(0,h.repo.moveCalls);assertEquals(0,h.repo.deleteCalls)
+        h.runtime.select(other);assertEquals(other.itemId,h.runtime.state.selected?.id)
+        h.runtime.close()
+    }
+    @Test fun defaultCompactRefreshStillClearsSelectionAndChangedQueryDoesNotRestoreIt() {
+        val h=Harness();val one=media("one");h.repo.media[one.itemId]=one;h.start();h.runtime.select(one)
+        h.runtime.refresh();h.drain();assertNull(h.runtime.state.selected)
+        h.runtime.select(one);h.runtime.refresh(preserveSelection=true)
+        h.runtime.dismissSelection();h.drain();assertNull(h.runtime.state.selected)
+        h.runtime.select(one);h.runtime.sort(LibrarySort.SIZE);h.drain();assertNull(h.runtime.state.selected)
+        h.runtime.close()
+    }
+    @Test fun wideRefreshFailureAndBackgroundCannotExposeOldReference() {
+        val h=Harness();val one=media("one");h.repo.media[one.itemId]=one;h.start();h.runtime.select(one)
+        h.repo.queryOverride={throw LibraryFailure(LibraryError.STORAGE_FAILURE)}
+        h.runtime.refresh(preserveSelection=true);h.drain()
+        assertFalse(h.runtime.state.ready);assertNull(h.runtime.takeSelectedReadRef(LibrarySelection.Media(one)))
+        h.runtime.requestDelete();h.runtime.startMove();assertNull(h.runtime.state.deletion);assertNull(h.runtime.state.move)
+        h.runtime.setForeground(false);assertNull(h.runtime.state.selected)
+        h.runtime.close()
+    }
+
     private class Harness {
         val ui = FakeUi()
         val work = FakeWork()
