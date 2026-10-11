@@ -1,0 +1,26 @@
+{
+  "schema": "esv-private-library-display-sanitized-v1",
+  "source_evidence_commit": "b63a879f06131fbca905eb87c523d040c5cc8503",
+  "apk_source_commit": "b714a87601d0725385c11f4587704f78587938b5",
+  "signed_return_commit": "0ef80ea13e6b5b01aab98000e87186838d598401",
+  "repository": "bennyliaa/EasySaveVideo",
+  "branch": "verification/esv-code3-b714a87",
+  "device": "emulator-5556",
+  "version_code": 3,
+  "min_sdk": 31,
+  "privacy": "Only sanitized status/count results. No private media, names, thumbnails, screenshots, raw UI, private filenames, metadata contents or private-content hashes.",
+  "files": [
+    {
+      "file": "report.md",
+      "bytes": 3102,
+      "sha256": "e579d8df23ac64fcaaf37ab8b06a028819be7bc1004f24781d728b51f4f7701a",
+      "git_blob_sha1": "71e6b9cc2f1fc03253a8d328a349d640de47052a"
+    },
+    {
+      "file": "test-receipt.json",
+      "bytes": 8342,
+      "sha256": "c3bce311ed422a557dfbbeff3ff9d34055fe8b4f4fe4d227531ccf9ec29c2441",
+      "git_blob_sha1": "d0c94ee289dc309fe2f33e4c02772c6041615b53"
+    }
+  ]
+}
