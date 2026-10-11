@@ -467,13 +467,13 @@ class MainActivity : ComponentActivity() {
                     onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) },
                     saveScanning = saves.scanning,
                     saveNotice = saves.notice,
-                    onDismissSaveNotice = saves::dismissNotice, destinations = saves.destinations, bookmarks = bookmarks)
+                    onDismissSaveNotice = saves::dismissNotice, destinations = saves.destinations, bookmarks = bookmarks, saveRuntime = saves)
                 }
                 BackHandler(enabled = previewHost) {
                     recordingConsent.cancel(); previewRuntime?.cancelPreview(); navigate(EsvDestination.RECORD)
                 }
                 if (!previewHost) {
-                    SaveSelectionDialog(saves, browser)
+                    if (activeDestination != EsvDestination.BROWSER) SaveSelectionDialog(saves, browser)
                     if (isForeground) saves.destinations?.let { OrdinaryDestinationDialog(it) }
                 }
                 if (authorizedPreviewFrame != null && isForeground) {

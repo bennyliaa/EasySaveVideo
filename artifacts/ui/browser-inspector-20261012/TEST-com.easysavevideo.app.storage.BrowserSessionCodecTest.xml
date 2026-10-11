@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.storage.BrowserSessionCodecTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-11T18:52:59.700Z" hostname="[HOST]" time="0.015">
+  <properties />
+  <testcase name="rejectsOversizedInputBeforeParsing" classname="com.easysavevideo.app.storage.BrowserSessionCodecTest" time="0.003" />
+  <testcase name="rejectsDuplicateTabsAndUnknownSelection" classname="com.easysavevideo.app.storage.BrowserSessionCodecTest" time="0.002" />
+  <testcase name="rejectsTruncatedAndTrailingData" classname="com.easysavevideo.app.storage.BrowserSessionCodecTest" time="0.004" />
+  <testcase name="emptyCheckpointClearsAddresses" classname="com.easysavevideo.app.storage.BrowserSessionCodecTest" time="0.001" />
+  <testcase name="rejectsMoreThanTwelveTabs" classname="com.easysavevideo.app.storage.BrowserSessionCodecTest" time="0.001" />
+  <testcase name="privateCheckpointRoundTripsWithNoHistoryOrCookieFields" classname="com.easysavevideo.app.storage.BrowserSessionCodecTest" time="0.002" />
+  <system-out />
+  <system-err />
+</testsuite>

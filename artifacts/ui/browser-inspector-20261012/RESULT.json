@@ -1,0 +1,68 @@
+{
+  "base": "46f59796e770c3974d93cffa5aeae05eac587003",
+  "status": "PASS_SCOPED_SOURCE_VALIDATION",
+  "jvm": [
+    {
+      "name": "com.easysavevideo.app.ui.BrowserInspectorLayoutTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.ResponsivePaneStateTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.save.SaveUiPolicyTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.browser.BrowserPolicyTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.storage.BrowserSessionCodecTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "total_passed": 36,
+  "compile": [
+    "Debug PASS",
+    "Release PASS"
+  ],
+  "lint": {
+    "debug": {
+      "Warning": 58,
+      "Hint": 7
+    },
+    "release": {
+      "Warning": 58,
+      "Hint": 7
+    }
+  },
+  "strict_runtime_artifacts": 90,
+  "scope": "Wide Browser shared candidate inspector / Compact modal; exclusive placement; repeat inspection disabled during selection and stream preparation; existing page/epoch/view/revision/expiry and save acceptance fences retained",
+  "not_run": [
+    "APK/device",
+    "actual Compose/window transitions",
+    "physical performance/power",
+    "public-page or owned-media save/output acceptance",
+    "font200/TalkBack rendering"
+  ],
+  "minimum_api": 31,
+  "code4_frozen_source": "d9bdf34567bf2d138e796a50560419d359385cf4",
+  "initial_failure": "Both Kotlin variants failed on out-of-scope route reference; fixed to existing activeDestination. Initial tests/lint NOT_RUN, corrected complete run retained."
+}

@@ -1,7 +1,7 @@
 # UI capability integration ledger
 
-Reconciled against main 43ef4ef57fadf3f61115424a10e4255cd78a5a9e plus the bounded
-Discovery filter / Tasks detail responsive source increment. COMPLETE SOURCE
+Reconciled against main 46f59796e770c3974d93cffa5aeae05eac587003 plus the bounded
+Browser wide inspector source increment. COMPLETE SOURCE
 means implementation plus scoped source validation. PARTIAL means callable code
 or bounded checks exist; it does not close full PPT/media/device acceptance.
 NOT ACCEPTED means the specified acceptance is unperformed. DISABLED is intentional.
@@ -100,7 +100,7 @@ permission to develop or model-test:
 |---|---|---|
 | PPT8 / C-03,C-04 | SOURCE IMPLEMENTED: collapsible Expanded filter pane and Compact modal share movable content, existing draft/controller and scroll state | Actual rendered transitions and focus acceptance NOT RUN |
 | PPT12–14 / C-06 | SOURCE IMPLEMENTED: selected stable task ID resolves current snapshot; Expanded list/detail, Compact original full action cards | Missing/duplicate ID never guesses; actual task/output acceptance NOT RUN |
-| PPT11 / C-05 | Wide browser inspection/selection still uses modal selection rather than a co-present inspector | Source composition can reuse the same session/revision-fenced selection state; real inspection requires an admitted owned page/media fixture and execution permission |
+| PPT11 / C-05 | SOURCE IMPLEMENTED: Wide webpage/candidate inspector; Compact modal shares movable composition and runtime selection | Actual page/media inspection and render transitions NOT RUN; HLS retains existing modal; settings/bookmarks force single-modal fallback |
 | PPT6–8 / UI-R04 | SOURCE IMPLEMENTED: bounded scrolling header/pager, minimum content space and conservative low-height/large-font fallback | Keyboard/font200/compact-height render matrix NOT RUN |
 | C-03 | Discovery thumbnail area currently renders a theme icon placeholder; approved loading/unknown/failed thumbnail presentation and reader binding remain | Owned local fixture/reader contracts can be developed without public fetching. Arbitrary real thumbnail URLs need source/rights/admission review; reference PPT photos remain unlicensed runtime assets |
 | PPT17 / C-08 | Complete expanded editor preview/segments/inspector composition is not accepted | Layout source can use existing typed UI state; real decoding/encoding needs verified owned media and permitted Tools capability |
@@ -131,3 +131,23 @@ window transition state, focus, TalkBack, font200 or phone/tablet rendering. Tho
 are NOT RUN. No APK rebuild or device operation; installed code4 remains based on
 d9bdf345 and excludes this group. Wide browser inspector, thumbnail reader and
 expanded editor remain pending; real media/save/output acceptance remains open.
+
+## Browser candidate inspector source increment
+
+Wide Browser now co-presents the webpage and the original detected candidate
+controls. Compact/low-height/large-font windows retain a modal; settings or
+bookmarks also use a modal fallback to avoid three panes. One movable composition
+uses the existing runtime selection and callback, with no copied domain state.
+MainActivity owns the selection dialog only outside the Browser route; HLS keeps
+its existing modal path. Back dismisses the inspector before page navigation.
+Inspection is disabled during scanning, candidate selection or HLS preparation;
+layout changes never inspect, navigate or save. Original candidate body matches
+the previous source after indentation normalization. Runtime page/tab/session/
+epoch/view/revision/expiry, identity, destination and immediate acceptance-clear
+fences are unchanged. Zero-provider address navigation and Cookie/incognito code
+are unchanged. No dependencies, network thumbnail loading or editor expansion.
+
+Validation: 36 scoped JVM passes, double Kotlin compile and lint PASS
+({'Warning': 58, 'Hint': 7}); exact runtime graph90. See artifacts/ui/browser-inspector-20261012.
+Actual rendering, window/state transitions, font200/TalkBack and real save/output
+acceptance NOT RUN. No device/APK step; code4 remains frozen on d9bdf345.

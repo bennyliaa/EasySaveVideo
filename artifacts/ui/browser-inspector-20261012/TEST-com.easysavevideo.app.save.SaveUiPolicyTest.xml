@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.save.SaveUiPolicyTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-11T18:52:59.626Z" hostname="[HOST]" time="0.069">
+  <properties />
+  <testcase name="originRequiresHttpsExactHostAndEffectivePort" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.02" />
+  <testcase name="everyMethodHasItsOwnLabelAndRecordingNeverPretendsToDownload" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.019" />
+  <testcase name="absentMalformedOrCredentialedPageCannotSupplyCookies" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.001" />
+  <testcase name="effectiveTimeUsesProvidedMicrosecondsRatherThanWallClock" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.006" />
+  <testcase name="cancelledOrMissingConsentOwnerCannotConsumeALateResult" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.003" />
+  <testcase name="audioLabelsNeverPromiseAudibilityFromPermissionOrPcm" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.007" />
+  <testcase name="streamAacDecoderCannotSilentlyExpandRateOrChannels" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.001" />
+  <testcase name="ephemeralConsentUsesOnlyItsOwnNonAndroidxPlatformCodes" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.007" />
+  <testcase name="selectionFencesLateCallbacksAndExpiry" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.004" />
+  <testcase name="safetyControlsDependOnSessionStateNotEntitlement" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.0" />
+  <testcase name="captureFinishedIsNotPublishedAndEveryCaptureStateHasALabel" classname="com.easysavevideo.app.save.SaveUiPolicyTest" time="0.001" />
+  <system-out />
+  <system-err />
+</testsuite>

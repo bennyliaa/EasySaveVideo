@@ -175,39 +175,45 @@ private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, brow
 
 @Composable
 fun SaveSelectionDialog(runtime: AndroidSaveRuntime, browser: SystemBrowserHost) {
-    val v = LocalEsvVisuals.current
     if (runtime.preparingStream || runtime.hlsPreparation != null) {
         HlsSelectionDialog(runtime)
         return
     }
-    val selection = runtime.selection ?: return
+    if (runtime.selection == null) return
     Dialog(onDismissRequest = runtime::dismissSelection) {
-        Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
-            .verticalScroll(rememberScrollState()).padding(v.spacingLarge), verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
-            EsvText(stringResource(R.string.flow_savetaskscreen_22), style = v.titleTextStyle)
-            EsvText(stringResource(R.string.flow_savetaskscreen_23), style = v.captionTextStyle)
-            EsvText(stringResource(R.string.flow_savetaskscreen_24), style = v.captionTextStyle)
-            selection.candidates.forEach { candidate ->
-                Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                    EsvText(candidate.label)
-                    EsvText(buildList {
-                        add(URI(candidate.url.value).host ?: stringResource(R.string.final_copy_54))
-                        add(if (candidate.width != null && candidate.height != null) "${candidate.width} × ${candidate.height}" else stringResource(R.string.final_copy_55))
-                        add(candidate.durationMillis?.let { "${it / 1000} 秒" } ?: stringResource(R.string.final_copy_56))
-                    }.joinToString(" · "), style = v.captionTextStyle, color = v.colors.muted)
-                    EsvButton(when {
-                        candidate.protected -> stringResource(R.string.final_copy_57)
-                        !candidate.supported -> stringResource(R.string.final_copy_58)
-                        !runtime.canSave(candidate.method) -> stringResource(R.string.final_copy_59)
-                        candidate.method == TaskMethod.STREAM -> stringResource(R.string.final_copy_60)
-                        else -> stringResource(R.string.final_copy_61)
-                    },
-                        onClick = { runtime.choose(candidate, browser) },
-                        enabled = candidate.supported && !candidate.protected && runtime.canSave(candidate.method) && selection.isCurrent())
-                }
+        SaveSelectionPanel(runtime, browser, Modifier.heightIn(max = 680.dp))
+    }
+
+}
+@Composable
+fun SaveSelectionPanel(runtime: AndroidSaveRuntime, browser: SystemBrowserHost, modifier: Modifier = Modifier) {
+    val v = LocalEsvVisuals.current
+    val selection = runtime.selection ?: return
+    Column(modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner))
+        .verticalScroll(rememberScrollState()).padding(v.spacingLarge), verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
+        EsvText(stringResource(R.string.flow_savetaskscreen_22), style = v.titleTextStyle)
+        EsvText(stringResource(R.string.flow_savetaskscreen_23), style = v.captionTextStyle)
+        EsvText(stringResource(R.string.flow_savetaskscreen_24), style = v.captionTextStyle)
+        selection.candidates.forEach { candidate ->
+            Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                EsvText(candidate.label)
+                EsvText(buildList {
+                    add(URI(candidate.url.value).host ?: stringResource(R.string.final_copy_54))
+                    add(if (candidate.width != null && candidate.height != null) "${candidate.width} × ${candidate.height}" else stringResource(R.string.final_copy_55))
+                    add(candidate.durationMillis?.let { "${it / 1000} 秒" } ?: stringResource(R.string.final_copy_56))
+                }.joinToString(" · "), style = v.captionTextStyle, color = v.colors.muted)
+                EsvButton(when {
+                    candidate.protected -> stringResource(R.string.final_copy_57)
+                    !candidate.supported -> stringResource(R.string.final_copy_58)
+                    !runtime.canSave(candidate.method) -> stringResource(R.string.final_copy_59)
+                    candidate.method == TaskMethod.STREAM -> stringResource(R.string.final_copy_60)
+                    else -> stringResource(R.string.final_copy_61)
+                },
+                    onClick = { runtime.choose(candidate, browser) },
+                    enabled = candidate.supported && !candidate.protected && runtime.canSave(candidate.method) && selection.isCurrent())
             }
-            EsvButton(stringResource(R.string.flow_savetaskscreen_32), onClick = runtime::dismissSelection)
         }
+        EsvButton(stringResource(R.string.flow_savetaskscreen_32), onClick = runtime::dismissSelection)
     }
 }
 @Composable

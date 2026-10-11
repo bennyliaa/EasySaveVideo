@@ -1,0 +1,6 @@
+{
+  "status": "PASS_ORIGINAL_CANDIDATE_CONTROLS_EXACT_AFTER_INDENT_NORMALIZATION",
+  "sha256": "42645c1f047bc72449d805576ef029436ccfc0620a326f9413c56f483bc2a78c",
+  "runtime_and_HLS_source": "UNCHANGED",
+  "scope": "Existing candidate metadata, choose callback, support/protection/entitlement/current-page gate and dismiss callback unchanged. Runtime identity/destination/acceptance fences retained."
+}

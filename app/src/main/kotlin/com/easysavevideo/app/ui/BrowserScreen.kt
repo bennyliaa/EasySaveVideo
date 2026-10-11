@@ -25,6 +25,10 @@ import com.easysavevideo.app.browser.bookmarks.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalDensity
+import com.easysavevideo.app.save.AndroidSaveRuntime
+import com.easysavevideo.app.save.SaveSelectionPanel
+import com.easysavevideo.app.save.SaveSelectionDialog
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -61,6 +65,7 @@ fun BrowserScreen(
     onDismissSaveNotice: () -> Unit,
     destinations: AndroidOrdinaryDestinationRuntime? = null,
     bookmarks: AndroidBookmarkRuntime? = null,
+    saveRuntime: AndroidSaveRuntime? = null,
 ) {
     val visuals = LocalEsvVisuals.current
     val addressDescription = stringResource(R.string.flow_address_description)
@@ -79,12 +84,21 @@ fun BrowserScreen(
     val focus = LocalFocusManager.current
     LaunchedEffect(selected?.address?.value) { if (!editing) address = selected?.address?.value.orEmpty() }
     fun go() { editing = false; focus.clearFocus(); browser.navigate(address) }
-    BackHandler(enabled = bookmarksOpen || settingsOpen || browser.fullScreenView != null || browser.selectedView()?.canGoBack() == true) {
-        if (bookmarksOpen) { bookmarksOpen = false; focus.clearFocus() } else if (settingsOpen) settingsOpen = false else browser.back()
+    BackHandler(enabled = saveRuntime?.selection != null || bookmarksOpen || settingsOpen || browser.fullScreenView != null || browser.selectedView()?.canGoBack() == true) {
+        if (saveRuntime?.selection != null) saveRuntime.dismissSelection()
+        else if (bookmarksOpen) { bookmarksOpen = false; focus.clearFocus() } else if (settingsOpen) settingsOpen = false else browser.back()
     }
+    val inspectorContent: @Composable (Modifier) -> Unit = { modifier ->
+        saveRuntime?.let { SaveSelectionPanel(it, browser, modifier) }
+    }
+    val latestInspectorContent = rememberUpdatedState(inspectorContent)
+    val inspectorPanel = remember { movableContentOf<Modifier> { modifier -> latestInspectorContent.value(modifier) } }
     EsvBackdrop(Modifier.fillMaxSize()) {
         BoxWithConstraints(Modifier.fillMaxSize().imePadding()) {
-            val wide = maxWidth >= 840.dp
+            val pane = responsivePaneLayout(maxWidth.value, maxHeight.value, LocalDensity.current.fontScale, visuals.spacingMedium.value)
+            val wide = pane.split
+            val inspector = browserInspectorLayout(pane, saveRuntime?.selection != null,
+                saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null, settingsOpen || bookmarksOpen)
             Column(Modifier.fillMaxSize()) {
                 Column(Modifier.fillMaxWidth().padding(horizontal = visuals.spacingMedium), verticalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
                     EsvText(stringResource(R.string.ui_browser), style = visuals.titleTextStyle)
@@ -120,7 +134,8 @@ fun BrowserScreen(
                 }
                 Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = visuals.spacingMedium),
                     horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
-                    EsvButton(stringResource(if (saveScanning) R.string.flow_inspecting else R.string.flow_inspect), onClick = onSave, enabled = !saveScanning && selected?.loadState == BrowserLoadState.READY)
+                    EsvButton(stringResource(if (saveScanning) R.string.flow_inspecting else R.string.flow_inspect), onClick = onSave, enabled = browserInspectEnabled(selected?.loadState == BrowserLoadState.READY, saveScanning,
+                        saveRuntime?.selection != null, saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null))
                     EsvButton(stringResource(R.string.flow_browserscreen_7), onClick = onSaveTasks)
                     EsvButton(stringResource(R.string.flow_browserscreen_8), onClick = onLibrary)
                     EsvButton(stringResource(if (moreControls) R.string.flow_less else R.string.flow_more),
@@ -189,6 +204,7 @@ fun BrowserScreen(
                             EsvText(stringResource(R.string.flow_browserscreen_21), style = visuals.captionTextStyle, color = visuals.colors.muted)
                         }
                     }
+                    if (inspector.sidePane) inspectorPanel(Modifier.width(pane.sideWidthDp.dp).fillMaxHeight())
                     if (bookmarksOpen && wide && bookmarks != null) Box(Modifier.width(360.dp).fillMaxHeight().background(visuals.colors.surface)) {
                         BookmarkPanel(bookmarks, onOpen = { item ->
                             bookmarks.addressForOpen(item)?.let { target ->
@@ -212,6 +228,12 @@ fun BrowserScreen(
             if (settingsOpen && !wide) EsvDialog(onDismiss = { settingsOpen = false }) {
                 SettingsPanel(settings, onSettings, browser, onClose = { settingsOpen = false }, clearCookies = { confirmCookies = true },
                             onManageProviders = { settingsOpen = false; onManageProviders() }, destinations = destinations)
+            }
+            if (inspector.modal) saveRuntime?.let { runtime ->
+                if (runtime.preparingStream || runtime.hlsPreparation != null) SaveSelectionDialog(runtime, browser)
+                else Dialog(onDismissRequest = runtime::dismissSelection) {
+                    inspectorPanel(Modifier.heightIn(max = maxHeight.coerceAtMost(680.dp)))
+                }
             }
             browser.fullScreenView?.let { view ->
                 Box(Modifier.fillMaxSize().background(visuals.colors.bg)) {
