@@ -71,16 +71,18 @@ class MainActivity : ComponentActivity() {
     private var initialDestination = EsvDestination.DISCOVER
     private var activeDestination by mutableStateOf(EsvDestination.DISCOVER)
     private fun navigate(destination: EsvDestination) {
-        discovery.setVisibility(isForeground, false)
-        providerManagement.setActive(false)
-        if (destination != EsvDestination.LIBRARY) libraryExportReference = null
-        navController?.navigate(destination.route) {
+        val controller = navController ?: return
+        dispatchEsvNavigation(controller.currentDestination?.route, destination, onLeaving = {
+            discovery.setVisibility(isForeground, false)
+            providerManagement.setActive(false)
+            if (destination != EsvDestination.LIBRARY) libraryExportReference = null
+        }, onNavigate = { target -> controller.navigate(target.route) {
             launchSingleTop = true
-            if (destination in EsvDestination.roots) {
+            if (target in EsvDestination.roots) {
                 popUpTo(EsvDestination.DISCOVER.route) { saveState = true }
                 restoreState = true
             }
-        }
+        } })
     }
     private fun backTo(destination: EsvDestination = EsvDestination.DISCOVER) {
         if (navController?.popBackStack() != true) navigate(destination)

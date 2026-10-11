@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.ui.shell.EsvNavigationVisibilityTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-11T16:04:22.634Z" hostname="redacted-local-host" time="0.079">
+  <properties/>
+  <testcase name="repeatedDiscoveryAndAppNameClicksDoNotSuspendAndNextQueryExecutes" classname="com.easysavevideo.app.ui.shell.EsvNavigationVisibilityTest" time="0.068"/>
+  <testcase name="leavingForBrowserStillCancelsDiscoveryBeforeNavigation" classname="com.easysavevideo.app.ui.shell.EsvNavigationVisibilityTest" time="0.002"/>
+  <testcase name="repeatedZeroProviderDiscoveryPreservesExplicitNoSources" classname="com.easysavevideo.app.ui.shell.EsvNavigationVisibilityTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
