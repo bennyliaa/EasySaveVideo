@@ -1,0 +1,104 @@
+{
+  "device": "emulator-5556",
+  "sdk": 31,
+  "apk_source": "d9bdf34567bf2d138e796a50560419d359385cf4",
+  "signed_ref": "d44be6f9cfd01a35529d1fb47e19bf0dabd6bb73",
+  "versionCode": 4,
+  "does_not_include_later_copy_commits": true,
+  "checks": [
+    {
+      "name": "compatible_preserved_data_upgrade_code3_to_code4",
+      "status": "PASS",
+      "detail": "adb install -r succeeded; no uninstall, clear-data or permission grant"
+    },
+    {
+      "name": "root_navigation_discover",
+      "status": "PASS"
+    },
+    {
+      "name": "owned_query_edit_after_repeated_discover_and_title",
+      "status": "PASS",
+      "detail": "Separate end/delete events cleared field; second owned query applied with no dirty-draft banner; Search enabled"
+    },
+    {
+      "name": "repeat_discover_and_title_then_explicit_zero_source_query",
+      "status": "NOT_RUN",
+      "detail": "Observed SUSPENDED and round budget 0: existing OS power gate veto precedes NO_SOURCES in production status. No power/network/safety setting changed; cannot isolate navigation from this gate"
+    },
+    {
+      "name": "root_navigation_tasks",
+      "status": "PASS",
+      "detail": "Known UI controls only; no item text/screenshot/preview collected"
+    },
+    {
+      "name": "root_navigation_library",
+      "status": "PASS",
+      "detail": "Known UI controls only; no item text/screenshot/preview collected"
+    },
+    {
+      "name": "root_navigation_record",
+      "status": "PASS",
+      "detail": "Known UI controls only; no item text/screenshot/preview collected"
+    },
+    {
+      "name": "root_navigation_browser",
+      "status": "PASS"
+    },
+    {
+      "name": "zero_source_address_entry",
+      "status": "PASS",
+      "detail": "Owned reserved address edited; Go exists. Not submitted; no external website accessed"
+    },
+    {
+      "name": "real_webpage_browsing",
+      "status": "NOT_RUN",
+      "detail": "This bounded smoke avoids external websites and new local HTTP/TLS configuration"
+    },
+    {
+      "name": "cross_page_return_discover",
+      "status": "PASS"
+    },
+    {
+      "name": "theme_language_persist_after_process_restart",
+      "status": "PASS",
+      "detail": "Dark and English remain selected in settings after process restart"
+    },
+    {
+      "name": "chinese_language_persist_after_process_restart",
+      "status": "PASS"
+    },
+    {
+      "name": "rotation_keeps_settings_and_selected_values",
+      "status": "PASS",
+      "detail": "Known options validated after bounded scroll; landscape viewport does not show all settings at once"
+    },
+    {
+      "name": "settings_back_to_root",
+      "status": "PASS"
+    },
+    {
+      "name": "existing_media_entries_content_preservation",
+      "status": "NOT_RUN",
+      "detail": "No media census, private file or preview read; compatible installer update is separate evidence"
+    }
+  ],
+  "permissions_auto_granted": false,
+  "microphone_screenrecord_or_other_device": false,
+  "rotation_settings_restored": true,
+  "private_media_files_or_previews_read": false,
+  "screenshots_exclude_task_library_content": true,
+  "ui_preferences_tested_dark_english_chinese": true,
+  "physical_power": "NOT_MEASURED",
+  "full_device_regression": "NOT_RUN",
+  "diagnosis": "Input batching/selection failed; separate End/Delete events verified empty and exact owned drafts. Zero-budget existing OS power gate prevents NO_SOURCES navigation-isolation acceptance. Settings language reopens route; landscape requires scrolling to inspect both selected options.",
+  "screenshots_uploaded": false,
+  "browser_screenshot_shared": false,
+  "browser_screenshot_exclusion_reason": "Existing browser tab header metadata is visible; keep screenshot local and exclude from shared evidence.",
+  "previous_script_failures": "Preserved locally: zero-bounds/selected tab locator, batched input/selection, off-screen new-tab button, language-route and landscape viewport assumptions. Single deletion changed the field; separate End/Delete cleared it and exact owned drafts were verified.",
+  "app_edit_bug_proven": false,
+  "source_fix_not_in_installed_package": "cd01c726a7bf290f6cd2bfd518d050f76bfe5955 English region-limit translation correction, plus earlier copy increments",
+  "apk_sha256": "2ac50cde8e294254c592ed05a1ac72bec2b3fa32b6bfc94c145d394b1f137e74",
+  "certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+  "android_minimum": "Android 12 / API 31",
+  "provider_config_changed": false
+}
