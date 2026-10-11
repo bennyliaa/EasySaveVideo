@@ -1,0 +1,94 @@
+{
+  "status": "PASS_SCOPED_DESKTOP",
+  "tests": 82,
+  "test_suites": [
+    {
+      "name": "com.easysavevideo.app.licenses.NoticeTextTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-11T16:19:04.420Z"
+    },
+    {
+      "name": "com.easysavevideo.app.save.SaveUiPolicyTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-11T16:19:04.449Z"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.shell.EsvDestinationTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-11T16:19:04.510Z"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.shell.EsvNavigationVisibilityTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-11T16:19:04.519Z"
+    },
+    {
+      "name": "com.easysavevideo.discovery.DiscoveryCoordinatorTest",
+      "tests": "29",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-11T16:18:51.347Z"
+    },
+    {
+      "name": "com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest",
+      "tests": "22",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-11T16:18:52.855Z"
+    },
+    {
+      "name": "com.easysavevideo.theme.EsvThemeTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-11T16:18:45.761Z"
+    },
+    {
+      "name": "com.easysavevideo.core.model.AppearanceSettingsTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-11T16:18:45.001Z"
+    }
+  ],
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "fresh_app_discovery_tests": 70,
+  "unchanged_prior_theme_appearance_tests": 12,
+  "compile": "Debug/Release executed after last source change",
+  "runtime_admission": 90,
+  "lint": {
+    "debug": {
+      "error_fatal": 0,
+      "warnings": 57
+    },
+    "release": {
+      "error_fatal": 0,
+      "warnings": 57
+    }
+  },
+  "bilingual_resource_pairs": 217,
+  "device_ui": "NOT_RUN",
+  "actual_click_P1": "NOT_RUN",
+  "real_save_playback": "NOT_RUN",
+  "phone_power": "NOT_MEASURED",
+  "public_source_benchmark": "NOT_RUN",
+  "full_windows_suite": "NOT_RUN; historical115 failures not overridden"
+}

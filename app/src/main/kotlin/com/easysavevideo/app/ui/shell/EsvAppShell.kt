@@ -13,6 +13,7 @@ import androidx.compose.material3.windowsizeclass.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalDensity
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.easysavevideo.app.R
@@ -25,6 +26,7 @@ fun EsvAppShell(controller: NavHostController, initial: EsvDestination,
     val destination = EsvDestination.fromRoute(entry?.destination?.route)
     val rail = windowSize.widthSizeClass != WindowWidthSizeClass.Compact ||
         windowSize.heightSizeClass == WindowHeightSizeClass.Compact
+    val showNavigationLabels = LocalDensity.current.fontScale <= 1.5f
     val labels = mapOf(EsvDestination.DISCOVER to R.string.ui_discover,
         EsvDestination.TASKS to R.string.ui_tasks, EsvDestination.RECORD to R.string.ui_record,
         EsvDestination.LIBRARY to R.string.ui_library)
@@ -34,10 +36,12 @@ fun EsvAppShell(controller: NavHostController, initial: EsvDestination,
     Scaffold(topBar = {
         if (chromeVisible) Row(Modifier.fillMaxWidth().statusBarsPadding(),
             horizontalArrangement = Arrangement.SpaceBetween) {
-            TextButton(onClick = { onNavigate(EsvDestination.DISCOVER) }, enabled = navigationEnabled) {
+            TextButton(onClick = { onNavigate(EsvDestination.DISCOVER) }, enabled = navigationEnabled,
+                modifier = Modifier.weight(1f)) {
                 Text(stringResource(R.string.ui_app_name))
             }
-            TextButton(onClick = { onNavigate(EsvDestination.SETTINGS) }, enabled = navigationEnabled) {
+            TextButton(onClick = { onNavigate(EsvDestination.SETTINGS) }, enabled = navigationEnabled,
+                modifier = Modifier.weight(1f)) {
                 Text(stringResource(R.string.ui_settings))
             }
         }
@@ -47,7 +51,8 @@ fun EsvAppShell(controller: NavHostController, initial: EsvDestination,
                 val label = stringResource(labels.getValue(root))
                 NavigationBarItem(selected = destination !in listOf(EsvDestination.SETTINGS, EsvDestination.SOURCES) && destination.root == root,
                     onClick = { onNavigate(root) }, enabled = navigationEnabled,
-                    icon = { Icon(icons.getValue(root), contentDescription = null) }, label = { Text(label) })
+                    icon = { Icon(icons.getValue(root), contentDescription = if (showNavigationLabels) null else label) },
+                    label = if (showNavigationLabels) { { Text(label) } } else null)
             }
         }
     }) { padding ->
@@ -57,7 +62,8 @@ fun EsvAppShell(controller: NavHostController, initial: EsvDestination,
                     val label = stringResource(labels.getValue(root))
                     NavigationRailItem(selected = destination !in listOf(EsvDestination.SETTINGS, EsvDestination.SOURCES) && destination.root == root,
                         onClick = { onNavigate(root) }, enabled = navigationEnabled,
-                        icon = { Icon(icons.getValue(root), contentDescription = null) }, label = { Text(label) })
+                        icon = { Icon(icons.getValue(root), contentDescription = if (showNavigationLabels) null else label) },
+                        label = if (showNavigationLabels) { { Text(label) } } else null)
                 }
             }
             Box(Modifier.weight(1f).fillMaxHeight()) {

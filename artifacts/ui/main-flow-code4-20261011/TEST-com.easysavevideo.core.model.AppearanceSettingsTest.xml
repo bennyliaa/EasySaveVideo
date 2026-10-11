@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.core.model.AppearanceSettingsTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-11T16:18:45.001Z" hostname="redacted-local-host" time="0.044">
+  <properties/>
+  <testcase name="manualThemeDoesNotFollowSystemChanges" classname="com.easysavevideo.core.model.AppearanceSettingsTest" time="0.004"/>
+  <testcase name="oldOrInvalidPreferencesRetainSystemDefaults" classname="com.easysavevideo.core.model.AppearanceSettingsTest" time="0.033"/>
+  <testcase name="persistedStableValuesRoundTripWithoutOrdinal" classname="com.easysavevideo.core.model.AppearanceSettingsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -18,6 +18,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -189,7 +192,7 @@ fun EsvText(
     color: Color = LocalEsvVisuals.current.colors.text,
     maxLines: Int = Int.MAX_VALUE,
 ) {
-    BasicText(
+    Text(
         text = text,
         modifier = modifier,
         style = style.copy(color = color),
@@ -221,23 +224,24 @@ fun EsvButton(
         VisualState.FOCUSED -> visuals.buttonFocused
         else -> visuals.buttonNormal
     }
-    Box(
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        interactionSource = interactions,
+        shape = RoundedCornerShape(visuals.buttonCorner),
+        elevation = null,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = visual.background, contentColor = visual.foreground,
+            disabledContainerColor = visuals.buttonDisabled.background,
+            disabledContentColor = visuals.buttonDisabled.foreground,
+        ),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(
+            horizontal = visuals.buttonPaddingHorizontal, vertical = visuals.buttonPaddingVertical),
         modifier = modifier
             // Touch target policy belongs to the app, independent of skin dimensions.
-            .sizeIn(minWidth = 48.dp, minHeight = 48.dp)
-            .clip(RoundedCornerShape(visuals.buttonCorner))
-            .background(visual.background)
-            .clickable(
-                interactionSource = interactions,
-                indication = LocalIndication.current,
-                enabled = enabled,
-                role = Role.Button,
-                onClick = onClick,
-            )
-            .padding(horizontal = visuals.buttonPaddingHorizontal, vertical = visuals.buttonPaddingVertical),
-        contentAlignment = Alignment.Center,
+            .sizeIn(minWidth = 48.dp, minHeight = 48.dp),
     ) {
-        BasicText(text, style = visual.textStyle.copy(color = visual.foreground))
+        Text(text, style = visual.textStyle.copy(color = visual.foreground))
     }
 }
 

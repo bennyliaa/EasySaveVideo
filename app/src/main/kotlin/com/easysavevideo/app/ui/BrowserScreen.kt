@@ -19,6 +19,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import com.easysavevideo.app.browser.bookmarks.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,8 +36,11 @@ import androidx.compose.ui.window.Dialog
 import com.easysavevideo.app.browser.SystemBrowserHost
 import com.easysavevideo.app.entitlements.DevelopmentEntitlementPanel
 import com.easysavevideo.app.theme.*
+import androidx.compose.ui.res.stringResource
+import com.easysavevideo.app.R
 import com.easysavevideo.core.model.*
 
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun BrowserScreen(
     browser: SystemBrowserHost,
@@ -57,6 +62,9 @@ fun BrowserScreen(
     bookmarks: AndroidBookmarkRuntime? = null,
 ) {
     val visuals = LocalEsvVisuals.current
+    val addressDescription = stringResource(R.string.flow_address_description)
+    val closeTabDescription = stringResource(R.string.flow_close_tab_description)
+    var moreControls by rememberSaveable { mutableStateOf(false) }
     val state = browser.state
     val selected = state.selectedTab
     var settingsOpen by remember { mutableStateOf(false) }
@@ -74,15 +82,15 @@ fun BrowserScreen(
         if (bookmarksOpen) { bookmarksOpen = false; focus.clearFocus() } else if (settingsOpen) settingsOpen = false else browser.back()
     }
     EsvBackdrop(Modifier.fillMaxSize()) {
-        BoxWithConstraints(Modifier.fillMaxSize().systemBarsPadding().imePadding()) {
+        BoxWithConstraints(Modifier.fillMaxSize().imePadding()) {
             val wide = maxWidth >= 840.dp
             Column(Modifier.fillMaxSize()) {
-                Row(Modifier.fillMaxWidth().padding(visuals.spacingMedium), verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
-                    EsvThemeIcon(contentDescription = null, modifier = Modifier.size(visuals.iconSize))
-                    EsvText("EasySaveVideo", style = visuals.titleTextStyle, modifier = Modifier.weight(1f))
-                    EsvButton("发现", onClick = onDiscovery)
-                    EsvButton("设置", onClick = { bookmarksOpen = false; settingsOpen = !settingsOpen; focus.clearFocus() })
+                Column(Modifier.fillMaxWidth().padding(horizontal = visuals.spacingMedium), verticalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
+                    EsvText(stringResource(R.string.ui_browser), style = visuals.titleTextStyle)
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
+                        EsvButton(stringResource(R.string.flow_browserscreen_1), onClick = onDiscovery)
+                        EsvButton(stringResource(R.string.flow_browserscreen_2), onClick = { bookmarksOpen = false; settingsOpen = !settingsOpen; focus.clearFocus() })
+                    }
                 }
                 LazyRow(Modifier.fillMaxWidth(), contentPadding = PaddingValues(horizontal = visuals.spacingMedium),
                     horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
@@ -90,66 +98,68 @@ fun BrowserScreen(
                         Row(Modifier.border(visuals.borderWidth,
                             if (tab.context.tabId == state.selectedTabId) visuals.colors.accent else visuals.colors.border,
                             RoundedCornerShape(visuals.corner)).padding(visuals.spacingSmall), verticalAlignment = Alignment.CenterVertically) {
-                            EsvButton(tab.title?.take(28) ?: tab.address?.value?.take(28) ?: "新标签",
+                            EsvButton(tab.title?.take(28) ?: tab.address?.value?.take(28) ?: stringResource(R.string.flow_new_tab),
                                 onClick = { editing = false; browser.selectTab(tab.context.tabId) })
-                            EsvButton("关闭", onClick = { browser.closeTab(tab.context.tabId) },
-                                modifier = Modifier.semantics { contentDescription = "关闭此标签" })
+                            EsvButton(stringResource(R.string.flow_browserscreen_3), onClick = { browser.closeTab(tab.context.tabId) },
+                                modifier = Modifier.semantics { contentDescription = closeTabDescription })
                         }
                     }
-                    item { EsvButton("＋ 标签", onClick = { editing = false; browser.newTab() }) }
+                    item { EsvButton(stringResource(R.string.flow_browserscreen_4), onClick = { editing = false; browser.newTab() }) }
                 }
                 Row(Modifier.fillMaxWidth().padding(visuals.spacingMedium), verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
-                    BasicTextField(value = address, onValueChange = { editing = true; address = it.take(8192) },
-                        modifier = Modifier.weight(1f).border(visuals.borderWidth, visuals.colors.border,
-                            RoundedCornerShape(visuals.corner)).background(visuals.colors.surface, RoundedCornerShape(visuals.corner))
-                            .padding(visuals.spacingMedium).semantics { contentDescription = "网页地址" },
-                        textStyle = visuals.bodyTextStyle.copy(color = visuals.colors.text),
-                        cursorBrush = SolidColor(visuals.colors.accent), singleLine = true,
+                    OutlinedTextField(value = address, onValueChange = { editing = true; address = it.take(8192) },
+                        modifier = Modifier.weight(1f).semantics { contentDescription = addressDescription },
+                        textStyle = visuals.bodyTextStyle, singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Go),
                         keyboardActions = KeyboardActions(onGo = { go() }),
-                        decorationBox = { input -> Box { if (address.isEmpty()) EsvText("输入网址", color = visuals.colors.muted); input() } })
-                    EsvButton("前往", onClick = { go() }, enabled = address.isNotBlank())
+                        placeholder = { Text(stringResource(R.string.flow_browserscreen_5)) })
+                    EsvButton(stringResource(R.string.flow_browserscreen_6), onClick = { go() }, enabled = address.isNotBlank())
                 }
                 Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = visuals.spacingMedium),
                     horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
-                    EsvButton(if (saveScanning) "分析中…" else "保存", onClick = onSave, enabled = !saveScanning && selected?.loadState == BrowserLoadState.READY)
-                    EsvButton("保存任务", onClick = onSaveTasks)
-                    EsvButton("媒体库", onClick = onLibrary)
+                    EsvButton(stringResource(if (saveScanning) R.string.flow_inspecting else R.string.flow_inspect), onClick = onSave, enabled = !saveScanning && selected?.loadState == BrowserLoadState.READY)
+                    EsvButton(stringResource(R.string.flow_browserscreen_7), onClick = onSaveTasks)
+                    EsvButton(stringResource(R.string.flow_browserscreen_8), onClick = onLibrary)
+                    EsvButton(stringResource(if (moreControls) R.string.flow_less else R.string.flow_more),
+                        onClick = { moreControls = !moreControls })
+                }
+                if (moreControls) Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = visuals.spacingMedium),
+                    horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
                     bookmarks?.let { runtime ->
-                        EsvButton("收藏此页", onClick = {
+                        EsvButton(stringResource(R.string.flow_browserscreen_9), onClick = {
                             editing = false; focus.clearFocus()
                             val page = browser.acceptBookmarkPage(bookmarkPage)
                             if (page == null) runtime.stalePage() else runtime.add(page)
                         }, enabled = runtime.state.ready && !runtime.state.busy && bookmarkPage != null)
-                        EsvButton("收藏列表", onClick = { editing = false; focus.clearFocus(); settingsOpen = false; bookmarksOpen = !bookmarksOpen })
+                        EsvButton(stringResource(R.string.flow_browserscreen_10), onClick = { editing = false; focus.clearFocus(); settingsOpen = false; bookmarksOpen = !bookmarksOpen })
                     }
-                    EsvButton("后退", onClick = { browser.back() }, enabled = selected?.canGoBack == true && browser.selectedView() != null)
-                    EsvButton("前进", onClick = browser::forward, enabled = selected?.canGoForward == true && browser.selectedView() != null)
-                    if (selected?.loadState == BrowserLoadState.LOADING) EsvButton("停止", onClick = browser::stopSelected)
-                    else EsvButton("重新加载", onClick = browser::reload, enabled = selected?.address != null)
-                    EsvText(if (selected?.loadState == BrowserLoadState.LOADING) "${selected.progressPercent}%" else "零 Provider · 普通标签",
+                    EsvButton(stringResource(R.string.flow_browserscreen_11), onClick = { browser.back() }, enabled = selected?.canGoBack == true && browser.selectedView() != null)
+                    EsvButton(stringResource(R.string.flow_browserscreen_12), onClick = browser::forward, enabled = selected?.canGoForward == true && browser.selectedView() != null)
+                    if (selected?.loadState == BrowserLoadState.LOADING) EsvButton(stringResource(R.string.flow_browserscreen_13), onClick = browser::stopSelected)
+                    else EsvButton(stringResource(R.string.flow_browserscreen_14), onClick = browser::reload, enabled = selected?.address != null)
+                    EsvText(if (selected?.loadState == BrowserLoadState.LOADING) "${selected.progressPercent}%" else stringResource(R.string.flow_ordinary_tab),
                         style = visuals.captionTextStyle, modifier = Modifier.align(Alignment.CenterVertically))
                 }
                 bookmarks?.state?.notice?.let { message ->
                     Row(Modifier.fillMaxWidth().background(visuals.colors.surface).padding(visuals.spacingMedium),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
                         EsvText(bookmarkNoticeText(message), modifier = Modifier.weight(1f), style = visuals.captionTextStyle)
-                        EsvButton("关闭提示", onClick = bookmarks::dismissNotice)
+                        EsvButton(stringResource(R.string.flow_browserscreen_15), onClick = bookmarks::dismissNotice)
                     }
                 }
                 saveNotice?.let { message ->
                     Row(Modifier.fillMaxWidth().background(visuals.colors.surface).padding(visuals.spacingMedium),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
                         EsvText(message, modifier = Modifier.weight(1f), style = visuals.captionTextStyle)
-                        EsvButton("关闭提示", onClick = onDismissSaveNotice)
+                        EsvButton(stringResource(R.string.flow_browserscreen_15), onClick = onDismissSaveNotice)
                     }
                 }
                 browser.notice?.let { message ->
                     Row(Modifier.fillMaxWidth().background(visuals.colors.surface).padding(visuals.spacingMedium),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
                         EsvText(message, modifier = Modifier.weight(1f), style = visuals.captionTextStyle)
-                        EsvButton("关闭提示", onClick = browser::dismissNotice)
+                        EsvButton(stringResource(R.string.flow_browserscreen_15), onClick = browser::dismissNotice)
                     }
                 }
                 Row(Modifier.weight(1f).fillMaxWidth()) {
@@ -166,15 +176,15 @@ fun BrowserScreen(
                         if (showEmpty) Column(Modifier.fillMaxSize().background(visuals.colors.bg).padding(visuals.spacingLarge)
                             .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally) {
-                            EsvText(if (!browser.platformAvailable) "系统网页内核不可用" else if (selected?.loadState == BrowserLoadState.CANCELLED) "加载已停止，重新加载可继续" else if (selected?.error != null) errorText(selected.error!!.code) else "浏览网页",
+                            EsvText(if (!browser.platformAvailable) stringResource(R.string.flow_web_unavailable) else if (selected?.loadState == BrowserLoadState.CANCELLED) stringResource(R.string.flow_web_stopped) else if (selected?.error != null) errorText(selected.error!!.code) else stringResource(R.string.flow_browse_empty),
                                 style = visuals.titleTextStyle)
                             Spacer(Modifier.height(visuals.spacingMedium))
-                            EsvText("输入 http 或 https 地址即可浏览。无需搜索来源或登录应用账号。", color = visuals.colors.muted)
+                            EsvText(stringResource(R.string.flow_browserscreen_18), color = visuals.colors.muted)
                             Spacer(Modifier.height(visuals.spacingMedium))
-                            if (selected?.address != null) EsvButton("打开 / 重试此地址", onClick = browser::reload)
-                            if (!browser.platformAvailable && selected?.address != null) EsvButton("用系统浏览器打开", onClick = openExternal)
+                            if (selected?.address != null) EsvButton(stringResource(R.string.flow_browserscreen_19), onClick = browser::reload)
+                            if (!browser.platformAvailable && selected?.address != null) EsvButton(stringResource(R.string.flow_browserscreen_20), onClick = openExternal)
                             Spacer(Modifier.height(visuals.spacingLarge))
-                            EsvText("当前为开发版本。可免费保存 HTTPS 兼容 MP4；受限静态 HLS 和高级录制 / 编辑按现有权益检查。请先打开网页。真实录制、GPU 与设备验收尚未执行。", style = visuals.captionTextStyle, color = visuals.colors.muted)
+                            EsvText(stringResource(R.string.flow_browserscreen_21), style = visuals.captionTextStyle, color = visuals.colors.muted)
                         }
                     }
                     if (bookmarksOpen && wide && bookmarks != null) Box(Modifier.width(360.dp).fillMaxHeight().background(visuals.colors.surface)) {
@@ -204,26 +214,26 @@ fun BrowserScreen(
             browser.fullScreenView?.let { view ->
                 Box(Modifier.fillMaxSize().background(visuals.colors.bg)) {
                     AndroidView(factory = { (view.parent as? ViewGroup)?.removeView(view); view }, modifier = Modifier.fillMaxSize())
-                    EsvButton("退出全屏", onClick = browser::hideFullscreen, modifier = Modifier.align(Alignment.TopEnd).padding(visuals.spacingMedium))
+                    EsvButton(stringResource(R.string.flow_browserscreen_22), onClick = browser::hideFullscreen, modifier = Modifier.align(Alignment.TopEnd).padding(visuals.spacingMedium))
                 }
             }
         }
     }
     if (confirmCookies) EsvDialog(onDismiss = { confirmCookies = false }) {
         Column(verticalArrangement = Arrangement.spacedBy(visuals.spacingMedium)) {
-            EsvText("清除全部 Cookie？", style = visuals.titleTextStyle)
-            EsvText("普通标签共享系统 WebView Cookie。清除会让所有网站登录状态失效，已保存的网页地址不变。")
-            EsvButton("清除", onClick = { confirmCookies = false; browser.clearCookies {} })
-            EsvButton("取消", onClick = { confirmCookies = false })
+            EsvText(stringResource(R.string.flow_browserscreen_23), style = visuals.titleTextStyle)
+            EsvText(stringResource(R.string.flow_browserscreen_24))
+            EsvButton(stringResource(R.string.flow_browserscreen_25), onClick = { confirmCookies = false; browser.clearCookies {} })
+            EsvButton(stringResource(R.string.flow_browserscreen_26), onClick = { confirmCookies = false })
         }
     }
     filePrompt?.let { choice -> EsvDialog(onDismiss = onFileCancel) {
         Column(verticalArrangement = Arrangement.spacedBy(visuals.spacingMedium)) {
-            EsvText("允许选择文件？", style = visuals.titleTextStyle)
+            EsvText(stringResource(R.string.flow_browserscreen_27), style = visuals.titleTextStyle)
             EsvText("来源：${choice.origin}")
-            EsvText("只会把你在系统选择器中选中的文件交给此网页。不会拍照、录音或授予文件夹访问。导航变化后会取消。")
-            EsvButton("选择文件", onClick = { onFileConfirm(choice) })
-            EsvButton("取消", onClick = onFileCancel)
+            EsvText(stringResource(R.string.flow_browserscreen_29))
+            EsvButton(stringResource(R.string.flow_browserscreen_30), onClick = { onFileConfirm(choice) })
+            EsvButton(stringResource(R.string.flow_browserscreen_26), onClick = onFileCancel)
         }
     } }
 }
@@ -244,27 +254,27 @@ fun BrowserScreen(
     }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(v.spacingMedium),
         verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
-        EsvText("浏览器设置", style = v.titleTextStyle)
-        EsvButton("完成", onClick = onClose)
+        EsvText(stringResource(R.string.flow_browserscreen_32), style = v.titleTextStyle)
+        EsvButton(stringResource(R.string.flow_browserscreen_33), onClick = onClose)
         Toggle("JavaScript", settings.browser.javaScriptEnabled) { update(settings.copy(browser = settings.browser.copy(javaScriptEnabled = it))) }
-        EsvText("关闭可能影响视频与登录页面；不会向网页注入原生桥接。", style = v.captionTextStyle)
+        EsvText(stringResource(R.string.flow_browserscreen_34), style = v.captionTextStyle)
         Toggle("允许第三方 Cookie", settings.browser.acceptThirdPartyCookies) { update(settings.copy(browser = settings.browser.copy(acceptThirdPartyCookies = it))) }
-        EsvText("默认关闭。普通标签共享 Cookie，没有无痕或逐标签隔离承诺。", style = v.captionTextStyle)
+        EsvText(stringResource(R.string.flow_browserscreen_35), style = v.captionTextStyle)
         Toggle("保存标签地址以供恢复", settings.browser.restoreTabs) { update(settings.copy(browser = settings.browser.copy(restoreTabs = it))) }
-        EsvText("只保存地址。关闭会清除本机保存的标签地址；不会清除网站 Cookie。重启后需手动打开恢复的页面。", style = v.captionTextStyle)
+        EsvText(stringResource(R.string.flow_browserscreen_36), style = v.captionTextStyle)
         EsvText("活动网页上限：${settings.browser.maxActiveWebViews}")
         Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-            EsvButton("减少", onClick = { update(settings.copy(browser = settings.browser.copy(maxActiveWebViews = settings.browser.maxActiveWebViews - 1))) }, enabled = settings.browser.maxActiveWebViews > 1)
-            EsvButton("增加", onClick = { update(settings.copy(browser = settings.browser.copy(maxActiveWebViews = settings.browser.maxActiveWebViews + 1))) }, enabled = settings.browser.maxActiveWebViews < 4)
+            EsvButton(stringResource(R.string.flow_browserscreen_38), onClick = { update(settings.copy(browser = settings.browser.copy(maxActiveWebViews = settings.browser.maxActiveWebViews - 1))) }, enabled = settings.browser.maxActiveWebViews > 1)
+            EsvButton(stringResource(R.string.flow_browserscreen_39), onClick = { update(settings.copy(browser = settings.browser.copy(maxActiveWebViews = settings.browser.maxActiveWebViews + 1))) }, enabled = settings.browser.maxActiveWebViews < 4)
         }
-        EsvText("最多 12 个标签；超出活动上限会释放较旧网页，切回时恢复有限的内存历史。", style = v.captionTextStyle)
-        EsvButton("清除全部 Cookie", onClick = clearCookies)
-        EsvButton("清除网页缓存", onClick = browser::clearCache)
-        EsvText("相机、麦克风与位置请求会按来源明确拒绝。文件上传需逐次确认并选择文件。", style = v.captionTextStyle)
+        EsvText(stringResource(R.string.flow_browserscreen_40), style = v.captionTextStyle)
+        EsvButton(stringResource(R.string.flow_browserscreen_41), onClick = clearCookies)
+        EsvButton(stringResource(R.string.flow_browserscreen_42), onClick = browser::clearCache)
+        EsvText(stringResource(R.string.flow_browserscreen_43), style = v.captionTextStyle)
         destinations?.let { OrdinaryDestinationSettings(it) }
-        EsvButton("Provider 管理与恢复", onClick = onManageProviders)
-        EsvText("来源配置和本地维护状态可在 Provider 管理中查看。真实支付未接入，免费浏览不依赖来源或权益。", style = v.captionTextStyle)
-        EsvButton("第三方软件许可（离线）", onClick = { noticesOpen = true })
+        EsvButton(stringResource(R.string.flow_browserscreen_44), onClick = onManageProviders)
+        EsvText(stringResource(R.string.flow_browserscreen_45), style = v.captionTextStyle)
+        EsvButton(stringResource(R.string.flow_browserscreen_46), onClick = { noticesOpen = true })
         DevelopmentEntitlementPanel()
     }
 }

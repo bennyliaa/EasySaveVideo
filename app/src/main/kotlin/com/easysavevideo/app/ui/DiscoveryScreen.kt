@@ -37,15 +37,21 @@ import com.easysavevideo.app.discovery.DiscoveryFilterTextField
 import com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicy
 import com.easysavevideo.app.discovery.RightsPresentationPolicy
 import com.easysavevideo.app.theme.*
+import androidx.compose.ui.res.stringResource
+import com.easysavevideo.app.R
 import com.easysavevideo.core.model.*
 import com.easysavevideo.discovery.*
 import kotlinx.coroutines.delay
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoverySettings, active: Boolean,
     onSettings: (DiscoverySettings) -> Unit, onBrowser: () -> Unit, onOpen: (PageSnapshot, VideoSearchResult) -> Unit,
     onLink: (String) -> Unit, onLibrary: () -> Unit, onManageProviders: () -> Unit) {
     val v = LocalEsvVisuals.current
+    val queryDescription = stringResource(R.string.flow_query_description)
     val state = controller.state
     var options by remember { mutableStateOf(false) }
     var showPending by remember { mutableStateOf(false) }
@@ -107,30 +113,31 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
         }
     }
     EsvBackdrop(Modifier.fillMaxSize()) {
-        Column(Modifier.fillMaxSize().systemBarsPadding().padding(v.spacingMedium), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvThemeIcon(null, Modifier.size(v.iconSize))
-                EsvText("视频发现", style = v.titleTextStyle, modifier = Modifier.weight(1f))
-                EsvButton("浏览器", onClick = onBrowser)
-                EsvButton("媒体库", onClick = onLibrary)
-                EsvButton("选项", onClick = { options = true })
+        Column(Modifier.fillMaxSize().padding(v.spacingMedium), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+            Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                EsvText(stringResource(R.string.flow_discoveryscreen_0), style = v.titleTextStyle)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                    EsvButton(stringResource(R.string.flow_discoveryscreen_1), onClick = onBrowser)
+                    EsvButton(stringResource(R.string.flow_discoveryscreen_2), onClick = onLibrary)
+                    EsvButton(stringResource(R.string.flow_discoveryscreen_3), onClick = { options = true })
+                }
             }
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                BasicTextField(draft.query, onValueChange = { editText(DiscoveryFilterTextField.QUERY, it) }, singleLine = true,
-                    enabled = editable,
-                    modifier = Modifier.weight(1f).border(v.borderWidth, v.colors.border, RoundedCornerShape(v.corner))
-                        .background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium).semantics { contentDescription = "视频关键词" },
-                    textStyle = v.bodyTextStyle.copy(color = v.colors.text), cursorBrush = SolidColor(v.colors.accent),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { search() }),
-                    decorationBox = { input -> Box { if (draft.query.isEmpty()) EsvText("输入视频关键词", color = v.colors.muted); input() } })
-                EsvButton("查找", onClick = { search() }, enabled = canSearch)
+                OutlinedTextField(draft.query, onValueChange = { editText(DiscoveryFilterTextField.QUERY, it) },
+                    singleLine = true, enabled = editable,
+                    modifier = Modifier.weight(1f).semantics { contentDescription = queryDescription },
+                    textStyle = v.bodyTextStyle,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(onSearch = { search() }),
+                    placeholder = { Text(stringResource(R.string.flow_discoveryscreen_4)) })
+                EsvButton(stringResource(R.string.flow_discoveryscreen_5), onClick = { search() }, enabled = canSearch)
             }
-            if (controller.filterSearchPending) EsvText("正在应用本次查找；等待本次操作确认。", style = v.captionTextStyle)
+            if (controller.filterSearchPending) EsvText(stringResource(R.string.flow_discoveryscreen_6), style = v.captionTextStyle)
             else if (appliedReadable && DiscoveryFilterPresentationPolicy.isDirty(draft)) EsvText(
                 "草稿尚未应用；当前结果仍对应已应用关键词“${state.profile.query}”及其筛选。", style = v.captionTextStyle)
             validation.error?.let { EsvText(it, style = v.captionTextStyle, color = v.colors.error) }
-            if (state.demo) EsvText("演示数据 · 本地合成，非真实搜索。点击只测试网页导航。", color = v.colors.error, style = v.captionTextStyle)
-            if (!state.demo && state.commonsConfigured && state.commonsEnabled) EsvText("Wikimedia Commons · 开放媒体资料库", style = v.captionTextStyle)
+            if (state.demo) EsvText(stringResource(R.string.flow_discoveryscreen_7), color = v.colors.error, style = v.captionTextStyle)
+            if (!state.demo && state.commonsConfigured && state.commonsEnabled) EsvText(stringResource(R.string.flow_discoveryscreen_8), style = v.captionTextStyle)
             if (appliedReadable && !state.demo && state.profile.filters.safeSearch && state.commonsConfigured && state.commonsEnabled) EsvText(
                 "Wikimedia Commons 暂不支持安全搜索。保持开启时，不会向该来源发送查询。", style = v.captionTextStyle, color = v.colors.error)
             EsvText(statusText(state.status, state.storageUnavailable, state.ready), style = v.captionTextStyle, color = v.colors.muted)
@@ -141,7 +148,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
             if (state.status?.state == DiscoveryState.CAPACITY_REACHED) EsvText(
                 "为保护已生成页面及其历史和来源进度，本次写入未越过本地容量上限。", style = v.captionTextStyle)
             state.notice?.let { EsvText(it, style = v.captionTextStyle) }
-            if (state.needsExplicitSearch) EsvText("来源配置已变化，旧结果和续页已失效。请核对来源与筛选，然后主动点击查找。", style = v.captionTextStyle)
+            if (state.needsExplicitSearch) EsvText(stringResource(R.string.flow_discoveryscreen_9), style = v.captionTextStyle)
             EsvText("本地验证来源准入：${state.localSourceAdmission}；不保证后备验证成功。", style = v.captionTextStyle)
             state.verificationSummary?.let { summary ->
                 EsvText("页面验证：${summary.outcome} · ${summary.evidence}。不代表可播放、下载或保存。", style = v.captionTextStyle)
@@ -159,11 +166,11 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                     }
                 } else if (state.results.isEmpty()) Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(v.spacingLarge),
                     verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    EsvText(if (state.storageUnavailable) "发现数据暂不可用" else if (state.status?.state == DiscoveryState.NO_SOURCES) "当前无已启用来源" else "暂无符合条件的结果", style = v.titleTextStyle)
+                    EsvText(if (state.storageUnavailable) "发现数据暂不可用" else if (state.status?.state == DiscoveryState.NO_SOURCES) "当前无已启用来源" else stringResource(R.string.flow_discovery_no_results), style = v.titleTextStyle)
                     Spacer(Modifier.height(v.spacingMedium))
-                    EsvText(if (state.storageUnavailable) "本地原始数据已保留。" else if (state.status?.state == DiscoveryState.NO_SOURCES) "来源未配置或已关闭。仍可直接使用浏览器。" else if (state.profile.filters.safeSearch && !state.demo) "当前来源的安全搜索能力可能不可核验；保持开启时不会向不支持的来源发送查询。请在选项查看说明。" else "输入关键词查找开放媒体资料；可调整筛选或重复策略后重试。", color = v.colors.muted)
+                    EsvText(if (state.storageUnavailable) "本地原始数据已保留。" else if (state.status?.state == DiscoveryState.NO_SOURCES) stringResource(R.string.flow_discovery_browser_fallback) else if (state.profile.filters.safeSearch && !state.demo) "当前来源的安全搜索能力可能不可核验；保持开启时不会向不支持的来源发送查询。请在选项查看说明。" else "输入关键词查找开放媒体资料；可调整筛选或重复策略后重试。", color = v.colors.muted)
                     Spacer(Modifier.height(v.spacingMedium))
-                    EsvButton("输入网址浏览", onClick = onBrowser)
+                    EsvButton(stringResource(R.string.flow_discoveryscreen_14), onClick = onBrowser)
                 } else LazyVerticalGrid(GridCells.Fixed(columns), state = grid, modifier = Modifier.fillMaxSize(),
                     horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                     items(state.results, key = { it.resultId }) { result ->
@@ -172,65 +179,65 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                             Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(v.backdrop, RoundedCornerShape(v.corner)), contentAlignment = Alignment.Center) {
                                 EsvThemeIcon("视频封面占位", Modifier.size(v.iconSize))
                             }
-                            EsvText(result.title ?: "标题未知", style = v.bodyTextStyle)
+                            EsvText(result.title ?: stringResource(R.string.flow_title_unknown), style = v.bodyTextStyle)
                             EsvText(result.sourceName, style = v.captionTextStyle, color = v.colors.muted)
                             if (result.provenance.any { it.startsWith("searxng-") }) EsvText(
                                 "网页视频证据；播放、下载及保存权限尚未验证", style = v.captionTextStyle, color = v.colors.muted)
-                            EsvText(result.durationMs?.let { "${it / 60_000}:${(it / 1_000 % 60).toString().padStart(2, '0')}" } ?: "时长未知", style = v.captionTextStyle)
+                            EsvText(result.durationMs?.let { "${it / 60_000}:${(it / 1_000 % 60).toString().padStart(2, '0')}" } ?: stringResource(R.string.flow_duration_unknown), style = v.captionTextStyle)
                             RightsPresentationPolicy.summary(result.rights).forEach { EsvText(it, style = v.captionTextStyle) }
-                            EsvButton("完整来源与许可资料", onClick = { rightsDetails = result }, modifier = Modifier.fillMaxWidth())
-                            EsvButton("打开网页", onClick = { page?.let { onOpen(it, result) } }, modifier = Modifier.fillMaxWidth())
+                            EsvButton(stringResource(R.string.flow_discoveryscreen_15), onClick = { rightsDetails = result }, modifier = Modifier.fillMaxWidth())
+                            EsvButton(stringResource(R.string.flow_discoveryscreen_16), onClick = { page?.let { onOpen(it, result) } }, modifier = Modifier.fillMaxWidth())
                         }
                     }
                 }
             }
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalAlignment = Alignment.CenterVertically) {
-                EsvButton("上一页", onClick = { controller.movePage(-1) }, enabled = state.pageIndex > 0)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_17), onClick = { controller.movePage(-1) }, enabled = state.pageIndex > 0)
                 EsvText("第 ${state.pageIndex + 1} 页", style = v.captionTextStyle)
-                EsvButton("下一页", onClick = { controller.movePage(1) }, enabled = state.results.isNotEmpty())
-                EsvButton("重试 / 补充", onClick = controller::retry, enabled = state.ready && !state.storageUnavailable)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_19), onClick = { controller.movePage(1) }, enabled = state.results.isNotEmpty())
+                EsvButton(stringResource(R.string.flow_discoveryscreen_20), onClick = controller::retry, enabled = state.ready && !state.storageUnavailable)
             }
         }
     }
     if (options) Dialog(onDismissRequest = { options = false }) {
         Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
             .padding(v.spacingLarge).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-            EsvText("发现选项", style = v.titleTextStyle)
-            EsvButton("完成", onClick = { options = false })
+            EsvText(stringResource(R.string.flow_discoveryscreen_21), style = v.titleTextStyle)
+            EsvButton(stringResource(R.string.flow_discoveryscreen_22), onClick = { options = false })
             state.notice?.let { EsvText(it, style = v.captionTextStyle) }
-            EsvText("本地排序：保留当前页，对后续页生效", style = v.captionTextStyle)
+            EsvText(stringResource(R.string.flow_discoveryscreen_23), style = v.captionTextStyle)
             ResultSort.entries.forEach { order ->
                 EsvButton((if (state.profile.sortOrder == order) "✓ " else "") + DiscoveryPresentationPolicy.sortLabel(order),
                     onClick = { controller.updateSort(order) }, enabled = state.ready && !state.storageUnavailable)
             }
             EsvText("未知日期或时长排后；优先新内容策略先分已展示与未展示。来源顺序不代表统一相关度分数。", style = v.captionTextStyle)
-            EsvText("重复策略", style = v.captionTextStyle)
+            EsvText(stringResource(R.string.flow_discoveryscreen_25), style = v.captionTextStyle)
             RepeatPolicy.entries.forEach { policy -> EsvButton((if (settings.repeatPolicy == policy) "✓ " else "") + policyText(policy), onClick = { onSettings(settings.copy(repeatPolicy = policy)) }) }
             EsvText("每页 ${settings.pageSize}；手机 ${settings.columns} 列，平板随宽度增加。", style = v.captionTextStyle)
             Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvButton("每页－", onClick = { onSettings(settings.copy(pageSize = (settings.pageSize - 10).coerceAtLeast(10))) }, enabled = settings.pageSize > 10)
-                EsvButton("每页＋", onClick = { onSettings(settings.copy(pageSize = (settings.pageSize + 10).coerceAtMost(100))) }, enabled = settings.pageSize < 100)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_27), onClick = { onSettings(settings.copy(pageSize = (settings.pageSize - 10).coerceAtLeast(10))) }, enabled = settings.pageSize > 10)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_28), onClick = { onSettings(settings.copy(pageSize = (settings.pageSize + 10).coerceAtMost(100))) }, enabled = settings.pageSize < 100)
             }
             Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvButton("列－", onClick = { onSettings(settings.copy(columns = settings.columns - 1)) }, enabled = settings.columns > 1)
-                EsvButton("列＋", onClick = { onSettings(settings.copy(columns = settings.columns + 1)) }, enabled = settings.columns < 6)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_29), onClick = { onSettings(settings.copy(columns = settings.columns - 1)) }, enabled = settings.columns > 1)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_30), onClick = { onSettings(settings.copy(columns = settings.columns + 1)) }, enabled = settings.columns < 6)
             }
             DiscoveryMode.entries.forEach { mode -> EsvButton((if (settings.mode == mode) "✓ " else "") + when(mode) {
                 DiscoveryMode.POWER_SAVING -> "省电：并发 1"; DiscoveryMode.BALANCED -> "平衡：并发 2"; DiscoveryMode.AGGRESSIVE -> "积极：并发最多 3"
             }, onClick = { onSettings(settings.copy(mode = mode)) }) }
             DiscoveryPowerControls(state, controller)
-            EsvText("已应用筛选", style = v.titleTextStyle)
+            EsvText(stringResource(R.string.flow_discoveryscreen_31), style = v.titleTextStyle)
             if (appliedReadable) {
                 EsvText("来源：${DiscoveryFilterPresentationPolicy.sourceSummary(state.profile.filters, choices)}", style = v.captionTextStyle)
                 EsvText(DiscoveryFilterPresentationPolicy.durationSummary(state.profile.filters), style = v.captionTextStyle)
                 EsvText("已应用安全搜索：${if (state.profile.filters.safeSearch) "开" else "关"}", style = v.captionTextStyle)
-            } else EsvText("已应用关键词与筛选暂不可核对；未按默认值替换已保存资料。", style = v.captionTextStyle)
-            EsvText("筛选草稿", style = v.titleTextStyle)
+            } else EsvText(stringResource(R.string.flow_discoveryscreen_34), style = v.captionTextStyle)
+            EsvText(stringResource(R.string.flow_discoveryscreen_35), style = v.titleTextStyle)
             EsvText("关键词与以下筛选仅在点击“查找”或“应用草稿查找”后一起生效。关闭选项或切换页面会保留草稿；应用重建或重启后恢复已应用资料。", style = v.captionTextStyle)
             EsvButton((if (draft.sourceNamespaces.isEmpty()) "✓ " else "") + "全部当前启用来源", onClick = {
                 edit(draft.copy(sourceNamespaces = emptySet()))
             }, enabled = editable)
-            if (choices.isEmpty()) EsvText("当前注册表没有可选来源；已保存的来源筛选仍原样保留。", style = v.captionTextStyle)
+            if (choices.isEmpty()) EsvText(stringResource(R.string.flow_discoveryscreen_37), style = v.captionTextStyle)
             choices.forEach { choice ->
                 val selected = DiscoveryFilterPresentationPolicy.isSelected(draft.sourceNamespaces, choice.namespace)
                 EsvButton((if (selected) "✓ " else "加入筛选：") + "${choice.label} [${choice.namespace}]", onClick = {
@@ -246,7 +253,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                     edit(DiscoveryFilterPresentationPolicy.removeSource(draft, namespace))
                 }, enabled = editable)
             }
-            EsvText("来源筛选只限制结果命名空间，不会启用来源或改写关键词；空选择表示全部当前启用来源。", style = v.captionTextStyle)
+            EsvText(stringResource(R.string.flow_discoveryscreen_39), style = v.captionTextStyle)
             DurationFilterField("最短时长（秒；留空不限）", draft.minimumSeconds, editable) {
                 editText(DiscoveryFilterTextField.MINIMUM_SECONDS, it)
             }
@@ -262,11 +269,11 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                 else edit(draft.copy(safeSearch = true))
             }, enabled = editable)
             validation.error?.let { EsvText(it, style = v.captionTextStyle, color = v.colors.error) }
-            EsvButton("应用草稿查找", onClick = { search() }, enabled = canSearch)
-            EsvButton("放弃草稿，恢复已应用关键词与筛选", onClick = {
+            EsvButton(stringResource(R.string.flow_discoveryscreen_43), onClick = { search() }, enabled = canSearch)
+            EsvButton(stringResource(R.string.flow_discoveryscreen_44), onClick = {
                 edit(DiscoveryFilterPresentationPolicy.fromProfile(state.profile, state.demo))
             }, enabled = editable && DiscoveryFilterPresentationPolicy.isDirty(draft))
-            EsvText("来源能力与未知信息", style = v.titleTextStyle)
+            EsvText(stringResource(R.string.flow_discoveryscreen_45), style = v.titleTextStyle)
             choices.forEach { choice -> DiscoveryFilterPresentationPolicy.capabilityText(choice).forEach {
                 EsvText(it, style = v.captionTextStyle)
             } }
@@ -275,12 +282,12 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
             }
             EsvText(DiscoveryFilterPresentationPolicy.nativeHistoryNotice(), style = v.captionTextStyle)
             EsvText(if (state.commonsConfigured) "Wikimedia Commons：已配置元数据来源" else "Wikimedia Commons：本构建未配置服务联系信息，零来源模式", style = v.captionTextStyle)
-            EsvButton("Provider 管理与恢复", onClick = { options = false; onManageProviders() })
+            EsvButton(stringResource(R.string.flow_discoveryscreen_47), onClick = { options = false; onManageProviders() })
             if (state.commonsConfigured) EsvButton("Commons 来源：${if (state.commonsEnabled) "开" else "关"}",
                 onClick = { controller.enableCommons(!state.commonsEnabled) })
             SearxngSourceSettings(controller.sourceSettings)
             VerificationServiceSettings(controller.verificationSettings)
-            EsvText("本地历史与来源进度", style = v.titleTextStyle)
+            EsvText(stringResource(R.string.flow_discoveryscreen_49), style = v.titleTextStyle)
             EsvText("本地统计快照。一个资料对应一组关键词、筛选和语言；Seen 统计记录身份及其别名，不是播放次数或媒体文件数量。", style = v.captionTextStyle)
             EsvText("从发现打开页面后的短期关联，只能确认保存来自该页面，不能证明所选媒体就是同一发现视频。当前发现视频的保存和播放状态都保持未知，不会据此隐藏视频。页面跳转、清历史或重启会使关联失效，媒体保存本身不受影响。", style = v.captionTextStyle)
             if (state.demo) EsvText("当前是隔离演示数据：以下统计、历史清除和进度重置仅作用于当前演示内存记录，不影响真实本地发现数据。", style = v.captionTextStyle, color = v.colors.error)
@@ -290,7 +297,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                 EsvText(DiscoveryPresentationPolicy.statisticsText("全部资料", statistics.allProfiles), style = v.captionTextStyle)
             } else EsvText(if (state.historyStatisticsUnavailable || state.storageUnavailable) "本地统计暂不可读，未将未知数据显示为零。"
                 else "本地统计尚未读取。", style = v.captionTextStyle)
-            EsvButton("刷新本地统计", onClick = { controller.refreshHistoryStatistics(state.controlTarget) },
+            EsvButton(stringResource(R.string.flow_discoveryscreen_53), onClick = { controller.refreshHistoryStatistics(state.controlTarget) },
                 enabled = state.controlTarget != null && !state.storageUnavailable)
             EsvText(DiscoveryPresentationPolicy.retentionNotice(), style = v.captionTextStyle)
             EsvButton("清除当前资料的 Seen 历史…", onClick = {
