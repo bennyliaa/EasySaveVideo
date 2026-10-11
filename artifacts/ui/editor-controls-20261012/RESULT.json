@@ -1,0 +1,83 @@
+{
+  "base": "766789ff93ea60bb2dd6164903f45a9a2f2cbe98",
+  "status": "PASS_SCOPED_SOURCE_VALIDATION",
+  "jvm": [
+    {
+      "name": "com.easysavevideo.app.editor.ui.EditorResponsiveControlsTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.editor.ui.EditorPresentationTest",
+      "tests": "17",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.editor.ui.EditorStatusResourcesTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.editor.EditorFeaturePolicyTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.editor.workflow.EditWorkflowTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.editor.EditPublicationCancellationTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.editor.EditorDeadlineGuardTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "total_passed": 48,
+  "compile": [
+    "Debug PASS",
+    "Release PASS"
+  ],
+  "lint": {
+    "debug": {
+      "Warning": 58,
+      "Hint": 7
+    },
+    "release": {
+      "Warning": 58,
+      "Hint": 7
+    }
+  },
+  "strict_runtime_artifacts": 90,
+  "scope": "Existing Editor bindings checked; four control pairs adapt to actual width/font scale; only successful published reference is exposed as new output preview",
+  "not_run": [
+    "APK/device/recording",
+    "private media reads",
+    "native decode/encode",
+    "actual entitlement/Tools admission",
+    "real save/new output/preview acceptance",
+    "font200/TalkBack/window rendering",
+    "complete PPT17 inline preview/three-pane editor"
+  ],
+  "minimum_api": 31,
+  "code4_frozen_source": "d9bdf34567bf2d138e796a50560419d359385cf4"
+}

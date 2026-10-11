@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.editor.ui.EditorResponsiveControlsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-11T18:59:51.379Z" hostname="[HOST]" time="0.004">
+  <properties />
+  <testcase name="unpublishedAndStoppingPhasesNeverExposeCompletedPreview" classname="com.easysavevideo.app.editor.ui.EditorResponsiveControlsTest" time="0.002" />
+  <testcase name="onlyExactPublishedReferenceIsExposedAndPhaseTransitionRevokesIt" classname="com.easysavevideo.app.editor.ui.EditorResponsiveControlsTest" time="0.0" />
+  <testcase name="narrowAndLargeFontControlsStackWithoutShrinkingText" classname="com.easysavevideo.app.editor.ui.EditorResponsiveControlsTest" time="0.0" />
+  <testcase name="invalidGeometryUsesConservativeStack" classname="com.easysavevideo.app.editor.ui.EditorResponsiveControlsTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

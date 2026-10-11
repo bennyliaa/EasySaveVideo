@@ -1,7 +1,7 @@
 # UI capability integration ledger
 
-Reconciled against main 46f59796e770c3974d93cffa5aeae05eac587003 plus the bounded
-Browser wide inspector source increment. COMPLETE SOURCE
+Reconciled against main 766789ff93ea60bb2dd6164903f45a9a2f2cbe98 plus the bounded
+Editor existing-binding / responsive-control source increment. COMPLETE SOURCE
 means implementation plus scoped source validation. PARTIAL means callable code
 or bounded checks exist; it does not close full PPT/media/device acceptance.
 NOT ACCEPTED means the specified acceptance is unperformed. DISABLED is intentional.
@@ -151,3 +151,31 @@ Validation: 36 scoped JVM passes, double Kotlin compile and lint PASS
 ({'Warning': 58, 'Hint': 7}); exact runtime graph90. See artifacts/ui/browser-inspector-20261012.
 Actual rendering, window/state transitions, font200/TalkBack and real save/output
 acceptance NOT RUN. No device/APK step; code4 remains frozen on d9bdf345.
+
+## Editor existing bindings and bounded control adaptation
+
+Input selection already connects Library current item snapshots and verified
+recorded-output exact references to AndroidEditRuntime.open. EditorScreen already
+connects draft selection/ordering/time/crop/compression, submit, phase, cancel and
+preview to real controllers. Only EditRunResult.Published supplies SUCCEEDED and
+a completed MediaReadRef; verified preview uses the controlled Library reader.
+No placeholder edit algorithm or fake completed output is added. Originals remain
+untouched by the existing new-output workflow. The current feature mapper and
+FeatureGate require the relevant VIDEO_CROP/MERGE/COMPRESS capabilities; source
+admission is inherited, while actual entitlement and native execution are NOT RUN.
+Rejecting Tools is reported through the existing runtime notice, never bypassed.
+
+This group adapts four action/time-input pairs to actual width and font scale,
+stacking without reducing text. It extracts the unchanged successful-publication
+preview condition into a tested policy. Input controls and cancellation callbacks
+retain their previous gates. Protected runtime/engine/workflow/storage/verifier,
+recording bridge, MainActivity bindings and dependency files are unchanged against
+766789ff93ea60bb2dd6164903f45a9a2f2cbe98. See BINDING-AND-ADMISSION-CHECK.json.
+
+Validation: 48 scoped JVM passes, both Kotlin variants compiled and lint
+passed ({'Warning': 58, 'Hint': 7}), strict graph90. Evidence:
+artifacts/ui/editor-controls-20261012. Full PPT17 inline native preview / expanded
+segments-and-inspector composition remains future source and rendering work, not
+closed by this increment. No private media, device capture, native processing,
+real published output/preview or Tools acceptance was performed. No APK/device
+step; code4 remains frozen on d9bdf345.

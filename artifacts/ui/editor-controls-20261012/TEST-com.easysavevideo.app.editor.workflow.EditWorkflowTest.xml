@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.editor.workflow.EditWorkflowTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-11T18:59:51.397Z" hostname="[HOST]" time="0.045">
+  <properties />
+  <testcase name="malformedIndependentProofCannotReachPublish" classname="com.easysavevideo.app.editor.workflow.EditWorkflowTest" time="0.019" />
+  <testcase name="finalAdmissionCancellationRejectsWithoutCatalogAndCleansOwnedCandidate" classname="com.easysavevideo.app.editor.workflow.EditWorkflowTest" time="0.004" />
+  <testcase name="admittedCommitWinsLateCancelForOrdinaryAndRecordedRecipes" classname="com.easysavevideo.app.editor.workflow.EditWorkflowTest" time="0.003" />
+  <testcase name="commitAcknowledgementLossPreservesConfirmedPublishedResult" classname="com.easysavevideo.app.editor.workflow.EditWorkflowTest" time="0.004" />
+  <testcase name="cancellationAfterConfirmedExecutionNeverPublishesAndCanRunAgain" classname="com.easysavevideo.app.editor.workflow.EditWorkflowTest" time="0.002" />
+  <testcase name="uncertainPublicationIsReconciledWithoutDeletingCandidate" classname="com.easysavevideo.app.editor.workflow.EditWorkflowTest" time="0.002" />
+  <testcase name="cancelledBeforePreparationDoesNotAllocateArtifact" classname="com.easysavevideo.app.editor.workflow.EditWorkflowTest" time="0.002" />
+  <testcase name="completeProductionWorkflowRequiresExecutionVerificationAndPublication" classname="com.easysavevideo.app.editor.workflow.EditWorkflowTest" time="0.004" />
+  <testcase name="unconfirmedNativeReleaseRetainsOwnerAndPreventsCleanup" classname="com.easysavevideo.app.editor.workflow.EditWorkflowTest" time="0.002" />
+  <testcase name="admittedTransactionFailureRemainsUncertainWithoutDiscardOrReuse" classname="com.easysavevideo.app.editor.workflow.EditWorkflowTest" time="0.002" />
+  <system-out />
+  <system-err />
+</testsuite>

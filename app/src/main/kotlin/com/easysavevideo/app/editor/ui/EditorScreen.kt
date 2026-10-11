@@ -61,6 +61,7 @@ fun EditorScreen(
     val editable = state.editable && !pendingSubmit
     var cropSegmentId by remember { mutableStateOf<Long?>(null) }
     val error = editorDraftError(draft, state.displayGeometries)
+    val publishedReference = editorPublishedReference(state)
     val status = stringResource(editorPhaseResource(state.phase, state.completedReference != null))
     BackHandler(onBack = onBack)
     EsvBackdrop(Modifier.fillMaxSize()) {
@@ -73,10 +74,11 @@ fun EditorScreen(
                 item(key = "header") {
                     Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                         EsvText(stringResource(R.string.advanced_copy_1), style = v.titleTextStyle)
-                        Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                            EsvButton(stringResource(R.string.advanced_copy_2), onBack, modifier = Modifier.weight(1f))
-                            EsvButton(stringResource(R.string.advanced_copy_3), onCancel, modifier = Modifier.weight(1f))
-                        }
+                        EditorResponsivePair(first = { modifier ->
+                            EsvButton(stringResource(R.string.advanced_copy_2), onBack, modifier = modifier)
+                        }, second = { modifier ->
+                            EsvButton(stringResource(R.string.advanced_copy_3), onCancel, modifier = modifier)
+                        })
                         EsvText(stringResource(R.string.final_copy_0), style = v.captionTextStyle, color = v.colors.muted)
                         EsvText(stringResource(R.string.final_copy_1), style = v.captionTextStyle, color = v.colors.muted)
                         EsvText(stringResource(R.string.final_copy_2), style = v.captionTextStyle, color = v.colors.muted)
@@ -89,8 +91,8 @@ fun EditorScreen(
                             color = if (state.phase == EditorPhase.FAILED || state.phase == EditorPhase.BLOCKED) v.colors.error else v.colors.text)
                         if (!state.foreground) EsvText(stringResource(R.string.advanced_copy_4), style = v.captionTextStyle, color = v.colors.muted)
                         state.notice?.let { EsvDiagnosticNotice(it) }
-                        if (state.phase == EditorPhase.SUCCEEDED && state.completedReference != null) {
-                            EsvButton(stringResource(R.string.final_copy_4), { onPreview(state.completedReference) },
+                        if (publishedReference != null) {
+                            EsvButton(stringResource(R.string.final_copy_4), { onPreview(publishedReference) },
                                 enabled = state.foreground && !state.busy, modifier = Modifier.fillMaxWidth())
                         }
                     }
@@ -108,19 +110,21 @@ fun EditorScreen(
                         EsvText("${index + 1}. ${segment.item.displayName}", style = v.titleTextStyle, maxLines = 2)
                         EsvText("${segment.startSeconds} → ${segment.endSeconds.ifEmpty { stringResource(R.string.final_pending_entry) }} 秒 · ${cropSummary(segment.crop)}",
                             style = v.captionTextStyle, color = v.colors.muted)
-                        Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                        EditorResponsivePair(first = { modifier ->
                             EsvButton(if (selected) stringResource(R.string.final_copy_6) else stringResource(R.string.final_copy_7), {
                                 onDraftChange(draft.copy(selectedSegmentId = segment.id))
-                            }, enabled = editable, modifier = Modifier.weight(1f))
+                            }, enabled = editable, modifier = modifier)
+                        }, second = { modifier ->
                             EsvButton(stringResource(R.string.final_copy_8), { onDraftChange(removeEditorSegment(draft, segment.id)) },
-                                enabled = editable, modifier = Modifier.weight(1f))
-                        }
-                        Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                enabled = editable, modifier = modifier)
+                        })
+                        EditorResponsivePair(first = { modifier ->
                             EsvButton(stringResource(R.string.final_copy_9), { onDraftChange(moveEditorSegment(draft, segment.id, -1)) },
-                                enabled = editable && index > 0, modifier = Modifier.weight(1f))
+                                enabled = editable && index > 0, modifier = modifier)
+                        }, second = { modifier ->
                             EsvButton(stringResource(R.string.final_copy_10), { onDraftChange(moveEditorSegment(draft, segment.id, 1)) },
-                                enabled = editable && index < draft.segments.lastIndex, modifier = Modifier.weight(1f))
-                        }
+                                enabled = editable && index < draft.segments.lastIndex, modifier = modifier)
+                        })
                     }
                 }
                 draft.selectedSegment?.let { segment ->
@@ -132,14 +136,15 @@ fun EditorScreen(
                             EsvButton(stringResource(R.string.final_copy_11), { onPreview(segment.reference) },
                                 enabled = state.foreground && !state.busy && !pendingSubmit, modifier = Modifier.fillMaxWidth())
                             EsvText(stringResource(R.string.final_copy_12), style = v.captionTextStyle, color = v.colors.muted)
-                            Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                EditorTimeField(segment.startSeconds, stringResource(R.string.final_copy_13), editable, Modifier.weight(1f)) { value ->
+                            EditorResponsivePair(first = { modifier ->
+                                EditorTimeField(segment.startSeconds, stringResource(R.string.final_copy_13), editable, modifier) { value ->
                                     onDraftChange(updateEditorSegment(draft, segment.id) { it.copy(startSeconds = value) })
                                 }
-                                EditorTimeField(segment.endSeconds, stringResource(R.string.final_copy_14), editable, Modifier.weight(1f)) { value ->
+                            }, second = { modifier ->
+                                EditorTimeField(segment.endSeconds, stringResource(R.string.final_copy_14), editable, modifier) { value ->
                                     onDraftChange(updateEditorSegment(draft, segment.id) { it.copy(endSeconds = value) })
                                 }
-                            }
+                            })
                             val verifiedDuration = geometry?.durationUs
                             val duration = verifiedDuration ?: segment.item.durationMillis?.let { it * 1_000 }
                             EsvText(if (duration == null) stringResource(R.string.final_copy_15) else "${if (verifiedDuration == null) stringResource(R.string.final_copy_16) else stringResource(R.string.final_copy_17)}时长：${editorSeconds(duration)} 秒",
