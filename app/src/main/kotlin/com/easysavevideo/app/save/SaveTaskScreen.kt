@@ -29,6 +29,7 @@ import com.easysavevideo.save.*
 import java.net.URI
 
 @Composable
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 fun SaveTaskScreen(
     runtime: AndroidSaveRuntime,
     browser: SystemBrowserHost,
@@ -44,8 +45,8 @@ fun SaveTaskScreen(
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(v.spacingMedium),
             verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
             item { Column(verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvText(stringResource(R.string.flow_savetaskscreen_0), style = v.titleTextStyle, modifier = Modifier.weight(1f))
+            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                EsvText(stringResource(R.string.flow_savetaskscreen_0), style = v.titleTextStyle)
                 EsvButton(stringResource(R.string.flow_savetaskscreen_1), onClick = onBack)
             }
             onLibrary?.let { open -> EsvButton(stringResource(R.string.flow_savetaskscreen_2), onClick = open, modifier = Modifier.fillMaxWidth()) }

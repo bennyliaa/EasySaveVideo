@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" tests="26" skipped="0" failures="0" errors="0" timestamp="2026-10-11T18:15:25.348Z" hostname="REDACTED" time="0.107">
+  <properties/>
+  <testcase name="restorePreservesEveryFilterIncludingUnknownAndCaseSensitiveStoredNamespace" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.053"/>
+  <testcase name="unavailableOrLoadingSnapshotCannotReplaceRestoredFiltersWithDefaults" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="choicesRequireExactAlreadyRegisteredAdmittedDescriptor" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="descriptorInspectionAndPresentationNeverCallProvider" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.006"/>
+  <testcase name="textRebasingKeepsExistingQueryBoundAndValidationOfDraftDurations" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.004"/>
+  <testcase name="claimsRejectDoubleSubmitAndStaleConfirmationWithoutRecomposition" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.0"/>
+  <testcase name="sourceLimitRefusesAdditionWithoutDroppingSavedSources" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.007"/>
+  <testcase name="reversedRangeDoesNotSilentlySwapOrClampBounds" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="rapidTextCallbacksRebaseLatestFieldAndPreserveOtherAcceptedDraftEdits" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.0"/>
+  <testcase name="localDurationFilteringKeepsBoundsInclusiveAndUnknownSeparate" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.015"/>
+  <testcase name="demoSwitchCannotLeakRealQueryOrFilterDraftIntoDemo" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="changedAppliedQueryLocaleOrFiltersRebasesWithoutReinterpretingThem" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="sourceUnavailableDoesNotClearExistingSelectionOrMakeZeroSourcesNonzero" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="emptyOrInvalidUnicodeQueryCannotSubmitButWhitespaceAndSymbolsAreNotRewritten" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.0"/>
+  <testcase name="viewAndHistoryTicksDoNotDiscardQueryAndFilterEdits" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="textEditsCannotRebaseAcrossChangedAppliedProfileOrLocale" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.0"/>
+  <testcase name="demoAndRealNamespacesCannotMix" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="malformedNegativeSubMillisecondAndOverflowDurationsFailWithoutChangingAppliedFilters" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="draftDiagnosticsRedactQueryAndNamespaceSelections" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.0"/>
+  <testcase name="capabilityCopySeparatesUnsupportedUnknownAndSyntheticMetadata" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="staleCasReconciliationCannotBeTreatedAsACurrentAppliedProfile" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="claimsRejectSameQueryFromDifferentProfileLocaleOrIsolationAndUnavailableState" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.0"/>
+  <testcase name="secondsRoundTripEveryBoundaryWithoutRoundingOrOverflow" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <testcase name="textEditsKeepEveryTargetAvailabilityAndBusyFence" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.0"/>
+  <testcase name="caseInsensitiveSelectionDoesNotRewriteStoredCasingOrDuplicateNamespace" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.0"/>
+  <testcase name="addingKnownSourceRetainsObsoleteSelectionsUntilExplicitRemoval" classname="com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

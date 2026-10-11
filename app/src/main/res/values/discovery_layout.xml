@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_grid_adapted">Column preference: %1$d. Columns displayed for this width and text size: %2$d. Your preference is preserved.</string>
+</resources>

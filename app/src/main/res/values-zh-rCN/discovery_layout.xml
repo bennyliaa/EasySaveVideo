@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_grid_adapted">已保留每行 %1$d 列偏好；按当前宽度与字号显示 %2$d 列。</string>
+</resources>

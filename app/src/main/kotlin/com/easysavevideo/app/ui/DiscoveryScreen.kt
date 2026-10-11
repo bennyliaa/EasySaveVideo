@@ -40,6 +40,7 @@ import com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicy
 import com.easysavevideo.app.discovery.RightsPresentationPolicy
 import com.easysavevideo.app.theme.*
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalDensity
 import com.easysavevideo.app.R
 import com.easysavevideo.core.model.*
 import com.easysavevideo.discovery.*
@@ -126,15 +127,24 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                     EsvButton(stringResource(R.string.flow_discoveryscreen_3), onClick = { options = true })
                 }
             }
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+            BoxWithConstraints(Modifier.fillMaxWidth()) {
+              val layout = discoveryResponsiveLayout(maxWidth.value, LocalDensity.current.fontScale, settings.columns, v.spacingSmall.value)
+              val QueryField: @Composable (Modifier) -> Unit = { modifier ->
                 OutlinedTextField(draft.query, onValueChange = { editText(DiscoveryFilterTextField.QUERY, it) },
                     singleLine = true, enabled = editable,
-                    modifier = Modifier.weight(1f).semantics { contentDescription = queryDescription },
+                    modifier = modifier.semantics { contentDescription = queryDescription },
                     textStyle = v.bodyTextStyle,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                     keyboardActions = KeyboardActions(onSearch = { search() }),
                     placeholder = { Text(stringResource(R.string.flow_discoveryscreen_4)) })
+              }
+              if (layout.stackSearch) Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                QueryField(Modifier.fillMaxWidth())
+                EsvButton(stringResource(R.string.flow_discoveryscreen_5), onClick = { search() }, enabled = canSearch, modifier = Modifier.fillMaxWidth())
+              } else Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                QueryField(Modifier.weight(1f))
                 EsvButton(stringResource(R.string.flow_discoveryscreen_5), onClick = { search() }, enabled = canSearch)
+              }
             }
             if (controller.filterSearchPending) EsvText(stringResource(R.string.flow_discoveryscreen_6), style = v.captionTextStyle)
             else if (appliedReadable && DiscoveryFilterPresentationPolicy.isDirty(draft)) EsvText(
@@ -157,12 +167,14 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
             state.verificationSummary?.let { summary ->
                 EsvText(stringResource(R.string.discovery_copy_6, summary.outcome, summary.evidence), style = v.captionTextStyle)
             }
-            if (state.pendingCandidates.isNotEmpty()) Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+            if (state.pendingCandidates.isNotEmpty()) FlowRow(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvButton(stringResource(R.string.discovery_copy_7, state.results.size), onClick = { showPending = false })
                 EsvButton(stringResource(R.string.discovery_copy_8, state.pendingCandidates.size), onClick = { showPending = true })
             }
             BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
-                val columns = if (maxWidth >= 720.dp) maxOf(settings.columns, (maxWidth.value / 220).toInt().coerceIn(2, 6)) else settings.columns
+                val columns = discoveryResponsiveLayout(maxWidth.value, LocalDensity.current.fontScale, settings.columns, v.spacingSmall.value).columns
+                Column(Modifier.fillMaxSize()) {
+                if (columns < settings.columns) EsvText(stringResource(R.string.discovery_grid_adapted, settings.columns, columns), style = v.captionTextStyle, color = v.colors.muted)
                 if ((showPending || state.results.isEmpty()) && state.pendingCandidates.isNotEmpty()) {
                     PendingCandidateCards(state.pendingCandidates, columns, admission = state.pendingAdmission, onVerify = { candidate ->
                         controller.verifyCandidate(state.controlTarget, candidate) }) { candidate ->
@@ -175,7 +187,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                     EsvText(if (state.storageUnavailable) stringResource(R.string.discovery_copy_11) else if (state.status?.state == DiscoveryState.NO_SOURCES) stringResource(R.string.flow_discovery_browser_fallback) else if (state.profile.filters.safeSearch && !state.demo) stringResource(R.string.discovery_copy_12) else stringResource(R.string.discovery_copy_13), color = v.colors.muted)
                     Spacer(Modifier.height(v.spacingMedium))
                     EsvButton(stringResource(R.string.flow_discoveryscreen_14), onClick = onBrowser)
-                } else LazyVerticalGrid(GridCells.Fixed(columns), state = grid, modifier = Modifier.fillMaxSize(),
+                } else LazyVerticalGrid(GridCells.Fixed(columns), state = grid, modifier = Modifier.weight(1f).fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                     items(state.results, key = { it.resultId }) { result ->
                         Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.corner))
@@ -194,8 +206,9 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                         }
                     }
                 }
+                }
             }
-            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalAlignment = Alignment.CenterVertically) {
+            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvButton(stringResource(R.string.flow_discoveryscreen_17), onClick = { controller.movePage(-1) }, enabled = state.pageIndex > 0)
                 EsvText(stringResource(R.string.discovery_copy_16, state.pageIndex + 1), style = v.captionTextStyle)
                 EsvButton(stringResource(R.string.flow_discoveryscreen_19), onClick = { controller.movePage(1) }, enabled = state.results.isNotEmpty())

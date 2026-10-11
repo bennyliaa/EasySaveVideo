@@ -1,6 +1,7 @@
 # UI capability integration ledger
 
-Reconciled against main c0920b78d2ec16246b28e1fdb89370f77a5ec277. COMPLETE SOURCE
+Reconciled against main fbbb0b2aacf5e1967584bdaa858250e73f6df605 plus the bounded
+discovery/task layout source increment. COMPLETE SOURCE
 means implementation plus scoped source validation. PARTIAL means callable code
 or bounded checks exist; it does not close full PPT/media/device acceptance.
 NOT ACCEPTED means the specified acceptance is unperformed. DISABLED is intentional.
@@ -70,3 +71,43 @@ Further acceptance depends on the specific fixtures, source/capability decisions
 and execution permissions listed above. Vault/rules remain disabled, payment
 undecided, and no private media/recording/microphone or physical-power acceptance
 is implied. Do not loosen gates to manufacture a PASS.
+
+## Concrete visual work, separate from execution permission
+
+The current bounded source group addresses UI-R04/framework section3 and C-03/C-04:
+Discovery now caps effective columns by remaining width, text scale and existing
+SkinKit gaps, preserves the configured preference, and explains a reduced grid
+with paired resources. It no longer forces extra columns on a wide single-column
+preference. Search field/action stack when their width budget cannot fit; pending
+list controls, pager controls and the task title/back group wrap. Text is not
+shrunk. This is source/model coverage, not a screenshot or device visual pass;
+code4 does not contain it. Stable result/task keys, materialized page order,
+callbacks, unknown progress, rights/verification and success gates are unchanged.
+
+Validation: artifacts/ui/discovery-layout-20261012/RESULT.json records44 unique
+JVM passes (layout7/filter26/save-policy11). Both Kotlin variants compiled after
+the layout changes; the final English count-label-only correction reused their
+UP-TO-DATE results. Both final lint variants have58 warnings/7 hints,0 error/fatal;
+the newly introduced plural warning was corrected without suppression. Strict
+runtime admission remains90 exact artifacts. The initial nonexistent save-test
+filter did not execute and is not counted; the correct11-test class passed in a
+separate run. No APK, device, media, public-site or physical-power step was run.
+
+Specific remaining implementation gaps that do NOT require external-site/media
+permission to develop or model-test:
+
+| Reference | Concrete missing layout/interface work | Dependency distinction |
+|---|---|---|
+| PPT8 / C-03,C-04 | Expanded discovery still uses a modal options dialog rather than the collapsible filter side panel | Can reuse existing filter state/intents; no source activation is required for layout/model work |
+| PPT12–14 / C-06 | Tasks still shows all detail inline in one list; separate selected-task detail and expanded list/detail composition are absent | Existing stable task IDs/records suffice for source binding and owned metadata model tests; a real completed task/output is needed only for actual save/output acceptance |
+| PPT11 / C-05 | Wide browser inspection/selection still uses modal selection rather than a co-present inspector | Source composition can reuse the same session/revision-fenced selection state; real inspection requires an admitted owned page/media fixture and execution permission |
+| PPT6–8 / UI-R04 | Compact-height discovery header/status/IME and pager still lack a complete vertical-space budget | Can implement bounded scrolling/collapsing using the same controls and snapshot; actual keyboard/200%/compact-height screenshots are separate device acceptance |
+| C-03 | Discovery thumbnail area currently renders a theme icon placeholder; approved loading/unknown/failed thumbnail presentation and reader binding remain | Owned local fixture/reader contracts can be developed without public fetching. Arbitrary real thumbnail URLs need source/rights/admission review; reference PPT photos remain unlicensed runtime assets |
+| PPT17 / C-08 | Complete expanded editor preview/segments/inspector composition is not accepted | Layout source can use existing typed UI state; real decoding/encoding needs verified owned media and permitted Tools capability |
+
+Standard control styles remain existing Material3 adapters driven by one SkinKit
+snapshot. No parallel palette, typography, component theme, dependency, reference
+image extraction, fake progress, new entitlement or permission was introduced.
+Contrast/TalkBack/focus/touch-target and full phone/tablet/font200 render matrices
+remain concrete acceptance work; their lack does not block the source layout
+items above or justify marking them complete.
