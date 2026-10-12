@@ -582,3 +582,30 @@ Independent batch review and source sync PENDING; original/fixed isolated v3 res
 remain historical evidence, not substituted for production OPPO navigation validation.
 Receipt/build evidence: artifacts/ui/production-code6-unsigned-20261012. Fixed binary
 and public SDK checks remain in delivery-dc69-20261010/unsigned-ui-code6-afca2ab-20261012.
+
+
+## Final-source aggregate regression and OPPO acceptance plan (2026-10-12)
+
+Pinned tested source e26f6c0b71f60f0e33d196713cfda7128de7f268. Aggregate multi-selection,
+move, share/proxy/release, gallery export/recovery and navigation tests actually ran:
+163 PASS /0 failure /0 error /0 skipped. Both test tasks forced not-up-to-date with
+no build cache. Debug Kotlin executed; Release Kotlin UP-TO-DATE (previous output,
+not fresh compilation).22 tasks executed/47 up-to-date; Debug lint59W/8H/0E. Logs and
+18 JUnit suites are in artifacts/ui/code6-aggregate-regression-20261012. This is targeted
+model/fake-port evidence, not the full2309 suite, real URI grants or phone performance.
+
+Only docs/evidence added; no feature/dependency/min31 change, APK assembly/signing,
+device operation or simulator start. Fixed unsigned APK SHA unchanged4447879b3785211c02cc1884165fe92250562e263a55728f4fafe5af8d4f9079.
+Original code6 cloud signing inputs/ref remain unchanged. Separate Files note identifies
+exact one decision: per-item CREATE_DOCUMENT or one-directory immutable batch-export
+grant. Minimum implementation recommendation is serial per-item save-as, reusing current
+single-file port; directory mode cannot spoof pre-creation admission or mutable defaults.
+That next feature decision does not block completed share/gallery or fixed UI validation.
+
+OPPO code3→code6 checklist explicitly gates signed identity/increasing version/data
+preservation, requires user confirmation without reading private DB/media, prohibits
+uninstall/clear-data/downgrade/auto grants, and limits actual business cases to admitted
+original fixtures. Missing fixture/receiver/safe evidence paths produce NOT_RUN and do
+not license private-data substitutions. Production navigation/URI/MediaStore/TTL/native
+cleanup/data preservation remain for separately scoped OPPO execution; ANR UNKNOWN.
+Plans: BATCH_FILES_DECISION_NOTE_20261012.md and OPPO_CODE6_PRESERVED_DATA_ACCEPTANCE_20261012.md.
