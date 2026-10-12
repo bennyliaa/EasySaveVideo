@@ -1,0 +1,55 @@
+Compiled from "BuildEntitlements.kt"
+public final class com.easysavevideo.app.entitlements.BuildEntitlements {
+  public static final com.easysavevideo.app.entitlements.BuildEntitlements INSTANCE;
+
+  private static final com.easysavevideo.app.distribution.DistributionConfiguration distribution;
+
+  private static final com.easysavevideo.app.entitlements.StorePurchaseBoundary store;
+
+  private static final com.easysavevideo.app.entitlements.FakeEntitlementSource source;
+
+  public static final int $stable;
+
+  private com.easysavevideo.app.entitlements.BuildEntitlements();
+    Code:
+       0: aload_0
+       1: invokespecial #8                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public final com.easysavevideo.app.distribution.DistributionConfiguration getDistribution();
+    Code:
+       0: getstatic     #17                 // Field distribution:Lcom/easysavevideo/app/distribution/DistributionConfiguration;
+       3: areturn
+
+  public final com.easysavevideo.app.entitlements.StorePurchaseBoundary getStore();
+    Code:
+       0: getstatic     #23                 // Field store:Lcom/easysavevideo/app/entitlements/StorePurchaseBoundary;
+       3: areturn
+
+  public final com.easysavevideo.app.entitlements.FakeEntitlementSource getSource();
+    Code:
+       0: getstatic     #29                 // Field source:Lcom/easysavevideo/app/entitlements/FakeEntitlementSource;
+       3: areturn
+
+  static {};
+    Code:
+       0: new           #2                  // class com/easysavevideo/app/entitlements/BuildEntitlements
+       3: dup
+       4: invokespecial #31                 // Method "<init>":()V
+       7: putstatic     #34                 // Field INSTANCE:Lcom/easysavevideo/app/entitlements/BuildEntitlements;
+      10: getstatic     #39                 // Field com/easysavevideo/app/distribution/BuildDistribution.INSTANCE:Lcom/easysavevideo/app/distribution/BuildDistribution;
+      13: invokevirtual #42                 // Method com/easysavevideo/app/distribution/BuildDistribution.getConfiguration:()Lcom/easysavevideo/app/distribution/DistributionConfiguration;
+      16: putstatic     #17                 // Field distribution:Lcom/easysavevideo/app/distribution/DistributionConfiguration;
+      19: getstatic     #34                 // Field INSTANCE:Lcom/easysavevideo/app/entitlements/BuildEntitlements;
+      22: pop
+      23: getstatic     #17                 // Field distribution:Lcom/easysavevideo/app/distribution/DistributionConfiguration;
+      26: invokevirtual #46                 // Method com/easysavevideo/app/distribution/DistributionConfiguration.getStore:()Lcom/easysavevideo/app/entitlements/StorePurchaseBoundary;
+      29: putstatic     #23                 // Field store:Lcom/easysavevideo/app/entitlements/StorePurchaseBoundary;
+      32: new           #48                 // class com/easysavevideo/app/entitlements/FakeEntitlementSource
+      35: dup
+      36: invokespecial #49                 // Method com/easysavevideo/app/entitlements/FakeEntitlementSource."<init>":()V
+      39: putstatic     #29                 // Field source:Lcom/easysavevideo/app/entitlements/FakeEntitlementSource;
+      42: bipush        8
+      44: putstatic     #53                 // Field $stable:I
+      47: return
+}
