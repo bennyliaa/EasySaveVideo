@@ -1,0 +1,111 @@
+{
+  "status": "PASS_FINAL_TARGETED_MULTI_SELECTION_SOURCE_CHECKS",
+  "tested_source": "fb87af58431f189776cd3724972a8c5a0ec2d449",
+  "code5_source": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534",
+  "tests": 46,
+  "suites": [
+    {
+      "name": "com.easysavevideo.app.library.LibraryMultiSelectionTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryPanelPolicyTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryRuntimeTest",
+      "tests": "23",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryThumbnailUiPolicyTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryExportSelectionTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "test_execution": "ACTUAL_FORCED_NO_BUILD_CACHE",
+  "lint": {
+    "debug": {
+      "Warning": 58,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 58,
+      "Hint": 8
+    }
+  },
+  "task_evidence": [
+    "> Task :app:compileDebugKotlin UP-TO-DATE",
+    "> Task :app:compileReleaseKotlin UP-TO-DATE",
+    "> Task :app:compileDebugJavaWithJavac UP-TO-DATE",
+    "> Task :app:compileDebugNavigationResources UP-TO-DATE",
+    "> Task :app:compileDebugUnitTestKotlin UP-TO-DATE",
+    "> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE",
+    "> Task :app:testDebugUnitTest",
+    "> Task :app:lintAnalyzeDebugAndroidTest UP-TO-DATE",
+    "> Task :app:lintAnalyzeDebugUnitTest UP-TO-DATE",
+    "> Task :app:compileReleaseJavaWithJavac UP-TO-DATE",
+    "> Task :app:lintAnalyzeDebug",
+    "> Task :app:lintAnalyzeRelease",
+    "> Task :app:lintReportRelease",
+    "> Task :app:lintRelease",
+    "> Task :app:lintReportDebug",
+    "> Task :app:lintDebug",
+    "75 actionable tasks: 8 executed, 67 up-to-date"
+  ],
+  "source_proof": [
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/LibraryScreen.kt",
+      "sha256": "ec375e668139adb60bd2b6a376367240e82a99d77d38ad8f44630fd8b78cffbb",
+      "tested_exact_commit": "fb87af58431f189776cd3724972a8c5a0ec2d449"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/LibraryMultiSelection.kt",
+      "sha256": "688cd2dba39b27c9e9845c0d8b8168c7a443b4d144e19586b388f65d87c32797",
+      "tested_exact_commit": "fb87af58431f189776cd3724972a8c5a0ec2d449"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/LibraryMultiSelectionToolbar.kt",
+      "sha256": "638407c67755350189ffccba28610e140f4f5941a712ba988bf332d33193c495",
+      "tested_exact_commit": "fb87af58431f189776cd3724972a8c5a0ec2d449"
+    },
+    {
+      "path": "app/src/main/res/values/library_multi.xml",
+      "sha256": "19dc8b83563604a740947ae687d1bced676607270a6634ed9c1a1aa71e0f1b66",
+      "tested_exact_commit": "fb87af58431f189776cd3724972a8c5a0ec2d449"
+    },
+    {
+      "path": "app/src/main/res/values-zh-rCN/library_multi.xml",
+      "sha256": "763e7900a018c9b0aff8cf74818573c74e76108bf9f7c84ec684695da9090c17",
+      "tested_exact_commit": "fb87af58431f189776cd3724972a8c5a0ec2d449"
+    }
+  ],
+  "runtime_graph": 90,
+  "new_business_changes_since_wip": 0,
+  "not_run": [
+    "full project regression",
+    "post-code5 Android multi-selection/native operations",
+    "batch domain operations",
+    "navigation implementation repair"
+  ],
+  "device_package_upload_operations": 0,
+  "historical_interruption": "Retained unchanged; superseded only by this completed final-source validation",
+  "independent_review": "PENDING"
+}

@@ -405,3 +405,20 @@ completed46-test/dual-compile/dual-lint run. The last copy/resource lint run was
 INTERRUPTED by the latest pause instruction; full final current-copy validation
 is not claimed. See artifacts/ui/library-multi-selection-20261012/CHECKPOINT-STATUS.md.
 No source sync/package/install; review and writer-state confirmation are pending.
+
+
+## Multi-selection final validation after WIP pause
+
+Exact tested source:fb87af58431f189776cd3724972a8c5a0ec2d449. Old Java processes
+were absent and the worktree clean before one serial run. The final English count
+copy and all current multi-selection code now pass46 actually executed scoped JVM
+tests, Debug/Release Kotlin checks and dual lint {'debug': {'Warning': 58, 'Hint': 8}, 'release': {'Warning': 58, 'Hint': 8}}. Compile task cache outcomes
+are preserved verbatim; a requested UP-TO-DATE check is not fresh compilation.
+Strict graph90 verified; no new source/business/dependency changes were needed.
+Evidence: artifacts/ui/library-multi-selection-20261012/completion. Earlier WIP/
+interrupted logs are immutable historical evidence, superseded for final-source
+validation by this successful run. Post-code5 device UI/native/real batch operation
+acceptance is still NOT_RUN. The source increment does not enter installed code5;
+no APK/install/device change, navigation implementation change or upload occurred.
+Independent review remains PENDING before batch source sync. Import/Vault/rules
+remain deferred; original publication paths remain the media acceptance route.
