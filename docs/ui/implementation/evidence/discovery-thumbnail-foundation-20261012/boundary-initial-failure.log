@@ -1,0 +1,6 @@
+Initial supplemental inherited boundary check: FAILED before approved POM-byte restoration.
+Traceback (most recent call last):
+  File "$SOURCE_ROOT/scripts/check-boundaries.py", line 38, in <module>
+    assert path.stat().st_size==item['bytes'] and hashlib.sha256(path.read_bytes()).hexdigest()==item['sha256'],path
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: $SOURCE_ROOT/third_party/current-runtime/poms/org.jetbrains__annotations__23.0.0.pom

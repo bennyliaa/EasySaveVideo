@@ -1,0 +1,58 @@
+{
+  "module_results": {
+    "discovery": {
+      "suites": 22,
+      "tests": 307,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "first_timestamp_utc": "2026-10-12T20:31:18.344Z",
+      "last_timestamp_utc": "2026-10-12T20:31:19.966Z"
+    },
+    "library": {
+      "suites": 23,
+      "tests": 277,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "first_timestamp_utc": "2026-10-12T20:32:08.457Z",
+      "last_timestamp_utc": "2026-10-12T20:32:09.007Z"
+    },
+    "app": {
+      "suites": 175,
+      "tests": 1553,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "first_timestamp_utc": "2026-10-12T20:28:51.598Z",
+      "last_timestamp_utc": "2026-10-12T20:28:56.407Z"
+    }
+  },
+  "new_thumbnail_suite": {
+    "tests": 19,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "failedReadInvalidFrameAndThrowingConsumerReleaseWithoutRetryLoops",
+      "consumerPageChangeCanQueueNewAuthorityWithoutPublishingOldAgain",
+      "thumbnailUrlAndReportedRightsDoNotGrantReadAccess",
+      "explicitQueueAndViewportLimitsAreEnforcedWithoutExtraWorkers",
+      "backgroundAndExitInvalidateLateResultsEvenWhenPageReturns",
+      "ownedFixtureIsCopiedBorrowedThenReleasedAndDeduplicated",
+      "sessionPageRevisionResultAndRightsChangesRejectOldCapabilitiesAndLateFrames",
+      "mutableRightsInputsDoNotRewriteExistingCapability",
+      "bindingDistinguishesMissingFromEmptyAndRejectsOversizeMetadata",
+      "cancellationBeforeWorkerStartsDoesNotOpenReader",
+      "offscreenQueuedWorkIsDroppedAndReturningWaitsForActiveRelease",
+      "closeKeepsWatchdogAndOldWatchdogCannotFenceNextRead",
+      "throwingFrameCloseAndStallNotificationCannotAdmitReplacement",
+      "unconfirmedReleaseAndThrownReaderFenceFutureReads",
+      "uiWinningDeliveryClaimIsNotCancelledByPostThrowingAfterTransfer",
+      "timeoutFencesWithoutReleasingOrReplacingTheActiveOwner",
+      "revokedCapabilityCannotStartOrPublishAndBorrowCallbackCanCloseSession",
+      "uncertainSubmissionAndFailedUiPostKeepOwnerUntilWatchdogOrActualCompletion",
+      "rejectedSubmissionAndDuplicateTaskOrCallbackAreSafe"
+    ]
+  }
+}

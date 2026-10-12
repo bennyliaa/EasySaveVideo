@@ -1,0 +1,17 @@
+Sanitized Gradle task evidence. Commands serialized by run-gradle.sh.
+Command: run-gradle.sh --offline --dependency-verification strict --rerun-tasks :library:test
+
+> Task :library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :library:processResources NO-SOURCE
+> Task :library:processTestResources NO-SOURCE
+> Task :library:compileKotlin
+> Task :library:compileJava NO-SOURCE
+> Task :library:classes UP-TO-DATE
+> Task :library:jar
+> Task :library:compileTestKotlin
+> Task :library:compileTestJava NO-SOURCE
+> Task :library:testClasses UP-TO-DATE
+> Task :library:test
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+BUILD SUCCESSFUL in 26s
+4 actionable tasks: 4 executed

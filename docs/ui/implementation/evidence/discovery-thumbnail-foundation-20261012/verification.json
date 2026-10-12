@@ -1,0 +1,130 @@
+{
+  "scope": "Unconnected pure-JVM Discovery thumbnail capability scheduling foundation",
+  "source_reconstructed_without_local_git": true,
+  "source_sha256": {
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailCapability.kt": "10bb7fbcfa1bdb15f2041c470115efa98fcb31913067be96459518584bd19ca7",
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailSession.kt": "6b14fc8cf094bf3c15aef778850a81f38ae0988078c8445e4ad62de42d56dc5a",
+    "discovery/src/test/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailSessionTest.kt": "1ba04b707dfa2be0fbd38729cbbb39d22f77b81a26a79b6eccc213d66b622c0d"
+  },
+  "gradle_runs": [
+    {
+      "evidence": "production-final-aggregate.log",
+      "command": "run-gradle.sh --offline --dependency-verification strict :discovery:test :library:test :app:testDebugUnitTest :app:compileDebugKotlin :app:compileReleaseKotlin :app:lintDebug :app:lintRelease :app:runtimeInventory :app:verifyRuntimeAdmission",
+      "result": "PASS",
+      "summary": "80 actionable tasks: 26 executed, 54 up-to-date",
+      "key_task_outcomes": {
+        ":discovery:test": "EXECUTED",
+        ":library:test": "UP-TO-DATE",
+        ":app:testDebugUnitTest": "EXECUTED",
+        ":app:compileDebugKotlin": "EXECUTED",
+        ":app:compileReleaseKotlin": "EXECUTED",
+        ":app:lintAnalyzeDebug": "EXECUTED",
+        ":app:lintAnalyzeRelease": "EXECUTED",
+        ":app:verifyRuntimeAdmission": "EXECUTED"
+      }
+    },
+    {
+      "evidence": "frozen-focused.log",
+      "command": "run-gradle.sh --offline --dependency-verification strict :discovery:test --tests com.easysavevideo.discovery.thumbnail.DiscoveryThumbnailSessionTest",
+      "result": "PASS",
+      "summary": "6 actionable tasks: 2 executed, 4 up-to-date",
+      "key_task_outcomes": {
+        ":discovery:test": "EXECUTED"
+      }
+    },
+    {
+      "evidence": "frozen-aggregate.log",
+      "command": "run-gradle.sh --offline --dependency-verification strict :discovery:test :library:test :app:testDebugUnitTest :app:compileDebugKotlin :app:compileReleaseKotlin :app:lintDebug :app:lintRelease :app:runtimeInventory :app:verifyRuntimeAdmission",
+      "result": "PASS",
+      "summary": "80 actionable tasks: 5 executed, 75 up-to-date",
+      "key_task_outcomes": {
+        ":discovery:test": "EXECUTED",
+        ":library:test": "UP-TO-DATE",
+        ":app:testDebugUnitTest": "UP-TO-DATE",
+        ":app:compileDebugKotlin": "UP-TO-DATE",
+        ":app:compileReleaseKotlin": "UP-TO-DATE",
+        ":app:lintAnalyzeDebug": "UP-TO-DATE",
+        ":app:lintAnalyzeRelease": "UP-TO-DATE",
+        ":app:verifyRuntimeAdmission": "EXECUTED"
+      }
+    },
+    {
+      "evidence": "library-forced-rerun.log",
+      "command": "run-gradle.sh --offline --dependency-verification strict --rerun-tasks :library:test",
+      "result": "PASS",
+      "summary": "4 actionable tasks: 4 executed",
+      "key_task_outcomes": {
+        ":library:test": "EXECUTED"
+      }
+    }
+  ],
+  "tests": {
+    "discovery": {
+      "suites": 22,
+      "tests": 307,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "first_timestamp_utc": "2026-10-12T20:31:18.344Z",
+      "last_timestamp_utc": "2026-10-12T20:31:19.966Z"
+    },
+    "library": {
+      "suites": 23,
+      "tests": 277,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "first_timestamp_utc": "2026-10-12T20:32:08.457Z",
+      "last_timestamp_utc": "2026-10-12T20:32:09.007Z"
+    },
+    "app": {
+      "suites": 175,
+      "tests": 1553,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "first_timestamp_utc": "2026-10-12T20:28:51.598Z",
+      "last_timestamp_utc": "2026-10-12T20:28:56.407Z"
+    }
+  },
+  "new_tests": 19,
+  "lint": {
+    "debug": {
+      "errors": 0,
+      "warnings": 60,
+      "hints": 8
+    },
+    "release": {
+      "errors": 0,
+      "warnings": 60,
+      "hints": 8
+    }
+  },
+  "execution_notes": [
+    "Production-final aggregate executed both Kotlin variants, both lint analyses and app JVM tests against final production-source hashes.",
+    "The nineteenth test and final test-file changes were compiled/executed in frozen-focused; complete Discovery suite re-executed in frozen-aggregate.",
+    "App compilation, app JVM tests and lint analyses were UP-TO-DATE during frozen-aggregate; this is not represented as fresh execution.",
+    "Library suite was subsequently forced with --rerun-tasks; all four actionable tasks executed.",
+    "AGP metrics-home warning and Gradle deprecation notices occurred; builds passed."
+  ],
+  "supplemental_boundary_check": {
+    "initial": "FAIL at scripts/check-boundaries.py:38 due to inherited approved POM-byte mismatch; failure retained",
+    "path": "third_party/current-runtime/poms/org.jetbrains__annotations__23.0.0.pom",
+    "expected_bytes": 1354,
+    "expected_sha256": "c9490f655132328df2cfbcfdf743f53fc3916d6c1d10437175a6ca6e3a67771c",
+    "observed_initial_bytes": 1324,
+    "observed_initial_sha256": "ebd006716f7920e1c9e8aacae5496a54d14d8133e0ad925966e190ac4b9477c1",
+    "recheck": "PASS: separate release-owner worker restored approved CRLF bytes; all 99 payloads match; all seven boundary checks pass; no POM or manifest in this publication whitelist",
+    "recheck_evidence": "boundary-restored-pass.log",
+    "restoration_evidence": "approved-pom-byte-restoration.json"
+  },
+  "NOT_RUN": [
+    "Remote thumbnail URLs, redirects, network or source licensing",
+    "Android/native decoding, persistent rendering and resource lifecycle",
+    "Discovery UI wiring and viewport/background integration",
+    "APK/AAB assembly, install, emulator or phone testing"
+  ],
+  "no_changes_to": [
+    "Existing modules, Browser/history files, UI files, dependencies, permission settings, source admission or cache implementation"
+  ]
+}

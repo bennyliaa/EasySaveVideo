@@ -1,0 +1,22 @@
+{
+  "method": "Independent static review; reviewer did not edit or run Gradle",
+  "result": "PASS within unconnected local fixture/capability-only scope",
+  "reviewed_sha256": {
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailCapability.kt": "10bb7fbcfa1bdb15f2041c470115efa98fcb31913067be96459518584bd19ca7",
+    "discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailSession.kt": "6b14fc8cf094bf3c15aef778850a81f38ae0988078c8445e4ad62de42d56dc5a",
+    "discovery/src/test/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailSessionTest.kt": "1ba04b707dfa2be0fbd38729cbbb39d22f77b81a26a79b6eccc213d66b622c0d"
+  },
+  "issues_corrected": [
+    "Strict null/empty and malformed Unicode identity validation",
+    "Deterministic rights bytes without per-byte Formatter allocation",
+    "Single atomic result ownership transfer for both post-failure race orders",
+    "Frame-close and callback exceptions cannot reopen fenced lane",
+    "Latch regression publishes thread reference before start and asserts intended interleaving"
+  ],
+  "future_admission_required": [
+    "Reliable Android dispatcher/timer implementation",
+    "Process-wide resource admission fence shared across sessions",
+    "Native reader release and rendering validation",
+    "Real source/rights approval; bounded persistent image owner"
+  ]
+}
