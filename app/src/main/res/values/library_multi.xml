@@ -1,0 +1,13 @@
+<resources>
+    <string name="library_multi_enter">Select videos</string>
+    <string name="library_multi_count">Selected: %1$d</string>
+    <string name="library_multi_page">Select current page</string>
+    <string name="library_multi_clear">Clear selection</string>
+    <string name="library_multi_cancel">Exit selection</string>
+    <string name="library_multi_details">Details (one item)</string>
+    <string name="library_multi_rename">Rename (one item)</string>
+    <string name="library_multi_move">Move (one item)</string>
+    <string name="library_multi_export">Export (one item)</string>
+    <string name="library_multi_single_only">Move and export currently support one selected item. Batch operations are unavailable.</string>
+    <string name="library_multi_item">Select %1$s</string>
+</resources>

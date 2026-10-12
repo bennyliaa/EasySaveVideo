@@ -1,0 +1,13 @@
+<resources>
+    <string name="library_multi_enter">多选视频</string>
+    <string name="library_multi_count">已选择 %1$d 项</string>
+    <string name="library_multi_page">选择当前页</string>
+    <string name="library_multi_clear">清除选择</string>
+    <string name="library_multi_cancel">退出多选</string>
+    <string name="library_multi_details">详情（单项）</string>
+    <string name="library_multi_rename">重命名（单项）</string>
+    <string name="library_multi_move">移动（单项）</string>
+    <string name="library_multi_export">导出（单项）</string>
+    <string name="library_multi_single_only">当前移动和导出仅支持选择一个条目，批量操作尚不可用。</string>
+    <string name="library_multi_item">选择 %1$s</string>
+</resources>

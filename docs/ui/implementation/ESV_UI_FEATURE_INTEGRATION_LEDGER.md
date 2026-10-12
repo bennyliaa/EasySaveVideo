@@ -355,3 +355,53 @@ need explicitly authorized synthetic local media, existing compatible Tools and
 user-selected export destinations. Code4 stays frozen, minSdk31 unchanged, no APK
 or device operation. This checkpoint is local only: prior main push rejection was
 respected; no push or alternate upload was attempted.
+
+
+## Post-code5 local increment: ordinary video multi-selection
+
+Base:c18cb37a22a51f3af962ebaf0fd9eefcb33e4534. This source increment is NOT in the
+installed/signed code5 and is not repackaged, installed or uploaded. Original UI
+framework lines36/57/93 require Back to exit multi-selection, responsive toolbar,
+and existing media operations; PPT traceability line34 explicitly requires stableID
+multi-selection. This confirms original scope rather than adding video import.
+
+Explicit Select videos enters an ephemeral current-page mode; checked items store
+stable IDs plus exact revision/generation and query snapshot, capped100. Current
+metadata reconciliation removes missing/deleted/ambiguous/changed refs, without
+rebasing consent or selecting neighbors. Query/folder/sort/page changes and
+background exit mode; command admission independently fences the old query even
+before Compose effects run. Back exits mode before folder/route navigation. Clear
+and cancel only change selection, never mutate files or cancel unrelated jobs.
+
+Compact and Wide share one selection owner and a bounded scrolling/wrapping toolbar
+outside the lazy media list. Checkable rows use actual checkbox semantics and48dp
+minimum target. Current-page select/clear/count/exit work at zero or many selections.
+Only exactly one current foreground selection admits existing detail/rename/move/
+export ports. Export requires its real callback; all current busy/loading/consent/
+move/ref fences remain. Opening details exposes original preview/edit/delete gates,
+including explicit deletion consent; no bulk delete. Multiple-item batch operations
+are visibly unavailable, with paired explanation; no UI loop fabricates atomic or
+successful batching. Folder multi-selection and domain batch coordination remain
+unimplemented; ordinary folder operations are unchanged.
+
+Validation: 46 targeted JVM passes, dual Kotlin compile/lint PASS {'debug': {'Warning': 59, 'Hint': 8}, 'release': {'Warning': 59, 'Hint': 8}},
+strict graph90 and11 paired resources. Evidence: artifacts/ui/library-multi-selection-20261012.
+Seven source proofs confirm unchanged MainActivity, runtime ports, native thumbnail
+modules, build version and shared detail/mutation body. The first run passed; a
+separate final run covers the added query-fence regression. Test results are model/
+source evidence, not post-code5 Android, native media or full-project acceptance.
+
+Code5 bounded device observations remain separate in local delivery evidence:
+fresh Settings root-Discover dispatch did not leave Settings even before resize,
+whereas system/visible Back returned Discover. Cause remains unconfirmed; current
+root save/restore behavior is a review candidate. No navigation repair is claimed
+here. Original Direct/Stream/Recorder/Editor publication remains the intended
+media chain. New local import is deferred, not classified as original-spec defect.
+Vault/rules remain shelved. Independent review is PENDING before batch source sync.
+
+
+Pause checkpoint: current English count copy changed to Selected:count after the
+completed46-test/dual-compile/dual-lint run. The last copy/resource lint run was
+INTERRUPTED by the latest pause instruction; full final current-copy validation
+is not claimed. See artifacts/ui/library-multi-selection-20261012/CHECKPOINT-STATUS.md.
+No source sync/package/install; review and writer-state confirmation are pending.

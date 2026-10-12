@@ -3,6 +3,9 @@ package com.easysavevideo.app.library
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.material3.Checkbox
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -54,6 +57,20 @@ fun LibraryScreen(
     val v = LocalEsvVisuals.current
     var grid by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(false) }
     var thumbnailsRequested by remember(thumbnails) { mutableStateOf(false) }
+    var multi by remember { mutableStateOf(LibraryMultiSelection.inactive()) }
+    val currentMulti = multi.reconcile(state.items)
+    LaunchedEffect(state.query, state.foreground) { multi = LibraryMultiSelection.inactive() }
+    LaunchedEffect(state.items, state.ready, state.loading) {
+        if (state.ready && !state.loading) multi = multi.reconcile(state.items)
+    }
+    fun selectedAction(action: (LibrarySelection.Media) -> Unit) {
+        val item = librarySingleMultiAction(multi, runtime.state) ?: return
+        runtime.select(item)
+        val selection = LibrarySelection.Media(item)
+        if (runtime.state.selected != selection) return
+        multi = LibraryMultiSelection.inactive()
+        action(selection)
+    }
     val gridState = rememberLazyGridState()
     val visibleThumbnailIds by remember { derivedStateOf {
         libraryVisibleThumbnailIds(gridState.layoutInfo.visibleItemsInfo.map { it.key })
@@ -77,6 +94,7 @@ fun LibraryScreen(
         when {
             state.deletion != null -> runtime.cancelDelete()
             state.editor != null -> runtime.cancelEditor()
+            multi.active -> { multi = LibraryMultiSelection.inactive() }
             state.selected != null -> runtime.dismissSelection()
             state.move != null -> runtime.cancelMove()
             state.query.folderId != null -> runtime.up()
@@ -87,11 +105,21 @@ fun LibraryScreen(
         BoxWithConstraints(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
             val layout = libraryPanelLayout(maxWidth.value, maxHeight.value, LocalDensity.current.fontScale, v.spacingMedium.value)
             val expanded = layout.expanded
+            val toolbarHeight = (maxHeight * 0.4f).coerceAtMost(240.dp)
             val thumbnailEnabled = libraryThumbnailAdmission(thumbnailsRequested, state.foreground, state.ready,
                 state.busy, state.loading, (!expanded && state.selected != null) || state.deletion != null || state.editor != null,
                 state.move != null, thumbnailAdmissionReady)
             SideEffect { thumbnails?.updatePage(state.items, enabled = thumbnailEnabled) }
             Row(Modifier.widthIn(max = if (expanded) maxWidth else 1_200.dp).fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
+                Column(Modifier.weight(1f).fillMaxHeight()) {
+                if (multi.active) LibraryMultiSelectionToolbar(currentMulti.count, libraryMultiSelectionInteractive(multi, state),
+                    single = librarySingleMultiAction(multi, state) != null, exportAvailable = onExport != null,
+                    onPage = { if (libraryMultiSelectionInteractive(multi, runtime.state)) multi = multi.selectPage(runtime.state.items) },
+                    onClear = { multi = multi.clear() }, onCancel = { multi = LibraryMultiSelection.inactive() },
+                    onDetails = { selectedAction {} }, onRename = { selectedAction { runtime.rename() } },
+                    onMove = { selectedAction { runtime.startMove() } },
+                    onExport = { if (onExport != null) selectedAction { selection -> runtime.takeSelectedReadRef(selection)?.let(onExport) } },
+                    modifier = Modifier.heightIn(max = toolbarHeight))
                 LazyVerticalGrid(
                     state = gridState,
                     columns = if (grid && state.move == null) GridCells.Adaptive(240.dp) else GridCells.Fixed(1),
@@ -103,6 +131,11 @@ fun LibraryScreen(
                     item(key = "header", span = { GridItemSpan(maxLineSpan) }) {
                         Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                             EsvText(stringResource(R.string.flow_libraryscreen_0), style = v.titleTextStyle)
+                            if (!multi.active) EsvButton(stringResource(R.string.library_multi_enter), {
+                                if (interactive && state.move == null && state.editor == null && state.deletion == null) {
+                                    runtime.dismissSelection(); multi = LibraryMultiSelection.enter(runtime.state.query)
+                                }
+                            }, enabled = interactive && state.move == null && state.editor == null && state.deletion == null)
                             Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                                 EsvButton(stringResource(R.string.flow_libraryscreen_1), onClick = onBack)
                                 EsvButton(stringResource(R.string.flow_libraryscreen_2), onClick = runtime::unavailableVault, enabled = false)
@@ -166,7 +199,7 @@ fun LibraryScreen(
                                 EsvText("${folder.itemCount} 个视频 · ${folder.childFolderCount} 个子文件夹", style = v.captionTextStyle, color = v.colors.muted)
                                 Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                                     EsvButton(stringResource(R.string.flow_libraryscreen_22), { runtime.enterFolder(folder.folderId) }, enabled = interactive)
-                                    if (state.move == null) EsvButton(stringResource(R.string.flow_libraryscreen_23), { runtime.select(folder) }, enabled = interactive)
+                                    if (state.move == null) EsvButton(stringResource(R.string.flow_libraryscreen_23), { runtime.select(folder) }, enabled = interactive && !multi.active)
                                 }
                             }
                         }
@@ -188,11 +221,18 @@ fun LibraryScreen(
                             LibraryCard {
                                 thumbnails?.let { LibraryThumbnail(media, it, Modifier.fillMaxWidth(),
                                     visible = thumbnailEnabled && media.itemId in visibleThumbnailIds) }
+                                if (multi.active) Row(Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                                    .toggleable(value = currentMulti.contains(media), enabled = libraryMultiSelectionInteractive(multi, state) && media.lifecycle == MediaLifecycle.READY,
+                                        role = Role.Checkbox, onValueChange = { if (libraryMultiSelectionInteractive(multi, runtime.state)) multi = multi.toggle(media, runtime.state.items) }),
+                                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                    Checkbox(checked = currentMulti.contains(media), onCheckedChange = null)
+                                    EsvText(stringResource(R.string.library_multi_item, media.displayName), style = v.bodyTextStyle, maxLines = 2)
+                                }
                                 EsvText(media.displayName, style = v.titleTextStyle, maxLines = 2)
                                 EsvText("MP4 · ${libraryDuration(media.durationMillis)} · ${libraryBytes(media.sizeBytes)}", style = v.captionTextStyle)
                                 EsvText(libraryResolution(media), style = v.captionTextStyle, color = v.colors.muted)
                                 EsvText(libraryDate(media), style = v.captionTextStyle, color = v.colors.muted)
-                                EsvButton(stringResource(R.string.flow_libraryscreen_27), { runtime.select(media) }, enabled = interactive, modifier = Modifier.fillMaxWidth())
+                                EsvButton(stringResource(R.string.flow_libraryscreen_27), { runtime.select(media) }, enabled = interactive && !multi.active, modifier = Modifier.fillMaxWidth())
                             }
                         }
                         item(key = "media_paging", span = { GridItemSpan(maxLineSpan) }) {
@@ -207,12 +247,14 @@ fun LibraryScreen(
                         }
                     }
                 }
+                }
                 if (expanded) Column(Modifier.width(layout.detailWidthDp.dp).fillMaxHeight()
                     .background(v.colors.surface, RoundedCornerShape(v.corner))
                     .verticalScroll(rememberScrollState()).padding(v.spacingMedium),
                     verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
                     EsvText(stringResource(R.string.library_detail_heading), style = v.titleTextStyle)
-                    SelectedDetailContent(runtime, onPreview, onExport, onEdit)
+                    if (multi.active) EsvText(stringResource(R.string.library_multi_count, currentMulti.count), color = v.colors.muted)
+                    else SelectedDetailContent(runtime, onPreview, onExport, onEdit)
                 }
                 when {
                     state.deletion != null -> DeleteDialog(runtime, state.deletion)

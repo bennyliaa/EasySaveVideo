@@ -1,0 +1,163 @@
+{
+  "status": "PASS_SOURCE_AND_TARGETED_JVM_ONLY",
+  "base": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534",
+  "total_tests": 46,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "suites": [
+    {
+      "name": "com.easysavevideo.app.library.LibraryMultiSelectionTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryPanelPolicyTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryRuntimeTest",
+      "tests": "23",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryThumbnailUiPolicyTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryExportSelectionTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "dual_compile": "PASS",
+  "lint": {
+    "debug": {
+      "Warning": 59,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 59,
+      "Hint": 8
+    }
+  },
+  "task_evidence": {
+    "library-multi-validation.log": [
+      "> Task :app:compileDebugKotlin",
+      "> Task :app:compileReleaseKotlin",
+      "> Task :app:compileDebugJavaWithJavac UP-TO-DATE",
+      "> Task :app:compileDebugNavigationResources UP-TO-DATE",
+      "> Task :app:compileDebugUnitTestKotlin",
+      "> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE",
+      "> Task :app:testDebugUnitTest",
+      "> Task :app:lintAnalyzeDebug",
+      "> Task :app:lintAnalyzeDebugAndroidTest",
+      "> Task :app:lintAnalyzeDebugUnitTest",
+      "> Task :app:compileReleaseJavaWithJavac UP-TO-DATE",
+      "> Task :app:lintAnalyzeRelease",
+      "> Task :app:lintReportDebug",
+      "> Task :app:lintDebug",
+      "> Task :app:lintReportRelease",
+      "> Task :app:lintRelease",
+      "75 actionable tasks: 33 executed, 42 up-to-date"
+    ],
+    "library-multi-final-validation.log": [
+      "> Task :app:compileReleaseKotlin",
+      "> Task :app:compileDebugKotlin",
+      "> Task :app:compileDebugJavaWithJavac UP-TO-DATE",
+      "> Task :app:compileDebugNavigationResources UP-TO-DATE",
+      "> Task :app:compileDebugUnitTestKotlin",
+      "> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE",
+      "> Task :app:testDebugUnitTest",
+      "> Task :app:lintAnalyzeDebugAndroidTest",
+      "> Task :app:lintAnalyzeDebug",
+      "> Task :app:lintAnalyzeDebugUnitTest",
+      "> Task :app:compileReleaseJavaWithJavac UP-TO-DATE",
+      "> Task :app:lintAnalyzeRelease",
+      "> Task :app:lintReportDebug",
+      "> Task :app:lintDebug",
+      "> Task :app:lintReportRelease",
+      "> Task :app:lintRelease",
+      "75 actionable tasks: 30 executed, 45 up-to-date"
+    ]
+  },
+  "source_proof": [
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+      "sha256": "542f31f5e2894bd8e05a2815cfdbe8ef7e76b0999949b808acefa3ec50e880bb",
+      "unchanged_from": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/AndroidLibraryRuntime.kt",
+      "sha256": "b41b714aa08ecef6e27eff8b51e75418ab4fd77fea53457d134ae472baa3c29c",
+      "unchanged_from": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/AndroidLibraryThumbnails.kt",
+      "sha256": "126010a544e0743fcde164a7005421ff46dff37b59f8fe55110ab40051863a7e",
+      "unchanged_from": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/LibraryThumbnail.kt",
+      "sha256": "2a85c30651f0bb5a2c53e89bfb036630f5a6ed94e9c234e8714968e9f17b019a",
+      "unchanged_from": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534"
+    },
+    {
+      "path": "library/src/main/kotlin/com/easysavevideo/library/thumbnail/BoundedThumbnailSession.kt",
+      "sha256": "6427927e42ee1f47afa41dbfc8026dd80ba3d3c24515b93f103077949463cb09",
+      "unchanged_from": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534"
+    },
+    {
+      "path": "app/build.gradle.kts",
+      "sha256": "0043ee070b61f2afe7680d6c98d3c3d28915985af4c693cd6f9b9bf5235dc938",
+      "unchanged_from": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/LibraryScreen.kt",
+      "section": "private fun DetailDialog through end",
+      "unchanged": true
+    }
+  ],
+  "runtime_graph": 90,
+  "new_dependencies": 0,
+  "paired_resource_keys": 11,
+  "scope": [
+    "Ephemeral ordinary-video current-page multi-selection capped100 refs; no reader/files/URI",
+    "exact revision/generation and query/page/sort/folder snapshot fence; stale/ambiguous/non-READY refs removed, no adjacent fallback",
+    "foreground/busy/loading/consent/move gates; query/background exit, Back/cancel/clear",
+    "shared bounded scroll/wrapping toolbar in compact/wide layouts; single-item existing detail/rename/move/export only",
+    "multiple selected items never loop existing ports or claim batch success; batch moves/exports unavailable"
+  ],
+  "not_run": [
+    "post-code5 Android multi-selection rendering/Back/resize/TalkBack/actual operations",
+    "batch domain coordination",
+    "native media/Tools/export/real-phone performance",
+    "navigation repair: no repair in this increment",
+    "full project regression"
+  ],
+  "device_apk_upload_operations": 0,
+  "spec_evidence": {
+    "01_ESV_UI_FRAMEWORK_DESIGN.md": [
+      36,
+      57,
+      93
+    ],
+    "07_ESV_UI_PPT_TRACEABILITY_MATRIX.md": [
+      34
+    ]
+  },
+  "import": "Deferred by user; not original-scope defect; no new import",
+  "independent_review": "PENDING; local source only"
+}
