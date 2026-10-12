@@ -165,6 +165,7 @@ fun BrowserScreen(
                         EsvButton(stringResource(R.string.flow_browserscreen_15), onClick = bookmarks::dismissNotice)
                     }
                 }
+                saveRuntime?.let { com.easysavevideo.app.save.SaveFailureBrowserReminder(it) }
                 saveNotice?.let { message ->
                     Row(Modifier.fillMaxWidth().background(visuals.colors.surface).padding(visuals.spacingMedium),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {

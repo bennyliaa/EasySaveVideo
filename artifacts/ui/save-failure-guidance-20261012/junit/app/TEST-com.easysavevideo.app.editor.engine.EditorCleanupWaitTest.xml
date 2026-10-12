@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.editor.engine.EditorCleanupWaitTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:30.839Z" hostname="cloud-jvm" time="0.145">
+  <properties/>
+  <testcase name="initiallyInterruptedCallerWaitsForActualCleanupAndRestoresInterrupt" classname="com.easysavevideo.app.editor.engine.EditorCleanupWaitTest" time="0.041"/>
+  <testcase name="interruptionDuringCleanupWaitDoesNotShortCircuitActualAcknowledgement" classname="com.easysavevideo.app.editor.engine.EditorCleanupWaitTest" time="0.072"/>
+  <testcase name="trueTimeoutIsNeverAReleaseAcknowledgement" classname="com.easysavevideo.app.editor.engine.EditorCleanupWaitTest" time="0.03"/>
+  <testcase name="originalInterruptedExceptionIsRememberedEvenIfItsFlagWasCleared" classname="com.easysavevideo.app.editor.engine.EditorCleanupWaitTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_failure_next">Next step</string>
+    <string name="save_failure_fresh_boundary">This keeps the failed task unchanged. The browser may show a different page. Inspect that current page again and explicitly select a newly detected resource; method, access, destination and permission checks still apply.</string>
+    <string name="save_failure_open_browser">Return to browser to inspect again</string>
+    <string name="save_failure_browser_hint">Check the currently selected page. When it is ready, tap Inspect and choose to inspect it again, then choose a new resource. The failed task remains unchanged; nothing has started automatically.</string>
+    <string name="save_failure_dismiss">Dismiss guidance</string>
+    <string name="save_failure_cancelled">You cancelled this task. No retry or method switch will follow. Start a separate task only if you choose to.</string>
+    <string name="save_failure_protected">Do not switch methods to bypass content protection or access restrictions. This task stays stopped; use a source you are permitted to save.</string>
+    <string name="save_failure_connection_blocked">Check the site address and its secure connection with the site owner. Do not bypass certificate warnings or retry through another saving method.</string>
+    <string name="save_failure_storage">Check available space and storage access before starting another task. Manage files yourself if needed. This guidance does not delete existing media or retry the task.</string>
+    <string name="save_failure_recovery">Wait for existing verification or recovery checks. If still unavailable, reopen the app and review the task status before starting new work. Retained files are not proof of a successful save.</string>
+    <string name="save_failure_release_pending">Do not start another method while resource release is unconfirmed. Exit and reopen the app, then review recovery status. Retained task files will not be deleted by this guidance.</string>
+    <string name="save_failure_busy">Wait for current media work to finish or stop safely, then review its status. No parallel retry or recording will be started here.</string>
+    <string name="save_failure_authentication">Return to the browser and check that you have access, signing in normally if needed. Then inspect the current page again. Do not use another method to bypass a refusal.</string>
+    <string name="save_failure_source_changed">The old resource cannot be reused safely. Return to the browser, check the current page and inspect again. Any selected replacement creates a separate task from the beginning.</string>
+    <string name="save_failure_network">Check the network and site availability, then inspect the current page again when ready. A network failure does not establish that another method will work.</string>
+    <string name="save_failure_rate_limited">Wait before contacting the site again. When its limit has cleared, return to the browser and inspect again manually; no automatic retries will be started here.</string>
+    <string name="save_failure_reassess_method">Inspect the current page again to check for supported resources. A newly detected MP4 may offer ① Direct; supported HLS may offer ② Stream with the required entitlement. Neither is guaranteed. Independent recording still requires your own setup and system consent and cannot bypass protection.</string>
+    <string name="save_failure_invalid_output">The output did not pass validation. Inspect the current page again and select a fresh supported resource if available. The failed output is not a saved video.</string>
+    <string name="save_failure_budget">This version reached its size or transfer limit. Review the limits before choosing a smaller supported resource in a separate task. Switching methods does not remove those limits.</string>
+    <string name="save_failure_unknown">Review the task error and app status before trying again. If it repeats, you can export redacted diagnostics from Settings. No method is assumed to be available.</string>
+    <string name="save_failure_record_consent">System capture consent was declined. The task stays stopped. Only if you change your mind, open recording settings yourself and explicitly start a new session with fresh consent.</string>
+    <string name="save_failure_record_audio">Review audio choices in recording settings. A silent recording requires your explicit choice and a new start; audio permission is not retried and the microphone is never substituted.</string>
+    <string name="save_failure_record_setup">Review the supported recording configuration and system availability in recording settings. Start a separate session only when ready, with fresh system consent.</string>
+    <string name="save_failure_record_output">Review the recording error and any retained segments in recording settings. Only verified output counts as saved. A new session requires your explicit start and fresh system consent.</string>
+    <string name="save_failure_already_used">This navigation has already been used. Inspect the current browser page to continue.</string>
+    <string name="save_failure_stale">The task changed or is no longer available. Review its latest details before choosing a next step.</string>
+    <string name="save_failure_not_allowed">This task does not allow this next step. Review its failure guidance instead.</string>
+    <string name="save_failure_unavailable">This action is temporarily unavailable. Wait for current media work or resource release to finish, then try again. Nothing has been started.</string>
+</resources>

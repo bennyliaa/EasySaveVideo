@@ -740,3 +740,36 @@ acceptance, network, data-clear/privacy, disabled-feature or payment behavior.
 Code8 package/device evidence unchanged. Separate source/evidence commit for unified
 review. Evidence artifacts/ui/settings-offline-notices-20261012; notes
 SETTINGS_OFFLINE_NOTICES_20261012.md include bounded read-only code8 stage snapshot.
+
+
+## Save failure guidance / fresh inspection slice (2026-10-12)
+
+Original Product §7.1/7.3 / PR-12 and Technical TR-07: terminal task details now
+show classified EN/ZH next steps. Cancellation, protection, TLS, storage, recovery,
+resource-release and recording-denial paths do not offer blind method fallback.
+Eligible network failures have a one-use view-lifetime return-to-browser command,
+revalidated against task ID/revision/state/method/error and runtime media gates.
+It retires inspection UI only, does not cancel accepted tasks or execute saving.
+The user then explicitly inspects the actual current browser page; existing
+context/session/epoch/READY/View/address/revision and candidate-expiry, entitlement,
+source-session, destination and validation gates are preserved. No old task URL or
+token replay, task rewriting, deletion, automatic recording or fake-success state.
+
+This is safe failure guidance and ①/② fresh resource re-evaluation, not complete
+PR-12 fallback capability or trusted ②→③ webpage recording eligibility. Independent
+recording remains explicitly user-started through the existing preparation route.
+
+App1510 and save86 JVM tests PASS/0 failures/errors/skipped; 22 new tests included.
+Final business source Debug/Release compilation PASS; Debug lint0 errors/60 warnings/
+8 hints. First full run exposed a test-only resource-count expectation29 vs actual28;
+corrected then full rerun passed, failed log retained. 28 paired translated entries.
+Independent read-only review: no new P1/P2;13/13 final file hashes verified.
+Device/emulator/real WebView/Compose rendering/accessibility/native media acceptance
+NOT_RUN. No APK assembly/install/upload. Source-only slice; previous APK unchanged.
+Evidence artifacts/ui/save-failure-guidance-20261012; scope/acceptance details
+SAVE_FAILURE_GUIDANCE_20261012.md. Parent remote verification is separate.
+
+Save-failure freeze follow-through: Release lint independently executed PASS with
+0 errors/60 warnings/8 hints. Debug lint separately PASS with
+0 errors/60 warnings/8 hints. Production13 hashes unchanged; final evidence XML
+hostnames and absolute environment paths redacted before publication hashes.

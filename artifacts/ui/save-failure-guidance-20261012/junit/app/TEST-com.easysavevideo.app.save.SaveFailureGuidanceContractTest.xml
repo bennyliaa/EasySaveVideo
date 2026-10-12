@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:28.384Z" hostname="cloud-jvm" time="0.124">
+  <properties/>
+  <testcase name="navigationBridgeHasNoExecutionOrOldSourceAuthorityAndKeepsTaskGates" classname="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" time="0.035"/>
+  <testcase name="nativeInspectionStillUsesCurrentPageSnapshotAndCandidateLeaseChecks" classname="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" time="0.008"/>
+  <testcase name="translatedGuidanceKeepsCriticalNoBypassAndNoSuccessBoundaries" classname="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" time="0.04"/>
+  <testcase name="uiCannotStartRecordingOrSaveAndNavigationDoesNotPretendToInspect" classname="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" time="0.008"/>
+  <testcase name="everyAdviceAndCommandResultHasPairedNonemptyCopy" classname="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" time="0.017"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

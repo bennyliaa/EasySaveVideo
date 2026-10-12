@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.editor.ui.EditorPanelPolicyTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:31.069Z" hostname="cloud-jvm" time="0.008">
+  <properties/>
+  <testcase name="noExplicitRequestOrMissingVerifiedGeometryNeverOpensInput" classname="com.easysavevideo.app.editor.ui.EditorPanelPolicyTest" time="0.0"/>
+  <testcase name="threePanelsRequireWidthHeightAndFontBudgets" classname="com.easysavevideo.app.editor.ui.EditorPanelPolicyTest" time="0.006"/>
+  <testcase name="onlySuccessfulPublishedOutputCanPreview" classname="com.easysavevideo.app.editor.ui.EditorPanelPolicyTest" time="0.0"/>
+  <testcase name="hiddenBusyAndBlockedPageCannotKeepPlaying" classname="com.easysavevideo.app.editor.ui.EditorPanelPolicyTest" time="0.001"/>
+  <testcase name="layoutTransitionsKeepDraftAndExactRequestedReference" classname="com.easysavevideo.app.editor.ui.EditorPanelPolicyTest" time="0.0"/>
+  <testcase name="invalidGeometryCannotEnablePanels" classname="com.easysavevideo.app.editor.ui.EditorPanelPolicyTest" time="0.0"/>
+  <testcase name="staleInputRevisionAndSelectionCannotReadAnotherItem" classname="com.easysavevideo.app.editor.ui.EditorPanelPolicyTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

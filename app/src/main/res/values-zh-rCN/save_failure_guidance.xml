@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_failure_next">下一步</string>
+    <string name="save_failure_fresh_boundary">这不会改变失败任务。浏览器当前页可能已不同；请重新检测当前页并明确选择新资源，仍需通过保存方式、访问权限、目的地和系统授权检查。</string>
+    <string name="save_failure_open_browser">返回浏览器重新检测</string>
+    <string name="save_failure_browser_hint">请确认当前选中的网页。页面加载完成后，点击“识别并选择”重新检测，再选择新资源。原失败任务保持不变，未自动开始任何保存或录制。</string>
+    <string name="save_failure_dismiss">关闭引导</string>
+    <string name="save_failure_cancelled">你已取消此任务，不会接着重试或切换保存方式。仅在你主动选择时，另行开始新任务。</string>
+    <string name="save_failure_protected">不要换用其他方式绕过内容保护或访问限制。此任务保持停止，请使用你有权保存的来源。</string>
+    <string name="save_failure_connection_blocked">请检查网站地址，并向网站方确认安全连接。不要绕过证书警告，也不要换用其他保存方式规避检查。</string>
+    <string name="save_failure_storage">请先检查剩余空间和存储访问状态，再开始新任务。如有需要，由你自行管理文件。本引导不会删除已有媒体或重试任务。</string>
+    <string name="save_failure_recovery">请等待现有校验或恢复检查；如仍不可用，可重新打开应用并检查任务状态，再开始新操作。保留文件不代表已保存成功。</string>
+    <string name="save_failure_release_pending">系统资源释放尚未确认，请不要启动其他保存方式。退出并重新打开应用后检查恢复状态。本引导不会删除保留的任务文件。</string>
+    <string name="save_failure_busy">请等待现有媒体操作完成或安全停止后检查状态。这里不会并行重试或开始录制。</string>
+    <string name="save_failure_authentication">请回到浏览器确认你有访问权限，必要时正常登录，再重新检测当前页。不要换用其他方式绕过访问拒绝。</string>
+    <string name="save_failure_source_changed">旧资源不能安全复用。请回到浏览器确认当前页并重新检测；选择的新资源会另建任务，从头开始。</string>
+    <string name="save_failure_network">请先检查网络与网站是否可用，恢复后重新检测当前页。网络失败不能证明另一种保存方式可用。</string>
+    <string name="save_failure_rate_limited">请稍后再访问网站。限流解除后回到浏览器手动重新检测；这里不会启动自动重试。</string>
+    <string name="save_failure_reassess_method">请重新检测当前页，检查是否有受支持的资源。新检测的 MP4 可评估①直接下载，受支持的 HLS 可在权益允许时评估②流媒体保存，均不保证可用。独立录制仍需你自行设置和系统授权，不能绕过内容保护。</string>
+    <string name="save_failure_invalid_output">输出未通过校验。请重新检测当前页，如有受支持的新资源，再明确选择。失败的输出不是已保存视频。</string>
+    <string name="save_failure_budget">已达到本版本的文件或传输上限。请先查看限制，再另行选择更小且受支持的资源。更换保存方式不会取消这些限制。</string>
+    <string name="save_failure_unknown">请先检查任务错误和应用状态，再决定是否重新操作。如反复发生，可从设置导出脱敏诊断。这里不假定任何替代保存方式可用。</string>
+    <string name="save_failure_record_consent">本次系统捕获授权被拒绝，任务保持停止。仅当你改变决定时，自行打开录制设置并明确开始新会话，重新授权。</string>
+    <string name="save_failure_record_audio">请在录制设置中检查声音选项。无声音录制必须由你明确选择并重新开始；不会自动重试声音授权或改用麦克风。</string>
+    <string name="save_failure_record_setup">请在录制设置中检查支持的配置和系统可用状态。准备好后由你另行开始会话，并重新获得系统授权。</string>
+    <string name="save_failure_record_output">请在录制设置中检查错误和可能保留的片段。只有验证通过的输出才算保存成功。新会话需要你明确开始并重新获得系统授权。</string>
+    <string name="save_failure_already_used">此导航已执行，请在浏览器当前页重新检测后继续。</string>
+    <string name="save_failure_stale">任务状态已变化或任务已不可用。请查看最新详情，再选择下一步。</string>
+    <string name="save_failure_not_allowed">此任务不允许这项下一步操作，请查看对应的失败说明。</string>
+    <string name="save_failure_unavailable">此操作暂不可用。请等待现有媒体操作或资源释放完成后再试，未开始新任务。</string>
+</resources>

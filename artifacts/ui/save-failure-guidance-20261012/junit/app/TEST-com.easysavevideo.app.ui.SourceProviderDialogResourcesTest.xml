@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:33.155Z" hostname="cloud-jvm" time="0.027">
+  <properties/>
+  <testcase name="languageKeysAndParametersMatchAcrossEveryNewResource" classname="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" time="0.01"/>
+  <testcase name="englishOversizedRegionNoticePreservesFullScreenFallbackBoundary" classname="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" time="0.005"/>
+  <testcase name="filtersKeepAdmissionAndOriginalArgumentsWhenLanguageChanges" classname="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" time="0.004"/>
+  <testcase name="localizationCannotGrantRecoveryOrInventReadableState" classname="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" time="0.005"/>
+  <testcase name="regionSemanticsKeepCoordinatesAndUnconfirmedCaptureCannotBeSelected" classname="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

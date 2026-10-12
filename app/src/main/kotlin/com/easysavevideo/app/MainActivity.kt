@@ -479,6 +479,7 @@ class MainActivity : ComponentActivity() {
                         }
                     })
                 else if (route == EsvDestination.TASKS) SaveTaskScreen(saves, browser,
+                    onBrowser = { navigate(EsvDestination.BROWSER) },
                     onBack = { backTo() },
                     onRecord = { navigate(EsvDestination.RECORD) },
                     onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) },

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.library.destination.OrdinaryDestinationRowsTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:31.422Z" hostname="cloud-jvm" time="0.002">
+  <properties/>
+  <testcase name="partiallyBoundRowsFailClosed" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationRowsTest" time="0.001"/>
+  <testcase name="badIdentitiesAndNonpositiveVersionNumbersFailClosed" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationRowsTest" time="0.0"/>
+  <testcase name="askUnknownAndMalformedChoicesCannotAdmitCopies" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationRowsTest" time="0.0"/>
+  <testcase name="allPreferenceChoicesAreExplicit" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationRowsTest" time="0.0"/>
+  <testcase name="unboundRowsStayUnbound" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationRowsTest" time="0.0"/>
+  <testcase name="exactSourceRoundTripsAllThreeIdentityFields" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationRowsTest" time="0.0"/>
+  <testcase name="malformedPreferenceNeverFallsBackToAlbumOrLibrary" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationRowsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

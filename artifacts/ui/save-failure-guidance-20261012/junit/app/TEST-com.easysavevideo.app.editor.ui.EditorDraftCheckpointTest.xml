@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:31.052Z" hostname="cloud-jvm" time="0.012">
+  <properties/>
+  <testcase name="repeatedRestoreCannotCreateASecondAdmission" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.003"/>
+  <testcase name="illegalCountsExhaustedSegmentIdsAndInvalidAuthorityAreRejected" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.002"/>
+  <testcase name="checkpointExcludesNamesOutputsGeometryAndTaskOwnership" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.002"/>
+  <testcase name="liveOwnerAndNewUserSelectionAlwaysWinEvenAfterClearingDraft" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.0"/>
+  <testcase name="missingDeletedAndChangedReferencesNeverReauthorizeOldDraft" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.001"/>
+  <testcase name="activeCheckpointRestoresReviewOnlyAndCapabilityDenialIsExplicit" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.0"/>
+  <testcase name="resolverUsesOnlyMetadataLookupAndNoFallbackSelection" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.001"/>
+  <testcase name="incompleteUserTimeInputIsPreservedWithoutBecomingExecutable" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.001"/>
+  <testcase name="malformedVersionTruncatedTrailingAndOversizedStateAreRejected" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.0"/>
+  <testcase name="emptyDraftHasNoCheckpointAndEveryRestoreStateHasFeedback" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.001"/>
+  <testcase name="rotationCheckpointRestoresExactOrderParametersAndSelection" classname="com.easysavevideo.app.editor.ui.EditorDraftCheckpointTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

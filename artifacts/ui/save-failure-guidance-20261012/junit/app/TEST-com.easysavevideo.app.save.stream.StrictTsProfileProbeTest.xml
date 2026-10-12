@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" tests="35" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:32.340Z" hostname="cloud-jvm" time="0.085">
+  <properties/>
+  <testcase name="unknownPidIsRejectedEvenIfItLooksLikeNullData" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.004"/>
+  <testcase name="finalEmptyAudMustBeDelimitedByEndMarkerEvenForFinitePes" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="approvedInputCapabilityIsOpenedAndClosedExactlyOnce" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="duplicatePayloadPacketsAreNotSilentlyDiscarded" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="malformedExpGolombAndTruncatedHeadersAreBounded" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="optionalAudioCannotDisappearInAnySegment" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.002"/>
+  <testcase name="boundedFinalVideoPesRequiresSourceDelimiterWithoutInventedTimestamp" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="baselineOnlyActualBSlicesAndNonIdrSegmentStartsFail" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="audioCadenceToleranceIsOneObservedTickRatherThanFrameRepair" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.004"/>
+  <testcase name="oversizedPesCannotAllocateAnUnboundedAccessUnit" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.045"/>
+  <testcase name="unboundedFinalVideoPesRequiresEndMarkerAndFinalAud" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.003"/>
+  <testcase name="rawTimestampResetWrapEqualValuesAndHugeGapsAreRejected" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.002"/>
+  <testcase name="wrongSyncTransportErrorAndScramblingAreRejected" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="patAndPmtCrcAreChecked" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="syntheticAdtsHeadersAreCountedWithoutClaimingDecodeValidity" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="releaseFailureOverridesParserFailureWithoutExposingUnderlyingMessage" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.002"/>
+  <testcase name="everySegmentMustRepeatPatAndPmt" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="intermediateUnboundedPesNeedsEndMarkerButNeverEmptyAud" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="missingWholeAacFrameBetweenPesFailsEvenWithinTwoSecondGapLimit" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="adtsConfigurationChangesAndTruncatedFramesFailClosed" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.002"/>
+  <testcase name="multipleProgramsAndUnexpectedElementaryStreamsAreRejected" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.005"/>
+  <testcase name="payloadLossInsideMultiPacketPesIsRejectedBeforeCodecParsing" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="declaredPesLengthMustExactlyMatchPayload" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="cancellationAfterCapabilityOpenStillClosesReader" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="boundedSyntheticHeadersProduceOriginalTimestampEvidence" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="everySpsAndPpsChangeIsRejectedIncludingLateChanges" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="audioPesCadenceUsesParsedMultiFrameDurationWithOneTickRounding" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="reorderedPtsDtsAndMissingMarkerBitsAreRejected" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="emptyAndNon188ByteInputsFailClosed" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="intermediateEmptyAudWouldCreateGhostSampleAndIsRejected" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="continuityCountersCannotResetOrSkipAtSegmentBoundary" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="checkpointPropagatesCancellationWithoutConvertingItToMediaFailure" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="noAvcParameterSetsOrMultipleAccessUnitsInPesFailClosed" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <testcase name="capabilityByteCountMustMatchActualReadInBothDirections" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.001"/>
+  <testcase name="adaptationDiscontinuityIsNotHiddenByCounters" classname="com.easysavevideo.app.save.stream.StrictTsProfileProbeTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

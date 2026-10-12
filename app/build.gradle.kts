@@ -86,13 +86,17 @@ val contractResourceInputs = fileTree("src/main/res") {
     for (locale in listOf("values", "values-zh-rCN")) {
         for (resource in listOf(
             "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
-            "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml",
+            "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
             "library_batch_export.xml", "library_multi.xml", "provider_copy.xml",
             "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "final_*.xml"
         )) include("$locale/$resource")
     }
 }
 val contractSourceInputs = files(
+    "src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/PageSaveDetector.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/SaveFailureGuidanceUi.kt",
+    "src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/EsvSettingsScreen.kt",
     "src/main/kotlin/com/easysavevideo/app/library/LibraryScreen.kt",
     "src/main/kotlin/com/easysavevideo/app/library/LibraryBatchExportDialog.kt",

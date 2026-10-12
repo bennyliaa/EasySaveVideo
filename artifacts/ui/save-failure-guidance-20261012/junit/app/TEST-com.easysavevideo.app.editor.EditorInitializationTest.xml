@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.editor.EditorInitializationTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:30.836Z" hostname="cloud-jvm" time="0.001">
+  <properties/>
+  <testcase name="runtimeFailureIsVisibleWithoutRetainingExceptionText" classname="com.easysavevideo.app.editor.EditorInitializationTest" time="0.001"/>
+  <testcase name="unavailableOrMissingRuntimeNeverEnablesEntry" classname="com.easysavevideo.app.editor.EditorInitializationTest" time="0.0"/>
+  <testcase name="storageFailureIsVisibleAndDoesNotConstructEditor" classname="com.easysavevideo.app.editor.EditorInitializationTest" time="0.0"/>
+  <testcase name="successMeansConstructorReadyNotEntitlementOrExecutionSuccess" classname="com.easysavevideo.app.editor.EditorInitializationTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

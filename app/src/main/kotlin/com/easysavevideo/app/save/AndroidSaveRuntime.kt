@@ -114,6 +114,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
     var segmentRecording by activityStateOf<AndroidSegmentRecordingRuntime?>(null); private set
     var scanning by mutableStateOf(false); private set
     var selection by mutableStateOf<PageSaveSelection?>(null); private set
+    var showFailureBrowserReminder by mutableStateOf(false); private set
     var records by mutableStateOf<List<SaveRecord>>(emptyList()); private set
     var activeTaskCount by mutableStateOf(0); private set
     var mediaDispositions by mutableStateOf<Map<String, MediaLifecycle>>(emptyMap()); private set
@@ -210,24 +211,43 @@ class AndroidSaveRuntime private constructor(context: Context) {
             }
         }
     }
+    internal fun returnToBrowserAfterFailure(command: FailureBrowserCommand): FailureNavigationResult {
+        requireMain()
+        val current = records.firstOrNull { it.task.taskId == command.taskId }
+            // Old terminal rows may not be present in the coordinator memory cache after restart.
+            ?.takeIf { record -> ::coordinator.isInitialized && coordinator.snapshot(command.taskId)?.let { it == record.task } != false }
+            ?.let(FailedTaskIdentity::from)
+        val result = command.accept(current, ready && foreground && allowed() && !executing.get() &&
+            !resourcesDraining() && pendingCommands.isEmpty() && currentRecordingId == null &&
+            pendingRecording == null && recordingService == null && !preparingStream && hlsPreparation == null)
+        if (result == FailureNavigationResult.ACCEPTED) {
+            // Only retire UI inspection. Never invoke cancel/resume/submit on the failed or active task.
+            dismissSelection()
+            showFailureBrowserReminder = true
+        }
+        return result
+    }
+    fun dismissFailureBrowserReminder() { showFailureBrowserReminder = false }
+    private fun inspectionPage(browser: SystemBrowserHost): SaveInspectionPage? {
+        val tab = browser.state.selectedTab ?: return null
+        val view = browser.selectedView()
+        return SaveInspectionPage(tab.context, tab.epoch, tab.loadState == BrowserLoadState.READY,
+            tab.address?.value, view?.url, view, browser.saveInspectionRevision)
+    }
     fun inspectFromUserClick(browser: SystemBrowserHost) {
         requireMain()
+        showFailureBrowserReminder = false
         if (!ready || !foreground || !allowed()) { notice = "保存暂时不可用，请稍后重试。"; return }
         if (scanning) return
-        val tab = browser.state.selectedTab
+        val captured = inspectionPage(browser)
         val view = browser.selectedView()
-        if (tab == null || view == null || tab.loadState != BrowserLoadState.READY || tab.address?.value != view.url) {
+        if (captured == null || !captured.isUsable() || view == null) {
             notice = "请先打开网页，等待页面加载完成后再保存。"; return
         }
-        val revision = browser.saveInspectionRevision
-        val pageUrl = view.url ?: return
-        fun isCurrent(): Boolean = foreground && browser.state.selectedTab?.let {
-            it.context == tab.context && it.epoch == tab.epoch && it.loadState == BrowserLoadState.READY &&
-                it.address?.value == pageUrl && browser.selectedView() === view &&
-                browser.saveInspectionRevision == revision && view.url == pageUrl
-        } == true
+        val pageUrl = captured.pageUrl ?: return
+        fun isCurrent(): Boolean = captured.matches(inspectionPage(browser), foreground)
         scanning = true; selection = null; notice = null
-        detector.inspectFromUserClick(view, tab.context, tab.epoch, pageUrl, ::isCurrent) { result ->
+        detector.inspectFromUserClick(view, captured.context, captured.epoch, pageUrl, ::isCurrent) { result ->
             scanning = false
             when (result) {
                 is PageSaveDetection.Found -> selection = result.selection

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.recording.ui.RecordingPreviewWindowFocusFenceTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:31.842Z" hostname="cloud-jvm" time="0.001">
+  <properties/>
+  <testcase name="focusLossBeforeConfirmCannotBeReclassifiedAsIntentionalRetirement" classname="com.easysavevideo.app.recording.ui.RecordingPreviewWindowFocusFenceTest" time="0.0"/>
+  <testcase name="initialCompositionCanWaitForFirstRealDialogFocus" classname="com.easysavevideo.app.recording.ui.RecordingPreviewWindowFocusFenceTest" time="0.0"/>
+  <testcase name="intentionalConfirmedDismissalDoesNotCancelAcceptedSelection" classname="com.easysavevideo.app.recording.ui.RecordingPreviewWindowFocusFenceTest" time="0.0"/>
+  <testcase name="retiredListenerCannotAffectANewDialog" classname="com.easysavevideo.app.recording.ui.RecordingPreviewWindowFocusFenceTest" time="0.0"/>
+  <testcase name="focusLossAfterAcquisitionRevokesWithoutAnyLifecyclePause" classname="com.easysavevideo.app.recording.ui.RecordingPreviewWindowFocusFenceTest" time="0.001"/>
+  <testcase name="regainingFocusCannotResurrectRevokedPixelsOrConfirmation" classname="com.easysavevideo.app.recording.ui.RecordingPreviewWindowFocusFenceTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.save.MediaTaskActivityExpiryTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:31.890Z" hostname="cloud-jvm" time="0.003">
+  <properties/>
+  <testcase name="realExpiryOwnsQueuedAndExecutingCleanupWithoutDuplicateBatches" classname="com.easysavevideo.app.save.MediaTaskActivityExpiryTest" time="0.002"/>
+  <testcase name="repeatedEmptyOrNotDueScansDoNotPublishPriorityOrStartWork" classname="com.easysavevideo.app.save.MediaTaskActivityExpiryTest" time="0.0"/>
+  <testcase name="cleanupAndDispatchExceptionsAlwaysReleaseTheirOwner" classname="com.easysavevideo.app.save.MediaTaskActivityExpiryTest" time="0.001"/>
+  <testcase name="queueRejectionEndsOwnershipAndOldWorkCannotAffectANewBatch" classname="com.easysavevideo.app.save.MediaTaskActivityExpiryTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

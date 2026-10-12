@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.editor.storage.EditArtifactFilesTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:30.990Z" hostname="cloud-jvm" time="0.037">
+  <properties/>
+  <testcase name="actualSyntheticBytesPromoteWithoutTouchingOriginal" classname="com.easysavevideo.app.editor.storage.EditArtifactFilesTest" time="0.005"/>
+  <testcase name="finalCollisionNeverOverwrittenOrCleaned" classname="com.easysavevideo.app.editor.storage.EditArtifactFilesTest" time="0.001"/>
+  <testcase name="cancellationDuringHashCannotPromote" classname="com.easysavevideo.app.editor.storage.EditArtifactFilesTest" time="0.012"/>
+  <testcase name="absentStageAndDurableMatchingProofAllowOwnPromotedCleanup" classname="com.easysavevideo.app.editor.storage.EditArtifactFilesTest" time="0.001"/>
+  <testcase name="symlinksAndTraversalNeverAdmitted" classname="com.easysavevideo.app.editor.storage.EditArtifactFilesTest" time="0.002"/>
+  <testcase name="stagingCollisionRejectedBeforeReuse" classname="com.easysavevideo.app.editor.storage.EditArtifactFilesTest" time="0.0"/>
+  <testcase name="finalWithoutProofOrWithWrongProofIsRetained" classname="com.easysavevideo.app.editor.storage.EditArtifactFilesTest" time="0.016"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

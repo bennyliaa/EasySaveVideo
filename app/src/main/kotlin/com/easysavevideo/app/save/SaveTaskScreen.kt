@@ -41,6 +41,7 @@ fun SaveTaskScreen(
     onRecord: (() -> Unit)? = null,
     onPreview: ((SaveRecord) -> Unit)? = null,
     onLibrary: (() -> Unit)? = null,
+    onBrowser: (() -> Unit)? = null,
     onBack: () -> Unit,
 ) {
     val v = LocalEsvVisuals.current
@@ -93,7 +94,7 @@ fun SaveTaskScreen(
                   if (layout.split) Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium)) {
                     EsvText("${stringResource(taskMethodTextResource(record.request.method))} · ${stringResource(taskStateTextResource(record))}", style = v.bodyTextStyle)
                     EsvText(stringResource(R.string.flow_task_id, record.task.taskId.take(8)), style = v.captionTextStyle, color = v.colors.muted)
-                  } else SaveTaskDetail(record, runtime, browser, onRecord, onPreview)
+                  } else SaveTaskDetail(record, runtime, browser, onRecord, onPreview, onBrowser)
                   EsvButton(stringResource(if (record.task.taskId == selectedTaskId) R.string.task_detail_selected else R.string.task_detail_select),
                     onClick = { selectedTaskId = record.task.taskId }, modifier = Modifier.fillMaxWidth().semantics { selected = record.task.taskId == selectedTaskId })
                 }
@@ -101,7 +102,7 @@ fun SaveTaskScreen(
             }
             if (layout.split) Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(detailScroll), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
               EsvText(stringResource(R.string.task_detail_heading), style = v.titleTextStyle)
-              if (detail != null) SaveTaskDetail(detail, runtime, browser, onRecord, onPreview)
+              if (detail != null) SaveTaskDetail(detail, runtime, browser, onRecord, onPreview, onBrowser)
               else EsvText(stringResource(if (selectedTaskId == null) R.string.task_detail_empty else R.string.task_detail_unavailable))
               if (selectedTaskId != null) EsvButton(stringResource(R.string.task_detail_clear), onClick = { selectedTaskId = null })
             }
@@ -113,7 +114,7 @@ fun SaveTaskScreen(
 
 @Composable
 private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, browser: SystemBrowserHost,
-    onRecord: (() -> Unit)?, onPreview: ((SaveRecord) -> Unit)?) {
+    onRecord: (() -> Unit)?, onPreview: ((SaveRecord) -> Unit)?, onBrowser: (() -> Unit)?) {
     val v = LocalEsvVisuals.current
     Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium),
         verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -153,6 +154,7 @@ private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, brow
             EsvButton(stringResource(R.string.flow_savetaskscreen_19), onClick = open)
         }
         record.error?.let { EsvText(stringResource(saveFailureTextResource(it)), color = v.colors.error, style = v.captionTextStyle) }
+        SaveFailureGuidance(record, runtime, onBrowser)
         if (record.task.state == TaskState.WAITING_USER) EsvText(if (record.request.method == TaskMethod.RECORD && record.transfer == null)
             stringResource(R.string.final_copy_48)
         else when (record.waitReason) {
