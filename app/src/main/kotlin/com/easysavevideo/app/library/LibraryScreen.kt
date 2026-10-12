@@ -1,5 +1,8 @@
 package com.easysavevideo.app.library
 
+import com.easysavevideo.app.BuildConfig
+import com.easysavevideo.app.diagnostics.InitializationDiagnostic
+import com.easysavevideo.app.diagnostics.initializationDiagnosticText
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -57,6 +60,7 @@ fun LibraryScreen(
     exports: AndroidExportRuntime? = null,
     thumbnails: AndroidLibraryThumbnails? = null,
     editorInitialization: EditorInitializationStatus = if (onEdit != null) EditorInitializationStatus.READY else EditorInitializationStatus.INITIALIZING,
+    editorDiagnostic: InitializationDiagnostic? = null,
 ) {
     val state = runtime.state
     val v = LocalEsvVisuals.current
@@ -279,12 +283,12 @@ fun LibraryScreen(
                     verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
                     EsvText(stringResource(R.string.library_detail_heading), style = v.titleTextStyle)
                     if (multi.active) EsvText(stringResource(R.string.library_multi_count, currentMulti.count), color = v.colors.muted)
-                    else SelectedDetailContent(runtime, onPreview, onExport, onEdit, editorInitialization)
+                    else SelectedDetailContent(runtime, onPreview, onExport, onEdit, editorInitialization, editorDiagnostic)
                 }
                 when {
                     state.deletion != null -> DeleteDialog(runtime, state.deletion)
                     state.editor != null -> NameDialog(runtime, state.editor)
-                    !expanded && state.selected != null -> DetailDialog(runtime, onPreview, onExport, onEdit, editorInitialization)
+                    !expanded && state.selected != null -> DetailDialog(runtime, onPreview, onExport, onEdit, editorInitialization, editorDiagnostic)
                 }
             }
         }
@@ -292,12 +296,12 @@ fun LibraryScreen(
 }
 
 @Composable
-private fun DetailDialog(runtime: AndroidLibraryRuntime, onPreview: (MediaReadRef) -> Unit, onExport: ((MediaReadRef) -> Unit)?, onEdit: ((MediaItem) -> Unit)?, editorInitialization: EditorInitializationStatus) {
-    LibraryDialog(runtime::dismissSelection) { SelectedDetailContent(runtime, onPreview, onExport, onEdit, editorInitialization) }
+private fun DetailDialog(runtime: AndroidLibraryRuntime, onPreview: (MediaReadRef) -> Unit, onExport: ((MediaReadRef) -> Unit)?, onEdit: ((MediaItem) -> Unit)?, editorInitialization: EditorInitializationStatus, editorDiagnostic: InitializationDiagnostic?) {
+    LibraryDialog(runtime::dismissSelection) { SelectedDetailContent(runtime, onPreview, onExport, onEdit, editorInitialization, editorDiagnostic) }
 }
 
 @Composable
-private fun ColumnScope.SelectedDetailContent(runtime: AndroidLibraryRuntime, onPreview: (MediaReadRef) -> Unit, onExport: ((MediaReadRef) -> Unit)?, onEdit: ((MediaItem) -> Unit)?, editorInitialization: EditorInitializationStatus) {
+private fun ColumnScope.SelectedDetailContent(runtime: AndroidLibraryRuntime, onPreview: (MediaReadRef) -> Unit, onExport: ((MediaReadRef) -> Unit)?, onEdit: ((MediaItem) -> Unit)?, editorInitialization: EditorInitializationStatus, editorDiagnostic: InitializationDiagnostic?) {
     val state = runtime.state
     val v = LocalEsvVisuals.current
     val selected = state.selected
@@ -312,12 +316,12 @@ private fun ColumnScope.SelectedDetailContent(runtime: AndroidLibraryRuntime, on
             EsvText(stringResource(R.string.library_detail_missing), color = v.colors.muted)
             EsvButton(stringResource(R.string.flow_libraryscreen_43), runtime::dismissSelection)
         }
-        else -> DetailContent(runtime, current, onPreview, onExport, onEdit, editorInitialization)
+        else -> DetailContent(runtime, current, onPreview, onExport, onEdit, editorInitialization, editorDiagnostic)
     }
 }
 
 @Composable
-private fun ColumnScope.DetailContent(runtime: AndroidLibraryRuntime, selection: LibrarySelection, onPreview: (MediaReadRef) -> Unit, onExport: ((MediaReadRef) -> Unit)?, onEdit: ((MediaItem) -> Unit)?, editorInitialization: EditorInitializationStatus) {
+private fun ColumnScope.DetailContent(runtime: AndroidLibraryRuntime, selection: LibrarySelection, onPreview: (MediaReadRef) -> Unit, onExport: ((MediaReadRef) -> Unit)?, onEdit: ((MediaItem) -> Unit)?, editorInitialization: EditorInitializationStatus, editorDiagnostic: InitializationDiagnostic?) {
     val v = LocalEsvVisuals.current
     EsvText(selection.name, style = v.titleTextStyle)
     when (selection) {
@@ -338,6 +342,9 @@ private fun ColumnScope.DetailContent(runtime: AndroidLibraryRuntime, selection:
                 EditorInitializationStatus.READY -> null
             }
             editorNotice?.let { EsvText(stringResource(it), style=v.captionTextStyle, color=v.colors.muted) }
+            initializationDiagnosticText(BuildConfig.DEBUG, editorDiagnostic)?.let {
+                EsvText(it, style = v.captionTextStyle, color = v.colors.muted)
+            }
             EsvButton(stringResource(R.string.flow_libraryscreen_37), { runtime.takeSelectedReadRef(selection)?.let(onPreview) }, modifier = Modifier.fillMaxWidth())
             EsvButton(stringResource(if (onExport == null) R.string.flow_export_unavailable else R.string.flow_export), {
                 if (onExport == null) runtime.unavailableExport()

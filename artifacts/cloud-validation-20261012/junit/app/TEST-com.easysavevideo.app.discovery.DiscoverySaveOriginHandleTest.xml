@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:40.146Z" time="0.009">
+  <testcase name="applicationStyleDispatchWithoutIdentityProofPreservesMediaAndNeverRecordsSaved" classname="com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest" time="0.003" />
+  <testcase name="handleDiagnosticsDoNotExposeCapabilityOrTaskData" classname="com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest" time="0.001" />
+  <testcase name="failureCompletionRemainsNotCommittedWhenHistoryDispatchFails" classname="com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest" time="0.0" />
+  <testcase name="committedOutcomeIsPreservedAcrossRejectedOrThrowingDispatch" classname="com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest" time="0.001" />
+  <testcase name="callbackThenDispatchExceptionNeverProducesASecondOrReplacementOutcome" classname="com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest" time="0.001" />
+  <testcase name="duplicateAsynchronousDispatchCallbacksAreDeliveredOnlyOnce" classname="com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest" time="0.0" />
+  <testcase name="successfulDispatchPreservesTaskOwnerAndUsesTheRealSingleUseGate" classname="com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest" time="0.001" />
+  <testcase name="callbackReentryAndCallbackExceptionCannotDispatchOrDeliverTwice" classname="com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest" time="0.001" />
+  <testcase name="abandonPreventsBindingDispatchAndLateDuplicateCompletion" classname="com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest" time="0.001" />
+</testsuite>

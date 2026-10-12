@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "tests": 31,
+  "forced_final_execution": true,
+  "final_english_resource_sha256": "f5f6a9aa4ddda0421a8951a70a10cb74bdd463d6cbff4d99d58bdcc80ce5d53b",
+  "aggregate_evidence": "artifacts/cloud-validation-20261012",
+  "suites": [
+    {
+      "suite": "licenses.NoticeTextTest",
+      "timestamp": "2026-10-12T19:28:41.105Z",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "licenses.NoticeSectionsTest",
+      "timestamp": "2026-10-12T19:28:40.989Z",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "licenses.NoticeViewportContractTest",
+      "timestamp": "2026-10-12T19:28:41.112Z",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "discovery.DiscoveryPowerPresentationTest",
+      "timestamp": "2026-10-12T19:28:39.940Z",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "discovery.DiscoveryOsPowerPresentationTest",
+      "timestamp": "2026-10-12T19:28:39.878Z",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "discovery.DiscoveryPowerResourcesTest",
+      "timestamp": "2026-10-12T19:28:39.953Z",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "scope": "JVM/XML/source-contract/arithmetic model, not real Compose or Android device acceptance"
+}

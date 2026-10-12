@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.discovery.VerificationConfigurationTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:40.315Z" time="0.025">
+  <testcase name="busyFenceCoversOldAndNewSnapshotPublication" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.005" />
+  <testcase name="reentrantCallbackCannotOverwriteNewerConsent" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.001" />
+  <testcase name="sharedHubFencesAllOwnersBeforePublishing" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.002" />
+  <testcase name="separateProcessDefaultsDoNotRestoreConsent" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.002" />
+  <testcase name="brokenOwnerDoesNotPreventOtherOwnersBeingFenced" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.001" />
+  <testcase name="recreatedOwnerReceivesExactSessionConsent" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.001" />
+  <testcase name="subscriberAttachedDuringFenceCannotRunOldConfiguration" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.002" />
+  <testcase name="detachedOwnerIsNeverReopenedByChangedService" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.002" />
+  <testcase name="redactedDiagnosticStrings" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.001" />
+  <testcase name="explicitAcknowledgementRequired" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.001" />
+  <testcase name="editAwayAndBackHasDistinctGeneration" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.002" />
+  <testcase name="invalidEndpointCannotFenceOrBecomeConfigured" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.002" />
+  <testcase name="defaultHasNoServiceOrNetworkSideEffects" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.0" />
+  <testcase name="sessionGenerationChangesCheckpointCompatibility" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.001" />
+  <testcase name="fenceOccursBeforeNewConfigurationPublished" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.001" />
+  <testcase name="staleDialogCannotEnableOrDisableNewerConfiguration" classname="com.easysavevideo.app.discovery.VerificationConfigurationTest" time="0.0" />
+</testsuite>

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.editor.storage.EditRecordCodecTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:40.909Z" time="0.013">
+  <testcase name="expectationRoundTripRetainsExplicitAudioAndTolerance" classname="com.easysavevideo.app.editor.storage.EditRecordCodecTest" time="0.003" />
+  <testcase name="editedSourcesNeverBecomeNetworkOrRecordRequest" classname="com.easysavevideo.app.editor.storage.EditRecordCodecTest" time="0.001" />
+  <testcase name="evidenceRoundTripNeverNormalizesAnUnknownVerificationVersion" classname="com.easysavevideo.app.editor.storage.EditRecordCodecTest" time="0.001" />
+  <testcase name="exactSnappedFrameCountSurvivesExpectationEncoding" classname="com.easysavevideo.app.editor.storage.EditRecordCodecTest" time="0.001" />
+  <testcase name="genuineFrozenV1AndV2ProductionRecordsRemainReadable" classname="com.easysavevideo.app.editor.storage.EditRecordCodecTest" time="0.003" />
+  <testcase name="thirtyThreePrivateInputsRoundTripWithoutCatalogAliases" classname="com.easysavevideo.app.editor.storage.EditRecordCodecTest" time="0.003" />
+  <testcase name="appendedTruncatedOversizedAndUnknownVersionRejected" classname="com.easysavevideo.app.editor.storage.EditRecordCodecTest" time="0.001" />
+  <testcase name="typedRecipeRoundTripPreservesIdentityOrderAndCrop" classname="com.easysavevideo.app.editor.storage.EditRecordCodecTest" time="0.0" />
+</testsuite>

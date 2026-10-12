@@ -1,0 +1,199 @@
+{
+  "scope": "Initialization diagnostic completion; not OPPO functional repair",
+  "inputCommit": "20fddc9c33b399ab75f8b8eee0f21e41e6f5b06f",
+  "inputRef": "backup/cloud-handoff-20261013",
+  "dateUtc": "2026-10-12",
+  "status": "SOURCE_COMPLETE_JVM_PASS_DEVICE_NOT_RUN",
+  "rootCause": "UNKNOWN",
+  "firstFailureScope": "Per construction attempt; earlier independent segment initialization is not reconstructed",
+  "verification": {
+    "relevantJvm": {
+      "status": "PASS",
+      "suiteCount": 14,
+      "tests": 85,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "com.easysavevideo.app.diagnostics.InitializationProbeTest",
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "915acf37b3acb706b2117cfac43151a0e48aa47e3d4922764bd27b0b182a2e99"
+        },
+        {
+          "name": "com.easysavevideo.app.editor.EditorInitializationTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "bec72a0b40cda00f161d024ba9b9d00035b7297ed73cca17529cc6baba5d0e15"
+        },
+        {
+          "name": "com.easysavevideo.app.editor.storage.EditArtifactFilesTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "9786d16c7e8301c3b76cf4a8ad295f40fbee230743013ddc28bd09f0a9660a22"
+        },
+        {
+          "name": "com.easysavevideo.app.editor.storage.EditInitializationStagesTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "1a0a3aa25e45184c39ae3a3b3e2ebc499e1c658bd1d8fa8d7f7c9a99488a02bc"
+        },
+        {
+          "name": "com.easysavevideo.app.editor.storage.EditRecordCodecTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "219844b0ad6a700ba52983044a62fda3cfe7cc85ca2aba3d38624327a9e804f9"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareBatchTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "298a11fd62860c4f8291fd00c495768cb18942958f6cf8072cf858e6c2e491b7"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareCopyVerifierTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "7a9fe1aacbc5e4d059438c055550edf48a3a83cfccfda8a8b98ea45c2e7c8394"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareGroupRevocationTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "4745353046c3b25d45a8f814516fb6b20d3571a50a06396375d5f74defde0b64"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareInitializationFilesTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "05fc1a51bfcd20b64e619d98de874d9f08dda847e60f2f158f93ef255a72ca99"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareInitializationTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "e9a23435eda1b6af8c736cc9599e22bd49cf8a8b34169dfa129f5827c06ec2bc"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.SharePolicyTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "0dfcf4c3b5149a2e926cbbf014fb103709cbff03271958c334bf4fee3f47a339"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareProxyAdmissionTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "2525f48a0ad67ccd444b42ea88597e40466e8b633c88f59b5e4255d183dde8d8"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareProxyReaderTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "b67d6288b00ac7728271aa1689135ae5c72d714a93e6d031563d127d1e3d3cec"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareReadBudgetTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "xmlSha256": "1bad8aa378005b99353d9b655c7f6bc06f24c5971bbfcda0744356eec178fc29"
+        }
+      ]
+    },
+    "initializationSpecificTests": 32,
+    "sharedSelectedAppRun": {
+      "status": "PASS",
+      "suites": 44,
+      "tests": 468,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "debugCompile": "PASS",
+    "releaseCompile": "PASS",
+    "runtimeAdmission": {
+      "status": "PASS",
+      "exactArtifactsPerVariant": 90
+    },
+    "debugLint": {
+      "status": "PASS_WITH_WARNINGS",
+      "errors": 0,
+      "warnings": 61,
+      "hints": 8
+    },
+    "releaseLint": {
+      "status": "PASS_WITH_WARNINGS",
+      "errors": 0,
+      "warnings": 61,
+      "hints": 8
+    },
+    "independentSourceReview": "PASS_WITHIN_SCOPE_AFTER_TWO_CORRECTIONS",
+    "apkAssembly": "NOT_RUN",
+    "deviceAndEmulator": "NOT_RUN",
+    "realAndroidServiceAndErrnoInjection": "NOT_RUN",
+    "realEditShareAcceptance": "NOT_RUN",
+    "fullRepositoryTestSuite": "NOT_RUN"
+  },
+  "fixedDiagnosticDefect": "Retained unconfirmed owner now preserves first lock diagnostic while every later get remains RELEASE_UNCONFIRMED",
+  "privacy": "Fixed enum values plus errno 1..4095 only; no paths, content, filenames, URLs, credentials, exception messages, stacks or Throwable retention in diagnostic state",
+  "authority": "No device, GitHub, dependency, entitlement, permission, Vault, rules, payment or publication changes",
+  "testFixtureSha256": "468090e0ee0ba7f91f9d434f1218ba98242b8793424d72d164a320307b0852ea",
+  "verificationRound": "r2: slice verification and original XML hashes; historical lint 61, not final aggregate",
+  "finalIntegratedValidation": {
+    "evidenceDirectory": "artifacts/cloud-validation-20261012",
+    "summarySha256": "d2db4476f600ed0a1421ac2f22046ccf1d4cf5d8e5600c57eed4916c52438dc4",
+    "forcedAppRound": "r4, after final English resource change",
+    "tests": {
+      "app": 468,
+      "coreModelAndCoreDomain": 47,
+      "discovery": 29,
+      "total": 544,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "debugAndReleaseCompilation": "PASS in r2; unchanged Kotlin outputs reused in final resource-only r3",
+    "debugLint": {
+      "errors": 0,
+      "warnings": 60,
+      "hints": 8
+    },
+    "releaseLint": {
+      "errors": 0,
+      "warnings": 60,
+      "hints": 8
+    },
+    "runtimeAdmissionExactArtifactsPerVariant": 90,
+    "deviceAndRealEditShare": "NOT_RUN",
+    "fullRepositorySuite": "NOT_RUN"
+  }
+}

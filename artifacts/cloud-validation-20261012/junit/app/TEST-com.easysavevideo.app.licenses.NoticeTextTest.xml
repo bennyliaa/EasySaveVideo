@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.licenses.NoticeTextTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:41.105Z" time="0.006">
+  <testcase name="zeroProgressCannotSpinForever" classname="com.easysavevideo.app.licenses.NoticeTextTest" time="0.0" />
+  <testcase name="previousHalfMegabyteLimitDoesNotHideNewAttribution" classname="com.easysavevideo.app.licenses.NoticeTextTest" time="0.006" />
+  <testcase name="exactBoundIsReadableButOversizedNoticeFailsClosed" classname="com.easysavevideo.app.licenses.NoticeTextTest" time="0.0" />
+</testsuite>

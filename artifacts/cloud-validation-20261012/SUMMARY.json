@@ -1,0 +1,573 @@
+{
+  "base_commit": "20fddc9c33b399ab75f8b8eee0f21e41e6f5b06f",
+  "scope": "Cloud compilation and targeted/adjacent JVM tests; not full suite or device acceptance",
+  "modules": {
+    "app": {
+      "task": "testDebugUnitTest",
+      "suite_count": 44,
+      "tests": 468,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "com.easysavevideo.app.diagnostics.InitializationProbeTest",
+          "tests": "12",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:39.518Z",
+          "time": "0.066"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoveryFilterPresentationPolicyTest",
+          "tests": "26",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:39.593Z",
+          "time": "0.071"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoveryHistoryControlsTest",
+          "tests": "11",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:39.669Z",
+          "time": "0.02"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoveryLatestDeliveryTest",
+          "tests": "6",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:39.693Z",
+          "time": "0.025"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoveryOriginTrackerTest",
+          "tests": "28",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:39.723Z",
+          "time": "0.028"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest",
+          "tests": "30",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:39.756Z",
+          "time": "0.12"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoveryOsPowerPresentationTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:39.878Z",
+          "time": "0.059"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoveryPowerPresentationTest",
+          "tests": "6",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:39.940Z",
+          "time": "0.011"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoveryPowerResourcesTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:39.953Z",
+          "time": "0.174"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoveryPresentationPolicyTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.129Z",
+          "time": "0.007"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoveryQualityPresentationTest",
+          "tests": "7",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.138Z",
+          "time": "0.006"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoverySaveOriginHandleTest",
+          "tests": "9",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.146Z",
+          "time": "0.009"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.DiscoverySourceUiFenceTest",
+          "tests": "4",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.156Z",
+          "time": "0.005"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.ProviderManagementControllerTest",
+          "tests": "18",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.166Z",
+          "time": "0.041"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.ProviderManagementPresentationTest",
+          "tests": "16",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.210Z",
+          "time": "0.015"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.ProviderRepositoryOwnerTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.226Z",
+          "time": "0.006"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.RightsPresentationPolicyTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.234Z",
+          "time": "0.014"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.SearxngConfigurationControllerTest",
+          "tests": "8",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.250Z",
+          "time": "0.03"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.SearxngConfigurationHubTest",
+          "tests": "11",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.282Z",
+          "time": "0.017"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.SearxngConfigurationPolicyTest",
+          "tests": "8",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.300Z",
+          "time": "0.008"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.SearxngSourceGenerationTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.309Z",
+          "time": "0.004"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.VerificationConfigurationTest",
+          "tests": "16",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.315Z",
+          "time": "0.025"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.network.StrictCommonsHttpTest",
+          "tests": "14",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.344Z",
+          "time": "0.028"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.network.StrictSearxngHttpTest",
+          "tests": "14",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.375Z",
+          "time": "0.024"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.network.StrictVerificationHttpTest",
+          "tests": "16",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.403Z",
+          "time": "0.092"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.network.SystemCommonsTransportTest",
+          "tests": "26",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.501Z",
+          "time": "0.122"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.network.SystemSearxngTransportTest",
+          "tests": "31",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.627Z",
+          "time": "0.117"
+        },
+        {
+          "name": "com.easysavevideo.app.discovery.network.SystemVerificationTransportTest",
+          "tests": "37",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.749Z",
+          "time": "0.115"
+        },
+        {
+          "name": "com.easysavevideo.app.editor.EditorInitializationTest",
+          "tests": "4",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.865Z",
+          "time": "0.003"
+        },
+        {
+          "name": "com.easysavevideo.app.editor.storage.EditArtifactFilesTest",
+          "tests": "7",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.871Z",
+          "time": "0.029"
+        },
+        {
+          "name": "com.easysavevideo.app.editor.storage.EditInitializationStagesTest",
+          "tests": "6",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.902Z",
+          "time": "0.004"
+        },
+        {
+          "name": "com.easysavevideo.app.editor.storage.EditRecordCodecTest",
+          "tests": "8",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.909Z",
+          "time": "0.013"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareBatchTest",
+          "tests": "10",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.924Z",
+          "time": "0.009"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareCopyVerifierTest",
+          "tests": "6",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.934Z",
+          "time": "0.011"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareGroupRevocationTest",
+          "tests": "2",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.946Z",
+          "time": "0.002"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareInitializationFilesTest",
+          "tests": "7",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.950Z",
+          "time": "0.008"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareInitializationTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.958Z",
+          "time": "0.001"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.SharePolicyTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.961Z",
+          "time": "0.0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareProxyAdmissionTest",
+          "tests": "2",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.962Z",
+          "time": "0.001"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareProxyReaderTest",
+          "tests": "8",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.967Z",
+          "time": "0.012"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareReadBudgetTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.980Z",
+          "time": "0.008"
+        },
+        {
+          "name": "com.easysavevideo.app.licenses.NoticeSectionsTest",
+          "tests": "11",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:40.989Z",
+          "time": "0.114"
+        },
+        {
+          "name": "com.easysavevideo.app.licenses.NoticeTextTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:41.105Z",
+          "time": "0.006"
+        },
+        {
+          "name": "com.easysavevideo.app.licenses.NoticeViewportContractTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:28:41.112Z",
+          "time": "0.002"
+        }
+      ]
+    },
+    "core-model": {
+      "task": "test",
+      "suite_count": 1,
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "com.easysavevideo.core.model.AppearanceSettingsTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:17:44.123Z",
+          "time": "0.016"
+        }
+      ]
+    },
+    "core-domain": {
+      "task": "test",
+      "suite_count": 6,
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "com.easysavevideo.core.domain.BrowserSessionControllerTest",
+          "tests": "12",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:17:46.626Z",
+          "time": "0.043"
+        },
+        {
+          "name": "com.easysavevideo.core.domain.EntitlementImmutabilityTest",
+          "tests": "12",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:17:46.674Z",
+          "time": "0.013"
+        },
+        {
+          "name": "com.easysavevideo.core.domain.EntitlementsTest",
+          "tests": "8",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:17:46.690Z",
+          "time": "0.004"
+        },
+        {
+          "name": "com.easysavevideo.core.domain.FreeLibraryVaultGateTest",
+          "tests": "2",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:17:46.696Z",
+          "time": "0.007"
+        },
+        {
+          "name": "com.easysavevideo.core.domain.OperationTaskTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:17:46.705Z",
+          "time": "0.007"
+        },
+        {
+          "name": "com.easysavevideo.core.domain.RecoverySettingsTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:17:46.715Z",
+          "time": "0.016"
+        }
+      ]
+    },
+    "discovery": {
+      "task": "test",
+      "suite_count": 2,
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "com.easysavevideo.discovery.DiscoveryPowerCoordinatorTest",
+          "tests": "22",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:26:03.733Z",
+          "time": "0.224"
+        },
+        {
+          "name": "com.easysavevideo.discovery.DiscoveryPowerPolicyTest",
+          "tests": "7",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-10-12T19:26:03.960Z",
+          "time": "0.006"
+        }
+      ]
+    }
+  },
+  "lint": {
+    "debug": {
+      "severity_counts": {
+        "Warning": 60,
+        "Hint": 8
+      },
+      "id_counts": {
+        "OldTargetApi": 1,
+        "AppBundleLocaleChanges": 1,
+        "GradleDependency": 7,
+        "NewerVersionAvailable": 1,
+        "PluralsCandidate": 2,
+        "SetJavaScriptEnabled": 1,
+        "StaticFieldLeak": 1,
+        "AutoboxingStateCreation": 8,
+        "UnusedResources": 32,
+        "UsableSpace": 4,
+        "UseKtx": 10
+      }
+    },
+    "release": {
+      "severity_counts": {
+        "Warning": 60,
+        "Hint": 8
+      },
+      "id_counts": {
+        "OldTargetApi": 1,
+        "AppBundleLocaleChanges": 1,
+        "GradleDependency": 6,
+        "NewerVersionAvailable": 2,
+        "PluralsCandidate": 2,
+        "SetJavaScriptEnabled": 1,
+        "StaticFieldLeak": 1,
+        "AutoboxingStateCreation": 8,
+        "UnusedResources": 32,
+        "UsableSpace": 4,
+        "UseKtx": 10
+      }
+    }
+  },
+  "runtime_admission": "90 exact approved artifacts verified for both debug/release",
+  "android_build": "Debug and release Kotlin compilation passed in r2; unchanged Kotlin sources reused as up-to-date in final resource-only r3",
+  "not_run": [
+    "APK/AAB packaging",
+    "device installation",
+    "emulator tests",
+    "instrumentation tests",
+    "visual/device acceptance"
+  ],
+  "total_tests": 544
+}

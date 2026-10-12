@@ -37,15 +37,19 @@ fun ThirdPartyNotices(listState: LazyListState, onClose: () -> Unit) {
         }, "esv-offline-notices").apply { isDaemon = true; start() }
         onDispose { active = false; worker.interrupt() }
     }
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(visuals.spacingMedium)) {
-        EsvText(stringResource(R.string.notice_title), style = visuals.titleTextStyle)
-        EsvButton(stringResource(R.string.notice_back_settings), onClick = onClose)
-        if (unavailable) EsvText(stringResource(R.string.notice_unavailable), color = visuals.colors.error)
-        else if (sections.isEmpty()) EsvText(stringResource(R.string.notice_loading))
-        // Do not measure an empty list during reload: it can reset the retained scroll position.
-        if (noticeContentVisible(unavailable, sections)) {
-            LazyColumn(Modifier.weight(1f), state = listState, verticalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
-                items(sections.size) { index -> EsvText(sections[index], style = visuals.captionTextStyle) }
+    // Loading/error must not measure the retained content state with a shorter item set.
+    // All controls and text share one finite viewport: large headers cannot starve the body.
+    val transientState = rememberLazyListState()
+    val contentVisible = noticeContentVisible(unavailable, sections)
+    LazyColumn(Modifier.fillMaxSize(), state = if (contentVisible) listState else transientState,
+        verticalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
+        item(key = "notice-title") { EsvText(stringResource(R.string.notice_title), style = visuals.titleTextStyle) }
+        item(key = "notice-back") { EsvButton(stringResource(R.string.notice_back_settings), onClick = onClose) }
+        if (unavailable) item(key = "notice-unavailable") { EsvText(stringResource(R.string.notice_unavailable), color = visuals.colors.error) }
+        else if (!contentVisible) item(key = "notice-loading") { EsvText(stringResource(R.string.notice_loading)) }
+        if (contentVisible) {
+            items(sections.size, key = { index -> "notice-section-$index" }) { index ->
+                EsvText(sections[index], style = visuals.captionTextStyle)
             }
         }
     }

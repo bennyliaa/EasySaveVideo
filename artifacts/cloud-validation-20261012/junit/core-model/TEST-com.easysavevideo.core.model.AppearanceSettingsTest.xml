@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.core.model.AppearanceSettingsTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:17:44.123Z" time="0.016">
+  <testcase name="manualThemeDoesNotFollowSystemChanges" classname="com.easysavevideo.core.model.AppearanceSettingsTest" time="0.003" />
+  <testcase name="oldOrInvalidPreferencesRetainSystemDefaults" classname="com.easysavevideo.core.model.AppearanceSettingsTest" time="0.008" />
+  <testcase name="persistedStableValuesRoundTripWithoutOrdinal" classname="com.easysavevideo.core.model.AppearanceSettingsTest" time="0.0" />
+</testsuite>

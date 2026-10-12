@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.editor.storage.EditInitializationStagesTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:40.902Z" time="0.004">
+  <testcase name="successfulInitializationHasNoFailureAndSyncsRootOnce" classname="com.easysavevideo.app.editor.storage.EditInitializationStagesTest" time="0.001" />
+  <testcase name="fsyncFailureIsNotSwallowedOrReplacedBySuccess" classname="com.easysavevideo.app.editor.storage.EditInitializationStagesTest" time="0.001" />
+  <testcase name="symbolicLinkDirectoryIsRejectedWithoutTouchingItsTarget" classname="com.easysavevideo.app.editor.storage.EditInitializationStagesTest" time="0.0" />
+  <testcase name="mediaBlockerRecordsItsOwnStageAndRetainsContent" classname="com.easysavevideo.app.editor.storage.EditInitializationStagesTest" time="0.001" />
+  <testcase name="occupiedDirectoryDoesNotBecomeReadyOrAlterTheBlockingFile" classname="com.easysavevideo.app.editor.storage.EditInitializationStagesTest" time="0.001" />
+  <testcase name="nonCanonicalAncestorIsRejectedBeforeFsync" classname="com.easysavevideo.app.editor.storage.EditInitializationStagesTest" time="0.0" />
+</testsuite>

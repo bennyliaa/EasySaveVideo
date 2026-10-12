@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" tests="30" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:39.756Z" time="0.12">
+  <testcase name="callbackOrderingCannotAdoptCapabilitiesBeforeAvailable" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.008" />
+  <testcase name="meteredNetworkAndSaverOnlyConserve" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.004" />
+  <testcase name="networkSwitchWaitsForBothNewCapabilitiesAndUnblocked" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="timerRejectionFailsClosedAndCleansSource" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="clockRollbackAndSaturationCannotProduceEternalFreshness" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="blockedUnvalidatedSuspendedOrLostNetworkStops" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.001" />
+  <testcase name="healthySteadyStateRequiresNewObservationAfterExpiry" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="startsEnabledUnknownRatherThanUnconnectedHealthy" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="cancelledTimerCannotExpireNewerObservation" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="allCallbacksBeforeOpenReturnsStayUnknownUntilRegistrationCompletes" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="fullFreshObservationAllowsOnlyExistingPolicy" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.001" />
+  <testcase name="floodKeepsOneTimerAndBoundedSnapshotCountForIdenticalValues" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.096" />
+  <testcase name="unknownOrUncertainOpenFailurePoisonsFurtherRegistration" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.002" />
+  <testcase name="refreshReplacesGenerationAndRejectsOldCallbacks" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="stoppedRefreshCannotRegister" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="expiryOccursAtBoundaryAndRetiresEverySignal" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.001" />
+  <testcase name="knownCleanOpenFailureIsRetriableOnlyExplicitly" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="saverCannotHideCriticalOrUnknownBattery" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="identicalSignalRenewalDoesNotPublishOrRefreshOtherChannels" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="earlyTimerRearmsRemainingTime" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="closeStopsPermanentlyAndIgnoresLateCallbacks" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="malformedBatteryNeverMapsToHealthyOrFakeZero" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.001" />
+  <testcase name="batteryThresholdsUseExactRatioWithoutIntegerOverflow" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="snapshotsAndFailuresHaveNoObservationDiagnostics" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="explicitRevalidationCatchesDelayedTimerBeforeCommands" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="partialNetworkRenewalCannotRefreshBlockedAge" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="lifecycleIdempotenceKeepsExactlyOneRegistration" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+  <testcase name="stopDuringRegistrationInvalidatesBeforeCleanupAndNewActivation" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.002" />
+  <testcase name="cleanupFailureCannotAccumulateSubscriptions" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.001" />
+  <testcase name="refreshDuringOpenClosesOldLeaseBeforeReplacement" classname="com.easysavevideo.app.discovery.DiscoveryOsPowerBridgeTest" time="0.0" />
+</testsuite>

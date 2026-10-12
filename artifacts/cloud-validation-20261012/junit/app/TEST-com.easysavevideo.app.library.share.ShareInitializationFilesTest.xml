@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.share.ShareInitializationFilesTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:40.950Z" time="0.008">
+  <testcase name="unconfirmedCloseRetainsFirstLockDiagnosticAcrossLaterDenials" classname="com.easysavevideo.app.library.share.ShareInitializationFilesTest" time="0.002" />
+  <testcase name="ownerOpenFailureDoesNotAcquireLockOrChangeBlockingDirectory" classname="com.easysavevideo.app.library.share.ShareInitializationFilesTest" time="0.001" />
+  <testcase name="overlappingOwnerLockKeepsExactFailureAndDoesNotReleaseOriginalOwner" classname="com.easysavevideo.app.library.share.ShareInitializationFilesTest" time="0.001" />
+  <testcase name="symbolicLinkDirectoryAndOwnerRemainRejected" classname="com.easysavevideo.app.library.share.ShareInitializationFilesTest" time="0.001" />
+  <testcase name="occupiedDirectoryFailsClosedAndPreservesBlocker" classname="com.easysavevideo.app.library.share.ShareInitializationFilesTest" time="0.001" />
+  <testcase name="nonCanonicalAncestorRemainsRejected" classname="com.easysavevideo.app.library.share.ShareInitializationFilesTest" time="0.001" />
+  <testcase name="successfulDirectoryAndOwnerAreReadyWithoutDiagnostic" classname="com.easysavevideo.app.library.share.ShareInitializationFilesTest" time="0.001" />
+</testsuite>

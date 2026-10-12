@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.easysavevideo.app.BuildConfig
+import com.easysavevideo.app.diagnostics.initializationDiagnosticText
 import com.easysavevideo.app.R
 import com.easysavevideo.library.export.BatchTransferStatus
 import com.easysavevideo.app.library.export.AndroidExportRuntime
@@ -32,6 +34,9 @@ internal fun LibraryExportStatus(exports: AndroidExportRuntime, foreground: Bool
     Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
         if (state.busy) EsvText("正在处理导出 / 分享副本，尚未确认完成。", style = v.captionTextStyle)
         state.notice?.let { EsvText(it, style = v.captionTextStyle) }
+        initializationDiagnosticText(BuildConfig.DEBUG, state.initializationDiagnostic)?.let {
+            EsvText(it, style = v.captionTextStyle, color = v.colors.muted)
+        }
         state.directoryNotice?.let { notice -> EsvText(stringResource(when(notice) {
             DirectoryExportNotice.PICKING -> R.string.directory_picking
             DirectoryExportNotice.CONFIRM -> R.string.directory_confirm_notice

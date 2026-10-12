@@ -1,0 +1,23 @@
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:processTestResources NO-SOURCE
+> Task :core-domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-domain:processResources NO-SOURCE
+> Task :core-domain:processTestResources NO-SOURCE
+> Task :core-model:compileKotlin
+> Task :core-model:compileJava NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar
+> Task :core-model:compileTestKotlin
+> Task :core-model:compileTestJava NO-SOURCE
+> Task :core-model:testClasses UP-TO-DATE
+> Task :core-model:test
+> Task :core-domain:compileKotlin
+> Task :core-domain:compileJava NO-SOURCE
+> Task :core-domain:classes UP-TO-DATE
+> Task :core-domain:jar
+> Task :core-domain:compileTestKotlin
+> Task :core-domain:compileTestJava NO-SOURCE
+> Task :core-domain:testClasses UP-TO-DATE
+> Task :core-domain:test
+BUILD SUCCESSFUL in 20s

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.diagnostics.InitializationProbeTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:39.518Z" time="0.066">
+  <testcase name="editorDirectoryFailureRemainsUnavailableAndNeverConstructsRuntime" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.022" />
+  <testcase name="everyExactStageRecordsAndRethrowsTheOriginalExceptionWithoutText" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.018" />
+  <testcase name="unknownInvalidAndSuppressedErrnoAreNotInvented" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.005" />
+  <testcase name="knownShareResourceFenceIsNotReplacedOrCleared" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.002" />
+  <testcase name="categoriesAreClosedAndDoNotDependOnExceptionMessages" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.001" />
+  <testcase name="presentationIsDebugOnlyAndContainsOnlyClosedFields" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.005" />
+  <testcase name="errnoOnlyRetainsValidNumericErrnoAndNeverPersistsThrowable" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.001" />
+  <testcase name="firstFailureIsNotOverwrittenByCleanupOrOuterConstructor" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.001" />
+  <testcase name="wrappedErrnoIsBoundedWithoutChangingOuterExceptionCategory" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.001" />
+  <testcase name="causeTraversalStopsAtEightAndOnCyclesOrThrowingAccessors" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.002" />
+  <testcase name="successfulStageAddsNoFailureAndPreservesValue" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.001" />
+  <testcase name="shareLockFailureKeepsFirstExactStageThroughFailClosedWrapper" classname="com.easysavevideo.app.diagnostics.InitializationProbeTest" time="0.0" />
+</testsuite>

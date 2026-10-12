@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_power_not_monitored">当前版本未接入 Android 电量、温度或网络状态监测，未测量实际耗电或省电效果。</string>
+    <string name="discovery_power_monitored">已接入 Android 电量、省电模式、温控和默认网络观察；仅在前台发现页监听，未测量实际耗电或省电效果。</string>
+    <string name="discovery_power_stopped">系统监听已停止；未重新取得有效信号前暂停补充。</string>
+    <string name="discovery_power_unavailable">系统监听或到期检查不可用，补充已暂停；可离开发现页后重进。若仍不可用，请重启应用。</string>
+    <string name="discovery_power_fresh">已取得近期系统观察。五分钟未更新的单项观察会到期；刷新只更新信号，不会自动补充。</string>
+    <string name="discovery_power_unknown">部分系统观察未知或已到期；这不代表电量为零或设备故障。可刷新系统信号，待有效后再主动查找或翻页。</string>
+    <string name="discovery_power_pending">策略更新尚未完成，发现请求已保守暂停。</string>
+    <string name="discovery_power_not_connected">系统信号未接入；仅按所选静态模式及前台、页面可见性和实际保存/录制状态限制补充。</string>
+    <string name="discovery_power_unrestricted">%1$s允许既有预算，不会扩大静态模式或其他上限。</string>
+    <string name="discovery_power_conserving">%1$s收紧补充预算；这不是已经节省电量的测量结果。</string>
+    <string name="discovery_power_paused">%1$s未知或需暂停，停止来源请求；已有本地结果仍可查看。</string>
+    <string name="discovery_power_budget">有效预算：并发最多 %1$d，每轮最多 %2$d 次尝试，低/高水位 %3$d/%4$d。</string>
+    <string name="discovery_power_recovery">信号变化只会收紧或停止当前需求；恢复不会自动开启新一轮。实际保存或录制始终优先。</string>
+    <string name="discovery_power_simulated">模拟信号</string>
+    <string name="discovery_power_system">系统观察</string>
+    <string name="discovery_power_injected">注入信号</string>
+</resources>

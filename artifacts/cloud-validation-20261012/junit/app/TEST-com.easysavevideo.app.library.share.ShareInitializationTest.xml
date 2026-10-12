@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.share.ShareInitializationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:40.958Z" time="0.001">
+  <testcase name="successReturnsOnlyTheOwnerAndDoesNotLaunchAChooser" classname="com.easysavevideo.app.library.share.ShareInitializationTest" time="0.001" />
+  <testcase name="knownReleaseAndCancellationFencesArePreserved" classname="com.easysavevideo.app.library.share.ShareInitializationTest" time="0.0" />
+  <testcase name="unclassifiedConstructorExceptionBecomesBoundedInitializationFailure" classname="com.easysavevideo.app.library.share.ShareInitializationTest" time="0.0" />
+</testsuite>

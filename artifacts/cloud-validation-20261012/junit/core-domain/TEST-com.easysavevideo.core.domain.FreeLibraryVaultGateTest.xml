@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.core.domain.FreeLibraryVaultGateTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:17:46.696Z" time="0.007">
+  <testcase name="emptyOfflineAndBrokenStoreDoNotNeedAccountOrPayment" classname="com.easysavevideo.core.domain.FreeLibraryVaultGateTest" time="0.0" />
+  <testcase name="everyStoreAndGrantStateLeavesLibraryAndVaultFree" classname="com.easysavevideo.core.domain.FreeLibraryVaultGateTest" time="0.007" />
+</testsuite>

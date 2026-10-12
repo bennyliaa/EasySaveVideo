@@ -37,7 +37,7 @@ class InitializationProbeTest {
             p.record(InitializationStage.EDIT_ROOT_FSYNC,IOException("private"))
             assertEquals(number.takeIf{it in 1..4095},p.failure?.errno)
         }
-        val p=InitializationProbe({InitializationErrorKind.IO},{13});p.record(InitializationStage.SHARE_OWNER_OPEN,IOException());assertNull(p.failure?.errno)
+        val p=InitializationProbe({InitializationErrorKind.IO},{13});p.record(InitializationStage.SHARE_OWNER_OPEN,IOException());assertEquals(13,p.failure?.errno)
     }
     @Test fun editorDirectoryFailureRemainsUnavailableAndNeverConstructsRuntime() {
         val p=InitializationProbe();var runtime=false
@@ -53,5 +53,47 @@ class InitializationProbeTest {
     @Test fun knownShareResourceFenceIsNotReplacedOrCleared() {
         val p=InitializationProbe();val original=ShareFailure(ShareError.RELEASE_UNCONFIRMED)
         try{initializeShareOwner<Any>(p){throw original};fail()}catch(failure:ShareFailure){assertSame(original,failure)}
+    }
+
+    @Test fun wrappedErrnoIsBoundedWithoutChangingOuterExceptionCategory() {
+        val root = IOException("PRIVATE_INNER")
+        val outer = IOException("PRIVATE_OUTER", root)
+        val p = InitializationProbe(errno = { initializationErrno(it) { value -> if (value === root) 13 else null } })
+        p.record(InitializationStage.SHARE_OWNER_OPEN, outer)
+        assertEquals(InitializationErrorKind.IO, p.failure?.kind)
+        assertEquals(13, p.failure?.errno)
+        assertFalse(p.failure.toString().contains("PRIVATE"))
+    }
+    @Test fun unknownInvalidAndSuppressedErrnoAreNotInvented() {
+        val root = IOException("PRIVATE")
+        root.addSuppressed(IOException("PRIVATE_SUPPRESSED"))
+        assertNull(initializationErrno(root))
+        assertNull(initializationErrno(root) { 4096 })
+        assertNull(initializationErrno(root) { -1 })
+        assertNull(initializationErrno(root) { if (it !== root) 13 else null })
+    }
+    @Test fun causeTraversalStopsAtEightAndOnCyclesOrThrowingAccessors() {
+        val causes = List(10) { IOException("PRIVATE") }
+        causes.zipWithNext().forEach { (outer, inner) -> outer.initCause(inner) }
+        var visits = 0
+        assertNull(initializationErrno(causes.first()) { visits++; if (it === causes[8]) 13 else null })
+        assertEquals(8, visits)
+        assertEquals(13, initializationErrno(causes.first()) { if (it === causes[7]) 13 else null })
+        val a = IOException(); val b = IOException(); a.initCause(b); b.initCause(a)
+        visits = 0
+        assertNull(initializationErrno(a) { visits++; null }); assertEquals(2, visits)
+        val hostile = object : Exception() { override val cause: Throwable get() = throw IllegalStateException("PRIVATE") }
+        assertNull(initializationErrno(hostile))
+    }
+    @Test fun presentationIsDebugOnlyAndContainsOnlyClosedFields() {
+        for (stage in InitializationStage.entries) for (kind in InitializationErrorKind.entries) {
+            val diagnostic = InitializationDiagnostic(stage, kind, 13)
+            assertEquals("INIT stage=${stage.name} kind=${kind.name} errno=13", initializationDiagnosticText(true, diagnostic))
+            assertNull(initializationDiagnosticText(false, diagnostic))
+        }
+        assertNull(initializationDiagnosticText(true, null))
+        for (number in listOf(null, -1, 0, 4096)) {
+            assertTrue(initializationDiagnosticText(true, InitializationDiagnostic(InitializationStage.EDIT_ROOT_FSYNC, InitializationErrorKind.IO, number))!!.endsWith("errno=UNKNOWN"))
+        }
     }
 }

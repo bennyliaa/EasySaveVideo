@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.discovery.DiscoveryLatestDeliveryTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:39.693Z" time="0.025">
+  <testcase name="rejectedEnqueueStopsWithoutRetryStorm" classname="com.easysavevideo.app.discovery.DiscoveryLatestDeliveryTest" time="0.003" />
+  <testcase name="floodCoalescesToSingleLatestValueAndOneTask" classname="com.easysavevideo.app.discovery.DiscoveryLatestDeliveryTest" time="0.017" />
+  <testcase name="consumerFailureReleasesScheduledFlagAndRetainsNewerValue" classname="com.easysavevideo.app.discovery.DiscoveryLatestDeliveryTest" time="0.001" />
+  <testcase name="closeDropsQueuedAndFutureDelivery" classname="com.easysavevideo.app.discovery.DiscoveryLatestDeliveryTest" time="0.001" />
+  <testcase name="reentrantOffersYieldWithOnlyLatestPending" classname="com.easysavevideo.app.discovery.DiscoveryLatestDeliveryTest" time="0.002" />
+  <testcase name="throwingEnqueueAlsoFailsClosed" classname="com.easysavevideo.app.discovery.DiscoveryLatestDeliveryTest" time="0.001" />
+</testsuite>

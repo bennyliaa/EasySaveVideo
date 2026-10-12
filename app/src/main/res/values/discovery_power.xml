@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_power_not_monitored">This build does not monitor Android battery, temperature or network status. Actual energy use and savings have not been measured.</string>
+    <string name="discovery_power_monitored">Android battery, battery saver, thermal status and the default network are observed only while Discover is visible in the foreground. Actual energy use and savings have not been measured.</string>
+    <string name="discovery_power_stopped">System observation has stopped. Replenishment is paused until valid signals are obtained again.</string>
+    <string name="discovery_power_unavailable">System observation or expiry checks are unavailable, so replenishment is paused. Leave Discover and return; restart the app if it remains unavailable.</string>
+    <string name="discovery_power_fresh">Recent system observations are available. Each observation expires after five minutes without an update. Refresh updates signals only; it does not automatically replenish results.</string>
+    <string name="discovery_power_unknown">Some system observations are unknown or expired. This does not mean zero battery or device failure. Refresh system signals, then explicitly discover or change pages once they are valid.</string>
+    <string name="discovery_power_pending">The policy update is incomplete. Discovery requests are paused conservatively.</string>
+    <string name="discovery_power_not_connected">System signals are not connected. Replenishment is limited by the selected static mode, foreground and page visibility, and actual saving or recording activity.</string>
+    <string name="discovery_power_unrestricted">%1$s allow the existing budget without raising the static mode or other limits.</string>
+    <string name="discovery_power_conserving">%1$s reduce the replenishment budget. This is not a measurement of energy saved.</string>
+    <string name="discovery_power_paused">%1$s are unknown or require a pause. Source requests are stopped; existing local results remain available.</string>
+    <string name="discovery_power_budget">Effective budget: concurrent request limit: %1$d; attempts per round: %2$d; low/high watermarks: %3$d/%4$d.</string>
+    <string name="discovery_power_recovery">Signal changes only reduce or stop current demand. Recovery does not automatically start another round. Actual saving or recording always takes priority.</string>
+    <string name="discovery_power_simulated">Simulated signals</string>
+    <string name="discovery_power_system">System observations</string>
+    <string name="discovery_power_injected">Injected signals</string>
+</resources>

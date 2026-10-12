@@ -2,6 +2,9 @@ package com.easysavevideo.app.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
+import com.easysavevideo.app.discovery.DiscoveryPowerText
 import com.easysavevideo.app.R
 import com.easysavevideo.app.discovery.AndroidDiscoveryController
 import com.easysavevideo.app.discovery.BuildDiscoveryPower
@@ -15,9 +18,12 @@ import com.easysavevideo.app.theme.LocalEsvVisuals
 @Composable
 fun DiscoveryPowerControls(state: DiscoveryUiState, controller: AndroidDiscoveryController) {
     val v = LocalEsvVisuals.current
+    val configuration = LocalConfiguration.current
+    val resources = LocalContext.current.createConfigurationContext(configuration).resources
+    val text = DiscoveryPowerText { key, args -> resources.getString(key.resource, *args) }
     EsvText(stringResource(R.string.finite_power_heading), style = v.captionTextStyle)
     DiscoveryPowerPresentationPolicy.lines(state.status?.powerPolicy, state.status?.powerPolicyUpdatePending == true,
-        state.powerScenarioId != null, state.osPower).forEach { EsvText(it, style = v.captionTextStyle) }
+        state.powerScenarioId != null, state.osPower, text).forEach { EsvText(it, style = v.captionTextStyle) }
     EsvButton(stringResource(R.string.finite_power_refresh), onClick = controller::refreshSystemSignals,
         enabled = state.ready && !state.storageUnavailable && state.osPower.state == com.easysavevideo.app.discovery.OsObservationState.OBSERVING)
     if (BuildDiscoveryPower.scenarios.isNotEmpty()) {

@@ -477,7 +477,7 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
             main.post { if (!closed) state = state.copy(notice = if (removed) "已撤销后续分享读取并清理临时副本。接收方已取得的数据无法收回。" else "已请求撤销后续读取；临时副本在实际读写退出后清理，仍有清理待确认。接收方已取得的数据无法收回。") }
         }
     }
-    fun clearNotice() { requireMain(); state = state.copy(notice = null) }
+    fun clearNotice() { requireMain(); state = state.copy(notice = null, initializationDiagnostic = null) }
     override fun close() {
         requireMain(); if (closed) return
         if (state.busy) cancel()

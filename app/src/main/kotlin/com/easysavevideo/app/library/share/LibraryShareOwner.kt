@@ -69,17 +69,10 @@ internal class LibraryShareOwner private constructor(private val context: Contex
     private var cleanupBlocked = false
     private var proxyIssuances = 0
     init {
-        initialization.at(InitializationStage.SHARE_DIRECTORY_CHECK) { require(!Files.isSymbolicLink(directory.toPath())) }
-        initialization.at(InitializationStage.SHARE_DIRECTORY_CREATE) { require(directory.isDirectory || directory.mkdirs()) }
-        initialization.at(InitializationStage.SHARE_DIRECTORY_CANONICAL) { require(directory.canonicalFile == directory) }
-        val lease = File(directory, ".owner")
-        initialization.at(InitializationStage.SHARE_OWNER_CHECK) { require(!Files.isSymbolicLink(lease.toPath())) }
-        ownerFile = initialization.at(InitializationStage.SHARE_OWNER_OPEN) { RandomAccessFile(lease, "rw") }
-        ownerLock = try { initialization.at(InitializationStage.SHARE_OWNER_LOCK) { ownerFile.channel.tryLock() ?: throw IOException("SHARE_BUSY") } }
-        catch (_: Exception) {
-            try { ownerFile.close() } catch (_: Exception) { failedOwner = ownerFile }
-            throw IOException("SHARE_BUSY")
-        }
+        initializeShareDirectory(directory, initialization)
+        val lease = acquireShareOwner(directory, initialization) { failedOwner = UnconfirmedShareOwner(it, initialization.failure) }
+        ownerFile = lease.file
+        ownerLock = lease.lock
         // Process death closes app-owned disk FDs. Recipients hold virtual proxy descriptors,
         // not snapshot disk FDs; none is adopted as a new capability by this process.
         recoverPreviousProcess()
@@ -360,9 +353,9 @@ internal class LibraryShareOwner private constructor(private val context: Contex
     }
     companion object {
         @Volatile private var singleton: LibraryShareOwner? = null
-        @Volatile private var failedOwner: Any? = null
+        @Volatile private var failedOwner: UnconfirmedShareOwner? = null
         fun get(context: Context): LibraryShareOwner = singleton ?: synchronized(this) {
-            if (failedOwner != null) throw ShareFailure(ShareError.RELEASE_UNCONFIRMED)
+            failedOwner?.let { throw it.failure() }
             singleton ?: InitializationProbe().let { probe -> initializeShareOwner(probe) { LibraryShareOwner(context.applicationContext,probe) } }.also { singleton = it }
         }
     }

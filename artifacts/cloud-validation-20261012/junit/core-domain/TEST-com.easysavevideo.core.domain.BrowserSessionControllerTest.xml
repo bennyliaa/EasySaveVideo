@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.core.domain.BrowserSessionControllerTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:17:46.626Z" time="0.043">
+  <testcase name="redirectsAndHistoryNavigationStayInsideCurrentEpoch" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.014" />
+  <testcase name="oldSessionIdsCannotBeReused" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.001" />
+  <testcase name="failedPageCannotBecomeReadyFromLaterFinish" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.002" />
+  <testcase name="restoredCallbackCannotCrossSessionBoundary" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.001" />
+  <testcase name="cancellationCannotBeOverwrittenByLateSuccessOrFailure" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.0" />
+  <testcase name="closeRemovesCallbacksAndChoosesStableRemainingTab" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.002" />
+  <testcase name="newerNavigationRejectsOldCallbacks" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.0" />
+  <testcase name="deadlineStopsLogicalRequestAndReturnsContextForRealStop" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.001" />
+  <testcase name="rendererFailureAffectsOnlyKnownGroupAndFreshRequestCanRecover" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.012" />
+  <testcase name="externallyCancelledTokenExpiresWithoutTimeoutError" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.0" />
+  <testcase name="incognitoNeverEntersNormalCheckpointAndRestoreIsIdle" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.001" />
+  <testcase name="onlyWebAddressesAreAcceptedAndToStringIsRedacted" classname="com.easysavevideo.core.domain.BrowserSessionControllerTest" time="0.003" />
+</testsuite>
