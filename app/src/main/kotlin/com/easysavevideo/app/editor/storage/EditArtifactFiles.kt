@@ -1,6 +1,7 @@
 package com.easysavevideo.app.editor.storage
 
 import java.io.File
+import com.easysavevideo.app.diagnostics.*
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
@@ -14,10 +15,11 @@ internal class EditArtifactFiles(
     root: File,
     private val syncDirectory: (File) -> Unit,
     private val promoteNoReplace: (File, File) -> Unit,
+    private val initialization: InitializationProbe = InitializationProbe(),
 ) {
-    private val staging = directory(File(root, "edit-staging"))
-    private val media = directory(File(root, "media"))
-    init { syncDirectory(root) }
+    private val staging = directory(File(root, "edit-staging"), InitializationStage.EDIT_STAGING_CHECK, InitializationStage.EDIT_STAGING_CREATE, InitializationStage.EDIT_STAGING_CANONICAL)
+    private val media = directory(File(root, "media"), InitializationStage.EDIT_MEDIA_CHECK, InitializationStage.EDIT_MEDIA_CREATE, InitializationStage.EDIT_MEDIA_CANONICAL)
+    init { initialization.at(InitializationStage.EDIT_ROOT_FSYNC) { syncDirectory(root) } }
     fun assertStagingAbsent(artifactId: String) {
         if (Files.exists(path(staging, artifactId, ".part").toPath(), LinkOption.NOFOLLOW_LINKS)) throw IOException("EDIT_STAGING_EXISTS")
     }
@@ -87,10 +89,13 @@ internal class EditArtifactFiles(
     private fun regular(file: File) {
         if (Files.isSymbolicLink(file.toPath()) || !file.isFile) throw IOException("EDIT_FILE_UNAVAILABLE")
     }
-    private fun directory(file: File): File {
-        if (Files.isSymbolicLink(file.toPath()) || (!file.isDirectory && !file.mkdirs())) throw IOException("EDIT_DIRECTORY_UNAVAILABLE")
-        val canonical = file.canonicalFile
-        if (canonical != file.absoluteFile) throw IOException("EDIT_DIRECTORY_UNAVAILABLE")
-        return canonical
+    private fun directory(file: File,check:InitializationStage,create:InitializationStage,canonicalCheck:InitializationStage):File {
+        initialization.at(check) { if(Files.isSymbolicLink(file.toPath()))throw IOException("EDIT_DIRECTORY_UNAVAILABLE") }
+        initialization.at(create) { if(!file.isDirectory && !file.mkdirs())throw IOException("EDIT_DIRECTORY_UNAVAILABLE") }
+        return initialization.at(canonicalCheck) {
+            val canonical=file.canonicalFile
+            if(canonical!=file.absoluteFile)throw IOException("EDIT_DIRECTORY_UNAVAILABLE")
+            canonical
+        }
     }
 }

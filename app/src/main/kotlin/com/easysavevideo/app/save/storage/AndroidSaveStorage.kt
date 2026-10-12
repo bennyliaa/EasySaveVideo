@@ -1,5 +1,7 @@
 package com.easysavevideo.app.save.storage
 
+import com.easysavevideo.app.diagnostics.InitializationProbe
+
 import android.content.ContentValues
 import android.content.Context
 import android.database.DatabaseErrorHandler
@@ -75,10 +77,11 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         is RecordedSegmentReadRef -> recordedSegments.retainSource(ref)
     }
     private var editorStorage: AndroidEditStorage? = null
-    internal val edits: AndroidEditStorage get() = synchronized(fileLock) {
+    internal val edits: AndroidEditStorage get() = initializeEditStorage(InitializationProbe())
+    internal fun initializeEditStorage(initialization:InitializationProbe):AndroidEditStorage = synchronized(fileLock) {
         editorStorage ?: AndroidEditStorage({ helper.writableDatabase }, fileLock, directory, { closed }, libraryStorage,
             ::openEditSource, ::retainEditSource, AndroidFileOps::syncDirectory, AndroidFileOps::promoteNoReplace,
-            destinations::bindVerifiedPublication)
+            destinations::bindVerifiedPublication, initialization)
             .also { editorStorage = it }
     }
     private val openWriters = mutableSetOf<String>()

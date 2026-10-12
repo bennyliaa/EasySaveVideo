@@ -1,5 +1,7 @@
 package com.easysavevideo.app.library.export
 
+import com.easysavevideo.app.diagnostics.InitializationDiagnostic
+
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -56,6 +58,7 @@ data class ExportViewState(
     val batchCleanupPending: Boolean = false,
     val directoryNotice:DirectoryExportNotice? = null,
     val directoryConfirmation:Boolean = false,
+    val initializationDiagnostic:InitializationDiagnostic? = null,
 )
 
 /** One app-scoped runtime; never reconstruct picker/grant authority from Activity saved state. */
@@ -489,7 +492,7 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
         activeShareBatch=null;batchActive=false
         operationId=null // A new directory picker has no current file operation to cancel yet.
         directoryBatchId=null
-        state = state.copy(busy = true, canCancel = true, notice = null,batchResults=emptyList(),batchNames=emptyList(),batchCleanupPending=false,directoryNotice=null,directoryConfirmation=false)
+        state = state.copy(busy = true, canCancel = true, notice = null,initializationDiagnostic=null,batchResults=emptyList(),batchNames=emptyList(),batchCleanupPending=false,directoryNotice=null,directoryConfirmation=false)
         return true
     }
     private fun request(ref: MediaReadRef, kind: ExportKind) = ExportRequest(UUID.randomUUID().toString(), ref, ExportDestination(kind, UUID.randomUUID().toString()))
@@ -542,7 +545,7 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
                 main.post { if (!closed) {
                     directorySelection?.let{directoryGate.cancel(it.ticket)};directorySelection=null;directoryBatchId=null
                     pendingSaf = null; pendingPickerResult = false
-                    state = state.copy(busy = false, canCancel = false,directoryConfirmation=false, recoverable = counts?.unfinished ?: maxOf(1L, state.recoverable), notice = notice)
+                    state = state.copy(busy = false, canCancel = false,directoryConfirmation=false, initializationDiagnostic = (failure as? ShareFailure)?.diagnostic, recoverable = counts?.unfinished ?: maxOf(1L, state.recoverable), notice = notice)
                 } }
             }
         } } catch (_: java.util.concurrent.RejectedExecutionException) {

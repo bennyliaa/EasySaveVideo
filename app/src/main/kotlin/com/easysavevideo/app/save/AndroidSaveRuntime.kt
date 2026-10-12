@@ -1,6 +1,7 @@
 package com.easysavevideo.app.save
 
 import android.Manifest
+import com.easysavevideo.app.diagnostics.*
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -108,6 +109,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
     var libraryExports by mutableStateOf<AndroidExportRuntime?>(null); private set
     var destinations by mutableStateOf<AndroidOrdinaryDestinationRuntime?>(null); private set
     var editor by mutableStateOf<AndroidEditRuntime?>(null); private set
+    var editorInitializationDiagnostic by mutableStateOf<InitializationDiagnostic?>(null); private set
     var editorInitializationStatus by mutableStateOf(EditorInitializationStatus.INITIALIZING); private set
     var segmentRecording by activityStateOf<AndroidSegmentRecordingRuntime?>(null); private set
     var scanning by mutableStateOf(false); private set
@@ -170,12 +172,13 @@ class AndroidSaveRuntime private constructor(context: Context) {
                         if (currentRecordingId == id) { currentRecordingId = null; pendingRecording = null; setExecuting(false) }
                         command { publishRecords() }
                     }, published = { command { publishRecords() } }, activityChanged = ::publishMediaTaskActivity) } catch (_: Exception) { null }
-                val editInitialization = initializeEditor(storageProbe = { storage.edits; Unit }) {
+                val editorProbe = InitializationProbe()
+                val editInitialization = initializeEditor(editorProbe, storageProbe = { storage.initializeEditStorage(editorProbe); Unit }) {
                     AndroidEditRuntime(application, storage, destinationRuntime) { ready && !executing.get() &&
                         pendingRecording == null && currentRecordingId == null && !resourcesDraining() }
                 }
                 initializationActivity.enqueue({ install -> main.post(install) }) {
-                    editor = editInitialization.value; editorInitializationStatus = editInitialization.status; segmentRecording = segmentRuntime; segmentRuntime?.setForeground(foreground)
+                    editor = editInitialization.value; editorInitializationStatus = editInitialization.status; editorInitializationDiagnostic = editInitialization.diagnostic; segmentRecording = segmentRuntime; segmentRuntime?.setForeground(foreground)
                     records = initial; activeTaskCount = initialActiveCount; mediaDispositions = dispositions
                     libraryExports = exports; destinations = destinationRuntime; ready = true
                 }

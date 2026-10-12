@@ -1,5 +1,7 @@
 package com.easysavevideo.app.editor.storage
 
+import com.easysavevideo.app.diagnostics.InitializationProbe
+
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import com.easysavevideo.app.editor.EditPublicationCancellation
@@ -30,8 +32,9 @@ internal class AndroidEditStorage(
     syncDirectory: (File) -> Unit,
     promoteNoReplace: (File, File) -> Unit,
     private val bindDestinationPublication: (SQLiteDatabase, String, MediaReadRef) -> Unit,
+    initialization: InitializationProbe = InitializationProbe(),
 ) {
-    private val files = EditArtifactFiles(root, syncDirectory, promoteNoReplace)
+    private val files = EditArtifactFiles(root, syncDirectory, promoteNoReplace, initialization)
     private class Active(val sourceLeases: List<AutoCloseable>) {
         var writers = 0; var nativeWriters = 0; var readers = 0; var unconfirmed = false
         val canFinalize: Boolean get() = writers == 0 && nativeWriters == 0 && readers == 0 && !unconfirmed

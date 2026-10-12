@@ -1,6 +1,7 @@
 package com.easysavevideo.app.library.share
 
 import android.content.ClipData
+import com.easysavevideo.app.diagnostics.*
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -36,7 +37,7 @@ import java.nio.ByteBuffer
  * opens/reads. Cleanup waits for onRelease plus actual private input-FD closure; a timeout never
  * proves release. Recipients may retain already delivered bytes independently and indefinitely.
  */
-internal class LibraryShareOwner private constructor(private val context: Context) {
+internal class LibraryShareOwner private constructor(private val context: Context, private val initialization:InitializationProbe) {
     private class Copy(val operationId: String, val token: String, val bytes: Long, val expires: Long) {
         var ready = false
         var revoked = false
@@ -58,22 +59,23 @@ internal class LibraryShareOwner private constructor(private val context: Contex
             },
             allowed = { !stop && !releaseAttempted && SystemClock.elapsedRealtime() < copy.expires })
     }
-    private val directory = File(context.noBackupFilesDir, "library_share_v1").absoluteFile
+    private val directory = initialization.at(InitializationStage.SHARE_DIRECTORY_RESOLVE) { File(context.noBackupFilesDir, "library_share_v1").absoluteFile }
     private val authority = context.packageName + ".library.share"
     private val lock = Any()
     private val copies = linkedMapOf<String, Copy>()
-    private val storageManager = requireNotNull(context.getSystemService(StorageManager::class.java))
+    private val storageManager = initialization.at(InitializationStage.SHARE_SERVICE) { requireNotNull(context.getSystemService(StorageManager::class.java)) }
     private val ownerFile: RandomAccessFile
     private val ownerLock: java.nio.channels.FileLock
     private var cleanupBlocked = false
     private var proxyIssuances = 0
     init {
-        require(!Files.isSymbolicLink(directory.toPath()) && (directory.isDirectory || directory.mkdirs()))
-        require(directory.canonicalFile == directory)
+        initialization.at(InitializationStage.SHARE_DIRECTORY_CHECK) { require(!Files.isSymbolicLink(directory.toPath())) }
+        initialization.at(InitializationStage.SHARE_DIRECTORY_CREATE) { require(directory.isDirectory || directory.mkdirs()) }
+        initialization.at(InitializationStage.SHARE_DIRECTORY_CANONICAL) { require(directory.canonicalFile == directory) }
         val lease = File(directory, ".owner")
-        require(!Files.isSymbolicLink(lease.toPath()))
-        ownerFile = RandomAccessFile(lease, "rw")
-        ownerLock = try { ownerFile.channel.tryLock() ?: throw IOException("SHARE_BUSY") }
+        initialization.at(InitializationStage.SHARE_OWNER_CHECK) { require(!Files.isSymbolicLink(lease.toPath())) }
+        ownerFile = initialization.at(InitializationStage.SHARE_OWNER_OPEN) { RandomAccessFile(lease, "rw") }
+        ownerLock = try { initialization.at(InitializationStage.SHARE_OWNER_LOCK) { ownerFile.channel.tryLock() ?: throw IOException("SHARE_BUSY") } }
         catch (_: Exception) {
             try { ownerFile.close() } catch (_: Exception) { failedOwner = ownerFile }
             throw IOException("SHARE_BUSY")
@@ -361,7 +363,7 @@ internal class LibraryShareOwner private constructor(private val context: Contex
         @Volatile private var failedOwner: Any? = null
         fun get(context: Context): LibraryShareOwner = singleton ?: synchronized(this) {
             if (failedOwner != null) throw ShareFailure(ShareError.RELEASE_UNCONFIRMED)
-            singleton ?: initializeShareOwner { LibraryShareOwner(context.applicationContext) }.also { singleton = it }
+            singleton ?: InitializationProbe().let { probe -> initializeShareOwner(probe) { LibraryShareOwner(context.applicationContext,probe) } }.also { singleton = it }
         }
     }
 }
