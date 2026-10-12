@@ -3,6 +3,7 @@ package com.easysavevideo.app.library
 import com.easysavevideo.library.*
 import org.junit.Assert.*
 import org.junit.Test
+import java.util.Locale
 
 class LibraryPresentationTest {
     @Test fun boundedTextPreservesWholeSupplementaryCharactersAndUtf8Budget() {
@@ -24,16 +25,19 @@ class LibraryPresentationTest {
     }
 
     @Test fun metadataLabelsDoNotInventMissingDurationOrResolution() {
-        assertEquals("时长未知", libraryDuration(null))
-        assertEquals("00:00:00", libraryDuration(0))
-        assertEquals("01:02:03", libraryDuration(3_723_000))
+        assertEquals("时长未知", libraryDuration(null,"时长未知"))
+        assertEquals("Duration unknown",libraryDuration(null,"Duration unknown"))
+        assertEquals("00:00:00", libraryDuration(0,"Duration unknown"))
+        assertEquals("01:02:03", libraryDuration(3_723_000,"Duration unknown"))
         assertEquals("0 B", libraryBytes(0))
         assertEquals("1.0 KiB", libraryBytes(1_024))
         assertEquals("2.00 GiB", libraryBytes(2L * 1_024 * 1_024 * 1_024))
         val imported = MediaItem("one", 1, 1, null, "One", 0, MediaDateKind.IMPORTED, 0, null, null, null)
-        assertEquals("分辨率未知", libraryResolution(imported))
-        assertTrue(libraryDate(imported).startsWith("导入时间："))
-        assertTrue(libraryDate(imported.copy(dateKind = MediaDateKind.SAVED)).startsWith("保存时间："))
+        assertEquals("分辨率未知", libraryResolution(imported,"分辨率未知"))
+        assertEquals("Resolution unknown",libraryResolution(imported,"Resolution unknown"))
+        assertTrue(libraryDate(imported,Locale.ENGLISH).contains("Jan"))
+        assertFalse(libraryDate(imported,Locale.SIMPLIFIED_CHINESE).contains("Jan"))
+        assertEquals(libraryDate(imported,Locale.ENGLISH),libraryDate(imported.copy(dateKind=MediaDateKind.SAVED),Locale.ENGLISH))
     }
 
     @Test fun allDomainErrorsHaveUserFacingCopyWithoutExceptionDetails() {

@@ -609,3 +609,25 @@ original fixtures. Missing fixture/receiver/safe evidence paths produce NOT_RUN 
 not license private-data substitutions. Production navigation/URI/MediaStore/TTL/native
 cleanup/data preservation remain for separately scoped OPPO execution; ANR UNKNOWN.
 Plans: BATCH_FILES_DECISION_NOTE_20261012.md and OPPO_CODE6_PRESERVED_DATA_ACCEPTANCE_20261012.md.
+
+
+## Finite internationalization checkpoint (2026-10-12)
+
+Compared ORIGINAL_SCOPE_GAPS_C18CB37 against current1501023.18 paired CN/EN keys now
+cover Library unknown duration/resolution, saved/imported date prefixes, sort/selected
+labels and Discovery system-signal controls/debug scenario captions. Display dates use
+the app configuration locale, not unrelated default JVM locale. Numeric formats and
+all underlying policies/signals/scenario choices are unchanged. Debug remains absent
+from Release; unknown scenario IDs still rejected.27 actually executed tests PASS,
+dual Kotlin compile/Debug lint PASS; exact outcomes in artifacts/ui/finite-i18n-20261012.
+Existing Settings appearance/language/sources/license labels are already paired; full
+category→detail wide layout remains a gap, not silently implemented. Detailed power
+policy lines, Editor dynamic scope and other runtime notices still need localization.
+No new feature/dependency/payment/settings strategy, device test, TalkBack/200-percent
+acceptance, version bump or APK build. Fixed code6 signing/input unchanged.
+
+User has now chosen one target folder for batch Files. This supersedes the earlier
+minimum per-item recommendation; prior decision note is historical. Implement explicit
+one-tree selection and immutable per-batch export grant/source admission separately,
+without mutating default destinations or spoofing pre-creation routes. OPPO remains
+exclusively with the reviewer; simulators remain closed.

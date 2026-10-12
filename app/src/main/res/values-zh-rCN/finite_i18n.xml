@@ -1,0 +1,20 @@
+<resources>
+    <string name="finite_duration_unknown">时长未知</string>
+    <string name="finite_resolution_unknown">分辨率未知</string>
+    <string name="finite_saved_at">保存时间：%1$s</string>
+    <string name="finite_imported_at">导入时间：%1$s</string>
+    <string name="finite_sort_name">名称</string>
+    <string name="finite_sort_date">日期</string>
+    <string name="finite_sort_duration">时长</string>
+    <string name="finite_sort_size">大小</string>
+    <string name="finite_selected">已选：%1$s</string>
+    <string name="finite_power_heading">补充预算与系统信号</string>
+    <string name="finite_power_refresh">刷新系统信号</string>
+    <string name="finite_power_debug">Debug 注入测试：以下选择不是设备读数，不会保存到下次启动。改变后需主动查找、翻页或补充。</string>
+    <string name="finite_power_disconnected">关闭模拟：使用 Android 系统信号</string>
+    <string name="finite_power_normal">模拟：正常电量、温度与非计费网络</string>
+    <string name="finite_power_conserving">模拟：低电量、温热与计费网络</string>
+    <string name="finite_power_unknown">模拟：已启用但信号未知</string>
+    <string name="finite_power_paused">模拟：临界电量、过热与离线</string>
+    <string name="finite_power_unavailable">调试场景不可用</string>
+</resources>

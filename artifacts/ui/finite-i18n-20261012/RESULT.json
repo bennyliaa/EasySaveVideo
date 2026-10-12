@@ -1,0 +1,59 @@
+{
+  "source_parent": "15010236d3df30292a3ca452cd6a182b4d97b07e",
+  "paired_resource_keys": 18,
+  "total": 27,
+  "tests": [
+    {
+      "name": "com.easysavevideo.app.discovery.DiscoveryPowerPresentationTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T09:05:37.071Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryMultiSelectionTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T09:05:37.113Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryPresentationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T09:05:37.224Z"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.FiniteI18nTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T09:05:37.244Z"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.shell.EsvDestinationTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T09:05:37.265Z"
+    }
+  ],
+  "lint_debug": {
+    "Warning": 59,
+    "Hint": 8
+  },
+  "scope": "FINITE_STATIC_PRESENTATION_ONLY",
+  "business_power_signals_prices_payments_settings_policy": "UNCHANGED",
+  "settings_check": "EXISTING_APPEARANCE_LANGUAGE_SOURCES_LICENSE_LABELS_ALREADY_LOCALIZED; FULL_CATEGORY_DETAIL_LAYOUT_STILL_INCOMPLETE_NOT_IMPLEMENTED_HERE",
+  "remaining_i18n": "DISCOVERY_POWER_POLICY_LONG_LINES_EDITOR_DYNAMIC_SCOPE_AND_OTHER_RUNTIME_NOTICES_REMAIN",
+  "code6_apk": "UNCHANGED_NOT_REBUILT",
+  "device": "NOT_RUN",
+  "large_text_and_TalkBack": "NOT_RUN",
+  "next_user_decision": "BATCH_FILES_ONE_DIRECTORY_CONFIRMED; IMPLEMENT_SEPARATELY_AFTER_THIS_CHECKPOINT"
+}

@@ -1,0 +1,20 @@
+<resources>
+    <string name="finite_duration_unknown">Duration unknown</string>
+    <string name="finite_resolution_unknown">Resolution unknown</string>
+    <string name="finite_saved_at">Saved at: %1$s</string>
+    <string name="finite_imported_at">Imported at: %1$s</string>
+    <string name="finite_sort_name">Name</string>
+    <string name="finite_sort_date">Date</string>
+    <string name="finite_sort_duration">Duration</string>
+    <string name="finite_sort_size">Size</string>
+    <string name="finite_selected">Selected: %1$s</string>
+    <string name="finite_power_heading">Refill budget and system signals</string>
+    <string name="finite_power_refresh">Refresh system signals</string>
+    <string name="finite_power_debug">Debug injected tests: these choices are not device readings and are not saved for the next launch. After a change, explicitly search, page or refill.</string>
+    <string name="finite_power_disconnected">Simulation off: use Android system signals</string>
+    <string name="finite_power_normal">Simulated: normal battery, temperature and unmetered network</string>
+    <string name="finite_power_conserving">Simulated: low battery, warm temperature and metered network</string>
+    <string name="finite_power_unknown">Simulated: enabled with unknown signals</string>
+    <string name="finite_power_paused">Simulated: critical battery, overheating and offline</string>
+    <string name="finite_power_unavailable">Unavailable debug scenario</string>
+</resources>

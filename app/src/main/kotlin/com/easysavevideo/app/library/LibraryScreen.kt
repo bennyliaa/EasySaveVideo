@@ -26,6 +26,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.window.Dialog
 import com.easysavevideo.app.theme.*
 import androidx.compose.ui.res.stringResource
@@ -250,9 +251,9 @@ fun LibraryScreen(
                                     EsvText(stringResource(R.string.library_multi_item, media.displayName), style = v.bodyTextStyle, maxLines = 2)
                                 }
                                 EsvText(media.displayName, style = v.titleTextStyle, maxLines = 2)
-                                EsvText("MP4 · ${libraryDuration(media.durationMillis)} · ${libraryBytes(media.sizeBytes)}", style = v.captionTextStyle)
-                                EsvText(libraryResolution(media), style = v.captionTextStyle, color = v.colors.muted)
-                                EsvText(libraryDate(media), style = v.captionTextStyle, color = v.colors.muted)
+                                EsvText("MP4 · ${durationLabel(media.durationMillis)} · ${libraryBytes(media.sizeBytes)}", style = v.captionTextStyle)
+                                EsvText(resolutionLabel(media), style = v.captionTextStyle, color = v.colors.muted)
+                                EsvText(dateLabel(media), style = v.captionTextStyle, color = v.colors.muted)
                                 EsvButton(stringResource(R.string.flow_libraryscreen_27), { runtime.select(media) }, enabled = interactive && !multi.active, modifier = Modifier.fillMaxWidth())
                             }
                         }
@@ -320,8 +321,8 @@ private fun ColumnScope.DetailContent(runtime: AndroidLibraryRuntime, selection:
         is LibrarySelection.Media -> {
             val media = selection.item
             EsvText("已验证的本地 MP4 · ${libraryBytes(media.sizeBytes)}")
-            EsvText("${libraryDuration(media.durationMillis)} · ${libraryResolution(media)}")
-            EsvText(libraryDate(media), style = v.captionTextStyle)
+            EsvText("${durationLabel(media.durationMillis)} · ${resolutionLabel(media)}")
+            EsvText(dateLabel(media), style = v.captionTextStyle)
             if (media.dateKind == MediaDateKind.IMPORTED) EsvText(stringResource(R.string.flow_libraryscreen_34), style = v.captionTextStyle, color = v.colors.muted)
             EsvText(stringResource(R.string.flow_libraryscreen_35), style = v.captionTextStyle, color = v.colors.muted)
             if (onEdit != null) EsvButton(stringResource(R.string.flow_libraryscreen_36), {
@@ -410,14 +411,23 @@ private fun LibraryField(value: String, onValueChange: (String) -> Unit, label: 
     }
 }
 
-private fun sortLabel(sort: LibrarySort, selected: LibrarySort): String = (if (sort == selected) "已选 " else "") + when (sort) {
-    LibrarySort.NAME -> "名称"
-    LibrarySort.DATE -> "日期"
-    LibrarySort.DURATION -> "时长"
-    LibrarySort.SIZE -> "大小"
+@Composable
+private fun sortLabel(sort: LibrarySort, selected: LibrarySort): String {
+    val label=stringResource(when(sort) {
+        LibrarySort.NAME -> R.string.finite_sort_name
+        LibrarySort.DATE -> R.string.finite_sort_date
+        LibrarySort.DURATION -> R.string.finite_sort_duration
+        LibrarySort.SIZE -> R.string.finite_sort_size
+    })
+    return if(sort==selected)stringResource(R.string.finite_selected,label) else label
 }
-internal fun libraryDuration(millis: Long?): String {
-    if (millis == null) return "时长未知"
+@Composable private fun durationLabel(millis:Long?)=libraryDuration(millis,stringResource(R.string.finite_duration_unknown))
+@Composable private fun resolutionLabel(media:MediaItem)=libraryResolution(media,stringResource(R.string.finite_resolution_unknown))
+@Composable private fun dateLabel(media:MediaItem):String = stringResource(
+    if(media.dateKind==MediaDateKind.IMPORTED)R.string.finite_imported_at else R.string.finite_saved_at,
+    libraryDate(media,LocalConfiguration.current.locales[0]))
+internal fun libraryDuration(millis: Long?, unknownLabel:String): String {
+    if (millis == null) return unknownLabel
     val seconds = millis.coerceAtLeast(0) / 1_000
     return String.format(Locale.ROOT, "%02d:%02d:%02d", seconds / 3_600, seconds / 60 % 60, seconds % 60)
 }
@@ -427,6 +437,6 @@ internal fun libraryBytes(bytes: Long): String = when {
     bytes >= 1_024 -> String.format(Locale.ROOT, "%.1f KiB", bytes / 1_024.0)
     else -> "$bytes B"
 }
-internal fun libraryResolution(media: MediaItem): String = if (media.width == null) "分辨率未知" else "${media.width} × ${media.height}"
-internal fun libraryDate(media: MediaItem): String =
-    (if (media.dateKind == MediaDateKind.IMPORTED) "导入时间：" else "保存时间：") + DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(Date(media.createdAtMillis))
+internal fun libraryResolution(media: MediaItem,unknownLabel:String): String = if (media.width == null) unknownLabel else "${media.width} × ${media.height}"
+internal fun libraryDate(media: MediaItem,locale:Locale): String =
+    DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT,locale).format(Date(media.createdAtMillis))
