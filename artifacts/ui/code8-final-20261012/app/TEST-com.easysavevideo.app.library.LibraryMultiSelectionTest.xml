@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.LibraryMultiSelectionTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-12T14:17:21.146Z" time="0.019">
+  <properties />
+  <testcase name="metadataResolutionDoesNotRequireAnyReaderOrNativeFrame" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.002" />
+  <testcase name="inactiveNeverAdmitsToggleOrCommands" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.0" />
+  <testcase name="missingDeletedAndAmbiguousIdsNeverSelectAdjacentItems" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.0" />
+  <testcase name="pageSelectionIsBoundedAndExcludesNonReadyOrDuplicateIds" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.002" />
+  <testcase name="foregroundReadyBusyLoadingAndModalGatesAreRequired" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.001" />
+  <testcase name="currentPageSelectionRetainsStableReferencesAcrossReordering" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.0" />
+  <testcase name="toolbarResourcesHaveMatchingKeysAndFormatParameters" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.008" />
+  <testcase name="staleRevisionOrRepresentationIsClearedWithoutRebasingConsent" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.001" />
+  <testcase name="deselectClearAndExitRetainNoCommandIntent" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.0" />
+  <testcase name="changedQueryFolderSortOrPageRevokesActionAdmission" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.003" />
+  <testcase name="togglingAnObsoleteSnapshotCannotSelectReplacement" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.0" />
+  <testcase name="onlyOneExactCurrentItemCanUseExistingSinglePorts" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

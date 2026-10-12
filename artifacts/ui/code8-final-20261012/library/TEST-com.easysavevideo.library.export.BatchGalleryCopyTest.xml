@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.library.export.BatchGalleryCopyTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-12T14:17:24.848Z" time="0.016">
+  <properties />
+  <testcase name="cancellationDuringLookupStopsJournalCreation" classname="com.easysavevideo.library.export.BatchGalleryCopyTest" time="0.002" />
+  <testcase name="staleMissingAndDeletedReferencesCreateNoOutputs" classname="com.easysavevideo.library.export.BatchGalleryCopyTest" time="0.003" />
+  <testcase name="cancellationAfterPublishDoesNotPretendToRollBackCompletedCopy" classname="com.easysavevideo.library.export.BatchGalleryCopyTest" time="0.002" />
+  <testcase name="consumedSnapshotAndInvalidInputAreRejected" classname="com.easysavevideo.library.export.BatchGalleryCopyTest" time="0.003" />
+  <testcase name="mixedFailureAndUncertainPublicationNeverClaimWholeGroupSuccess" classname="com.easysavevideo.library.export.BatchGalleryCopyTest" time="0.002" />
+  <testcase name="cancelledCurrentCopyAndUnstartedItemsRemainDistinct" classname="com.easysavevideo.library.export.BatchGalleryCopyTest" time="0.001" />
+  <testcase name="independentlyVerifiedCopiesUseUniqueOperationAndTargetIds" classname="com.easysavevideo.library.export.BatchGalleryCopyTest" time="0.001" />
+  <testcase name="mismatchedOperationResultIsNeverCreditedToThisCopy" classname="com.easysavevideo.library.export.BatchGalleryCopyTest" time="0.001" />
+  <system-out />
+  <system-err />
+</testsuite>

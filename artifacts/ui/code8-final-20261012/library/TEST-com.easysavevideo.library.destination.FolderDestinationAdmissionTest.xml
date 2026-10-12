@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.library.destination.FolderDestinationAdmissionTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-12T14:17:24.683Z" time="0.013">
+  <properties />
+  <testcase name="folderSelectionSnapshotRequiresIdButOtherDefaultsMayRememberIt" classname="com.easysavevideo.library.destination.FolderDestinationAdmissionTest" time="0.002" />
+  <testcase name="folderOutcomesRemainIndependentFromPrivatePublication" classname="com.easysavevideo.library.destination.FolderDestinationAdmissionTest" time="0.006" />
+  <testcase name="settingsAndAdmissionDiagnosticsRedactRememberedFolder" classname="com.easysavevideo.library.destination.FolderDestinationAdmissionTest" time="0.003" />
+  <testcase name="persistedFolderIdentityCannotBecomePerOperationExportGrant" classname="com.easysavevideo.library.destination.FolderDestinationAdmissionTest" time="0.0" />
+  <testcase name="folderWaitsForVerifiedPrivatePublicationAndCannotRebindSource" classname="com.easysavevideo.library.destination.FolderDestinationAdmissionTest" time="0.001" />
+  <testcase name="folderCopyRequiresAnOpaqueSelectionExactlyForFolderChoice" classname="com.easysavevideo.library.destination.FolderDestinationAdmissionTest" time="0.001" />
+  <system-out />
+  <system-err />
+</testsuite>

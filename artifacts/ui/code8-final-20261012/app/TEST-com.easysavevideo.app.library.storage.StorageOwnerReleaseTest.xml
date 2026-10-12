@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.storage.StorageOwnerReleaseTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-12T14:17:21.524Z" time="0.005">
+  <properties />
+  <testcase name="throwingDirectoryCloseAlsoCannotReportConfirmedRelease" classname="com.easysavevideo.app.library.storage.StorageOwnerReleaseTest" time="0.004" />
+  <testcase name="failureBeforeDatabaseConstructionStillReleasesDirectoryOwner" classname="com.easysavevideo.app.library.storage.StorageOwnerReleaseTest" time="0.0" />
+  <testcase name="throwingDatabaseCloseRetainsBothOwnersWithoutReleasingDirectory" classname="com.easysavevideo.app.library.storage.StorageOwnerReleaseTest" time="0.001" />
+  <testcase name="successfulCloseReleasesDatabaseBeforeDirectoryOwnership" classname="com.easysavevideo.app.library.storage.StorageOwnerReleaseTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

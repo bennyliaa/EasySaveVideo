@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.library.edit.EditPlannerTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-10-12T14:17:24.823Z" time="0.012">
+  <properties />
+  <testcase name="segmentRangeAndCountAreBoundedBeforeSumming" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.001" />
+  <testcase name="saveSpaceDownscalesAndReducesBitrateWithoutCallingOriginalLossless" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.0" />
+  <testcase name="unsupportedAudioRatesAndSurroundCannotEnterAcceptedMetadata" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.0" />
+  <testcase name="trimAndRepeatedSegmentsKeepExactCallerOrderAndContinuousOutputTimeline" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.001" />
+  <testcase name="requestDefensivelyCopiesOrderedInputsAndRejectsMutation" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.0" />
+  <testcase name="sourceByteDurationAndPixelBudgetsRejectOverflowCandidates" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.002" />
+  <testcase name="totalSourceBytesCountUniqueInputsRatherThanRepeatedSegments" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.0" />
+  <testcase name="fingerprintBindsRevisionGenerationOrderBoundariesCropAndCompression" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.002" />
+  <testcase name="incompatibleAspectRateAndAudioLayoutsAreExplicitRejections" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.001" />
+  <testcase name="quarterTurnCropUsesDisplayDimensionsAndCorrectSourceRegion" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.0" />
+  <testcase name="unknownHdrVfrNonSquareOddAndUnusualProfilesFailClosed" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.001" />
+  <testcase name="mergeNormalizesSameAspectToSmallestCropWithoutUpscaling" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.0" />
+  <testcase name="negativeZeroCropHasCanonicalFingerprint" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.0" />
+  <testcase name="idsRejectPathsUrlsAndOversizedLocators" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.001" />
+  <testcase name="exactCatalogIdentityRequiredAndUnrequestedMetadataRejected" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.0" />
+  <testcase name="quantizationAndAacPrimingTolerancesScaleWithSegmentsAndVerifierBudgetIsBounded" classname="com.easysavevideo.library.edit.EditPlannerTest" time="0.002" />
+  <system-out />
+  <system-err />
+</testsuite>

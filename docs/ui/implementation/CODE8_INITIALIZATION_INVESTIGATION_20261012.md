@@ -66,3 +66,13 @@ Use UI enums first, request the smallest justified additional probe after failur
 No additional definite implementation defect found from the existing evidence.
 Proceed with reviewed f3+4c directory fixes as code8 Debug input, compatible signer
 pending original route. No installation by this author; Android12/API31 minimum.
+
+Final local verification:498 supported JVM tests PASS(221 app,277 library),
+0 failures/errors/skips in that supported run. Initial all-requested run had
+1 FileSystemException at symbolic-link fixture creation, before guard assertions.
+The original OS reason is not retained in sanitized evidence. That one method
+was excluded from the supported rerun and remains environment setup FAILED /
+guard assertions NOT_RUN; no security/privilege change or alternate fixture.
+Debug compile executed in initial code8 run; Release compile executed in final
+run. Lint59W/8H/0E. Fresh Release classes: no Fake, Store-bound, no-op panel.
+Evidence artifacts/ui/code8-final-20261012. No code8 device acceptance claim.

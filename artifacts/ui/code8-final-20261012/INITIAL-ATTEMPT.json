@@ -1,0 +1,17 @@
+{
+  "app": {
+    "tests": 222,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "library": {
+    "tests": 277,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "fixture": "com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest.symbolicMediaAndDirectoryLinksAreNeverFollowed",
+  "classification": "FAILED_ENVIRONMENT_SETUP; SYMLINK_GUARD_ASSERTIONS_NOT_RUN",
+  "system_settings_changes": 0
+}

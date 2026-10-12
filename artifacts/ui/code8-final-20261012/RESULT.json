@@ -1,0 +1,469 @@
+{
+  "status": "PASS_SUPPORTED_REGRESSION_WITH_RECORDED_WINDOWS_FIXTURE_LIMIT",
+  "source_metadata_commit": "a1731be91477a5d1cd625e1c51538095a82b1a9e",
+  "feature_commit": "f3bf2153aeec68b652cc01d7cf6add5b19c44aad",
+  "directory_fixes": [
+    "02bfec36685062ded705871fddfdb8350b52cb7e",
+    "4c180deefff1f90957c62ce2d313737ed9173c4a"
+  ],
+  "modules": {
+    "app": {
+      "totals": {
+        "tests": 221,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "suites": [
+        {
+          "name": "com.easysavevideo.app.editor.EditorInitializationTest",
+          "tests": "4",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.entitlements.DebugEntitlementIsolationTest",
+          "tests": "3",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.destination.DirectoryPickerLifecycleTest",
+          "tests": "4",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.destination.FolderDestinationRowsTest",
+          "tests": "10",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.destination.FolderPickerAsyncBridgeTest",
+          "tests": "20",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.destination.FolderPickerResultLifecycleTest",
+          "tests": "8",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.destination.FolderSelectionGateTest",
+          "tests": "11",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.destination.OrdinaryDestinationRowsTest",
+          "tests": "7",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.destination.OrdinaryDestinationSelectionTest",
+          "tests": "7",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.export.DirectoryBatchResourcesTest",
+          "tests": "3",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.export.ExportLabelsTest",
+          "tests": "2",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.export.ExportPresentationTest",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.export.ExportRecordCodecTest",
+          "tests": "7",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.export.FolderCreateIdentityTest",
+          "tests": "4",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryBackDispatchTest",
+          "tests": "3",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryBatchDialogScrollTest",
+          "tests": "3",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryBatchSelectionTest",
+          "tests": "3",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryDialogMeasureTest",
+          "tests": "2",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryExportSelectionTest",
+          "tests": "4",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryMultiSelectionTest",
+          "tests": "12",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryPanelPolicyTest",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryPresentationTest",
+          "tests": "4",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryRuntimeTest",
+          "tests": "28",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryThumbnailUiPolicyTest",
+          "tests": "2",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.LibraryUnverifiedCleanupTest",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareBatchTest",
+          "tests": "10",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareCopyVerifierTest",
+          "tests": "6",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareGroupRevocationTest",
+          "tests": "2",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareInitializationTest",
+          "tests": "3",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.SharePolicyTest",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareProxyAdmissionTest",
+          "tests": "2",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareProxyReaderTest",
+          "tests": "8",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.share.ShareReadBudgetTest",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.storage.LibraryPublicationEvidenceTest",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.app.library.storage.StorageOwnerReleaseTest",
+          "tests": "4",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        }
+      ]
+    },
+    "library": {
+      "totals": {
+        "tests": 277,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "suites": [
+        {
+          "name": "com.easysavevideo.library.destination.FolderDestinationAdmissionTest",
+          "tests": "6",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.destination.FolderDestinationRouterTest",
+          "tests": "3",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.destination.OrdinaryDestinationAdmissionTest",
+          "tests": "12",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.destination.OrdinaryDestinationRouterTest",
+          "tests": "23",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.edit.EditFrameTimelineTest",
+          "tests": "11",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.edit.EditGeometryTest",
+          "tests": "10",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.edit.EditLifecycleTest",
+          "tests": "18",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.edit.EditPlannerTest",
+          "tests": "16",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.edit.EditVerificationEvidenceTest",
+          "tests": "8",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.edit.RecordedEditInputTest",
+          "tests": "9",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.export.BatchGalleryCopyTest",
+          "tests": "8",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.export.DirectoryBatchCopyTest",
+          "tests": "11",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.export.ExportCoordinatorTest",
+          "tests": "44",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.export.ExportModelsTest",
+          "tests": "8",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.LibraryBatchMoveTest",
+          "tests": "9",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.LibraryFolderPolicyTest",
+          "tests": "11",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.LibraryModelsTest",
+          "tests": "9",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.LibraryNamesTest",
+          "tests": "10",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.LibraryQueryPolicyTest",
+          "tests": "11",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.MediaLeaseRegistryTest",
+          "tests": "14",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.thumbnail.BoundedThumbnailSessionTest",
+          "tests": "17",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.thumbnail.ThumbnailNativeResourceGateTest",
+          "tests": "4",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        },
+        {
+          "name": "com.easysavevideo.library.thumbnail.ThumbnailReadResourcesTest",
+          "tests": "5",
+          "failures": "0",
+          "errors": "0",
+          "skipped": "0"
+        }
+      ]
+    }
+  },
+  "supported_tests_pass": 498,
+  "environment_fixture": "Initial setup FAILED createSymbolicLink; guard assertions NOT_RUN; exact OS reason not retained",
+  "environment_fixture_name": "com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest.symbolicMediaAndDirectoryLinksAreNeverFollowed",
+  "production_symlink_guards": "UNCHANGED; no privilege/security-setting changes; no workaround for fixture",
+  "debug_compile": "PASS_EXECUTED_INITIAL_CODE8_RUN",
+  "release_compile": "PASS_EXECUTED_SUPPORTED_FINAL_RUN",
+  "lint_debug": {
+    "Warning": 59,
+    "Hint": 8
+  },
+  "final_tasks": "69:13 executed/56 up-to-date",
+  "release_isolation": {
+    "debug_fake_classes": 1,
+    "release_fake_classes": 0
+  },
+  "release_scope": "Fresh compiled classes; no Release APK",
+  "versionCode": 8,
+  "versionName": "0.8.0-ui-dev",
+  "minSdk": 31,
+  "targetSdk": 36,
+  "dependencies": "UNCHANGED_90_ADMITTED_RUNTIME_ARTIFACTS",
+  "device_acceptance": "NOT_RUN_FOR_CODE8",
+  "original_media_and_device_test_directory_writes": 0,
+  "phone_performance": "NOT_MEASURED",
+  "ANR": "UNKNOWN"
+}

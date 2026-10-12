@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.share.ShareCopyVerifierTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-12T14:17:21.408Z" time="0.035">
+  <properties />
+  <testcase name="shortCopyFails" classname="com.easysavevideo.app.library.share.ShareCopyVerifierTest" time="0.007" />
+  <testcase name="zeroReadIsBoundedFailure" classname="com.easysavevideo.app.library.share.ShareCopyVerifierTest" time="0.003" />
+  <testcase name="trailingCopyFails" classname="com.easysavevideo.app.library.share.ShareCopyVerifierTest" time="0.006" />
+  <testcase name="corruptionFails" classname="com.easysavevideo.app.library.share.ShareCopyVerifierTest" time="0.006" />
+  <testcase name="exactCopyRequiresFinalEof" classname="com.easysavevideo.app.library.share.ShareCopyVerifierTest" time="0.006" />
+  <testcase name="cancellationBeforeAndAfterRead" classname="com.easysavevideo.app.library.share.ShareCopyVerifierTest" time="0.006" />
+  <system-out />
+  <system-err />
+</testsuite>

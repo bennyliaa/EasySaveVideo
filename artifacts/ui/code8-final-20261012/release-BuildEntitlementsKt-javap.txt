@@ -1,0 +1,57 @@
+Compiled from "BuildEntitlements.kt"
+public final class com.easysavevideo.app.entitlements.BuildEntitlementsKt {
+  public static final void DevelopmentEntitlementPanel(androidx.compose.runtime.Composer, int);
+    Code:
+       0: aload_0
+       1: ldc           #9                  // int 1282896606
+       3: invokeinterface #15,  2           // InterfaceMethod androidx/compose/runtime/Composer.startRestartGroup:(I)Landroidx/compose/runtime/Composer;
+       8: astore_0
+       9: aload_0
+      10: ldc           #17                 // String C(DevelopmentEntitlementPanel):BuildEntitlements.kt#4od4vm
+      12: invokestatic  #23                 // Method androidx/compose/runtime/ComposerKt.sourceInformation:(Landroidx/compose/runtime/Composer;Ljava/lang/String;)V
+      15: aload_0
+      16: iload_1
+      17: ifeq          24
+      20: iconst_1
+      21: goto          25
+      24: iconst_0
+      25: iload_1
+      26: iconst_1
+      27: iand
+      28: invokeinterface #27,  3           // InterfaceMethod androidx/compose/runtime/Composer.shouldExecute:(ZI)Z
+      33: ifeq          63
+      36: invokestatic  #31                 // Method androidx/compose/runtime/ComposerKt.isTraceInProgress:()Z
+      39: ifeq          51
+      42: ldc           #9                  // int 1282896606
+      44: iload_1
+      45: iconst_m1
+      46: ldc           #33                 // String com.easysavevideo.app.entitlements.DevelopmentEntitlementPanel (BuildEntitlements.kt:10)
+      48: invokestatic  #37                 // Method androidx/compose/runtime/ComposerKt.traceEventStart:(IIILjava/lang/String;)V
+      51: invokestatic  #31                 // Method androidx/compose/runtime/ComposerKt.isTraceInProgress:()Z
+      54: ifeq          69
+      57: invokestatic  #41                 // Method androidx/compose/runtime/ComposerKt.traceEventEnd:()V
+      60: goto          69
+      63: aload_0
+      64: invokeinterface #44,  1           // InterfaceMethod androidx/compose/runtime/Composer.skipToGroupEnd:()V
+      69: aload_0
+      70: invokeinterface #48,  1           // InterfaceMethod androidx/compose/runtime/Composer.endRestartGroup:()Landroidx/compose/runtime/ScopeUpdateScope;
+      75: dup
+      76: ifnull        93
+      79: iload_1
+      80: invokedynamic #68,  0             // InvokeDynamic #0:invoke:(I)Lkotlin/jvm/functions/Function2;
+      85: invokeinterface #74,  2           // InterfaceMethod androidx/compose/runtime/ScopeUpdateScope.updateScope:(Lkotlin/jvm/functions/Function2;)V
+      90: goto          94
+      93: pop
+      94: return
+
+  private static final kotlin.Unit DevelopmentEntitlementPanel$lambda$0(int, androidx.compose.runtime.Composer, int);
+    Code:
+       0: aload_1
+       1: iload_0
+       2: iconst_1
+       3: ior
+       4: invokestatic  #84                 // Method androidx/compose/runtime/RecomposeScopeImplKt.updateChangedFlags:(I)I
+       7: invokestatic  #86                 // Method DevelopmentEntitlementPanel:(Landroidx/compose/runtime/Composer;I)V
+      10: getstatic     #92                 // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+      13: areturn
+}

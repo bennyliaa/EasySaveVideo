@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.library.edit.EditGeometryTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-12T14:17:24.766Z" time="0.016">
+  <properties />
+  <testcase name="allFourRotationTransformsMapAsymmetricCropToExpectedSourceArea" classname="com.easysavevideo.library.edit.EditGeometryTest" time="0.0" />
+  <testcase name="selectionsWhollyInBarsFailInsteadOfCroppingTheWrongPixels" classname="com.easysavevideo.library.edit.EditGeometryTest" time="0.0" />
+  <testcase name="deterministicPropertySamplesPreserveInwardContainmentAndRotationRoundTrip" classname="com.easysavevideo.library.edit.EditGeometryTest" time="0.01" />
+  <testcase name="normalizedCoordinatesRejectNanInfinityReversalAndOutOfBounds" classname="com.easysavevideo.library.edit.EditGeometryTest" time="0.002" />
+  <testcase name="pixelRoundingIsEvenAndStrictlyInward" classname="com.easysavevideo.library.edit.EditGeometryTest" time="0.001" />
+  <testcase name="transformsRejectUnsupportedRotationsOddGeometryAndOutsideSelections" classname="com.easysavevideo.library.edit.EditGeometryTest" time="0.001" />
+  <testcase name="displayOrientationSwapsDimensionsOnlyForQuarterTurns" classname="com.easysavevideo.library.edit.EditGeometryTest" time="0.0" />
+  <testcase name="letterboxedLandscapeSelectionUsesActualImageBounds" classname="com.easysavevideo.library.edit.EditGeometryTest" time="0.0" />
+  <testcase name="pillarboxedPortraitSelectionUsesActualImageBounds" classname="com.easysavevideo.library.edit.EditGeometryTest" time="0.0" />
+  <testcase name="viewportRoundTripRetainsNormalizedSelectionAcrossAspectRatios" classname="com.easysavevideo.library.edit.EditGeometryTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

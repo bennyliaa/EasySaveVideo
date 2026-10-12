@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-12T14:17:20.865Z" time="0.066">
+  <properties />
+  <testcase name="refusesDirectoriesAndUnexpectedReplacementWithoutRecursiveCleanup" classname="com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest" time="0.022" />
+  <testcase name="traversalDisplayNamesAndForeignFilesNeverBecomeDeleteAuthority" classname="com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest" time="0.016" />
+  <testcase name="exactOpaqueReadUsesReadOnlyDescriptorAndChecksSize" classname="com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest" time="0.009" />
+  <testcase name="crashAfterUnlinkStillRequiresDirectoryFenceBeforeRecoveryCompletes" classname="com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest" time="0.006" />
+  <testcase name="failedUnlinkRemainsPresentAndDoesNotPretendToSync" classname="com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest" time="0.006" />
+  <system-out />
+  <system-err />
+</testsuite>
