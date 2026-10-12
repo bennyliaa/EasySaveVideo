@@ -3,6 +3,9 @@ package com.easysavevideo.app.library
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.easysavevideo.app.R
+import com.easysavevideo.library.export.BatchTransferStatus
 import com.easysavevideo.app.library.export.AndroidExportRuntime
 import com.easysavevideo.app.library.export.UnverifiedExportView
 import com.easysavevideo.app.theme.*
@@ -28,6 +31,24 @@ internal fun LibraryExportStatus(exports: AndroidExportRuntime, foreground: Bool
     Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
         if (state.busy) EsvText("正在处理导出 / 分享副本，尚未确认完成。", style = v.captionTextStyle)
         state.notice?.let { EsvText(it, style = v.captionTextStyle) }
+        state.batchResults.forEachIndexed { index,result ->
+            state.batchNames.getOrNull(index)?.let { EsvText(it,maxLines=2,style=v.captionTextStyle) }
+            EsvText(stringResource(R.string.library_batch_move_item,index+1,stringResource(when(result.status) {
+                BatchTransferStatus.VERIFIED_COPY -> R.string.library_transfer_verified
+                BatchTransferStatus.COPIED_UNVERIFIED -> R.string.library_transfer_unverified
+                BatchTransferStatus.STALE -> R.string.library_transfer_stale
+                BatchTransferStatus.UNAVAILABLE -> R.string.library_transfer_unavailable
+                BatchTransferStatus.FAILED_UNCONFIRMED -> R.string.library_transfer_unknown
+                BatchTransferStatus.CANCELLED_BEFORE_START -> R.string.library_transfer_cancelled_before
+                BatchTransferStatus.CANCELLED -> R.string.library_transfer_cancelled
+                BatchTransferStatus.CLEANUP_PENDING -> R.string.library_transfer_cleanup
+                BatchTransferStatus.PREPARED -> R.string.library_transfer_prepared
+                BatchTransferStatus.CHOOSER_OPENED -> R.string.library_transfer_chooser
+                BatchTransferStatus.AUTHORITY_REVOKED -> R.string.library_transfer_revoked
+                BatchTransferStatus.NOT_STARTED -> R.string.library_transfer_not_started
+            })),style=v.captionTextStyle)
+        }
+        if(state.batchCleanupPending)EsvText(stringResource(R.string.library_batch_cleanup_pending),color=v.colors.error,style=v.captionTextStyle)
         if (state.recoverable > 0) {
             EsvText("${state.recoverable} 个导出操作仍待核对或清理。导出不会删除原件；外部位置可能已有副本或部分文件。", style = v.captionTextStyle, color = v.colors.error)
             EsvButton("核对并重试未完成操作", exports::retry, enabled = foreground && !state.busy, modifier = Modifier.fillMaxWidth())

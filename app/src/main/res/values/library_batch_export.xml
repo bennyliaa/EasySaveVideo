@@ -1,0 +1,24 @@
+<resources>
+    <string name="library_batch_transfer_title">Share or copy selected videos</string>
+    <string name="library_batch_transfer_stale">Selection expired. Select the videos again.</string>
+    <string name="library_batch_gallery_warning">Create external gallery copies one item at a time. Only verified copies count as complete. Cancellation stops unstarted items; published copies remain. Originals are preserved.</string>
+    <string name="library_batch_gallery">Copy selected videos to gallery</string>
+    <string name="library_batch_share_warning">Prepare all selected videos or open no chooser. Temporary copies are read-only for up to 10 minutes with at most 8 opens per copy. Opening a chooser does not mean delivery. Revocation cannot recall bytes already received.</string>
+    <string name="library_batch_share">Prepare copies and open system share</string>
+    <string name="library_batch_share_limit">Select at most 4 videos, each up to 256 MiB, total up to 512 MiB. The selection is never silently truncated.</string>
+    <string name="library_batch_files_pending">Batch Files location selection is pending. Single-item Files export remains available.</string>
+    <string name="library_batch_dismiss">Cancel</string>
+    <string name="library_batch_cleanup_pending">Temporary copy cleanup is not confirmed; future reads have been stopped. Received bytes cannot be recalled.</string>
+    <string name="library_transfer_verified">Verified external copy</string>
+    <string name="library_transfer_unverified">Copied, integrity unverified</string>
+    <string name="library_transfer_stale">Selection expired</string>
+    <string name="library_transfer_unavailable">Source unavailable</string>
+    <string name="library_transfer_unknown">Result unconfirmed</string>
+    <string name="library_transfer_cancelled_before">Cancelled before start</string>
+    <string name="library_transfer_cancelled">Cancelled; see cleanup status</string>
+    <string name="library_transfer_cleanup">Cleanup pending</string>
+    <string name="library_transfer_prepared">Prepared; not delivered</string>
+    <string name="library_transfer_chooser">Chooser opened; delivery unconfirmed</string>
+    <string name="library_transfer_revoked">Future read authority revoked</string>
+    <string name="library_transfer_not_started">Not started after an earlier failure</string>
+</resources>

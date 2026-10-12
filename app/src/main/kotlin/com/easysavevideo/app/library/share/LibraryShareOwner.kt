@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.Looper
 import android.os.ProxyFileDescriptorCallback
 import android.os.storage.StorageManager
 import android.os.ParcelFileDescriptor
@@ -81,7 +82,11 @@ internal class LibraryShareOwner private constructor(private val context: Contex
         // not snapshot disk FDs; none is adopted as a new capability by this process.
         recoverPreviousProcess()
     }
-    fun prepare(storage: AndroidSaveStorage, ref: MediaReadRef, operationId: String, cancelled: () -> Boolean = { false }): Intent {
+    fun prepare(storage: AndroidSaveStorage, ref: MediaReadRef, operationId: String, cancelled: () -> Boolean = { false }): Intent =
+        chooser(listOf(prepareUri(storage, ref, operationId, cancelled)))
+
+    /** Capabilities stay in the runtime's worker/launch closure, never in UI state or saved state. */
+    internal fun prepareUri(storage: AndroidSaveStorage, ref: MediaReadRef, operationId: String, cancelled: () -> Boolean): Uri {
         require(SharePolicy.validToken(operationId))
         val source = storage.openLibraryMedia(ref)
         var inputReleased = false
@@ -147,14 +152,7 @@ internal class LibraryShareOwner private constructor(private val context: Contex
                 selected.expiryTask = expiry
                 MaintenanceLane.handler.postDelayed(expiry, SharePolicy.TTL_MILLIS)
             }
-            val uri = uri(selected.token)
-            val send = Intent(Intent.ACTION_SEND).apply {
-                type = "video/mp4"; putExtra(Intent.EXTRA_STREAM, uri)
-                clipData = ClipData.newRawUri("Shared video", uri)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
-            // No chosen app is contacted here. Caller launches this only from deliberate foreground UI.
-            return Intent.createChooser(send, "分享普通视频副本").apply { addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) }
+            return uri(selected.token)
         } catch (failure: Exception) {
             synchronized(lock) { copy?.revoked = true }
             throw if (failure is ShareFailure) failure else ShareFailure(ShareError.IO)
@@ -179,12 +177,41 @@ internal class LibraryShareOwner private constructor(private val context: Contex
             } }
         }
     }
+    /** Worker-only; never wait on this IO-owning lock from a main-thread launch callback. */
+    internal fun chooser(uris: List<Uri>): Intent {
+        check(Looper.myLooper()!=Looper.getMainLooper())
+        require(uris.size in 1..SharePolicy.MAX_COPIES && uris.distinct().size==uris.size)
+        require(uris.all { it.scheme=="content" && it.authority==authority && it.pathSegments.size==2 &&
+            it.pathSegments[0]=="share" && SharePolicy.validToken(it.pathSegments[1]) && it.query==null && it.fragment==null })
+        require(synchronized(lock) { uris.all { value -> resolve(value)?.let {
+            it.ready && !it.revoked && !it.staging && !it.uncertain && SystemClock.elapsedRealtime()<it.expires
+        }==true } })
+        val clip=ClipData.newRawUri("Shared videos",uris.first())
+        uris.drop(1).forEach { clip.addItem(ClipData.Item(it)) }
+        val send=Intent(if(uris.size==1)Intent.ACTION_SEND else Intent.ACTION_SEND_MULTIPLE).apply {
+            type="video/mp4"
+            if(uris.size==1)putExtra(Intent.EXTRA_STREAM,uris.first())
+            else putParcelableArrayListExtra(Intent.EXTRA_STREAM,ArrayList(uris))
+            clipData=clip
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        return Intent.createChooser(send,"分享普通视频副本").apply {
+            clipData=clip;addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+    }
+    internal fun expiryOf(uris:List<Uri>):Long = synchronized(lock) {
+        uris.map { value -> resolve(value)?.takeIf { it.ready && !it.revoked && !it.staging && !it.uncertain }?.expires ?: 0L }.minOrNull() ?: 0L
+    }
     fun revokeOperation(operationId: String): Boolean = synchronized(lock) {
-        copies.values.filter { it.operationId == operationId }.forEach { it.revoked = true; stopLocked(it); cleanupLocked(it) }
+        val owned=copies.values.filter { it.operationId==operationId }
+        revokeShareGroup(owned,deny={ it.revoked=true;it.transfers.forEach { transfer -> transfer.stop=true } },
+            revoke=::stopLocked,cleanup=::cleanupLocked)
         copies.values.none { it.operationId == operationId }
     }
     fun revokeAll(): Boolean = synchronized(lock) {
-        copies.values.toList().forEach { it.revoked = true; stopLocked(it); cleanupLocked(it) }
+        val owned=copies.values.toList()
+        revokeShareGroup(owned,deny={ it.revoked=true;it.transfers.forEach { transfer -> transfer.stop=true } },
+            revoke=::stopLocked,cleanup=::cleanupLocked)
         if (copies.isEmpty() && cleanupBlocked) recoverPreviousProcess()
         copies.isEmpty() && !cleanupBlocked
     }
@@ -267,10 +294,11 @@ internal class LibraryShareOwner private constructor(private val context: Contex
     private fun uri(token: String): Uri = Uri.Builder().scheme("content").authority(authority).appendPath("share").appendPath(token).build()
     private fun expireLocked() { copies.values.toList().forEach { if (SystemClock.elapsedRealtime() >= it.expires) { it.revoked = true; stopLocked(it); cleanupLocked(it) } } }
     private fun stopLocked(copy: Copy) {
-        context.revokeUriPermission(uri(copy.token), Intent.FLAG_GRANT_READ_URI_PERMISSION)
         // The remote virtual descriptor may stay open. Future callbacks refuse access, while
         // the private staged-file owner remains until onRelease and verified input close.
         copy.transfers.forEach { it.stop = true }
+        // Logical denial must precede best-effort framework revocation, including every group item.
+        try { context.revokeUriPermission(uri(copy.token), Intent.FLAG_GRANT_READ_URI_PERMISSION) } catch (_: Exception) { }
     }
     private fun cleanupLocked(copy: Copy) {
         if (!copy.revoked || copy.staging || copy.uncertain || copy.transfers.isNotEmpty()) return

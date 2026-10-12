@@ -43,6 +43,9 @@ import com.easysavevideo.app.editor.ui.EditorDraftCheckpointCodec
 import com.easysavevideo.app.library.LibraryScreen
 import com.easysavevideo.app.library.LibraryUnavailableScreen
 import com.easysavevideo.app.library.LibraryExportDialog
+import com.easysavevideo.app.library.LibraryBatchSelection
+import com.easysavevideo.app.library.LibraryBatchExportDialog
+import com.easysavevideo.app.library.batchSelectionIsCurrent
 import com.easysavevideo.app.library.LibraryExportDestination
 import com.easysavevideo.app.library.exportSelectionIsCurrent
 import com.easysavevideo.app.library.thumbnail.AndroidLibraryThumbnails
@@ -75,6 +78,8 @@ class MainActivity : ComponentActivity() {
     private fun navigate(destination: EsvDestination) {
         val controller = navController ?: return
         dispatchEsvNavigation(controller.currentDestination?.route, destination, onLeaving = {
+            libraryBatchExportSelection=null
+            if(destination!=EsvDestination.LIBRARY && ::saves.isInitialized)saves.libraryExports?.cancelBatchForBackground()
             discovery.setVisibility(isForeground, false)
             providerManagement.setActive(false)
             if (destination != EsvDestination.LIBRARY) libraryExportReference = null
@@ -108,6 +113,7 @@ class MainActivity : ComponentActivity() {
     private val showingEditor get() = activeDestination == EsvDestination.EDITOR
     private var libraryPreviewReference by mutableStateOf<MediaReadRef?>(null)
     private var libraryExportReference by mutableStateOf<MediaReadRef?>(null)
+    private var libraryBatchExportSelection by mutableStateOf<LibraryBatchSelection?>(null)
     private var pendingLibraryDocumentResult: Pair<Int, Intent?>? = null
     private var pendingEditorCheckpoint by mutableStateOf<String?>(null)
     private val showingRecording get() = activeDestination == EsvDestination.RECORD
@@ -339,13 +345,31 @@ class MainActivity : ComponentActivity() {
                     val thumbnails = remember(library) { AndroidLibraryThumbnails(saves::openLibraryMedia, saves::retainLibraryNativeReader) }
                     DisposableEffect(thumbnails) { onDispose { thumbnails.close() } }
                     LibraryScreen(library,
-                        onBack = { libraryExportReference = null; backTo() },
+                        onBack = { libraryExportReference = null; libraryBatchExportSelection=null; backTo() },
                         onPreview = { libraryPreviewReference = it },
                         onEdit = if (editor == null) null else { item ->
                             editor.open(item, library.state.items); navigate(EsvDestination.EDITOR); libraryExportReference = null
                         },
                         onExport = if (exports == null) null else { ref -> libraryExportReference = ref },
+                        onBatchExport = if(exports==null)null else { selection -> libraryBatchExportSelection=selection },
                         exports = exports, thumbnails = thumbnails)
+                    val batchSelection=libraryBatchExportSelection
+                    if(exports!=null && batchSelection!=null && isForeground) {
+                        LibraryBatchExportDialog(batchSelection,batchSelectionIsCurrent(batchSelection,library.state),!exports.state.busy,
+                            onChoose={ target ->
+                                if(libraryBatchExportSelection===batchSelection && !exports.state.busy && batchSelectionIsCurrent(batchSelection,library.state)) {
+                                    libraryBatchExportSelection=null
+                                    when(target) {
+                                        LibraryExportDestination.GALLERY -> exports.exportBatchToMediaStore(batchSelection.items)
+                                        LibraryExportDestination.SHARE -> exports.shareBatch(batchSelection.items,isCurrent={
+                                            isForeground && showingLibrary && libraryPreviewReference==null && !isDestroyed && !isFinishing &&
+                                                batchSelectionIsCurrent(batchSelection,library.state)
+                                        }) { intent -> startActivity(intent) }
+                                        LibraryExportDestination.FILES -> Unit // No batch Files grant/selection has been admitted.
+                                    }
+                                }
+                            },onDismiss={libraryBatchExportSelection=null})
+                    }
                     val exportReference = libraryExportReference
                     val exportItem = library.state.items.firstOrNull { it.lifecycle == com.easysavevideo.library.MediaLifecycle.READY && it.readRef() == exportReference }
                     if (exports != null && exportReference != null && exportItem != null && isForeground) {
@@ -561,7 +585,7 @@ class MainActivity : ComponentActivity() {
         if (::saves.isInitialized) saves.segmentRecording?.setPreviewHostFocused(hasFocus)
     }
     override fun onResume() { super.onResume(); isForeground = true; if (::saves.isInitialized) saves.setForeground(true); if (::browser.isInitialized) browser.resume(); if (::discovery.isInitialized) discovery.setVisibility(true, showingDiscovery && !showingProviderManagement && !showingLibrary && !showingSaveTasks && !showingRecording) }
-    override fun onPause() { if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) saves.editor?.setForeground(false); libraryExportReference = null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
+    override fun onPause() { if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
     override fun onDestroy() {
         discoveryPrioritySubscription?.close(); discoveryPrioritySubscription = null
         if (::folderPickerHost.isInitialized) {

@@ -7,8 +7,9 @@
     <string name="library_multi_details">Details (one item)</string>
     <string name="library_multi_rename">Rename (one item)</string>
     <string name="library_multi_move">Move selected</string>
-    <string name="library_multi_export">Export (one item)</string>
-    <string name="library_multi_single_only">Move supports multiple selected videos. Details, rename and export require one item; batch sharing is pending.</string>
+    <string name="library_multi_export">Copy / export selected</string>
+    <string name="library_multi_share">Share selected</string>
+    <string name="library_multi_single_only">Move, gallery copy and bounded sharing support multiple selections. Details and rename require one item. Batch Files export is pending.</string>
     <string name="library_batch_move_count">Move %1$d selected videos</string>
     <string name="library_batch_move_partial">Items move separately. Cancellation stops unstarted items; completed moves remain.</string>
     <string name="library_batch_move_item">Item %1$d: %2$s</string>

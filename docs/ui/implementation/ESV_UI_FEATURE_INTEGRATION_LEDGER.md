@@ -503,3 +503,58 @@ All64 carrier runtime artifacts remain an exact subset of prior90 admitted artif
 No new dependency, production APK, install, device operation or upload. Review and
 original/fixed v3 runtime acceptance PENDING. Production ESV ANR remains UNKNOWN,
 separate from both the navigation repair and diagnostic v1 Future VerifyError.
+
+
+## Independent v3 review and ordinary batch share/copy (2026-10-12)
+
+Independent review of073d80d/bb83a53 found no new definite P1/P2. Real isolated v3
+original6/6 failed; fixed18/18 target routes and18/18 original root marker17 passed,
+with same-root, ordinary Back, Activity recreation and rotation. Report preserved in
+artifacts/ui/library-batch-share-copy-20261012/NAV_V3_INDEPENDENT_REVIEW.md; raw fixed
+JSONL remains at reviewer nav-v3/matrix-complete.jsonl. Production code5 was not
+updated by that test, and ANR is UNKNOWN. User now chose OPPO PDYM20/API31 for future
+production acceptance, installed code3; emulator5556 is closed and must remain closed.
+No device operation by the source author. minSdk remains31.
+
+Original PPT slide18 requires sharing after selection. Product Requirements section
+9.1/PR17 distinguishes explicit gallery/Files export and system share, prohibits silent
+publication/upload, and preserves internal media after external failures. UI interface
+contract section10 describes separate Commands/Tasks and says share revocation cannot
+recall recipient copies. This increment implements two distinct explicit choices:
+
+- Gallery copies use the existing ExportCoordinator/MediaStore port and separate durable
+  per-item operation/target IDs. Only matched SUCCEEDED/verified records count as copies.
+  Stale/unavailable sources, cancelled unstarted work, cleanup-pending and uncertain
+  outcomes remain per-item. Exceptions do not imply rollback. Already published copies
+  survive cancellation; no atomic group success, overwrite or automatic batch replay.
+- System sharing keeps the exact prior4-copy/256MiB each/512MiB total/10-minute TTL,
+  8-opens/2-active-transfer/proxy-issuance bounds. All selected copies must prepare or
+  no chooser opens; there is no silent success-subset grant. Group revocation addresses
+  only that group's operation ID. Every group's logical reads stop before any framework
+  revocation/cleanup, so a failed first item cannot leave later reads live. Actual release
+  and cleanup uncertainty remain distinct. Read-only SEND/SEND_MULTIPLE plus matching
+  ClipData contain only issued ordinary-copy URIs, never original/private file descriptors.
+  No write, persistable or prefix grants. Chooser-open never means recipient delivery.
+
+Selection freezes exact READY IDs/revision/generation and query plus original names;
+page/source/modal/lifecycle changes invalidate admission without rebasing consent. Batch
+preparation and queued copies cancel on background, disposal or leaving Library; current
+accepted work may reconcile. Chooser launch rechecks foreground/exact snapshot and a
+monotonic expiry value, with no main-thread owner lock/filesystem work. Capabilities and
+Intents exist only in worker/launch closures, not Compose state or saved state. Repeated
+launch/preparation is blocked. An opened chooser retains bounded authority until TTL or
+explicit revocation; recipient-owned bytes cannot be recalled and chooser dismissal is
+not a delivery receipt.
+
+Batch Files remains pending the explicit target-selection decision (one directory grant
+versus per-item CREATE_DOCUMENT); no target/grant is guessed or reconstructed. Existing
+single-item Files and other single-item export routes remain. No import/Vault/rules,
+new dependency/permission/security setting or real media read was added or performed.
+
+121 actual directed JVM/model/fake-port tests PASS, including existing verifier/proxy/FD
+release/export recovery tests; Debug/Release compile and Debug lint PASS (59W/8H/0E).
+All intermediate/final task/cache results are preserved. Real Android URI grants,
+recipient reads, gallery writes, lifecycle/permission revocation and performance remain
+NOT_RUN, for future scoped OPPO acceptance. Source-independent review/sync PENDING.
+Production code6 unsigned Release preparation follows only after this local checkpoint;
+the preexisting compatible signer is on the original cloud route, not a new local key.

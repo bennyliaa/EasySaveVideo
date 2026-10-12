@@ -14,6 +14,9 @@ import com.easysavevideo.app.library.share.ShareFailure
 import com.easysavevideo.app.library.share.ShareError
 import com.easysavevideo.app.save.storage.AndroidSaveStorage
 import com.easysavevideo.library.MediaReadRef
+import com.easysavevideo.library.MediaItem
+import com.easysavevideo.library.MediaLifecycle
+import com.easysavevideo.app.library.share.*
 import com.easysavevideo.library.export.*
 import java.util.UUID
 import java.util.concurrent.ArrayBlockingQueue
@@ -43,6 +46,9 @@ data class ExportViewState(
     val unverifiedCount: Long = 0,
     val unverifiedPage: Long = 0,
     val unverifiedPages: Long = 0,
+    val batchResults: List<BatchTransferItem> = emptyList(),
+    val batchNames: List<String> = emptyList(),
+    val batchCleanupPending: Boolean = false,
 )
 
 /** One app-scoped runtime; never reconstruct picker/grant authority from Activity saved state. */
@@ -59,6 +65,8 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
     @Volatile private var sharing = false
     @Volatile private var operationId: String? = null
     @Volatile private var closed = false
+    @Volatile private var activeShareBatch: ShareBatch? = null
+    @Volatile private var batchActive = false
     private var pendingSaf: ExportRequest? = null
     private var pendingPickerResult = false
     var state by mutableStateOf(ExportViewState()); private set
@@ -206,9 +214,96 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
             }
         }
     }
+    fun exportBatchToMediaStore(items: List<MediaItem>) {
+        requireMain()
+        val refs=batchReferences(items) ?: return
+        val batch=BatchGalleryCopy(refs)
+        if(!admit())return
+        batchActive=true
+        state=state.copy(batchNames=items.map { it.displayName })
+        val cancellation=cancelled
+        submit {
+            val rows=batch.run(storage.library::item,cancellation::get) { request ->
+                operationId=request.operationId
+                journal.create(request)
+                if(cancellation.get())coordinator.cancel(request.operationId)
+                coordinator.run(request).also(port::releaseFinishedGrant)
+            }
+            try { refreshReviews() } catch (_: Exception) { }
+            main.post { if(!closed)state=state.copy(busy=false,canCancel=false,batchResults=rows,
+                notice="逐项复制结果见下方。已完成的外部副本不会因取消撤回；媒体库原件保留。") }
+        }
+    }
+
+    fun shareBatch(items: List<MediaItem>, isCurrent: () -> Boolean, onChooser: (Intent) -> Unit) {
+        requireMain()
+        if(batchReferences(items)==null)return
+        val batch=try { ShareBatch(items) } catch(_:IllegalArgumentException) {
+            state=state.copy(notice="分享最多选择4项，每项不超过256 MiB，总计不超过512 MiB。未截断选择，未打开分享面板。")
+            return
+        }
+        if(!admit())return
+        sharing=true;batchActive=true;activeShareBatch=batch;operationId=batch.operationId
+        state=state.copy(batchNames=items.map { it.displayName })
+        submit {
+            val owner=LibraryShareOwner.get(application)
+            var prepared=batch.prepare(object:ShareBatchPort<android.net.Uri> {
+                override fun current(id:String)=storage.library.item(id)
+                override fun prepare(ref:MediaReadRef,operationId:String,cancelled:()->Boolean)=owner.prepareUri(storage,ref,operationId,cancelled)
+                override fun revoke(operationId:String)=owner.revokeOperation(operationId)
+            })
+            var expiresAt=0L
+            val intent=try {
+                if(prepared.payloads.size==batch.snapshot.size)owner.chooser(prepared.payloads).also {
+                    expiresAt=owner.expiryOf(prepared.payloads)
+                } else null
+            } catch(_:Exception) {
+                batch.cancel()
+                val clean=owner.revokeOperation(batch.operationId)
+                prepared=PreparedShareBatch(emptyList(),prepared.rows.map {
+                    if(it.status==BatchTransferStatus.PREPARED)it.copy(status=BatchTransferStatus.AUTHORITY_REVOKED) else it
+                },!clean)
+                null
+            }
+            val ready=prepared
+            main.post {
+                // UI checks are memory/clock only. All owner locking, filesystem and Intent
+                // preparation stays on the bounded worker/control lanes.
+                val launch=batch.launch(ready,{!closed && !cancelled.get() && android.os.SystemClock.elapsedRealtime()<expiresAt && isCurrent()}) {
+                    onChooser(requireNotNull(intent))
+                }
+                when(launch) {
+                    ShareLaunchResult.LAUNCHED -> if(!closed)state=state.copy(busy=false,canCancel=false,
+                        batchResults=ready.rows.map { it.copy(status=BatchTransferStatus.CHOOSER_OPENED) },
+                        notice="已打开系统分享选择器，不代表送达。10分钟后或撤销时阻止后续读取；接收方已取得的内容无法收回。")
+                    ShareLaunchResult.REJECTED -> submitControl {
+                        val clean=owner.revokeOperation(batch.operationId)
+                        main.post { if(!closed && operationId==batch.operationId)state=state.copy(busy=false,canCancel=false,
+                            batchCleanupPending=!clean,
+                            batchResults=ready.rows.map { if(it.status==BatchTransferStatus.PREPARED)it.copy(status=BatchTransferStatus.AUTHORITY_REVOKED) else it },
+                            notice="未确认打开分享选择器；已停止本批后续读取。临时副本是否清理完成见状态，不代表收回接收方已有内容。") }
+                    }
+                    ShareLaunchResult.ALREADY_LAUNCHED -> Unit
+                }
+            }
+        }
+    }
+
+    /** Batch preparation/copy stops on background; an already opened chooser retains its TTL. */
+    fun cancelBatchForBackground() { requireMain();if(batchActive && state.busy)cancel() }
+
+    private fun batchReferences(items:List<MediaItem>):List<MediaReadRef>? {
+        if(items.size !in 1..com.easysavevideo.library.LibraryLimits.MAX_PAGE_SIZE ||
+            items.map { it.itemId }.distinct().size!=items.size || items.any { it.lifecycle!=MediaLifecycle.READY }) {
+            state=state.copy(notice="批量选择无效或已失效，请重新选择；未创建新副本。")
+            return null
+        }
+        return items.map { it.readRef() }
+    }
     fun cancel() {
         requireMain(); if (closed || !state.busy) return
         cancelled.set(true)
+        activeShareBatch?.cancel()
         state = state.copy(canCancel = false, notice = if (pendingPickerResult) "取消已请求。请关闭文件选择器；如已创建文档，会尝试清理并报告结果。" else "取消已请求；等待当前读写实际退出并核对外部副本。")
         val id = operationId
         val share = sharing
@@ -259,6 +354,7 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
     }
     fun revokeShares() {
         requireMain(); if (closed) return
+        if(batchActive && sharing && state.busy) { cancelled.set(true);activeShareBatch?.cancel() }
         submitControl {
             val removed = LibraryShareOwner.get(application).revokeAll()
             main.post { if (!closed) state = state.copy(notice = if (removed) "已撤销后续分享读取并清理临时副本。接收方已取得的数据无法收回。" else "已请求撤销后续读取；临时副本在实际读写退出后清理，仍有清理待确认。接收方已取得的数据无法收回。") }
@@ -276,7 +372,8 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
         if (closed || state.busy) return false
         cancelled = AtomicBoolean(false)
         sharing = false
-        state = state.copy(busy = true, canCancel = true, notice = null)
+        activeShareBatch=null;batchActive=false
+        state = state.copy(busy = true, canCancel = true, notice = null,batchResults=emptyList(),batchNames=emptyList(),batchCleanupPending=false)
         return true
     }
     private fun request(ref: MediaReadRef, kind: ExportKind) = ExportRequest(UUID.randomUUID().toString(), ref, ExportDestination(kind, UUID.randomUUID().toString()))

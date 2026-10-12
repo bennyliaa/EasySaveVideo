@@ -13,7 +13,7 @@ import com.easysavevideo.app.theme.*
 @Composable
 internal fun LibraryMultiSelectionToolbar(count: Int, interactive: Boolean, single: Boolean, exportAvailable: Boolean,
     onPage: () -> Unit, onClear: () -> Unit, onCancel: () -> Unit, onDetails: () -> Unit,
-    onRename: () -> Unit, onMove: () -> Unit, onExport: () -> Unit, modifier: Modifier = Modifier) {
+    onRename: () -> Unit, onMove: () -> Unit, onExport: () -> Unit, onShare: () -> Unit, modifier: Modifier = Modifier) {
     val v = LocalEsvVisuals.current
     Column(modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(v.spacingMedium),
         verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -25,7 +25,8 @@ internal fun LibraryMultiSelectionToolbar(count: Int, interactive: Boolean, sing
             EsvButton(stringResource(R.string.library_multi_details), onDetails, enabled = single)
             EsvButton(stringResource(R.string.library_multi_rename), onRename, enabled = single)
             EsvButton(stringResource(R.string.library_multi_move), onMove, enabled = interactive && count > 0)
-            EsvButton(stringResource(R.string.library_multi_export), onExport, enabled = single && exportAvailable)
+            EsvButton(stringResource(R.string.library_multi_export), onExport, enabled = interactive && count>0 && exportAvailable)
+            EsvButton(stringResource(R.string.library_multi_share), onShare, enabled = interactive && count>0 && exportAvailable)
         }
         EsvText(stringResource(R.string.library_multi_single_only), style = v.captionTextStyle, color = v.colors.muted)
         if (!exportAvailable) EsvText(stringResource(R.string.flow_export_unavailable), style = v.captionTextStyle, color = v.colors.muted)

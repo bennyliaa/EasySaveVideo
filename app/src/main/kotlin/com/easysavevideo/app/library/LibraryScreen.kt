@@ -49,6 +49,7 @@ fun LibraryScreen(
     onBack: () -> Unit,
     onPreview: (MediaReadRef) -> Unit,
     onExport: ((MediaReadRef) -> Unit)? = null,
+    onBatchExport: ((LibraryBatchSelection) -> Unit)? = null,
     onEdit: ((MediaItem) -> Unit)? = null,
     exports: AndroidExportRuntime? = null,
     thumbnails: AndroidLibraryThumbnails? = null,
@@ -70,6 +71,13 @@ fun LibraryScreen(
         if (runtime.state.selected != selection) return
         multi = LibraryMultiSelection.inactive()
         action(selection)
+    }
+    fun batchAction() {
+        val callback=onBatchExport ?: return
+        if(!libraryMultiSelectionInteractive(multi,runtime.state))return
+        val selection=LibraryBatchSelection.admit(multi.references.toList(),runtime.state) ?: return
+        multi=LibraryMultiSelection.inactive()
+        callback(selection)
     }
     val gridState = rememberLazyGridState()
     val visibleThumbnailIds by remember { derivedStateOf {
@@ -107,7 +115,7 @@ fun LibraryScreen(
             Row(Modifier.widthIn(max = if (expanded) maxWidth else 1_200.dp).fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
                 Column(Modifier.weight(1f).fillMaxHeight()) {
                 if (multi.active) LibraryMultiSelectionToolbar(currentMulti.count, libraryMultiSelectionInteractive(multi, state),
-                    single = librarySingleMultiAction(multi, state) != null, exportAvailable = onExport != null,
+                    single = librarySingleMultiAction(multi, state) != null, exportAvailable = onExport != null && onBatchExport != null && exports?.state?.busy!=true,
                     onPage = { if (libraryMultiSelectionInteractive(multi, runtime.state)) multi = multi.selectPage(runtime.state.items) },
                     onClear = { multi = multi.clear() }, onCancel = { multi = LibraryMultiSelection.inactive() },
                     onDetails = { selectedAction {} }, onRename = { selectedAction { runtime.rename() } },
@@ -115,7 +123,8 @@ fun LibraryScreen(
                         if (libraryMultiSelectionInteractive(multi, runtime.state) &&
                             runtime.startMoveBatch(multi.references.toList())) multi = LibraryMultiSelection.inactive()
                     },
-                    onExport = { if (onExport != null) selectedAction { selection -> runtime.takeSelectedReadRef(selection)?.let(onExport) } },
+                    onExport = { if(multi.count>1)batchAction() else if (onExport != null) selectedAction { selection -> runtime.takeSelectedReadRef(selection)?.let(onExport) } },
+                    onShare = ::batchAction,
                     modifier = Modifier.heightIn(max = toolbarHeight))
                 LazyVerticalGrid(
                     state = gridState,

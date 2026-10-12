@@ -1,0 +1,151 @@
+{
+  "source_parent": "bb83a530a0904953b92223c39feb77dab6298306",
+  "scope": "SOURCE_MODELS_FAKE_PORTS_ONLY",
+  "tests": [
+    {
+      "name": "com.easysavevideo.library.export.BatchGalleryCopyTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:01.664Z"
+    },
+    {
+      "name": "com.easysavevideo.library.export.ExportCoordinatorTest",
+      "tests": "44",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:01.907Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryBackDispatchTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:14.878Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryBatchSelectionTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:14.927Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryExportSelectionTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:14.965Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryMultiSelectionTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:14.970Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareBatchTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:15.004Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareCopyVerifierTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:15.023Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareGroupRevocationTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:15.062Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.SharePolicyTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:15.067Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareProxyAdmissionTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:15.070Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareProxyReaderTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:15.092Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareReadBudgetTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:15.122Z"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.shell.RootNavigationTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:45:15.132Z"
+    }
+  ],
+  "total": 121,
+  "lint_debug": {
+    "Warning": 59,
+    "Hint": 8
+  },
+  "final": "PASS",
+  "share_policy": {
+    "max_items": 4,
+    "max_each_MiB": 256,
+    "max_total_MiB": 512,
+    "ttl_minutes_max": 10,
+    "max_opens_each": 8,
+    "max_active_transfers": 2
+  },
+  "sharing": "ALL_SELECTED_OR_NO_CHOOSER; CHOOSER_OPEN_IS_NOT_DELIVERY",
+  "gallery": "INDEPENDENT_PER_ITEM_VERIFIED_COPIES; NO_GROUP_ATOMICITY",
+  "files_batch": "PENDING_PRODUCT_TARGET_SELECTION_AND_GRANT_PORT",
+  "main_thread": "ONLY_MEMORY_CLOCK_CONSENT_AND_START_ACTIVITY; OWNER_IO_AND_LOCKING_ON_WORKER_CONTROL",
+  "dependencies": "NO_NEW_ARTIFACTS; PRIOR90_STRICT_GATE_UNCHANGED",
+  "runtime_uri_grants": "NOT_RUN",
+  "real_media": "NOT_READ",
+  "device_operations": 0,
+  "production_ANR": "UNKNOWN; NOT_CLAIMED_FIXED",
+  "nav_v3_independent": {
+    "original_failed": 6,
+    "fixed_routes_passed": 18,
+    "root_marker_retained": 18,
+    "back_recreation_rotation": "PASS_ISOLATED_CARRIER_ONLY"
+  },
+  "future_device": "OPPO_PDYM20_API31",
+  "emulator": "KEEP_CLOSED",
+  "sync": "PENDING_REVIEW",
+  "production_package": "NEXT_STAGE_UNSIGNED_RELEASE_CODE6; ORIGINAL_SIGNING_ROUTE_REQUIRED"
+}
