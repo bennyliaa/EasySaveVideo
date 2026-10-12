@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 enum class BatchTransferStatus {
     VERIFIED_COPY, COPIED_UNVERIFIED, STALE, UNAVAILABLE, FAILED_UNCONFIRMED,
     CANCELLED_BEFORE_START, CANCELLED, CLEANUP_PENDING, PREPARED,
-    CHOOSER_OPENED, AUTHORITY_REVOKED, NOT_STARTED,
+    CHOOSER_OPENED, AUTHORITY_REVOKED, NOT_STARTED, TARGET_UNAVAILABLE,
 }
 
 data class BatchTransferItem(val ref: MediaReadRef, val status: BatchTransferStatus) {

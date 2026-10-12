@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.library.export.DirectoryBatchResourcesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T10:13:09.251Z" hostname="HOST" time="0.014">
+  <properties/>
+  <testcase name="stoppedHistoryIsNotAutomaticallyResumedOrMislabelledAsSuccessfulCopy" classname="com.easysavevideo.app.library.export.DirectoryBatchResourcesTest" time="0.005"/>
+  <testcase name="everyFolderNoticeAndActionHasPairedNonemptyCopy" classname="com.easysavevideo.app.library.export.DirectoryBatchResourcesTest" time="0.004"/>
+  <testcase name="partialCompletionAndPermissionRetentionAreNotPromisedAsRollback" classname="com.easysavevideo.app.library.export.DirectoryBatchResourcesTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

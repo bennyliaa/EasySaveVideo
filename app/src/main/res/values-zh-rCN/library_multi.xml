@@ -9,7 +9,7 @@
     <string name="library_multi_move">移动所选视频</string>
     <string name="library_multi_export">复制／导出所选视频</string>
     <string name="library_multi_share">分享所选视频</string>
-    <string name="library_multi_single_only">移动、相册复制和有限分享支持多选；详情和重命名限单项，批量 Files 导出待确定。</string>
+    <string name="library_multi_single_only">移动、相册复制、目录复制和有限分享支持多选；详情和重命名限单项。</string>
     <string name="library_batch_move_count">移动 %1$d 个所选视频</string>
     <string name="library_batch_move_partial">逐项移动。取消会停止未开始的项；已完成的移动保留。</string>
     <string name="library_batch_move_item">第 %1$d 项：%2$s</string>

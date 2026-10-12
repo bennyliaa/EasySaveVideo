@@ -6,7 +6,8 @@
     <string name="library_batch_share_warning">Prepare all selected videos or open no chooser. Temporary copies are read-only for up to 10 minutes with at most 8 opens per copy. Opening a chooser does not mean delivery. Revocation cannot recall bytes already received.</string>
     <string name="library_batch_share">Prepare copies and open system share</string>
     <string name="library_batch_share_limit">Select at most 4 videos, each up to 256 MiB, total up to 512 MiB. The selection is never silently truncated.</string>
-    <string name="library_batch_files_pending">Batch Files location selection is pending. Single-item Files export remains available.</string>
+    <string name="library_batch_files_pending">Choose one folder, then explicitly confirm the frozen selection. Each item creates an ESV-random-ID.mp4 document; existing documents are not overwritten. Permission loss, partial copy or unsupported readback is reported separately. A folder with over 1000 existing children cannot pass the bounded safety preflight. A noncompliant provider may leave an uncertain empty document.</string>
+    <string name="library_transfer_target_unavailable">Destination grant unavailable; batch stopped</string>
     <string name="library_batch_dismiss">Cancel</string>
     <string name="library_batch_cleanup_pending">Temporary copy cleanup is not confirmed; future reads have been stopped. Received bytes cannot be recalled.</string>
     <string name="library_transfer_verified">Verified external copy</string>

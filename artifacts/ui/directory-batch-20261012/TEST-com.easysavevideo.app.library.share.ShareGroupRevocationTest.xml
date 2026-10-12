@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.library.share.ShareGroupRevocationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-12T10:13:09.314Z" hostname="HOST" time="0.002">
+  <properties/>
+  <testcase name="cleanupFailureRetainsOwnedResourceAndLaterCopiesStillReceiveCleanupAttempt" classname="com.easysavevideo.app.library.share.ShareGroupRevocationTest" time="0.001"/>
+  <testcase name="allLogicalReadsStopBeforeFirstFrameworkRevocationAndFailuresDoNotStarveOtherCopies" classname="com.easysavevideo.app.library.share.ShareGroupRevocationTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

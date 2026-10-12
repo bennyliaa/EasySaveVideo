@@ -8,6 +8,7 @@ import com.easysavevideo.app.R
 import com.easysavevideo.library.export.BatchTransferStatus
 import com.easysavevideo.app.library.export.AndroidExportRuntime
 import com.easysavevideo.app.library.export.UnverifiedExportView
+import com.easysavevideo.app.library.export.DirectoryExportNotice
 import com.easysavevideo.app.theme.*
 
 internal fun unverifiedCleanupStillCurrent(
@@ -31,6 +32,19 @@ internal fun LibraryExportStatus(exports: AndroidExportRuntime, foreground: Bool
     Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
         if (state.busy) EsvText("正在处理导出 / 分享副本，尚未确认完成。", style = v.captionTextStyle)
         state.notice?.let { EsvText(it, style = v.captionTextStyle) }
+        state.directoryNotice?.let { notice -> EsvText(stringResource(when(notice) {
+            DirectoryExportNotice.PICKING -> R.string.directory_picking
+            DirectoryExportNotice.CONFIRM -> R.string.directory_confirm_notice
+            DirectoryExportNotice.COPYING -> R.string.directory_copying
+            DirectoryExportNotice.COMPLETED -> R.string.directory_completed
+            DirectoryExportNotice.STOPPED -> R.string.directory_stopped
+            DirectoryExportNotice.STALE -> R.string.directory_stale
+            DirectoryExportNotice.UNAVAILABLE -> R.string.directory_unavailable
+            DirectoryExportNotice.UNCERTAIN -> R.string.directory_uncertain
+            DirectoryExportNotice.INTERRUPTED -> R.string.directory_interrupted
+        }),style=v.captionTextStyle) }
+        if(state.directoryConfirmation)EsvButton(stringResource(R.string.directory_confirm_copy),exports::confirmBatchFolderCopy,
+            enabled=foreground && exports.canConfirmBatchFolder(),modifier=Modifier.fillMaxWidth())
         state.batchResults.forEachIndexed { index,result ->
             state.batchNames.getOrNull(index)?.let { EsvText(it,maxLines=2,style=v.captionTextStyle) }
             EsvText(stringResource(R.string.library_batch_move_item,index+1,stringResource(when(result.status) {
@@ -46,6 +60,7 @@ internal fun LibraryExportStatus(exports: AndroidExportRuntime, foreground: Bool
                 BatchTransferStatus.CHOOSER_OPENED -> R.string.library_transfer_chooser
                 BatchTransferStatus.AUTHORITY_REVOKED -> R.string.library_transfer_revoked
                 BatchTransferStatus.NOT_STARTED -> R.string.library_transfer_not_started
+                BatchTransferStatus.TARGET_UNAVAILABLE -> R.string.library_transfer_target_unavailable
             })),style=v.captionTextStyle)
         }
         if(state.batchCleanupPending)EsvText(stringResource(R.string.library_batch_cleanup_pending),color=v.colors.error,style=v.captionTextStyle)

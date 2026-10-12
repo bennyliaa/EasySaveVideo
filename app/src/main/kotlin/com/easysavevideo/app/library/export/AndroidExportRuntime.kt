@@ -17,6 +17,10 @@ import com.easysavevideo.library.MediaReadRef
 import com.easysavevideo.library.MediaItem
 import com.easysavevideo.library.MediaLifecycle
 import com.easysavevideo.app.library.share.*
+import com.easysavevideo.app.library.destination.AndroidFolderPickerHost
+import com.easysavevideo.app.library.destination.AndroidFolderGrantRegistry
+import com.easysavevideo.app.library.destination.FolderSelectionGate
+import com.easysavevideo.app.library.destination.DirectoryPickerLifecycle
 import com.easysavevideo.library.export.*
 import java.util.UUID
 import java.util.concurrent.ArrayBlockingQueue
@@ -35,6 +39,7 @@ data class UnverifiedExportView(
 }
 
 /** UI snapshots expose no URI, private locator, stream or provider capability. */
+enum class DirectoryExportNotice { PICKING, CONFIRM, COPYING, COMPLETED, STOPPED, STALE, UNAVAILABLE, UNCERTAIN, INTERRUPTED }
 data class ExportViewState(
     val busy: Boolean = false,
     val canCancel: Boolean = false,
@@ -49,6 +54,8 @@ data class ExportViewState(
     val batchResults: List<BatchTransferItem> = emptyList(),
     val batchNames: List<String> = emptyList(),
     val batchCleanupPending: Boolean = false,
+    val directoryNotice:DirectoryExportNotice? = null,
+    val directoryConfirmation:Boolean = false,
 )
 
 /** One app-scoped runtime; never reconstruct picker/grant authority from Activity saved state. */
@@ -67,6 +74,13 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
     @Volatile private var closed = false
     @Volatile private var activeShareBatch: ShareBatch? = null
     @Volatile private var batchActive = false
+    @Volatile private var directoryBatchId:String? = null
+    private val directoryGate=FolderSelectionGate()
+    private var directoryHost:AndroidFolderPickerHost? = null
+    private class DirectorySelection(val ticket:FolderSelectionGate.Ticket,val items:List<MediaItem>,val current:()->Boolean) {
+        var uri:android.net.Uri?=null;var flags=0;val lifecycle=DirectoryPickerLifecycle()
+    }
+    private var directorySelection:DirectorySelection?=null
     private var pendingSaf: ExportRequest? = null
     private var pendingPickerResult = false
     var state by mutableStateOf(ExportViewState()); private set
@@ -75,10 +89,13 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
             // Previous-process recipients held virtual proxy descriptors; reclaim private copies now.
             try { LibraryShareOwner.get(application) } catch (_: Exception) { /* Sharing stays unavailable; ordinary exports may proceed. */ }
             try {
+                storage.directoryExportBatches.stopInterrupted().forEach(coordinator::cancel)
+                val interrupted=storage.directoryExportBatches.interruptedCount()>0
                 val found = coordinator.recoverPending()
                 found.forEach(port::releaseFinishedGrant)
                 refreshReviews()
-                main.post { if (!closed) state = state.copy(notice = if (found.any { !it.phase.terminal }) "有导出结果需要核对。本次操作不会删除媒体库原件，可重试恢复检查；文件选择器中的遗留文件可能需要手动清理。" else null) }
+                main.post { if (!closed) state = state.copy(directoryNotice=if(interrupted)DirectoryExportNotice.INTERRUPTED else null,
+                    notice = if (found.any { !it.phase.terminal }) "有导出结果需要核对。本次操作不会删除媒体库原件，可重试恢复检查；文件选择器中的遗留文件可能需要手动清理。" else null) }
             } catch (_: Exception) { main.post { if (!closed) state = state.copy(notice = "导出恢复检查未完成；本次操作不会删除媒体库原件。") } }
         }
     }
@@ -290,7 +307,87 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
     }
 
     /** Batch preparation/copy stops on background; an already opened chooser retains its TTL. */
-    fun cancelBatchForBackground() { requireMain();if(batchActive && state.busy)cancel() }
+    fun cancelBatchForBackground() {
+        requireMain()
+        // The intentional tree picker pauses this Activity. No copy occurs until an explicit
+        // foreground confirmation after its result. All other batch backgrounding cancels.
+        if(directorySelection?.lifecycle?.expectedPickerPause()==true)return
+        if(batchActive && state.busy)cancel()
+    }
+    fun cancelBatchForLeavingLibrary() {requireMain();if(batchActive && state.busy)cancel()}
+    internal fun attachBatchFolderPicker(host:AndroidFolderPickerHost) {requireMain();directoryHost=host}
+    internal fun detachBatchFolderPicker(host:AndroidFolderPickerHost) {
+        requireMain();if(directoryHost!==host)return
+        if(directorySelection!=null)cancel()
+        directoryHost=null
+    }
+    fun chooseBatchFolder(items:List<MediaItem>,isCurrent:()->Boolean) {
+        requireMain();if(batchReferences(items)==null || !isCurrent())return
+        val host=directoryHost ?: run{state=state.copy(directoryNotice=DirectoryExportNotice.UNAVAILABLE);return}
+        if(!admit())return
+        val ticket=directoryGate.begin(host) ?: run{state=state.copy(busy=false,canCancel=false,directoryNotice=DirectoryExportNotice.UNAVAILABLE);return}
+        val selected=DirectorySelection(ticket,items.toList(),isCurrent)
+        directorySelection=selected;batchActive=true
+        state=state.copy(batchNames=items.map{it.displayName},directoryNotice=DirectoryExportNotice.PICKING)
+        try {host.launch(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
+                Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
+        }) { result,data ->
+            if(directorySelection!==selected || !directoryGate.receive(ticket) || closed || cancelled.get() || !selected.lifecycle.receive())return@launch
+            if(result!=Activity.RESULT_OK || data?.data==null) {cancel();return@launch}
+            selected.uri=data.data;selected.flags=data.flags
+            state=state.copy(directoryConfirmation=true,directoryNotice=DirectoryExportNotice.CONFIRM)
+        }}catch(_:Exception){cancel();state=state.copy(directoryNotice=DirectoryExportNotice.UNAVAILABLE)}
+    }
+    fun canConfirmBatchFolder():Boolean {
+        requireMain();val selection=directorySelection ?: return false
+        return !closed && selection.uri!=null && !cancelled.get() && selection.lifecycle.canConfirm(selection.current())
+    }
+    fun confirmBatchFolderCopy() {
+        requireMain();val selection=directorySelection ?: return
+        if(!canConfirmBatchFolder()){cancel();state=state.copy(directoryNotice=DirectoryExportNotice.STALE);return}
+        if(!selection.lifecycle.confirm(selection.current()))return
+        val uri=requireNotNull(selection.uri);val cancellation=cancelled
+        state=state.copy(directoryConfirmation=false,directoryNotice=DirectoryExportNotice.COPYING)
+        submit {
+            val registry=AndroidFolderGrantRegistry(application,storage){destinationStateObserver?.invoke()}
+            var plan:DirectoryBatchPlan?=null
+            try {
+                val folder=registry.accept(uri,selection.flags){!closed && !cancellation.get() && selection.lifecycle.active() && directoryGate.active(selection.ticket)}
+                if(cancellation.get())throw ExportFailure(ExportError.CANCELLED)
+                val admitted=DirectoryBatchPlan.create(folder,selection.items.map{it.readRef()})
+                plan=admitted;directoryBatchId=admitted.batchId
+                val rows=DirectoryBatchCopy(admitted).run(storage.directoryExportBatches,storage.library::item,
+                    targetAvailable={try{registry.requireTree(folder);true}catch(_:Exception){false}},cancelled=cancellation::get) { request ->
+                    operationId=request.operationId
+                    journal.create(request)
+                    if(cancellation.get())coordinator.cancel(request.operationId)
+                    coordinator.run(request).also(port::releaseFinishedGrant)
+                }
+                try{refreshReviews()}catch(_:Exception){}
+                main.post {if(!closed && directorySelection===selection) {
+                    directoryGate.cancel(selection.ticket);directorySelection=null;directoryBatchId=null
+                    state=state.copy(busy=false,canCancel=false,batchResults=rows,directoryNotice=if(cancellation.get())DirectoryExportNotice.STOPPED else DirectoryExportNotice.COMPLETED)
+                }}
+            }catch(_:Exception) {
+                plan?.let{try{storage.directoryExportBatches.stop(it.batchId)}catch(_:Exception){}}
+                val rows=selection.items.map { item ->
+                    val request=plan?.requests?.singleOrNull{it.source==item.readRef()}
+                    val known=request?.let{try{storage.directoryExportBatches.outcome(it.operationId)}catch(_:Exception){null}}
+                    val started=request?.let{try{storage.directoryExportBatches.started(it.operationId)}catch(_:Exception){null}}
+                    val outcome=known ?: when {
+                        plan==null || started==false -> if(cancellation.get())BatchTransferStatus.CANCELLED_BEFORE_START else BatchTransferStatus.NOT_STARTED
+                        else -> BatchTransferStatus.FAILED_UNCONFIRMED
+                    }
+                    BatchTransferItem(item.readRef(),outcome)
+                }
+                main.post {if(!closed && directorySelection===selection) {
+                    directoryGate.cancel(selection.ticket);directorySelection=null;directoryBatchId=null
+                    state=state.copy(busy=false,canCancel=false,batchResults=rows,directoryNotice=DirectoryExportNotice.UNCERTAIN)
+                }}
+            }
+        }
+    }
 
     private fun batchReferences(items:List<MediaItem>):List<MediaReadRef>? {
         if(items.size !in 1..com.easysavevideo.library.LibraryLimits.MAX_PAGE_SIZE ||
@@ -304,10 +401,22 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
         requireMain(); if (closed || !state.busy) return
         cancelled.set(true)
         activeShareBatch?.cancel()
+        val selection=directorySelection
+        if(selection!=null) {
+            selection.lifecycle.cancel()
+            directoryGate.cancel(selection.ticket)
+            if(!selection.lifecycle.confirmedOnce) {
+                directorySelection=null
+                state=state.copy(busy=false,canCancel=false,directoryConfirmation=false,directoryNotice=DirectoryExportNotice.STOPPED)
+                return
+            }
+        }
         state = state.copy(canCancel = false, notice = if (pendingPickerResult) "取消已请求。请关闭文件选择器；如已创建文档，会尝试清理并报告结果。" else "取消已请求；等待当前读写实际退出并核对外部副本。")
         val id = operationId
         val share = sharing
+        val directory=directoryBatchId
         submitControl {
+            if(directory!=null)storage.directoryExportBatches.stop(directory)
             if (id != null) {
                 if (share) LibraryShareOwner.get(application).revokeOperation(id) else coordinator.cancel(id)
             }
@@ -317,6 +426,7 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
         requireMain(); if (!admit()) return
         state = state.copy(canCancel = false)
         submit {
+            storage.directoryExportBatches.stopInterrupted().forEach(coordinator::cancel)
             val results = coordinator.recoverPending()
             results.forEach(port::releaseFinishedGrant)
             refreshReviews()
@@ -369,11 +479,13 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
         worker.shutdown(); controls.shutdown()
     }
     private fun admit(): Boolean {
-        if (closed || state.busy) return false
+        if (closed || state.busy || directorySelection!=null) return false
         cancelled = AtomicBoolean(false)
         sharing = false
         activeShareBatch=null;batchActive=false
-        state = state.copy(busy = true, canCancel = true, notice = null,batchResults=emptyList(),batchNames=emptyList(),batchCleanupPending=false)
+        operationId=null // A new directory picker has no current file operation to cancel yet.
+        directoryBatchId=null
+        state = state.copy(busy = true, canCancel = true, notice = null,batchResults=emptyList(),batchNames=emptyList(),batchCleanupPending=false,directoryNotice=null,directoryConfirmation=false)
         return true
     }
     private fun request(ref: MediaReadRef, kind: ExportKind) = ExportRequest(UUID.randomUUID().toString(), ref, ExportDestination(kind, UUID.randomUUID().toString()))
@@ -424,12 +536,14 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
                     "已有 ${ExportLimits.MAX_ACTIVE} 个导出操作未完成，请先恢复检查并处理待确认的副本。本次未创建新副本，已完成的历史记录不占用此上限。"
                 } else "导出或分享未确认完成。本次操作不会删除媒体库原件；可重试恢复检查，不会重建同一操作的副本。"
                 main.post { if (!closed) {
+                    directorySelection?.let{directoryGate.cancel(it.ticket)};directorySelection=null;directoryBatchId=null
                     pendingSaf = null; pendingPickerResult = false
-                    state = state.copy(busy = false, canCancel = false, recoverable = counts?.unfinished ?: maxOf(1L, state.recoverable), notice = notice)
+                    state = state.copy(busy = false, canCancel = false,directoryConfirmation=false, recoverable = counts?.unfinished ?: maxOf(1L, state.recoverable), notice = notice)
                 } }
             }
         } } catch (_: java.util.concurrent.RejectedExecutionException) {
-            state = state.copy(busy = false, canCancel = false, notice = "导出队列已满，请稍后重试。")
+            directorySelection?.let{directoryGate.cancel(it.ticket)};directorySelection=null;directoryBatchId=null
+            state = state.copy(busy = false, canCancel = false,directoryConfirmation=false, notice = "导出队列已满，请稍后重试。")
         }
     }
     private fun submitControl(block: () -> Unit) {

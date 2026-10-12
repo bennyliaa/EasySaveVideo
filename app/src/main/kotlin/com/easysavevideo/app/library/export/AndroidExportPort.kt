@@ -99,12 +99,16 @@ internal class AndroidExportPort(
                 // never recreated or reopened for writing by replay, even if an earlier call failed.
                 require(target.uri == null)
                 val tree = folders.requireTree(folder) // Revalidate actual persisted permission before every create.
-                val child = DocumentsContract.createDocument(resolver, folders.parent(tree), "video/mp4", fileName(target))
-                    ?: throw IOException("EXPORT_CREATE_UNCERTAIN")
-                folders.requireChild(folder, child)
                 // Exact returned identity must be durable before any bytes are written. If bind
                 // fails, recovery reports Unknown; it never searches a name, guesses or recreates.
-                journal.bind(target.operationId, target.grantId, child.toString(), AndroidFolderGrantRegistry.READ_WRITE)
+                val create={DocumentsContract.createDocument(resolver,folders.parent(tree),"video/mp4",fileName(target)) ?: throw IOException("EXPORT_CREATE_UNCERTAIN")}
+                val validate:(Uri)->Unit = {folders.requireChild(folder,it)}
+                val bind:(Uri)->Unit = {journal.bind(target.operationId,target.grantId,it.toString(),AndroidFolderGrantRegistry.READ_WRITE)}
+                if(storage.directoryExportBatches.folderForOperation(record.operationId)!=null) {
+                    createFreshFolderChild(existingChildIds(tree),create,validate,{DocumentsContract.getDocumentId(it)},bind)
+                } else {
+                    val child=create();validate(child);bind(child)
+                }
                 requireSaf(requireNotNull(journal.target(target.operationId)))
             }
             return output
@@ -263,7 +267,21 @@ internal class AndroidExportPort(
         require(context.checkUriPermission(uri, Process.myPid(), Process.myUid(), Intent.FLAG_GRANT_WRITE_URI_PERMISSION) == PackageManager.PERMISSION_GRANTED)
         return uri
     }
-    private fun folderId(operationId: String): String? = storage.destinations.folderGrantForOperation(operationId)
+    private fun folderId(operationId: String): String? {
+        val batch=storage.directoryExportBatches.folderForOperation(operationId)
+        val creation=storage.destinations.folderGrantForOperation(operationId)
+        require(batch==null || creation==null) // Never bridge two admission domains.
+        return batch ?: creation
+    }
+    private fun existingChildIds(tree:Uri):Set<String> {
+        val children=DocumentsContract.buildChildDocumentsUriUsingTree(tree,DocumentsContract.getTreeDocumentId(tree))
+        return resolver.query(children,arrayOf(DocumentsContract.Document.COLUMN_DOCUMENT_ID),null,null,null)?.use { c ->
+            buildSet { while(c.moveToNext()) {
+                require(size<FolderCreateIdentity.MAX_CHILDREN)
+                val id=c.getString(0);require(id.isNotEmpty() && id.toByteArray().size<=8192 && add(id))
+            } }
+        } ?: throw IOException("FOLDER_PREFLIGHT_UNAVAILABLE")
+    }
     private fun safAbsent(uri: Uri): Boolean = try {
         resolver.query(uri, arrayOf(DocumentsContract.Document.COLUMN_DOCUMENT_ID), null, null, null)?.use { !it.moveToFirst() } ?: false
     } catch (_: java.io.FileNotFoundException) { true } catch (_: Exception) { false }

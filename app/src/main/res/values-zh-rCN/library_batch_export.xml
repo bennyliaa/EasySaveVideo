@@ -6,7 +6,8 @@
     <string name="library_batch_share_warning">全部所选项准备完成才打开分享选择器。临时副本只读、最长有效10分钟，每份最多打开8次。打开选择器不代表送达。撤销无法收回接收方已取得的内容。</string>
     <string name="library_batch_share">准备副本并打开系统分享</string>
     <string name="library_batch_share_limit">最多选择4项，每项不超过256 MiB，总计不超过512 MiB。不自动截断选择。</string>
-    <string name="library_batch_files_pending">批量 Files 的选址流程待确定；现有单项 Files 导出保留。</string>
+    <string name="library_batch_files_pending">一次选择目录，再明确确认冻结的所选项。每项新建 ESV-随机ID.mp4 文档，不覆盖既有文档。权限丢失、部分复制或不能回读验证时分别报告。目录已有子项超过1000时不能通过有限安全预检；不遵循协议的提供方可能留下未确认的空文档。</string>
+    <string name="library_transfer_target_unavailable">目标授权不可用，本批已停止</string>
     <string name="library_batch_dismiss">取消</string>
     <string name="library_batch_cleanup_pending">临时副本清理尚未确认；后续读取已停止。接收方已有内容无法收回。</string>
     <string name="library_transfer_verified">外部副本已完整核对</string>

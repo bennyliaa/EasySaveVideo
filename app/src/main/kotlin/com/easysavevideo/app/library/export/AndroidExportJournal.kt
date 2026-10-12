@@ -102,6 +102,7 @@ internal class AndroidExportJournal(
         require(uri.toByteArray(Charsets.UTF_8).size in 1..8192 && flags in 0..3)
         val target = target(operationId) ?: throw ExportFailure(ExportError.INVALID_STATE)
         require(target.grantId == grantId && (target.uri == null || target.uri == uri))
+        require(database().rawQuery("SELECT 1 FROM library_export_target WHERE uri=? AND operation_id<>? LIMIT 1",arrayOf(uri,operationId)).use{!it.moveToFirst()})
         if (target.uri == null) require(database().update("library_export_target", ContentValues().apply { put("uri", uri); put("grant_flags", flags) }, "operation_id=? AND uri IS NULL", arrayOf(operationId)) == 1)
         target.copy(uri = uri, flags = if (target.uri == null) flags else target.flags)
     }

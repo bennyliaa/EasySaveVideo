@@ -22,6 +22,8 @@ import com.easysavevideo.app.library.destination.AndroidOrdinaryDestinationJourn
 import com.easysavevideo.app.library.destination.OrdinaryDestinationSchema
 import com.easysavevideo.app.library.export.AndroidExportJournal
 import com.easysavevideo.app.library.export.ExportSchema
+import com.easysavevideo.app.library.export.DirectoryBatchSchema
+import com.easysavevideo.app.library.export.AndroidDirectoryBatchJournal
 import com.easysavevideo.app.library.storage.AndroidLibraryRepository
 import com.easysavevideo.app.library.storage.LibrarySchema
 import com.easysavevideo.app.library.storage.OrdinaryMediaFiles
@@ -56,6 +58,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
     /** The catalog shares this storage owner's database, lock and directory lifetime. */
     val library: LibraryRepository get() = libraryStorage
     internal val exportJournal: AndroidExportJournal by lazy { AndroidExportJournal({ helper.writableDatabase }, fileLock, { closed }) }
+    internal val directoryExportBatches: AndroidDirectoryBatchJournal by lazy { AndroidDirectoryBatchJournal({ helper.writableDatabase }, fileLock, { closed }) }
     internal val folderGrants: AndroidFolderGrantJournal by lazy { AndroidFolderGrantJournal({ helper.writableDatabase }, fileLock, { closed }) }
     internal val destinations: AndroidOrdinaryDestinationJournal by lazy { AndroidOrdinaryDestinationJournal({ helper.writableDatabase }, fileLock, { closed }) }
     private var segmentStorage: AndroidRecordedSegmentStorage? = null
@@ -429,7 +432,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
                 "commit_id=? AND artifact_id=? AND state='STAGING'", arrayOf(row.artifact.commitId, row.artifact.artifactId))
         }
     }
-    private class Database(context: Context, private val file: File) : SQLiteOpenHelper(context, file.absolutePath, null, 7,
+    private class Database(context: Context, private val file: File) : SQLiteOpenHelper(context, file.absolutePath, null, 8,
         DatabaseErrorHandler { throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE) }) {
         override fun onConfigure(db: SQLiteDatabase) {
             // Legacy parent-table migration requires this before the version transaction.
@@ -453,6 +456,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             EditSchema.migrateLibrary(db)
             OrdinaryDestinationSchema.create(db)
             FolderDestinationSchema.migrate(db)
+            DirectoryBatchSchema.create(db)
         }
         override fun onOpen(db: SQLiteDatabase) {
             db.setForeignKeyConstraintsEnabled(true)
@@ -463,7 +467,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             }
         }
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-            if (oldVersion !in 1..6 || newVersion != 7) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+            if (oldVersion !in 1..7 || newVersion != 8) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
             // SQLiteOpenHelper rolls DDL, every backfilled row and user_version back together on failure.
             try {
                 if (oldVersion == 1) {
@@ -477,7 +481,8 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
                     EditSchema.migrateLibrary(db)
                 } else if (oldVersion == 4) EditSchema.migrateRecordedSources(db)
                 if (oldVersion < 6) OrdinaryDestinationSchema.create(db)
-                FolderDestinationSchema.migrate(db)
+                if(oldVersion<7)FolderDestinationSchema.migrate(db)
+                DirectoryBatchSchema.create(db)
                 EditSchema.requireForeignKeysValid(db)
             }
             catch (_: Exception) { throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE) }

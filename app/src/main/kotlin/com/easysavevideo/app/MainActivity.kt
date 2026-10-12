@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
         val controller = navController ?: return
         dispatchEsvNavigation(controller.currentDestination?.route, destination, onLeaving = {
             libraryBatchExportSelection=null
-            if(destination!=EsvDestination.LIBRARY && ::saves.isInitialized)saves.libraryExports?.cancelBatchForBackground()
+            if(destination!=EsvDestination.LIBRARY && ::saves.isInitialized)saves.libraryExports?.cancelBatchForLeavingLibrary()
             discovery.setVisibility(isForeground, false)
             providerManagement.setActive(false)
             if (destination != EsvDestination.LIBRARY) libraryExportReference = null
@@ -197,7 +197,8 @@ class MainActivity : ComponentActivity() {
                 val destinations = saves.destinations
                 DisposableEffect(destinations) {
                     destinations?.attachFolderPicker(folderPickerHost)
-                    onDispose { destinations?.detachFolderPicker(folderPickerHost) }
+                    saves.libraryExports?.attachBatchFolderPicker(folderPickerHost)
+                    onDispose { destinations?.detachFolderPicker(folderPickerHost);saves.libraryExports?.detachBatchFolderPicker(folderPickerHost) }
                 }
                 val dark = settings.appearance.themeMode.useDark(isSystemInDarkTheme())
                 SideEffect {
@@ -365,7 +366,10 @@ class MainActivity : ComponentActivity() {
                                             isForeground && showingLibrary && libraryPreviewReference==null && !isDestroyed && !isFinishing &&
                                                 batchSelectionIsCurrent(batchSelection,library.state)
                                         }) { intent -> startActivity(intent) }
-                                        LibraryExportDestination.FILES -> Unit // No batch Files grant/selection has been admitted.
+                                        LibraryExportDestination.FILES -> exports.chooseBatchFolder(batchSelection.items,isCurrent={
+                                            isForeground && showingLibrary && libraryPreviewReference==null && !isDestroyed && !isFinishing &&
+                                                batchSelectionIsCurrent(batchSelection,library.state)
+                                        })
                                     }
                                 }
                             },onDismiss={libraryBatchExportSelection=null})

@@ -1,0 +1,13 @@
+<resources>
+    <string name="directory_choose">Choose one destination folder</string>
+    <string name="directory_picking">Choose a folder in the system picker. No video copy starts there.</string>
+    <string name="directory_confirm_notice">Folder selected. Confirm below to retain its exact grant and copy the frozen selection. This does not change your default save folder. System folder permissions may remain after cancellation.</string>
+    <string name="directory_confirm_copy">Confirm folder and copy selected videos</string>
+    <string name="directory_copying">Copying items separately to the admitted folder. Originals remain; this is not an atomic batch.</string>
+    <string name="directory_completed">Batch attempts ended. Inspect each result below; unverified or uncertain copies are not confirmed complete.</string>
+    <string name="directory_stopped">Batch stopped. Unstarted items are not copied; completed copies remain. System folder grants are not automatically revoked.</string>
+    <string name="directory_stale">Selection expired. No new batch is admitted; choose the videos and folder again.</string>
+    <string name="directory_unavailable">Folder picker unavailable or grant not accepted. No default directory is substituted.</string>
+    <string name="directory_uncertain">Folder admission or copy results are unconfirmed. Originals remain. Check only this operation’s owned copies; do not infer rollback.</string>
+    <string name="directory_interrupted">A previous folder batch is stopped. Unstarted items will not automatically resume. Earlier outputs, including interrupted copies, may need verification; a new explicit batch creates new copies.</string>
+</resources>

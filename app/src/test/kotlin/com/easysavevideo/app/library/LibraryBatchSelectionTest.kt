@@ -30,7 +30,7 @@ class LibraryBatchSelectionTest {
             val nodes=f.newDocumentBuilder().parse(File(root,"$folder/library_batch_export.xml")).getElementsByTagName("string")
             return (0 until nodes.length).associate{nodes.item(it).attributes.getNamedItem("name").nodeValue to nodes.item(it).textContent}
         }
-        val en=read("values");val zh=read("values-zh-rCN");assertEquals(22,en.size);assertEquals(en.keys,zh.keys)
+        val en=read("values");val zh=read("values-zh-rCN");assertEquals(23,en.size);assertEquals(en.keys,zh.keys)
         assertTrue(en.getValue("library_transfer_chooser").contains("unconfirmed"))
         assertTrue(en.getValue("library_batch_share_warning").contains("does not mean delivery"))
     }

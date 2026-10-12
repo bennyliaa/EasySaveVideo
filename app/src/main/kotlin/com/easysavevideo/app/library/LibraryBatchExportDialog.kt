@@ -27,6 +27,7 @@ internal fun LibraryBatchExportDialog(selection:LibraryBatchSelection,current:Bo
             EsvButton(stringResource(R.string.library_batch_share),{onChoose(LibraryExportDestination.SHARE)},enabled=enabled && current && shareEligible)
             if(!shareEligible)EsvText(stringResource(R.string.library_batch_share_limit),style=v.captionTextStyle,color=v.colors.muted)
             EsvText(stringResource(R.string.library_batch_files_pending),style=v.captionTextStyle,color=v.colors.muted)
+            EsvButton(stringResource(R.string.directory_choose),{onChoose(LibraryExportDestination.FILES)},enabled=enabled && current)
             EsvButton(stringResource(R.string.library_batch_dismiss),onDismiss)
         }
     }

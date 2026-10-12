@@ -631,3 +631,53 @@ minimum per-item recommendation; prior decision note is historical. Implement ex
 one-tree selection and immutable per-batch export grant/source admission separately,
 without mutating default destinations or spoofing pre-creation routes. OPPO remains
 exclusively with the reviewer; simulators remain closed.
+
+## Independent OPPO code6 limited UI result (2026-10-12)
+
+Reviewer report signed-code6/OPPO-CODE6-UI-RESULT.md pins afca2ab source, signed APK
+SHA658465feff82880183d5701ec68719263a7862c5f9ef084076104709eb002cdb. Actual Settings
+to Discover/Tasks, Sources/Browser to Discover, repeated header and visible/system
+Back passed on PDYM20/API31. Dark/English preferences survived foreground return;
+route retention was not asserted. Theme/language and initial rotation/font restored.
+Fixed page features support these paths; selected-root semantics are not claimed
+from a script's incomplete ancestor extraction. Library empty: no preview/edit/move/
+share/gallery/Files closed loop, Editor→Library return or native media acceptance.
+200-percent font shell change rejected by OPPO WRITE_SETTINGS and not bypassed;
+font stayed1.0. Cold restore, actual rotation, wide layout and TalkBack NOT_RUN.
+Limited technical fatal markers0 cannot close the old UNKNOWN production ANR.
+No media/DB injection, import, network sample or recording/audio request performed.
+Source author did not operate devices. This result does not accept later d4ec8be
+internationalization or current uncommitted directory batch work.
+
+
+## Batch Files one-directory completion for independent review (2026-10-12)
+
+User one-folder decision implemented after d4ec8be checkpoint. Once selected through
+the existing non-restored SAF tree picker, explicit foreground confirmation freezes
+exact READY references and a separate immutable export-folder admission. Default save
+folder and pre-creation route unchanged. Separate per-item operations, random fresh
+names, returned-child/known-URI ownership guards, per-item verification/partial failure
+and actual release cleanup semantics; no group atomicity, guessed filename recovery,
+source deletion or silent target fallback. Directory ID-only preflight bounded1000;
+sources bounded100; existing capacity/worker gates retained. New v7→v8 schema additive,
+transaction rollback, identity/replay/stop constraints. Process interruption stops old
+batch and cancels its active rows before recovery, including historical PREPARED rows
+after an uncertain attempt ended. New admissions clear old operation correlation so
+canceling directory preparation cannot cancel the previous operation. Known outputs
+and unstarted/started-but-uncertain rows remain distinct; no automatic new copies.
+
+169 actually executed JVM/model/fake-port tests PASS/0 fail/0 error/0 skipped.12 exact
+schema/recovery SQL groups PASS on Desktop SQLite3.51.1 :memory:, synthetic rows only.
+Debug and Release Kotlin executed; final build15 executed/54 up-to-date tasks; Debug
+lint59W/8H/0E. Intermediate logs retained; one helper's initial expected SQL-statement
+count10 was corrected to actual9 before all12 groups ran. No real directory or phone
+data read, Android SQLite/SAF/native OEM acceptance or phone performance claimed.
+Evidence: artifacts/ui/directory-batch-20261012; protocol/limits/self-review:
+BATCH_DIRECTORY_COPY_20261012.md. Independent review PENDING; no push/package/install.
+
+OPPO media closure is IN_PROGRESS, not PASS: independent gate review found code6
+Release has unconfigured StoreAdapters and no RECORD_SAVE. Future approved media
+test package must reuse existing Debug entitlement panel/higher code/compatible signer,
+keep all actual resource/MediaProjection/media validation/publication gates, and prove
+Release excludes fake. No new flavor/pricing/purchase credential/READY fabrication.
+Author performed no device operation; fixed code6 signing/input unchanged.

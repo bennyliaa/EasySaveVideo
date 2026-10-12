@@ -1,0 +1,13 @@
+<resources>
+    <string name="directory_choose">选择一个目标文件夹</string>
+    <string name="directory_picking">请在系统界面选择目录；此时不会开始复制视频。</string>
+    <string name="directory_confirm_notice">目录已选择。请在下方确认保留该准确授权并复制已冻结的所选项，不改变默认保存目录。取消后系统目录授权可能仍保留。</string>
+    <string name="directory_confirm_copy">确认目录并复制所选视频</string>
+    <string name="directory_copying">正在向已准入目录逐项复制，原件保留，不是整批原子操作。</string>
+    <string name="directory_completed">本批尝试已结束，请逐项核对下方结果；未验证或不明的副本不算确认完成。</string>
+    <string name="directory_stopped">本批已停止。未开始项不会复制，已完成副本保留；不自动撤销系统目录授权。</string>
+    <string name="directory_stale">选择已失效，未准入新批次。请重新选择视频和目录。</string>
+    <string name="directory_unavailable">目录选择器不可用或授权未准入，不改用默认目录。</string>
+    <string name="directory_uncertain">目录准入或复制结果未确认，原件保留。只核对此操作实际拥有的副本，不能据此推断已回滚。</string>
+    <string name="directory_interrupted">此前目录批次已停止，未开始项不会自动继续。已有外部副本（包括中断的副本）可能待核对；重新明确发起批次会新建副本。</string>
+</resources>
