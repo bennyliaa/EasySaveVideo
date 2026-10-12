@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notice_title">Third-party software licenses</string>
+    <string name="notice_back_settings">Back to settings</string>
+    <string name="notice_unavailable">License text cannot be read. Do not distribute this build.</string>
+    <string name="notice_loading">Loading the license text bundled with this app…</string>
+</resources>

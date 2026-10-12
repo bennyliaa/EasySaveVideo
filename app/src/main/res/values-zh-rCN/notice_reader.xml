@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notice_title">第三方软件许可</string>
+    <string name="notice_back_settings">返回设置</string>
+    <string name="notice_unavailable">许可文本无法读取，请勿分发此构建。</string>
+    <string name="notice_loading">正在读取随应用提供的许可文本…</string>
+</resources>

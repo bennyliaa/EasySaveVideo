@@ -2,6 +2,7 @@ package com.easysavevideo.app.ui.shell
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -24,6 +25,7 @@ import com.easysavevideo.app.ui.responsivePaneLayout
 fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSources:()->Unit,onBack:()->Unit) {
     var categoryKey by rememberSaveable { mutableStateOf<String?>(null) }
     var notices by rememberSaveable { mutableStateOf(false) }
+    val noticesListState = rememberLazyListState()
     val v=LocalEsvVisuals.current
     BoxWithConstraints(Modifier.fillMaxSize()) {
         // Reuse the existing remaining-content geometry policy; no settings-specific thresholds.
@@ -36,7 +38,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
             SettingsBackAction.EXIT -> onBack()
         } }
         BackHandler(enabled=back!=SettingsBackAction.EXIT){goBack()}
-        if(notices) ThirdPartyNotices(onClose={notices=false})
+        if(notices) ThirdPartyNotices(onClose={notices=false}, listState=noticesListState)
         else if(pane.split) {
             Column(Modifier.fillMaxSize().padding(v.spacingMedium),verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
                 SettingsHeading(onBack={goBack()})

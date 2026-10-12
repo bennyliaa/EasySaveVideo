@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.licenses.NoticeSectionsTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-12T18:10:31.763Z" time="0.143">
+  <properties />
+  <testcase name="longUnbrokenLineIsStillBoundedAndLossless" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.036" />
+  <testcase name="crlfIsNotSplitAtBoundary" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.002" />
+  <testcase name="emptyTextHasNoInventedContent" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.0" />
+  <testcase name="missingOrEmptyContentIsUnavailableInsteadOfPermanentlyLoading" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.001" />
+  <testcase name="surrogatePairCrossingTheDefaultBoundaryIsNeverSplit" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.009" />
+  <testcase name="loadingAndFailureNeverMeasureAnEmptyListOrReplaceRetainedPosition" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.0" />
+  <testcase name="newlinePreferenceDoesNotDropWhitespaceOrChangeAttribution" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.0" />
+  <testcase name="invalidLimitIsRejectedInsteadOfSplittingUnicode" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.009" />
+  <testcase name="minimumChunkBoundHandlesPairsAndLineEndingsWithoutStalling" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.0" />
+  <testcase name="maximumReadableTextHasNoContentLossAcrossDisplayChunks" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.04" />
+  <testcase name="actualBundledNoticeReconstructsExactlyIncludingLastAttribution" classname="com.easysavevideo.app.licenses.NoticeSectionsTest" time="0.037" />
+  <system-out />
+  <system-err />
+</testsuite>

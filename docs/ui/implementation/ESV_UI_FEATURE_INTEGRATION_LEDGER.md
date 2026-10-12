@@ -725,3 +725,18 @@ Settings-only files, media/MainActivity/version/Release guards unchanged. Code8
 package/evidence/test-directory unchanged; no device or APK operation.
 Evidence artifacts/ui/settings-category-detail-20261012; source notes
 SETTINGS_CATEGORY_DETAIL_20261012.md. Independent source review pending.
+
+
+## Settings About/offline notices continuation (2026-10-12)
+
+Existing real bundled552250-byte license asset unchanged. Four EN/ZH controls;
+lossless4096-char display chunks preserve surrogate pairs, CRLF and every original
+character. Original1MiB reader/worker retained; empty text unavailable rather than
+loading forever. Settings owns standard saved scroll state outside viewer, loading
+does not measure an empty list; browser callback signature retained via overload.
+24 actual tests PASS/0 failure/error/skipped, dual compile/lint0 errors PASS (59W/8H).
+Actual Android restore/glyph/TalkBack/200-percent acceptance NOT_RUN. No agreement
+acceptance, network, data-clear/privacy, disabled-feature or payment behavior.
+Code8 package/device evidence unchanged. Separate source/evidence commit for unified
+review. Evidence artifacts/ui/settings-offline-notices-20261012; notes
+SETTINGS_OFFLINE_NOTICES_20261012.md include bounded read-only code8 stage snapshot.

@@ -14,3 +14,28 @@ internal fun readNoticeText(reader: Reader, limit: Int = 1024 * 1024): String {
         result.append(buffer, 0, count)
     }
 }
+
+/** Lossless display chunks. Do not split UTF-16 surrogate pairs or CRLF; prefer existing newlines. */
+internal fun noticeSections(text:String,maxChars:Int=4096):List<String> {
+    require(maxChars>=2)
+    val sections=ArrayList<String>()
+    var start=0
+    while(start<text.length) {
+        var end=(start.toLong()+maxChars).coerceAtMost(text.length.toLong()).toInt()
+        if(end<text.length) {
+            if(text[end-1].isHighSurrogate() && text[end].isLowSurrogate())end--
+            if(end>start && text[end-1]=='\r' && text[end]=='\n')end--
+            val newline=text.lastIndexOf('\n',end-1)
+            if(newline>=start)end=newline+1
+        }
+        check(end>start)
+        sections+=text.substring(start,end)
+        start=end
+    }
+    return sections
+}
+
+/** Empty/corrupt bundled content is unavailable, not an endless loading state. */
+internal fun noticeLoadUnavailable(sections:List<String>?)=sections.isNullOrEmpty()
+
+internal fun noticeContentVisible(unavailable:Boolean,sections:List<String>)=!unavailable && sections.isNotEmpty()

@@ -1,0 +1,62 @@
+{
+  "status": "PASS_SOURCE_NOTICE_READING_SLICE_PENDING_UNIFIED_REVIEW",
+  "base": "73807af86f4f38675769641b42f0a6ace32a2327",
+  "tests": {
+    "tests": 24,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": [
+    {
+      "name": "com.easysavevideo.app.licenses.NoticeSectionsTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.licenses.NoticeTextTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.shell.SettingsNavigationTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.shell.SettingsScrollStructureTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "new_notice_tests": 11,
+  "paired_strings": 4,
+  "notice_asset_bytes": 552250,
+  "notice_asset_sha256": "27df093ea522ae12733b400e54856dbadd68b695b258ce0b7e31a778d5101a5e",
+  "notice_asset": "UNCHANGED",
+  "exact_corpus_reconstruction": "PASS",
+  "read_limit": "UNCHANGED_1MiB_chars",
+  "background_read": "UNCHANGED",
+  "scroll_position": "Host-owned standard LazyListState; no empty-list measurement while loading; Android restoration NOT_RUN",
+  "compile_debug": "PASS_EXECUTED",
+  "compile_release": "PASS_EXECUTED",
+  "lint": {
+    "Warning": 59,
+    "Hint": 8
+  },
+  "tasks": "67:15 executed/52 up-to-date",
+  "code8_input_sha256_unchanged": "a4f35a62ea46f33ec02d3a474fe08d9f8774071aa0b25c0dc80f66abfc73586b",
+  "device_or_test_directory_writes": 0,
+  "packaging": "NOT_RUN",
+  "upload": "NOT_RUN",
+  "new_agreement_or_security_behavior": false,
+  "actual_glyph_TalkBack_large_font_OEM": "NOT_RUN"
+}
