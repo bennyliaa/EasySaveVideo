@@ -1,0 +1,44 @@
+{
+  "status": "PASS_SOURCE_SETTINGS_SLICE_PENDING_REVIEW_DEVICE_ACCEPTANCE_NOT_RUN",
+  "base": "ea87963dee631a498774f648c9a1dabd9f665b90",
+  "tests": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": [
+    {
+      "name": "com.easysavevideo.app.ui.shell.SettingsNavigationTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.shell.SettingsScrollStructureTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "compile_debug": "PASS_EXECUTED",
+  "compile_release": "PASS_EXECUTED",
+  "lint_debug": {
+    "Warning": 59,
+    "Hint": 8
+  },
+  "tasks": "67:29 executed/38 up-to-date",
+  "paired_strings": 2,
+  "scope": "Existing Appearance/Language/Sources/About category/detail; not full original settings capability list",
+  "layout": "Existing responsivePaneLayout; finite single scroll in compact/independent bounded wide panes",
+  "code8_input_sha256_unchanged": "a4f35a62ea46f33ec02d3a474fe08d9f8774071aa0b25c0dc80f66abfc73586b",
+  "metadata_media_and_release_source_guards": "UNCHANGED",
+  "device_tests": "NOT_RUN",
+  "glyph_layout_TalkBack_large_font": "NOT_RUN",
+  "packaging": "NOT_RUN",
+  "device_operations": 0,
+  "device_evidence_directory_writes": 0,
+  "ANR": "UNKNOWN"
+}

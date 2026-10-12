@@ -707,3 +707,21 @@ Recording/media closure and Android SAF remain NOT_RUN; phone performance
 NOT_MEASURED, ANR UNKNOWN. Evidence artifacts/ui/debug7-isolation-20261012.
 Source and input delivery are authorized for private normal fast-forward upload;
 remote verification recorded separately after transfer.
+
+
+## Settings existing category/detail slice (2026-10-12)
+
+Original docs/ui01 classification/compact-detail/wide-panes plus05 single settings
+owner implemented for existing Appearance, Language, Sources and About/licenses.
+Compact category->detail->Back list; wide category/detail shares AppSettings and
+stable string selection; notices Back closes first. Existing remaining-geometry
+policy reused for low height/large font; no nested scrolling or new NavHost.
+Theme/language updates preserve all unrelated fields and existing callbacks/store.
+Original discovery/save/record/privacy extra controls and provider update/rollback
+remain gaps; this is not full PPT21-23 acceptance. Two paired EN/ZH strings.
+10 actual tests PASS/0 failure/error/skipped; Debug/Release compile and lint0 errors
+(59W/8H) PASS. Device/glyph/TalkBack/200-percent actual acceptance NOT_RUN.
+Settings-only files, media/MainActivity/version/Release guards unchanged. Code8
+package/evidence/test-directory unchanged; no device or APK operation.
+Evidence artifacts/ui/settings-category-detail-20261012; source notes
+SETTINGS_CATEGORY_DETAIL_20261012.md. Independent source review pending.
