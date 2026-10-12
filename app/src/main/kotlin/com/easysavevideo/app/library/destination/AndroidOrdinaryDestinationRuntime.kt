@@ -144,17 +144,18 @@ class AndroidOrdinaryDestinationRuntime internal constructor(
         try { host.launch(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
                 Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
-        }) { resultCode, data -> receiveFolder(ticket, resultCode, data) } }
-        catch (failure: Exception) {
-            if (folderGate.cancel(ticket)) {
-                folderTicket = null; choosingFolder = false
-                notice = when ((failure as? FolderPickerFailure)?.code) {
-                    FolderPickerError.EXHAUSTED -> "本机文件夹选择关联次数已达安全上限，不能通过重试恢复。已有任务保留；可继续使用 App媒体库、相册或媒体库中的单次另存。"
-                    FolderPickerError.PENDING -> "上一次系统文件夹选择尚未返回。请先关闭或完成那个选择器；本次没有打开新的选择器，App媒体库仍可使用。"
-                    FolderPickerError.INVALID_STATE -> "文件夹选择关联记录不可用，未重置或重复使用旧关联。可继续使用 App媒体库、相册或媒体库中的单次另存。"
-                    FolderPickerError.STORAGE -> "本次文件夹选择关联未能安全保存，尚未打开系统选择器。请检查本机存储后重试。"
-                    null -> "系统文件夹选择器未能打开，请稍后重试。"
-                }
+        }, current = { folderHost === host && folderTicket === ticket && choosingFolder }, failed = { folderLaunchFailed(ticket, it) }) { resultCode, data -> receiveFolder(ticket, resultCode, data) } }
+        catch (failure: Exception) { folderLaunchFailed(ticket, failure) }
+    }
+    private fun folderLaunchFailed(ticket: FolderSelectionGate.Ticket, failure: Exception) {
+        if (folderGate.cancel(ticket)) {
+            folderTicket = null; choosingFolder = false
+            notice = when ((failure as? FolderPickerFailure)?.code) {
+                FolderPickerError.EXHAUSTED -> "本机文件夹选择关联次数已达安全上限，不能通过重试恢复。已有任务保留；可继续使用 App媒体库、相册或媒体库中的单次另存。"
+                FolderPickerError.PENDING -> "上一次系统文件夹选择尚未返回。请先关闭或完成那个选择器；本次没有打开新的选择器，App媒体库仍可使用。"
+                FolderPickerError.INVALID_STATE -> "文件夹选择关联记录不可用，未重置或重复使用旧关联。可继续使用 App媒体库、相册或媒体库中的单次另存。"
+                FolderPickerError.STORAGE -> "本次文件夹选择关联未能安全保存，尚未打开系统选择器。请检查本机存储后重试。"
+                null -> "系统文件夹选择器未能打开，请稍后重试。"
             }
         }
     }

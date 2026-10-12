@@ -1,69 +1,86 @@
 package com.easysavevideo.app.library.destination
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.Lifecycle
 import java.lang.ref.WeakReference
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
-/** A folder-only, non-restored result bridge. No URI/Intent/callback enters saved result state.
- * A durable correlation counter is consumed before launch, never used as grant authority and never
- * reused across process death. Rotation abandons the callback; old results are consumed/discarded. */
+/** Durable worker allocation before main-thread launch. Results are never restored after rotation. */
 internal class AndroidFolderPickerHost(activity: ComponentActivity) : AutoCloseable {
     private val activity = WeakReference(activity)
+    private val application = activity.applicationContext
     private var closed = false
+    private val lifecycleObserver = LifecycleEventObserver { _, event ->
+        if (event == Lifecycle.Event.ON_PAUSE) results.cancelUnlaunched(this)
+    }
     @Suppress("DEPRECATION")
-    fun launch(intent: Intent, callback: (Int, Intent?) -> Unit) {
+    fun launch(intent: Intent, current: () -> Boolean = { true },
+        failed: (Exception) -> Unit = {}, callback: (Int, Intent?) -> Unit) {
+        requireMain()
         check(!closed)
         val host = requireNotNull(activity.get())
         check(host.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED))
-        FolderPickerResults.launch(this, {
-            val preferences = host.applicationContext.getSharedPreferences("ordinary_folder_picker_sequence_v1", Context.MODE_PRIVATE)
-            val next = try { preferences.getInt("next", FolderPickerRequestCodes.FIRST) }
-                catch (_: Exception) { throw FolderPickerFailure(FolderPickerError.INVALID_STATE) }
-            FolderPickerRequestCodes.consume(next) {
-                preferences.edit().putInt("next", it).commit()
-            }
-        }, { code -> host.startActivityForResult(intent, code) }, callback)
+        val expected = WeakReference(host)
+        val deadline = SystemClock.elapsedRealtime() + 30_000L
+        ensureAllocator(application)
+        results.launch(this,
+            current = { !closed && activity.get()?.let { it === expected.get() } == true && current() },
+            launch = { code ->
+                check(SystemClock.elapsedRealtime() < deadline)
+                check(activity.get()?.lifecycle?.currentState?.isAtLeast(Lifecycle.State.RESUMED) == true)
+                requireNotNull(activity.get()).startActivityForResult(intent, code)
+            },
+            failed = { failure -> failed(failure); callback(Activity.RESULT_CANCELED, null) },
+            result = { (code, data) -> callback(code, data) })
     }
-    private fun owns(host: ComponentActivity): Boolean = !closed && activity.get() === host
     override fun close() {
-        closed = true; FolderPickerResults.abandon(this); activity.clear()
+        requireMain(); closed = true; results.abandon(this)
+        activity.get()?.let { it.lifecycle.removeObserver(lifecycleObserver); if (owners[it]?.get() === this) owners.remove(it) }; activity.clear()
     }
     companion object {
-        /** MainActivity must intercept this reserved range BEFORE its saved AndroidX registry. */
-        fun dispatchActivityResult(host: ComponentActivity, requestCode: Int, resultCode: Int, data: Intent?): Boolean =
-            FolderPickerResults.dispatch(host, requestCode, resultCode, data)
+        private fun requireMain() = check(Looper.myLooper() == Looper.getMainLooper())
+        private val main = Handler(Looper.getMainLooper())
+        private val lane = ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, ArrayBlockingQueue<Runnable>(8),
+            { work -> Thread(work, "esv-folder-picker-allocation").apply { isDaemon = true } }, ThreadPoolExecutor.AbortPolicy())
+        private var allocator: DurableFolderPickerAllocator? = null
+        private fun ensureAllocator(application: Context) {
+            requireMain()
+            if (allocator == null) allocator = DurableFolderPickerAllocator(
+                read = {
+                    try { application.getSharedPreferences("ordinary_folder_picker_sequence_v1", Context.MODE_PRIVATE)
+                        .getInt("next", FolderPickerRequestCodes.FIRST) }
+                    catch (_: Exception) { throw FolderPickerFailure(FolderPickerError.INVALID_STATE) }
+                }, persist = { next ->
+                    application.getSharedPreferences("ordinary_folder_picker_sequence_v1", Context.MODE_PRIVATE)
+                        .edit().putInt("next", next).commit()
+                })
+        }
+        private val results = FolderPickerAsyncBridge<AndroidFolderPickerHost, Pair<Int, Intent?>>(
+            ::requireMain, { work -> lane.execute(work) }, { work -> main.post { work() }; Unit },
+            { requireNotNull(allocator).allocate() })
+        /** MainActivity intercepts this reserved range before AndroidX's saved registry. */
+        fun dispatchActivityResult(host: ComponentActivity, requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+            requireMain()
+            // Match the bridge owner by the exact live Activity, never by a restored request code.
+            val owner = owners[host]?.get()
+            return results.dispatch(owner, requestCode, resultCode to data)
+        }
+        private val owners = java.util.WeakHashMap<ComponentActivity, WeakReference<AndroidFolderPickerHost>>()
     }
-    private object FolderPickerResults {
-        private class Pending(val code: Int, var owner: AndroidFolderPickerHost?, var callback: ((Int, Intent?) -> Unit)?)
-        private var pending: Pending? = null
-        @Synchronized fun launch(owner: AndroidFolderPickerHost, allocate: () -> Int,
-            launch: (Int) -> Unit, callback: (Int, Intent?) -> Unit) {
-            if (pending != null) throw FolderPickerFailure(FolderPickerError.PENDING)
-            val code = allocate()
-            val request = Pending(code, owner, callback)
-            pending = request
-            try { launch(code) } catch (failure: Exception) {
-                // No future request will reuse this code, including an uncertain launch outcome.
-                if (pending === request) pending = null
-                throw failure
-            }
-        }
-        @Synchronized fun abandon(owner: AndroidFolderPickerHost) {
-            pending?.takeIf { it.owner === owner }?.let { it.owner = null; it.callback = null }
-        }
-        fun dispatch(host: ComponentActivity, code: Int, result: Int, data: Intent?): Boolean {
-            if (!FolderPickerRequestCodes.owns(code)) return false
-            val callback = synchronized(this) {
-                val request = pending
-                if (request?.code != code) null else {
-                    pending = null
-                    if (request.owner?.owns(host) == true) request.callback else null
-                }
-            }
-            callback?.invoke(result, data)
-            return true // Cold-process and abandoned results never reach a restored result registry.
+    init {
+        requireMain()
+        requireNotNull(this.activity.get()).let {
+            owners[it] = WeakReference(this)
+            it.lifecycle.addObserver(lifecycleObserver)
         }
     }
 }

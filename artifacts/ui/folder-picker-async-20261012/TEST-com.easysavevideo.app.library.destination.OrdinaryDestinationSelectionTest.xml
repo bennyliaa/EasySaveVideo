@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.destination.OrdinaryDestinationSelectionTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-12T11:00:59.119Z" time="0.003">
+  <properties />
+  <testcase name="preferenceIsSnapshottedAndCompletionCannotPrecedeChoice" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationSelectionTest" time="0.0" />
+  <testcase name="cancelBeforeChoicePreventsAdmission" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationSelectionTest" time="0.001" />
+  <testcase name="unrecognizedSettingIsNeverInterpretedAsAlbumPermission" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationSelectionTest" time="0.0" />
+  <testcase name="staleFailureCannotCancelNewSelectionOrProduceCurrentFailure" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationSelectionTest" time="0.0" />
+  <testcase name="oneIntentRejectsRepeatedTapAndConsumesCompletionOnce" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationSelectionTest" time="0.0" />
+  <testcase name="cancelDuringDurableWriteRejectsLateCompletionAndCannotConsumeNewIntent" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationSelectionTest" time="0.0" />
+  <testcase name="defaultAndExplicitPreferenceResolveBeforeCreation" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationSelectionTest" time="0.001" />
+  <system-out />
+  <system-err />
+</testsuite>
