@@ -90,17 +90,11 @@ fun LibraryScreen(
             thumbnailAdmissionReady = !thumbnailAdmissionFenced
         }
     }
-    BackHandler {
-        when {
-            state.deletion != null -> runtime.cancelDelete()
-            state.editor != null -> runtime.cancelEditor()
-            multi.active -> { multi = LibraryMultiSelection.inactive() }
-            state.selected != null -> runtime.dismissSelection()
-            state.move != null -> runtime.cancelMove()
-            state.query.folderId != null -> runtime.up()
-            else -> onBack()
-        }
-    }
+    fun handleBack() = dispatchLibraryBack(runtime.state, multi.active,
+        cancelDelete = runtime::cancelDelete, cancelEditor = runtime::cancelEditor,
+        exitMulti = { multi = LibraryMultiSelection.inactive() }, dismissSelection = runtime::dismissSelection,
+        cancelMove = runtime::cancelMove, up = runtime::up, leave = onBack)
+    BackHandler { handleBack() }
     EsvBackdrop(Modifier.fillMaxSize()) {
         BoxWithConstraints(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
             val layout = libraryPanelLayout(maxWidth.value, maxHeight.value, LocalDensity.current.fontScale, v.spacingMedium.value)
@@ -137,7 +131,7 @@ fun LibraryScreen(
                                 }
                             }, enabled = interactive && state.move == null && state.editor == null && state.deletion == null)
                             Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                EsvButton(stringResource(R.string.flow_libraryscreen_1), onClick = onBack)
+                                EsvButton(stringResource(R.string.flow_libraryscreen_1), onClick = ::handleBack)
                                 EsvButton(stringResource(R.string.flow_libraryscreen_2), onClick = runtime::unavailableVault, enabled = false)
                                 EsvButton(stringResource(R.string.flow_libraryscreen_3), onClick = { runtime.refresh(preserveSelection = expanded) }, enabled = state.foreground && !state.busy && !state.loading)
                             }

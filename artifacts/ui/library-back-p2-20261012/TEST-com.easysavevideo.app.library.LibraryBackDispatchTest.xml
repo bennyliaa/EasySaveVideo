@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.LibraryBackDispatchTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T05:37:23.487Z" hostname="REDACTED" time="0.098">
+  <properties />
+  <testcase name="consentDismissalKeepsPriorityAndNormalBackRetainsExistingActions" classname="com.easysavevideo.app.library.LibraryBackDispatchTest" time="0.067" />
+  <testcase name="multiSelectionWinsOverFolderAndDetailNavigation" classname="com.easysavevideo.app.library.LibraryBackDispatchTest" time="0.003" />
+  <testcase name="pageAndSystemBackBothExitTwoItemSelectionWithoutBusinessCommand" classname="com.easysavevideo.app.library.LibraryBackDispatchTest" time="0.015" />
+  <system-out />
+  <system-err />
+</testsuite>

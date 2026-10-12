@@ -422,3 +422,19 @@ acceptance is still NOT_RUN. The source increment does not enter installed code5
 no APK/install/device change, navigation implementation change or upload occurred.
 Independent review remains PENDING before batch source sync. Import/Vault/rules
 remain deferred; original publication paths remain the media acceptance route.
+
+
+## Independent review P2: shared Library Back priority
+
+Review found visible page Back bypassed active multi-selection while system Back
+exited it first. Both now call the same current-state handleBack dispatcher, with
+consent dismissal before multi-selection exit, followed by detail/move/folder/route
+actions. Exiting selection clears only ephemeral consent and issues no business
+command. Three new regressions cover two selected items through both ingress paths,
+multi-selection precedence and existing ordinary Back actions. Source/model49 JVM
+passes, dual compile/lint PASS; task/cache evidence and unchanged runtime/MainActivity
+proof are in artifacts/ui/library-back-p2-20261012. Actual post-code5 Android Back
+is NOT_RUN. Multi-item move/export/bulk delete remain UNIMPLEMENTED and unavailable;
+this is not complete multi-selection business acceptance. Code5 has no P2 fix.
+No production navigation, APK/install or upload change. Separate Nav QA scaffolding
+is not included in this P2 commit and its default opt-in remains off.
