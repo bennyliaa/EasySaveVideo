@@ -558,3 +558,27 @@ recipient reads, gallery writes, lifecycle/permission revocation and performance
 NOT_RUN, for future scoped OPPO acceptance. Source-independent review/sync PENDING.
 Production code6 unsigned Release preparation follows only after this local checkpoint;
 the preexisting compatible signer is on the original cloud route, not a new local key.
+
+
+## Production test package code6 local preparation (2026-10-12)
+
+Batch share/copy was independently sealed as a125681d5ecad3cfd6c98f62531247dd613d15ba
+before packaging. afca2ab8d2d7748550c009d50eb3e4d0e6cb6a70 changes only versionCode5→6
+and versionName0.5.0→0.6.0-ui-dev. Unsigned Release assemble/lint PASS (59W/8H/0E),
+strict prior90 runtime gate unchanged. Official SDK manifest/alignment/DEX checks
+confirm app package/min31/target36/version6, production RootNavigation/ShareBatch/
+BatchGalleryCopy/Future definitions and no diagnostic package. Notices match source;
+no credentials, Python/Scrapling runtime or media fixtures were packaged. Fixed APK
+35399390 bytes, SHA2564447879b3785211c02cc1884165fe92250562e263a55728f4fafe5af8d4f9079.
+
+This APK is UNSIGNED and must not be installed. It is staged for the existing cloud
+signing route, expected compatible signer18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5.
+No replacement local signer/key or credential was created or exported. Matching the
+fresh installed OPPO code3 certificate, signed artifact hash/signature/alignment and
+increasing version must be verified before a separately scoped data-preserving install.
+The author performs no OPPO or emulator operations; emulator remains closed. APK
+preparation is not production UI/native URI/grant/battery acceptance, and ANR is UNKNOWN.
+Independent batch review and source sync PENDING; original/fixed isolated v3 results
+remain historical evidence, not substituted for production OPPO navigation validation.
+Receipt/build evidence: artifacts/ui/production-code6-unsigned-20261012. Fixed binary
+and public SDK checks remain in delivery-dc69-20261010/unsigned-ui-code6-afca2ab-20261012.
