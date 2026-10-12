@@ -681,3 +681,29 @@ test package must reuse existing Debug entitlement panel/higher code/compatible 
 keep all actual resource/MediaProjection/media validation/publication gates, and prove
 Release excludes fake. No new flavor/pricing/purchase credential/READY fabrication.
 Author performed no device operation; fixed code6 signing/input unchanged.
+
+
+### code7 Debug input / isolation (2026-10-12)
+
+Files source38a6fc1 independently reviewed: no definite new P1/P2; six source
+hashes matched. Prior169 JVM/12 desktop SQLite results remain author results,
+not independent reruns. Android migration/SAF remains NOT_RUN.
+
+Existing Debug variant code7/0.7.0-ui-dev built from9efc346; min31/target36.
+No new flavor, pricing or entitlement business change. Three new isolation tests
+PASS/0 failures/errors/skips; fresh Debug and Release Kotlin compilation PASS.
+Release bytecode has no FakeEntitlementSource; source binds Store and panel
+retains only Compose no-op scaffolding. This proof is compiled-class scope,
+not a Release APK/device test. Debug can explicitly choose existing presets;
+platform, policy, MediaProjection, real media validation and publication gates
+remain unchanged. Debug lint0 errors; existing59 warnings/8 hints.
+
+Official SDK aapt/apksigner/zipalign/dexdump checks PASS. APK SHA256
+6db2a62a7e4461747eb02ae40115353496adbbf006b61e10a7d3a4ed3bb2874b,
+45191483 bytes. Local signer5e841a0 differs from original compatible18e3ef6:
+NEEDS_COMPATIBLE_RESIGN, do not install this input over existing App.
+No device/emulator operation, installation, key export or private media read.
+Recording/media closure and Android SAF remain NOT_RUN; phone performance
+NOT_MEASURED, ANR UNKNOWN. Evidence artifacts/ui/debug7-isolation-20261012.
+Source and input delivery are authorized for private normal fast-forward upload;
+remote verification recorded separately after transfer.
