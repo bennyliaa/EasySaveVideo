@@ -456,11 +456,50 @@ Exceptions after a committed write remain unconfirmed; no automatic retry/resele
 
 52 actual JVM tests PASS after one recorded resource-key-count failure was corrected.
 Debug/Release Kotlin checks and Debug lint PASS; exact task/cache outcomes and lint
-counts are in artifacts/ui/library-batch-move-20261012. Batch sharing/export/delete
+counts are in artifacts/ui/library-batch-move-20261012.
 Lint has59 warnings/8 hints/0 errors (one new PluralsCandidate for the English
 selected-video count; the paired format test passes). These are not a zero-warning gate.
-remain UNIMPLEMENTED; this is not complete PPT18 or Android media acceptance.
+Batch sharing/export/delete remain UNIMPLEMENTED; this is not complete PPT18 or Android media acceptance.
 No import, Vault, rules, real files, device operation, production APK or upload.
 Independent review/sync PENDING. This checkpoint is sealed before the navigation
 repair requested after independent v2 runtime evidence. Production ESV ANR is a
 separate UNKNOWN defect; no relationship to v1 missing classes is claimed.
+
+
+## Minimal auxiliary-to-root repair and isolated carrier v3 (2026-10-12)
+
+Independent v2 real NavController evidence reproduced all6 auxiliary-to-current-root
+failures with the original options while marker17 remained, and same-root, Back/pop
+and Activity restoration worked. See the reviewer nav-v2/MATRIX_RESULT.md and
+matrix-complete.jsonl; this is narrower than production acceptance. Batch move was
+sealed as073d80d with52 passing fake/model tests before this separate repair.
+
+Production root navigation now discards known auxiliary entries with ordinary pop
+before reusing the existing root save/restore options. If popping reaches the requested
+root, it returns by pop alone. Roots retain their saved state. A restored old auxiliary
+tail is discarded without clearing the restored root; a graph recreated with no live
+root cannot save its auxiliary as a root. Pop count is bounded32; blocked/oversized
+chains return false and never claim the requested route. Same-route admission,
+foreground source gating and ordinary Back are unchanged. No universal restoreState
+disable, global clearBackStack or graph clearing of live roots was introduced.
+
+Shared platform-neutral RootNavigation source is compiled by production and diagnostic
+v3 via the official AGP AndroidSourceSet.kotlin configuration. The v2 original function
+is byte-identical; original and fixed carrier modes/matrices remain separately callable.
+Fixed matrix contains baseline6 and12 auxiliary-to-other-root cases with actual
+destination callbacks/current/previous/presence and synthetic marker snapshots, then
+same-root and Back. Manual PREPARE_FIXED_RECREATE_AUX/RECREATE_ACTIVITY and rotation
+check the owned marker after restore. A separate nav-observations-v3.jsonl with
+carrier_version3 preserves the earlier carrier's log. No automatic runtime PASS is
+fabricated by source completion. Current/previous/presence is not an ordered stack dump.
+
+17 actual scoped JVM tests PASS; Debug/Release compile checks, production Debug lint,
+diagnostic Debug APK build and lint PASS. First two source-set configuration failures
+are retained; final logs include exact executed/cache outcomes. App lint59W/8H/0E;
+carrier lint and static manifest/signature/SDK/hash/DEX proof are in the result/receipt.
+Carrier package/version3/min31/target36 and preexisting compatible diagnostic signer
+are verified; production version5/signing configuration/permissions are unchanged.
+All64 carrier runtime artifacts remain an exact subset of prior90 admitted artifacts.
+No new dependency, production APK, install, device operation or upload. Review and
+original/fixed v3 runtime acceptance PENDING. Production ESV ANR remains UNKNOWN,
+separate from both the navigation repair and diagnostic v1 Future VerifyError.

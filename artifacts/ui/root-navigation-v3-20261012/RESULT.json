@@ -1,0 +1,108 @@
+{
+  "source_parent": "073d80d99256f14b04d9e056f9eb3c2245742b1d",
+  "scope": "FINITE_ROOT_NAVIGATION_AND_ISOLATED_CARRIER_ONLY",
+  "tests": [
+    {
+      "name": "com.easysavevideo.app.ui.shell.RootNavigationTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:05:53.510Z"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.shell.EsvNavigationVisibilityTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:05:53.437Z"
+    },
+    {
+      "name": "com.easysavevideo.app.ui.shell.EsvDestinationTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:05:53.429Z"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryBackDispatchTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-12T07:05:53.371Z"
+    }
+  ],
+  "total": 17,
+  "lint_debug": {
+    "app": {
+      "Warning": 59,
+      "Hint": 8
+    },
+    "nav-diagnostics": {
+      "Warning": 8
+    }
+  },
+  "first_build": "FAILED_QA_JAVA_SOURCE_DIR_NOT_KOTLIN_INPUT",
+  "second_build": "FAILED_UNSUPPORTED_KOTLIN_SOURCE_SETS_MAIN",
+  "official_agp_source_configuration": "https://developer.android.com/build/migrate-to-built-in-kotlin#kotlin-sourceSets",
+  "final": "PASS",
+  "apk_static": {
+    "status": "PASS_STATIC_ONLY",
+    "source_parent": "073d80d99256f14b04d9e056f9eb3c2245742b1d",
+    "source_commit": "PENDING_LOCAL_COMMIT",
+    "package": "com.easysavevideo.navdiagnostics",
+    "activity": ".NavDiagnosticActivity",
+    "versionCode": 3,
+    "minSdk": 31,
+    "targetSdk": 36,
+    "apk": "esv-nav-diagnostics-v3-debug.apk",
+    "bytes": 22858202,
+    "sha256": "175f768bb72ed777d1afb3f0a90ce09adf05a3608bb9594eb39902233c063825",
+    "certificate_sha256": "5e841a04968f3f790f6996ca5e286d8c2734338542486909f9a136717dde808f",
+    "runtime_artifacts": 64,
+    "strict_admission": "UNCHANGED_PRIOR90_SUBSET",
+    "lint": {
+      "Warning": 8
+    },
+    "shared_policy_sha256": "4cdf211f638bf17a16ddc58346a745f0db51dcd487e58c41c37c4945da4e8118",
+    "main_activity_sha256": "27566467171ff6aacc5a15ab9da8cf6095a1c0351e1bdd1dfae01ca87fee7ec8",
+    "diagnostic_source_sha256": "6948d552fab15aac3b5eaec32115bf7937a2a971b85de5f5879d2e4d5bf39baf",
+    "shared_policy_definition": {
+      "Lcom/google/common/util/concurrent/ListenableFuture;": [
+        "classes6.dex"
+      ],
+      "Landroidx/concurrent/futures/ResolvableFuture;": [
+        "classes.dex"
+      ],
+      "Landroidx/concurrent/futures/AbstractResolvableFuture;": [
+        "classes.dex"
+      ],
+      "Landroidx/profileinstaller/ProfileVerifier;": [
+        "classes.dex"
+      ],
+      "Lcom/easysavevideo/app/ui/shell/navigation/RootNavigation;": [
+        "classes4.dex"
+      ]
+    },
+    "original_v2_function_unchanged": true,
+    "production_changes": "NAVIGATION_FUNCTION_AND_IMPORT_ONLY_AFTER_BATCH_CHECKPOINT",
+    "runtime_matrix": "NOT_RUN",
+    "installation": "NOT_RUN",
+    "production_ANR": "UNKNOWN_SEPARATE_DEFECT",
+    "limitations": [
+      "Default graph/animations differ from production chrome and owner lifecycles",
+      "Presence/current/previous callbacks are not a full ordered stack dump",
+      "Source models/static checks are not device or production acceptance",
+      "Fixed 18-case matrix includes baseline6 and12 cross-root cases; marker restoration and Back; recreation/rotation manual"
+    ]
+  },
+  "runtime_original_v3": "NOT_RUN",
+  "runtime_fixed_v3": "NOT_RUN",
+  "production_ANR": "UNKNOWN_SEPARATE_DEFECT",
+  "device_operations": 0,
+  "production_apk": "NOT_BUILT",
+  "sync": "PENDING_REVIEW"
+}

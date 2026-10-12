@@ -7,10 +7,14 @@ android {
     namespace = "com.easysavevideo.navdiagnostics"
     compileSdk = 36
     buildToolsVersion = "36.0.0"
-    defaultConfig { applicationId = "com.easysavevideo.navdiagnostics"; minSdk = 31; targetSdk = 36; versionCode = 2; versionName = "2-nav-qa" }
+    defaultConfig { applicationId = "com.easysavevideo.navdiagnostics"; minSdk = 31; targetSdk = 36; versionCode = 3; versionName = "3-nav-qa-original-fixed" }
     buildFeatures { compose = true }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     lint { abortOnError = true }
+}
+// Compile the exact production finite policy, without importing the app or its business owners.
+android.sourceSets.named("main") {
+    kotlin.directories += "../app/src/main/kotlin/com/easysavevideo/app/ui/shell/navigation"
 }
 val admittedLines = rootProject.file("third_party/admitted-runtime.tsv").readLines().filter { it.isNotBlank() && !it.startsWith("#") }
 dependencies {

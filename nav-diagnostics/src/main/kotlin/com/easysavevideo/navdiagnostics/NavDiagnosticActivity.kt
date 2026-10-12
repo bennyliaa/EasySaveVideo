@@ -9,6 +9,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import com.easysavevideo.app.ui.shell.navigation.RootNavigation
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -27,9 +29,9 @@ class NavDiagnosticActivity : ComponentActivity() {
     private var instance = 0
     private fun fixed(route: String?) = route?.takeIf { it in routes } ?: "NONE"
     private fun emit(action: String, nav: NavHostController, expected: String? = null) {
-        if (records.size >= 300) return
+        if (records.size >= 1_000) return
         val current = fixed(nav.currentDestination?.route)
-        val row = JSONObject().put("action", action).put("instance", instance).put("route", current)
+        val row = JSONObject().put("carrier_version", 3).put("action", action).put("instance", instance).put("route", current)
             .put("previous", fixed(nav.previousBackStackEntry?.destination?.route))
         if (expected != null) row.put("expected", expected).put("route_matches", current == expected)
         val present = JSONArray()
@@ -40,7 +42,7 @@ class NavDiagnosticActivity : ComponentActivity() {
         row.put("owned_markers", markers)
         records.add(row)
         // Only this separate app's internal file; fixed route/action diagnostics, no arguments.
-        val file = File(filesDir, "nav-observations.jsonl")
+        val file = File(filesDir, "nav-observations-v3.jsonl")
         if (file.length() < 1_048_576) file.appendText(row.toString() + "\n")
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +52,7 @@ class NavDiagnosticActivity : ComponentActivity() {
             val nav = rememberNavController()
             val scope = rememberCoroutineScope()
             var running by remember { mutableStateOf(false) }
+            var useFixed by rememberSaveable { mutableStateOf(false) }
             val entry by nav.currentBackStackEntryAsState()
             var summary by remember { mutableStateOf("Runtime cases NOT RUN. This is not ESV media acceptance.") }
             fun original(target: String, action: String) {
@@ -64,6 +67,23 @@ class NavDiagnosticActivity : ComponentActivity() {
                 }
                 emit(action + "_AFTER", nav, target)
             }
+            fun repaired(target: String, action: String) {
+                emit("FIXED_" + action + "_BEFORE", nav)
+                if (nav.currentDestination?.route != target) {
+                    if (target in roots) RootNavigation.navigate(target, { nav.currentDestination?.route }, { nav.popBackStack() }) { preserve ->
+                        nav.navigate(target) {
+                            launchSingleTop = true
+                            if (preserve) popUpTo("discover") { saveState = true }
+                            else popUpTo(nav.graph.id) { saveState = false }
+                            restoreState = true
+                        }
+                    } else nav.navigate(target) { launchSingleTop = true }
+                }
+                emit("FIXED_" + action + "_AFTER", nav, target)
+            }
+            fun selected(target: String, action: String) {
+                if (useFixed) repaired(target, action) else original(target, action)
+            }
             DisposableEffect(nav) {
                 val listener = androidx.navigation.NavController.OnDestinationChangedListener { _, _, _ -> emit("DESTINATION_CALLBACK", nav) }
                 nav.addOnDestinationChangedListener(listener)
@@ -71,10 +91,13 @@ class NavDiagnosticActivity : ComponentActivity() {
             }
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 BasicText("ESV Nav QA: separate sandbox, no media/user data")
-                Control("HEADER_DISCOVER", !running) { original("discover", "HEADER_DISCOVER") }
-                Control("OPEN_SETTINGS", !running) { original("settings", "OPEN_SETTINGS") }
-                for (root in roots) Control("BOTTOM_" + root.uppercase(), !running) { original(root, "BOTTOM_" + root.uppercase()) }
-                for (route in listOf("sources", "browser", "editor")) Control("OPEN_" + route.uppercase(), !running) { original(route, "OPEN_" + route.uppercase()) }
+                BasicText("Manual policy: " + if (useFixed) "FIXED" else "ORIGINAL")
+                Control("MODE_ORIGINAL", !running) { useFixed = false }
+                Control("MODE_FIXED", !running) { useFixed = true }
+                Control("HEADER_DISCOVER", !running) { selected("discover", "HEADER_DISCOVER") }
+                Control("OPEN_SETTINGS", !running) { selected("settings", "OPEN_SETTINGS") }
+                for (root in roots) Control("BOTTOM_" + root.uppercase(), !running) { selected(root, "BOTTOM_" + root.uppercase()) }
+                for (route in listOf("sources", "browser", "editor")) Control("OPEN_" + route.uppercase(), !running) { selected(route, "OPEN_" + route.uppercase()) }
                 Control("BACK_POP", !running) { emit("BACK_BEFORE", nav); nav.popBackStack(); emit("BACK_AFTER", nav) }
                 Control("RUN_ORIGINAL_MATRIX", !running) {
                     scope.launch {
@@ -105,6 +128,51 @@ class NavDiagnosticActivity : ComponentActivity() {
                             emit("CASE_EXCEPTION", nav)
                         } finally { running = false }
                     }
+                }
+                Control("RUN_FIXED_MATRIX", !running) {
+                    scope.launch {
+                        running = true; useFixed = true
+                        try {
+                            // Same six v2 cases plus all auxiliaries to other roots. Fixture reset
+                            // belongs only to this sandbox; assertions use actual controller state.
+                            val cases = listOf(Triple("discover", "settings", "discover"), Triple("discover", "settings", "discover"),
+                                Triple("tasks", "settings", "tasks"), Triple("discover", "sources", "discover"),
+                                Triple("discover", "browser", "discover"), Triple("library", "editor", "library")) +
+                                listOf("settings", "sources", "browser", "editor").flatMap { auxiliary ->
+                                    roots.filter { it != "tasks" }.map { Triple("tasks", auxiliary, it) }
+                                }
+                            for ((index, case) in cases.withIndex()) {
+                                val (root, auxiliary, target) = case
+                                for (r in roots) nav.clearBackStack(r)
+                                nav.navigate("discover") { popUpTo(nav.graph.id) { inclusive = false }; restoreState = false }
+                                delay(200)
+                                if (root != "discover") repaired(root, "CASE_ROOT")
+                                delay(200)
+                                nav.getBackStackEntry(root).savedStateHandle["owned_probe"] = 17
+                                repaired(auxiliary, "CASE_AUXILIARY"); delay(200)
+                                repaired(target, "CASE_${index}_ROOT"); delay(200)
+                                emit("FIXED_CASE_${index}_SETTLED", nav, target)
+                                repaired(root, "CASE_${index}_RETURN_ORIGINAL_ROOT"); delay(200)
+                                emit("FIXED_CASE_${index}_MARKER_RESTORE", nav, root)
+                            }
+                            repaired("discover", "SAME_ROOT_FIRST"); delay(200)
+                            repaired("discover", "SAME_ROOT_REPEAT"); delay(200)
+                            repaired("settings", "BACK_SETUP"); delay(200)
+                            emit("FIXED_BACK_BEFORE", nav); nav.popBackStack(); delay(200)
+                            emit("FIXED_BACK_SETTLED", nav, "discover")
+                            summary = "Fixed matrix executed: inspect actual route/callback/markers. Rotation remains manual."
+                        } catch (error: Exception) {
+                            summary = "Runtime stopped: " + error.javaClass.simpleName
+                            emit("FIXED_CASE_EXCEPTION", nav)
+                        } finally { running = false }
+                    }
+                }
+                Control("PREPARE_FIXED_RECREATE_AUX", !running) {
+                    useFixed = true
+                    repaired("library", "RECREATE_ROOT")
+                    nav.getBackStackEntry("library").savedStateHandle["owned_probe"] = 17
+                    repaired("settings", "RECREATE_AUX")
+                    emit("FIXED_RECREATE_READY", nav, "settings")
                 }
                 Control("RECREATE_ACTIVITY", !running) { emit("RECREATE_BEFORE", nav); recreate() }
                 BasicText("Current fixed route: " + fixed(entry?.destination?.route))

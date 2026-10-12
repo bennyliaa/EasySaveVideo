@@ -24,6 +24,7 @@ import com.easysavevideo.app.browser.bookmarks.AndroidBookmarkRuntime
 import com.easysavevideo.app.storage.*
 import com.easysavevideo.app.theme.EsvThemeHost
 import com.easysavevideo.app.ui.shell.*
+import com.easysavevideo.app.ui.shell.navigation.RootNavigation
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import com.easysavevideo.app.ui.BrowserScreen
@@ -77,13 +78,20 @@ class MainActivity : ComponentActivity() {
             discovery.setVisibility(isForeground, false)
             providerManagement.setActive(false)
             if (destination != EsvDestination.LIBRARY) libraryExportReference = null
-        }, onNavigate = { target -> controller.navigate(target.route) {
-            launchSingleTop = true
+        }, onNavigate = { target ->
             if (target in EsvDestination.roots) {
-                popUpTo(EsvDestination.DISCOVER.route) { saveState = true }
-                restoreState = true
+                RootNavigation.navigate(target.route, { controller.currentDestination?.route }, { controller.popBackStack() }) { preserve ->
+                    controller.navigate(target.route) {
+                        launchSingleTop = true
+                        if (preserve) popUpTo(EsvDestination.DISCOVER.route) { saveState = true }
+                        else popUpTo(controller.graph.id) { saveState = false }
+                        restoreState = true
+                    }
+                }
+            } else {
+                controller.navigate(target.route) { launchSingleTop = true }
             }
-        } })
+        })
     }
     private fun backTo(destination: EsvDestination = EsvDestination.DISCOVER) {
         if (navController?.popBackStack() != true) navigate(destination)
