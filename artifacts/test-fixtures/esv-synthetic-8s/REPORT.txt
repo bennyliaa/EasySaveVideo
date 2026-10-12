@@ -1,0 +1,33 @@
+ESV synthetic MP4 test fixture — verification report
+
+File: esv_synthetic_8s_h264_aac.mp4
+Size: 191,650 bytes (187.16 KiB)
+SHA-256: 74c26a41fca18c585d288b51a8362381f23e4f0a34053df117630daa8720c353
+Duration: exactly 8.000 seconds (both audio and video)
+Video: H.264/AVC Constrained Baseline, level 3.0; yuv420p; 640×360; 30 fps; 240 decoded frames
+Audio: AAC-LC, 48 kHz, mono; original generated low-volume 440 Hz tone
+MP4 layout: faststart verified (moov before mdat)
+
+Content: three labeled RGB color landmarks, an orbiting yellow circle,
+a left-to-right purple square, progress bar, and visible time/frame markers.
+The first frame reads t=00.00s, frame=000/239; the final frame is 7.97s/239.
+All media is generated from geometry, text, and a sine wave. No website
+content, personal media, private data, network access, or new installation.
+
+PASS: ffprobe codec/dimension/framerate/frame-count/duration assertions
+PASS: full audio/video decode using FFmpeg -xerror, no errors
+PASS: top-level MP4 atom bounds and progressive-download ordering
+PASS: human-visible decoded contact sheet inspected at 0, 2, 4, 6 seconds;
+      geometry and all labels are legible and unclipped
+NOT RUN: ESV import/save/playback/export on emulator or any physical device
+NOT DONE: upload, repository sync, or installation onto any device
+
+Reproduce with existing FFmpeg, Python 3 and Pillow:
+  python3 generate_fixture.py [output_directory]
+The script overwrites only its named fixture and supporting QA files in the
+chosen output directory. Use a new directory if retaining an earlier run.
+Generation environment: FFmpeg 7.1.5; Python 3.12.14; Pillow 12.3.0.
+Pixel-identical hashes are not guaranteed with different codec/font versions.
+
+Evidence: manifest.json, ffprobe.json, ffmpeg_encode.log,
+ffmpeg_decode.log (empty means zero decode errors), decoded_contact_sheet.png.

@@ -1,0 +1,61 @@
+{
+  "schema": "esv-synthetic-fixture-transfer-v1",
+  "original_media": {
+    "file": "esv_synthetic_8s_h264_aac.mp4",
+    "bytes": 191650,
+    "sha256": "74c26a41fca18c585d288b51a8362381f23e4f0a34053df117630daa8720c353"
+  },
+  "base64_transfer": {
+    "file": "esv_synthetic_8s_h264_aac.mp4.b64",
+    "bytes": 255536,
+    "sha256": "76a6f0f9bd1a3ef60f08c208ec81867f82a8073f79539e0bbd7a6624eeaa7e5d",
+    "git_blob_sha1": "5bd5b80b7d9bf6a5485c47ca8d696f1d4a2ee3b1",
+    "encoding": "RFC4648 canonical base64; ASCII UTF-8 without whitespace",
+    "reconstruct": "Verify text length/SHA256/Git blob SHA1, strictly decode base64 and verify original_media bytes/SHA256 before use"
+  },
+  "files": [
+    {
+      "file": "esv_synthetic_8s_h264_aac.mp4",
+      "bytes": 191650,
+      "sha256": "74c26a41fca18c585d288b51a8362381f23e4f0a34053df117630daa8720c353",
+      "git_blob_sha1": "1e099ef7dd31bbed1d3b8d86bb9ef765e0416c46"
+    },
+    {
+      "file": "generate_fixture.py",
+      "bytes": 7015,
+      "sha256": "60b794d1b8446553f9039f58f1a25b535453559db99de03c51be3b19e12dd24a",
+      "git_blob_sha1": "01ca9c9a298500a9c22b15a613c9c7124645e645"
+    },
+    {
+      "file": "manifest.json",
+      "bytes": 1967,
+      "sha256": "d985608afeae10c513e1cb0c33601faddf2bc8f4ddfe5863bf5c5a4004fc6d74",
+      "git_blob_sha1": "a312f5b51ac48dac14a388a161069776127f308a"
+    },
+    {
+      "file": "REPORT.txt",
+      "bytes": 1858,
+      "sha256": "28332023911db4f07f5eabee53a4509c7df2934b7e83549bedaddc17e1857b74",
+      "git_blob_sha1": "fcfdce09d54a6ecdfee7d09acc5c888f981b0bc0"
+    },
+    {
+      "file": "SHA256SUMS",
+      "bytes": 96,
+      "sha256": "a40d354c401b6a141769ab7ff7bbc4f57c7e59b2dd94a56e89838724658d7f99",
+      "git_blob_sha1": "de74fb17df4651203d3c8f5de924f51048d48187"
+    },
+    {
+      "file": "esv_synthetic_8s_h264_aac.mp4.b64",
+      "bytes": 255536,
+      "sha256": "76a6f0f9bd1a3ef60f08c208ec81867f82a8073f79539e0bbd7a6624eeaa7e5d",
+      "git_blob_sha1": "5bd5b80b7d9bf6a5485c47ca8d696f1d4a2ee3b1"
+    }
+  ],
+  "scope": "Original synthetic ESV QA fixture; no personal media or third-party source media. Generation report is preserved as supplied; its upload status reflects time of generation. This transfer does not imply device acceptance.",
+  "generation_evidence_not_in_this_transfer": [
+    "decoded_contact_sheet.png",
+    "ffmpeg_encode.log",
+    "ffmpeg_decode.log",
+    "ffprobe.json"
+  ]
+}
