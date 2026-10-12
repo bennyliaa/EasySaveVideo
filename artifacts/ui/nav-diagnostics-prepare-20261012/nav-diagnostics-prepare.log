@@ -1,0 +1,41 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :nav-diagnostics
+w: file:///WORKSPACE/nav-diagnostics/build.gradle.kts:23:40: 'fun RegisteringDomainObjectDelegateProviderWithAction<out TaskContainer, Task>.provideDelegate(receiver: Any?, property: KProperty<*>): ExistingDomainObjectDelegate<TaskProvider<Task>>' is deprecated. Use 'val task = tasks.register(name) { }' instead. See the Gradle 9.6 upgrading guide.
+w: file:///WORKSPACE/nav-diagnostics/build.gradle.kts:23:40: 'fun <T : Any, C : NamedDomainObjectContainer<T>> C.registering(action: T.() -> Unit): RegisteringDomainObjectDelegateProviderWithAction<out C, T>' is deprecated. Use 'val element = register(name) { }' instead. See the Gradle 9.6 upgrading guide.
+w: file:///WORKSPACE/nav-diagnostics/build.gradle.kts:23:40: 'fun <T> ExistingDomainObjectDelegate<out T>.getValue(receiver: Any?, property: KProperty<*>): T' is deprecated. Use the named() API instead. See the Gradle 9.6 upgrading guide.
+
+> Task :nav-diagnostics:verifyDiagnosticAdmission FAILED
+
+[Incubating] Problems report is available at: file:///WORKSPACE/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':nav-diagnostics:verifyDiagnosticAdmission' (registered in build file 'nav-diagnostics\build.gradle.kts').
+> Dependency verification failed for configuration ':nav-diagnostics:debugRuntimeClasspath'
+  5 artifacts failed verification:
+    - collection-1.0.0.pom (androidx.collection:collection:1.0.0) from repository Google
+    - collection-1.4.2.module (androidx.collection:collection:1.4.2) from repository Google
+    - runtime-1.7.0.module (androidx.compose.runtime:runtime:1.7.0) from repository Google
+    - runtime-saveable-1.7.0.module (androidx.compose.runtime:runtime-saveable:1.7.0) from repository Google
+    - ui-1.0.1.module (androidx.compose.ui:ui:1.0.1) from repository Google
+  If the artifacts are trustworthy, you will need to update the gradle/verification-metadata.xml file. For more on how to do this, please refer to https://docs.gradle.org/9.6.0/userguide/dependency_verification.html#sec:troubleshooting-verification in the Gradle documentation.
+  
+  Open this report for more details: file:///WORKSPACE/build/reports/dependency-verification/at-1791783817656/dependency-verification-report.html
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+> Get more help at https://help.gradle.org.
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 20s
+1 actionable task: 1 executed

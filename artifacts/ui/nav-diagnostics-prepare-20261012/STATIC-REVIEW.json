@@ -1,0 +1,41 @@
+{
+  "status": "PASS_LOCAL_BUILD_SIGNATURE_AND_STATIC_CHECKS_ONLY",
+  "package": "com.easysavevideo.navdiagnostics",
+  "activity": ".NavDiagnosticActivity",
+  "versionCode": 1,
+  "minSdk": 31,
+  "targetSdk": 36,
+  "apk": "esv-nav-diagnostics-v1-debug.apk",
+  "bytes": 20201516,
+  "sha256": "5ab4e4bc4532a3ade2392c26518b5e0a70312833e02ad84c591d7dcd2c693fb1",
+  "certificate_sha256": "5e841a04968f3f790f6996ca5e286d8c2734338542486909f9a136717dde808f",
+  "signature": "Existing local Android debug signer; separate package, not code5 replacement",
+  "runtime_artifacts": 58,
+  "admission": "Every artifact exact byte/version subset of prior90; verification metadata and strict mode unchanged",
+  "lint": {
+    "Warning": 8
+  },
+  "production_navigation_unchanged": true,
+  "source_parent": "68357115020934b4b97737a1721044c6a147ff7c",
+  "source_file_sha256": "1da17097afeb0c47d459c04bedf404f39a33c6fee485019f68c103f6d518deb3",
+  "static_review": "No networking, service, database/content resolver, media, shared UID or runtime permissions. Only own sandbox JSONL output with fixed route/action and synthetic marker integers. Existing instrumentation runner is not referenced. UI header/bottom/manual actions and matrix use actual Android NavHostController/ComposeNavigator; original NavOptions copied, no fix.",
+  "limitations": [
+    "Runtime matrix not executed; not evidence of root cause",
+    "Observable current/previous/presence/callbacks are not a full ordered internal stack dump",
+    "Standalone saved-state/rotation is not real ESV Activity/private state/feature-owner proof",
+    "Debuggable QA app; only own files/profiles and normal activity navigation on future install/start"
+  ],
+  "install_launch_device_operations": 0,
+  "source_commit": "Fixed resulting commit is supplied by handoff; source parent and file digest retained",
+  "build_tasks": [
+    "> Task :nav-diagnostics:packageDebugResources",
+    "> Task :nav-diagnostics:compileDebugKotlin",
+    "> Task :nav-diagnostics:packageDebug",
+    "47 actionable tasks: 25 executed, 22 up-to-date"
+  ],
+  "initial_blocker": "Unreviewed older requested metadata stopped first build; only already-admitted root coordinates aligned; verification metadata unchanged",
+  "compatibility_fixes": [
+    "AGP disallowed Provider source directory; used static exact notice copy without compatibility switch",
+    "Old aapt cannot resolve external system icon for badging; used owned vector"
+  ]
+}
