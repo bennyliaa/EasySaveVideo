@@ -6,8 +6,17 @@
     <string name="library_multi_cancel">Exit selection</string>
     <string name="library_multi_details">Details (one item)</string>
     <string name="library_multi_rename">Rename (one item)</string>
-    <string name="library_multi_move">Move (one item)</string>
+    <string name="library_multi_move">Move selected</string>
     <string name="library_multi_export">Export (one item)</string>
-    <string name="library_multi_single_only">Move and export currently support one selected item. Batch operations are unavailable.</string>
+    <string name="library_multi_single_only">Move supports multiple selected videos. Details, rename and export require one item; batch sharing is pending.</string>
+    <string name="library_batch_move_count">Move %1$d selected videos</string>
+    <string name="library_batch_move_partial">Items move separately. Cancellation stops unstarted items; completed moves remain.</string>
+    <string name="library_batch_move_item">Item %1$d: %2$s</string>
+    <string name="library_batch_moved">Moved</string>
+    <string name="library_batch_already">Already at destination</string>
+    <string name="library_batch_stale">Selection expired</string>
+    <string name="library_batch_unavailable">Unavailable</string>
+    <string name="library_batch_unknown">Result unconfirmed</string>
+    <string name="library_batch_cancelled">Cancelled before start</string>
     <string name="library_multi_item">Select %1$s</string>
 </resources>

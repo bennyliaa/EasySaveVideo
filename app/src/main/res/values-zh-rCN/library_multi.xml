@@ -6,8 +6,17 @@
     <string name="library_multi_cancel">退出多选</string>
     <string name="library_multi_details">详情（单项）</string>
     <string name="library_multi_rename">重命名（单项）</string>
-    <string name="library_multi_move">移动（单项）</string>
+    <string name="library_multi_move">移动所选视频</string>
     <string name="library_multi_export">导出（单项）</string>
-    <string name="library_multi_single_only">当前移动和导出仅支持选择一个条目，批量操作尚不可用。</string>
+    <string name="library_multi_single_only">可移动多个所选视频；详情、重命名和导出限单项，批量分享待实现。</string>
+    <string name="library_batch_move_count">移动 %1$d 个所选视频</string>
+    <string name="library_batch_move_partial">逐项移动。取消会停止未开始的项；已完成的移动保留。</string>
+    <string name="library_batch_move_item">第 %1$d 项：%2$s</string>
+    <string name="library_batch_moved">已移动</string>
+    <string name="library_batch_already">原已在目标位置</string>
+    <string name="library_batch_stale">选择已失效</string>
+    <string name="library_batch_unavailable">不可用</string>
+    <string name="library_batch_unknown">结果未确认</string>
+    <string name="library_batch_cancelled">取消后未开始</string>
     <string name="library_multi_item">选择 %1$s</string>
 </resources>

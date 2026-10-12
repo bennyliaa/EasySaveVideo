@@ -438,3 +438,29 @@ is NOT_RUN. Multi-item move/export/bulk delete remain UNIMPLEMENTED and unavaila
 this is not complete multi-selection business acceptance. Code5 has no P2 fix.
 No production navigation, APK/install or upload change. Separate Nav QA scaffolding
 is not included in this P2 commit and its default opt-in remains off.
+
+
+## Original specification batch move checkpoint (2026-10-12)
+
+Original UI PPT slide18 explicitly requires move/share after selection; UI framework
+line93 and traceability matrix PPT18 require stable identities and existing ports.
+This increment implements bounded multi-item MOVE through existing LibraryRepository
+CAS operations on the existing worker. Exact READY/revision/representation snapshots
+are admitted on the current foreground page and rechecked before each write. Each
+item has a separate durable operation ID; duplicate confirmation is blocked. This
+is sequential per-item mutation, not an atomic group or a rollback promise. Cancellation,
+background and disposal stop unstarted items, allowing a started write to reconcile.
+Completed, already-at-target, stale, unavailable, unconfirmed and cancelled-before-start
+outcomes remain distinct, with snapshot names and per-item results shown locally.
+Exceptions after a committed write remain unconfirmed; no automatic retry/reselection.
+
+52 actual JVM tests PASS after one recorded resource-key-count failure was corrected.
+Debug/Release Kotlin checks and Debug lint PASS; exact task/cache outcomes and lint
+counts are in artifacts/ui/library-batch-move-20261012. Batch sharing/export/delete
+Lint has59 warnings/8 hints/0 errors (one new PluralsCandidate for the English
+selected-video count; the paired format test passes). These are not a zero-warning gate.
+remain UNIMPLEMENTED; this is not complete PPT18 or Android media acceptance.
+No import, Vault, rules, real files, device operation, production APK or upload.
+Independent review/sync PENDING. This checkpoint is sealed before the navigation
+repair requested after independent v2 runtime evidence. Production ESV ANR is a
+separate UNKNOWN defect; no relationship to v1 missing classes is claimed.

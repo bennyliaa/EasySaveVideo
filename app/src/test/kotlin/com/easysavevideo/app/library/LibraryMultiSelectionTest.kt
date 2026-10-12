@@ -83,7 +83,7 @@ class LibraryMultiSelectionTest {
             val nodes=f.newDocumentBuilder().parse(File(root,"$folder/library_multi.xml")).getElementsByTagName("string")
             return (0 until nodes.length).associate{nodes.item(it).attributes.getNamedItem("name").nodeValue to nodes.item(it).textContent}
         }
-        val en=read("values");val zh=read("values-zh-rCN");assertEquals(11,en.size);assertEquals(en.keys,zh.keys)
+        val en=read("values");val zh=read("values-zh-rCN");assertEquals(20,en.size);assertEquals(en.keys,zh.keys)
         val format=Regex("%[0-9]+\\$[ds]")
         en.keys.forEach {assertEquals(format.findAll(en.getValue(it)).map{m->m.value}.toList(),format.findAll(zh.getValue(it)).map{m->m.value}.toList())}
     }

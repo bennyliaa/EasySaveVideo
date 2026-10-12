@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.easysavevideo.library.*
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -26,6 +27,8 @@ data class LibraryViewState(
     val selected: LibrarySelection? = null,
     val editor: LibraryNameEditor? = null,
     val move: LibraryMoveSelection? = null,
+    val batchMoveResults: List<BatchMoveItemResult> = emptyList(),
+    val batchMoveNames: List<String> = emptyList(),
     val deletion: LibraryDeleteSelection? = null,
     val pendingDeletes: Set<String> = emptySet(),
     val pendingDeleteCount: Int = 0,
@@ -49,7 +52,7 @@ sealed interface LibrarySelection {
 }
 
 data class LibraryNameEditor(val target: LibrarySelection?, val parentId: String?, val name: String)
-data class LibraryMoveSelection(val target: LibrarySelection, val originFolderId: String?)
+data class LibraryMoveSelection(val target: LibrarySelection, val originFolderId: String?, val batchRefs: List<MediaReadRef> = emptyList())
 data class LibraryDeleteSelection(val target: LibrarySelection) {
     /** Identity and exact revision are part of consent, including the representation generation. */
     fun matches(selection: LibrarySelection?): Boolean = target == selection
@@ -74,10 +77,12 @@ class AndroidLibraryRuntime internal constructor(
     private var queuedRead: Runnable? = null
     private var delayedSearch: Runnable? = null
     private var deletePoll: Runnable? = null
+    private var batchMoveCancellation: AtomicBoolean? = null
 
     fun setForeground(value: Boolean) {
         ui.requireCurrentThread()
         if (disposed || state.foreground == value) return
+        if (!value) batchMoveCancellation?.set(true)
         invalidateRead()
         state = state.copy(foreground = value, loading = false, selected = null, editor = null, deletion = null, move = null)
         if (value) refresh() else cancelDeletePoll()
@@ -229,8 +234,27 @@ class AndroidLibraryRuntime internal constructor(
         load(state.query.copy(folderId = null, text = "", cursor = null))
     }
 
+    /** Admit only the exact current foreground page snapshot; never substitute nearby items. */
+    fun startMoveBatch(refs: List<MediaReadRef>): Boolean {
+        ui.requireCurrentThread()
+        if (!available() || state.busy || state.loading || !state.ready || state.selected != null ||
+            state.editor != null || state.deletion != null || state.move != null ||
+            refs.size !in 1..LibraryLimits.MAX_PAGE_SIZE || refs.map { it.itemId }.distinct().size != refs.size) return false
+        val snapshot = refs.toList()
+        val items = snapshot.map { ref ->
+            state.items.singleOrNull { it.itemId == ref.itemId }?.takeIf {
+                it.lifecycle == MediaLifecycle.READY && it.readRef() == ref
+            } ?: return false
+        }
+        state = state.copy(move = LibraryMoveSelection(LibrarySelection.Media(items.first()), state.query.folderId, snapshot),
+            batchMoveResults = emptyList(), batchMoveNames = items.map { it.displayName }, selected = null, editor = null, deletion = null)
+        load(state.query.copy(folderId = null, text = "", cursor = null))
+        return true
+    }
+
     fun cancelMove() {
         ui.requireCurrentThread()
+        batchMoveCancellation?.let { it.set(true); return }
         if (!available() || state.busy) return
         val move = state.move ?: return
         state = state.copy(move = null)
@@ -242,6 +266,10 @@ class AndroidLibraryRuntime internal constructor(
         if (!available() || state.busy || state.loading || !state.ready) return
         val move = state.move ?: return
         val destination = state.query.folderId
+        if (move.batchRefs.isNotEmpty()) {
+            confirmBatchMove(LibraryBatchMove(move.batchRefs, destination))
+            return
+        }
         if (move.target is LibrarySelection.Folder && move.target.id == destination) {
             state = state.copy(notice = "不能将文件夹移动到其自身。")
             return
@@ -253,6 +281,27 @@ class AndroidLibraryRuntime internal constructor(
                 is LibrarySelection.Folder -> repository.moveFolder(target.id, target.revision, destination, operationId)
             }
             MutationResult()
+        }
+    }
+
+    private fun confirmBatchMove(batch: LibraryBatchMove) {
+        invalidateRead(); cancelDeletePoll()
+        val cancellation = AtomicBoolean(false)
+        batchMoveCancellation = cancellation
+        state = state.copy(busy = true, loading = false, notice = "正在逐项移动，尚未确认完成。")
+        val job = Runnable {
+            val results = batch.execute(repository) { cancellation.get() }
+            ui.post {
+                if (disposed) return@post
+                batchMoveCancellation = null
+                state = state.copy(busy = false, move = null, batchMoveResults = results,
+                    notice = libraryBatchMoveSummary(results))
+                if (state.foreground) load(state.query.copy(cursor = null))
+            }
+        }
+        if (!work.submit(job)) {
+            batchMoveCancellation = null
+            state = state.copy(busy = false, notice = libraryErrorText(LibraryError.BUSY))
         }
     }
 
@@ -426,6 +475,7 @@ class AndroidLibraryRuntime internal constructor(
     override fun close() {
         ui.requireCurrentThread()
         if (disposed) return
+        batchMoveCancellation?.set(true)
         disposed = true
         invalidateRead(); cancelDeletePoll()
         state = state.copy(foreground = false, loading = false, selected = null, editor = null, deletion = null, move = null)
@@ -458,6 +508,13 @@ private class BoundedLibraryWorkLane : LibraryWorkLane {
     override fun submit(task: Runnable): Boolean = try { executor.execute(task); true } catch (_: java.util.concurrent.RejectedExecutionException) { false }
     override fun remove(task: Runnable) { executor.remove(task) }
     override fun close() { executor.shutdown() }
+}
+
+internal fun libraryBatchMoveSummary(results: List<BatchMoveItemResult>): String {
+    fun count(status: BatchMoveStatus) = results.count { it.status == status }
+    return "逐项移动结果：已移动 ${count(BatchMoveStatus.MOVED)}；原已在目标 ${count(BatchMoveStatus.ALREADY_AT_TARGET)}；" +
+        "失效 ${count(BatchMoveStatus.STALE)}；不可用 ${count(BatchMoveStatus.UNAVAILABLE)}；" +
+        "未确认 ${count(BatchMoveStatus.FAILED_UNCONFIRMED)}；取消后未开始 ${count(BatchMoveStatus.CANCELLED_BEFORE_START)}。"
 }
 
 internal fun boundedLibraryText(value: String, maxUtf8Bytes: Int): String {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.library.LibraryBatchMoveTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-12T06:49:00.761Z" hostname="HOST" time="0.06">
+  <properties/>
+  <testcase name="consumesSnapshotOnceAndDefensivelyCopiesInput" classname="com.easysavevideo.library.LibraryBatchMoveTest" time="0.033"/>
+  <testcase name="movesOnlySelectedItemsWithDistinctOperationIds" classname="com.easysavevideo.library.LibraryBatchMoveTest" time="0.007"/>
+  <testcase name="cancellationBeforeStartDoesNotAccessRepository" classname="com.easysavevideo.library.LibraryBatchMoveTest" time="0.001"/>
+  <testcase name="rejectsEmptyDuplicateAndOversizedConsent" classname="com.easysavevideo.library.LibraryBatchMoveTest" time="0.008"/>
+  <testcase name="exceptionAfterCommitRemainsUnconfirmedAndNextItemContinues" classname="com.easysavevideo.library.LibraryBatchMoveTest" time="0.003"/>
+  <testcase name="alreadyAtTargetIsNotReportedAsMoved" classname="com.easysavevideo.library.LibraryBatchMoveTest" time="0.0"/>
+  <testcase name="rejectsChangedRevisionGenerationAndLifecycleWithoutWrites" classname="com.easysavevideo.library.LibraryBatchMoveTest" time="0.001"/>
+  <testcase name="cancellationDuringLookupFencesMutation" classname="com.easysavevideo.library.LibraryBatchMoveTest" time="0.001"/>
+  <testcase name="cancellationDuringWritePreservesCompletedItemAndStopsNext" classname="com.easysavevideo.library.LibraryBatchMoveTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

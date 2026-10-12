@@ -111,7 +111,10 @@ fun LibraryScreen(
                     onPage = { if (libraryMultiSelectionInteractive(multi, runtime.state)) multi = multi.selectPage(runtime.state.items) },
                     onClear = { multi = multi.clear() }, onCancel = { multi = LibraryMultiSelection.inactive() },
                     onDetails = { selectedAction {} }, onRename = { selectedAction { runtime.rename() } },
-                    onMove = { selectedAction { runtime.startMove() } },
+                    onMove = {
+                        if (libraryMultiSelectionInteractive(multi, runtime.state) &&
+                            runtime.startMoveBatch(multi.references.toList())) multi = LibraryMultiSelection.inactive()
+                    },
                     onExport = { if (onExport != null) selectedAction { selection -> runtime.takeSelectedReadRef(selection)?.let(onExport) } },
                     modifier = Modifier.heightIn(max = toolbarHeight))
                 LazyVerticalGrid(
@@ -167,11 +170,15 @@ fun LibraryScreen(
                                 EsvButton(stringResource(R.string.flow_libraryscreen_10), { runtime.enterFolder(null) }, enabled = interactive)
                             }
                             state.move?.let { move ->
-                                EsvText("移动：${move.target.name}")
+                                EsvText(if (move.batchRefs.isEmpty()) "移动：${move.target.name}" else stringResource(R.string.library_batch_move_count, move.batchRefs.size))
+                                if (move.batchRefs.isNotEmpty()) EsvText(stringResource(R.string.library_batch_move_partial), style = v.captionTextStyle)
+                                if (move.batchRefs.isNotEmpty()) state.batchMoveNames.forEachIndexed { index, name ->
+                                    EsvText(stringResource(R.string.library_batch_move_item, index + 1, name), style = v.captionTextStyle)
+                                }
                                 EsvText(stringResource(R.string.flow_libraryscreen_12), style = v.captionTextStyle, color = v.colors.muted)
                                 EsvButton(stringResource(R.string.flow_libraryscreen_13), runtime::confirmMove,
                                     enabled = interactive && !(move.target is LibrarySelection.Folder && move.target.id == state.query.folderId), modifier = Modifier.fillMaxWidth())
-                                EsvButton(stringResource(R.string.flow_libraryscreen_14), runtime::cancelMove, enabled = !state.busy)
+                                EsvButton(stringResource(R.string.flow_libraryscreen_14), runtime::cancelMove, enabled = !state.busy || move.batchRefs.isNotEmpty())
                             }
                             if (state.busy) EsvText(stringResource(R.string.flow_libraryscreen_15), color = v.colors.muted)
                             else if (state.loading) EsvText(stringResource(R.string.flow_libraryscreen_16), color = v.colors.muted)
@@ -179,6 +186,17 @@ fun LibraryScreen(
                             state.notice?.let {
                                 EsvText(it, style = v.captionTextStyle)
                                 EsvButton(stringResource(R.string.flow_libraryscreen_18), runtime::dismissNotice)
+                            }
+                            state.batchMoveResults.forEachIndexed { index, result ->
+                                state.batchMoveNames.getOrNull(index)?.let { name -> EsvText(name, style = v.captionTextStyle) }
+                                EsvText(stringResource(R.string.library_batch_move_item, index + 1, stringResource(when (result.status) {
+                                    com.easysavevideo.library.BatchMoveStatus.MOVED -> R.string.library_batch_moved
+                                    com.easysavevideo.library.BatchMoveStatus.ALREADY_AT_TARGET -> R.string.library_batch_already
+                                    com.easysavevideo.library.BatchMoveStatus.STALE -> R.string.library_batch_stale
+                                    com.easysavevideo.library.BatchMoveStatus.UNAVAILABLE -> R.string.library_batch_unavailable
+                                    com.easysavevideo.library.BatchMoveStatus.FAILED_UNCONFIRMED -> R.string.library_batch_unknown
+                                    com.easysavevideo.library.BatchMoveStatus.CANCELLED_BEFORE_START -> R.string.library_batch_cancelled
+                                })), style = v.captionTextStyle)
                             }
                             if (state.pendingDeleteCount > 0) EsvText("${state.pendingDeleteCount} 个已确认删除的项目仍待清理；尚未完成。", color = v.colors.error, style = v.captionTextStyle)
                         }

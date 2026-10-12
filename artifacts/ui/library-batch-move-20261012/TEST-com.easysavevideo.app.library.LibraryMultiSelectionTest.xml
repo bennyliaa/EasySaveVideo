@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.library.LibraryMultiSelectionTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-12T06:49:16.957Z" hostname="HOST" time="0.113">
+  <properties/>
+  <testcase name="metadataResolutionDoesNotRequireAnyReaderOrNativeFrame" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.028"/>
+  <testcase name="inactiveNeverAdmitsToggleOrCommands" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.009"/>
+  <testcase name="missingDeletedAndAmbiguousIdsNeverSelectAdjacentItems" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.001"/>
+  <testcase name="pageSelectionIsBoundedAndExcludesNonReadyOrDuplicateIds" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.012"/>
+  <testcase name="foregroundReadyBusyLoadingAndModalGatesAreRequired" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.001"/>
+  <testcase name="currentPageSelectionRetainsStableReferencesAcrossReordering" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.001"/>
+  <testcase name="toolbarResourcesHaveMatchingKeysAndFormatParameters" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.046"/>
+  <testcase name="staleRevisionOrRepresentationIsClearedWithoutRebasingConsent" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.0"/>
+  <testcase name="deselectClearAndExitRetainNoCommandIntent" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.001"/>
+  <testcase name="changedQueryFolderSortOrPageRevokesActionAdmission" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.005"/>
+  <testcase name="togglingAnObsoleteSnapshotCannotSelectReplacement" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.0"/>
+  <testcase name="onlyOneExactCurrentItemCanUseExistingSinglePorts" classname="com.easysavevideo.app.library.LibraryMultiSelectionTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

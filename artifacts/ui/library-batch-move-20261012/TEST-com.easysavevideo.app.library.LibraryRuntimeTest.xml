@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.library.LibraryRuntimeTest" tests="28" skipped="0" failures="0" errors="0" timestamp="2026-10-12T06:49:17.086Z" hostname="HOST" time="0.071">
+  <properties/>
+  <testcase name="pendingDeletionPollDoesNotDismissAnotherConfirmation" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.029"/>
+  <testcase name="wideRefreshRetainsIdentityButConsumesOnlyLatestReference" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="backgroundAndDisposalCancelQueuedBatchWithoutStaleUiPublication" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.01"/>
+  <testcase name="playbackReferenceRequiresExactActiveForegroundSelectionAndIsSingleUse" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="defaultCompactRefreshStillClearsSelectionAndChangedQueryDoesNotRestoreIt" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="wideRefreshFailureAndBackgroundCannotExposeOldReference" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.003"/>
+  <testcase name="failedFolderNavigationClearsPreviousSnapshotAndDisablesDestination" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.002"/>
+  <testcase name="batchAdmissionRejectsStaleDuplicateLoadingAndBackground" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="queueRejectionRestoresControlsAndDoesNotClaimWriteSuccess" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.002"/>
+  <testcase name="disposedReadCannotPublishItsLateResult" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="missingTombstoneNeverCountsAsCompletedDeletion" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="batchMoveAdmitsExactSnapshotAndCannotDuplicateConfirmation" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="staleMutationShowsConflictAndReloadsCurrentMetadata" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="restartPendingReportIsShownWithoutInventingSuccessfulDeletion" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="repositoryCallsAreOffUiAndPagesReplaceRatherThanAccumulate" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.003"/>
+  <testcase name="failedPageCannotExposePriorRowsUnderNewPageNumber" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="staleCursorRecoversToFirstPageWithoutAppendingObsoleteRows" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.004"/>
+  <testcase name="rapidSearchReplacesQueuedReadAndBoundsInput" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.003"/>
+  <testcase name="deletionConfirmationBindsExactSelectedItemAndRevision" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="batchWorkerRevalidatesConsentAfterDestinationSelection" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="moveCannotConfirmDestinationWhoseLatestLoadFailed" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="nonemptyFolderDeleteExplainsCountsAndDoesNotQueueMutation" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="doubleDeleteTapProducesOneDurableIntentAndHonestPendingState" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="cancellingAcceptedQueuedBatchDoesNotMoveAnyItem" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="backgroundClearsDeleteAndMoveConsentAndRejectsOldCallbacks" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="acceptedMutationFinishesAfterDisposeWithoutPublishingOrClosingSharedRepository" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <testcase name="wideRefreshMissingSelectionDoesNotJumpOrAuthorizeOperations" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.0"/>
+  <testcase name="staleRunningSearchCannotPublishIntoNewGeneration" classname="com.easysavevideo.app.library.LibraryRuntimeTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

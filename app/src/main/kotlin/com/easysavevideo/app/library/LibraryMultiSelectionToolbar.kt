@@ -24,7 +24,7 @@ internal fun LibraryMultiSelectionToolbar(count: Int, interactive: Boolean, sing
             EsvButton(stringResource(R.string.library_multi_cancel), onCancel)
             EsvButton(stringResource(R.string.library_multi_details), onDetails, enabled = single)
             EsvButton(stringResource(R.string.library_multi_rename), onRename, enabled = single)
-            EsvButton(stringResource(R.string.library_multi_move), onMove, enabled = single)
+            EsvButton(stringResource(R.string.library_multi_move), onMove, enabled = interactive && count > 0)
             EsvButton(stringResource(R.string.library_multi_export), onExport, enabled = single && exportAvailable)
         }
         EsvText(stringResource(R.string.library_multi_single_only), style = v.captionTextStyle, color = v.colors.muted)

@@ -356,6 +356,57 @@ class LibraryRuntimeTest {
         h.runtime.close()
     }
 
+    @Test fun batchMoveAdmitsExactSnapshotAndCannotDuplicateConfirmation() {
+        val h=Harness();val a=media("a");val b=media("b");h.repo.media[a.itemId]=a;h.repo.media[b.itemId]=b
+        h.repo.folderRecords["target"]=LibraryFolder("target",1,null,"target");h.start()
+        assertTrue(h.runtime.startMoveBatch(listOf(a.readRef(),b.readRef())))
+        assertFalse(h.runtime.startMoveBatch(listOf(a.readRef())))
+        h.drain();h.runtime.enterFolder("target");h.drain()
+        h.runtime.confirmMove();h.runtime.confirmMove();h.drain()
+        assertEquals(2,h.repo.moveCalls)
+        assertEquals(listOf(BatchMoveStatus.MOVED,BatchMoveStatus.MOVED),h.runtime.state.batchMoveResults.map{it.status})
+        h.runtime.close()
+    }
+
+    @Test fun batchAdmissionRejectsStaleDuplicateLoadingAndBackground() {
+        val h=Harness();val a=media("a");h.repo.media[a.itemId]=a
+        h.runtime.setForeground(true);assertFalse(h.runtime.startMoveBatch(listOf(a.readRef())));h.drain()
+        assertFalse(h.runtime.startMoveBatch(listOf(a.readRef().copy(representationGeneration=2))))
+        assertFalse(h.runtime.startMoveBatch(listOf(a.readRef(),a.readRef())))
+        h.runtime.setForeground(false);assertFalse(h.runtime.startMoveBatch(listOf(a.readRef())))
+        assertEquals(0,h.repo.moveCalls);h.runtime.close()
+    }
+
+    @Test fun cancellingAcceptedQueuedBatchDoesNotMoveAnyItem() {
+        val h=Harness();val a=media("a");h.repo.media[a.itemId]=a;h.start()
+        assertTrue(h.runtime.startMoveBatch(listOf(a.readRef())));h.drain()
+        h.runtime.confirmMove();h.runtime.cancelMove();h.drain()
+        assertEquals(0,h.repo.moveCalls)
+        assertEquals(BatchMoveStatus.CANCELLED_BEFORE_START,h.runtime.state.batchMoveResults.single().status)
+        h.runtime.close()
+    }
+
+    @Test fun backgroundAndDisposalCancelQueuedBatchWithoutStaleUiPublication() {
+        for(dispose in listOf(false,true)) {
+            val h=Harness();val a=media("a");h.repo.media[a.itemId]=a;h.start()
+            assertTrue(h.runtime.startMoveBatch(listOf(a.readRef())));h.drain();h.runtime.confirmMove()
+            if(dispose)h.runtime.close() else h.runtime.setForeground(false)
+            h.drain();assertEquals(0,h.repo.moveCalls);assertFalse(h.runtime.state.foreground)
+            if(dispose)assertTrue(h.runtime.state.batchMoveResults.isEmpty()) else assertEquals(BatchMoveStatus.CANCELLED_BEFORE_START,h.runtime.state.batchMoveResults.single().status)
+            h.runtime.close()
+        }
+    }
+
+    @Test fun batchWorkerRevalidatesConsentAfterDestinationSelection() {
+        val h=Harness();val a=media("a");val b=media("b");h.repo.media[a.itemId]=a;h.repo.media[b.itemId]=b;h.start()
+        assertTrue(h.runtime.startMoveBatch(listOf(a.readRef(),b.readRef())));h.drain()
+        h.repo.media[a.itemId]=a.copy(revision=2);h.repo.media.remove(b.itemId)
+        h.runtime.confirmMove();h.drain()
+        assertEquals(0,h.repo.moveCalls)
+        assertEquals(listOf(BatchMoveStatus.STALE,BatchMoveStatus.UNAVAILABLE),h.runtime.state.batchMoveResults.map{it.status})
+        h.runtime.close()
+    }
+
     private class Harness {
         val ui = FakeUi()
         val work = FakeWork()
