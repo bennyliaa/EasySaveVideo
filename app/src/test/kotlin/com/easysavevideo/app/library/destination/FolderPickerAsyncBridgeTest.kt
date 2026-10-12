@@ -20,7 +20,7 @@ class FolderPickerAsyncBridgeTest {
         val allocator = DurableFolderPickerAllocator({ check(background); next }, { check(background); writes++; next = it; committed })
         val bridge = FolderPickerAsyncBridge<Any, String>({ check(!background) }, { worker.add(it) }, { main.add(it) }, allocator::allocate)
         fun launch(owner: Any = this.owner, gate: () -> Boolean = { current }, action: (Int) -> Unit = { launches.add(it) }) =
-            bridge.launch(owner, gate, action, { failures++ }, { results.add(it) })
+            bridge.launch(owner, gate, action, { failures++ }, { results.add(it) }, related = gate)
         fun work() { background = true; try { worker.removeFirst()() } finally { background = false } }
         fun deliver() { main.removeFirst()() }
         fun complete() { work(); deliver() }
@@ -81,8 +81,8 @@ class FolderPickerAsyncBridgeTest {
     }
     @Test fun rejectedWorkerAdmissionReleasesMainSlot() {
         var reject=true;val bridge=FolderPickerAsyncBridge<Any,String>({}, {if(reject)throw java.util.concurrent.RejectedExecutionException() else it()}, {it()}, {42000})
-        val owner=Any();try{bridge.launch(owner,{true},{},{},{});fail()}catch(_:java.util.concurrent.RejectedExecutionException){}
-        reject=false;var launched=false;bridge.launch(owner,{true},{launched=true},{},{});assertTrue(launched)
+        val owner=Any();try{bridge.launch(owner,{true},{},{},{},related={true});fail()}catch(_:java.util.concurrent.RejectedExecutionException){}
+        reject=false;var launched=false;bridge.launch(owner,{true},{launched=true},{},{},related={true});assertTrue(launched)
     }
     @Test fun pauseBeforeLaunchCancelsEvenIfActivityResumesBeforeWorkerPost() {
         val h=Harness();h.launch();h.work();h.bridge.cancelUnlaunched(h.owner);h.current=true;h.deliver()
@@ -108,7 +108,7 @@ class FolderPickerAsyncBridgeTest {
             {lane.execute(it)}, {posts.add(it);Unit}, allocator::allocate)
         val owner=Any()
         try {
-            bridge.launch(owner,{true},{launches++},{failures++},{})
+            bridge.launch(owner,{true},{launches++},{failures++},{},related={true})
             assertTrue(entered.await(2,java.util.concurrent.TimeUnit.SECONDS))
             // Runs while commit is blocked; no allocation monitor is acquired on the UI lane.
             bridge.cancelUnlaunched(owner)

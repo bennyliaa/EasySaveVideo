@@ -144,7 +144,8 @@ class AndroidOrdinaryDestinationRuntime internal constructor(
         try { host.launch(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
                 Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
-        }, current = { folderHost === host && folderTicket === ticket && choosingFolder }, failed = { folderLaunchFailed(ticket, it) }) { resultCode, data -> receiveFolder(ticket, resultCode, data) } }
+        }, current = { folderHost === host && folderTicket === ticket && choosingFolder },
+            related = { folderHost === host && folderTicket === ticket && choosingFolder }, failed = { folderLaunchFailed(ticket, it) }) { resultCode, data -> receiveFolder(ticket, resultCode, data) } }
         catch (failure: Exception) { folderLaunchFailed(ticket, failure) }
     }
     private fun folderLaunchFailed(ticket: FolderSelectionGate.Ticket, failure: Exception) {

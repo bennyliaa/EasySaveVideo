@@ -24,7 +24,7 @@ internal class AndroidFolderPickerHost(activity: ComponentActivity) : AutoClosea
     }
     @Suppress("DEPRECATION")
     fun launch(intent: Intent, current: () -> Boolean = { true },
-        failed: (Exception) -> Unit = {}, callback: (Int, Intent?) -> Unit) {
+        related: () -> Boolean, failed: (Exception) -> Unit = {}, callback: (Int, Intent?) -> Unit) {
         requireMain()
         check(!closed)
         val host = requireNotNull(activity.get())
@@ -40,7 +40,8 @@ internal class AndroidFolderPickerHost(activity: ComponentActivity) : AutoClosea
                 requireNotNull(activity.get()).startActivityForResult(intent, code)
             },
             failed = { failure -> failed(failure); callback(Activity.RESULT_CANCELED, null) },
-            result = { (code, data) -> callback(code, data) })
+            result = { (code, data) -> callback(code, data) },
+            related = { !closed && activity.get()?.let { it === expected.get() } == true && related() })
     }
     override fun close() {
         requireMain(); closed = true; results.abandon(this)

@@ -332,7 +332,9 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
         try {host.launch(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
                 Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
-        }, current = { directoryHost === host && directorySelection === selected && !closed && !cancelled.get() && selected.current() }, failed = {
+        }, current = { directoryHost === host && directorySelection === selected && !closed && !cancelled.get() && selected.current() },
+            related = { directoryHost === host && directorySelection === selected && !closed && !cancelled.get() &&
+                directoryGate.active(ticket) && selected.lifecycle.active() }, failed = {
             if(directorySelection===selected) { cancel();state=state.copy(directoryNotice=DirectoryExportNotice.UNAVAILABLE) }
         }) { result,data ->
             if(directorySelection!==selected || !directoryGate.receive(ticket) || closed || cancelled.get() || !selected.lifecycle.receive())return@launch

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.destination.FolderPickerResultLifecycleTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-12T11:18:03.769Z" time="0.006">
+  <properties />
+  <testcase name="cancelledAfterStagedResultCannotConfirm" classname="com.easysavevideo.app.library.destination.FolderPickerResultLifecycleTest" time="0.004" />
+  <testcase name="recreationAbandonsOldOwnerAndLateResultCannotStage" classname="com.easysavevideo.app.library.destination.FolderPickerResultLifecycleTest" time="0.001" />
+  <testcase name="revokedPermissionAfterResultStopsWorkerCopyWithoutFakeSuccess" classname="com.easysavevideo.app.library.destination.FolderPickerResultLifecycleTest" time="0.0" />
+  <testcase name="sourceChangeAfterResumeIsRecheckedAtExplicitConfirmation" classname="com.easysavevideo.app.library.destination.FolderPickerResultLifecycleTest" time="0.0" />
+  <testcase name="cancelledBeforeResultCannotStageOrCopyAfterResume" classname="com.easysavevideo.app.library.destination.FolderPickerResultLifecycleTest" time="0.0" />
+  <testcase name="foregroundAndSourceRemainMandatoryBeforeLaunch" classname="com.easysavevideo.app.library.destination.FolderPickerResultLifecycleTest" time="0.0" />
+  <testcase name="changedSourceResultStagesButConfirmationRefuses" classname="com.easysavevideo.app.library.destination.FolderPickerResultLifecycleTest" time="0.0" />
+  <testcase name="launchPauseResultOkResumeExplicitConfirmStagesBeforeForegroundWithoutCopy" classname="com.easysavevideo.app.library.destination.FolderPickerResultLifecycleTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

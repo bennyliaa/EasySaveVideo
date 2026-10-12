@@ -8,22 +8,23 @@ internal class FolderPickerAsyncBridge<O : Any, R>(
     private val allocate: () -> Int,
 ) {
     private class Pending<O, R>(var owner: O?, var current: () -> Boolean,
-        var launch: (Int) -> Unit, var failed: (Exception) -> Unit, var result: (R) -> Unit) {
+        var launch: (Int) -> Unit, var failed: (Exception) -> Unit, var result: (R) -> Unit,
+        var related: () -> Boolean) {
         var code: Int? = null
         var abandoned = false
         var launched = false
         fun releaseCallbacks() {
-            owner = null; current = { false }; launch = {}; failed = {}; result = {}
+            owner = null; current = { false }; launch = {}; failed = {}; result = {}; related = { false }
         }
     }
     private var pending: Pending<O, R>? = null
 
     fun launch(owner: O, current: () -> Boolean, launch: (Int) -> Unit,
-        failed: (Exception) -> Unit, result: (R) -> Unit) {
+        failed: (Exception) -> Unit, result: (R) -> Unit, related: () -> Boolean) {
         requireMain()
         pending?.let { if (!it.launched && (it.abandoned || !it.current())) { pending = null; it.releaseCallbacks() } }
         if (pending != null) throw FolderPickerFailure(FolderPickerError.PENDING)
-        val request = Pending(owner, current, launch, failed, result)
+        val request = Pending(owner, current, launch, failed, result, related)
         pending = request
         try { enqueue {
             val allocated = runCatching { allocate() }
@@ -75,7 +76,8 @@ internal class FolderPickerAsyncBridge<O : Any, R>(
         if (request?.code != code || !request.launched) return true
         pending = null
         if (!request.abandoned && request.owner === owner) {
-            if (request.current()) request.result(result)
+            // Result correlation is independent of launch foreground/source admission.
+            if (request.related()) request.result(result)
             else request.failed(FolderPickerFailure(FolderPickerError.INVALID_STATE))
         }
         return true

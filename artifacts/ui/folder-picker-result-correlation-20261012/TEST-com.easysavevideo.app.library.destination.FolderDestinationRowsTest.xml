@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-12T11:18:03.702Z" time="0.029">
+  <properties />
+  <testcase name="persistedFolderSnapshotDecodesIntoExistingSafExportKind" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.006" />
+  <testcase name="invalidationIsDistinctFromRetirementAndAlwaysVisibleToAuthorityChecks" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.008" />
+  <testcase name="retiredRowsRemainDataButNeverHideTheirStateOrExposeUrisInText" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.004" />
+  <testcase name="selectionRevisionCannotBeNegative" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.002" />
+  <testcase name="selectionRevisionRoundTripsAndLegacyCallersDefaultToZero" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.001" />
+  <testcase name="invalidationRejectsUnknownStateAndRedactsRetainedIdentity" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.001" />
+  <testcase name="malformedFolderRowIdentitiesUriAndRetirementFailClosed" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.004" />
+  <testcase name="folderAndNonfolderSelectionsMustHaveMatchingFields" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.001" />
+  <testcase name="folderRowsRoundTripOnlyReadWriteFlagsAndRetirementState" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.0" />
+  <testcase name="folderSourceTupleRequiresPositiveExactLongVersionsOrAllNull" classname="com.easysavevideo.app.library.destination.FolderDestinationRowsTest" time="0.001" />
+  <system-out />
+  <system-err />
+</testsuite>

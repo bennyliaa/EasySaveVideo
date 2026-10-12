@@ -54,3 +54,11 @@ Kotlin executed, lint59 warnings/8 hints/0 errors and no internal exception in
 the final log. 67 tasks:15 executed/52 up-to-date. Existing code7 input SHA
 6db2a62a7e4461747eb02ae40115353496adbbf006b61e10a7d3a4ed3bb2874b
 rechecked unchanged. No claim of Android StrictMode or device reproduction.
+
+## Independent P2 follow-up
+
+02bfec3 was found to reuse its launch predicate for result correlation, which
+wrongly rejected Files RESULT_OK received before onResume. Its59 tests did not
+exercise foreground=false during result delivery. See
+FOLDER_PICKER_RESULT_CORRELATION_20261012.md for the separate correlation fix
+and new lifecycle-order regressions. Original results above are historical.
