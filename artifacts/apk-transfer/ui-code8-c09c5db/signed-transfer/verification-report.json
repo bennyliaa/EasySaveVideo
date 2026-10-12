@@ -1,0 +1,205 @@
+{
+  "schema": "esv-apk-resigning-verification-v1",
+  "source_commit": "c09c5db25c71d8880bfa86b7d085d175f4c86060",
+  "input_transport_commit": "9bca5289acaad8d6400f7b7d228b180a4d2fcf5f",
+  "input_manifest_sha256": "a4d26dd4734dace927edcb7f3321f2c30639205c0caa43466195e8c6a4f7f084",
+  "input": {
+    "bytes": 45225903,
+    "sha256": "a4f35a62ea46f33ec02d3a474fe08d9f8774071aa0b25c0dc80f66abfc73586b",
+    "all_116_parts_bytes_sha256_git_blob_verified": true,
+    "strict_canonical_base64": true,
+    "was_already_signed": true,
+    "official_verification": {
+      "input_verified": true,
+      "input_api31_verified": true,
+      "input_v2_verified": true,
+      "input_v3_verified": false,
+      "input_certificate_sha256": "5e841a04968f3f790f6996ca5e286d8c2734338542486909f9a136717dde808f",
+      "warning_count": 0
+    }
+  },
+  "signed": {
+    "file": "esv-ui-code8-c09c5db-debug-compatible-signed.apk",
+    "bytes": 45229673,
+    "sha256": "1e12d0823b46f59ea893b6c7169ad6964ab07cc98ed0b954d4a550f1ce28f17d",
+    "certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5"
+  },
+  "metadata": {
+    "package": "com.easysavevideo.app",
+    "versionCode": 8,
+    "versionName": "0.8.0-ui-dev",
+    "minSdk": 31,
+    "targetSdk": 36,
+    "debuggable": true,
+    "variant": "debug",
+    "official_aapt2_before_after_identical": true,
+    "raw_android_manifest_unchanged": true
+  },
+  "official_signatures": {
+    "v2_independent_verified": true,
+    "v2_verifier_override_range": [
+      24,
+      27
+    ],
+    "v3_api31_through_36_verified": true,
+    "api31_verified": true,
+    "api31_v3_verified": true,
+    "certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+    "warning_counts": [
+      0,
+      0,
+      0
+    ],
+    "lower_android_install_compatibility_claimed": false
+  },
+  "signing_implementation": "Existing official Google ApkSigner and ApkVerifier 9.4.0 APIs; existing compatible test identity; old signers not preserved; no new credentials",
+  "signing_schemes": {
+    "v1_enabled": false,
+    "v2_enabled": true,
+    "v3_enabled": true,
+    "v4_enabled": false,
+    "other_signers_preserved": false
+  },
+  "tool_fingerprints": [
+    {
+      "name": "apksig-9.4.0.jar",
+      "sha256": "7ae2e5980c77d853e3513074ee7c822bbdcdcde1668889d17faa7fe8bc8aa821"
+    },
+    {
+      "name": "builder-9.4.0.jar",
+      "sha256": "dcc7126ce9077ab8113bc29518e68e42b05ab1c9ed053b9f97f46e257396485f"
+    },
+    {
+      "name": "builder-model-9.4.0.jar",
+      "sha256": "9ec37d9d6188c84af3b4a78134b5a42e7c9aee1cde0169d13e155e1d6ee81542"
+    },
+    {
+      "name": "aapt2",
+      "sha256": "7f0587c898f8401986b9c32385fb25d1ecea1e9007907376215f30f99c4894a9"
+    }
+  ],
+  "payload": {
+    "identical": true,
+    "entry_count": 204,
+    "comparison": "All ZIP entry names, decompressed bytes SHA256 and compression methods identical. No V1 signature entries in input or output. Original signed input preserved."
+  },
+  "signature_metadata_changes": {
+    "input_signing_block": {
+      "bytes": 45225903,
+      "signing_block_offset": 45203782,
+      "signing_block_bytes": 4096,
+      "signing_block_sha256": "59b76ce432c6120ac18a311ed708ef129256a123d3aa47445b28365ff7f7b1ee",
+      "pairs": [
+        {
+          "id": "0x7109871a",
+          "name": "APK Signature Scheme v2",
+          "value_bytes": 1390,
+          "value_sha256": "740ff9bd3f02a00a4d7580921f18ba7034d01715eeddc93f861b539f6c484cb3"
+        },
+        {
+          "id": "0x42726577",
+          "name": "Verity padding",
+          "value_bytes": 2650,
+          "value_sha256": "4551b8baec05d94b8a55b0bb31ab10b8521ce44b178c3ad9a2b760c708e463a4"
+        }
+      ],
+      "central_directory_offset": 45207878,
+      "central_directory_bytes": 18003
+    },
+    "output_signing_block": {
+      "bytes": 45229673,
+      "signing_block_offset": 45207552,
+      "signing_block_bytes": 4096,
+      "signing_block_sha256": "a93abb3f0c888004953e1966ef5520bdcefb27ee2969d1446d5c0c389fb21e0b",
+      "pairs": [
+        {
+          "id": "0x7109871a",
+          "name": "APK Signature Scheme v2",
+          "value_bytes": 1402,
+          "value_sha256": "a6966e83d982e9d94197745a0921c2836ba5463c0f7b6b1295867b3ea2932917"
+        },
+        {
+          "id": "0xf05368c0",
+          "name": "APK Signature Scheme v3",
+          "value_bytes": 1402,
+          "value_sha256": "1000cfbd97d56f8464835fcdc33b450c6481caff5ded2f324bca508976ee22c6"
+        },
+        {
+          "id": "0x42726577",
+          "name": "Verity padding",
+          "value_bytes": 1224,
+          "value_sha256": "e28b98a94e0077340a3aece749f2d400c3f06890cec9447f4c2567bd1e7a5839"
+        }
+      ],
+      "central_directory_offset": 45211648,
+      "central_directory_bytes": 18003
+    },
+    "v1_zip_signature_entry_changes": [],
+    "signing_block_pair_changes": [
+      {
+        "id": "0x42726577",
+        "change": "REPLACED",
+        "before": {
+          "id": "0x42726577",
+          "name": "Verity padding",
+          "value_bytes": 2650,
+          "value_sha256": "4551b8baec05d94b8a55b0bb31ab10b8521ce44b178c3ad9a2b760c708e463a4"
+        },
+        "after": {
+          "id": "0x42726577",
+          "name": "Verity padding",
+          "value_bytes": 1224,
+          "value_sha256": "e28b98a94e0077340a3aece749f2d400c3f06890cec9447f4c2567bd1e7a5839"
+        }
+      },
+      {
+        "id": "0x7109871a",
+        "change": "REPLACED",
+        "before": {
+          "id": "0x7109871a",
+          "name": "APK Signature Scheme v2",
+          "value_bytes": 1390,
+          "value_sha256": "740ff9bd3f02a00a4d7580921f18ba7034d01715eeddc93f861b539f6c484cb3"
+        },
+        "after": {
+          "id": "0x7109871a",
+          "name": "APK Signature Scheme v2",
+          "value_bytes": 1402,
+          "value_sha256": "a6966e83d982e9d94197745a0921c2836ba5463c0f7b6b1295867b3ea2932917"
+        }
+      },
+      {
+        "id": "0xf05368c0",
+        "change": "ADDED",
+        "before": null,
+        "after": {
+          "id": "0xf05368c0",
+          "name": "APK Signature Scheme v3",
+          "value_bytes": 1402,
+          "value_sha256": "1000cfbd97d56f8464835fcdc33b450c6481caff5ded2f324bca508976ee22c6"
+        }
+      }
+    ],
+    "original_pre_signing_block_bytes_preserved": true,
+    "central_directory_byte_identical": true,
+    "end_record_only_central_directory_offset_changed": true,
+    "new_zero_padding_before_signing_block": {
+      "offset": 45203782,
+      "bytes": 3770,
+      "all_zero": true,
+      "sha256": "1a21dcb5599e6f5b1cf0534d4dc2f5645bc6152f77921ea8f834dc82daa2e24c"
+    },
+    "difference_summary": "Original ZIP local headers, compressed payload bytes and central directory are byte-identical. Official signer inserted 3770 zero padding bytes before replacing the APK Signing Block and updated the EOCD central-directory offset. Old V2 replaced, V3 added, verity padding resized. No V1 ZIP signature entries existed."
+  },
+  "alignment": {
+    "passed": true,
+    "method": "Independent ZIP local-header data-offset audit",
+    "stored_entries_checked": 139,
+    "native_so_libraries_checked": 4,
+    "stored_entry_alignment": 4,
+    "native_so_alignment": 16384,
+    "official_zipalign_cli_run": false,
+    "pc_required_check": "zipalign -c -P 16 4 <signed.apk>"
+  },
+  "device_acceptance": "NOT_RUN; verify installed certificate before preserved-data update on emulator-5556; stop on mismatch; do not clear data or uninstall"
+}
