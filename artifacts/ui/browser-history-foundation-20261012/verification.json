@@ -1,0 +1,42 @@
+{
+  "base_commit": "29b7fedc0431fcd53b788dae7999495675e5d3be",
+  "status": "UNCONNECTED_FOUNDATION",
+  "automatic_collection_enabled": false,
+  "retention_choice": "PENDING",
+  "gradle_exit": 0,
+  "device_tests": "NOT_RUN",
+  "modules": {
+    "app": {
+      "tests": 1553,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "task_state": "EXECUTED"
+    },
+    "core-domain": {
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "task_state": "UP_TO_DATE"
+    },
+    "core-model": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "task_state": "UP_TO_DATE"
+    }
+  },
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "history_tests": 43
+}

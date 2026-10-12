@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:16:12.644Z" hostname="b5f39a690d03" time="0.003">
+  <properties/>
+  <testcase name="functionalDataToStringIsRedacted" classname="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" time="0.001"/>
+  <testcase name="incognitoNeverProducesOrdinaryRecord" classname="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" time="0.0"/>
+  <testcase name="repeatedFinishAndRepeatedRecordAreSingleUse" classname="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" time="0.0"/>
+  <testcase name="foreignGateCannotReplayAuthority" classname="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" time="0.0"/>
+  <testcase name="oldSessionEpochViewEntrySelectionAndBackgroundReject" classname="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" time="0.0"/>
+  <testcase name="failedOrUnacceptedCompletionNeverRecords" classname="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" time="0.001"/>
+  <testcase name="trustedCompletionPreservesApprovedQueryFragmentAndSanitizesTitle" classname="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" time="0.0"/>
+  <testcase name="unsafeAddressesNeverBecomeVisits" classname="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" time="0.001"/>
+  <testcase name="addressMustMatchTabViewAndNavigationAdmission" classname="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" time="0.0"/>
+  <testcase name="clearedGenerationRejectsStartedBeforeClearAndUndeliveredCompletion" classname="com.easysavevideo.app.browser.history.HistoryNavigationGateTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

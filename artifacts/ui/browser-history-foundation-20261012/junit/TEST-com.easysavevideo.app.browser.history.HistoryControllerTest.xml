@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.browser.history.HistoryControllerTest" tests="20" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:16:12.279Z" hostname="b5f39a690d03" time="0.363">
+  <properties/>
+  <testcase name="slowWriterCannotStartSecondWriterAndLateCompletionReconciles" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.005"/>
+  <testcase name="uncertainClearCommitRequiresReadBeforeClaimingSuccess" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.001"/>
+  <testcase name="failedRecordDropsQueuedVisitsAndDoesNotAffectBrowsingAuthorityOutsideHistory" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.001"/>
+  <testcase name="restartRestoresHistoryWithoutGeneratingAdditionalVisits" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.0"/>
+  <testcase name="repeatedVisitTokenIsNotReplayed" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.001"/>
+  <testcase name="explicitTtlPrunesDurablyOnReadWhileCountOnlyNeverDoes" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.001"/>
+  <testcase name="clearIsAtomicAndUndeliveredVisitCannotRefillClearedHistory" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.001"/>
+  <testcase name="corruptLoadPreservesOriginalUntilExplicitConfirmedClear" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.0"/>
+  <testcase name="burstQueueIsBoundedAndKeepsMostRecentAddresses" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.347"/>
+  <testcase name="removalRequiresFreshConfirmationAndOnlyTouchesHistory" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.002"/>
+  <testcase name="visitsDuringInitialReadQueueAndCommitAfterRead" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.0"/>
+  <testcase name="repeatedAddressMovesToFrontButStableIdentityRemains" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.001"/>
+  <testcase name="newStoreLoadsOnWorkerWithoutWritingOrInventingHistory" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.0"/>
+  <testcase name="visitAcknowledgedOnlyAfterDurableCommitAndDelivery" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.0"/>
+  <testcase name="cancellationDoesNotClearOrInvalidateCurrentRows" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.0"/>
+  <testcase name="listTokensCannotReplayAfterLoadMutationDeletionOrAnotherOwner" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.001"/>
+  <testcase name="workerRejectionDisablesOnlyHistory" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.001"/>
+  <testcase name="clearFailurePreservesOldRowsButDisablesTheirAuthority" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.001"/>
+  <testcase name="oldConfirmationCannotDeleteNewerList" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.0"/>
+  <testcase name="closedOwnerDoesNotPublishLateResultOrAcceptWork" classname="com.easysavevideo.app.browser.history.HistoryControllerTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
