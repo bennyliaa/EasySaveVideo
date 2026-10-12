@@ -1,0 +1,79 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :nav-diagnostics:verifyDiagnosticAdmission
+Diagnostic admitted subset: debugRuntimeClasspath 64
+Diagnostic admitted subset: releaseRuntimeClasspath 64
+
+> Task :nav-diagnostics:preBuild
+> Task :nav-diagnostics:preDebugBuild
+> Task :nav-diagnostics:generateDebugResources UP-TO-DATE
+> Task :nav-diagnostics:packageDebugResources UP-TO-DATE
+> Task :nav-diagnostics:processDebugNavigationResources UP-TO-DATE
+> Task :nav-diagnostics:parseDebugLocalResources UP-TO-DATE
+> Task :nav-diagnostics:generateDebugRFile UP-TO-DATE
+> Task :nav-diagnostics:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :nav-diagnostics:javaPreCompileDebug UP-TO-DATE
+> Task :nav-diagnostics:generateDebugAssets UP-TO-DATE
+> Task :nav-diagnostics:mergeDebugAssets UP-TO-DATE
+> Task :nav-diagnostics:compressDebugAssets UP-TO-DATE
+> Task :nav-diagnostics:generateDebugGlobalSynthetics UP-TO-DATE
+> Task :nav-diagnostics:checkDebugDuplicateClasses
+> Task :nav-diagnostics:desugarDebugFileDependencies UP-TO-DATE
+> Task :nav-diagnostics:compileDebugKotlin
+> Task :nav-diagnostics:compileDebugJavaWithJavac NO-SOURCE
+> Task :nav-diagnostics:processDebugJavaRes UP-TO-DATE
+> Task :nav-diagnostics:mergeDebugJavaResource
+> Task :nav-diagnostics:mergeLibDexDebug UP-TO-DATE
+> Task :nav-diagnostics:checkDebugAarMetadata UP-TO-DATE
+> Task :nav-diagnostics:mapDebugSourceSetPaths UP-TO-DATE
+> Task :nav-diagnostics:compileDebugNavigationResources UP-TO-DATE
+> Task :nav-diagnostics:mergeDebugResources UP-TO-DATE
+> Task :nav-diagnostics:createDebugCompatibleScreenManifests
+> Task :nav-diagnostics:extractDeepLinksDebug UP-TO-DATE
+> Task :nav-diagnostics:processDebugMainManifest
+> Task :nav-diagnostics:processDebugManifest
+> Task :nav-diagnostics:processDebugManifestForPackage
+> Task :nav-diagnostics:processDebugResources
+> Task :nav-diagnostics:dexBuilderDebug UP-TO-DATE
+> Task :nav-diagnostics:mergeProjectDexDebug UP-TO-DATE
+> Task :nav-diagnostics:mergeDebugJniLibFolders UP-TO-DATE
+> Task :nav-diagnostics:mergeDebugNativeLibs UP-TO-DATE
+> Task :nav-diagnostics:stripDebugDebugSymbols UP-TO-DATE
+> Task :nav-diagnostics:validateSigningDebug UP-TO-DATE
+> Task :nav-diagnostics:writeDebugAppMetadata UP-TO-DATE
+> Task :nav-diagnostics:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :nav-diagnostics:bundleDebugClassesToCompileJar UP-TO-DATE
+> Task :nav-diagnostics:preDebugAndroidTestBuild SKIPPED
+> Task :nav-diagnostics:generateDebugAndroidTestLintModel
+> Task :nav-diagnostics:extractProguardFiles UP-TO-DATE
+> Task :nav-diagnostics:generateDebugLintReportModel
+> Task :nav-diagnostics:preDebugUnitTestBuild
+> Task :nav-diagnostics:generateDebugUnitTestLintModel
+> Task :nav-diagnostics:mergeExtDexDebug
+> Task :nav-diagnostics:packageDebug
+> Task :nav-diagnostics:createDebugApkListingFileRedirect
+> Task :nav-diagnostics:assembleDebug
+> Task :nav-diagnostics:lintAnalyzeDebugAndroidTest
+> Task :nav-diagnostics:lintAnalyzeDebugUnitTest
+> Task :nav-diagnostics:lintAnalyzeDebug
+
+> Task :nav-diagnostics:lintReportDebug
+Wrote HTML report to file:///WORKSPACE/nav-diagnostics/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///WORKSPACE/nav-diagnostics/build/reports/lint-results-debug.sarif
+
+> Task :nav-diagnostics:lintDebug
+Persisted dependency lock state for buildscript of root project 'EasySaveVideo'
+Persisted dependency lock state for project ':nav-diagnostics'
+
+[Incubating] Problems report is available at: file:///WORKSPACE/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 55s
+47 actionable tasks: 20 executed, 27 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.0/userguide/configuration_cache_enabling.html

@@ -1,10 +1,10 @@
 # Isolated actual NavController diagnostic carrier
 
 Package `com.easysavevideo.navdiagnostics`, activity `.NavDiagnosticActivity`,
-version1/min31/target36. Opt-in module only (`-Pesv.navdiagnostics=true`); no production
+version2/min31/target36. Opt-in module only (`-Pesv.navdiagnostics=true`); no production
 dependency, shared UID, ESV classes, database, media, networking, service or permission
 requests. This own-source platform Activity is not the old A/B instrumentation runner
-and introduces no third-party runner/test library. All58 runtime artifacts must be
+and introduces no third-party runner/test library. All64 runtime artifacts must be
 exact subsets of the existing90 admitted bytes/versions; strict verification stays on.
 Notice text is the shared admitted inventory superset, not a claim that every
 inventory component ships in this diagnostic APK.
@@ -53,3 +53,23 @@ the production package or interpret its fixed graph as playback/editor acceptanc
 Minimum fixes are considered only after actual route/marker/callback evidence;
 auxiliary resurrection and legitimate root-state retention must both be checked.
 The independent compile/static review is not root-cause proof.
+
+## V1 startup failure and V2 packaging correction
+
+Independent API31 execution of the fixed v1 artifact hit ProfileVerifier VerifyError
+before matrix actions. Official SDK dexdump confirms ResolvableFuture and its base
+were defined, but ListenableFuture was absent. The production admission deliberately
+uses the empty listenablefuture9999 placeholder because Guava supplies that interface;
+the v1 minimal subset inherited the placeholder without Guava. V2 adds only the
+already-admitted Guava33.3.1-android and its already-reviewed transitive artifacts,
+bringing the checked subset to64. Verification metadata/admission rules are unchanged.
+No production navigation or diagnostic navigation/case code changes are made.
+Static class-definition coverage does not prove startup/runtime behavior; device
+retest remains required. Preserve the old v1 artifact and initial callback evidence.
+Own JSONL may contain earlier initial records; associate new actions with the verified
+installed version/hash and do not count an initial callback as a case PASS.
+
+The sandbox remains non-equivalent to complete production UI: it uses default
+NavHost animations, a discover start destination, simple control buttons and no
+production chrome/feature/foreground gates. It tests actual framework save/restore
+with owned markers, not complete ESV Activity, click targeting or media acceptance.

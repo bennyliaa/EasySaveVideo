@@ -7,7 +7,7 @@ android {
     namespace = "com.easysavevideo.navdiagnostics"
     compileSdk = 36
     buildToolsVersion = "36.0.0"
-    defaultConfig { applicationId = "com.easysavevideo.navdiagnostics"; minSdk = 31; targetSdk = 36; versionCode = 1; versionName = "1-nav-qa" }
+    defaultConfig { applicationId = "com.easysavevideo.navdiagnostics"; minSdk = 31; targetSdk = 36; versionCode = 2; versionName = "2-nav-qa" }
     buildFeatures { compose = true }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     lint { abortOnError = true }
@@ -23,6 +23,8 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-saveable:1.8.3")
     implementation("androidx.compose.ui:ui:1.8.3")
     implementation("androidx.collection:collection:1.5.0")
+    // The admitted empty listenablefuture placeholder requires the admitted Guava provider.
+    implementation("com.google.guava:guava:33.3.1-android")
     constraints { admittedLines.map { it.substringBefore('\t') }.distinct().forEach { implementation(it) } }
 }
 val verifyDiagnosticAdmission = tasks.register("verifyDiagnosticAdmission") {
