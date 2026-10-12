@@ -76,3 +76,12 @@ guard assertions NOT_RUN; no security/privilege change or alternate fixture.
 Debug compile executed in initial code8 run; Release compile executed in final
 run. Lint59W/8H/0E. Fresh Release classes: no Fake, Store-bound, no-op panel.
 Evidence artifacts/ui/code8-final-20261012. No code8 device acceptance claim.
+
+Code8 existing Debug variant assembled fromc09c5db25c71d8880bfa86b7d085d175f4c86060.
+Official aapt/apksigner/zipalign/dexdump checks PASS. APK45225903 bytes, SHA256
+a4f35a62ea46f33ec02d3a474fe08d9f8774071aa0b25c0dc80f66abfc73586b.
+Local signer5e841a0 differs from compatible18e3ef6: NEEDS_COMPATIBLE_RESIGN.
+Do not install this input over existing App. Artifact notice bytes unchanged.
+Original code7/signed branches remain fixed; no author device operation.
+Source/reports and separate APK/chunk input delivery authorized for private
+normal fast-forward transfer; fresh remote verification recorded separately.

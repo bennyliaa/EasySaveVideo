@@ -1,0 +1,49 @@
+{
+  "status": "PASS_DEBUG_BUILD_STATIC_AND_SUPPORTED_TESTS_WITH_WINDOWS_FIXTURE_LIMIT",
+  "source_commit": "c09c5db25c71d8880bfa86b7d085d175f4c86060",
+  "feature_commit": "f3bf2153aeec68b652cc01d7cf6add5b19c44aad",
+  "package": "com.easysavevideo.app",
+  "versionCode": 8,
+  "versionName": "0.8.0-ui-dev",
+  "minSdk": 31,
+  "targetSdk": 36,
+  "variant": "debug",
+  "apk": "esv-ui-code8-c09c5db-debug-input.apk",
+  "bytes": 45225903,
+  "sha256": "a4f35a62ea46f33ec02d3a474fe08d9f8774071aa0b25c0dc80f66abfc73586b",
+  "signed": true,
+  "local_signer_sha256": "5e841a04968f3f790f6996ca5e286d8c2734338542486909f9a136717dde808f",
+  "expected_compatible_signer_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+  "signing": "NEEDS_COMPATIBLE_RESIGN",
+  "install": "NOT_RUN_DO_NOT_INSTALL_DIFFERENT_SIGNER",
+  "dependencies": "UNCHANGED_90_RUNTIME_ARTIFACTS_STRICT_OFFLINE",
+  "notices_sha256": "27df093ea522ae12733b400e54856dbadd68b695b258ce0b7e31a778d5101a5e",
+  "dex_definitions": {
+    "Lcom/easysavevideo/app/entitlements/FakeEntitlementSource;": [
+      "classes22.dex"
+    ],
+    "Lcom/easysavevideo/library/export/DirectoryBatchJournal;": [
+      "classes10.dex"
+    ],
+    "Lcom/easysavevideo/app/ui/shell/navigation/RootNavigation;": [
+      "classes24.dex"
+    ],
+    "Lcom/easysavevideo/app/editor/EditorInitializationStatus;": [
+      "classes15.dex"
+    ],
+    "Lcom/easysavevideo/app/library/LibraryBatchExportDialogKt;": [
+      "classes18.dex"
+    ]
+  },
+  "isolation_tests": "3_PASS_0_FAILURE",
+  "release_isolation": "Fresh compiled classes: Store boundary; no Fake; Compose no-op panel",
+  "device_operations": 0,
+  "Android_migration_SAF": "NOT_RUN",
+  "recording_media_closure": "NOT_RUN",
+  "phone_performance": "NOT_MEASURED",
+  "ANR": "UNKNOWN",
+  "supported_JVM_tests": 498,
+  "environment_fixture": "INITIAL_CREATE_SYMLINK_SETUP_FAILED; GUARD_ASSERTIONS_NOT_RUN",
+  "P1": "SOURCE_FIXED_DEVICE_RETEST_PENDING",
+  "editor_and_single_share": "DIAGNOSTICS_ONLY_ROOT_CAUSES_OPEN"
+}
