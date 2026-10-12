@@ -12,8 +12,8 @@ android {
         applicationId = "com.easysavevideo.app"
         minSdk = 31
         targetSdk = 36
-        versionCode = 6
-        versionName = "0.6.0-ui-dev"
+        versionCode = 7
+        versionName = "0.7.0-ui-dev"
         testInstrumentationRunner = "com.easysavevideo.app.validation.OwnedVerificationInstrumentation"
         // Explicit build identity only. A channel does not select billing or authorize release.
         val distributionChannel = providers.gradleProperty("esv.distribution.channel").orElse("unconfigured").get()
