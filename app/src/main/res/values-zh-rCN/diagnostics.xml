@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="diagnostics_title">诊断</string>
+    <string name="diagnostics_description">主动导出已有技术 ERROR 日志的有界快照，导出前再次过滤。仅包含时间、错误模块及错误码、Android API 和 HTTP 状态码。不包含浏览历史、网址、路径、Cookie 或 Token。不会自动上传；不导出不影响使用。</string>
+    <string name="diagnostics_provider_warning">请在系统文件选择器中选择目标。所选文件提供方可能将文件同步到云端。本次只写入一次，无法保证提供方原子写入。取消或失败后可能留下空文件或部分文件，请在提供方中检查；应用不会自动删除或重试。</string>
+    <string name="diagnostics_idle">点击按钮后才会开始导出。</string>
+    <string name="diagnostics_preparing">正在准备过滤后的快照…</string>
+    <string name="diagnostics_choosing">等待选择导出目标…</string>
+    <string name="diagnostics_writing">正在写入所选文件…</string>
+    <string name="diagnostics_cancelling">正在取消，等待当前文件提供方操作结束并关闭；可能留下部分文件。</string>
+    <string name="diagnostics_empty">没有符合要求的技术 ERROR 记录可导出。</string>
+    <string name="diagnostics_succeeded">快照已写入，输出流已成功关闭。</string>
+    <string name="diagnostics_failed">导出失败。若已选择目标，可能留下空文件或部分文件。再次尝试前请在所选文件提供方中检查。</string>
+    <string name="diagnostics_cancelled">已取消导出。若已选择目标，可能留下空文件或部分文件。</string>
+    <string name="diagnostics_export">导出技术错误日志</string>
+    <string name="diagnostics_cancel">取消导出</string>
+    <string name="diagnostics_timed_out">导出已超时，不再准入后续写入；此前已准入的文件提供方操作仍可能结束。请检查目标是否留下空文件或部分文件。</string>
+    <string name="diagnostics_blocked">此前的诊断操作尚未确认资源释放，本次未开始新导出。可以离开此页，稍后主动重试。</string>
+    <string name="diagnostics_release_unconfirmed">尚未确认资源释放。当前应用进程已隔离后续导出；这不代表写入已撤回或文件已删除。仍可离开此页使用其他功能。</string>
+</resources>

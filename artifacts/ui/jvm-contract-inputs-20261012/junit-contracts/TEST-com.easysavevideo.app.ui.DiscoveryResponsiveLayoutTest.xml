@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.ui.DiscoveryResponsiveLayoutTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:36:55.671Z" time="0.007">
+  <testcase name="wideWindowNeverOverridesSingleColumnPreference" classname="com.easysavevideo.app.ui.DiscoveryResponsiveLayoutTest" time="0.001" />
+  <testcase name="compactDefaultKeepsTwoColumnsAndLargeTextReducesRatherThanShrinks" classname="com.easysavevideo.app.ui.DiscoveryResponsiveLayoutTest" time="0.0" />
+  <testcase name="capacityAndFontMatrixPreservesPreferenceAndNeverCrowdsMultipleCards" classname="com.easysavevideo.app.ui.DiscoveryResponsiveLayoutTest" time="0.0" />
+  <testcase name="invalidMeasurementsUseConservativeSingleColumnStack" classname="com.easysavevideo.app.ui.DiscoveryResponsiveLayoutTest" time="0.0" />
+  <testcase name="compactSixColumnPreferenceIsOnlyReducedForPresentation" classname="com.easysavevideo.app.ui.DiscoveryResponsiveLayoutTest" time="0.0" />
+  <testcase name="adaptiveExplanationHasMatchedLocaleArguments" classname="com.easysavevideo.app.ui.DiscoveryResponsiveLayoutTest" time="0.005" />
+  <testcase name="widerViewportCannotReduceCapacity" classname="com.easysavevideo.app.ui.DiscoveryResponsiveLayoutTest" time="0.001" />
+  </testsuite>

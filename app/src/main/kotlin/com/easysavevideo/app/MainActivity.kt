@@ -22,6 +22,7 @@ import kotlinx.coroutines.withContext
 import com.easysavevideo.app.browser.SystemBrowserHost
 import com.easysavevideo.app.browser.bookmarks.AndroidBookmarkRuntime
 import com.easysavevideo.app.storage.*
+import com.easysavevideo.app.diagnostics.*
 import com.easysavevideo.app.theme.EsvThemeHost
 import com.easysavevideo.app.ui.shell.*
 import com.easysavevideo.app.ui.shell.navigation.RootNavigation
@@ -104,6 +105,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var browser: SystemBrowserHost
     private lateinit var bookmarks: AndroidBookmarkRuntime
     private lateinit var persistence: BrowserPersistence
+    private lateinit var diagnostics: AndroidDiagnosticExportRuntime
+    private var diagnosticState by mutableStateOf(DiagnosticExportState())
     private lateinit var errorSink: AndroidErrorSink
     private lateinit var saves: AndroidSaveRuntime
     private lateinit var folderPickerHost: AndroidFolderPickerHost
@@ -154,6 +157,7 @@ class MainActivity : ComponentActivity() {
             .getOrElse { "!" }?.let { if (it.length <= EditorDraftCheckpointCodec.MAX_ENCODED) it else "!" }
         WindowCompat.setDecorFitsSystemWindows(window, false)
         errorSink = AndroidErrorSink(applicationContext)
+        diagnostics = AndroidDiagnosticExportRuntime(this) { diagnosticState = it }
         bookmarks = AndroidBookmarkRuntime.get(applicationContext)
         discovery = AndroidDiscoveryController(applicationContext, errorSink)
         val managementMain = Handler(Looper.getMainLooper())
@@ -501,7 +505,8 @@ class MainActivity : ComponentActivity() {
                     })
                 else if (route == EsvDestination.SETTINGS) EsvSettingsScreen(settings,
                     onChange = { value -> settingsChanged = true; settings = value; persistence.saveSettings(value) },
-                    onSources = ::openProviderManagement, onBack = { backTo() })
+                    onSources = ::openProviderManagement, onBack = { backTo() },
+                    diagnostics = { DiagnosticSettings(diagnosticState, diagnostics.controller::begin, diagnostics.controller::cancel) })
                 else if (route == EsvDestination.EDITOR) LibraryUnavailableScreen(onBack = { backTo(EsvDestination.LIBRARY) })
                 else BrowserScreen(browser, settings, onSettings = {
                     settingsChanged = true; settings = it; browser.applySettings(it.browser); persistence.saveSettings(it)
@@ -590,8 +595,10 @@ class MainActivity : ComponentActivity() {
         if (::saves.isInitialized) saves.segmentRecording?.setPreviewHostFocused(hasFocus)
     }
     override fun onResume() { super.onResume(); isForeground = true; if (::saves.isInitialized) saves.setForeground(true); if (::browser.isInitialized) browser.resume(); if (::discovery.isInitialized) discovery.setVisibility(true, showingDiscovery && !showingProviderManagement && !showingLibrary && !showingSaveTasks && !showingRecording) }
-    override fun onPause() { if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
+    override fun onPostResume() { super.onPostResume(); if (::diagnostics.isInitialized) diagnostics.onPostResume() }
+    override fun onPause() { if (::diagnostics.isInitialized) diagnostics.onPause(); if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
     override fun onDestroy() {
+        if (::diagnostics.isInitialized) diagnostics.close()
         discoveryPrioritySubscription?.close(); discoveryPrioritySubscription = null
         if (::folderPickerHost.isInitialized) {
             if (::saves.isInitialized) saves.destinations?.detachFolderPicker(folderPickerHost)

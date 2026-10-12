@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="diagnostics_title">Diagnostics</string>
+    <string name="diagnostics_description">Export a bounded snapshot of existing technical ERROR logs, filtered again before export. Only time, error module/code, Android API and HTTP status are included. No browsing history, URLs, paths, cookies or tokens. Nothing is uploaded automatically; skipping export does not affect the app.</string>
+    <string name="diagnostics_provider_warning">Choose a destination in the system file picker. The selected file provider may sync this file to the cloud. Export writes once; provider writes are not guaranteed atomic. If cancelled or failed, a partial or empty destination file may remain. Check it in that provider; the app will not delete or retry it.</string>
+    <string name="diagnostics_idle">Export starts only when you tap the button.</string>
+    <string name="diagnostics_preparing">Preparing a filtered snapshot…</string>
+    <string name="diagnostics_choosing">Waiting for your destination choice…</string>
+    <string name="diagnostics_writing">Writing the selected file…</string>
+    <string name="diagnostics_cancelling">Cancelling. Waiting for the current provider operation to finish and close; a partial file may remain.</string>
+    <string name="diagnostics_empty">No eligible technical ERROR records to export.</string>
+    <string name="diagnostics_succeeded">Snapshot written and the output stream closed successfully.</string>
+    <string name="diagnostics_failed">Export failed. If you selected a destination, an empty or partial file may remain. Check it in the selected file provider before trying again.</string>
+    <string name="diagnostics_cancelled">Export cancelled. If you selected a destination, an empty or partial file may remain.</string>
+    <string name="diagnostics_export">Export technical error logs</string>
+    <string name="diagnostics_cancel">Cancel export</string>
+    <string name="diagnostics_timed_out">Export timed out. No further writes will be started; a previously admitted provider operation may still finish. Check the destination for an empty or partial file.</string>
+    <string name="diagnostics_blocked">An earlier diagnostic operation has not confirmed resource release. No new export was started. You can leave this page and try again later.</string>
+    <string name="diagnostics_release_unconfirmed">Resource release is not yet confirmed. New exports are isolated in this app process; this does not mean the write was withdrawn or the file removed. You can still leave this page.</string>
+</resources>

@@ -32,7 +32,10 @@ class LibraryPresentationTest {
         assertEquals("0 B", libraryBytes(0))
         assertEquals("1.0 KiB", libraryBytes(1_024))
         assertEquals("2.00 GiB", libraryBytes(2L * 1_024 * 1_024 * 1_024))
-        val imported = MediaItem("one", 1, 1, null, "One", 0, MediaDateKind.IMPORTED, 0, null, null, null)
+        // Keep the locale-format assertion away from month boundaries in every time zone.
+        val createdAt = java.time.Instant.parse("1970-01-15T12:00:00Z").toEpochMilli()
+        val imported = MediaItem("one", 1, 1, null, "One", createdAtMillis = createdAt,
+            dateKind = MediaDateKind.IMPORTED, sizeBytes = 0, durationMillis = null, width = null, height = null)
         assertEquals("分辨率未知", libraryResolution(imported,"分辨率未知"))
         assertEquals("Resolution unknown",libraryResolution(imported,"Resolution unknown"))
         assertTrue(libraryDate(imported,Locale.ENGLISH).contains("Jan"))

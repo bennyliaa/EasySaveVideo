@@ -1,4 +1,6 @@
 import java.security.MessageDigest
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.testing.Test
 
 plugins {
     id("com.android.application")
@@ -74,6 +76,34 @@ dependencies {
     implementation("androidx.compose.material3:material3-window-size-class:1.3.2")
     implementation("androidx.navigation:navigation-compose:2.8.9")
     testImplementation("junit:junit:4.13.2")
+}
+
+
+// JVM contract tests also read these project files directly, outside their classpath.
+// Keep this list aligned with the resource/source contract tests in src/test/kotlin.
+// final_*.xml is intentionally a tree: FinalResourceContractTest enumerates that set.
+val contractResourceInputs = fileTree("src/main/res") {
+    for (locale in listOf("values", "values-zh-rCN")) {
+        for (resource in listOf(
+            "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
+            "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml",
+            "library_batch_export.xml", "library_multi.xml", "provider_copy.xml",
+            "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "final_*.xml"
+        )) include("$locale/$resource")
+    }
+}
+val contractSourceInputs = files(
+    "src/main/kotlin/com/easysavevideo/app/ui/shell/EsvSettingsScreen.kt",
+    "src/main/kotlin/com/easysavevideo/app/library/LibraryScreen.kt",
+    "src/main/kotlin/com/easysavevideo/app/library/LibraryBatchExportDialog.kt",
+    "src/main/kotlin/com/easysavevideo/app/licenses/ThirdPartyNotices.kt",
+    "src/main/assets/third-party-notices.txt"
+)
+tasks.withType<Test>().configureEach {
+    inputs.files(contractResourceInputs).withPropertyName("contractResourceInputs")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(contractSourceInputs).withPropertyName("contractSourceInputs")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 tasks.register("runtimeInventory") {

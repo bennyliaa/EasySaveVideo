@@ -22,7 +22,7 @@ import com.easysavevideo.app.licenses.ThirdPartyNotices
 import com.easysavevideo.app.ui.responsivePaneLayout
 
 @Composable
-fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSources:()->Unit,onBack:()->Unit) {
+fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}) {
     var categoryKey by rememberSaveable { mutableStateOf<String?>(null) }
     var notices by rememberSaveable { mutableStateOf(false) }
     val noticesListState = rememberLazyListState()
@@ -47,7 +47,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
                         SettingsCategories(presentation.active){categoryKey=it.key}
                     }
                     Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
-                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources){notices=true}
+                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics){notices=true}
                     }
                 }
             }
@@ -57,7 +57,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
                 verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
                 SettingsHeading(onBack={goBack()})
                 if(presentation.categories)SettingsCategories(null){categoryKey=it.key}
-                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources){notices=true}
+                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics){notices=true}
             }
         }
     }
@@ -71,6 +71,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
     SettingsCategory.APPEARANCE -> R.string.ui_appearance
     SettingsCategory.LANGUAGE -> R.string.ui_language
     SettingsCategory.SOURCES -> R.string.ui_sources
+    SettingsCategory.DIAGNOSTICS -> R.string.diagnostics_title
     SettingsCategory.ABOUT -> R.string.ui_settings_about
 })
 @Composable private fun SettingsCategories(active:SettingsCategory?,onSelect:(SettingsCategory)->Unit) {
@@ -85,7 +86,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
     }
 }
 @Composable private fun SettingsDetail(category:SettingsCategory,settings:AppSettings,onChange:(AppSettings)->Unit,
-    onSources:()->Unit,onNotices:()->Unit) {
+    onSources:()->Unit,diagnostics: @Composable () -> Unit,onNotices:()->Unit) {
     val v=LocalEsvVisuals.current
     EsvText(categoryLabel(category),style=v.titleTextStyle)
     when(category) {
@@ -110,6 +111,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
             EsvText(stringResource(R.string.ui_settings_sources_description),style=v.captionTextStyle)
             EsvButton(stringResource(R.string.ui_sources),onSources)
         }
+        SettingsCategory.DIAGNOSTICS -> diagnostics()
         SettingsCategory.ABOUT -> {
             EsvButton(stringResource(R.string.ui_licenses),onNotices)
             EsvText(stringResource(R.string.ui_vault_disabled),style=v.captionTextStyle)

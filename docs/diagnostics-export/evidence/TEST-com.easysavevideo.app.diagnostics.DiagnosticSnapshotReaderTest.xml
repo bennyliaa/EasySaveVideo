@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" tests="32" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:51:19.593Z" hostname="redacted-cloud-jvm" time="0.128">
+  <properties /><testcase name="inputBudgetIsSharedAcrossFilesAndDropsItsPartialLastLine" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.056" />
+  <testcase name="seventhDayIsIncludedAndEighthDayIsExpired" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.001" />
+  <testcase name="snapshotIsDetachedAndReaderDoesNotAlterOriginals" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.003" />
+  <testcase name="allClosedEnumsAndNumericBoundariesRoundTrip" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="longOrNonAsciiLineDropsThroughNewlineAndResumesSafely" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.003" />
+  <testcase name="numericOverflowAndNonCanonicalRepresentationsAreRejected" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="exactNamesOnlyAndNoFunctionalStorageTraversal" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.003" />
+  <testcase name="allBucketExtentsAreCapturedBeforeFirstRead" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.003" />
+  <testcase name="emptyDirectoryAndMalformedOnlyFilesAreEmpty" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.001" />
+  <testcase name="timestampsMustBelongToBucketAndNotExceedCapturedNow" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.003" />
+  <testcase name="directorySymlinkIsRejectedButTrustedParentAliasWorks" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.001" />
+  <testcase name="closeFailureDiscardsAnOtherwiseValidSnapshot" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="missingDirectoryIsEmptyAndIsNeverCreated" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.0" />
+  <testcase name="incompleteTailIsNeverParsedEvenWhenItHasValidGrammar" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.001" />
+  <testcase name="zeroProgressAndUnexpectedEofFailWithoutSpinning" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="readAndOpenFailureNeverPublishPartialSuccessfulBuckets" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="validRecordsAcrossReadBufferBoundaryRemainComplete" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.003" />
+  <testcase name="snapshotConstructionEnforcesAsciiAndByteCeiling" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.0" />
+  <testcase name="exactAsciiGrammarRejectsWhitespaceUnicodeAndControlBait" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="sensitiveBaitInAnyExtraOrUnknownFieldIsDiscarded" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.001" />
+  <testcase name="symlinkSwapImmediatelyBeforeOpenIsRejected" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="epochZeroAndMaximumLongClockDoNotOverflow" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="totalInputBudgetIncludesMalformedBytesAndNeverReadsPastCap" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.016" />
+  <testcase name="readsOnlyNewestFiveDaysWithinSevenDayWindow" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.003" />
+  <testcase name="directoryAtExpectedDailyFilenameFailsClosed" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.001" />
+  <testcase name="fileSymlinkNeverReadsOutsideDirectory" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.001" />
+  <testcase name="sameSizeRewriteIsNotMistakenForAppend" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="concurrentAppendCannotAddRecordsOrCompleteCapturedTail" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="arbitraryRootAndNonDirectoryRootFailClosed" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.0" />
+  <testcase name="truncationDuringReadFailsEvenAfterBytesWereBuffered" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="removalAndReplacementDuringReadFailClosed" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.002" />
+  <testcase name="clockFailureReturnsClosedFailureWithoutExceptionText" classname="com.easysavevideo.app.diagnostics.DiagnosticSnapshotReaderTest" time="0.001" />
+  <system-out />
+  <system-err />
+</testsuite>
