@@ -1,0 +1,12 @@
+{
+  "debug_fake_classes": 1,
+  "release_fake_classes": 0,
+  "status": "PASS",
+  "tests": 3,
+  "failures": 0,
+  "release_scope": "Fresh compiled Release classes; not a Release APK or device test",
+  "release_panel": "Compose no-op stub retained; no Material UI or Fake source",
+  "runtime_gates": "Existing platform and policy gates tested unchanged; MediaProjection/device recording NOT_RUN",
+  "minSdk": 31,
+  "device_operations": 0
+}

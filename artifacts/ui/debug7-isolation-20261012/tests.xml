@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.entitlements.DebugEntitlementIsolationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T10:24:48.031Z" time="0.032">
+  <properties />
+  <testcase name="initialUnknownAndFreePresetsCannotOpenRecordingGate" classname="com.easysavevideo.app.entitlements.DebugEntitlementIsolationTest" time="0.025" />
+  <testcase name="revokedExpiredAndUnknownStillRefuseRealFeatureRequests" classname="com.easysavevideo.app.entitlements.DebugEntitlementIsolationTest" time="0.001" />
+  <testcase name="deliberateInternalSavePresetCanAuthorizeEntitlementButNotPlatformOrPolicy" classname="com.easysavevideo.app.entitlements.DebugEntitlementIsolationTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>
