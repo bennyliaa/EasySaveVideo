@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="editor_initializing">编辑组件仍在初始化，原件保留。</string>
+    <string name="editor_storage_unavailable">编辑存储暂不可用，未启动编辑；原件保留。</string>
+    <string name="editor_runtime_unavailable">编辑组件初始化未完成，未启动编辑；原件保留。</string>
+</resources>

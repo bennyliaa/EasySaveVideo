@@ -353,7 +353,7 @@ class MainActivity : ComponentActivity() {
                         },
                         onExport = if (exports == null) null else { ref -> libraryExportReference = ref },
                         onBatchExport = if(exports==null)null else { selection -> libraryBatchExportSelection=selection },
-                        exports = exports, thumbnails = thumbnails)
+                        exports = exports, thumbnails = thumbnails, editorInitialization = saves.editorInitializationStatus)
                     val batchSelection=libraryBatchExportSelection
                     if(exports!=null && batchSelection!=null && isForeground) {
                         LibraryBatchExportDialog(batchSelection,batchSelectionIsCurrent(batchSelection,library.state),!exports.state.busy,

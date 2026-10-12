@@ -1,10 +1,7 @@
 package com.easysavevideo.app.library
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.easysavevideo.app.R
 import com.easysavevideo.app.library.share.SharePolicy
@@ -15,7 +12,9 @@ internal fun LibraryBatchExportDialog(selection:LibraryBatchSelection,current:Bo
     onChoose:(LibraryExportDestination)->Unit,onDismiss:()->Unit) {
     val v=LocalEsvVisuals.current
     LibraryDialog(onDismiss) {
-        Column(Modifier.verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
+        // LibraryDialog owns the bounded scroll viewport. A second vertical scroll
+        // would receive its parent's infinite content height and fail measurement.
+        Column(verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
             EsvText(stringResource(R.string.library_batch_transfer_title),style=v.titleTextStyle)
             selection.items.forEach { EsvText(it.displayName,maxLines=2) }
             if(!current)EsvText(stringResource(R.string.library_batch_transfer_stale),color=v.colors.error)

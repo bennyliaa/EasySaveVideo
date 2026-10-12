@@ -361,7 +361,7 @@ internal class LibraryShareOwner private constructor(private val context: Contex
         @Volatile private var failedOwner: Any? = null
         fun get(context: Context): LibraryShareOwner = singleton ?: synchronized(this) {
             if (failedOwner != null) throw ShareFailure(ShareError.RELEASE_UNCONFIRMED)
-            singleton ?: LibraryShareOwner(context.applicationContext).also { singleton = it }
+            singleton ?: initializeShareOwner { LibraryShareOwner(context.applicationContext) }.also { singleton = it }
         }
     }
 }

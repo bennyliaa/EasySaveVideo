@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="editor_initializing">Editing is still initializing. The original is retained.</string>
+    <string name="editor_storage_unavailable">Editing storage is unavailable. No edit has started; the original is retained.</string>
+    <string name="editor_runtime_unavailable">Editing could not initialize. No edit has started; the original is retained.</string>
+</resources>

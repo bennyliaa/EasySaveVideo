@@ -36,6 +36,8 @@ import com.easysavevideo.app.library.export.AndroidExportRuntime
 import com.easysavevideo.app.library.destination.AndroidOrdinaryDestinationRuntime
 import com.easysavevideo.library.destination.OrdinaryDestinationAdmission
 import com.easysavevideo.app.editor.AndroidEditRuntime
+import com.easysavevideo.app.editor.EditorInitializationStatus
+import com.easysavevideo.app.editor.initializeEditor
 import com.easysavevideo.library.LibraryRepository
 import com.easysavevideo.library.MediaReadRef
 import com.easysavevideo.library.MediaLifecycle
@@ -106,6 +108,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
     var libraryExports by mutableStateOf<AndroidExportRuntime?>(null); private set
     var destinations by mutableStateOf<AndroidOrdinaryDestinationRuntime?>(null); private set
     var editor by mutableStateOf<AndroidEditRuntime?>(null); private set
+    var editorInitializationStatus by mutableStateOf(EditorInitializationStatus.INITIALIZING); private set
     var segmentRecording by activityStateOf<AndroidSegmentRecordingRuntime?>(null); private set
     var scanning by mutableStateOf(false); private set
     var selection by mutableStateOf<PageSaveSelection?>(null); private set
@@ -167,10 +170,12 @@ class AndroidSaveRuntime private constructor(context: Context) {
                         if (currentRecordingId == id) { currentRecordingId = null; pendingRecording = null; setExecuting(false) }
                         command { publishRecords() }
                     }, published = { command { publishRecords() } }, activityChanged = ::publishMediaTaskActivity) } catch (_: Exception) { null }
-                val editRuntime = try { AndroidEditRuntime(application, storage, destinationRuntime) { ready && !executing.get() &&
-                    pendingRecording == null && currentRecordingId == null && !resourcesDraining() } } catch (_: Exception) { null }
+                val editInitialization = initializeEditor(storageProbe = { storage.edits; Unit }) {
+                    AndroidEditRuntime(application, storage, destinationRuntime) { ready && !executing.get() &&
+                        pendingRecording == null && currentRecordingId == null && !resourcesDraining() }
+                }
                 initializationActivity.enqueue({ install -> main.post(install) }) {
-                    editor = editRuntime; segmentRecording = segmentRuntime; segmentRuntime?.setForeground(foreground)
+                    editor = editInitialization.value; editorInitializationStatus = editInitialization.status; segmentRecording = segmentRuntime; segmentRuntime?.setForeground(foreground)
                     records = initial; activeTaskCount = initialActiveCount; mediaDispositions = dispositions
                     libraryExports = exports; destinations = destinationRuntime; ready = true
                 }

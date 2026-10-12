@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.library.share.SharePolicyTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-12T13:45:39.940Z" time="0.003">
+  <properties />
+  <testcase name="rejectsAllWritingAndVariantModes" classname="com.easysavevideo.app.library.share.SharePolicyTest" time="0.001" />
+  <testcase name="finiteOpenAndTransferCapacity" classname="com.easysavevideo.app.library.share.SharePolicyTest" time="0.0" />
+  <testcase name="zeroAndExpiryAreNotActive" classname="com.easysavevideo.app.library.share.SharePolicyTest" time="0.001" />
+  <testcase name="onlyCanonicalRandomTokenShape" classname="com.easysavevideo.app.library.share.SharePolicyTest" time="0.0" />
+  <testcase name="copyCountAndBytesAreBothBounded" classname="com.easysavevideo.app.library.share.SharePolicyTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

@@ -571,6 +571,7 @@ internal fun exportNotice(record: ExportRecord): String = when (record.phase) {
 }
 
 internal fun shareFailureNotice(error: ShareError): String = when (error) {
+    ShareError.INITIALIZATION_FAILED -> "分享组件初始化检查未完成，尚未准备副本或打开选择器；媒体库原件保留。分享需重新核对，可先使用导出到相册。"
     ShareError.SOURCE_TOO_LARGE -> "该视频超过临时分享副本的 256 MiB 上限。可改用导出到系统视频库或文件。"
     ShareError.COPY_CAPACITY -> "临时分享副本空间已满（最多 ${SharePolicy.MAX_COPIES} 份、共 512 MiB）。请撤销已有分享，或等待接收方实际关闭文件后再试；本次未打开分享选择器。"
     ShareError.PROCESS_CAPACITY -> "本次应用会话的分享读取次数已达到安全上限。请先关闭接收方正在读取的文件，再重新启动应用；已有媒体不会因此被删除。"

@@ -1,0 +1,139 @@
+{
+  "status": "SOURCE_P1_FIXED_AND_DIAGNOSTICS_ADDED_PENDING_REVIEW_AND_DEVICE_RETEST",
+  "base": "4c180deefff1f90957c62ce2d313737ed9173c4a",
+  "code7_source": "9efc3460af5d1a74cd302eb705052d90ecb5d8cb",
+  "code7_and_main_old_batch_dialog_sha256": "7302daebba80e85a3a82a03623a70eb68969b1941ff32a295d1fdbd209a913f5",
+  "new_batch_dialog_sha256": "c7e98ddf6bcd63352cbfa48ccc5952209813cf4c69d708ffbc537b48219eee6a",
+  "batch_content_and_callbacks_unchanged": true,
+  "crash_log_sha256": "6366ee5f2b3ef9885a606309bf1cc3482870e6f011f7002ea64ea71f160a2f92",
+  "crash_file_mtime_utc": "2026-10-12T13:12:54.586368+00:00",
+  "test_totals": {
+    "tests": 65,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": [
+    {
+      "name": "com.easysavevideo.app.editor.EditorInitializationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryBatchDialogScrollTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryBatchSelectionTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryDialogMeasureTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.LibraryMultiSelectionTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareBatchTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareCopyVerifierTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareGroupRevocationTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareInitializationTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.SharePolicyTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareProxyAdmissionTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareProxyReaderTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.easysavevideo.app.library.share.ShareReadBudgetTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "new_tests": 12,
+  "real_foundation_scroll_measurement_cases": 81,
+  "layout_scope": "Real Foundation ScrollNode + synthetic plain content and font-scaled extents; no glyph rendering or Android/OEM UI acceptance",
+  "compile": "Debug/Release PASS_EXECUTED",
+  "lint_debug": {
+    "Warning": 59,
+    "Hint": 8
+  },
+  "build_tasks": "29 executed/38 up-to-date",
+  "release_scope": "Compiled Release binds Store; Fake class absent. Not Release APK",
+  "preserved_sources": [
+    "app/build.gradle.kts",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidFolderPickerHost.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/FolderPickerAsyncBridge.kt",
+    "app/src/debug/kotlin/com/easysavevideo/app/entitlements/BuildEntitlements.kt",
+    "app/src/release/kotlin/com/easysavevideo/app/entitlements/BuildEntitlements.kt"
+  ],
+  "paired_initialization_strings": 3,
+  "editor_gap": "Missing UI traced to null constructor result. Visible disabled entry/status added; root exception and editing success still UNPROVEN",
+  "single_share_gap": "Unclassified worker failure; owner-constructor error now classified. Actual cause/chooser/revocation success still UNPROVEN",
+  "storage_path_security_guards": "UNCHANGED; no speculative canonical-path normalization",
+  "code7_input_sha256_unchanged": "6db2a62a7e4461747eb02ae40115353496adbbf006b61e10a7d3a4ed3bb2874b",
+  "packaging": "NOT_RUN",
+  "install": "NOT_RUN",
+  "upload": "NOT_RUN",
+  "device_operations": 0,
+  "original_media_or_test_directory_writes": 0,
+  "phone_performance": "NOT_MEASURED",
+  "ANR": "UNKNOWN",
+  "same_process_second_recording": "OBSERVED_LIMITATION_NOT_FIXED_HERE"
+}
