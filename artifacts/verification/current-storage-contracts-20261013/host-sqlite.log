@@ -1,0 +1,54 @@
+test_all_seven_supported_baselines_preserve_rows_reopen_and_match_fresh_schema (__main__.CurrentStorageContracts.test_all_seven_supported_baselines_preserve_rows_reopen_and_match_fresh_schema) ... ok
+test_batch_admission_requires_existing_active_grant_and_never_changes_default (__main__.CurrentStorageContracts.test_batch_admission_requires_existing_active_grant_and_never_changes_default) ... ok
+test_batch_and_item_identity_replay_history_and_result_are_immutable (__main__.CurrentStorageContracts.test_batch_and_item_identity_replay_history_and_result_are_immutable) ... ok
+test_batch_bounds_unique_source_ordinal_and_grant_fail_atomically (__main__.CurrentStorageContracts.test_batch_bounds_unique_source_ordinal_and_grant_fail_atomically) ... ok
+test_corrupt_foreign_key_is_not_silently_repaired_or_version_advanced (__main__.CurrentStorageContracts.test_corrupt_foreign_key_is_not_silently_repaired_or_version_advanced) ... ok
+test_every_ddl_backfill_check_integrity_and_version_boundary_rolls_back (__main__.CurrentStorageContracts.test_every_ddl_backfill_check_integrity_and_version_boundary_rolls_back) ... ok
+test_failed_child_admission_rolls_back_parent_and_prior_children_together (__main__.CurrentStorageContracts.test_failed_child_admission_rolls_back_parent_and_prior_children_together) ... ok
+test_lazy_editor_still_uses_one_owner_monitor_and_only_publishes_after_construction (__main__.CurrentStorageContracts.test_lazy_editor_still_uses_one_owner_monitor_and_only_publishes_after_construction) ... ok
+test_nested_schema_dispatch_is_bound_to_actual_production_call_order (__main__.CurrentStorageContracts.test_nested_schema_dispatch_is_bound_to_actual_production_call_order) ... ok
+test_production_interruption_sql_stops_uncertain_finished_batches_without_restarting_items (__main__.CurrentStorageContracts.test_production_interruption_sql_stops_uncertain_finished_batches_without_restarting_items) ... ok
+test_source_dispatch_is_exactly_current_contract_not_only_version_string (__main__.CurrentStorageContracts.test_source_dispatch_is_exactly_current_contract_not_only_version_string) ... ok
+test_stopped_and_finished_batches_cannot_start_or_resume_and_completed_item_cannot_start (__main__.CurrentStorageContracts.test_stopped_and_finished_batches_cannot_start_or_resume_and_completed_item_cannot_start) ... ok
+test_unsupported_upgrade_and_downgrade_model_preserves_database (__main__.CurrentStorageContracts.test_unsupported_upgrade_and_downgrade_model_preserves_database) ... ok
+test_v1_visible_succeeded_selector_is_bounded_and_rejects_unmodelled_backfill (__main__.CurrentStorageContracts.test_v1_visible_succeeded_selector_is_bounded_and_rejects_unmodelled_backfill) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 2.010s
+
+OK
+{
+  "kind": "CURRENT_V8_HOST_SQLITE_CONTRACT",
+  "sqlite_version": "3.53.1",
+  "tests": 14,
+  "failures": 0,
+  "errors": 0,
+  "rollback_fault_boundaries": 344,
+  "baseline_provenance": {
+    "1": "frozen LEGACY literal",
+    "2": "synthetic frozen-v3 pre-export prefix",
+    "3": "frozen V3_DDL literal",
+    "4": "synthetic v3 plus current edit-job/library DDL and frozen v4 source table",
+    "5": "frozen a3a028d v5 DDL",
+    "6": "synthetic v5 plus production v6 DDL",
+    "7": "synthetic v6 plus production v7 DDL"
+  },
+  "v1_published_media_backfill": "NOT_EXECUTED_REAL_CODEC_MEDIA_REQUIRED",
+  "kotlin_codec": "SEPARATE_JVM_GATE",
+  "android_sqlite_runtime": "NOT_RUN",
+  "input_sha256": {
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt": "109a7d71a9811606875e8f178b1ecb74167d8bd0de7907e803b58cce6ff6822c",
+    "app/src/main/kotlin/com/easysavevideo/app/library/storage/LibrarySchema.kt": "898b7b9b04f57bf3fb9f0e7594b682b938e876cca9ead67fd3c3b83d285c971f",
+    "app/src/main/kotlin/com/easysavevideo/app/editor/storage/EditSchema.kt": "8f5a6b738913f1913210fa75e153ad013ea2780cfa9c23663926de707a5ea96d",
+    "app/src/main/kotlin/com/easysavevideo/app/library/export/ExportSchema.kt": "c35a5fb4ab5fb203ebad839919b162473190735dfe5823bc28a0243695b20941",
+    "app/src/main/kotlin/com/easysavevideo/app/recording/segments/RecordedSegmentSchema.kt": "6122d11def6407662256ecb532392f450544605c149c4f77cd01764ba8750d53",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationSchema.kt": "dc289eba5299c89efe27f687fb06887c6ced475544b0439616e8e5a960506103",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/FolderDestinationSchema.kt": "77971f7d3ff43435c31c2f19b941b0d3c5f562b38313a0de059cf7190319093f",
+    "app/src/main/kotlin/com/easysavevideo/app/library/export/DirectoryBatchSchema.kt": "36ba17ef69bd431083b64bf7227b4aa909075160f0424acc2c3e7bfb5abc9f27",
+    "app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidDirectoryBatchJournal.kt": "b6037dcf969b28973537ba163fff7cfa1fdbd7f5279d262dc73bb719c3cae734",
+    "scripts/verify-library-sqlite.py": "50f318c6309c8e3c5013059541e9dfd4b0528c76205e0721d78adbec2e40eab1",
+    "scripts/verify-editor-sqlite.py": "fde730a59fd482c01d77d3991b6818d7cc087e272001ade2f57b2d70b949f72a",
+    "app/src/test/resources/destination/frozen-v5-schema.sql": "a216f8fc311c9cbd736d0c93f56a7067c856f870a82a748128e5fc59bf197eae",
+    "app/src/test/resources/recorded-segments/frozen-v4-edit-source.sql": "c762a1ef96b6f1b835bbc17f1a7ac05a07be2dc88f8a58630f88aa8602aa3f7b"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "result": "PASS_SOURCE_JVM_ONLY",
+  "commands": [
+    ":app:testDebugUnitTest",
+    ":app:compileDebugKotlin",
+    ":app:compileReleaseKotlin",
+    ":app:lintDebug",
+    ":app:lintRelease",
+    ":app:verifyRuntimeAdmission"
+  ],
+  "offline": true,
+  "final_run": "build2.log",
+  "final_exit": 0,
+  "app_tests": {
+    "tests": 1774,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_tests": 13,
+  "production_compilers": "Debug and Release EXECUTED and passed in build1; UP-TO-DATE in build2 after test-only reader correction. Production hashes unchanged.",
+  "retained_failure": "build1 test compile Files.readString unsupported by configured API stubs; replaced with existing Files.readAllBytes pattern before full rerun.",
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "runtime_artifacts_exact": 90,
+  "final_tasks": {
+    "executed": 12,
+    "up_to_date": 63
+  },
+  "not_run": [
+    "APK assembly",
+    "device/emulator",
+    "real Compose rendering",
+    "PPT or pixel parity",
+    "TalkBack",
+    "keyboard traversal",
+    "font200 screenshots",
+    "last navigation item click",
+    "native media/save/recording"
+  ],
+  "static_review": "INDEPENDENT_SOURCE_REVIEW.md"
+}

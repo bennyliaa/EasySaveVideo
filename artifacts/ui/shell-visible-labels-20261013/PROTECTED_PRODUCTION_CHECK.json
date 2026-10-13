@@ -1,0 +1,7 @@
+{
+  "checked_files": 470,
+  "changed_files": [],
+  "scope": "Other src/main production and build configurations; includes settings/runtime/route registry. Test-only schema inputs verified separately if manifest provided.",
+  "prior_contract_freeze_files_checked": 15,
+  "prior_contract_freeze_changed_files": []
+}

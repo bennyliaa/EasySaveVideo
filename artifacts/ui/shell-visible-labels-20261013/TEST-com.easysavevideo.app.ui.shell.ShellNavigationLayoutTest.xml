@@ -1,0 +1,18 @@
+<testsuite name="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-13T05:59:40.931Z" hostname="[redacted]" time="0.003">
+  <properties />
+  <testcase name="boundedChromeLeavesContentAtSmallButUsableHeights" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.001" />
+  <testcase name="standardSelectionDisabledAndClickSemanticsRemainWithDecorativeIcons" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.001" />
+  <testcase name="navigationOwnerAndAuxiliarySettingsEntryAreRetained" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <testcase name="actualNavigationHorizontalInsetsCountBeforeChoosingBottomBar" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <testcase name="ordinaryCompactRetainsFourItemBottomBarAtEverySupportedTextScale" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <testcase name="eachScrollableViewportIsBoundedBeforeItsScrollModifier" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <testcase name="actualFoundationAcceptsFiniteViewportConstraints" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <testcase name="bothStandardContainersAlwaysExposeWrappingVisibleText" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <testcase name="railGrowsAtLargeTextButLeavesAContentBudget" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <testcase name="officialMediumExpandedAndLowHeightInputsSelectRail" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <testcase name="narrowRailBoundsDoNotUseAnInvertedClamp" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <testcase name="invalidGeometryHasFinitePositiveFallbacks" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <testcase name="subminimumFourTargetWidthUsesRailWithoutChangingDestinations" classname="com.easysavevideo.app.ui.shell.ShellNavigationLayoutTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

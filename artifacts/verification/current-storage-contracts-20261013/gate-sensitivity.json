@@ -1,0 +1,40 @@
+{
+  "scope": "in-memory mutations of host contract model only; production inputs unchanged",
+  "results": [
+    {
+      "mutation": "omit_item_immutability",
+      "test": "test_batch_and_item_identity_replay_history_and_result_are_immutable",
+      "detected_by_assertion": true,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "mutation": "omit_stopped_start_guard",
+      "test": "test_stopped_and_finished_batches_cannot_start_or_resume_and_completed_item_cannot_start",
+      "detected_by_assertion": true,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "mutation": "omit_retained_item_guard",
+      "test": "test_batch_and_item_identity_replay_history_and_result_are_immutable",
+      "detected_by_assertion": true,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "mutation": "omit_active_grant_guard",
+      "test": "test_batch_admission_requires_existing_active_grant_and_never_changes_default",
+      "detected_by_assertion": true,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "mutation": "omit_foreign_key_validation",
+      "test": "test_corrupt_foreign_key_is_not_silently_repaired_or_version_advanced",
+      "detected_by_assertion": true,
+      "failures": 1,
+      "errors": 0
+    }
+  ]
+}
