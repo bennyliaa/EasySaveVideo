@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_recovery_failed">任务 %1$s：状态恢复未完成。存储恢复可用后，可重试恢复。此操作仅恢复任务控制，之后仍需另点继续或重新验证。</string>
+    <string name="save_recovery_retry">重试恢复</string>
+    <string name="save_recovery_cancel_pending">任务 %1$s：尚未确认取消成功。存储恢复可用后，可重试取消。</string>
+</resources>

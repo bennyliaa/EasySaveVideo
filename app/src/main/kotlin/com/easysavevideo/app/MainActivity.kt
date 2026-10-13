@@ -134,6 +134,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var providerManagement: ProviderManagementController
     private var providerManagementState by mutableStateOf(ProviderManagementState())
     private var isForeground by mutableStateOf(false)
+    private var libraryResumeSequence by mutableLongStateOf(0L)
     private var hasFocusedWindow by mutableStateOf(false)
     private var settings by mutableStateOf(AppSettings())
     private var filePrompt by mutableStateOf<SystemBrowserHost.FileChoice?>(null)
@@ -321,7 +322,9 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 DisposableEffect(library) { onDispose { library?.close() } }
-                LaunchedEffect(library, isForeground, showingLibrary, showingEditor, libraryPreviewReference) {
+                // Resume identity covers a coalesced pause; result identity covers defensive late delivery.
+                LaunchedEffect(library, isForeground, libraryResumeSequence, exports?.state?.directoryConfirmation,
+                    showingLibrary, showingEditor, libraryPreviewReference) {
                     library?.setForeground(isForeground && showingLibrary && !showingEditor && libraryPreviewReference == null)
                 }
                 LaunchedEffect(saves.ready, showingSaveTasks, showingLibrary) {
@@ -390,6 +393,12 @@ class MainActivity : ComponentActivity() {
                         onExport = if (exports == null) null else { ref -> libraryExportReference = ref },
                         onBatchExport = if(exports==null)null else { selection -> libraryBatchExportSelection=selection },
                         exports = exports, thumbnails = thumbnails, editorInitialization = saves.editorInitializationStatus,
+                        exportRecoveryIsCurrent = { expected ->
+                            isForeground && activeDestination == EsvDestination.LIBRARY &&
+                                libraryPreviewReference == null && previewReceipt == null &&
+                                saves.segmentRecording?.previewActive != true &&
+                                saves.libraryExports === expected && !isDestroyed && !isFinishing
+                        },
                         editorDiagnostic = saves.editorInitializationDiagnostic)
                     val batchSelection=libraryBatchExportSelection
                     if(exports!=null && batchSelection!=null && isForeground) {
@@ -403,7 +412,7 @@ class MainActivity : ComponentActivity() {
                                             isForeground && showingLibrary && libraryPreviewReference==null && !isDestroyed && !isFinishing &&
                                                 batchSelectionIsCurrent(batchSelection,library.state)
                                         }) { intent -> startActivity(intent) }
-                                        LibraryExportDestination.FILES -> exports.chooseBatchFolder(batchSelection.items,isCurrent={
+                                        LibraryExportDestination.FILES -> exports.chooseBatchFolder(batchSelection,library,isCurrent={
                                             isForeground && showingLibrary && libraryPreviewReference==null && !isDestroyed && !isFinishing &&
                                                 batchSelectionIsCurrent(batchSelection,library.state)
                                         })
@@ -511,6 +520,15 @@ class MainActivity : ComponentActivity() {
                         }
                     })
                 else if (route == EsvDestination.TASKS) SaveTaskScreen(saves, browser,
+                    recoveryIsCurrent = { expected ->
+                        isForeground && hasFocusedWindow && activeDestination == EsvDestination.TASKS &&
+                            navController?.currentDestination?.route == EsvDestination.TASKS.route && saves === expected &&
+                            previewReceipt == null && libraryPreviewReference == null && saves.segmentRecording?.previewActive != true &&
+                            saves.selection == null && !saves.scanning && !saves.preparingStream && saves.hlsPreparation == null &&
+                            saves.destinations?.asking != true && saves.destinations?.notice == null &&
+                            !browser.pickerInFlight && !browser.hasPendingFileChoice && browser.jsDialog == null && browser.fullScreenView == null &&
+                            !isDestroyed && !isFinishing
+                    },
                     canOpenBrowserForAuthentication = {
                         isForeground && hasFocusedWindow && !isDestroyed && !isFinishing &&
                             navController?.currentDestination?.route == EsvDestination.TASKS.route &&
@@ -665,7 +683,7 @@ class MainActivity : ComponentActivity() {
         hasFocusedWindow = hasFocus
         if (::saves.isInitialized) saves.segmentRecording?.setPreviewHostFocused(hasFocus)
     }
-    override fun onResume() { super.onResume(); isForeground = true; if (::saves.isInitialized) saves.setForeground(true); if (::browser.isInitialized) browser.resume(); if (::discovery.isInitialized) discovery.setVisibility(true, showingDiscovery && !showingProviderManagement && !showingLibrary && !showingSaveTasks && !showingRecording) }
+    override fun onResume() { super.onResume(); libraryResumeSequence++; isForeground = true; if (::saves.isInitialized) saves.setForeground(true); if (::browser.isInitialized) browser.resume(); if (::discovery.isInitialized) discovery.setVisibility(true, showingDiscovery && !showingProviderManagement && !showingLibrary && !showingSaveTasks && !showingRecording) }
     override fun onPostResume() { super.onPostResume(); if (::diagnostics.isInitialized) diagnostics.onPostResume() }
     override fun onPause() { newTabInputGeneration++; if (::diagnostics.isInitialized) diagnostics.onPause(); if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
     override fun onDestroy() {
@@ -673,6 +691,7 @@ class MainActivity : ComponentActivity() {
         discoveryPrioritySubscription?.close(); discoveryPrioritySubscription = null
         if (::folderPickerHost.isInitialized) {
             if (::saves.isInitialized) saves.destinations?.detachFolderPicker(folderPickerHost)
+            if (::saves.isInitialized) saves.libraryExports?.detachBatchFolderPicker(folderPickerHost)
             folderPickerHost.close()
         }
         if (::saves.isInitialized) saves.segmentRecording?.previewHostDestroyed()

@@ -61,6 +61,7 @@ fun LibraryScreen(
     thumbnails: AndroidLibraryThumbnails? = null,
     editorInitialization: EditorInitializationStatus = if (onEdit != null) EditorInitializationStatus.READY else EditorInitializationStatus.INITIALIZING,
     editorDiagnostic: InitializationDiagnostic? = null,
+    exportRecoveryIsCurrent: (AndroidExportRuntime) -> Boolean = { false },
 ) {
     val state = runtime.state
     val v = LocalEsvVisuals.current
@@ -162,7 +163,7 @@ fun LibraryScreen(
                             EsvButton(stringResource(if (thumbnailsRequested) R.string.thumbnail_stop else R.string.thumbnail_load_visible),
                                 onClick = { thumbnailsRequested = !thumbnailsRequested }, enabled = interactive && state.move == null && thumbnails != null)
                             if (thumbnails == null) EsvText(stringResource(R.string.thumbnail_module_unavailable), style = v.captionTextStyle, color = v.colors.muted)
-                            exports?.let { LibraryExportStatus(it, state.foreground) }
+                            exports?.let { LibraryExportStatus(it, state.foreground) { exportRecoveryIsCurrent(it) } }
                             if (state.move == null) {
                                 LibraryField(state.query.text, runtime::search, stringResource(R.string.flow_library_search), enabled = state.foreground && !state.busy)
                                 Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_recovery_failed">Task %1$s: state recovery could not finish. Retry recovery when storage is available. This only restores the task controls; use Resume or Reverify separately afterward.</string>
+    <string name="save_recovery_retry">Retry recovery</string>
+    <string name="save_recovery_cancel_pending">Task %1$s: cancellation is not yet confirmed. Retry Cancel when storage is available.</string>
+</resources>

@@ -29,7 +29,7 @@ class SaveCoordinator(
     private fun resourcesUnreleased() = transfer.requiresProcessRecovery() || stream.requiresProcessRecovery() || recording.requiresProcessRecovery() || verifier.requiresProcessRecovery()
 
     private val lock = Any()
-    private class Runtime(val original: OperationContext, val method: TaskMethod, @Volatile var resource: SelectedMediaResource?, val sourceExpiresAt: Long) {
+    private class Runtime(val original: OperationContext, val method: TaskMethod, @Volatile var resource: SelectedMediaResource?, val sourceExpiresAt: Long, val resumeOperation: OperationContext? = null) {
         val cancel = CancellationSource()
         @Volatile var pause = false
         @Volatile var userCancel = false
@@ -104,7 +104,7 @@ class SaveCoordinator(
         val sourceExpiresAt = if (resource != null) sourceExpiry(operation, liveResource)
             else priorRuntime?.sourceExpiresAt ?: sourceExpiry(operation, null)
         val nextRuntime = Runtime(if (record.request.method == TaskMethod.RECORD) operation.copy(retryBudget = 0, attempt = 0) else operation,
-            record.request.method, liveResource?.copy(requestContextRef = requestContextRef), sourceExpiresAt).also { it.lastRecord = running }
+            record.request.method, liveResource?.copy(requestContextRef = requestContextRef), sourceExpiresAt, operation).also { it.lastRecord = running }
         runtimes[taskId] = nextRuntime
         try { save(record, running) }
         catch (error: Exception) {
@@ -112,6 +112,70 @@ class SaveCoordinator(
             throw error
         }
         running
+    }
+
+    /**
+     * Project-internal compensation for a proven unaccepted explicit Resume. The caller owns the
+     * admission fence; this method never signals a worker, cleans up, or starts media work.
+     * preparedWaiting must retain the exact proposal even when the CAS result is ambiguous.
+     */
+    fun recoverUnadmittedResume(
+        expected: SaveRecord,
+        operation: OperationContext,
+        expectedWaiting: SaveRecord?,
+        reason: SaveWaitReason,
+        mayRepair: () -> Boolean,
+        preparedWaiting: (SaveRecord) -> Unit,
+    ): Boolean = synchronized(lock) {
+        val runtime = runtimes[expected.task.taskId] ?: return@synchronized false
+        if (runtime.resumeOperation !== operation || runtime.executing ||
+            expected.operationId != operation.operationId || expected.task.state != TaskState.RUNNING)
+            return@synchronized false
+        if (expectedWaiting != null) {
+            val wait = expectedWaiting.task.waitingUser ?: return@synchronized false
+            val validReason = when (expectedWaiting.waitReason) {
+                SaveWaitReason.BACKGROUND -> expected.request.method != TaskMethod.RECORD && expectedWaiting.error == null && wait.resumeAction == ResumeAction.RETRY
+                SaveWaitReason.NETWORK -> expected.needsNetworkTransfer() && expectedWaiting.error == SaveError.WIFI_REQUIRED && wait.resumeAction == ResumeAction.RETRY
+                SaveWaitReason.RECOVERY -> expectedWaiting.error in setOf(SaveError.RECOVERY_REQUIRED, SaveError.RESOURCE_RELEASE_UNCONFIRMED) && wait.resumeAction == ResumeAction.REVIEW_RECOVERY
+                else -> false
+            }
+            if (!validReason || expectedWaiting != changeState(expected, TaskState.WAITING_USER, expectedWaiting.error, wait)
+                    .copy(waitReason = expectedWaiting.waitReason)) return@synchronized false
+        }
+        val current = journal.read(expected.task.taskId) ?: return@synchronized false
+        // A write may have committed before throwing. lastRecord need not have been published yet.
+        if (expectedWaiting != null && current == expectedWaiting) {
+            publish(current)
+            return@synchronized true
+        }
+        if (current != expected || runtime.lastRecord != expected ||
+            runtime.userCancel || operation.cancelToken.isCancelled) return@synchronized false
+        val unreleased = resourcesUnreleased()
+        val waitReason = when {
+            unreleased -> SaveWaitReason.RECOVERY
+            expected.request.method == TaskMethod.RECORD -> SaveWaitReason.RECOVERY
+            runtime.pause || reason == SaveWaitReason.BACKGROUND -> SaveWaitReason.BACKGROUND
+            reason == SaveWaitReason.NETWORK && expected.needsNetworkTransfer() -> SaveWaitReason.NETWORK
+            else -> SaveWaitReason.RECOVERY
+        }
+        val error = when {
+            unreleased -> SaveError.RESOURCE_RELEASE_UNCONFIRMED
+            waitReason == SaveWaitReason.NETWORK -> SaveError.WIFI_REQUIRED
+            waitReason == SaveWaitReason.BACKGROUND -> null
+            else -> SaveError.RECOVERY_REQUIRED
+        }
+        // Reuse the first proposal after an authoritative read of the unchanged RUNNING record.
+        // In particular a write-then-throw can never extend its WAITING_USER deadline.
+        val next = expectedWaiting ?: changeState(expected, TaskState.WAITING_USER, error,
+            UserWait(saturatedAdd(clock.nowMillis(), limits.waitingUserLifetimeMillis),
+                if (waitReason == SaveWaitReason.RECOVERY) ResumeAction.REVIEW_RECOVERY else ResumeAction.RETRY))
+            .copy(waitReason = waitReason)
+        preparedWaiting(next)
+        // Linearization point relative to synchronous ticket retirement/Cancel. A transaction
+        // admitted here may finish before the subsequent durable Cancel, never after CANCELLED.
+        if (runtime.userCancel || operation.cancelToken.isCancelled || !mayRepair()) return@synchronized false
+        save(expected, next)
+        true
     }
 
     fun execute(taskId: String): SaveRecord? {

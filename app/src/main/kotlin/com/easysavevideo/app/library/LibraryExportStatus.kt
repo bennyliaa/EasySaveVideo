@@ -11,6 +11,10 @@ import com.easysavevideo.library.export.BatchTransferStatus
 import com.easysavevideo.app.library.export.AndroidExportRuntime
 import com.easysavevideo.app.library.export.UnverifiedExportView
 import com.easysavevideo.app.library.export.DirectoryExportNotice
+import com.easysavevideo.app.library.export.ExportRecoveryStatus
+import com.easysavevideo.app.library.export.ExportRecoveryFailure
+import com.easysavevideo.app.library.export.ExportRecoveryRetryAction
+import com.easysavevideo.app.library.export.offerExportRecoveryRetry
 import com.easysavevideo.app.theme.*
 
 internal fun unverifiedCleanupStillCurrent(
@@ -22,9 +26,19 @@ internal fun unverifiedCleanupStillCurrent(
 
 /** Output responsibilities remain visible independently of source selection and the latest notice. */
 @Composable
-internal fun LibraryExportStatus(exports: AndroidExportRuntime, foreground: Boolean) {
+internal fun LibraryExportStatus(exports: AndroidExportRuntime, foreground: Boolean, isCurrent: () -> Boolean) {
     val state = exports.state
     val v = LocalEsvVisuals.current
+    val currentForeground by rememberUpdatedState(foreground)
+    val currentRuntime by rememberUpdatedState(exports)
+    val currentAdmission by rememberUpdatedState(isCurrent)
+    val retryAction = remember(exports) {
+        ExportRecoveryRetryAction({
+            currentForeground && currentRuntime === exports && currentAdmission() && !exports.state.busy &&
+                offerExportRecoveryRetry(exports.state.recoveryCheck, exports.state.recoverable)
+        }, exports::retry)
+    }
+    DisposableEffect(retryAction) { onDispose { retryAction.close() } }
     var showingUnverified by remember { mutableStateOf(false) }
     var cleanupConfirmation by remember { mutableStateOf<UnverifiedExportView?>(null) }
     LaunchedEffect(foreground, state.unverified) {
@@ -73,7 +87,23 @@ internal fun LibraryExportStatus(exports: AndroidExportRuntime, foreground: Bool
         if(state.batchCleanupPending)EsvText(stringResource(R.string.library_batch_cleanup_pending),color=v.colors.error,style=v.captionTextStyle)
         if (state.recoverable > 0) {
             EsvText("${state.recoverable} 个导出操作仍待核对或清理。导出不会删除原件；外部位置可能已有副本或部分文件。", style = v.captionTextStyle, color = v.colors.error)
-            EsvButton("核对并重试未完成操作", exports::retry, enabled = foreground && !state.busy, modifier = Modifier.fillMaxWidth())
+        }
+        val recovery = state.recoveryCheck
+        EsvText(stringResource(when (recovery.status) {
+            ExportRecoveryStatus.UNKNOWN -> R.string.export_recovery_unknown
+            ExportRecoveryStatus.CHECKING -> R.string.export_recovery_checking
+            ExportRecoveryStatus.FAILED -> if (recovery.failure == ExportRecoveryFailure.QUEUE_BUSY)
+                R.string.export_recovery_queue_busy else R.string.export_recovery_failed
+            ExportRecoveryStatus.CHECKED -> R.string.export_recovery_checked
+        }), style = v.captionTextStyle)
+        if (recovery.status == ExportRecoveryStatus.CHECKING && recovery.failure != null)
+            EsvText(stringResource(if (recovery.failure == ExportRecoveryFailure.QUEUE_BUSY)
+                R.string.export_recovery_queue_busy else R.string.export_recovery_failed), style = v.captionTextStyle)
+        if (offerExportRecoveryRetry(recovery, state.recoverable)) {
+            EsvText(stringResource(R.string.export_recovery_scope), style = v.captionTextStyle)
+            EsvButton(stringResource(R.string.export_recovery_retry), retryAction::invoke,
+                enabled = foreground && !state.busy && recovery.status != ExportRecoveryStatus.CHECKING,
+                modifier = Modifier.fillMaxWidth())
         }
         if (state.unverifiedCount > 0) {
             EsvText("有 ${state.unverifiedCount} 条文件导出记录需要核对，包含未校验或尚未确认清理的副本。", style = v.captionTextStyle, color = v.colors.muted)

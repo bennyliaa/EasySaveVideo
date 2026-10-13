@@ -77,8 +77,10 @@ class LibraryBatchRecoverySourceContractTest {
         assertTrue(confirm.contains("storage.directoryExportBatches.started(it.operationId)"))
         assertTrue(confirm.contains("BatchTransferStatus.CANCELLED_BEFORE_START"))
         val retry = section(runtime, "fun retry()", "fun unverifiedPage")
-        assertTrue(retry.contains("stopInterrupted().forEach(coordinator::cancel)"))
-        assertTrue(retry.contains("coordinator.recoverPending()"))
+        assertTrue(retry.contains("recoveryChecks.start()"))
+        val recovery = section(runtime, "private val recoveryChecks =", "internal fun observeDestinationState")
+        assertTrue(recovery.contains("stopInterrupted().forEach(coordinator::cancel)"))
+        assertTrue(recovery.contains("recoverPending = { coordinator.recoverPending() }"))
         assertFalse(retry.contains("DirectoryBatchPlan.create")); assertFalse(retry.contains("chooseBatchFolder"))
     }
 

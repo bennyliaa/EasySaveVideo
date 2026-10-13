@@ -23,6 +23,9 @@ import com.easysavevideo.app.library.destination.AndroidFolderPickerHost
 import com.easysavevideo.app.library.destination.AndroidFolderGrantRegistry
 import com.easysavevideo.app.library.destination.FolderSelectionGate
 import com.easysavevideo.app.library.destination.DirectoryPickerLifecycle
+import com.easysavevideo.app.library.AndroidLibraryRuntime
+import com.easysavevideo.app.library.LibraryBatchSelection
+import com.easysavevideo.app.library.LibraryPickerPageReturn
 import com.easysavevideo.library.export.*
 import java.util.UUID
 import java.util.concurrent.ArrayBlockingQueue
@@ -47,6 +50,7 @@ data class ExportViewState(
     val canCancel: Boolean = false,
     val notice: String? = null,
     val recoverable: Long = 0,
+    val recoveryCheck: ExportRecoveryCheckState = ExportRecoveryCheckState(),
     val canCleanupUnverified: Boolean = false,
     val unverifiedOperationId: String? = null,
     val unverified: List<UnverifiedExportView> = emptyList(),
@@ -82,26 +86,38 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
     private var directoryHost:AndroidFolderPickerHost? = null
     private class DirectorySelection(val ticket:FolderSelectionGate.Ticket,val items:List<MediaItem>,val current:()->Boolean) {
         val confirmation=DirectoryBatchConfirmation()
+        var pageReturn:LibraryPickerPageReturn?=null
         var uri:android.net.Uri?=null;var flags=0;val lifecycle=DirectoryPickerLifecycle()
     }
     private var directorySelection:DirectorySelection?=null
     private var pendingSaf: ExportRequest? = null
     private var pendingPickerResult = false
     var state by mutableStateOf(ExportViewState()); private set
+    private val recoveryChecks = ExportRecoveryCheckController(
+        enqueue = { work -> worker.execute(work) },
+        post = { update -> main.post(update) },
+        isRuntimeCurrent = { !closed },
+        stopInterrupted = {
+            storage.directoryExportBatches.stopInterrupted().forEach(coordinator::cancel)
+            storage.directoryExportBatches.interruptedCount() > 0
+        },
+        recoverPending = { coordinator.recoverPending() },
+        releaseFinishedGrant = port::releaseFinishedGrant,
+        readReviews = { readReviews() },
+        onUpdate = { check, result, ownsBusy ->
+            val reviewed = result?.let { state.withReviews(it.reviews) } ?: state
+            state = reviewed.copy(recoveryCheck = check,
+                busy = if (ownsBusy) check.status == ExportRecoveryStatus.CHECKING else reviewed.busy,
+                canCancel = if (ownsBusy) false else reviewed.canCancel,
+                directoryNotice = if (result?.interrupted == true) DirectoryExportNotice.INTERRUPTED else reviewed.directoryNotice)
+        },
+    )
     init {
+        // Previous-process recipients held virtual proxy descriptors; reclaim private copies now.
         worker.execute {
-            // Previous-process recipients held virtual proxy descriptors; reclaim private copies now.
             try { LibraryShareOwner.get(application) } catch (_: Exception) { /* Sharing stays unavailable; ordinary exports may proceed. */ }
-            try {
-                storage.directoryExportBatches.stopInterrupted().forEach(coordinator::cancel)
-                val interrupted=storage.directoryExportBatches.interruptedCount()>0
-                val found = coordinator.recoverPending()
-                found.forEach(port::releaseFinishedGrant)
-                refreshReviews()
-                main.post { if (!closed) state = state.copy(directoryNotice=if(interrupted)DirectoryExportNotice.INTERRUPTED else null,
-                    notice = if (found.any { !it.phase.terminal }) "有导出结果需要核对。本次操作不会删除媒体库原件，可重试恢复检查；文件选择器中的遗留文件可能需要手动清理。" else null) }
-            } catch (_: Exception) { main.post { if (!closed) state = state.copy(notice = "导出恢复检查未完成；本次操作不会删除媒体库原件。") } }
         }
+        recoveryChecks.start()
     }
     internal fun observeDestinationState(observer: () -> Unit) {
         check(destinationStateObserver == null)
@@ -319,19 +335,28 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
         if(batchActive && state.busy)cancel()
     }
     fun cancelBatchForLeavingLibrary() {requireMain();if(batchActive && state.busy)cancel()}
-    internal fun attachBatchFolderPicker(host:AndroidFolderPickerHost) {requireMain();directoryHost=host}
+    internal fun attachBatchFolderPicker(host:AndroidFolderPickerHost) {
+        requireMain()
+        if(directoryHost!==host && directorySelection!=null)cancel()
+        directoryHost=host
+    }
     internal fun detachBatchFolderPicker(host:AndroidFolderPickerHost) {
         requireMain();if(directoryHost!==host)return
         if(directorySelection!=null)cancel()
         directoryHost=null
     }
-    fun chooseBatchFolder(items:List<MediaItem>,isCurrent:()->Boolean) {
+    fun chooseBatchFolder(selection:LibraryBatchSelection,library:AndroidLibraryRuntime,isCurrent:()->Boolean) {
+        val items=selection.items
         requireMain();if(batchReferences(items)==null || !isCurrent())return
         val host=directoryHost ?: run{state=state.copy(directoryNotice=DirectoryExportNotice.UNAVAILABLE);return}
         if(!admit())return
         val ticket=directoryGate.begin(host) ?: run{state=state.copy(busy=false,canCancel=false,directoryNotice=DirectoryExportNotice.UNAVAILABLE);return}
         val selected=DirectorySelection(ticket,items.toList(),isCurrent)
         directorySelection=selected;batchActive=true
+        selected.pageReturn=library.beginPickerReturn(selection,selected.lifecycle,
+            related={directoryHost===host && directorySelection===selected && !closed && !cancelled.get() && directoryGate.active(ticket)},
+            onStale={if(directorySelection===selected) {cancel();state=state.copy(directoryNotice=DirectoryExportNotice.STALE)}})
+        if(selected.pageReturn==null) {cancel();state=state.copy(directoryNotice=DirectoryExportNotice.STALE);return}
         state=state.copy(batchNames=items.map{it.displayName},directoryNotice=DirectoryExportNotice.PICKING)
         try {host.launch(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
@@ -350,17 +375,18 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
     fun canConfirmBatchFolder(expected:DirectoryBatchConfirmation):Boolean {
         requireMain();val selection=directorySelection ?: return false
         return selection.confirmation===expected && selection.lifecycle.canConfirm(true) &&
-            !closed && selection.uri!=null && !cancelled.get() && selection.current()
+            !closed && selection.uri!=null && !cancelled.get() && selection.current() && selection.pageReturn?.isCurrent()==true
     }
     fun confirmBatchFolderCopy(expected:DirectoryBatchConfirmation) {
         requireMain();val selection=directorySelection ?: return
         when(consumeDirectoryBatchConfirmation(expected,selection.confirmation,selection.lifecycle) {
-            !closed && selection.uri!=null && !cancelled.get() && selection.current()
+            !closed && selection.uri!=null && !cancelled.get() && selection.current() && selection.pageReturn?.isCurrent()==true
         }) {
             DirectoryConfirmationDecision.IGNORED -> return
             DirectoryConfirmationDecision.STALE -> {cancel();state=state.copy(directoryNotice=DirectoryExportNotice.STALE);return}
             DirectoryConfirmationDecision.CONFIRMED -> Unit
         }
+        selection.pageReturn?.close()
         val uri=requireNotNull(selection.uri);val cancellation=cancelled
         state=state.copy(directoryConfirmation=null,directoryNotice=DirectoryExportNotice.COPYING)
         submit {
@@ -417,6 +443,7 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
         activeShareBatch?.cancel()
         val selection=directorySelection
         if(selection!=null) {
+            selection.pageReturn?.close()
             selection.lifecycle.cancel()
             directoryGate.cancel(selection.ticket)
             if(!selection.lifecycle.confirmedOnce) {
@@ -439,14 +466,7 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
     fun retry() {
         requireMain(); if (!admit()) return
         state = state.copy(canCancel = false)
-        submit {
-            storage.directoryExportBatches.stopInterrupted().forEach(coordinator::cancel)
-            val results = coordinator.recoverPending()
-            results.forEach(port::releaseFinishedGrant)
-            refreshReviews()
-            main.post { if (!closed) state = state.copy(busy = false, canCancel = false,
-                notice = if (results.any { !it.phase.terminal }) "仍有外部副本或授权需要核对。未创建重复副本，本次操作不会删除媒体库原件；文件提供方无法确认的结果需手动检查。" else "本批自动恢复检查已结束；仍需核对的文件副本请查看列表。") }
-        }
+        recoveryChecks.start()
     }
     fun unverifiedPage(page: Long) {
         requireMain(); if (closed || state.busy || page < 0) return
@@ -487,13 +507,14 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
     fun clearNotice() { requireMain(); state = state.copy(notice = null, initializationDiagnostic = null) }
     override fun close() {
         requireMain(); if (closed) return
-        if (state.busy) cancel()
+        if (state.busy && !recoveryChecks.checking()) cancel()
         closed = true
+        recoveryChecks.close()
         submitControl { LibraryShareOwner.get(application).revokeAll() }
         worker.shutdown(); controls.shutdown()
     }
     private fun admit(): Boolean {
-        if (closed || state.busy || directorySelection!=null) return false
+        if (closed || state.busy || directorySelection!=null || recoveryChecks.checking()) return false
         cancelled = AtomicBoolean(false)
         sharing = false
         activeShareBatch=null;batchActive=false
@@ -519,8 +540,15 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
         refreshReviews()
         main.post { if (!closed) state = state.copy(busy = false, canCancel = false, notice = exportNotice(result)) }
     }
-    /** Called only on bounded worker lane; never opens the source or reconstructs a SAF grant. */
+    private data class ReviewSnapshot(val views: List<UnverifiedExportView>, val total: Long,
+        val unfinished: Long, val page: Long)
+
     private fun refreshReviews(page: Long = 0) {
+        val reviews = readReviews(page)
+        main.post { if (!closed) state = state.withReviews(reviews) }
+    }
+    /** Called only on bounded worker lanes; never opens the source or reconstructs a SAF grant. */
+    private fun readReviews(page: Long = 0): ReviewSnapshot {
         val reviewed = journal.listUnverified(page)
         val counts = journal.counts()
         val views = reviewed.records.map { entry ->
@@ -536,15 +564,20 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
                 else if (record.verification == ExportVerification.READBACK_UNSUPPORTED) "副本未完整校验，可明确选择清理。"
                 else "导出或清理结果待核对，请重试恢复检查。")
         }
-        main.post { if (!closed) state = state.copy(unverified = views, unverifiedCount = reviewed.total, recoverable = counts.unfinished,
-            unverifiedPage = reviewed.page, unverifiedPages = reviewed.total / AndroidExportJournal.REVIEW_PAGE_SIZE + if (reviewed.total % AndroidExportJournal.REVIEW_PAGE_SIZE == 0L) 0 else 1,
-            canCleanupUnverified = views.any { it.canAttemptCleanup }, unverifiedOperationId = views.firstOrNull { it.canAttemptCleanup }?.operationId) }
+        return ReviewSnapshot(views, reviewed.total, counts.unfinished, reviewed.page)
     }
+    private fun ExportViewState.withReviews(reviews: ReviewSnapshot) = copy(
+        unverified = reviews.views, unverifiedCount = reviews.total, recoverable = reviews.unfinished,
+        unverifiedPage = reviews.page,
+        unverifiedPages = reviews.total / AndroidExportJournal.REVIEW_PAGE_SIZE + if (reviews.total % AndroidExportJournal.REVIEW_PAGE_SIZE == 0L) 0 else 1,
+        canCleanupUnverified = reviews.views.any { it.canAttemptCleanup },
+        unverifiedOperationId = reviews.views.firstOrNull { it.canAttemptCleanup }?.operationId,
+    )
     private fun submit(block: () -> Unit) {
         try { worker.execute {
             try { block() } catch (failure: Exception) {
                 val counts = try { journal.counts() } catch (_: Exception) { null }
-                try { refreshReviews() } catch (_: Exception) { }
+                val reviewsAvailable = try { refreshReviews(); true } catch (_: Exception) { false }
                 val notice = if (failure is ShareFailure) shareFailureNotice(failure.code)
                 else if (failure is ExportFailure && failure.code == ExportError.CAPACITY) {
                     "已有 ${ExportLimits.MAX_ACTIVE} 个导出操作未完成，请先恢复检查并处理待确认的副本。本次未创建新副本，已完成的历史记录不占用此上限。"
@@ -552,7 +585,8 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
                 main.post { if (!closed) {
                     directorySelection?.let{directoryGate.cancel(it.ticket)};directorySelection=null;directoryBatchId=null
                     pendingSaf = null; pendingPickerResult = false
-                    state = state.copy(busy = false, canCancel = false,directoryConfirmation=null, initializationDiagnostic = (failure as? ShareFailure)?.diagnostic, recoverable = counts?.unfinished ?: maxOf(1L, state.recoverable), notice = notice)
+                    state = state.copy(busy = false, canCancel = false,directoryConfirmation=null, initializationDiagnostic = (failure as? ShareFailure)?.diagnostic, recoverable = counts?.unfinished ?: state.recoverable, notice = notice)
+                    if (exportRecoveryReviewUnavailable(counts != null, reviewsAvailable)) recoveryChecks.requireRecovery()
                 } }
             }
         } } catch (_: java.util.concurrent.RejectedExecutionException) {

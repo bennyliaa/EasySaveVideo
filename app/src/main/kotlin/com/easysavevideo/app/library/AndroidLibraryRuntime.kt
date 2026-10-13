@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.easysavevideo.library.*
+import com.easysavevideo.app.library.destination.DirectoryPickerLifecycle
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.ArrayBlockingQueue
@@ -78,25 +79,84 @@ class AndroidLibraryRuntime internal constructor(
     private var delayedSearch: Runnable? = null
     private var deletePoll: Runnable? = null
     private var batchMoveCancellation: AtomicBoolean? = null
+    private var userIntentEpoch = 0L
+    private var pickerPageReturn: LibraryPickerPageReturn? = null
+
+    internal fun beginPickerReturn(selection: LibraryBatchSelection, lifecycle: DirectoryPickerLifecycle,
+        related: () -> Boolean, onStale: () -> Unit): LibraryPickerPageReturn? {
+        ui.requireCurrentThread()
+        if (disposed || !batchSelectionIsCurrent(selection, state) || !lifecycle.expectedPickerPause() || !related()) return null
+        pickerPageReturn?.let { retirePickerReturn(it, stale = true) }
+        cancelDeletePoll()
+        return LibraryPickerPageReturn(this, selection, userIntentEpoch, lifecycle, related, onStale)
+            .also { pickerPageReturn = it }
+    }
+
+    private fun ownsPickerReturn(lease: LibraryPickerPageReturn): Boolean =
+        !disposed && pickerPageReturn === lease && !lease.retired && lease.intentEpoch == userIntentEpoch &&
+            lease.selection.query == state.query && lease.lifecycle.active() && !lease.lifecycle.confirmedOnce && lease.related()
+
+    internal fun pickerReturnIsCurrent(lease: LibraryPickerPageReturn): Boolean {
+        ui.requireCurrentThread()
+        return ownsPickerReturn(lease) && lease.revalidated && batchSelectionIsCurrent(lease.selection, state)
+    }
+
+    internal fun retirePickerReturn(lease: LibraryPickerPageReturn, stale: Boolean = false) {
+        ui.requireCurrentThread()
+        if (pickerPageReturn !== lease) return
+        pickerPageReturn = null
+        lease.retired = true
+        if (lease.refreshStarted && !lease.revalidated && state.loading) {
+            invalidateRead()
+            state = state.copy(loading = false, ready = false)
+        }
+        if (stale) lease.onStale()
+        scheduleDeletePoll()
+    }
+
+    /** Explicit user intent is irreversible even if query/selection values later become equal. */
+    private fun userIntent() {
+        userIntentEpoch++
+        pickerPageReturn?.let { retirePickerReturn(it, stale = true) }
+    }
 
     fun setForeground(value: Boolean) {
         ui.requireCurrentThread()
-        if (disposed || state.foreground == value) return
-        if (!value) batchMoveCancellation?.set(true)
-        invalidateRead()
-        state = state.copy(foreground = value, loading = false, selected = null, editor = null, deletion = null, move = null)
-        if (value) refresh() else cancelDeletePoll()
+        if (disposed) return
+        val lease = pickerPageReturn?.takeIf { ownsPickerReturn(it) }
+        if (lease == null) pickerPageReturn?.let { retirePickerReturn(it, stale = true) }
+        val returnedResult = value && lease != null && lease.lifecycle.canConfirm(true) && !lease.refreshStarted
+        if (state.foreground == value && !returnedResult) return
+        if (state.foreground != value) {
+            if (!value) batchMoveCancellation?.set(true)
+            invalidateRead()
+            state = state.copy(foreground = value, loading = false, selected = null, editor = null, deletion = null, move = null)
+        }
+        if (!value) { cancelDeletePoll(); return }
+        if (lease != null) {
+            // A WAITING resume cannot spend the eventual matching-result allowance or reset its page.
+            if (returnedResult) {
+                lease.refreshStarted = true
+                load(lease.selection.query, retryPending = true, returningPicker = lease)
+            }
+        } else if (!state.busy) {
+            // Original UI01:38 preserves the root reading page, not transient command authority.
+            // Revalidate this cursor through the repository; load still falls back on STALE_PAGE.
+            load(state.query, retryPending = true)
+        }
     }
 
     fun refresh(preserveSelection: Boolean = false) {
         ui.requireCurrentThread()
         if (!available() || state.busy) return
+        userIntent()
         load(state.query.copy(cursor = null), retryPending = true, preserveSelection = preserveSelection)
     }
 
     fun search(text: String) {
         ui.requireCurrentThread()
         if (!available() || state.busy || state.move != null) return
+        userIntent()
         invalidateRead()
         val bounded = boundedLibraryText(text, LibraryLimits.MAX_SEARCH_UTF8_BYTES)
         val query = try { state.query.copy(text = bounded, cursor = null) } catch (_: LibraryFailure) {
@@ -115,12 +175,14 @@ class AndroidLibraryRuntime internal constructor(
     fun sort(sort: LibrarySort) {
         ui.requireCurrentThread()
         if (!available() || state.busy || state.move != null) return
+        userIntent()
         load(state.query.copy(sort = sort, cursor = null))
     }
 
     fun reverseSort() {
         ui.requireCurrentThread()
         if (!available() || state.busy || state.move != null) return
+        userIntent()
         val direction = if (state.query.direction == SortDirection.ASCENDING) SortDirection.DESCENDING else SortDirection.ASCENDING
         load(state.query.copy(direction = direction, cursor = null))
     }
@@ -128,13 +190,14 @@ class AndroidLibraryRuntime internal constructor(
     fun nextPage() {
         ui.requireCurrentThread()
         if (!available() || state.busy || state.loading) return
-        state.nextCursor?.let { load(state.query.copy(cursor = it)) }
+        state.nextCursor?.let { userIntent(); load(state.query.copy(cursor = it)) }
     }
 
     fun previousPage() {
         ui.requireCurrentThread()
         if (!available() || state.busy || state.loading) return
         val cursor = state.query.cursor ?: return
+        userIntent()
         val previous = if (cursor.offset <= state.query.pageSize) null else cursor.copy(offset = cursor.offset - state.query.pageSize)
         load(state.query.copy(cursor = previous))
     }
@@ -142,12 +205,14 @@ class AndroidLibraryRuntime internal constructor(
     fun folderPage(page: Int) {
         ui.requireCurrentThread()
         if (!available() || state.busy) return
+        userIntent()
         state = state.copy(folderPage = page.coerceIn(0, ((state.folders.size - 1).coerceAtLeast(0) / FOLDER_PAGE_SIZE)))
     }
 
     fun enterFolder(folderId: String?) {
         ui.requireCurrentThread()
         if (!available() || state.busy) return
+        userIntent()
         load(state.query.copy(folderId = folderId, text = "", cursor = null))
     }
 
@@ -157,6 +222,7 @@ class AndroidLibraryRuntime internal constructor(
         ui.requireCurrentThread()
         if (!available() || state.busy || state.loading || state.move != null || item.lifecycle != MediaLifecycle.READY) return
         if (state.items.none { it == item }) return
+        userIntent()
         state = state.copy(selected = LibrarySelection.Media(item), editor = null, deletion = null)
     }
 
@@ -164,6 +230,7 @@ class AndroidLibraryRuntime internal constructor(
         ui.requireCurrentThread()
         if (!available() || state.busy || state.loading || state.move != null) return
         if (state.folders.none { it == folder }) return
+        userIntent()
         state = state.copy(selected = LibrarySelection.Folder(folder), editor = null, deletion = null)
     }
 
@@ -173,18 +240,21 @@ class AndroidLibraryRuntime internal constructor(
         if (!available() || state.busy || state.loading || !state.ready || state.selected != selection ||
             state.items.none { it == selection.item }) return null
         val ref = selection.item.readRef()
+        userIntent()
         state = state.copy(selected = null, editor = null, deletion = null)
         return ref
     }
 
     fun dismissSelection() {
         ui.requireCurrentThread()
+        userIntent()
         state = state.copy(selected = null, editor = null, deletion = null)
     }
 
     fun createFolder() {
         ui.requireCurrentThread()
         if (!available() || state.busy || state.loading || state.move != null) return
+        userIntent()
         state = state.copy(selected = null, editor = LibraryNameEditor(null, state.query.folderId, ""), deletion = null)
     }
 
@@ -246,6 +316,7 @@ class AndroidLibraryRuntime internal constructor(
                 it.lifecycle == MediaLifecycle.READY && it.readRef() == ref
             } ?: return false
         }
+        userIntent()
         state = state.copy(move = LibraryMoveSelection(LibrarySelection.Media(items.first()), state.query.folderId, snapshot),
             batchMoveResults = emptyList(), batchMoveNames = items.map { it.displayName }, selected = null, editor = null, deletion = null)
         load(state.query.copy(folderId = null, text = "", cursor = null))
@@ -351,7 +422,8 @@ class AndroidLibraryRuntime internal constructor(
     private data class Loaded(val page: LibraryPage, val folder: LibraryFolder?, val folders: List<LibraryFolder>, val pending: Set<String>, val deleteReport: PendingDeleteReport?, val deleteUnknown: Boolean)
     private data class MutationResult(val pendingDeleteId: String? = null)
 
-    private fun load(query: LibraryQuery, retryPending: Boolean = false, preserveSelection: Boolean = false) {
+    private fun load(query: LibraryQuery, retryPending: Boolean = false, preserveSelection: Boolean = false,
+        returningPicker: LibraryPickerPageReturn? = null) {
         invalidateRead()
         if (!available()) return
         val token = generation
@@ -380,7 +452,8 @@ class AndroidLibraryRuntime internal constructor(
             } catch (failure: LibraryFailure) { Result.failure(failure) }
             catch (_: Exception) { Result.failure(LibraryFailure(LibraryError.STORAGE_FAILURE)) }
             ui.post {
-                if (disposed || !state.foreground || generation != token) return@post
+                if (disposed || !state.foreground || generation != token ||
+                    (returningPicker != null && !ownsPickerReturn(returningPicker))) return@post
                 queuedRead = null
                 loaded.fold(onSuccess = { result ->
                     state = state.copy(items = result.page.items.toList(), folders = result.folders,
@@ -397,11 +470,16 @@ class AndroidLibraryRuntime internal constructor(
                             (result.deleteReport?.pending ?: 0) > 0 -> "已确认的删除仍在等待清理，尚未完成。"
                             else -> state.notice
                         })
+                    pickerPageReturn?.let { lease ->
+                        if (!ownsPickerReturn(lease) || !batchSelectionIsCurrent(lease.selection, state)) retirePickerReturn(lease, stale = true)
+                        else if (lease === returningPicker) lease.revalidated = true
+                    }
                     scheduleDeletePoll()
                 }, onFailure = { throwable ->
                     val failure = throwable as LibraryFailure
                     state = state.copy(loading = false, ready = false, items = emptyList(), folders = emptyList(), nextCursor = null,
                         notice = libraryErrorText(failure.code))
+                    pickerPageReturn?.let { retirePickerReturn(it, stale = true) }
                     // The obsolete page is never appended or presented as a current snapshot.
                     if (failure.code == LibraryError.STALE_PAGE && query.cursor != null) load(query.copy(cursor = null))
                     else if (failure.code == LibraryError.NOT_FOUND && query.folderId != null) load(query.copy(folderId = null, cursor = null))
@@ -413,6 +491,7 @@ class AndroidLibraryRuntime internal constructor(
         if (!work.submit(job)) {
             queuedRead = null
             state = state.copy(loading = false, ready = false, items = emptyList(), folders = emptyList(), nextCursor = null, notice = libraryErrorText(LibraryError.BUSY))
+            pickerPageReturn?.let { retirePickerReturn(it, stale = true) }
         }
     }
 
@@ -445,7 +524,7 @@ class AndroidLibraryRuntime internal constructor(
 
     private fun scheduleDeletePoll() {
         cancelDeletePoll()
-        if (!available() || state.pendingDeleteCount == 0 || state.busy) return
+        if (!available() || state.pendingDeleteCount == 0 || state.busy || pickerPageReturn?.revalidated == false) return
         val poll = Runnable {
             deletePoll = null
             if (available() && !state.busy && state.pendingDeleteCount > 0) {
@@ -475,6 +554,7 @@ class AndroidLibraryRuntime internal constructor(
     override fun close() {
         ui.requireCurrentThread()
         if (disposed) return
+        pickerPageReturn?.let { retirePickerReturn(it, stale = true) }
         batchMoveCancellation?.set(true)
         disposed = true
         invalidateRead(); cancelDeletePoll()

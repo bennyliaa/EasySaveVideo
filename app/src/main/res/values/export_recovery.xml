@@ -1,0 +1,9 @@
+<resources>
+    <string name="export_recovery_unknown">Export recovery has not been checked yet.</string>
+    <string name="export_recovery_checking">Export recovery is in progress.</string>
+    <string name="export_recovery_failed">Export recovery did not finish. You can retry even if no pending count is available.</string>
+    <string name="export_recovery_queue_busy">The export queue is busy. Recovery has not finished; try again later.</string>
+    <string name="export_recovery_checked">This recovery pass has finished. Any unresolved copies remain listed below.</string>
+    <string name="export_recovery_retry">Retry recovery</string>
+    <string name="export_recovery_scope">Recovery may continue an already accepted export or reconcile and clean up its unfinished copy. It does not create a second export request or delete the Library original.</string>
+</resources>

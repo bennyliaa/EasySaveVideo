@@ -45,8 +45,12 @@ fun SaveTaskScreen(
     onBrowser: (() -> Unit)? = null,
     onBack: () -> Unit,
     canOpenBrowserForAuthentication: () -> Boolean = { false },
+    recoveryIsCurrent: (AndroidSaveRuntime) -> Boolean = { false },
 ) {
     val v = LocalEsvVisuals.current
+    val currentRecoveryAdmission by rememberUpdatedState(recoveryIsCurrent)
+    val recoveryAction = remember(runtime) { runtime.recoveryRetryAction { currentRecoveryAdmission(runtime) } }
+    DisposableEffect(recoveryAction) { onDispose { recoveryAction.close() } }
     var showLimits by rememberSaveable { mutableStateOf(false) }
     var selectedTaskId by rememberSaveable { mutableStateOf<String?>(null) }
     val listState = rememberLazyListState()
@@ -77,6 +81,19 @@ fun SaveTaskScreen(
             runtime.notice?.let { text ->
                 EsvText(saveRuntimeNoticeText(text), color = v.colors.error)
                 EsvButton(stringResource(R.string.flow_savetaskscreen_10), onClick = runtime::dismissNotice)
+            }
+            // Independent of records/counts: a failed journal snapshot must not hide local repair.
+            runtime.pendingSaveRecoveries.forEach { ticket ->
+                EsvText(stringResource(R.string.save_recovery_failed, ticket.taskId.take(8)), color = v.colors.error)
+                EsvButton(stringResource(R.string.save_recovery_retry), onClick = { recoveryAction.invoke(ticket) },
+                    enabled = ticket.taskId !in runtime.pendingCommands)
+                EsvButton(stringResource(R.string.flow_savetaskscreen_21), onClick = { recoveryAction.cancel(ticket.taskId, runtime::cancel) },
+                    enabled = ticket.taskId !in runtime.pendingCommands)
+            }
+            runtime.recoveryCancelTaskIds.forEach { taskId ->
+                EsvText(stringResource(R.string.save_recovery_cancel_pending, taskId.take(8)), color = v.colors.error)
+                EsvButton(stringResource(R.string.flow_savetaskscreen_21), onClick = { recoveryAction.cancel(taskId, runtime::cancel) },
+                    enabled = taskId !in runtime.pendingCommands)
             }
             runtime.destinations?.let { OrdinaryDestinationHistory(it) }
             if (!runtime.ready) EsvText(stringResource(R.string.flow_savetaskscreen_11))

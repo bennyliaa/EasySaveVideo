@@ -1,0 +1,9 @@
+<resources>
+    <string name="export_recovery_unknown">尚未检查导出恢复状态。</string>
+    <string name="export_recovery_checking">正在恢复导出。</string>
+    <string name="export_recovery_failed">导出恢复未完成。即使暂时无法取得待处理数量，也可以重试。</string>
+    <string name="export_recovery_queue_busy">导出队列暂忙，恢复尚未完成，请稍后重试。</string>
+    <string name="export_recovery_checked">本批恢复已结束；尚未解决的副本仍会在下方显示。</string>
+    <string name="export_recovery_retry">重试恢复</string>
+    <string name="export_recovery_scope">恢复可能继续已接受但尚未完成的导出，或核对并清理该操作的未完成副本。不会创建第二个导出请求，也不会删除媒体库原件。</string>
+</resources>
