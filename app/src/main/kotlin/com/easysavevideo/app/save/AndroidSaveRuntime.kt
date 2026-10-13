@@ -228,12 +228,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         return result
     }
     fun dismissFailureBrowserReminder() { showFailureBrowserReminder = false }
-    private fun inspectionPage(browser: SystemBrowserHost): SaveInspectionPage? {
-        val tab = browser.state.selectedTab ?: return null
-        val view = browser.selectedView()
-        return SaveInspectionPage(tab.context, tab.epoch, tab.loadState == BrowserLoadState.READY,
-            tab.address?.value, view?.url, view, browser.saveInspectionRevision)
-    }
+    private fun inspectionPage(browser: SystemBrowserHost): SaveInspectionPage? = browser.saveInspectionPage()
     fun inspectFromUserClick(browser: SystemBrowserHost) {
         requireMain()
         showFailureBrowserReminder = false

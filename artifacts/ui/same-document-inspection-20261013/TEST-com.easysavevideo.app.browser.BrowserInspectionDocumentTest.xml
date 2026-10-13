@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-10-13T04:25:13.594Z" time="0.065">
+  <testcase name="unacceptedDocumentCannotBorrowReadyAddress" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.01" />
+  <testcase name="exactFinishedAddressIsUsable" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.014" />
+  <testcase name="routeSnapshotStillRejectsOwnerContextEpochInteractionAndForegroundChanges" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.009" />
+  <testcase name="otherDocumentHistoryDoesNotRetireSelectedDocument" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.001" />
+  <testcase name="sameAddressHistoryAlsoRetiresCapturedWork" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.001" />
+  <testcase name="invalidFinishedAddressCannotBecomeOriginAnchor" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.001" />
+  <testcase name="currentViewMustMatchEvenBeforeHistoryCallbackArrives" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.0" />
+  <testcase name="awayAndBackNeverRevivesOldCandidate" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.002" />
+  <testcase name="mismatchedNativeCallbackRetiresWithoutAdmittingAddress" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.001" />
+  <testcase name="reloadLoadingAndRetiredRequestCannotAdmitHistory" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.001" />
+  <testcase name="diagnosticsNeverExposeDocumentAddress" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.0" />
+  <testcase name="hashPushAndReplaceRoutesCanBeExplicitlyInspected" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.001" />
+  <testcase name="crossOriginSchemePortCredentialsAndInvalidAddressesAreRejected" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.006" />
+  <testcase name="startedDropsPriorOriginUntilNewAcceptedFinish" classname="com.easysavevideo.app.browser.BrowserInspectionDocumentTest" time="0.001" />
+  </testsuite>

@@ -1,0 +1,177 @@
+> Task :core-domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :recording:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:compileKotlin
+> Task :core-model:compileJava NO-SOURCE
+> Task :recording:compileKotlin
+> Task :recording:compileJava NO-SOURCE
+> Task :save:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :save:processResources NO-SOURCE
+> Task :core-domain:processResources NO-SOURCE
+> Task :commons-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-domain:compileKotlin
+> Task :core-domain:compileJava NO-SOURCE
+> Task :save:compileKotlin
+> Task :save:compileJava NO-SOURCE
+> Task :save:classes UP-TO-DATE
+> Task :save:jar
+> Task :core-domain:classes UP-TO-DATE
+> Task :core-domain:jar
+> Task :commons-provider:processResources NO-SOURCE
+> Task :searxng-provider:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :searxng-provider:processResources NO-SOURCE
+> Task :verification-client:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-client:processResources NO-SOURCE
+> Task :verification-local:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-local:processResources NO-SOURCE
+> Task :discovery:processResources NO-SOURCE
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar
+> Task :recording:processResources NO-SOURCE
+> Task :recording:classes UP-TO-DATE
+> Task :recording:jar
+> Task :library:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :discovery:compileKotlin
+> Task :discovery:compileJava NO-SOURCE
+> Task :library:compileKotlin
+> Task :searxng-provider:compileKotlin
+> Task :searxng-provider:compileJava NO-SOURCE
+> Task :searxng-provider:classes UP-TO-DATE
+> Task :searxng-provider:jar
+> Task :commons-provider:compileKotlin
+> Task :commons-provider:compileJava NO-SOURCE
+> Task :commons-provider:classes UP-TO-DATE
+> Task :commons-provider:jar
+> Task :verification-client:compileKotlin
+> Task :verification-client:compileJava NO-SOURCE
+> Task :verification-client:classes UP-TO-DATE
+> Task :verification-client:jar
+> Task :discovery:classes UP-TO-DATE
+> Task :discovery:jar
+> Task :library:compileJava NO-SOURCE
+> Task :library:processResources NO-SOURCE
+> Task :library:classes UP-TO-DATE
+> Task :library:jar
+> Task :hls:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :verification-local:compileKotlin
+> Task :verification-local:compileJava NO-SOURCE
+> Task :verification-local:classes UP-TO-DATE
+> Task :verification-local:jar
+> Task :hls:processResources NO-SOURCE
+> Task :ui-theme:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :hls:compileKotlin
+> Task :hls:compileJava NO-SOURCE
+> Task :hls:classes UP-TO-DATE
+> Task :hls:jar
+> Task :ui-theme:processResources NO-SOURCE
+> Task :ui-theme:compileKotlin
+> Task :app:verifyRuntimeAdmission
+License admission: exact 90 reviewed runtime artifacts verified for both variants
+> Task :ui-theme:compileJava NO-SOURCE
+> Task :ui-theme:classes UP-TO-DATE
+> Task :ui-theme:jar
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :app:generateDebugBuildConfig
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:processDebugNavigationResources
+> Task :app:javaPreCompileDebug
+> Task :app:checkDebugAarMetadata
+> Task :app:parseDebugLocalResources
+> Task :app:mapDebugSourceSetPaths
+> Task :app:compileDebugNavigationResources
+> Task :app:generateDebugRFile
+> Task :app:mergeDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :app:preDebugUnitTestBuild
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:preReleaseBuild
+> Task :app:generateReleaseBuildConfig
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:processReleaseNavigationResources
+> Task :app:parseReleaseLocalResources
+> Task :app:generateReleaseRFile
+> Task :app:compileDebugKotlin
+> Task :app:compileReleaseKotlin
+> Task :app:compileDebugJavaWithJavac
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:processDebugJavaRes
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:generateDebugAndroidTestLintModel
+> Task :app:extractProguardFiles
+> Task :app:generateDebugLintReportModel
+> Task :app:generateDebugUnitTestLintModel
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:testDebugUnitTest
+> Task :app:lintAnalyzeDebugAndroidTest
+> Task :app:lintAnalyzeDebug
+> Task :app:lintAnalyzeDebugUnitTest
+> Task :app:javaPreCompileRelease
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:extractDeepLinksRelease
+> Task :app:processReleaseMainManifest
+> Task :app:generateReleaseLintReportModel
+> Task :app:lintAnalyzeRelease
+> Task :app:lintReportDebug
+> Task :app:lintDebug
+> Task :discovery:compileTestKotlin
+> Task :discovery:compileTestJava NO-SOURCE
+> Task :discovery:processTestResources NO-SOURCE
+> Task :discovery:testClasses UP-TO-DATE
+> Task :discovery:test
+> Task :core-domain:compileTestKotlin
+> Task :core-domain:compileTestJava NO-SOURCE
+> Task :core-domain:processTestResources NO-SOURCE
+> Task :core-domain:testClasses UP-TO-DATE
+> Task :core-domain:test
+> Task :core-model:compileTestKotlin
+> Task :core-model:compileTestJava NO-SOURCE
+> Task :core-model:processTestResources NO-SOURCE
+> Task :core-model:testClasses UP-TO-DATE
+> Task :core-model:test
+> Task :commons-provider:compileTestKotlin
+> Task :commons-provider:compileTestJava NO-SOURCE
+> Task :commons-provider:processTestResources
+> Task :commons-provider:testClasses
+> Task :commons-provider:test
+> Task :app:lintReportRelease
+> Task :app:lintRelease
+> Task :searxng-provider:processTestResources NO-SOURCE
+> Task :searxng-provider:compileTestKotlin
+> Task :searxng-provider:compileTestJava NO-SOURCE
+> Task :searxng-provider:testClasses UP-TO-DATE
+> Task :verification-client:compileTestKotlin
+> Task :searxng-provider:test
+> Task :verification-client:compileTestJava NO-SOURCE
+> Task :verification-client:processTestResources NO-SOURCE
+> Task :verification-client:testClasses UP-TO-DATE
+> Task :verification-client:test
+> Task :verification-local:processTestResources
+> Task :verification-local:compileTestKotlin
+> Task :verification-local:compileTestJava NO-SOURCE
+> Task :verification-local:testClasses
+> Task :save:compileTestKotlin
+> Task :verification-local:test
+> Task :save:compileTestJava NO-SOURCE
+> Task :save:processTestResources NO-SOURCE
+> Task :save:testClasses UP-TO-DATE
+> Task :save:test
+> Task :hls:processTestResources NO-SOURCE
+> Task :hls:compileTestKotlin
+> Task :hls:compileTestJava NO-SOURCE
+> Task :hls:testClasses UP-TO-DATE
+> Task :hls:test
+BUILD SUCCESSFUL in 3m 4s
+95 actionable tasks: 95 executed

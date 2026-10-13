@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import com.easysavevideo.core.domain.BrowserSessionController
 import com.easysavevideo.core.model.*
 import com.easysavevideo.app.discovery.*
+import com.easysavevideo.app.save.SaveInspectionPage
 import com.easysavevideo.app.browser.bookmarks.BookmarkPageToken
 import com.easysavevideo.app.browser.bookmarks.BookmarkPolicy
 import com.easysavevideo.discovery.PageSnapshot
@@ -43,7 +44,7 @@ class SystemBrowserHost(
     var viewRevision by mutableStateOf(0); private set
     var platformAvailable by mutableStateOf(true); private set
     var bookmarkNavigationRevision by mutableStateOf(0L); private set
-    private data class Entry(val context: BrowserContextRef, val view: WebView, var request: BrowserRequest? = null, var suppressed: Boolean = false, var admission: NavigationAdmission? = null, var bookmarkAddress: String? = null, var jsDocument: Long = 0, var presenceBudget: BrowserVideoPresenceBudget = BrowserVideoPresenceBudget(), var presenceNavigationRevision: Long = 0, var jsDialogCount: Int = 0, var jsDialogsBlocked: Boolean = false)
+    private data class Entry(val context: BrowserContextRef, val view: WebView, var request: BrowserRequest? = null, var suppressed: Boolean = false, var admission: NavigationAdmission? = null, var bookmarkAddress: String? = null, val inspectionDocument: BrowserInspectionDocument = BrowserInspectionDocument(), var jsDocument: Long = 0, var presenceBudget: BrowserVideoPresenceBudget = BrowserVideoPresenceBudget(), var presenceNavigationRevision: Long = 0, var jsDialogCount: Int = 0, var jsDialogsBlocked: Boolean = false)
     private val entries = LinkedHashMap<String, Entry>(4, 0.75f, true)
     private val history = mutableMapOf<String, Bundle>()
     private val released = WeakHashMap<WebView, Boolean>()
@@ -139,6 +140,17 @@ class SystemBrowserHost(
     val hasUserInteracted: Boolean get() = interactionRevision > 0
     /** Fences user-selected detection across tab switches, including switch-away-and-back. */
     val saveInspectionRevision: Long get() = interactionRevision
+    /** Only a host-accepted live document can authorize explicit media inspection. */
+    internal fun saveInspectionPage(): SaveInspectionPage? {
+        requireMain()
+        val tab = state.selectedTab ?: return null
+        val entry = entries[tab.context.tabId] ?: return null
+        if (closed || !foreground || entry.context != tab.context || entry.suppressed ||
+            current(entry) == null || entry.admission?.hasStarted() != true) return null
+        return SaveInspectionPage(tab.context, tab.epoch, tab.loadState == BrowserLoadState.READY,
+            entry.inspectionDocument.address, entry.view.url, entry.view, saveInspectionRevision,
+            entry.inspectionDocument.revision)
+    }
     private val timeout = object : Runnable {
         override fun run() {
             if (closed) return
@@ -505,6 +517,7 @@ class SystemBrowserHost(
         override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
             if (entries[entry.context.tabId] !== entry || closed || entry.suppressed) return
             val address = BrowserInputPolicy.address(url ?: return) ?: return
+            entry.inspectionDocument.started()
             entry.jsDocument++; entry.presenceBudget = BrowserVideoPresenceBudget()
             if (entry.context == state.selectedTab?.context) videoPresenceController.update(null)
             entry.jsDialogCount = 0; entry.jsDialogsBlocked = false
@@ -527,6 +540,7 @@ class SystemBrowserHost(
             val address = verifiedMainAddress(entry, url) ?: return
             if (entry.admission?.accepts(address.value) != true) return
             if (controller.acceptPageFinished(request, address, view.canGoBack(), view.canGoForward(), System.currentTimeMillis())) {
+                entry.inspectionDocument.finished(address.value, view.url)
                 entry.bookmarkAddress = address.value
                 entry.presenceNavigationRevision++
                 bookmarkNavigationRevision++
@@ -540,6 +554,9 @@ class SystemBrowserHost(
             bookmarkNavigationRevision++
             entry.presenceNavigationRevision++
             val tab = state.tabs.firstOrNull { it.context == entry.context }
+            entry.inspectionDocument.history(url, view.url, isReload,
+                current(entry) != null && !entry.suppressed && entry.admission?.hasStarted() == true,
+                tab?.loadState == BrowserLoadState.READY)
             // History API/hash changes are same-document only. A new or unverified document
             // cannot borrow a prior READY title/address; a stale callback fails URL equality.
             entry.bookmarkAddress = url?.takeIf { actual ->

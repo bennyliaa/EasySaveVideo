@@ -96,6 +96,7 @@ val contractSourceInputs = files(
     "src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
     "src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/BrowserInspectionDocument.kt",
     "src/main/kotlin/com/easysavevideo/app/browser/BrowserVideoPresenceScript.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/BrowserJsDialog.kt",

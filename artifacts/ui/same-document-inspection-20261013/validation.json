@@ -1,0 +1,124 @@
+{
+  "time_utc": "2026-10-13T04:27:07.561882+00:00",
+  "baseline": "Frozen video-presence 2026-10-13; publisher resolves exact remote predecessor",
+  "code_files_verified": 9,
+  "command": "TZ=UTC run-gradle.sh --offline --rerun-tasks :app:testDebugUnitTest :app:compileDebugKotlin :app:compileReleaseKotlin :app:lintDebug :app:lintRelease :discovery:test :core-domain:test :core-model:test :commons-provider:test :searxng-provider:test :verification-client:test :verification-local:test :save:test :hls:test",
+  "build": "SUCCESS",
+  "actionable_summary": "95 actionable tasks: 95 executed",
+  "tests": {
+    "app": {
+      "task_status": "ACTUAL",
+      "tests": 1670,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_cases": []
+    },
+    "discovery": {
+      "task_status": "ACTUAL",
+      "tests": 307,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_cases": []
+    },
+    "core-domain": {
+      "task_status": "ACTUAL",
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_cases": []
+    },
+    "core-model": {
+      "task_status": "ACTUAL",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_cases": []
+    },
+    "commons-provider": {
+      "task_status": "ACTUAL",
+      "tests": 247,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_cases": []
+    },
+    "searxng-provider": {
+      "task_status": "ACTUAL",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_cases": []
+    },
+    "verification-client": {
+      "task_status": "ACTUAL",
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_cases": []
+    },
+    "verification-local": {
+      "task_status": "ACTUAL",
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "skipped_cases": [
+        "com.easysavevideo.verification.local.FrozenRecoveryComponentTest.authored80MutationsActualJsoupComponent",
+        "com.easysavevideo.verification.local.FrozenCorpusHostTest.same100FrozenBodiesActualStaticB"
+      ]
+    },
+    "save": {
+      "task_status": "ACTUAL",
+      "tests": 86,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_cases": []
+    },
+    "hls": {
+      "task_status": "ACTUAL",
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_cases": []
+    }
+  },
+  "lint": {
+    "debug": {
+      "Error": 0,
+      "Fatal": 0,
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Error": 0,
+      "Fatal": 0,
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "runtime_admission": "Exact reviewed runtime bytes checked for debug and release by actual build",
+  "focused": "29 tests passed; 51 tasks, 6 executed and 45 UP-TO-DATE before final full rerun",
+  "boundary": "PASS after final build; a premature attempt during forced recompilation failed because debug class output was temporarily absent, then reran successfully",
+  "independent_review": "No blocker for bounded already-READY same-origin history/hash explicit inspection; review scope and limits in independent-review.txt",
+  "not_run": [
+    "Android/WebView native callback delivery/order",
+    "device/emulator",
+    "real websites/network",
+    "APK assembly/install",
+    "credential-bearing download"
+  ],
+  "known_limits": [
+    "initial LOADING URL rewrite admission unchanged",
+    "unobserved in-renderer same-URL/ABA changes cannot be proven by native callback tests",
+    "Cookie lease still requires original tab.address==view.url; no credential-authority expansion"
+  ],
+  "next_independent_original_item": "TR-05 separately review accepted same-document identity for credential lease; alternatively isolate LOADING history rewrite admission"
+}

@@ -57,7 +57,7 @@ class PageSaveDetector {
         check(Looper.myLooper() == Looper.getMainLooper())
         cancel()
         if (!view.settings.javaScriptEnabled) { callback(PageSaveDetection.Unavailable(PageSaveDetection.Reason.JAVASCRIPT_DISABLED)); return }
-        if (!stillCurrent()) { callback(PageSaveDetection.Unavailable(PageSaveDetection.Reason.STALE_PAGE)); return }
+        if (!stillCurrent() || view.url != pageUrl) { callback(PageSaveDetection.Unavailable(PageSaveDetection.Reason.STALE_PAGE)); return }
         val token = generation
         var delivered = false
         fun deliver(result: PageSaveDetection) {

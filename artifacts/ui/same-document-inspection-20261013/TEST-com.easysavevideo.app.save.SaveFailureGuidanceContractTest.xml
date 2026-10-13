@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-13T04:25:17.305Z" time="0.014">
+  <testcase name="navigationBridgeHasNoExecutionOrOldSourceAuthorityAndKeepsTaskGates" classname="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" time="0.001" />
+  <testcase name="nativeInspectionStillUsesCurrentPageSnapshotAndCandidateLeaseChecks" classname="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" time="0.001" />
+  <testcase name="translatedGuidanceKeepsCriticalNoBypassAndNoSuccessBoundaries" classname="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" time="0.006" />
+  <testcase name="uiCannotStartRecordingOrSaveAndNavigationDoesNotPretendToInspect" classname="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" time="0.002" />
+  <testcase name="everyAdviceAndCommandResultHasPairedNonemptyCopy" classname="com.easysavevideo.app.save.SaveFailureGuidanceContractTest" time="0.004" />
+  </testsuite>

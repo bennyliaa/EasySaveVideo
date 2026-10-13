@@ -38,7 +38,7 @@ class SaveFailureGuidanceContractTest {
     @Test fun nativeInspectionStillUsesCurrentPageSnapshotAndCandidateLeaseChecks() {
         val runtime = source("save/AndroidSaveRuntime.kt")
         assertTrue(runtime.contains("captured.matches(inspectionPage(browser), foreground)"))
-        assertTrue(runtime.contains("browser.saveInspectionRevision"))
+        assertTrue(runtime.contains("browser.saveInspectionPage()"))
         assertTrue(runtime.contains("captured.candidates.none { it === candidate }"))
         assertTrue(runtime.contains("!captured.isCurrent()"))
         assertTrue(runtime.contains("fun chooseHlsVariant"))
