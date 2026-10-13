@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="video_presence_found">发现视频元素；点击检测后才分析是否支持保存。</string>
+    <string name="video_presence_manual">手动检测当前页</string>
+    <string name="video_presence_record">录制选项</string>
+</resources>

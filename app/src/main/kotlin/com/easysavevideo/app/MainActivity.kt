@@ -81,7 +81,7 @@ class MainActivity : ComponentActivity() {
         val controller = navController ?: return
         dispatchEsvNavigation(controller.currentDestination?.route, destination, onLeaving = {
             newTabInputGeneration++
-            if (::browser.isInitialized) browser.setJsDialogUiVisible(false)
+            if (::browser.isInitialized) { browser.setJsDialogUiVisible(false); browser.setVideoPresenceUiVisible(false) }
             libraryBatchExportSelection=null
             if(destination!=EsvDestination.LIBRARY && ::saves.isInitialized)saves.libraryExports?.cancelBatchForLeavingLibrary()
             discovery.setVisibility(isForeground, false)
@@ -185,6 +185,7 @@ class MainActivity : ComponentActivity() {
         browser = SystemBrowserHost(this, errorSink,
             browserCommandAllowed = { gate.evaluate(FeatureRequest(Feature.BROWSER), entitlements.snapshot(),
                 PlatformCapabilities(setOf(Feature.BROWSER)), BuildFeaturePolicy(), System.currentTimeMillis()).allowed },
+            browserSurfaceAllowed = { activeDestination == EsvDestination.BROWSER && saves.segmentRecording?.previewActive != true },
             onCheckpoint = { checkpoint -> if (::browser.isInitialized && browser.hasUserInteracted) persistence.checkpoint(checkpoint, settings.browser.restoreTabs) },
             onChooseFiles = { choice -> filePrompt = choice },
             onDiscoverySaveCompleted = discovery::completeOriginSave)
@@ -197,7 +198,7 @@ class MainActivity : ComponentActivity() {
                     navController = controller
                     val listener = androidx.navigation.NavController.OnDestinationChangedListener { _, destination, _ ->
                         activeDestination = EsvDestination.fromRoute(destination.route)
-                        if (activeDestination != EsvDestination.BROWSER) browser.setJsDialogUiVisible(false)
+                        if (activeDestination != EsvDestination.BROWSER) { browser.setJsDialogUiVisible(false); browser.setVideoPresenceUiVisible(false) }
                     }
                     controller.addOnDestinationChangedListener(listener)
                     onDispose { controller.removeOnDestinationChangedListener(listener); navController = null }
@@ -531,6 +532,7 @@ class MainActivity : ComponentActivity() {
                     },
                     onManageProviders = ::openProviderManagement,
                     onSave = { saves.inspectFromUserClick(browser) },
+                    onRecording = { navigate(EsvDestination.RECORD) },
                     onSaveTasks = { navigate(EsvDestination.TASKS) },
                     onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) },
                     saveScanning = saves.scanning,

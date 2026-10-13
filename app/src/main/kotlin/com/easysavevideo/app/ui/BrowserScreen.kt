@@ -42,6 +42,7 @@ import com.easysavevideo.app.browser.NewTabSubmissionGate
 import com.easysavevideo.app.browser.NewTabInputPolicy
 import com.easysavevideo.app.browser.NewTabInputMode
 import com.easysavevideo.app.browser.NewTabInput
+import com.easysavevideo.app.browser.BrowserVideoPresence
 import com.easysavevideo.app.browser.SystemBrowserHost
 import com.easysavevideo.app.entitlements.DevelopmentEntitlementPanel
 import com.easysavevideo.app.theme.*
@@ -72,6 +73,7 @@ fun BrowserScreen(
     saveRuntime: AndroidSaveRuntime? = null,
     interactiveJsDialogs: Boolean = true,
     onVideoSearchDraft: ((String) -> Unit)? = null,
+    onRecording: (() -> Unit)? = null,
     newTabInputGeneration: Long = 0,
     canSubmitNewTabInput: (Long) -> Boolean = { false },
 ) {
@@ -101,6 +103,12 @@ fun BrowserScreen(
     SideEffect {
         browser.setJsDialogUiBlocked(settingsOpen || bookmarksOpen || confirmCookies || filePrompt != null ||
             saveRuntime?.selection != null || saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null)
+    }
+    DisposableEffect(browser) { onDispose { browser.setVideoPresenceUiVisible(false) } }
+    SideEffect {
+        browser.setVideoPresenceUiVisible(interactiveJsDialogs && !settingsOpen && !bookmarksOpen &&
+            !confirmCookies && filePrompt == null && !saveScanning && saveRuntime?.selection == null &&
+            saveRuntime?.preparingStream != true && saveRuntime?.hlsPreparation == null)
     }
     val focus = LocalFocusManager.current
     fun submitVideoInput() {
@@ -169,15 +177,30 @@ fun BrowserScreen(
                 }
                 Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = visuals.spacingMedium),
                     horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
-                    EsvButton(stringResource(if (saveScanning) R.string.flow_inspecting else R.string.flow_inspect), onClick = onSave, enabled = browserInspectEnabled(selected?.loadState == BrowserLoadState.READY, saveScanning,
-                        saveRuntime?.selection != null, saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null))
+                    if (browser.videoPresence == BrowserVideoPresence.PRESENT || saveScanning ||
+                        saveRuntime?.selection != null || saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null) {
+                        EsvButton(stringResource(if (saveScanning) R.string.flow_inspecting else R.string.flow_inspect), onClick = onSave,
+                            enabled = browserInspectEnabled(selected?.loadState == BrowserLoadState.READY, saveScanning,
+                                saveRuntime?.selection != null, saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null))
+                    }
+                    if (browser.videoPresence == BrowserVideoPresence.PRESENT && onRecording != null) {
+                        EsvButton(stringResource(R.string.video_presence_record), onClick = onRecording)
+                    }
                     EsvButton(stringResource(R.string.flow_browserscreen_7), onClick = onSaveTasks)
                     EsvButton(stringResource(R.string.flow_browserscreen_8), onClick = onLibrary)
                     EsvButton(stringResource(if (moreControls) R.string.flow_less else R.string.flow_more),
                         onClick = { moreControls = !moreControls })
                 }
+                if (browser.videoPresence == BrowserVideoPresence.PRESENT) {
+                    EsvText(stringResource(R.string.video_presence_found), style = visuals.captionTextStyle,
+                        modifier = Modifier.padding(horizontal = visuals.spacingMedium))
+                }
                 if (moreControls) Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = visuals.spacingMedium),
                     horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
+                    EsvButton(stringResource(if (saveScanning) R.string.flow_inspecting else R.string.video_presence_manual),
+                        onClick = onSave, enabled = browserInspectEnabled(selected?.loadState == BrowserLoadState.READY,
+                            saveScanning, saveRuntime?.selection != null,
+                            saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null))
                     bookmarks?.let { runtime ->
                         EsvButton(stringResource(R.string.flow_browserscreen_9), onClick = {
                             editing = false; focus.clearFocus()

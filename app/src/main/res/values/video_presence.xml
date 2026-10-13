@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="video_presence_found">Video element found. Saving support is checked only when you tap Inspect.</string>
+    <string name="video_presence_manual">Inspect current page manually</string>
+    <string name="video_presence_record">Recording options</string>
+</resources>

@@ -31,6 +31,7 @@ class SystemBrowserHost(
     private val errors: ErrorSink,
     private val onCheckpoint: (BrowserSessionCheckpoint) -> Unit,
     private val browserCommandAllowed: () -> Boolean,
+    private val browserSurfaceAllowed: () -> Boolean,
     private val onChooseFiles: (FileChoice) -> Unit,
     private val onDiscoverySaveCompleted: DiscoverySaveOriginCompletion,
 ) : BrowserAdapter, AutoCloseable {
@@ -42,13 +43,47 @@ class SystemBrowserHost(
     var viewRevision by mutableStateOf(0); private set
     var platformAvailable by mutableStateOf(true); private set
     var bookmarkNavigationRevision by mutableStateOf(0L); private set
-    private data class Entry(val context: BrowserContextRef, val view: WebView, var request: BrowserRequest? = null, var suppressed: Boolean = false, var admission: NavigationAdmission? = null, var bookmarkAddress: String? = null, var jsDocument: Long = 0, var jsDialogCount: Int = 0, var jsDialogsBlocked: Boolean = false)
+    private data class Entry(val context: BrowserContextRef, val view: WebView, var request: BrowserRequest? = null, var suppressed: Boolean = false, var admission: NavigationAdmission? = null, var bookmarkAddress: String? = null, var jsDocument: Long = 0, var presenceBudget: BrowserVideoPresenceBudget = BrowserVideoPresenceBudget(), var presenceNavigationRevision: Long = 0, var jsDialogCount: Int = 0, var jsDialogsBlocked: Boolean = false)
     private val entries = LinkedHashMap<String, Entry>(4, 0.75f, true)
     private val history = mutableMapOf<String, Bundle>()
     private val released = WeakHashMap<WebView, Boolean>()
     private val handler = Handler(Looper.getMainLooper())
     private var closed = false
     private var foreground = true
+    private var videoPresenceUiVisible = false
+    internal var videoPresence by mutableStateOf(BrowserVideoPresence.UNKNOWN); private set
+    private val videoPresenceController = BrowserVideoPresenceController(
+        android.os.SystemClock::elapsedRealtime,
+        schedule = { delay, action ->
+            val work = Runnable { action() }
+            handler.postDelayed(work, delay)
+            val cancel: () -> Unit = { handler.removeCallbacks(work) }; cancel
+        },
+        evaluate = { target, reply ->
+            // Revalidate immediately before execution AND receipt; no source text is interpolated.
+            syncVideoPresence()
+            if (target == videoPresenceTarget()) {
+                (target.owner as WebView).evaluateJavascript(BrowserVideoPresenceScript.SCRIPT) { raw ->
+                    syncVideoPresence()
+                    if (target == videoPresenceTarget()) reply(raw)
+                }
+            }
+        },
+        changed = { videoPresence = it },
+    )
+    internal fun setVideoPresenceUiVisible(visible: Boolean) {
+        requireMain(); videoPresenceUiVisible = visible; syncVideoPresence()
+    }
+    private fun videoPresenceTarget(): BrowserVideoPresenceTarget? {
+        if (closed || !foreground || !videoPresenceUiVisible || !browserSurfaceAllowed() || !settings.javaScriptEnabled) return null
+        val tab = state.selectedTab ?: return null
+        val entry = entries[tab.context.tabId] ?: return null
+        if (tab.loadState != BrowserLoadState.READY || entry.context != tab.context || entry.suppressed ||
+            current(entry) == null || entry.bookmarkAddress == null || entry.bookmarkAddress != entry.view.url) return null
+        return BrowserVideoPresenceTarget(entry.view, entry.presenceBudget, tab.epoch,
+            interactionRevision, entry.presenceNavigationRevision)
+    }
+    private fun syncVideoPresence() { videoPresenceController.update(videoPresenceTarget()) }
     private var jsDialogUiVisible = false
     private var jsDialogUiBlocked = false
     internal var jsDialog by mutableStateOf<BrowserJsDialogRequest?>(null); private set
@@ -270,6 +305,7 @@ class SystemBrowserHost(
         requireMain(); settings = value
         if (!value.javaScriptEnabled) jsDialogs.cancel()
         entries.values.forEach { applyPreferences(it.view) }
+        syncVideoPresence()
         trimViews()
     }
     fun clearCookies(onComplete: (Boolean) -> Unit) {
@@ -299,9 +335,10 @@ class SystemBrowserHost(
         requireMain(); foreground = true
         entries.values.firstOrNull()?.view?.resumeTimers()
         state.selectedTabId?.let { entries[it]?.view?.onResume() }
+        syncVideoPresence()
     }
     fun pause() {
-        requireMain(); foreground = false; jsDialogs.cancel(); if (!pickerInFlight) cancelFiles(); hideFullscreen()
+        requireMain(); foreground = false; jsDialogs.cancel(); videoPresenceController.update(null); if (!pickerInFlight) cancelFiles(); hideFullscreen()
         entries.values.forEach { it.view.onPause() }
         entries.values.firstOrNull()?.view?.pauseTimers()
         CookieManager.getInstance().flush()
@@ -339,6 +376,7 @@ class SystemBrowserHost(
     private fun operation() = OperationContext(UUID.randomUUID().toString(), System.currentTimeMillis() + 60_000, CancellationSource())
     private fun publish(persist: Boolean = true) {
         state = controller.state
+        syncVideoPresence()
         if (persist) onCheckpoint(controller.persistableSession())
     }
     private fun requireMain() { check(Looper.myLooper() == Looper.getMainLooper()) }
@@ -467,7 +505,9 @@ class SystemBrowserHost(
         override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
             if (entries[entry.context.tabId] !== entry || closed || entry.suppressed) return
             val address = BrowserInputPolicy.address(url ?: return) ?: return
-            entry.jsDocument++; entry.jsDialogCount = 0; entry.jsDialogsBlocked = false
+            entry.jsDocument++; entry.presenceBudget = BrowserVideoPresenceBudget()
+            if (entry.context == state.selectedTab?.context) videoPresenceController.update(null)
+            entry.jsDialogCount = 0; entry.jsDialogsBlocked = false
             jsDialogs.cancel(view)
             if (entry.context == state.selectedTab?.context && discoveryNavigation?.onStarted(address.value) == false)
                 invalidateDiscoveryOrigin()
@@ -488,6 +528,7 @@ class SystemBrowserHost(
             if (entry.admission?.accepts(address.value) != true) return
             if (controller.acceptPageFinished(request, address, view.canGoBack(), view.canGoForward(), System.currentTimeMillis())) {
                 entry.bookmarkAddress = address.value
+                entry.presenceNavigationRevision++
                 bookmarkNavigationRevision++
                 if (entry.context == state.selectedTab?.context) discoveryNavigation?.onFinished()
                 publish()
@@ -497,6 +538,7 @@ class SystemBrowserHost(
             if (closed || entries[entry.context.tabId] !== entry) return
             jsDialogs.cancel(view)
             bookmarkNavigationRevision++
+            entry.presenceNavigationRevision++
             val tab = state.tabs.firstOrNull { it.context == entry.context }
             // History API/hash changes are same-document only. A new or unverified document
             // cannot borrow a prior READY title/address; a stale callback fails URL equality.
@@ -507,6 +549,7 @@ class SystemBrowserHost(
             }
             if (entry.context == state.selectedTab?.context &&
                 (isReload || discoveryNavigation?.onVisitedHistory(url ?: "") == false)) invalidateDiscoveryOrigin()
+            syncVideoPresence()
         }
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             if (!request.isForMainFrame || verifiedMainAddress(entry, request.url.toString()) == null ||
@@ -591,7 +634,7 @@ class SystemBrowserHost(
     }
     override fun close() {
         requireMain(); if (closed) return
-        closed = true; jsDialogs.cancel(); handler.removeCallbacks(timeout); cancelFiles(); hideFullscreen()
+        closed = true; jsDialogs.cancel(); videoPresenceController.close(); handler.removeCallbacks(timeout); cancelFiles(); hideFullscreen()
         discoveryOrigins.close(); discoveryOrigin = null; discoveryNavigation = null
         val views = entries.values.toList(); entries.clear(); views.forEach { releaseView(it.view) }; history.clear()
     }
