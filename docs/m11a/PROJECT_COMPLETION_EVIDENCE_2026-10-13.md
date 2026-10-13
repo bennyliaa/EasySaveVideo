@@ -7,12 +7,13 @@ Original requirements and historical evidence are unchanged.
 
 ## 1. Source baseline and what “published” means
 
-Latest verified source publication: [3176bcc0be84325be5b278823995761f17049dd8](https://github.com/bennyliaa/EasySaveVideo/commit/3176bcc0be84325be5b278823995761f17049dd8),
-on `development/cloud-followup-20261013`, combining Discovery body-state presentation
-and explicit Browser/new-tab/Discovery input-clear actions. The publication receipt
-records 48 changed files, all 48 blobs read back with exact byte equality, no deletions
-and no forced ref update. Parent: `8fa0c4a2b9720f2098e64ca2ff93a599d4856833`.
+Latest verified source publication: [b0c5647e6759dd212423647742e4923c8d0dce93](https://github.com/bennyliaa/EasySaveVideo/commit/b0c5647e6759dd212423647742e4923c8d0dce93),
+on `development/cloud-followup-20261013`, generated candidate-label display and typed
+website-permission denial notices. The publication receipt records 30 changed files,
+all 30 blobs read back with exact byte equality, no deletions and no forced ref update.
+Parent: `795b6bb9dc0353be55682a53d402bf6773aed9e8`.
 Main remained `ea87963dee631a498774f648c9a1dabd9f665b90`; the repository remained private.
+The 30 changed blobs are verified; whole remote-tree equality is not claimed.
 This is source publication, not a main merge, new APK, installation or release acceptance.
 
 The following later publications supersede the former `2986ada` editor-default checkpoint:
@@ -24,8 +25,11 @@ The following later publications supersede the former `2986ada` editor-default c
 | [82ccae9](https://github.com/bennyliaa/EasySaveVideo/commit/82ccae9dfb4d0c70ecca689a0a65aa259434603b) | Current storage/checkpoint/owner contracts and visible Shell navigation labels; 31 changed files, 31 exact readbacks | `/workspace/shared/esv-contract-shell-publication-20261013/SUMMARY.json` |
 | [8fa0c4a](https://github.com/bennyliaa/EasySaveVideo/commit/8fa0c4a2b9720f2098e64ca2ff93a599d4856833) | Save display locale, semantic theme tokens and nine recovered original UI Markdown documents; 62 changed files, 62 exact readbacks | `/workspace/shared/esv-locale-tokens-originals-publication-20261013/SUMMARY.json` |
 | [3176bcc](https://github.com/bennyliaa/EasySaveVideo/commit/3176bcc0be84325be5b278823995761f17049dd8) | Discovery body states and input clear; 48 changed files, 48 exact readbacks | `/workspace/shared/esv-body-clear-publication-20261013/SUMMARY.json` |
+| [62b5f6d](https://github.com/bennyliaa/EasySaveVideo/commit/62b5f6d4076fe1ea4ec727ae4dcd87c9113697e3) | Authentication-waiting return to current Browser and 26-pair fixed destination copy; 33 changed files, 33 exact readbacks | `/workspace/shared/esv-auth-destination-copy-publication-20261013/SUMMARY.json` |
+| [795b6bb](https://github.com/bennyliaa/EasySaveVideo/commit/795b6bb9dc0353be55682a53d402bf6773aed9e8) | Typed destination notices/copy status and Discovery inline/floating filter roles; 42 changed files, 42 exact readbacks | `/workspace/shared/esv-destination-filter-publication-20261013/SUMMARY.json` |
+| [b0c5647](https://github.com/bennyliaa/EasySaveVideo/commit/b0c5647e6759dd212423647742e4923c8d0dce93) | Generated candidate display and typed denied-permission notices; 30 changed files, 30 exact readbacks | `/workspace/shared/esv-candidate-permission-publication-20261013/SUMMARY.json` |
 
-All five receipts were read for this refresh. Receipt paths are local verification inputs,
+All eight receipts were read across this documentation refresh. Receipt paths are local verification inputs,
 not portable repository attachments; commit links and the in-repository slice reports
 are the durable source references. Wi-Fi's original 77-file source/evidence freeze is
 historical input to its 79-file publication group, not a still-pending publication.
@@ -51,68 +55,98 @@ payment and deferred-feature decisions still take precedence over old examples.
 
 ## 2. Evidence levels and exact current limits
 
-- Requirements describe desired behavior. Source-contract and pure JVM tests establish
-  their checked conditions; compilation/lint establish neither pixels nor native media
-  correctness. Publication readback establishes bytes, not installed behavior.
-- The final validation included in published `3176bcc` is the input-clear slice:
-  `artifacts/ui/input-clear-20261013/VERIFICATION.json`, with census
-  `artifacts/ui/input-clear-20261013/JVM_CENSUS.json` and final `build4.log`.
-  App **1,835 tests actually executed PASS**, including 22 new tests, with zero
-  failures/errors/skips. Final build4 completed 75 tasks: 19 executed, 56 UP-TO-DATE.
-  Debug/Release production Kotlin and both lint tasks actually executed PASS;
-  each lint reports **0 errors, 60 warnings and 8 hints**. Runtime admission passed
-  for **90 exact reviewed artifacts**. This is not a fresh execution of every module.
-- **ui-theme 17 tests actually ran in the earlier semantic-token slice only**:
-  `artifacts/ui/semantic-theme-tokens-20261013/VERIFICATION.json` and `JVM_CENSUS.json`.
-  That slice ran App 1,801 and theme 17. Do not add theme 17 to App 1,835 at
-  publication or the later App 1,857 source run. Theme was not rerun in either later
-  slice, and no all-module final-run total is claimed.
-- Earlier App-only slice totals identify their own inputs: Browser copy 1,747,
-  current storage contracts 1,761, Shell labels 1,774, Save locale 1,791,
-  semantic tokens 1,801, Discovery body 1,813. These overlap; they are not additive.
-  Their individual compile/UP-TO-DATE distinctions remain in the original reports.
-- Current storage contracts also recorded 14 host SQLite tests and 344 host-model
-  rollback locations. See `docs/verification/CURRENT_STORAGE_CONTRACTS_20261013.md`.
-  This new gate does not make old version/source-anchor gates pass and does not prove
-  Android migration, native descriptor or provider behavior. Historical missing Git/
-  snapshot evidence remains unavailable; old failures and failure logs are retained.
-- Input-clear build2 caught an unintended SideEffect replacement in the existing
-  `BrowserVideoPresenceContractTest`. The original SideEffect was restored and the
-  original test stayed unchanged; the failed log/XML remain in slice evidence.
-  The final build4 pass supersedes that failed attempt only for its checked source.
-- Historical editor-default and Wi-Fi evidence remain separately dated. Verification-local
-  recorded 34 cases including 2 SKIP for unavailable frozen-private/authored-mutation
-  corpus inputs. Those skips are not newly executed acceptance. `testReleaseUnitTest`
-  does not exist in this build; the old failed task-selection attempt ran no tests.
-- The latest publication receipt records zero workflow files/runs/checks/statuses.
-  Empty combined status `pending` is neither running nor passing CI. Recorded cloud
-  validation is not GitHub Actions green status; publication itself ran no builds/tests.
-- APK assembly/install, emulator/phone, rendered Compose/IME/TalkBack/large-font
-  behavior, PPT/screenshots and native media acceptance for the latest slices are
-  **NOT_RUN**. Historical package/device evidence must stay separately attributed.
-  No physical battery saving or full UI-B/UI-E/M9/M11 completion is established.
+Requirements describe desired behavior. Source-contract, JVM and host tests establish
+only their checked conditions. Compilation/lint establish neither rendered pixels nor
+native media correctness; publication readback establishes bytes, not installed behavior.
 
-### Newer source verification, not yet published
+### Current full cloud regression on the published UI source
 
-Status: **SOURCE_VERIFIED_PENDING_PUBLICATION** for the authentication-waiting task
-return-to-current-Browser action and fixed destination display copy. This source group
-follows `3176bcc`; no newer remote commit is asserted. Its final build2 actually ran
-**208 App suites / 1,857 tests**, zero failures/errors/skips, including 22 new tests:
-10 authentication-policy, 5 wiring and 7 destination-copy tests. Debug/Release Kotlin
-and both lint tasks actually executed PASS; each lint retains 60 warnings/8 hints/
-0 errors. Runtime admission verified 90 exact artifacts. Theme was not rerun by this
-group. These totals
-supersede older App execution only for the new verified source; they do not replace
-`3176bcc`'s historical 1,835-test publication evidence or imply a new publication.
+Report: `docs/m11a/FULL_CLOUD_UI_REGRESSION_20261013.md`.
+Evidence: `artifacts/regression/full-ui-20261013/VERIFICATION.json`.
+This is a new recorded run, not a sum of overlapping UI-slice totals:
 
-Reports: `docs/m11a/AUTHENTICATION_BROWSER_NAVIGATION_20261013.md` and
-`docs/m11a/ORDINARY_DESTINATION_FIXED_COPY_20261013.md`.
-Evidence: `artifacts/ui/auth-destination-copy-20261013/VERIFICATION.json`.
-Authentication waiting offers only a return to the current Browser; this is not the
-complete original `OpenOriginForLogin` flow. Destination localization covers only
-26 paired fixed English/Simplified Chinese strings; runtime-generated dynamic notices
-remain deferred. APK/device/emulator/native-flow/PPT comparison remains NOT_RUN;
-the original PPT binary is still unavailable. OPPO edit/share failures remain open.
+- All **13 selected module test tasks actually reran with `--rerun`**. **307 fresh JUnit
+  XML suites** registered **3,149 cases: 3,147 passed, 0 failures, 0 errors, 2 skipped**. App **1,886** and
+  ui-theme **17** were both actually executed in this full run. The two verification-local
+  cases need unavailable `ESV_OWNED_CORPUS` inputs; they are not passed acceptance.
+- Debug/Release Kotlin compile and lint analysis/report tasks actually reran with
+  `--rerun` and passed. Each variant's lint retains **60 warnings, 8 hints, 0 errors**.
+  Runtime admission verified **90 exact artifacts**. These statements concern the
+  selected tasks, not every dependency task in the Gradle graph: **101 actionable tasks,
+  30 executed and 71 dependency tasks UP-TO-DATE**, terminal exit 0 in 3m16s.
+  All 1,391 captured code/test/script/Gradle/third-party inputs stayed byte-identical;
+  the independent host inventory also retained 1,839 non-build inputs unchanged
+  during the host-gate run; evidence and ledger documents were intentionally updated afterwards.
+  No production fix or weakened gate was used to obtain this regression result.
+- Final compiled boundary check passed after the build outputs were stable. The current
+  Save DB v8 host SQLite gate freshly passed **14 tests / 344 rollback fault boundaries**.
+  It exercises extracted SQL plus a source-checked host transaction model; Android
+  SQLiteOpenHelper, real published-media v1 backfill and native provider behavior are
+  not established by this result.
+- Production JavaScript checks passed **22 video-presence** and **11 save-detector**
+  owned synthetic-DOM checks. The detector's missing-output-directory failure was
+  retained; its successful rerun used an isolated output directory and byte-identical
+  production/script inputs. This is not Android WebView, real-site or media acceptance.
+- All **21 historical admission scripts** were rerun unchanged: **2 scoped passes,
+  16 blocked by missing Git history, 2 blocked by missing historical evidence, and
+  1 historical source-anchor failure**. The **14 older SQLite scripts** likewise
+  reran unchanged: **2 scoped passes and 12 historical source-anchor failures**.
+  The final boundary check is already one of the 21; do not count it again as a
+  separate historical admission pass. Current-version success does not overwrite
+  old gate failures or manufacture the missing Git/candidate evidence.
+- The latest publication receipt has zero workflows/runs/checks/statuses. Empty combined
+  `pending` is neither running nor passing CI. This local regression is not GitHub
+  Actions green status, and the publisher itself ran no builds or device tests.
+- APK/device/emulator, original-PPT comparison, rendered IME/TalkBack/large-font behavior,
+  real media/network/provider acceptance and physical energy measurements remain
+  **NOT_RUN**. Original PPT bytes are still unavailable. Older OPPO and Windows failures
+  remain separately open; there is no whole UI-B/UI-E/M9/M11 or release acceptance.
+  The next bounded native checks are recorded, not executed, in
+  `docs/m11a/UI_DEVICE_ACCEPTANCE_CHECKLIST_20261013.md`.
+
+### Published UI slices and their historical verification numbers
+
+These reports remain dated evidence; their totals overlap and must not be added to
+one another or the full regression. Pre-publication wording in frozen slice reports
+is superseded by the exact publication receipts above, not edited retroactively.
+
+- `3176bcc`: input-clear build4 App **1,835** actually passed, 22 new tests, zero
+  failures/errors/skips; 75 Gradle tasks, 19 executed/56 UP-TO-DATE. Debug/Release
+  Kotlin and both lint tasks executed PASS, each 60 warnings/8 hints/0 errors;
+  runtime 90. Evidence: `artifacts/ui/input-clear-20261013/VERIFICATION.json`.
+  Its build2 SideEffect regression was fixed by restoring the original SideEffect;
+  the existing test stayed unchanged and the failed log/XML are retained.
+- `62b5f6d`: authentication/fixed-copy final build2 **208 App suites / 1,857 tests**,
+  zero failures/errors/skips, 22 new tests (10 policy, 5 wiring, 7 destination).
+  Dual Kotlin/lint executed PASS, each lint 60 warnings/8 hints/0 errors, runtime 90.
+  Reports: `docs/m11a/AUTHENTICATION_BROWSER_NAVIGATION_20261013.md` and
+  `docs/m11a/ORDINARY_DESTINATION_FIXED_COPY_20261013.md`;
+  evidence: `artifacts/ui/auth-destination-copy-20261013/VERIFICATION.json`.
+  It is published; the earlier pending-publication status is superseded. The action returns
+  only to the current Browser; full `OpenOriginForLogin` remains incomplete.
+- `795b6bb`: typed-destination App **1,864** and filter-role App **1,870** are separate
+  slice runs, with 7 and 6 new tests respectively. The latter executed dual Kotlin/lint,
+  retaining 60 warnings/8 hints/0 errors and runtime 90. Reports:
+  `docs/m11a/DESTINATION_TYPED_DISPLAY_20261013.md` and
+  `docs/ui/implementation/DISCOVERY_FILTER_PANEL_ROLE_20261013.md`.
+  Destination dynamic notice/copy-status localization is now implemented and published:
+  26 typed notice, 2 kind and 6 copy-state resource pairs supplement the earlier 26 fixed
+  pairs. User-owned values and other Save runtime messages are outside that migration.
+  Discovery's shared filter uses inline surface/card and floating elevated/sheet roles;
+  its host remains Dialog, not a BottomSheet, with one shared movableContent owner.
+- `b0c5647`: candidate/permission display App **1,886** actually passed, 16 new tests;
+  dual Kotlin/lint executed PASS, each lint 60 warnings/8 hints/0 errors, runtime 90.
+  See `docs/m11a/CANDIDATE_PERMISSION_DISPLAY_20261013.md`. Candidate numbering is
+  locale-rendered; two website-denial notices are typed until current-locale display.
+  Camera/microphone/location remain denied. Other Browser raw notices are not all migrated.
+- Theme **17** ran in the earlier semantic-token slice and again in the new full
+  regression. It did **not** run in the intermediate input-clear, authentication,
+  destination/filter or candidate/permission slices; no historical run is relabeled.
+  Earlier App totals remain Browser copy 1,747, current storage contracts 1,761,
+  Shell labels 1,774, Save locale 1,791, semantic tokens 1,801 and Discovery body 1,813.
+  Their executed/cached task details remain in their individual reports.
+- `testReleaseUnitTest` does not exist in this build; the historical failed task-selection
+  attempt ran no tests. The new run does not create a Release unit-test claim.
 
 ### Published Wi-Fi R6 evidence, retained as an earlier slice
 
@@ -127,7 +161,8 @@ published in `172fa3c`. R6 is no longer awaiting source publication.
   their earlier execution within that slice is separately recorded. Verification-local
   retains the same two unavailable private-corpus SKIP cases.
 - Library 277, HLS 40, recording 127 and ui-theme 9 were UP-TO-DATE in R6 and
-  not rerun earlier in that Wi-Fi slice. They are not fresh R6 or latest-source passes.
+  not rerun earlier in that Wi-Fi slice. They are not fresh R6 passes; the later full
+  regression has its own current-source execution evidence above.
 - Debug/Release Kotlin and both lint tasks actually executed in R6; lint retained
   60 warnings/8 hints/0 errors. AndroidTest Kotlin compilation was UP-TO-DATE,
   not instrumented-test execution. Runtime admission verified 90 artifacts;
@@ -151,16 +186,16 @@ published in `172fa3c`. R6 is no longer awaiting source publication.
 | Browser navigation, tabs, bookmarks | Real WebView integration and bounded bookmark persistence; new-tab input can populate an owned draft before Go; BrowserScreen settings/error copy is bilingual and explicit address/new-tab Clear is wired | Native keyboard/layout/rotation/lifecycle matrix incomplete. Do not mark bookmarks absent. See `docs/browser-bookmarks/VERIFICATION.md`. |
 | Browser JS dialogs and video detection | Native guarded alert/confirm/prompt; bounded advisory video-element hint; full detection remains explicit; READY same-document revision invalidates stale candidates | Real WebView callback ordering needs device acceptance. Hint is not playback, media identity, rights, or automatic recording authority. Same-document credential forwarding is intentionally narrower than inspection. |
 | Browser ordinary history | Policy, bounded codec, serial controller and private atomic store, 43 focused JVM cases | No runtime collection/list UI. Explicit retention decision needed: 200 recent distinct addresses with 30-day expiry, or without time expiry. No default choice is made. `docs/ui/implementation/BROWSER_HISTORY_FOUNDATION_20261012.md`. |
-| Incognito and site permissions | Incognito guards exclude ordinary persisted session/history paths, but no user-facing incognito entry is implemented; current WebChromeClient explicitly denies camera/microphone and location | Shared CookieManager/storage is not isolated browsing. Permission selection/Android result correlation and granted-capture lifecycle are absent; do not call deny-only a completed permissions manager. `app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt`. |
-| Discovery paging and results | Explicit one-shot next-page demand, bounded provider/local validation framework; truthful missing metadata; distinct empty/loading/waiting/error body presentation and explicit query Clear | Real image capability/source admission, Android decode/owner and viewport/UI binding missing. Current Discovery placeholder remains honest. `docs/ui/implementation/DISCOVERY_THUMBNAIL_FOUNDATION_20261012.md`. |
+| Incognito and site permissions | Incognito guards exclude ordinary persisted session/history paths, but no user-facing incognito entry is implemented; current WebChromeClient explicitly denies camera/microphone and location, with typed localized denial notices | Shared CookieManager/storage is not isolated browsing. Permission selection/Android result correlation and granted-capture lifecycle are absent; do not call deny-only a completed permissions manager. `app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt`. |
+| Discovery paging and results | Explicit one-shot next-page demand, bounded provider/local validation framework; truthful missing metadata; distinct empty/loading/waiting/error body presentation, explicit query Clear and shared inline/floating filter roles | Real image capability/source admission, Android decode/owner and viewport/UI binding missing. Current Discovery placeholder remains honest. `docs/ui/implementation/DISCOVERY_THUMBNAIL_FOUNDATION_20261012.md`. |
 | Direct / Stream / Record | Real bounded save/capture pipelines, explicit user triggers, verified media publication and safe failure guidance; Wi-Fi-only save enforcement passed R6 source verification and was published in `172fa3c` | Full native stream/codec/AV/background/recovery coverage pending. A failed network save offers fresh explicit reinspection only; it does not auto-retry, broaden sources or silently start recording. |
-| Save location, library and batch Files | App Library/ASK/album plus remembered ordinary SAF folder; batch export uses one selected folder and per-item verified results; originals retained for copies | Native provider/revocation/uncertain cleanup matrix remains partial. Old “choose batch Files behavior” note was resolved by later one-folder implementation. `docs/m5a4b/REQUIREMENTS_DECISION.md`; `docs/ui/implementation/BATCH_DIRECTORY_COPY_20261012.md`. |
+| Save location, library and batch Files | App Library/ASK/album plus remembered ordinary SAF folder; batch export uses one selected folder and per-item verified results; fixed and typed dynamic destination display localized; originals retained for copies | Native provider/revocation/uncertain cleanup matrix remains partial. Old “choose batch Files behavior” note was resolved by later one-folder implementation. `docs/m5a4b/REQUIREMENTS_DECISION.md`; `docs/ui/implementation/BATCH_DIRECTORY_COPY_20261012.md`. |
 | Editing and default compression | Trim/merge/crop/compress with existing entitlement gates; default applies once to new edits, never overwrites active/restored drafts | OPPO edit initialization failure unresolved. Default editor compression is not recording compression, successful encoding, or a paid unlock. `docs/ui/implementation/EDITOR_DEFAULT_COMPRESSION_20261013.md`. |
 | Power/settings/notices | Real lifecycle OS battery/thermal/network observation and fail-closed policy; localized status; scrollable offline notices and responsive settings panes | Physical energy benefit, platform callback timing, full accessibility/large-font/phone/tablet acceptance absent. The old OS NOT_CONNECTED label is obsolete. `docs/m8b4/VERIFICATION.md`; `docs/ui/implementation/CLOUD_NOTICES_POWER_20261012.md`. |
 | Diagnostics and sharing | Bounded typed initialization diagnostics and log-export implementation; no sensitive media/path/URL logging allowed | New diagnostics must be run on the failing device build before determining edit/share root cause. Existing failure enums alone do not prove codec failure or a repair. `docs/ui/implementation/INITIALIZATION_DIAGNOSTICS_CLOUD_20261012.md`; `docs/diagnostics-export/IMPLEMENTATION_AND_VALIDATION.md`. |
 | Vault / dynamic rules / new local video import | Explicitly deferred; Vault/rules disabled or isolated | Do not reopen blocked reviews, substitute integrations or count these as implemented. Import is a deferred extension, not automatically an original requirement failure. `docs/ui/implementation/ESV_UI_FEATURE_INTEGRATION_LEDGER.md`; `AGENTS.md`. |
 | Real payment and release | Store-neutral preparation and six channel identities | Payment choice, products, actual accounts/SDK/backend and channel acceptance unknown/unconfigured. Fresh release policy and actual release artifact/device gates still needed. `docs/m10b/CHANNEL_READINESS.md`. |
-| Full visual design | Nine original UI Markdown documents recovered/published; visible Shell labels, locale-aware Save display, semantic theme tokens, Discovery body states and input Clear implemented in bounded source slices | Original PPT binary still unavailable. Semantic tokens and localization remain partial; no complete slide/pixel parity, UI-E or accessibility acceptance. `docs/ui/implementation/ESV_UI_TOKEN_AND_COMPONENT_MAP.md`; the five dated slice reports listed below. |
+| Full visual design | Nine original UI Markdown documents recovered/published; visible Shell labels, locale-aware Save/candidate/destination display, semantic theme tokens, Discovery body/filter roles and input Clear implemented in bounded source slices | Original PPT binary still unavailable. Semantic tokens and localization remain partial; no complete slide/pixel parity, UI-E or accessibility acceptance. `docs/ui/implementation/ESV_UI_TOKEN_AND_COMPONENT_MAP.md`; the five dated slice reports listed below. |
 
 Current original-UI repair reports (all read for this checkpoint):
 `docs/ui/implementation/SHELL_VISIBLE_LABELS_20261013.md`,
@@ -168,10 +203,11 @@ Current original-UI repair reports (all read for this checkpoint):
 `DISCOVERY_BODY_STATE_20261013.md` and `INPUT_CLEAR_20261013.md`.
 Their earlier “next work”/publication-pending statements are slice-time history where
 superseded by the publication chain above, not instructions to repeat completed work.
-Authentication-waiting task return to the current Browser and `OrdinaryDestinationUi`
-26-pair fixed-copy localization are SOURCE_VERIFIED_PENDING_PUBLICATION, with exact
-reports and final build2 evidence above. Full `OpenOriginForLogin`, dynamic runtime
-notice localization and native acceptance remain outside this verified group.
+Authentication-waiting return to the current Browser and 26-pair fixed destination
+copy are published in `62b5f6d`. Typed destination notices/copy-state display and Discovery
+filter roles are published in `795b6bb`; candidate labels and typed denied-permission
+notices are published in `b0c5647`. Full `OpenOriginForLogin`, remaining Save/Browser
+raw notices and native acceptance are still outside those bounded completed scopes.
 
 ## 4. Older device evidence: useful, bounded, not overwritten
 
@@ -210,7 +246,9 @@ Keep one build owner and review/freeze each slice before combining it with other
 
 Wi-Fi-only enforcement, BrowserScreen's bounded settings/origin/error localization,
 Shell labels, Save display locale, the bounded semantic-token slice, Discovery body
-states and explicit input Clear have been published. Do not relist those completed
+states, explicit input Clear, current-Browser authentication return, fixed/typed
+destination display, Discovery filter roles and candidate/denial display have been
+published. Do not relist those completed
 source scopes as new work; their device and full-original-UI acceptance remains open.
 
 1. **Integrate the real owned-fixture Discovery thumbnail path under the original reuse policy.**
@@ -243,17 +281,17 @@ source scopes as new work; their device and full-original-UI acceptance remains 
    does not prove already-granted capture stops; resolve the active WebView teardown/reload
    behavior and review it before claiming a full permission lifecycle. No new permission or
    personal-data transmission is authorized merely by listing this task.
-3. **Publish the verified authentication-waiting and fixed destination-copy group.**
-   Both bounded source repairs are SOURCE_VERIFIED_PENDING_PUBLICATION, with App
-   1,857 actual tests and final build2 evidence above. Do not repeat their implementation
-   or label the group shipped before exact remote publication/readback is confirmed.
-   The new action returns to the current Browser only, not full `OpenOriginForLogin`;
-   the 26 paired fixed destination strings do not translate dynamic runtime notices.
-   Keep those remaining functional/localization and device limits explicit.
+3. **Review the remaining original authentication-recovery seam.** The published action
+   returns to the current Browser only. Full `OpenOriginForLogin` is still incomplete;
+   any further origin resolution or task-resume work needs explicit source/credential,
+   freshness, ownership and lifecycle review. Do not repeat the completed navigation
+   button, infer a safe origin from media URLs, or promise authentication/resume success.
 4. **Review remaining original UI coverage after those bounded repairs.** Use the recovered
    nine Markdown originals and `ESV_UI_TOKEN_AND_COMPONENT_MAP.md` to select remaining
    semantic-state/component coverage or other app-owned locale gaps. BrowserScreen's
-   already-published copy is not a pending target. Full app localization, success/warning/
+   already-published copy, destination typed display, candidate/denial display and filter
+   panel roles are not pending targets. Full app localization, remaining app-owned
+   Save/Browser raw notices, success/warning/
    selected/loading/scrim/system-bar tokens and all-component acceptance remain partial.
    Source coverage does not substitute for the missing PPT or rendered-device evidence.
 
@@ -288,17 +326,17 @@ not cure the unresolved OPPO root cause by assumption.
 
 ## 7. Documentation-only validation and publication boundary
 
-Only this overview and `docs/m11a/MILESTONE_STATUS.md` are changed by this refresh.
-No production source, Gradle configuration, old evidence, original requirements,
-package/version, device state or Git remote is changed. The five publication receipts,
-five requested UI-slice reports and final input-clear evidence were read; the new
-authentication/destination reports and final build2 evidence were also read and
-checked. Original Markdown handoff availability was checked separately from its
-published repository paths.
-Unavailable device/PPT artifacts are explicitly marked unavailable, not linked as local proof.
+Only this overview and `docs/m11a/MILESTONE_STATUS.md` are changed by this document
+refresh. The separate full-regression owner ran the checks recorded above; this
+editor ran no Gradle or device task and changed no production source, build input,
+old evidence, original requirement, package/version, device state or Git remote.
+The three newest publication receipts, bounded UI reports, full-regression report/
+evidence and native acceptance checklist were read and reconciled with earlier
+receipt/report history. Original Markdown recovery is distinct from unavailable PPT
+imagery; unavailable device/PPT artifacts are not presented as local proof.
 
-These two edited documents are pending the coordinating owner's combined review and
-verification. This refresh creates no separate freeze and performs no publication,
-Gradle, APK or device task. Any later source slice must supply its own exact validation
-and publication evidence before this checkpoint can be advanced; shared working-tree
-changes alone do not establish that it passed or shipped.
+The two edited documents await the coordinating owner's combined review/publication
+of the regression evidence group. This refresh creates no separate freeze and performs
+no publication. That pending documentation/evidence delivery does not make already
+published source slices pending again, and the current source publication remains
+`b0c5647`. Later source changes need their own exact validation and publication evidence.

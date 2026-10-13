@@ -1,0 +1,20 @@
+{
+  "head": "b0c5647e6759dd212423647742e4923c8d0dce93",
+  "parent": "795b6bb9dc0353be55682a53d402bf6773aed9e8",
+  "branch": "development/cloud-followup-20261013",
+  "url": "https://github.com/bennyliaa/EasySaveVideo/commit/b0c5647e6759dd212423647742e4923c8d0dce93",
+  "publication_files": 30,
+  "all30_blob_readback": "EXACT_BYTE_EQUALITY_VERIFIED",
+  "source_matches_all30_frozen_files": true,
+  "frozen_ui_manifest_sha256": "feb5eb85aa13ec3ac9f4aded22b2bff6050deaabd8fcfa1f7c1393491faec2b7",
+  "main_unchanged": "ea87963dee631a498774f648c9a1dabd9f665b90",
+  "ci": {
+    "checks": 0,
+    "runs": 0,
+    "status": "pending",
+    "status_count": 0,
+    "workflow_files": 0,
+    "interpretation": "No workflow files, checks, runs or status entries. Empty pending combined status is neither running nor passing CI."
+  },
+  "whole_remote_tree_equality": "NOT_CLAIMED; historical snapshot omissions remain"
+}

@@ -1,0 +1,135 @@
+{
+  "result": "CURRENT_CLOUD_REGRESSION_PASS_WITH_EXPLICIT_SKIPS_AND_HISTORICAL_BLOCKERS",
+  "source_head": "b0c5647e6759dd212423647742e4923c8d0dce93",
+  "inputs_frozen_at_utc": "2026-10-13T08:17:31.602080+00:00",
+  "terminal_exit_code_observed": 0,
+  "command": [
+    "${TOOLCHAIN}/run-gradle.sh",
+    "--offline",
+    ":core-model:test",
+    "--rerun",
+    ":core-domain:test",
+    "--rerun",
+    ":ui-theme:test",
+    "--rerun",
+    ":discovery:test",
+    "--rerun",
+    ":save:test",
+    "--rerun",
+    ":recording:test",
+    "--rerun",
+    ":library:test",
+    "--rerun",
+    ":hls:test",
+    "--rerun",
+    ":commons-provider:test",
+    "--rerun",
+    ":searxng-provider:test",
+    "--rerun",
+    ":verification-client:test",
+    "--rerun",
+    ":verification-local:test",
+    "--rerun",
+    ":app:testDebugUnitTest",
+    "--rerun",
+    ":app:compileDebugKotlin",
+    "--rerun",
+    ":app:compileReleaseKotlin",
+    "--rerun",
+    ":app:lintAnalyzeDebug",
+    "--rerun",
+    ":app:lintReportDebug",
+    "--rerun",
+    ":app:lintDebug",
+    "--rerun",
+    ":app:lintAnalyzeRelease",
+    "--rerun",
+    ":app:lintReportRelease",
+    "--rerun",
+    ":app:lintRelease",
+    "--rerun",
+    ":app:verifyRuntimeAdmission",
+    "--rerun"
+  ],
+  "serial_lock": "same run-gradle.sh flock; no production writes during run",
+  "elapsed_from_gradle": "3m 16s",
+  "actionable_tasks": 101,
+  "executed_tasks": 30,
+  "up_to_date_dependencies": 71,
+  "forced_test_modules": 13,
+  "junit": {
+    "tests": 3149,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "passed_tests": 3147,
+  "app_tests": 1886,
+  "theme_tests": 17,
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "runtime_exact_artifacts": 90,
+  "final_compiled_boundary": "PASS",
+  "current_host_sqlite": {
+    "tests": 14,
+    "rollback_fault_boundaries": 344,
+    "failures": 0,
+    "errors": 0,
+    "scope": "production-extracted SQL plus explicit host transaction model; some intermediate baselines synthetic; not Android SQLiteOpenHelper or real legacy published-media codec validation"
+  },
+  "synthetic_dom_js": {
+    "video_presence": 22,
+    "save_detector_isolated": 11,
+    "missing_output_failure": "reproduced only in isolated scratch; unchanged script passes when its scratch output directory exists"
+  },
+  "historical_admission": {
+    "total": 21,
+    "scoped_pass": 2,
+    "missing_git_blocked": 16,
+    "missing_evidence_blocked": 2,
+    "stale_library_anchor_fail": 1
+  },
+  "historical_sqlite": {
+    "total": 14,
+    "scoped_pass": 2,
+    "stale_anchor_fail": 12
+  },
+  "production_inputs_checked": 1391,
+  "production_inputs_changed": [],
+  "input_manifest_sha256": "03e43197e33e4969960ba6548ecc8ff99dc2e8ffd0d7c8c4c709068103208d28",
+  "independent_host_inventory_unchanged": 1839,
+  "not_run": [
+    "APK assembly/signing/install",
+    "device/emulator/OPPO",
+    "actual WebView or native media",
+    "PPT/screenshots/pixel parity",
+    "Windows symlink fixture rerun",
+    "missing owned 100/80 corpus tests"
+  ],
+  "previous_issues_preserved": [
+    "OPPO edit STORAGE_UNAVAILABLE",
+    "OPPO share INITIALIZATION_FAILED",
+    "historical ANR and second recording gaps",
+    "Windows fixture setup/guard gap"
+  ],
+  "source_fixes_in_this_regression": [],
+  "complete_evidence_archive": {
+    "path": "COMPLETE_EVIDENCE.zip",
+    "sha256": "8c035c7e5df4fd035add95846a888affd4b2afcd813486e6c3f46fb13f7aad1c",
+    "bytes": 722468,
+    "total_entries": 408,
+    "hashed_payload_entries": 407,
+    "self_manifest": "ARCHIVE_MANIFEST.json"
+  },
+  "independent_host_inventory_scope": "1839 unchanged during host-gate execution; later evidence/ledger documentation is an intentional post-run output",
+  "evidence_collected_utc": "2026-10-13T08:26:38.131824+00:00",
+  "execution_log_last_written_utc": "2026-10-13T08:20:48.378264+00:00"
+}
