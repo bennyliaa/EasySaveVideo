@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recording_notification_channel">Screen recording</string>
+    <string name="recording_notification_title">③ Screen recording</string>
+    <string name="recording_notification_stop">Stop &amp; Save</string>
+    <string name="recording_notification_initial_preparing">Preparing to record</string>
+    <string name="recording_notification_paused">Paused; use the notification to stop and save</string>
+    <string name="recording_notification_recording">Recording the sharing scope selected in the system</string>
+    <string name="recording_notification_stopping">Finishing recording</string>
+    <string name="recording_notification_cancelling">Discarding recording</string>
+    <string name="recording_notification_recovery_required">System resources have not been released; stop the app through the system</string>
+    <string name="recording_notification_preparing_or_verifying">Preparing or verifying recording</string>
+</resources>

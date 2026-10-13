@@ -85,7 +85,7 @@ dependencies {
 val contractResourceInputs = fileTree("src/main/res") {
     for (locale in listOf("values", "values-zh-rCN")) {
         for (resource in listOf(
-            "save_authentication_origin.xml", "save_runtime_notice.xml", "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "input_clear.xml",
+            "recording_notification.xml", "save_authentication_origin.xml", "save_runtime_notice.xml", "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "input_clear.xml",
             "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "browser_permission_notice.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
             "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
             "library_batch_export.xml", "library_multi.xml", "provider_copy.xml",
@@ -94,6 +94,11 @@ val contractResourceInputs = fileTree("src/main/res") {
     }
 }
 val contractSourceInputs = files(
+    "src/main/kotlin/com/easysavevideo/app/recording/RecordingNotificationStatus.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/RecordingNotificationDisplay.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/RecordingForegroundService.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/AndroidSegmentRecordingRuntime.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/shell/EsvLocaleContext.kt",
     "src/main/kotlin/com/easysavevideo/app/save/AuthenticationOriginPolicy.kt",
     "src/main/kotlin/com/easysavevideo/app/save/SaveAuthenticationOriginGuidance.kt",
     "src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryReadingAnchorPolicy.kt",

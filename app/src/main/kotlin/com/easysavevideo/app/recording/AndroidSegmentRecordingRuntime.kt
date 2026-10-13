@@ -712,7 +712,7 @@ class AndroidSegmentRecordingRuntime internal constructor(
         val rows = presentation?.closedSegments.orEmpty()
         presentation = RecordingSegmentsPresentation(phase, rows, maxOf(progress.effectiveDurationUs, rows.sumOf { it.effectiveDurationUs }),
             progress.effectiveResumeCount, job.descriptor.regionCaptureRecipe, progress.audioStatus)
-        job.service?.showStatus(job.descriptor.sessionId, recordingSegmentsPhaseLabel(phase))
+        recordingSegmentNotificationStatus(phase)?.let { job.service?.showStatus(job.descriptor.sessionId, it) }
         if (phase == RecordingSegmentsPhase.STOPPING) armFinalizationDeadline(job)
     }
     private fun updateRows(snapshot: AndroidRecordedSegmentStorage.Snapshot) {

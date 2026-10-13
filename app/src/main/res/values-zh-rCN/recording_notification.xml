@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recording_notification_channel">屏幕录制</string>
+    <string name="recording_notification_title">③ 屏幕录制</string>
+    <string name="recording_notification_stop">停止并保存</string>
+    <string name="recording_notification_initial_preparing">正在准备录制</string>
+    <string name="recording_notification_paused">已暂停，通知可停止并保存</string>
+    <string name="recording_notification_recording">录制中，系统选择的共享范围</string>
+    <string name="recording_notification_stopping">正在结束录制</string>
+    <string name="recording_notification_cancelling">正在放弃录制</string>
+    <string name="recording_notification_recovery_required">系统资源仍未退出，请在系统中结束应用</string>
+    <string name="recording_notification_preparing_or_verifying">正在准备或验证录制</string>
+</resources>

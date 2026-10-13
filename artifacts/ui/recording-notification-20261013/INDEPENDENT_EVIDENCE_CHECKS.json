@@ -1,0 +1,122 @@
+{
+  "at": "2026-10-13T11:02:37.022318+00:00",
+  "verdict": "PASS_SOURCE_JVM_EVIDENCE_ONLY",
+  "final_input_manifest_sha256": "cc5495ec67c45059792608bad2519a6dbaf08a155c1f8fb0d425929a1818ee07",
+  "all_1417_inputs_unchanged": true,
+  "only_input_changed_between_attempts": [
+    "app/src/test/kotlin/com/easysavevideo/app/recording/RecordingNotificationWiringTest.kt"
+  ],
+  "exact_test_correction_reverse_hash": "6a1059c8c4cb18958d1d3f54a4b1f9548344e02269bc16eddc1cc54aba88baee",
+  "final_test_sha256": "ccd750e9b857bd9ac1e7796513502820dea696a36d908ac89696458f375eb32c",
+  "archives": {
+    "COMPLETE_APP_EVIDENCE.zip": {
+      "sha256": "49a350937500f0d49b38e7b5948e31bc7fcd1c1f268db4dcb79c25cdf117f277",
+      "bytes": 198319,
+      "entries": 228,
+      "payload_hashes_verified": 227,
+      "junit_xml": 223,
+      "crc": "PASS",
+      "totals": {
+        "tests": 2026,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "FIRST_ATTEMPT_JUNIT.zip": {
+      "sha256": "21c4ac431f2946f7be2fde8be67fe2353937fcd10dd5c92d62ec034e9f2a4ae8",
+      "bytes": 175229,
+      "entries": 224,
+      "payload_hashes_verified": 223,
+      "junit_xml": 223,
+      "crc": "PASS",
+      "totals": {
+        "tests": 2026,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "all_223_final_junit_semantically_equal_to_current_raw_reports": true,
+  "all_final_junit_timestamps_after_final_pin": true,
+  "full_census_matches_archives": true,
+  "new_tests": 28,
+  "failed_attempt_failure": [
+    [
+      "com.easysavevideo.app.recording.RecordingNotificationWiringTest",
+      "localeHelperIsSharedStatelessAndDoesNotCreateAnotherPreferenceOwner",
+      "java.lang.AssertionError: startForeground"
+    ]
+  ],
+  "ten_forced_tasks_actually_executed": [
+    ":app:testDebugUnitTest",
+    ":app:compileDebugKotlin",
+    ":app:compileReleaseKotlin",
+    ":app:lintAnalyzeDebug",
+    ":app:lintReportDebug",
+    ":app:lintDebug",
+    ":app:lintAnalyzeRelease",
+    ":app:lintReportRelease",
+    ":app:lintRelease",
+    ":app:verifyRuntimeAdmission"
+  ],
+  "lint": {
+    "debug": {
+      "severities": {
+        "Warning": 60,
+        "Hint": 8
+      },
+      "baseline_issue_multiset_equal": true,
+      "comparison": "id, severity, full message multiset",
+      "location_change": "One existing AppBundleLocaleChanges warning moved from EsvLocaleHost.kt to extracted EsvLocaleContext.kt; all other location files equal"
+    },
+    "release": {
+      "severities": {
+        "Warning": 60,
+        "Hint": 8
+      },
+      "baseline_issue_multiset_equal": true,
+      "comparison": "id, severity, full message multiset",
+      "location_change": "One existing AppBundleLocaleChanges warning moved from EsvLocaleHost.kt to extracted EsvLocaleContext.kt; all other location files equal"
+    }
+  },
+  "baseline_lint_archive_sha256": "57e2f0cb16f0442893e44debd9e3f9b856401d9937838586ac597afcfee06442",
+  "runtime_exact_artifacts": 90,
+  "boundary_reports": {
+    "core_platform_provider_store_import_boundary": "PASS",
+    "fake_entitlements_debug_only": "PASS",
+    "synthetic_discovery_debug_only": "PASS",
+    "release_only_configured_commons_and_zero_source_fallback": "PASS (registration and two-mode JVM checks; device NOT_RUN)",
+    "license_recovery_original_bytes": "PASS (99 payloads + manifest)",
+    "skinkit_original_release_jar_hashes": "PASS",
+    "seven_getter_abi": "PASS"
+  },
+  "no_apk_or_binary_payloads_in_evidence": true,
+  "no_assemble_or_install_gradle_tasks_in_log": true,
+  "reviewer_executed_gradle": false,
+  "device_ui_acceptance": "NOT_RUN",
+  "evidence_artifact_hashes": {
+    "BUILD_ATTEMPTS.json": "246413a59ca7912777655d667ebb45c29614f5bb44b4e891d54507ee8f45855b",
+    "COMPLETE_APP_EVIDENCE.zip": "49a350937500f0d49b38e7b5948e31bc7fcd1c1f268db4dcb79c25cdf117f277",
+    "FIRST_ATTEMPT_CENSUS.json": "0e0693576a8124c4efe829db603d6ed089022fa0067286fb0253a6f6e58d8665",
+    "FIRST_ATTEMPT_JUNIT.zip": "21c4ac431f2946f7be2fde8be67fe2353937fcd10dd5c92d62ec034e9f2a4ae8",
+    "INPUT_MANIFEST.build1.json": "ad12e48d69b17f24bed78fbdde4e8d94243958ef827a11ac7c72bb941d0395cf",
+    "INPUT_MANIFEST.json": "cc5495ec67c45059792608bad2519a6dbaf08a155c1f8fb0d425929a1818ee07",
+    "JVM_CENSUS.json": "db581d6fdc5e9a76ee18dd1896c3df9ab436405db9b71b13f9e5467658996c98",
+    "PRODUCTION_SUBSTITUTIONS.json": "8dc1d6fb648a01fc45efaa36a618415a7aaa0e37736738285a40d68df529bc4e",
+    "README.md": "90fb54f9e0a2a1450f3908a1edae66091ec700708902a99ded8fbf2b5c6731f6",
+    "STATIC_EQUIVALENCE.json": "d94ffaa750730ba12aa9ef6e34211fa73f06075ace8a01119effd44267249484",
+    "TASK_STATUS.json": "84c3c29835ff9a2cc54153dc7b076352bb84d63e366aabe536dc8de08a269126",
+    "TEST-com.easysavevideo.app.recording.RecordingNotificationDisplayTest.xml": "25dc253415e168a723f7ebe8fb4d1f2da41b264b5d7a2c9572cfd80fd8383560",
+    "TEST-com.easysavevideo.app.recording.RecordingNotificationStatusTest.xml": "39beb77af19e6286c926bf2e254418df59a9cbb446e97afe7937cf3b2c973d9f",
+    "TEST-com.easysavevideo.app.recording.RecordingNotificationWiringTest.xml": "9e0b77107d5dc3de98547923a5ff3cd48d985a77407ee7cf93b2077b1f9ea590",
+    "TEST_ASSERTION_CORRECTION.json": "9fda70d9bcfd236ca22445fb04600ef953f5085eb6aa9a95b42c978f60c8d2c5",
+    "VERIFICATION.json": "b167a3fc702a5161a35a7818cc846df8eaafdd7df730624fd2fb62b8fb991ffa",
+    "boundaries.log": "bcfeb662c64e6d4d0b6bd34913f501a6de3da0ba95912f99026a3f2ff76199a2",
+    "build1.log": "e7ebad827da4b2877ceb89980693ed80551f543a52eba6c0727d1845c679fc92",
+    "build2.log": "e5303801e12cfce21e4a313bb5218566d7bfbb30b0d082ea8e17e45fb9c8e7ac",
+    "skinkit-themeprovider-javap.txt": "e325488d70d5b52f07b3fa11906603d95ce7a67575c900cd33f619e528bd8390",
+    "source-boundary-checks.json": "bcfeb662c64e6d4d0b6bd34913f501a6de3da0ba95912f99026a3f2ff76199a2"
+  }
+}

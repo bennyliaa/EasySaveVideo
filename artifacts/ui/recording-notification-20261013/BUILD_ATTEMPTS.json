@@ -1,0 +1,25 @@
+{
+  "attempt1": {
+    "exit_code": 1,
+    "elapsed": "2m 56s",
+    "tests": 2026,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "log": "build1.log",
+    "input_manifest": "INPUT_MANIFEST.build1.json",
+    "all_junit_archive": "FIRST_ATTEMPT_JUNIT.zip"
+  },
+  "correction": {
+    "only_changed_input": "app/src/test/kotlin/com/easysavevideo/app/recording/RecordingNotificationWiringTest.kt",
+    "production_changes": [],
+    "details": "TEST_ASSERTION_CORRECTION.json"
+  },
+  "attempt2": {
+    "status": "PASS",
+    "log": "build2.log",
+    "input_manifest": "INPUT_MANIFEST.json",
+    "exit_code": 0,
+    "elapsed": "3m 4s"
+  }
+}

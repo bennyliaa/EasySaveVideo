@@ -532,6 +532,7 @@ class MainActivity : ComponentActivity() {
                         val changedNetwork = edit is SettingsEdit.WifiOnly
                         if (changedNetwork) { saveSettingsChanged = true; saves.updateSaveSettings(value.save) }
                         settingsChanged = true; settings = value
+                        if (edit is SettingsEdit.Language) saves.updateRecordingNotificationLanguage(settings.appearance.language)
                         persistence.saveSettings(value, confirmNetworkPreference = changedNetwork)
                     },
                     onSources = ::openProviderManagement, onBack = { backTo() },
@@ -585,6 +586,7 @@ class MainActivity : ComponentActivity() {
             if (!saveSettingsChanged && persistence.settingsLoaded) {
                 settings = settings.copy(save = saves.initializeSaveSettings(loaded.save))
             }
+            saves.updateRecordingNotificationLanguage(settings.appearance.language)
             settingsReady = true
             discovery.updateSettings(settings.discovery)
             if (settings.browser.restoreTabs) browser.restore(checkpoint)

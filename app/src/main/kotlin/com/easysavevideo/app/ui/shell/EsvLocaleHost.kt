@@ -1,8 +1,6 @@
 package com.easysavevideo.app.ui.shell
 
-import android.content.res.Configuration
 import android.os.Build
-import android.os.LocaleList
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalConfiguration
@@ -17,9 +15,7 @@ fun EsvLocaleHost(language: AppLanguage, content: @Composable () -> Unit) {
         content()
     } else {
         val localized = remember(base, configuration, language) {
-            base.createConfigurationContext(Configuration(configuration).apply {
-                setLocales(LocaleList.forLanguageTags(language.tag))
-            })
+            esvLocalizedContext(base, configuration, language)
         }
         CompositionLocalProvider(LocalContext provides localized,
             LocalConfiguration provides localized.resources.configuration, content = content)

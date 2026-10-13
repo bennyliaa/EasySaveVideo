@@ -1,0 +1,18 @@
+{
+  "exact_inverse_to_baseline": {
+    "app/build.gradle.kts": true,
+    "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt": true,
+    "app/src/main/kotlin/com/easysavevideo/app/recording/AndroidSegmentRecordingRuntime.kt": true,
+    "app/src/main/kotlin/com/easysavevideo/app/recording/RecordingForegroundService.kt": true,
+    "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt": true,
+    "app/src/main/kotlin/com/easysavevideo/app/ui/shell/EsvLocaleHost.kt": true
+  },
+  "prior_inputs_checked": 1409,
+  "prior_inputs_unchanged": 1403,
+  "scoped_modified_files": 6,
+  "scoped_new_files": 8,
+  "final_inputs_checked": 1417,
+  "changed_during_build": [],
+  "scope": "app-only typed recording notification localization and current-locale repaint; no capture/wire/storage/scheduler edits",
+  "no_device": true
+}

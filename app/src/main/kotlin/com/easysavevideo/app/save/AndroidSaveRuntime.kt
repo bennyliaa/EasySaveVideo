@@ -74,6 +74,12 @@ class AndroidSaveRuntime private constructor(context: Context) {
     private var recordingGeneration = 0L
     private var recordingService: RecordingForegroundService? = null
         set(value) { field = value; publishMediaTaskActivity() }
+    private val notificationLanguage = RecordingNotificationLanguage()
+    internal val recordingNotificationLanguage: AppLanguage get() = notificationLanguage.current
+    internal fun updateRecordingNotificationLanguage(language: AppLanguage) {
+        requireMain()
+        if (notificationLanguage.update(language)) recordingService?.refreshNotificationText()
+    }
     var recordingSnapshot by activityStateOf<RecordingSnapshot?>(null); private set
     var currentRecordingId by activityStateOf<String?>(null); private set
     private var previewUnconfirmed = false
@@ -149,14 +155,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 recorder = AndroidRecordSavePort(application, storage, { canSave(TaskMethod.RECORD) }, ::canPauseRecording) { next ->
                     main.post {
                         if (recordingSnapshot?.revision?.let { it > next.revision } != true) recordingSnapshot = next
-                        val label = when (next.state) {
-                            RecordingState.PAUSED -> "已暂停，通知可停止并保存"
-                            RecordingState.RECORDING -> "录制中，系统选择的共享范围"
-                            RecordingState.STOPPING, RecordingState.FINALIZING -> "正在结束录制"
-                            RecordingState.CANCELLING -> "正在放弃录制"
-                            RecordingState.RECOVERY_REQUIRED -> "系统资源仍未退出，请在系统中结束应用"
-                            else -> "正在准备或验证录制"
-                        }
+                        val label = recordingNotificationStatus(next.state)
                         next.request?.requestId?.let { id ->
                             recordingService?.showStatus(id, label)
                             if (!executing.get()) finishRecordingOwnerIfReleased(id)
@@ -745,7 +744,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                             if (currentRecordingId != id) return@post
                             if (recorder.nativeOccupied) {
                                 notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_NATIVE_RELEASE_UNCONFIRMED)
-                                service.showStatus(id, "系统资源仍未退出，请在系统中结束应用")
+                                service.showStatus(id, RecordingNotificationStatus.RECOVERY_REQUIRED)
                             } else finishRecordingOwnerIfReleased(id)
                         }
                     }
