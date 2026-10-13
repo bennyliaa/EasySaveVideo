@@ -1,0 +1,12 @@
+<testsuite name="com.easysavevideo.app.library.destination.OrdinaryDestinationResourceContractTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-13T07:33:27.556Z" hostname="[redacted]" time="0.017">
+  <properties />
+  <testcase name="bothLanguagesRetainOriginalCopyAndPermissionBoundaries" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationResourceContractTest" time="0.006" />
+  <testcase name="realCallbacksAndDismissalActionsAreUnchangedAndNeverInvokeOnComposition" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationResourceContractTest" time="0.002" />
+  <testcase name="everyPreferenceMapsToItsOwnCurrentResource" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationResourceContractTest" time="0.0" />
+  <testcase name="exactOwnedKeysArePairedAndOnlyExpectedPositionalArgumentsArePresent" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationResourceContractTest" time="0.004" />
+  <testcase name="selectedLabelsAndRawShortTaskIdsAreSingleUninterpretedFormatArguments" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationResourceContractTest" time="0.003" />
+  <testcase name="fixedCopyUsesCompositionResourcesOnTheExistingRealEntryPoints" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationResourceContractTest" time="0.002" />
+  <testcase name="busyFolderAndSavedRowGatesAndDeferredRuntimeCopyRemainUnchanged" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationResourceContractTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

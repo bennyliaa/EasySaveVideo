@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ordinary_destination_title">普通媒体保存位置</string>
+    <string name="ordinary_destination_description">适用于之后新建的直接下载、静态 HLS、基础 / 高级录制和编辑成片。始终先在 App媒体库验证保存；另存相册或所选文件夹都是额外副本，成功、失败或取消都保留 App媒体库原件。</string>
+    <string name="ordinary_destination_selected">已选：%1$s</string>
+    <string name="ordinary_destination_app_library">App媒体库</string>
+    <string name="ordinary_destination_ask">每次询问</string>
+    <string name="ordinary_destination_album_copy">另存一份到相册</string>
+    <string name="ordinary_destination_folder_copy">App媒体库并另存一份到所选文件夹</string>
+    <string name="ordinary_destination_folder_notice">所选文件夹由系统文件提供方管理，可能同步到云端；写入中的副本可能提前可见。需要明确选择并记住持久读写授权，随后每次创建前都会重新核对。</string>
+    <string name="ordinary_destination_reselect_folder">重新选择文件夹</string>
+    <string name="ordinary_destination_select_folder">选择并记住文件夹</string>
+    <string name="ordinary_destination_forget_folder">停止记住文件夹</string>
+    <string name="ordinary_destination_cancel_folder">取消更改文件夹</string>
+    <string name="ordinary_destination_change_notice">更改设置只影响之后新建的媒体，不改变已接受任务，也不复制历史媒体。切换或停止记住文件夹不会撤销旧系统授权，以便已有任务或未确认副本继续处理和清理；可在系统设置管理授权，撤销后可能需要手动清理。保险箱仍未启用。</string>
+    <string name="ordinary_destination_close_notice">关闭保存位置提示</string>
+    <string name="ordinary_destination_admitting">正在保存本次位置选择，尚未开始创建媒体…</string>
+    <string name="ordinary_destination_acknowledge">知道了</string>
+    <string name="ordinary_destination_prompt_title">本次普通媒体保存位置</string>
+    <string name="ordinary_destination_prompt_description">先验证保存到 App媒体库。选择相册或已记住文件夹会再复制一份，之后更改设置不会改变本次选择；所有结果都保留 App媒体库原件。</string>
+    <string name="ordinary_destination_remembered_folder_copy">App媒体库并另存一份到已记住文件夹</string>
+    <string name="ordinary_destination_prompt_folder_notice">文件提供方可能同步到云端；尚未选择文件夹时，请先到保存位置设置中选择。</string>
+    <string name="ordinary_destination_cancel_creation">取消，不创建媒体</string>
+    <string name="ordinary_destination_history_title">本次保存与额外副本</string>
+    <string name="ordinary_destination_task_summary">任务 %1$s · App媒体库：创建时已验证入库</string>
+    <string name="ordinary_destination_cancel_copy">取消此额外副本</string>
+    <string name="ordinary_destination_history_notice">以上是创建时记录，后续重命名或删除不会重新复制。尚未入库的任务请查看各自进度。</string>
+    <string name="ordinary_destination_reconcile">恢复核对额外副本</string>
+</resources>

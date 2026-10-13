@@ -14,6 +14,7 @@ import android.os.Handler
 import android.os.Looper
 import android.webkit.CookieManager
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.easysavevideo.app.browser.SystemBrowserHost
@@ -116,6 +117,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
     var scanning by mutableStateOf(false); private set
     var selection by mutableStateOf<PageSaveSelection?>(null); private set
     var showFailureBrowserReminder by mutableStateOf(false); private set
+    internal var authenticationNavigationGeneration by mutableLongStateOf(0L); private set
     var records by mutableStateOf<List<SaveRecord>>(emptyList()); private set
     var activeTaskCount by mutableStateOf(0); private set
     var mediaDispositions by mutableStateOf<Map<String, MediaLifecycle>>(emptyMap()); private set
@@ -192,7 +194,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
         }
     }
     fun setForeground(value: Boolean) {
-        requireMain(); foreground = value; segmentRecording?.setForeground(value); main.removeCallbacks(poll)
+        requireMain()
+        if (foreground != value) authenticationNavigationGeneration++
+        foreground = value; segmentRecording?.setForeground(value); main.removeCallbacks(poll)
         if (value) { main.post(poll) }
         else {
             destinations?.cancelSelection()
@@ -211,6 +215,22 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 leases.clear(); publishRecords()
             }
         }
+    }
+    internal fun authenticationBrowserAvailable(): Boolean = ready && foreground && allowed() &&
+        !executing.get() && !resourcesDraining() && !AndroidLocalMp4Verifier.requiresRestart && !Media3LocalHlsEngine.requiresRestart &&
+        pendingCommands.isEmpty() && pendingMediaCommands.get() == 0 &&
+        !expiryActivity.active && !initializationActivity.active && !scanning && selection == null &&
+        currentRecordingId == null && pendingRecording == null && recordingService == null &&
+        !preparingStream && hlsPreparation == null && destinations?.asking != true && destinations?.notice == null &&
+        segmentRecording?.let { it.busy || it.recoveryActive || it.nativeOccupied || it.previewActive || it.requiresRecovery } != true
+
+    /** Navigation authority only. No source lookup, credential lease, task command or selection mutation. */
+    internal fun returnToBrowserForAuthentication(command: AuthenticationBrowserCommand): AuthenticationNavigationResult {
+        requireMain()
+        val current = records.filter { it.task.taskId == command.taskId }.singleOrNull()
+            ?.takeIf { ::coordinator.isInitialized && authenticationSnapshotCompatible(it.task, coordinator.snapshot(command.taskId)) }
+            ?.let(AuthenticationTaskIdentity::from)
+        return command.accept(current, authenticationNavigationGeneration, authenticationBrowserAvailable())
     }
     internal fun returnToBrowserAfterFailure(command: FailureBrowserCommand): FailureNavigationResult {
         requireMain()

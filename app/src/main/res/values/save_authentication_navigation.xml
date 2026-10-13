@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_auth_browser_open">Return to browser</string>
+    <string name="save_auth_browser_boundary">This only returns to the current browser. Open and sign in on the source webpage yourself, then follow the current task guidance. No page is opened automatically and no task is resumed.</string>
+    <string name="save_auth_browser_used">This navigation has already been used.</string>
+    <string name="save_auth_browser_stale">The task or screen changed. Review the current task before trying again.</string>
+    <string name="save_auth_browser_not_allowed">This task is no longer waiting for webpage authentication.</string>
+    <string name="save_auth_browser_unavailable">Returning to the browser is temporarily unavailable. Nothing has been opened or resumed.</string>
+</resources>

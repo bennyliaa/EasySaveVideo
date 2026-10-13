@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ordinary_destination_title">Ordinary media save location</string>
+    <string name="ordinary_destination_description">Applies to newly created direct downloads, static HLS downloads, basic / advanced recordings, and edited media. Saving is always verified in the App Library first. Saving to the album or selected folder creates an extra copy; the App Library original is kept whether copying succeeds, fails, or is canceled.</string>
+    <string name="ordinary_destination_selected">Selected: %1$s</string>
+    <string name="ordinary_destination_app_library">App Library</string>
+    <string name="ordinary_destination_ask">Ask every time</string>
+    <string name="ordinary_destination_album_copy">Save an extra copy to the album</string>
+    <string name="ordinary_destination_folder_copy">App Library and an extra copy in the selected folder</string>
+    <string name="ordinary_destination_folder_notice">The selected folder is managed by a system file provider and may sync to the cloud. A copy may become visible while it is being written. You must explicitly select a folder and retain persistent read/write permission; permission is checked again before each new copy is created.</string>
+    <string name="ordinary_destination_reselect_folder">Choose a different folder</string>
+    <string name="ordinary_destination_select_folder">Choose and remember a folder</string>
+    <string name="ordinary_destination_forget_folder">Stop remembering the folder</string>
+    <string name="ordinary_destination_cancel_folder">Cancel folder change</string>
+    <string name="ordinary_destination_change_notice">Changes affect only newly created media, not accepted tasks, and do not copy existing media. Changing or forgetting a folder does not revoke its old system permission, so existing tasks or unconfirmed copies can still be processed and cleaned up. You can manage permission in system settings; revoking it may require manual cleanup. Vault is still disabled.</string>
+    <string name="ordinary_destination_close_notice">Dismiss save location notice</string>
+    <string name="ordinary_destination_admitting">Saving this location choice. Media creation has not started yet…</string>
+    <string name="ordinary_destination_acknowledge">Got it</string>
+    <string name="ordinary_destination_prompt_title">Save location for this media</string>
+    <string name="ordinary_destination_prompt_description">Saving to the App Library is verified first. Choosing the album or remembered folder creates an extra copy. Later settings changes do not affect this choice; the App Library original is kept in every outcome.</string>
+    <string name="ordinary_destination_remembered_folder_copy">App Library and an extra copy in the remembered folder</string>
+    <string name="ordinary_destination_prompt_folder_notice">The file provider may sync to the cloud. If no folder has been selected, choose one in save location settings first.</string>
+    <string name="ordinary_destination_cancel_creation">Cancel without creating media</string>
+    <string name="ordinary_destination_history_title">Saved media and extra copies</string>
+    <string name="ordinary_destination_task_summary">Task %1$s · App Library: verified and saved at creation</string>
+    <string name="ordinary_destination_cancel_copy">Cancel this extra copy</string>
+    <string name="ordinary_destination_history_notice">These records reflect creation time. Later renaming or deletion does not create another copy. For tasks not yet saved to the library, check their individual progress.</string>
+    <string name="ordinary_destination_reconcile">Resume checking extra copies</string>
+</resources>

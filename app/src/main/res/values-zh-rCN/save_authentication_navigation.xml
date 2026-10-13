@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_auth_browser_open">返回浏览器</string>
+    <string name="save_auth_browser_boundary">此操作仅返回当前浏览器。请自行打开并登录来源网页，再按任务当前提示处理；不会自动打开网页或继续任务。</string>
+    <string name="save_auth_browser_used">此次导航已执行。</string>
+    <string name="save_auth_browser_stale">任务或页面已变化，请查看当前任务后再操作。</string>
+    <string name="save_auth_browser_not_allowed">此任务当前不处于等待网页认证的状态。</string>
+    <string name="save_auth_browser_unavailable">暂时无法返回浏览器，未打开网页或继续任务。</string>
+</resources>

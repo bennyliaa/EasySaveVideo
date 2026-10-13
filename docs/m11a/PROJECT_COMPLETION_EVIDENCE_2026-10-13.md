@@ -7,128 +7,171 @@ Original requirements and historical evidence are unchanged.
 
 ## 1. Source baseline and what “published” means
 
-Latest verified source publication: [2986ada82ff4f0843eced900a90249d69f876671](https://github.com/bennyliaa/EasySaveVideo/commit/2986ada82ff4f0843eced900a90249d69f876671),
-on `development/cloud-followup-20261013`, default compression for new editor drafts.
-The local publication receipt reports exactly 26 changed files, exact diff, complete
-blob readback and passing privacy scan. Its parent is `dc2f421891c558ad2921eaa0882e89d4249cff79`.
-The receipt's main branch remained `ea87963dee631a498774f648c9a1dabd9f665b90`.
-This does not mean main was merged, an APK rebuilt, or installed code updated.
+Latest verified source publication: [3176bcc0be84325be5b278823995761f17049dd8](https://github.com/bennyliaa/EasySaveVideo/commit/3176bcc0be84325be5b278823995761f17049dd8),
+on `development/cloud-followup-20261013`, combining Discovery body-state presentation
+and explicit Browser/new-tab/Discovery input-clear actions. The publication receipt
+records 48 changed files, all 48 blobs read back with exact byte equality, no deletions
+and no forced ref update. Parent: `8fa0c4a2b9720f2098e64ca2ff93a599d4856833`.
+Main remained `ea87963dee631a498774f648c9a1dabd9f665b90`; the repository remained private.
+This is source publication, not a main merge, new APK, installation or release acceptance.
 
-Read-only publisher evidence exists outside the source snapshot at
-`/workspace/shared/esv-compression-default-publication-20261013/SUMMARY.json`.
-The corresponding frozen manifest is
-`/workspace/shared/esv-compression-default-frozen-20261013/PUBLICATION_MANIFEST.json`.
-These are local verification inputs, not portable repository attachments; the commit
-link and in-repository reports are the durable source references.
+The following later publications supersede the former `2986ada` editor-default checkpoint:
 
-Earlier reported published increments, in order, include paging (`c83ebad`), native
-JS dialogs (`08ce295`), new-tab draft transfer (`312007`), lightweight video hint
-(`63e929`) and READY SPA/hash explicit inspection (`dc2f421`). Their scope reports:
+| Published commit | Bounded scope | Publication receipt |
+|---|---|---|
+| [172fa3c](https://github.com/bennyliaa/EasySaveVideo/commit/172fa3c443431a302658a64e3f3dd35abae41dbb) | Wi-Fi-only source enforcement plus documentation; 79 changed files, 79 exact readbacks | `/workspace/shared/esv-wifi-publication-20261013/SUMMARY.json` |
+| [93a67ba](https://github.com/bennyliaa/EasySaveVideo/commit/93a67ba5a4e07cb6c9b1b7d186c6145570db19e0) | BrowserScreen bilingual settings/origin/error copy; 29 changed files, 29 exact readbacks | `/workspace/shared/esv-browser-copy-publication-20261013/SUMMARY.json` |
+| [82ccae9](https://github.com/bennyliaa/EasySaveVideo/commit/82ccae9dfb4d0c70ecca689a0a65aa259434603b) | Current storage/checkpoint/owner contracts and visible Shell navigation labels; 31 changed files, 31 exact readbacks | `/workspace/shared/esv-contract-shell-publication-20261013/SUMMARY.json` |
+| [8fa0c4a](https://github.com/bennyliaa/EasySaveVideo/commit/8fa0c4a2b9720f2098e64ca2ff93a599d4856833) | Save display locale, semantic theme tokens and nine recovered original UI Markdown documents; 62 changed files, 62 exact readbacks | `/workspace/shared/esv-locale-tokens-originals-publication-20261013/SUMMARY.json` |
+| [3176bcc](https://github.com/bennyliaa/EasySaveVideo/commit/3176bcc0be84325be5b278823995761f17049dd8) | Discovery body states and input clear; 48 changed files, 48 exact readbacks | `/workspace/shared/esv-body-clear-publication-20261013/SUMMARY.json` |
 
-- `docs/ui/implementation/DISCOVERY_PAGE_DEMAND_20261013.md`
-- `docs/browser-js-dialogs/VERIFICATION.md`
-- `docs/ui/implementation/NEW_TAB_SEARCH_INPUT_20261013.md`
-- `docs/ui/implementation/VIDEO_PRESENCE_HINT_20261013.md`
-- `docs/ui/implementation/SAME_DOCUMENT_INSPECTION_20261013.md`
+All five receipts were read for this refresh. Receipt paths are local verification inputs,
+not portable repository attachments; commit links and the in-repository slice reports
+are the durable source references. Wi-Fi's original 77-file source/evidence freeze is
+historical input to its 79-file publication group, not a still-pending publication.
 
-The shared source directory has no `.git` history and can contain later unshipped
-work. Do not infer a commit identity from all current files or call it a full clone.
-Wi-Fi-only saving has completed final R6 source verification and freeze, documented
-in `docs/ui/implementation/SAVE_WIFI_ONLY_20261013.md`. Its 77-file whitelist comprises
-38 source files, one report and 38 evidence files. It is ready for publisher review,
-but not included in the already-published baseline at this checkpoint.
-The actual handoff is `/workspace/shared/esv-wifi-only-frozen-20261013/HANDOFF.json`;
-manifest `/workspace/shared/esv-wifi-only-frozen-20261013/PUBLICATION_MANIFEST.json`
-SHA-256 is `db99a324a12c2d2de86ff99d7af735e593661601eda8c8b3fec7aa8f961e48fc`.
-These local freeze inputs were read and the manifest hash checked. Freeze success
-is not remote publication or APK/device acceptance.
+Earlier increments include paging (`c83ebad`), native JS dialogs (`08ce295`), new-tab
+draft transfer (`312007`), lightweight video hint (`63e929`), READY SPA/hash explicit
+inspection (`dc2f421`) and editor-default compression (`2986ada`). Their reports remain
+under `docs/ui/implementation/` and `docs/browser-js-dialogs/VERIFICATION.md`.
+The shared source directory has no `.git` history and can contain later unshipped work;
+do not infer that every current file belongs to the published checkpoint.
+
+### Original UI material is recovered in part, not wholly missing
+
+All nine original UI Markdown documents, `00_ESV_UI_DOCUMENT_INDEX.md` through
+`08_ESV_UI_additional_technical_framework_policy_2026-10-11.md`, were recovered and
+published under `docs/ui/` in `8fa0c4a`. The original Markdown handoff is locally
+readable at `/workspace/shared/esv-ui-original-handoff-20261013/`; this shared source
+snapshot does not itself contain all nine at their published repository paths.
+The original PPT binary `EasySaveVideo_UI_Effect_Design_V1.0_2026-10-11.pptx` has not
+been obtained or viewed. Its 34-page Markdown traceability matrix is available, but
+is not the slide imagery and cannot establish pixel parity. Later API31, history-TTL,
+payment and deferred-feature decisions still take precedence over old examples.
 
 ## 2. Evidence levels and exact current limits
 
-- Requirements describe desired behavior. An implementation file establishes source,
-  not device operation. Synthetic/source-contract tests establish only their checked
-  conditions. Compilation/lint establish neither pixels nor native media correctness.
-- The already-published editor-default validation is
-  `artifacts/ui/editor-default-compression-20261013/validation.json`.
-  Final App: 1,679 tests actually executed, zero failures/errors/skips. Core-domain 44,
-  Discovery 307, Commons 247, SearXNG 25, verification-client 44, save 86, recording 127
-  and ui-theme 9 also actually executed in the recorded commands. Core-model 5,
-  library 277 and HLS 40 were UP-TO-DATE in those final commands, not rerun there.
-- Verification-local reports 34 cases, including 2 SKIP: frozen private corpus and
-  authored-mutation corpus inputs were unavailable. Those two were not executed
-  acceptance. Do not sum overlapping historical/slice runs into a new project total.
-- Debug/Release compile and lint passed; each lint contains 0 errors, 60 warnings,
-  8 hints. `testReleaseUnitTest` does not exist in this build; the failed task-selection
-  attempt ran no tests. There is no Release unit pass to invent.
-- `scripts/check-editor-admission.py` could not run its historical Git diff in this
-  source-only snapshot (exit 129). No `.git` was manufactured. The seven available
-  boundary checks passed as recorded in
-  `artifacts/ui/editor-default-compression-20261013/boundaries.json`; they do not
-  substitute for that unavailable legacy check.
-- Current publisher receipt: zero workflow files/runs/checks/statuses; aggregate
-  status `pending` is empty, not successful CI. Cloud validation is local recorded
-  execution, not GitHub Actions green status.
-- The cloud source groups did not assemble/install APKs, operate an emulator/phone,
-  fetch real media or measure physical battery savings. Historical package/device
-  evidence must be identified separately and must not be generalized to this source.
+- Requirements describe desired behavior. Source-contract and pure JVM tests establish
+  their checked conditions; compilation/lint establish neither pixels nor native media
+  correctness. Publication readback establishes bytes, not installed behavior.
+- The final validation included in published `3176bcc` is the input-clear slice:
+  `artifacts/ui/input-clear-20261013/VERIFICATION.json`, with census
+  `artifacts/ui/input-clear-20261013/JVM_CENSUS.json` and final `build4.log`.
+  App **1,835 tests actually executed PASS**, including 22 new tests, with zero
+  failures/errors/skips. Final build4 completed 75 tasks: 19 executed, 56 UP-TO-DATE.
+  Debug/Release production Kotlin and both lint tasks actually executed PASS;
+  each lint reports **0 errors, 60 warnings and 8 hints**. Runtime admission passed
+  for **90 exact reviewed artifacts**. This is not a fresh execution of every module.
+- **ui-theme 17 tests actually ran in the earlier semantic-token slice only**:
+  `artifacts/ui/semantic-theme-tokens-20261013/VERIFICATION.json` and `JVM_CENSUS.json`.
+  That slice ran App 1,801 and theme 17. Do not add theme 17 to App 1,835 at
+  publication or the later App 1,857 source run. Theme was not rerun in either later
+  slice, and no all-module final-run total is claimed.
+- Earlier App-only slice totals identify their own inputs: Browser copy 1,747,
+  current storage contracts 1,761, Shell labels 1,774, Save locale 1,791,
+  semantic tokens 1,801, Discovery body 1,813. These overlap; they are not additive.
+  Their individual compile/UP-TO-DATE distinctions remain in the original reports.
+- Current storage contracts also recorded 14 host SQLite tests and 344 host-model
+  rollback locations. See `docs/verification/CURRENT_STORAGE_CONTRACTS_20261013.md`.
+  This new gate does not make old version/source-anchor gates pass and does not prove
+  Android migration, native descriptor or provider behavior. Historical missing Git/
+  snapshot evidence remains unavailable; old failures and failure logs are retained.
+- Input-clear build2 caught an unintended SideEffect replacement in the existing
+  `BrowserVideoPresenceContractTest`. The original SideEffect was restored and the
+  original test stayed unchanged; the failed log/XML remain in slice evidence.
+  The final build4 pass supersedes that failed attempt only for its checked source.
+- Historical editor-default and Wi-Fi evidence remain separately dated. Verification-local
+  recorded 34 cases including 2 SKIP for unavailable frozen-private/authored-mutation
+  corpus inputs. Those skips are not newly executed acceptance. `testReleaseUnitTest`
+  does not exist in this build; the old failed task-selection attempt ran no tests.
+- The latest publication receipt records zero workflow files/runs/checks/statuses.
+  Empty combined status `pending` is neither running nor passing CI. Recorded cloud
+  validation is not GitHub Actions green status; publication itself ran no builds/tests.
+- APK assembly/install, emulator/phone, rendered Compose/IME/TalkBack/large-font
+  behavior, PPT/screenshots and native media acceptance for the latest slices are
+  **NOT_RUN**. Historical package/device evidence must stay separately attributed.
+  No physical battery saving or full UI-B/UI-E/M9/M11 completion is established.
 
-### Later unshipped Wi-Fi R6 validation, kept separate from the published base
+### Newer source verification, not yet published
 
-Authoritative frozen report:
-`/workspace/shared/esv-wifi-only-frozen-20261013/source/artifacts/ui/save-wifi-only-20261013/validation.json`.
-Repository report/evidence for the intended publication are
+Status: **SOURCE_VERIFIED_PENDING_PUBLICATION** for the authentication-waiting task
+return-to-current-Browser action and fixed destination display copy. This source group
+follows `3176bcc`; no newer remote commit is asserted. Its final build2 actually ran
+**208 App suites / 1,857 tests**, zero failures/errors/skips, including 22 new tests:
+10 authentication-policy, 5 wiring and 7 destination-copy tests. Debug/Release Kotlin
+and both lint tasks actually executed PASS; each lint retains 60 warnings/8 hints/
+0 errors. Runtime admission verified 90 exact artifacts. Theme was not rerun by this
+group. These totals
+supersede older App execution only for the new verified source; they do not replace
+`3176bcc`'s historical 1,835-test publication evidence or imply a new publication.
+
+Reports: `docs/m11a/AUTHENTICATION_BROWSER_NAVIGATION_20261013.md` and
+`docs/m11a/ORDINARY_DESTINATION_FIXED_COPY_20261013.md`.
+Evidence: `artifacts/ui/auth-destination-copy-20261013/VERIFICATION.json`.
+Authentication waiting offers only a return to the current Browser; this is not the
+complete original `OpenOriginForLogin` flow. Destination localization covers only
+26 paired fixed English/Simplified Chinese strings; runtime-generated dynamic notices
+remain deferred. APK/device/emulator/native-flow/PPT comparison remains NOT_RUN;
+the original PPT binary is still unavailable. OPPO edit/share failures remain open.
+
+### Published Wi-Fi R6 evidence, retained as an earlier slice
+
 `docs/ui/implementation/SAVE_WIFI_ONLY_20261013.md` and
-`artifacts/ui/save-wifi-only-20261013/validation.json`.
-The final task log is `artifacts/ui/save-wifi-only-20261013/final-validation-r6.tasks.log`.
+`artifacts/ui/save-wifi-only-20261013/validation.json` record the source validation
+published in `172fa3c`. R6 is no longer awaiting source publication.
 
-- R6 completed successfully: 111 actionable tasks, 20 executed and 91 UP-TO-DATE.
-  App 1,742 tests actually executed with zero failures/errors/skips.
-- R6 core-model 6, core-domain 44, Discovery 307, Commons 247, SearXNG 25,
-  verification-client 44, verification-local 34 and save 95 were UP-TO-DATE;
-  the report explicitly records their execution in an earlier round of this slice.
-  Verification-local includes the same two unavailable private-corpus SKIP cases.
+- R6 completed 111 actionable tasks: 20 executed, 91 UP-TO-DATE. App 1,742 tests
+  actually executed with zero failures/errors/skips.
+- Core-model 6, core-domain 44, Discovery 307, Commons 247, SearXNG 25,
+  verification-client 44, verification-local 34 and save 95 were UP-TO-DATE in R6;
+  their earlier execution within that slice is separately recorded. Verification-local
+  retains the same two unavailable private-corpus SKIP cases.
 - Library 277, HLS 40, recording 127 and ui-theme 9 were UP-TO-DATE in R6 and
-  were not rerun earlier in this Wi-Fi slice. Do not label all modules fresh R6 passes.
-- Debug/Release Kotlin compile and both lint tasks actually executed in R6;
-  each lint reports 60 warnings/8 hints and no errors. AndroidTest Kotlin compilation
-  was UP-TO-DATE in R6; a successful compilation check is not instrumented-test execution.
-- Runtime admission passed for exact 90 reviewed artifacts in both variants.
-  Authored manifest hash stayed unchanged; both merged manifests retain the same
-  eight permissions. No dependency or permission was added.
-- Independent review closed the listed P2 settings/transport/cleanup findings.
-  Final Release bytecode evidence covers 17 class hashes, same-request Android
-  Network binding for DNS/socket/connection/watchdog, preserved TLS/public-peer
-  checks, and no newly shared cross-task source/credential state. See
+  not rerun earlier in that Wi-Fi slice. They are not fresh R6 or latest-source passes.
+- Debug/Release Kotlin and both lint tasks actually executed in R6; lint retained
+  60 warnings/8 hints/0 errors. AndroidTest Kotlin compilation was UP-TO-DATE,
+  not instrumented-test execution. Runtime admission verified 90 artifacts;
+  authored/merged manifests retained the same eight permissions.
+- Independent Release bytecode review covers 17 class hashes, same-request Android
+  Network binding, preserved TLS/public-peer checks and no newly shared cross-task
+  source/credential state. See
   `artifacts/ui/save-wifi-only-20261013/release-review/00-review-summary.txt`.
-  This is compiled JVM class evidence, not a packaged DEX, actual VPN test or
-  whole-application proof against all possible data leakage.
-- `check-boundaries.py` passed. Old stream admission remains BLOCKED because
-  the historical candidate artifact-inspection JSON is absent; old OS-power admission
-  remains BLOCKED because this source snapshot has no `.git` history. Independent
-  strict runtime-byte and merged-permission checks passed, but do not turn either
-  unavailable historical gate into a pass.
-- APK assembly/install, real device/emulator/network switching, VPN routing,
-  SharedPreferences restart and rendered Compose/accessibility remain NOT_RUN.
-  Intermediate R3/R4/R5 counts are superseded for final-source App validation by R6;
-  no older failure log was rewritten. Remote publication is still pending.
+  This is compiled JVM class evidence, not packaged DEX, VPN or whole-app leakage proof.
+- Boundary checks passed. Old stream admission still lacked historical candidate
+  artifact-inspection JSON; old OS-power admission still lacked `.git` history.
+  Neither unavailable gate becomes a pass because independent runtime/permission
+  checks or newer source-contract checks passed.
+- Device/network transitions, VPN routing, SharedPreferences restart and rendered
+  accessibility remain NOT_RUN. Source publication does not close those gates.
 
 ## 3. User-facing feature map
 
 | User-facing function | What exists | What still prevents full acceptance / smallest next step |
 |---|---|---|
-| Browser navigation, tabs, bookmarks | Real WebView integration and bounded bookmark persistence; new-tab input can populate an owned draft before Go | Native keyboard/layout/rotation/lifecycle matrix incomplete. Do not mark bookmarks absent. See `docs/browser-bookmarks/VERIFICATION.md`. |
+| Browser navigation, tabs, bookmarks | Real WebView integration and bounded bookmark persistence; new-tab input can populate an owned draft before Go; BrowserScreen settings/error copy is bilingual and explicit address/new-tab Clear is wired | Native keyboard/layout/rotation/lifecycle matrix incomplete. Do not mark bookmarks absent. See `docs/browser-bookmarks/VERIFICATION.md`. |
 | Browser JS dialogs and video detection | Native guarded alert/confirm/prompt; bounded advisory video-element hint; full detection remains explicit; READY same-document revision invalidates stale candidates | Real WebView callback ordering needs device acceptance. Hint is not playback, media identity, rights, or automatic recording authority. Same-document credential forwarding is intentionally narrower than inspection. |
 | Browser ordinary history | Policy, bounded codec, serial controller and private atomic store, 43 focused JVM cases | No runtime collection/list UI. Explicit retention decision needed: 200 recent distinct addresses with 30-day expiry, or without time expiry. No default choice is made. `docs/ui/implementation/BROWSER_HISTORY_FOUNDATION_20261012.md`. |
-| Incognito and site permissions | Incognito guards exclude ordinary persisted session/history paths; current WebChromeClient explicitly denies camera/microphone and location | Shared CookieManager/storage is not isolated browsing. Permission selection/Android result correlation and granted-capture lifecycle are absent; do not call deny-only a completed permissions manager. `app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt`. |
-| Discovery paging and results | Explicit one-shot next-page demand, bounded provider/local validation framework; truthful missing metadata | Real image capability/source admission, Android decode/owner and viewport/UI binding missing. Current Discovery placeholder remains honest. `docs/ui/implementation/DISCOVERY_THUMBNAIL_FOUNDATION_20261012.md`. |
-| Direct / Stream / Record | Real bounded save/capture pipelines, explicit user triggers, verified media publication and safe failure guidance; Wi-Fi-only save enforcement passed R6 source verification and is frozen, not yet published | Full native stream/codec/AV/background/recovery coverage pending. A failed network save offers fresh explicit reinspection only; it does not auto-retry, broaden sources or silently start recording. |
+| Incognito and site permissions | Incognito guards exclude ordinary persisted session/history paths, but no user-facing incognito entry is implemented; current WebChromeClient explicitly denies camera/microphone and location | Shared CookieManager/storage is not isolated browsing. Permission selection/Android result correlation and granted-capture lifecycle are absent; do not call deny-only a completed permissions manager. `app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt`. |
+| Discovery paging and results | Explicit one-shot next-page demand, bounded provider/local validation framework; truthful missing metadata; distinct empty/loading/waiting/error body presentation and explicit query Clear | Real image capability/source admission, Android decode/owner and viewport/UI binding missing. Current Discovery placeholder remains honest. `docs/ui/implementation/DISCOVERY_THUMBNAIL_FOUNDATION_20261012.md`. |
+| Direct / Stream / Record | Real bounded save/capture pipelines, explicit user triggers, verified media publication and safe failure guidance; Wi-Fi-only save enforcement passed R6 source verification and was published in `172fa3c` | Full native stream/codec/AV/background/recovery coverage pending. A failed network save offers fresh explicit reinspection only; it does not auto-retry, broaden sources or silently start recording. |
 | Save location, library and batch Files | App Library/ASK/album plus remembered ordinary SAF folder; batch export uses one selected folder and per-item verified results; originals retained for copies | Native provider/revocation/uncertain cleanup matrix remains partial. Old “choose batch Files behavior” note was resolved by later one-folder implementation. `docs/m5a4b/REQUIREMENTS_DECISION.md`; `docs/ui/implementation/BATCH_DIRECTORY_COPY_20261012.md`. |
 | Editing and default compression | Trim/merge/crop/compress with existing entitlement gates; default applies once to new edits, never overwrites active/restored drafts | OPPO edit initialization failure unresolved. Default editor compression is not recording compression, successful encoding, or a paid unlock. `docs/ui/implementation/EDITOR_DEFAULT_COMPRESSION_20261013.md`. |
 | Power/settings/notices | Real lifecycle OS battery/thermal/network observation and fail-closed policy; localized status; scrollable offline notices and responsive settings panes | Physical energy benefit, platform callback timing, full accessibility/large-font/phone/tablet acceptance absent. The old OS NOT_CONNECTED label is obsolete. `docs/m8b4/VERIFICATION.md`; `docs/ui/implementation/CLOUD_NOTICES_POWER_20261012.md`. |
 | Diagnostics and sharing | Bounded typed initialization diagnostics and log-export implementation; no sensitive media/path/URL logging allowed | New diagnostics must be run on the failing device build before determining edit/share root cause. Existing failure enums alone do not prove codec failure or a repair. `docs/ui/implementation/INITIALIZATION_DIAGNOSTICS_CLOUD_20261012.md`; `docs/diagnostics-export/IMPLEMENTATION_AND_VALIDATION.md`. |
 | Vault / dynamic rules / new local video import | Explicitly deferred; Vault/rules disabled or isolated | Do not reopen blocked reviews, substitute integrations or count these as implemented. Import is a deferred extension, not automatically an original requirement failure. `docs/ui/implementation/ESV_UI_FEATURE_INTEGRATION_LEDGER.md`; `AGENTS.md`. |
 | Real payment and release | Store-neutral preparation and six channel identities | Payment choice, products, actual accounts/SDK/backend and channel acceptance unknown/unconfigured. Fresh release policy and actual release artifact/device gates still needed. `docs/m10b/CHANNEL_READINESS.md`. |
-| Full visual design | Admitted SkinKit components and documented responsive/localized slices | External UI originals are unavailable in this snapshot; no complete slide/pixel parity or full accessibility assertion. `docs/ui/implementation/ESV_UI_IMPLEMENTATION_BASELINE.md`. |
+| Full visual design | Nine original UI Markdown documents recovered/published; visible Shell labels, locale-aware Save display, semantic theme tokens, Discovery body states and input Clear implemented in bounded source slices | Original PPT binary still unavailable. Semantic tokens and localization remain partial; no complete slide/pixel parity, UI-E or accessibility acceptance. `docs/ui/implementation/ESV_UI_TOKEN_AND_COMPONENT_MAP.md`; the five dated slice reports listed below. |
+
+Current original-UI repair reports (all read for this checkpoint):
+`docs/ui/implementation/SHELL_VISIBLE_LABELS_20261013.md`,
+`SAVE_DISPLAY_LOCALE_20261013.md`, `SEMANTIC_THEME_TOKENS_20261013.md`,
+`DISCOVERY_BODY_STATE_20261013.md` and `INPUT_CLEAR_20261013.md`.
+Their earlier “next work”/publication-pending statements are slice-time history where
+superseded by the publication chain above, not instructions to repeat completed work.
+Authentication-waiting task return to the current Browser and `OrdinaryDestinationUi`
+26-pair fixed-copy localization are SOURCE_VERIFIED_PENDING_PUBLICATION, with exact
+reports and final build2 evidence above. Full `OpenOriginForLogin`, dynamic runtime
+notice localization and native acceptance remain outside this verified group.
 
 ## 4. Older device evidence: useful, bounded, not overwritten
 
@@ -165,22 +208,31 @@ or infer that emulator authorization permits it. This refresh starts no device w
 These are bounded implementation candidates, not claims that they already passed.
 Keep one build owner and review/freeze each slice before combining it with other work.
 
-Wi-Fi-only source implementation and final validation are now complete. Its remaining
-step is publication of the exact reviewed freeze, followed separately by authorized
-native network-transition acceptance. It is no longer an unfinished code task in
-this list and is not claimed published before the publisher verifies the remote.
+Wi-Fi-only enforcement, BrowserScreen's bounded settings/origin/error localization,
+Shell labels, Save display locale, the bounded semantic-token slice, Discovery body
+states and explicit input Clear have been published. Do not relist those completed
+source scopes as new work; their device and full-original-UI acceptance remains open.
 
-1. **Implement the real owned-fixture Discovery thumbnail path.** Start from
+1. **Integrate the real owned-fixture Discovery thumbnail path under the original reuse policy.**
+   Original UI `08_ESV_UI_additional_technical_framework_policy_2026-10-11.md` §§2/3/7
+   requires existing media Reader/thumbnail capabilities and already-admitted mature
+   image loaders first. Any new loader candidate must pass the existing exact-version,
+   byte/license/dependency admission review before integration. This candidate is not
+   authority to build a general-purpose image downloader/decoder/multilevel-cache
+   framework or to bypass admission because an adapter would be smaller.
+   Start from
    `discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailSession.kt`
    and
-   `discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailCapability.kt`. Build a bounded Android
-   decoder/closeable bitmap owner and reliable main-thread delivery, then connect page and
-   visible-item events in `app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt`
-   and `app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt` using owned synthetic
-   fixtures. Add stale-page/background/late-delivery/unconfirmed-close/oversized-image tests.
-   Do not invent image-read grants from metadata or activate arbitrary remote image URLs.
-   Outcome: executable decoder/rendering integration under test, rather than another policy
-   abstraction; production source admission remains a separate gate before real fetching.
+   `discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailCapability.kt`.
+   Identify reusable admitted decoding/ownership and delivery capabilities, then use a
+   bounded product adapter to connect page and visible-item events in
+   `app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt`
+   and `app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt` with owned
+   synthetic fixtures. Add stale-page/background/late-delivery/unconfirmed-close/
+   oversized-image tests. If no admitted capability fits, report the concrete gap and
+   obtain the required reuse/admission decision before extending a generic framework.
+   Do not invent image-read grants from metadata or activate arbitrary remote URLs.
+   Production source admission remains a separate gate before real fetching.
 2. **Implement bounded per-request webpage audio consent.** Current `SystemBrowserHost`
    deny-only callback is a concrete gap. A native SkinKit confirmation may grant only
    AUDIO_CAPTURE to the exact current same-origin HTTPS request, after independent Android
@@ -191,18 +243,24 @@ this list and is not claimed published before the publisher verifies the remote.
    does not prove already-granted capture stops; resolve the active WebView teardown/reload
    behavior and review it before claiming a full permission lifecycle. No new permission or
    personal-data transmission is authorized merely by listing this task.
-3. **Close finite source-level UI gaps rather than wait for all visual originals.** Audit
-   hardcoded legacy browser permission/error text and replace identified app-owned strings
-   with paired EN/ZH resources using existing SkinKit semantics; register each source/resource
-   contract input and test compact/large-font layout-policy branches. Preserve page titles,
-   URLs and technical enums verbatim; do not translate user data. The source location above
-   currently contains hardcoded deny notices, making this a concrete code target. Stop short
-   of declaring real rendered accessibility or original-PPT parity without actual evidence.
+3. **Publish the verified authentication-waiting and fixed destination-copy group.**
+   Both bounded source repairs are SOURCE_VERIFIED_PENDING_PUBLICATION, with App
+   1,857 actual tests and final build2 evidence above. Do not repeat their implementation
+   or label the group shipped before exact remote publication/readback is confirmed.
+   The new action returns to the current Browser only, not full `OpenOriginForLogin`;
+   the 26 paired fixed destination strings do not translate dynamic runtime notices.
+   Keep those remaining functional/localization and device limits explicit.
+4. **Review remaining original UI coverage after those bounded repairs.** Use the recovered
+   nine Markdown originals and `ESV_UI_TOKEN_AND_COMPONENT_MAP.md` to select remaining
+   semantic-state/component coverage or other app-owned locale gaps. BrowserScreen's
+   already-published copy is not a pending target. Full app localization, success/warning/
+   selected/loading/scrim/system-bar tokens and all-component acceptance remain partial.
+   Source coverage does not substitute for the missing PPT or rendered-device evidence.
 
-Items 1–3 still require normal scope review and must preserve existing source-admission,
-privacy, entitlement and lifecycle gates. They can produce real source/test progress
-without selecting history retention, activating billing/Vault, or installing an APK.
-They do not cure the unresolved OPPO root cause by assumption.
+Items 1–4 require normal scope review and must preserve existing source-admission,
+privacy, entitlement and lifecycle gates. They can produce source/test progress without
+selecting history retention, activating billing/Vault, or installing an APK. They do
+not cure the unresolved OPPO root cause by assumption.
 
 ## 6. Decisions and external evidence that really do gate completion
 
@@ -210,7 +268,8 @@ They do not cure the unresolved OPPO root cause by assumption.
   enabling collection. Then integrate accepted page-finish events, one process-owned serial
   writer, localized list/open/remove/confirmed-clear UI and any selected expiry timer. Add
   rotation/clear-versus-late-write/current-row replay tests; avoid only adding another codec.
-- **Incognito isolation:** current shared CookieManager is insufficient. Specify and review
+- **Incognito entry and isolation:** the user-facing entry is not implemented and current
+  shared CookieManager is insufficient. Specify and review
   a supported profile/process lifetime and clearing model before promising independent
   cookie/storage isolation; ordinary/incognito persistence tests alone cannot prove it.
 - **OPPO edit/share failures:** new stage/category diagnostics from a bounded failing attempt
@@ -222,16 +281,24 @@ They do not cure the unresolved OPPO root cause by assumption.
 - **Commercial/release:** payment and actual channel/account readiness unresolved. Recheck
   then-current official requirements at release time; the 2026-10-07 market checklist is
   preparation, not a new legal verification performed by this document.
-- **UI/device:** recover external approved visual originals and run the finite phone/tablet,
-  large-font/accessibility/lifecycle/native-media matrix before full UI/M9/M11 acceptance.
+- **UI/device:** use the nine recovered original Markdown documents; obtain the original
+  PPT binary/imagery, then perform the finite phone/tablet, large-font/accessibility/
+  lifecycle/native-media matrix before full UI/M9/M11 acceptance. Markdown recovery
+  does not supply screenshot comparison or close UI-E.
 
 ## 7. Documentation-only validation and publication boundary
 
 Only this overview and `docs/m11a/MILESTONE_STATUS.md` are changed by this refresh.
 No production source, Gradle configuration, old evidence, original requirements,
-package/version, device state or Git remote is changed. All explicitly referenced
-local files/directories were checked for existence at freeze; unavailable device
-artifacts are identified as unavailable instead of linked as local evidence.
-The two document bytes are frozen separately for the publisher's next reviewed group.
-Publication must use that exact whitelist, and a later source commit or Wi-Fi publication
-must update the checkpoint rather than being inferred from a shared working tree.
+package/version, device state or Git remote is changed. The five publication receipts,
+five requested UI-slice reports and final input-clear evidence were read; the new
+authentication/destination reports and final build2 evidence were also read and
+checked. Original Markdown handoff availability was checked separately from its
+published repository paths.
+Unavailable device/PPT artifacts are explicitly marked unavailable, not linked as local proof.
+
+These two edited documents are pending the coordinating owner's combined review and
+verification. This refresh creates no separate freeze and performs no publication,
+Gradle, APK or device task. Any later source slice must supply its own exact validation
+and publication evidence before this checkpoint can be advanced; shared working-tree
+changes alone do not establish that it passed or shipped.

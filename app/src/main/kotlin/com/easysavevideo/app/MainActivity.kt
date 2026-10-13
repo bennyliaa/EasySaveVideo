@@ -486,6 +486,14 @@ class MainActivity : ComponentActivity() {
                         }
                     })
                 else if (route == EsvDestination.TASKS) SaveTaskScreen(saves, browser,
+                    canOpenBrowserForAuthentication = {
+                        isForeground && hasFocusedWindow && !isDestroyed && !isFinishing &&
+                            navController?.currentDestination?.route == EsvDestination.TASKS.route &&
+                            saves.selection == null && !saves.scanning && !saves.preparingStream && saves.hlsPreparation == null &&
+                            saves.destinations?.asking != true && saves.destinations?.notice == null &&
+                            saves.segmentRecording?.previewActive != true && previewReceipt == null && libraryPreviewReference == null &&
+                            !browser.pickerInFlight && !browser.hasPendingFileChoice && browser.jsDialog == null && browser.fullScreenView == null
+                    },
                     onBrowser = { navigate(EsvDestination.BROWSER) },
                     onBack = { backTo() },
                     onRecord = { navigate(EsvDestination.RECORD) },
