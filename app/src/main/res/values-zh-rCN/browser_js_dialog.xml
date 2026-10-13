@@ -1,0 +1,12 @@
+<resources>
+    <string name="browser_js_alert">网页提示</string>
+    <string name="browser_js_confirm">网页确认</string>
+    <string name="browser_js_prompt">网页输入</string>
+    <string name="browser_js_origin">来源：%1$s</string>
+    <string name="browser_js_untrusted">以下内容来自此网页，不是 EasySaveVideo。确认会将你的选择发送给网页，不会授予应用权限。</string>
+    <string name="browser_js_input">发送给网页的输入（已隐藏）</string>
+    <string name="browser_js_input_limit">最多 %1$d 个字符。应用不会保存输入。请勿在此输入密码或付款信息。</string>
+    <string name="browser_js_cancel">取消</string>
+    <string name="browser_js_ok">确定</string>
+    <string name="browser_js_block">取消并阻止此页继续弹窗</string>
+</resources>

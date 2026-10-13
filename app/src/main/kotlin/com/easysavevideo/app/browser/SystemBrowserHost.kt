@@ -42,13 +42,55 @@ class SystemBrowserHost(
     var viewRevision by mutableStateOf(0); private set
     var platformAvailable by mutableStateOf(true); private set
     var bookmarkNavigationRevision by mutableStateOf(0L); private set
-    private data class Entry(val context: BrowserContextRef, val view: WebView, var request: BrowserRequest? = null, var suppressed: Boolean = false, var admission: NavigationAdmission? = null, var bookmarkAddress: String? = null)
+    private data class Entry(val context: BrowserContextRef, val view: WebView, var request: BrowserRequest? = null, var suppressed: Boolean = false, var admission: NavigationAdmission? = null, var bookmarkAddress: String? = null, var jsDocument: Long = 0, var jsDialogCount: Int = 0, var jsDialogsBlocked: Boolean = false)
     private val entries = LinkedHashMap<String, Entry>(4, 0.75f, true)
     private val history = mutableMapOf<String, Bundle>()
     private val released = WeakHashMap<WebView, Boolean>()
     private val handler = Handler(Looper.getMainLooper())
     private var closed = false
     private var foreground = true
+    private var jsDialogUiVisible = false
+    private var jsDialogUiBlocked = false
+    internal var jsDialog by mutableStateOf<BrowserJsDialogRequest?>(null); private set
+    private val jsDialogs = BrowserJsDialogController(android.os.SystemClock::elapsedRealtime) { jsDialog = it }
+    internal fun setJsDialogUiVisible(visible: Boolean) {
+        requireMain(); jsDialogUiVisible = visible
+        if (!visible) jsDialogs.cancel()
+    }
+    internal fun setJsDialogUiBlocked(blocked: Boolean) {
+        requireMain(); jsDialogUiBlocked = blocked
+        if (blocked) jsDialogs.cancel()
+    }
+    internal fun finishJsDialog(request: BrowserJsDialogRequest, accepted: Boolean, input: String? = null, block: Boolean = false) {
+        requireMain(); jsDialogs.finish(request, accepted, input, block)
+    }
+    private fun jsDialogAllowed(entry: Entry): Boolean = !closed && foreground && jsDialogUiVisible &&
+        !jsDialogUiBlocked && settings.javaScriptEnabled && !entry.suppressed && !entry.jsDialogsBlocked &&
+        entries[entry.context.tabId] === entry && state.selectedTab?.context == entry.context &&
+        state.selectedTab?.loadState !in setOf(BrowserLoadState.CANCELLED, BrowserLoadState.FAILED) &&
+        current(entry) != null && entry.admission?.hasStarted() == true &&
+        fileChoice == null && !pickerInFlight && fullScreenView == null
+
+    private fun showJsDialog(entry: Entry, view: WebView, url: String, message: String,
+        kind: BrowserJsDialogKind, defaultValue: String = "", result: JsResult): Boolean {
+        requireMain()
+        val document = entry.jsDocument
+        val epoch = state.selectedTab?.epoch
+        val origin = BrowserJsDialogPolicy.origin(url, view.url)
+        val valid = { jsDialogAllowed(entry) && entry.view === view && entry.jsDocument == document &&
+            state.selectedTab?.epoch == epoch && origin != null && BrowserJsDialogPolicy.origin(view.url, view.url) == origin }
+        if (jsDialogs.offer(kind, origin, message, defaultValue,
+                allowed = valid() && entry.jsDialogCount < BrowserJsDialogPolicy.MAX_PER_DOCUMENT,
+                valid = valid, blockDocument = { entry.jsDialogsBlocked = true }, owner = view) { accepted, input ->
+                // No page text, prompt input, URL or native exception details enter diagnostics.
+                try {
+                    if (!accepted) result.cancel()
+                    else if (kind == BrowserJsDialogKind.PROMPT) (result as JsPromptResult).confirm(input.orEmpty())
+                    else result.confirm()
+                } catch (_: RuntimeException) { /* Retired native result. Never retry a completion. */ }
+            }) entry.jsDialogCount++
+        return true
+    }
     var pickerInFlight: Boolean = false
         private set
     private var fullscreenOwner: Entry? = null
@@ -113,7 +155,7 @@ class SystemBrowserHost(
     }
     fun closeTab(id: String) {
         requireMain(); if (closed) return
-        touched(); cancelFiles(); hideFullscreen()
+        touched(); jsDialogs.cancel(); cancelFiles(); hideFullscreen()
         controller.closeTab(id)?.let(::destroy)
         if (controller.state.tabs.isEmpty()) newTab(userAction = false)
         publish()
@@ -169,7 +211,9 @@ class SystemBrowserHost(
         discoveryOrigins.invalidateAll(); discoveryOrigin = null; discoveryNavigation = null
     }
     override fun load(request: BrowserRequest) {
-        requireMain(); invalidateDiscoveryOrigin(); cancelFiles(); hideFullscreen()
+        requireMain()
+        entries[request.context.tabId]?.takeIf { it.context == request.context }?.let { jsDialogs.cancel(it.view) }
+        invalidateDiscoveryOrigin(); cancelFiles(); hideFullscreen()
         if (!browserCommandAllowed()) { fail(request, ErrorCode.POLICY_BLOCKED); return }
         val entry = recreateEntry(request.context) ?: run { fail(request, ErrorCode.WEBVIEW_UNAVAILABLE); return }
         entry.view.stopLoading()
@@ -183,7 +227,7 @@ class SystemBrowserHost(
         val tab = controller.state.selectedTab ?: return false
         val old = entries[tab.context.tabId] ?: return false
         if (!old.view.canGoBack()) return false
-        touched(); cancelFiles()
+        touched(); jsDialogs.cancel(); cancelFiles()
         val list = old.view.copyBackForwardList()
         val target = list.getItemAtIndex(list.currentIndex - 1)?.url ?: return false
         val request = controller.beginHistoryNavigation(tab.context.tabId, operation())
@@ -195,7 +239,7 @@ class SystemBrowserHost(
         requireMain(); val tab = controller.state.selectedTab ?: return
         val old = entries[tab.context.tabId] ?: return
         if (!old.view.canGoForward()) return
-        touched(); cancelFiles()
+        touched(); jsDialogs.cancel(); cancelFiles()
         val list = old.view.copyBackForwardList()
         val target = list.getItemAtIndex(list.currentIndex + 1)?.url ?: return
         val request = controller.beginHistoryNavigation(tab.context.tabId, operation())
@@ -215,7 +259,7 @@ class SystemBrowserHost(
     }
     override fun stop(context: BrowserContextRef) {
         requireMain(); discoveryOrigins.invalidate(context); entries[context.tabId]?.takeIf { it.context == context }?.let {
-            it.request = null; it.suppressed = true; it.admission?.cancel(); it.view.stopLoading()
+            jsDialogs.cancel(it.view); it.request = null; it.suppressed = true; it.admission?.cancel(); it.view.stopLoading()
         }
     }
     fun selectedView(): WebView? {
@@ -224,6 +268,7 @@ class SystemBrowserHost(
     }
     fun applySettings(value: BrowserSettings) {
         requireMain(); settings = value
+        if (!value.javaScriptEnabled) jsDialogs.cancel()
         entries.values.forEach { applyPreferences(it.view) }
         trimViews()
     }
@@ -256,7 +301,7 @@ class SystemBrowserHost(
         state.selectedTabId?.let { entries[it]?.view?.onResume() }
     }
     fun pause() {
-        requireMain(); foreground = false; if (!pickerInFlight) cancelFiles(); hideFullscreen()
+        requireMain(); foreground = false; jsDialogs.cancel(); if (!pickerInFlight) cancelFiles(); hideFullscreen()
         entries.values.forEach { it.view.onPause() }
         entries.values.firstOrNull()?.view?.pauseTimers()
         CookieManager.getInstance().flush()
@@ -288,7 +333,7 @@ class SystemBrowserHost(
         val pending = fileChoice; fileChoice = null; pending?.callback?.onReceiveValue(null)
     }
     private fun leaveCurrentTab() {
-        cancelFiles(); hideFullscreen(); state.selectedTabId?.let { entries[it]?.view?.onPause() }
+        jsDialogs.cancel(); cancelFiles(); hideFullscreen(); state.selectedTabId?.let { entries[it]?.view?.onPause() }
     }
     private fun touched() { interactionRevision++; invalidateDiscoveryOrigin() }
     private fun operation() = OperationContext(UUID.randomUUID().toString(), System.currentTimeMillis() + 60_000, CancellationSource())
@@ -375,6 +420,7 @@ class SystemBrowserHost(
     }
     private fun releaseView(view: WebView, rendererDead: Boolean = false) {
         if (released.put(view, true) != null) return
+        jsDialogs.cancel(view)
         (view.parent as? ViewGroup)?.removeView(view)
         if (!rendererDead) {
             view.stopLoading(); view.onPause(); view.webChromeClient = null
@@ -394,6 +440,7 @@ class SystemBrowserHost(
         val error = ErrorEnvelope(code, ErrorModule.BROWSER, code != ErrorCode.TLS_REJECTED,
             UserAction.RETRY, SafeContext(httpStatus = status))
         if (controller.acceptPageFailed(request, error, System.currentTimeMillis())) {
+            entries[request.context.tabId]?.let { jsDialogs.cancel(it.view) }
             discoveryOrigins.invalidate(request.context)
             errors.report(error); publish()
         }
@@ -404,7 +451,7 @@ class SystemBrowserHost(
             if (address == null) { notice = "已阻止网页发起的外部或不安全地址跳转。"; return true }
             if (!request.isForMainFrame) return false
             if (entries[entry.context.tabId] !== entry || closed) return true
-            cancelFiles(); hideFullscreen()
+            jsDialogs.cancel(view); cancelFiles(); hideFullscreen()
             if (request.isRedirect) discoveryOrigins.invalidate(entry.context)
             if (!request.hasGesture() && current(entry) != null && entry.admission?.expects(address.value) == true) return false
             if (request.isRedirect && current(entry) != null) {
@@ -420,6 +467,8 @@ class SystemBrowserHost(
         override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
             if (entries[entry.context.tabId] !== entry || closed || entry.suppressed) return
             val address = BrowserInputPolicy.address(url ?: return) ?: return
+            entry.jsDocument++; entry.jsDialogCount = 0; entry.jsDialogsBlocked = false
+            jsDialogs.cancel(view)
             if (entry.context == state.selectedTab?.context && discoveryNavigation?.onStarted(address.value) == false)
                 invalidateDiscoveryOrigin()
             var request = current(entry)
@@ -446,6 +495,7 @@ class SystemBrowserHost(
         }
         override fun doUpdateVisitedHistory(view: WebView, url: String?, isReload: Boolean) {
             if (closed || entries[entry.context.tabId] !== entry) return
+            jsDialogs.cancel(view)
             bookmarkNavigationRevision++
             val tab = state.tabs.firstOrNull { it.context == entry.context }
             // History API/hash changes are same-document only. A new or unverified document
@@ -481,7 +531,7 @@ class SystemBrowserHost(
         }
         override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
             if (closed || entries[entry.context.tabId] !== entry) { releaseView(view, rendererDead = true); return true }
-            cancelFiles(); hideFullscreen()
+            jsDialogs.cancel(view); cancelFiles(); hideFullscreen()
             discoveryOrigins.invalidate(entry.context)
             // Android dispatches this callback to every affected WebView, including
             // views sharing a renderer. Handle each exact instance, preserving healthy tabs.
@@ -516,6 +566,7 @@ class SystemBrowserHost(
             if (!foreground || tab?.context != entry.context || tab.loadState in setOf(BrowserLoadState.CANCELLED, BrowserLoadState.FAILED) || origin == null || entries[entry.context.tabId] !== entry) {
                 callback.onReceiveValue(null); return true
             }
+            jsDialogs.cancel(webView)
             val choice = FileChoice(entry.context, tab.epoch, origin,
                 BrowserInputPolicy.safeAcceptTypes(params.acceptTypes), params.mode == FileChooserParams.MODE_OPEN_MULTIPLE, callback)
             fileChoice = choice; onChooseFiles(choice); return true
@@ -525,18 +576,22 @@ class SystemBrowserHost(
                 state.selectedTab?.loadState in setOf(BrowserLoadState.CANCELLED, BrowserLoadState.FAILED) || fullScreenView != null) {
                 callback.onCustomViewHidden(); return
             }
-            cancelFiles(); fullScreenView = view; fullscreenCallback = callback; fullscreenOwner = entry
+            jsDialogs.cancel(); cancelFiles(); fullScreenView = view; fullscreenCallback = callback; fullscreenOwner = entry
         }
         override fun onHideCustomView() { if (fullscreenOwner === entry) hideFullscreen() }
-        override fun onJsAlert(view: WebView, url: String, message: String, result: JsResult): Boolean {
-            result.cancel(); notice = "网页弹窗已关闭。"; return true
+        override fun onJsAlert(view: WebView, url: String, message: String, result: JsResult): Boolean =
+            showJsDialog(entry, view, url, message, BrowserJsDialogKind.ALERT, result = result)
+        override fun onJsConfirm(view: WebView, url: String, message: String, result: JsResult): Boolean =
+            showJsDialog(entry, view, url, message, BrowserJsDialogKind.CONFIRM, result = result)
+        override fun onJsPrompt(view: WebView, url: String, message: String, defaultValue: String, result: JsPromptResult): Boolean =
+            showJsDialog(entry, view, url, message, BrowserJsDialogKind.PROMPT, defaultValue, result)
+        override fun onJsBeforeUnload(view: WebView, url: String, message: String, result: JsResult): Boolean {
+            result.cancel(); return true
         }
-        override fun onJsConfirm(view: WebView, url: String, message: String, result: JsResult): Boolean { result.cancel(); return true }
-        override fun onJsPrompt(view: WebView, url: String, message: String, defaultValue: String, result: JsPromptResult): Boolean { result.cancel(); return true }
     }
     override fun close() {
         requireMain(); if (closed) return
-        closed = true; handler.removeCallbacks(timeout); cancelFiles(); hideFullscreen()
+        closed = true; jsDialogs.cancel(); handler.removeCallbacks(timeout); cancelFiles(); hideFullscreen()
         discoveryOrigins.close(); discoveryOrigin = null; discoveryNavigation = null
         val views = entries.values.toList(); entries.clear(); views.forEach { releaseView(it.view) }; history.clear()
     }

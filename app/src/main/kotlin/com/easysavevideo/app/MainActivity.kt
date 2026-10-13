@@ -79,6 +79,7 @@ class MainActivity : ComponentActivity() {
     private fun navigate(destination: EsvDestination) {
         val controller = navController ?: return
         dispatchEsvNavigation(controller.currentDestination?.route, destination, onLeaving = {
+            if (::browser.isInitialized) browser.setJsDialogUiVisible(false)
             libraryBatchExportSelection=null
             if(destination!=EsvDestination.LIBRARY && ::saves.isInitialized)saves.libraryExports?.cancelBatchForLeavingLibrary()
             discovery.setVisibility(isForeground, false)
@@ -194,6 +195,7 @@ class MainActivity : ComponentActivity() {
                     navController = controller
                     val listener = androidx.navigation.NavController.OnDestinationChangedListener { _, destination, _ ->
                         activeDestination = EsvDestination.fromRoute(destination.route)
+                        if (activeDestination != EsvDestination.BROWSER) browser.setJsDialogUiVisible(false)
                     }
                     controller.addOnDestinationChangedListener(listener)
                     onDispose { controller.removeOnDestinationChangedListener(listener); navController = null }
@@ -336,7 +338,7 @@ class MainActivity : ComponentActivity() {
                     onSettings = { /* The bounded preview transition keeps the current browser host. */ },
                     filePrompt = null, onFileCancel = {}, onFileConfirm = {}, openExternal = {},
                     onDiscovery = {}, onManageProviders = {}, onSave = {}, onSaveTasks = {}, onLibrary = {},
-                    saveScanning = false, saveNotice = null, onDismissSaveNotice = {})
+                    saveScanning = false, saveNotice = null, onDismissSaveNotice = {}, interactiveJsDialogs = false)
                 else if (receipt != null) VerifiedMediaPreview(receipt, isForeground, saves::openPublishedMedia,
                     onBack = { previewReceipt = null }, onReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
                 else if (libraryReference != null) LibraryMediaPreview(libraryReference, isForeground, saves::openLibraryMedia,

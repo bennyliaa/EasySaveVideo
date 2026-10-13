@@ -1,0 +1,12 @@
+<resources>
+    <string name="browser_js_alert">Webpage message</string>
+    <string name="browser_js_confirm">Webpage confirmation</string>
+    <string name="browser_js_prompt">Webpage input</string>
+    <string name="browser_js_origin">Source: %1$s</string>
+    <string name="browser_js_untrusted">The text below comes from this webpage, not EasySaveVideo. Confirming sends your choice to the page; it grants no app permissions.</string>
+    <string name="browser_js_input">Input sent to the webpage (hidden)</string>
+    <string name="browser_js_input_limit">Character limit: %1$d. Input is not saved by the app. Do not enter passwords or payment details here.</string>
+    <string name="browser_js_cancel">Cancel</string>
+    <string name="browser_js_ok">OK</string>
+    <string name="browser_js_block">Cancel and block dialogs on this page</string>
+</resources>

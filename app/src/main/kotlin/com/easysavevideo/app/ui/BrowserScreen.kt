@@ -66,6 +66,7 @@ fun BrowserScreen(
     destinations: AndroidOrdinaryDestinationRuntime? = null,
     bookmarks: AndroidBookmarkRuntime? = null,
     saveRuntime: AndroidSaveRuntime? = null,
+    interactiveJsDialogs: Boolean = true,
 ) {
     val visuals = LocalEsvVisuals.current
     val addressDescription = stringResource(R.string.flow_address_description)
@@ -81,6 +82,14 @@ fun BrowserScreen(
     var confirmCookies by remember { mutableStateOf(false) }
     var address by remember(selected?.context?.tabId) { mutableStateOf(selected?.address?.value.orEmpty()) }
     var editing by remember(selected?.context?.tabId) { mutableStateOf(false) }
+    DisposableEffect(browser, interactiveJsDialogs) {
+        browser.setJsDialogUiVisible(interactiveJsDialogs)
+        onDispose { browser.setJsDialogUiVisible(false) }
+    }
+    SideEffect {
+        browser.setJsDialogUiBlocked(settingsOpen || bookmarksOpen || confirmCookies || filePrompt != null ||
+            saveRuntime?.selection != null || saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null)
+    }
     val focus = LocalFocusManager.current
     LaunchedEffect(selected?.address?.value) { if (!editing) address = selected?.address?.value.orEmpty() }
     fun go() { editing = false; focus.clearFocus(); browser.navigate(address) }
@@ -243,6 +252,9 @@ fun BrowserScreen(
                 }
             }
         }
+    }
+    if (interactiveJsDialogs) browser.jsDialog?.let { request ->
+        BrowserJsDialog(request, browser::finishJsDialog)
     }
     if (confirmCookies) EsvDialog(onDismiss = { confirmCookies = false }) {
         Column(verticalArrangement = Arrangement.spacedBy(visuals.spacingMedium)) {
