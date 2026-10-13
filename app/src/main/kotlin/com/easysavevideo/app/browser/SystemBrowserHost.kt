@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.easysavevideo.core.domain.BrowserSessionController
@@ -132,7 +133,8 @@ class SystemBrowserHost(
     private var fullscreenOwner: Entry? = null
     private var fullscreenCallback: WebChromeClient.CustomViewCallback? = null
     private var fileChoice: FileChoice? = null
-    private var interactionRevision = 0L
+    internal val hasPendingFileChoice: Boolean get() = fileChoice != null
+    private var interactionRevision by mutableLongStateOf(0L)
     private val discoveryOrigins = DiscoveryOriginTracker()
     private var discoveryOrigin: DiscoveryOriginToken? = null
     private var discoveryNavigation: DiscoveryNavigationFence? = null

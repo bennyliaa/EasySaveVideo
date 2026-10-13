@@ -499,6 +499,12 @@ class MainActivity : ComponentActivity() {
                     onRejectCandidate = providerManagement::rejectCandidate, onRollback = providerManagement::rollback,
                     onBack = { providerManagement.setActive(false); backTo(EsvDestination.SETTINGS) })
                 else if (route == EsvDestination.DISCOVER) DiscoveryScreen(discovery, settings.discovery, isForeground,
+                    canClearQuery = {
+                        isForeground && activeDestination == EsvDestination.DISCOVER &&
+                            !saves.scanning && saves.selection == null && !saves.preparingStream && saves.hlsPreparation == null &&
+                            saves.destinations?.asking != true && saves.destinations?.notice == null &&
+                            saves.segmentRecording?.previewActive != true && previewReceipt == null && libraryPreviewReference == null
+                    },
                     onSettings = { value ->
                         settingsChanged = true; settings = settings.copy(discovery = value)
                         persistence.saveSettings(settings); discovery.updateSettings(value)

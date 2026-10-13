@@ -1,0 +1,34 @@
+{
+  "result": "PASS_SOURCE_JVM_ONLY",
+  "final_run": "build2.log",
+  "offline": true,
+  "app_tests_executed": {
+    "tests": 1813,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_tests_executed": 12,
+  "production_compilers": "Debug/Release executed PASS build2",
+  "lint_tasks": "Debug/Release executed PASS build2",
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "runtime_exact_artifacts": 90,
+  "review_correction": "EXHAUSTED can mean a bounded round ended; dedicated neutral body copy avoids asserting all providers are exhausted. Existing footer source-exhaustion gate unchanged.",
+  "not_run": [
+    "APK",
+    "device/emulator",
+    "actual rendering/timing",
+    "200% text",
+    "TalkBack",
+    "PPT/screenshots"
+  ]
+}

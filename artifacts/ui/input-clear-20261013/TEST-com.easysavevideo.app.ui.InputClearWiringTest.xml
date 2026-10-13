@@ -1,0 +1,11 @@
+<testsuite name="com.easysavevideo.app.ui.InputClearWiringTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-13T07:06:32.699Z" hostname="[redacted]" time="0.005">
+  <properties />
+  <testcase name="threeActionsUseVisiblePairedCopyAndMinimumTargets" classname="com.easysavevideo.app.ui.InputClearWiringTest" time="0.002" />
+  <testcase name="actualDiscoveryAndBrowserHostsRejectGlobalSaveModalsAtClick" classname="com.easysavevideo.app.ui.InputClearWiringTest" time="0.001" />
+  <testcase name="hostInteractionRevisionIsObservableEvenWhenRepeatedInvalidGoChangesNoTab" classname="com.easysavevideo.app.ui.InputClearWiringTest" time="0.0" />
+  <testcase name="everyEditSourceInvalidatesObservableClaimAndSubmissionRetiresClear" classname="com.easysavevideo.app.ui.InputClearWiringTest" time="0.001" />
+  <testcase name="discoveryUsesItsStrictControllerPathAndDoesNotRebaseAnOldClear" classname="com.easysavevideo.app.ui.InputClearWiringTest" time="0.001" />
+  <testcase name="browserClearBodiesCannotSubmitOrNavigateAndReadLatestEnvironment" classname="com.easysavevideo.app.ui.InputClearWiringTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

@@ -168,6 +168,16 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             state.profile, state.demo, state.ready, state.storageUnavailable, filterControlsBusy, field, value) ?: return false
         return updateFilterDraft(current, next)
     }
+    /** Explicit clear is stricter than continuous IME edits: a stale claim must never erase newer input. */
+    internal val clearQueryLifecycle: Long get() = pageLifecycle.get()
+    fun clearFilterQuery(claim: DiscoveryFilterClaim, expectedLifecycle: Long): Boolean {
+        if (closed.get() || !foreground || !visible) return false
+        val current = filterDraft
+        val next = DiscoveryFilterPresentationPolicy.clearQuery(claim, current, state.controlTarget,
+            state.profile, state.demo, state.ready, state.storageUnavailable, filterControlsBusy,
+            expectedLifecycle, pageLifecycle.get(), foreground && visible) ?: return false
+        return updateFilterDraft(current, next)
+    }
     fun confirmFilterSafety(claim: DiscoveryFilterClaim): Boolean {
         if (closed.get() || !DiscoveryFilterPresentationPolicy.validClaim(claim, filterDraft, state.controlTarget,
                 state.profile, state.demo, state.ready, state.storageUnavailable, filterControlsBusy)) return false

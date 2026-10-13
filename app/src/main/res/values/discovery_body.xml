@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_body_restoring">Wait for the local data check to finish. You can use the browser meanwhile.</string>
+    <string name="discovery_body_searching">Applying your search</string>
+    <string name="discovery_body_wait">Discovery is still working. No completed empty result is available yet.</string>
+    <string name="discovery_body_waiting_page">Waiting for a result page</string>
+    <string name="discovery_body_page_wait">The page request is pending. Use the page controls below to cancel waiting.</string>
+    <string name="discovery_body_buffered">Results are available for a page. Use the existing page controls to continue.</string>
+    <string name="discovery_body_backoff">A source is waiting before another attempt. This does not establish that the device is offline. See Options for source status.</string>
+    <string name="discovery_body_paused">Discovery is paused. Check the current status for details, or use the browser.</string>
+    <string name="discovery_body_configuration">Review the source configuration in Options, or open an address in the browser.</string>
+    <string name="discovery_body_failed">The current discovery operation did not complete. Review its status and use the available retry or source controls; no retry is started here.</string>
+    <string name="discovery_body_round_finished">No displayable results were produced in this round. Use the available search or page controls to continue, or adjust the query and sources.</string>
+</resources>

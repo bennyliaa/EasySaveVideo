@@ -29,6 +29,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.easysavevideo.app.discovery.AndroidDiscoveryController
+import com.easysavevideo.app.discovery.DiscoveryBodyState
+import com.easysavevideo.app.discovery.discoveryBodyState
+import com.easysavevideo.app.discovery.discoveryBodyText
 import com.easysavevideo.app.discovery.BuildDiscovery
 import com.easysavevideo.app.discovery.DiscoveryPagerPolicy
 import com.easysavevideo.app.discovery.DiscoveryPresentationPolicy
@@ -55,7 +58,8 @@ import androidx.compose.material3.Text
 @Composable
 fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoverySettings, active: Boolean,
     onSettings: (DiscoverySettings) -> Unit, onBrowser: () -> Unit, onOpen: (PageSnapshot, VideoSearchResult) -> Unit,
-    onLink: (String) -> Unit, onLibrary: () -> Unit, onManageProviders: () -> Unit) {
+    onLink: (String) -> Unit, onLibrary: () -> Unit, onManageProviders: () -> Unit,
+    canClearQuery: () -> Boolean = { false }) {
     val v = LocalEsvVisuals.current
     BoxWithConstraints(Modifier.fillMaxSize().imePadding()) {
     val paneLayout = responsivePaneLayout(maxWidth.value - 2 * v.spacingMedium.value,
@@ -77,6 +81,11 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
     val appliedReadable = state.ready && !state.storageUnavailable
     val draft = DiscoveryFilterPresentationPolicy.reconcile(storedDraft, state.profile, state.demo, appliedReadable)
     val editClaim = state.controlTarget?.let { DiscoveryFilterClaim(it, state.demo, draft) }
+    val queryClearLifecycle = controller.clearQueryLifecycle
+    val currentQueryClearInteractive by rememberUpdatedState {
+        active && canClearQuery() && !(options && !paneLayout.split) && localControlConfirm == null &&
+            safeDisableConfirm == null && rightsDetails == null
+    }
     val copyResources = LocalContext.current.resources
     val filterCopy = FilterCopyText { key, args -> copyResources.getString(key.resource, *args) }
     val validation = DiscoveryFilterPresentationPolicy.validate(draft, filterCopy)
@@ -112,6 +121,11 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
     fun search() {
         if (controller.submitFilterDraft(draft, state.controlTarget)) focus.clearFocus()
     }
+    val bodyState = discoveryBodyState(
+        hasResults = state.results.isNotEmpty(), hasPendingCandidates = state.pendingCandidates.isNotEmpty(),
+        showPending = showPending, ready = state.ready, storageUnavailable = state.storageUnavailable,
+        searchPending = controller.filterSearchPending, nextPagePending = state.nextPagePending, status = state.status,
+    )
     val page = state.page
     LaunchedEffect(page?.stamp, page?.revision, page?.pageIndex) { grid.scrollToItem(0) }
     LaunchedEffect(page?.stamp, page?.revision, page?.pageIndex, active, showPending, optionsIsModal, localControlConfirm, safeDisableConfirm, rightsDetails) {
@@ -277,6 +291,12 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                     textStyle = v.bodyTextStyle,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                     keyboardActions = KeyboardActions(onSearch = { search() }),
+
+                    trailingIcon = { InputClearButton(R.string.input_clear_discovery,
+                        enabled = editable && draft.query.isNotEmpty() && currentQueryClearInteractive(),
+                        onClear = { if (currentQueryClearInteractive()) {
+                            editClaim?.let { controller.clearFilterQuery(it, queryClearLifecycle) }
+                        } }) },
                     placeholder = { Text(stringResource(R.string.flow_discoveryscreen_4)) })
               }
               if (layout.stackSearch) Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -318,16 +338,20 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                 val columns = discoveryResponsiveLayout(maxWidth.value, LocalDensity.current.fontScale, settings.columns, v.spacingSmall.value).columns
                 Column(Modifier.fillMaxSize()) {
                 if (columns < settings.columns) EsvText(stringResource(R.string.discovery_grid_adapted, settings.columns, columns), style = v.captionTextStyle, color = v.colors.muted)
-                if ((showPending || state.results.isEmpty()) && state.pendingCandidates.isNotEmpty()) {
+                if (bodyState == DiscoveryBodyState.PENDING_CANDIDATES) {
                     PendingCandidateCards(state.pendingCandidates, columns, admission = state.pendingAdmission, onVerify = { candidate ->
                         controller.verifyCandidate(state.controlTarget, candidate) }) { candidate ->
                         controller.candidateUrl(state.controlTarget, candidate)?.let(onLink)
                     }
-                } else if (state.results.isEmpty()) Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(v.spacingLarge),
+                } else if (bodyState != DiscoveryBodyState.CONTENT) Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(v.spacingLarge),
                     verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    EsvText(if (state.storageUnavailable) stringResource(R.string.discovery_copy_9) else if (state.status?.state == DiscoveryState.NO_SOURCES) stringResource(R.string.discovery_copy_10) else stringResource(R.string.flow_discovery_no_results), style = v.titleTextStyle)
+                    val bodyText = requireNotNull(discoveryBodyText(bodyState))
+                    EsvText(stringResource(bodyText.title), style = v.titleTextStyle)
                     Spacer(Modifier.height(v.spacingMedium))
-                    EsvText(if (state.storageUnavailable) stringResource(R.string.discovery_copy_11) else if (state.status?.state == DiscoveryState.NO_SOURCES) stringResource(R.string.flow_discovery_browser_fallback) else if (state.profile.filters.safeSearch && !state.demo) stringResource(R.string.discovery_copy_12) else stringResource(R.string.discovery_copy_13), color = v.colors.muted)
+                    EsvText(stringResource(bodyText.detail), color = v.colors.muted)
+                    if (bodyText.showFilterGuidance && state.profile.filters.safeSearch && !state.demo) {
+                        EsvText(stringResource(R.string.discovery_copy_12), color = v.colors.muted)
+                    }
                     Spacer(Modifier.height(v.spacingMedium))
                     EsvButton(stringResource(R.string.flow_discoveryscreen_14), onClick = onBrowser)
                 } else LazyVerticalGrid(GridCells.Fixed(columns), state = grid, modifier = Modifier.weight(1f).fillMaxWidth(),

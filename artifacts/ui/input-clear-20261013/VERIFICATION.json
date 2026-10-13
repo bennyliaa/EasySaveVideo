@@ -1,0 +1,42 @@
+{
+  "result": "PASS_SOURCE_JVM_ONLY",
+  "final_run": "build4.log",
+  "offline": true,
+  "commands": [
+    ":app:testDebugUnitTest",
+    ":app:compileDebugKotlin",
+    ":app:compileReleaseKotlin",
+    ":app:lintDebug",
+    ":app:lintRelease",
+    ":app:verifyRuntimeAdmission"
+  ],
+  "app_tests_executed": {
+    "tests": 1835,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_tests_executed": 22,
+  "production_compilers": "Debug/Release executed PASS build4",
+  "lint_tasks": "Debug/Release executed PASS build4",
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "runtime_exact_artifacts": 90,
+  "preserved_failure": "build2 failed existing BrowserVideoPresenceContractTest after unrelated SideEffect replacement; original SideEffect restored, test unchanged, failure log/XML retained",
+  "not_run": [
+    "APK",
+    "device/emulator",
+    "actual IME or Compose event ordering",
+    "200% or narrow-screen rendering",
+    "TalkBack",
+    "PPT/screenshots"
+  ]
+}

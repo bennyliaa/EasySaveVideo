@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="input_clear">Clear</string>
+    <string name="input_clear_address">Clear address draft</string>
+    <string name="input_clear_new_tab">Clear new-tab address or query</string>
+    <string name="input_clear_discovery">Clear discovery query draft</string>
+</resources>

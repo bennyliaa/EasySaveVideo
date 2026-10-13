@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_body_restoring">请等待本地数据检查完成；期间仍可使用浏览器。</string>
+    <string name="discovery_body_searching">正在应用搜索条件</string>
+    <string name="discovery_body_wait">发现仍在处理中，目前尚不能判定结果为空。</string>
+    <string name="discovery_body_waiting_page">正在等待结果页</string>
+    <string name="discovery_body_page_wait">结果页请求仍在等待中，可使用下方分页操作取消等待。</string>
+    <string name="discovery_body_buffered">已有可供分页的结果，请使用现有分页操作继续。</string>
+    <string name="discovery_body_backoff">来源正在等待后续尝试，这不代表设备已离线。可在选项中查看来源状态。</string>
+    <string name="discovery_body_paused">发现当前已暂停。可查看状态说明，或继续使用浏览器。</string>
+    <string name="discovery_body_configuration">请在选项中检查来源配置，或使用浏览器打开网址。</string>
+    <string name="discovery_body_failed">本次发现操作未完成。请查看状态，并使用当前可用的重试或来源操作；此提示不会自动重试。</string>
+    <string name="discovery_body_round_finished">本轮未生成可显示结果。可使用当前可用的查找或分页操作继续，或调整关键词和来源。</string>
+</resources>

@@ -97,6 +97,39 @@ fun BrowserScreen(
     var videoInput by remember(selected?.context?.tabId) { mutableStateOf("") }
     var videoMode by remember(selected?.context?.tabId) { mutableStateOf(NewTabInputMode.AUTO) }
     var videoInputError by remember(selected?.context?.tabId) { mutableStateOf(false) }
+    val addressClearGate = remember(selected?.context, selected?.epoch, newTabInputGeneration) { InputClearGate() }
+    val videoClearGate = remember(videoSubmission) { InputClearGate() }
+    // Observable tokens invalidate old callbacks even when edits return to the same string.
+    var addressClearToken by remember(addressClearGate) { mutableStateOf(addressClearGate.token) }
+    var videoClearToken by remember(videoClearGate) { mutableStateOf(videoClearGate.token) }
+    val addressClearClaim = addressClearToken
+    val videoClearClaim = videoClearToken
+    val clearInspectionRevision = browser.saveInspectionRevision
+    DisposableEffect(addressClearGate, videoClearGate) {
+        onDispose { addressClearGate.retire(); videoClearGate.retire() }
+    }
+    val currentClearEnvironment by rememberUpdatedState {
+        interactiveJsDialogs && canSubmitNewTabInput(newTabInputGeneration) &&
+            !settingsOpen && !bookmarksOpen && !confirmCookies && filePrompt == null && !saveScanning && saveRuntime?.scanning != true &&
+            saveRuntime?.selection == null && saveRuntime?.preparingStream != true && saveRuntime?.hlsPreparation == null &&
+            destinations?.asking != true && destinations?.notice == null &&
+            browser.jsDialog == null && browser.fullScreenView == null && !browser.pickerInFlight && !browser.hasPendingFileChoice
+    }
+    fun clearOwnerCurrent(): Boolean = canClearBrowserDraft(selected, browser.state.selectedTab,
+        clearInspectionRevision, browser.saveInspectionRevision, currentClearEnvironment())
+    fun clearAddressDraft() {
+        if (!addressClearGate.accept(addressClearClaim, clearOwnerCurrent(), address.isNotEmpty())) return
+        addressClearToken = addressClearGate.token
+        editing = true
+        address = ""
+    }
+    fun clearVideoDraft() {
+        val allowed = clearOwnerCurrent() && NewTabInputPolicy.canSubmit(selected, browser.state.selectedTab, true)
+        if (!videoClearGate.accept(videoClearClaim, allowed, videoInput.isNotEmpty())) return
+        videoClearToken = videoClearGate.token
+        videoInput = ""
+        videoInputError = false
+    }
     DisposableEffect(browser, interactiveJsDialogs) {
         browser.setJsDialogUiVisible(interactiveJsDialogs)
         onDispose { browser.setJsDialogUiVisible(false) }
@@ -120,13 +153,20 @@ fun BrowserScreen(
         val input = NewTabInputPolicy.interpret(videoInput, videoMode)
         if (input == NewTabInput.Invalid) { videoInputError = true; return }
         if (!videoSubmission.claim(selected, browser.state.selectedTab, canSubmitNewTabInput(newTabInputGeneration))) return
+        videoClearGate.retire()
+        videoClearToken = videoClearGate.token
         when (input) {
             is NewTabInput.Address -> { videoInputError = false; focus.clearFocus(); browser.navigate(input.value) }
             is NewTabInput.Query -> { videoInputError = false; focus.clearFocus(); onVideoSearchDraft(input.value) }
             NewTabInput.Invalid -> videoInputError = true
         }
     }
-    LaunchedEffect(selected?.address?.value) { if (!editing) address = selected?.address?.value.orEmpty() }
+    LaunchedEffect(selected?.address?.value) {
+        if (!editing) {
+            address = selected?.address?.value.orEmpty()
+            addressClearToken = addressClearGate.invalidate()
+        }
+    }
     fun go() { editing = false; focus.clearFocus(); browser.navigate(address) }
     BackHandler(enabled = saveRuntime?.selection != null || bookmarksOpen || settingsOpen || browser.fullScreenView != null || browser.selectedView()?.canGoBack() == true) {
         if (saveRuntime?.selection != null) saveRuntime.dismissSelection()
@@ -168,11 +208,14 @@ fun BrowserScreen(
                 }
                 Row(Modifier.fillMaxWidth().padding(visuals.spacingMedium), verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
-                    OutlinedTextField(value = address, onValueChange = { editing = true; address = it.take(8192) },
+                    OutlinedTextField(value = address, onValueChange = { editing = true; address = it.take(8192); addressClearToken = addressClearGate.invalidate() },
                         modifier = Modifier.weight(1f).semantics { contentDescription = addressDescription },
                         textStyle = visuals.bodyTextStyle, singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Go),
                         keyboardActions = KeyboardActions(onGo = { go() }),
+                        trailingIcon = { InputClearButton(R.string.input_clear_address,
+                            enabled = address.isNotEmpty() && addressClearGate.active && clearOwnerCurrent(),
+                            onClear = ::clearAddressDraft) },
                         placeholder = { Text(stringResource(R.string.flow_browserscreen_5)) })
                     EsvButton(stringResource(R.string.flow_browserscreen_6), onClick = { go() }, enabled = address.isNotBlank())
                 }
@@ -257,9 +300,13 @@ fun BrowserScreen(
                                 style = visuals.titleTextStyle)
                             Spacer(Modifier.height(visuals.spacingMedium))
                             if (selected?.address == null && onVideoSearchDraft != null) {
-                                OutlinedTextField(value = videoInput, onValueChange = { videoInput = it.take(8193); videoInputError = false },
+                                OutlinedTextField(value = videoInput, onValueChange = { videoInput = it.take(8193); videoInputError = false; videoClearToken = videoClearGate.invalidate() },
                                     modifier = Modifier.fillMaxWidth(), textStyle = visuals.bodyTextStyle, singleLine = true,
                                     label = { Text(stringResource(R.string.new_tab_video_input)) }, isError = videoInputError,
+                                    trailingIcon = { InputClearButton(R.string.input_clear_new_tab,
+                                        enabled = videoInput.isNotEmpty() && videoClearGate.active && clearOwnerCurrent() &&
+                                            NewTabInputPolicy.canSubmit(selected, browser.state.selectedTab, true),
+                                        onClear = ::clearVideoDraft) },
                                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
                                     keyboardActions = KeyboardActions(onGo = { submitVideoInput() }))
                                 FlowRow(horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
@@ -268,7 +315,7 @@ fun BrowserScreen(
                                             NewTabInputMode.AUTO -> R.string.new_tab_auto
                                             NewTabInputMode.ADDRESS -> R.string.new_tab_address
                                             NewTabInputMode.VIDEO -> R.string.new_tab_video
-                                        }), onClick = { videoMode = mode; videoInputError = false },
+                                        }), onClick = { videoMode = mode; videoInputError = false; videoClearToken = videoClearGate.invalidate() },
                                             modifier = Modifier.semantics { this.selected = videoMode == mode }
                                                 .then(if (videoMode == mode) Modifier.border(2.dp, visuals.colors.accent,
                                                     RoundedCornerShape(visuals.buttonCorner)) else Modifier))

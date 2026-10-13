@@ -69,6 +69,15 @@ object DiscoveryFilterPresentationPolicy {
             claim.target.profileId == currentProfile.profileId && claim.draft == currentDraft &&
             matchesApplied(claim.draft, currentProfile, demo)
 
+    /** A clear button is a captured intent, not a rebased IME edit. Identity also fences A→B→A. */
+    fun clearQuery(claim: DiscoveryFilterClaim, currentDraft: DiscoveryFilterDraft?, currentTarget: DiscoveryControlTarget?,
+        currentProfile: SearchProfile, demo: Boolean, ready: Boolean, unavailable: Boolean, busy: Boolean,
+        expectedLifecycle: Long, currentLifecycle: Long, interactive: Boolean): DiscoveryFilterDraft? {
+        if (!interactive || expectedLifecycle != currentLifecycle || currentDraft !== claim.draft || currentDraft.query.isEmpty() ||
+            !validClaim(claim, currentDraft, currentTarget, currentProfile, demo, ready, unavailable, busy)) return null
+        return currentDraft.copy(query = "")
+    }
+
     /** IME callbacks can arrive before recomposition. Rebase only this field, never the whole draft. */
     fun editText(claim: DiscoveryFilterClaim, currentDraft: DiscoveryFilterDraft?, currentTarget: DiscoveryControlTarget?,
         currentProfile: SearchProfile, demo: Boolean, ready: Boolean, unavailable: Boolean, busy: Boolean,

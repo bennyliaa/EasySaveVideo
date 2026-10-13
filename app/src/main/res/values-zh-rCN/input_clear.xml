@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="input_clear">清除</string>
+    <string name="input_clear_address">清除网址输入</string>
+    <string name="input_clear_new_tab">清除新标签网址或关键词</string>
+    <string name="input_clear_discovery">清除发现关键词输入</string>
+</resources>
