@@ -76,9 +76,11 @@ class MainActivity : ComponentActivity() {
     private var navController: androidx.navigation.NavHostController? = null
     private var initialDestination = EsvDestination.DISCOVER
     private var activeDestination by mutableStateOf(EsvDestination.DISCOVER)
+    private var newTabInputGeneration by mutableLongStateOf(0L)
     private fun navigate(destination: EsvDestination) {
         val controller = navController ?: return
         dispatchEsvNavigation(controller.currentDestination?.route, destination, onLeaving = {
+            newTabInputGeneration++
             if (::browser.isInitialized) browser.setJsDialogUiVisible(false)
             libraryBatchExportSelection=null
             if(destination!=EsvDestination.LIBRARY && ::saves.isInitialized)saves.libraryExports?.cancelBatchForLeavingLibrary()
@@ -518,6 +520,15 @@ class MainActivity : ComponentActivity() {
                     onFileConfirm = { choice -> filePrompt = null; chooseFile(choice) },
                     openExternal = ::openSystemBrowser,
                     onDiscovery = { navigate(EsvDestination.DISCOVER); discovery.setVisibility(isForeground, true) },
+                    newTabInputGeneration = newTabInputGeneration,
+                    canSubmitNewTabInput = { generation -> generation == newTabInputGeneration && isForeground && activeDestination == EsvDestination.BROWSER },
+                    onVideoSearchDraft = { query ->
+                        if (isForeground && activeDestination == EsvDestination.BROWSER) {
+                            navigate(EsvDestination.DISCOVER)
+                            discovery.setVisibility(true, true)
+                            discovery.offerBrowserQuery(query)
+                        }
+                    },
                     onManageProviders = ::openProviderManagement,
                     onSave = { saves.inspectFromUserClick(browser) },
                     onSaveTasks = { navigate(EsvDestination.TASKS) },
@@ -599,7 +610,7 @@ class MainActivity : ComponentActivity() {
     }
     override fun onResume() { super.onResume(); isForeground = true; if (::saves.isInitialized) saves.setForeground(true); if (::browser.isInitialized) browser.resume(); if (::discovery.isInitialized) discovery.setVisibility(true, showingDiscovery && !showingProviderManagement && !showingLibrary && !showingSaveTasks && !showingRecording) }
     override fun onPostResume() { super.onPostResume(); if (::diagnostics.isInitialized) diagnostics.onPostResume() }
-    override fun onPause() { if (::diagnostics.isInitialized) diagnostics.onPause(); if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
+    override fun onPause() { newTabInputGeneration++; if (::diagnostics.isInitialized) diagnostics.onPause(); if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
     override fun onDestroy() {
         if (::diagnostics.isInitialized) diagnostics.close()
         discoveryPrioritySubscription?.close(); discoveryPrioritySubscription = null

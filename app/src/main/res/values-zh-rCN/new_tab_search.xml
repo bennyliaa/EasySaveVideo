@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="new_tab_video_input">搜索视频</string>
+    <string name="new_tab_auto">自动判断</string>
+    <string name="new_tab_address">网页地址</string>
+    <string name="new_tab_video">视频关键词</string>
+    <string name="new_tab_draft_help">网址直接在浏览器打开。关键词带入发现页，确认后点击“搜索”才开始查询。</string>
+    <string name="new_tab_invalid">请输入有效的 HTTP(S) 网址或最多 512 字符的视频关键词。可切换输入模式纠正判断。</string>
+    <string name="new_tab_continue">前往视频搜索</string>
+    <string name="new_tab_open_address">打开网址</string>
+</resources>

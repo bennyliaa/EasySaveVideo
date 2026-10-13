@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="new_tab_video_input">Search videos</string>
+    <string name="new_tab_auto">Auto</string>
+    <string name="new_tab_address">Web address</string>
+    <string name="new_tab_video">Video keywords</string>
+    <string name="new_tab_draft_help">Addresses open in the browser. Keywords go to Discover for review; press Search there to start.</string>
+    <string name="new_tab_invalid">Enter a valid HTTP(S) address or video keywords (up to 512 characters). You can change the input mode.</string>
+    <string name="new_tab_continue">Go to video search</string>
+    <string name="new_tab_open_address">Open address</string>
+</resources>

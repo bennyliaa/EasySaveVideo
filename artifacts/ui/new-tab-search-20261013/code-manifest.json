@@ -1,0 +1,55 @@
+{
+  "base_commit": "08ce295972f4b6740ea479d4e6a8e73d9402e823",
+  "files": [
+    {
+      "path": "app/build.gradle.kts",
+      "sha256": "c41ce2f71babf4e5d3097ca2132fed5c2f9aae69f25c9d0a976c5a7a11821099",
+      "bytes": 8878
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+      "sha256": "e386c68478c602592f799f1424a1db494370a6bcc9e2cd2f2ea045ef7411b5c1",
+      "bytes": 46249
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
+      "sha256": "05bfa1ece6c4a3106004dad93588ede78963250b2bdeae35de949e717383daa7",
+      "bytes": 40024
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt",
+      "sha256": "315d46dd61073fce64185246f154946f6b263ca158656f2fee3f618f7318c77e",
+      "bytes": 28527
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
+      "sha256": "1ef3bc277b529f3d6a9d8478db530f67bd4a65766136e7e68ebb61e6226a6892",
+      "bytes": 38518
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/browser/NewTabInputPolicy.kt",
+      "sha256": "b861d94fdc867775e27940f0c41577724351f183d0d7a7d2883b040bddd4ed5e",
+      "bytes": 2506
+    },
+    {
+      "path": "app/src/main/res/values/new_tab_search.xml",
+      "sha256": "dba453c46698a0bff6abad04fdecfda3fe78249178b47b418f61032a2b9f33b8",
+      "bytes": 701
+    },
+    {
+      "path": "app/src/main/res/values-zh-rCN/new_tab_search.xml",
+      "sha256": "b47d8c07eff3503140e2f5897c759953af50036de64b4a26226f24c01fc7d58b",
+      "bytes": 728
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/browser/NewTabInputPolicyTest.kt",
+      "sha256": "6b4f70b9063204b7587729cd209a24f365d69559c0f79e013cd137e5ffaaa415",
+      "bytes": 5896
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/browser/NewTabSearchContractTest.kt",
+      "sha256": "06115f335b493cbef6ba20b8412da6651bdb68e3fb4542a1112be4af3aa4afed",
+      "bytes": 5822
+    }
+  ]
+}

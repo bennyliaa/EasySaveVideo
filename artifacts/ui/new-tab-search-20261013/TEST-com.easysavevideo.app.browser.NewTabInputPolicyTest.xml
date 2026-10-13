@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.browser.NewTabInputPolicyTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-10-13T04:06:52.752Z" time="0.017">
+  <properties />
+  <testcase name="blankAndControlCharactersAreRejectedInAllModes" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.002" />
+  <testcase name="ordinaryPaddingIsTrimmed" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.002" />
+  <testcase name="resultStringRepresentationsRedactBusinessData" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.0" />
+  <testcase name="unsafeAndMalformedAddressNeverFallBackToSearch" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.001" />
+  <testcase name="disposalRetiresEvenAnUnclaimedVisit" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.002" />
+  <testcase name="addressLengthIsBoundedAndOversizedInputNeverTruncatedIntoNavigation" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.005" />
+  <testcase name="userCanCorrectDomainLikeKeywords" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.0" />
+  <testcase name="explicitQueryModeDoesNotOpenAddress" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.001" />
+  <testcase name="explicitWebAddressNeverBecomesAutomaticProviderQuery" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.0" />
+  <testcase name="acceptedBlankTabActionCannotReplayEvenAfterReturningToSameTab" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.0" />
+  <testcase name="rejectedBackgroundOrStaleAttemptDoesNotConsumeTheActiveBlankTab" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.001" />
+  <testcase name="addressModeRejectsWhitespaceRatherThanExecutingQuery" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.0" />
+  <testcase name="retiredNavigationClosedSwitchedAndBackgroundTabsCannotSubmit" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.0" />
+  <testcase name="userCanCorrectSingleLabelAddress" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.0" />
+  <testcase name="queryLengthAndSurrogatesUseExistingDiscoveryPolicy" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.002" />
+  <testcase name="ordinaryAndPunctuatedKeywordsRemainQueries" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.001" />
+  <testcase name="bareDomainAndLocalhostUseExistingBrowserAdmission" classname="com.easysavevideo.app.browser.NewTabInputPolicyTest" time="0.0" />
+  </testsuite>

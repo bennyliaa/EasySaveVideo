@@ -72,6 +72,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
     var localControlConfirm by remember { mutableStateOf<DiscoveryControlRequest?>(null) }
     var safeDisableConfirm by remember { mutableStateOf<DiscoveryFilterClaim?>(null) }
     var rightsDetails by remember { mutableStateOf<VideoSearchResult?>(null) }
+    val pendingBrowserQuery = controller.pendingBrowserQuery
     val storedDraft = controller.filterDraft
     val appliedReadable = state.ready && !state.storageUnavailable
     val draft = DiscoveryFilterPresentationPolicy.reconcile(storedDraft, state.profile, state.demo, appliedReadable)
@@ -83,7 +84,10 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
     val editable = state.ready && !state.storageUnavailable && !controller.filterControlsBusy &&
         storedDraft == draft && editClaim != null
     val canSearch = editable && DiscoveryFilterPresentationPolicy.canSubmit(draft)
-    SideEffect { if (appliedReadable && storedDraft != draft) controller.updateFilterDraft(storedDraft, draft) }
+    SideEffect {
+        if (pendingBrowserQuery != null) controller.applyBrowserQuery(pendingBrowserQuery)
+        else if (appliedReadable && storedDraft != draft) controller.updateFilterDraft(storedDraft, draft)
+    }
     val focus = LocalFocusManager.current
     val grid = rememberLazyGridState()
     LaunchedEffect(options, state.controlTarget) {

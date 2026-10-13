@@ -126,6 +126,25 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     // Main-thread UI draft only; persisted applied search remains the sole source-query authority.
     var filterDraft by mutableStateOf<DiscoveryFilterDraft?>(null)
         private set
+    // Ephemeral navigation draft: never executes a search and is discarded on leaving/background.
+    var pendingBrowserQuery by mutableStateOf<String?>(null)
+        private set
+    fun offerBrowserQuery(query: String): Boolean {
+        if (closed.get() || !foreground || !visible || query.isBlank() ||
+            !DiscoveryPresentationPolicy.validQuery(query) || query.any { it.code < 32 || it.code == 127 }) return false
+        pendingBrowserQuery = query
+        applyBrowserQuery(query)
+        return true
+    }
+    fun applyBrowserQuery(expected: String): Boolean {
+        if (closed.get() || !foreground || !visible || pendingBrowserQuery != expected ||
+            !state.ready || state.storageUnavailable || filterControlsBusy) return false
+        val current = filterDraft
+        val draft = DiscoveryFilterPresentationPolicy.reconcile(current, state.profile, state.demo, true)
+        if (!updateFilterDraft(current, draft.copy(query = expected))) return false
+        pendingBrowserQuery = null
+        return true
+    }
     var filterSearchPending by mutableStateOf(false)
         private set
     private var filterSourceChangePending by mutableStateOf(false)
@@ -138,6 +157,8 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         if (closed.get() || filterControlsBusy || filterDraft != expected ||
             !DiscoveryFilterPresentationPolicy.matchesApplied(value, state.profile, state.demo)) return false
         filterDraft = value
+        // An accepted edit/reset or this handoff supersedes any waiting browser draft.
+        pendingBrowserQuery = null
         return true
     }
     fun editFilterText(claim: DiscoveryFilterClaim, field: DiscoveryFilterTextField, value: String): Boolean {
@@ -161,6 +182,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             !DiscoveryFilterPresentationPolicy.canSubmit(expected)) return false
         val filters = DiscoveryFilterPresentationPolicy.validate(expected).filters ?: return false
         val intentGeneration = filterIntentGeneration
+        pendingBrowserQuery = null
         filterSearchPending = true
         coordinator?.invalidateVerificationSummary()
         state = state.copy(verificationSummary = null)
@@ -316,6 +338,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     }
     fun setVisibility(isForeground: Boolean, discoveryVisible: Boolean) {
         if (!isForeground || !discoveryVisible) {
+            pendingBrowserQuery = null
             pageLifecycle.incrementAndGet() // Retire intent now, before any queued refresh can resume.
             state = state.copy(verificationSummary = null, nextPagePending = false)
         }
@@ -610,6 +633,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     }
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
+        pendingBrowserQuery = null
         verificationSubscription?.close(); verificationSubscription = null
         sourceSubscription?.close(); sourceSubscription = null
         osSignals.close(); signalClock.shutdownNow()

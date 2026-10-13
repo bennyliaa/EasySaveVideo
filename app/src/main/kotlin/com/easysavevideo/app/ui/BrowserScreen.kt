@@ -38,6 +38,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
+import com.easysavevideo.app.browser.NewTabSubmissionGate
+import com.easysavevideo.app.browser.NewTabInputPolicy
+import com.easysavevideo.app.browser.NewTabInputMode
+import com.easysavevideo.app.browser.NewTabInput
 import com.easysavevideo.app.browser.SystemBrowserHost
 import com.easysavevideo.app.entitlements.DevelopmentEntitlementPanel
 import com.easysavevideo.app.theme.*
@@ -67,6 +71,9 @@ fun BrowserScreen(
     bookmarks: AndroidBookmarkRuntime? = null,
     saveRuntime: AndroidSaveRuntime? = null,
     interactiveJsDialogs: Boolean = true,
+    onVideoSearchDraft: ((String) -> Unit)? = null,
+    newTabInputGeneration: Long = 0,
+    canSubmitNewTabInput: (Long) -> Boolean = { false },
 ) {
     val visuals = LocalEsvVisuals.current
     val addressDescription = stringResource(R.string.flow_address_description)
@@ -82,6 +89,11 @@ fun BrowserScreen(
     var confirmCookies by remember { mutableStateOf(false) }
     var address by remember(selected?.context?.tabId) { mutableStateOf(selected?.address?.value.orEmpty()) }
     var editing by remember(selected?.context?.tabId) { mutableStateOf(false) }
+    val videoSubmission = remember(selected?.context, selected?.epoch, newTabInputGeneration) { NewTabSubmissionGate() }
+    DisposableEffect(videoSubmission) { onDispose { videoSubmission.retire() } }
+    var videoInput by remember(selected?.context?.tabId) { mutableStateOf("") }
+    var videoMode by remember(selected?.context?.tabId) { mutableStateOf(NewTabInputMode.AUTO) }
+    var videoInputError by remember(selected?.context?.tabId) { mutableStateOf(false) }
     DisposableEffect(browser, interactiveJsDialogs) {
         browser.setJsDialogUiVisible(interactiveJsDialogs)
         onDispose { browser.setJsDialogUiVisible(false) }
@@ -91,6 +103,20 @@ fun BrowserScreen(
             saveRuntime?.selection != null || saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null)
     }
     val focus = LocalFocusManager.current
+    fun submitVideoInput() {
+        // A queued IME/click from a closed or replaced tab cannot hand off a different tab.
+        if (!NewTabInputPolicy.canSubmit(selected, browser.state.selectedTab, canSubmitNewTabInput(newTabInputGeneration)) || onVideoSearchDraft == null ||
+            settingsOpen || bookmarksOpen || confirmCookies || filePrompt != null ||
+            saveRuntime?.selection != null || saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null) return
+        val input = NewTabInputPolicy.interpret(videoInput, videoMode)
+        if (input == NewTabInput.Invalid) { videoInputError = true; return }
+        if (!videoSubmission.claim(selected, browser.state.selectedTab, canSubmitNewTabInput(newTabInputGeneration))) return
+        when (input) {
+            is NewTabInput.Address -> { videoInputError = false; focus.clearFocus(); browser.navigate(input.value) }
+            is NewTabInput.Query -> { videoInputError = false; focus.clearFocus(); onVideoSearchDraft(input.value) }
+            NewTabInput.Invalid -> videoInputError = true
+        }
+    }
     LaunchedEffect(selected?.address?.value) { if (!editing) address = selected?.address?.value.orEmpty() }
     fun go() { editing = false; focus.clearFocus(); browser.navigate(address) }
     BackHandler(enabled = saveRuntime?.selection != null || bookmarksOpen || settingsOpen || browser.fullScreenView != null || browser.selectedView()?.canGoBack() == true) {
@@ -206,6 +232,31 @@ fun BrowserScreen(
                             EsvText(if (!browser.platformAvailable) stringResource(R.string.flow_web_unavailable) else if (selected?.loadState == BrowserLoadState.CANCELLED) stringResource(R.string.flow_web_stopped) else if (selected?.error != null) errorText(selected.error!!.code) else stringResource(R.string.flow_browse_empty),
                                 style = visuals.titleTextStyle)
                             Spacer(Modifier.height(visuals.spacingMedium))
+                            if (selected?.address == null && onVideoSearchDraft != null) {
+                                OutlinedTextField(value = videoInput, onValueChange = { videoInput = it.take(8193); videoInputError = false },
+                                    modifier = Modifier.fillMaxWidth(), textStyle = visuals.bodyTextStyle, singleLine = true,
+                                    label = { Text(stringResource(R.string.new_tab_video_input)) }, isError = videoInputError,
+                                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
+                                    keyboardActions = KeyboardActions(onGo = { submitVideoInput() }))
+                                FlowRow(horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
+                                    NewTabInputMode.entries.forEach { mode ->
+                                        EsvButton(stringResource(when (mode) {
+                                            NewTabInputMode.AUTO -> R.string.new_tab_auto
+                                            NewTabInputMode.ADDRESS -> R.string.new_tab_address
+                                            NewTabInputMode.VIDEO -> R.string.new_tab_video
+                                        }), onClick = { videoMode = mode; videoInputError = false },
+                                            modifier = Modifier.semantics { this.selected = videoMode == mode }
+                                                .then(if (videoMode == mode) Modifier.border(2.dp, visuals.colors.accent,
+                                                    RoundedCornerShape(visuals.buttonCorner)) else Modifier))
+                                    }
+                                }
+                                EsvText(stringResource(R.string.new_tab_draft_help), style = visuals.captionTextStyle)
+                                if (videoInputError) EsvText(stringResource(R.string.new_tab_invalid), color = visuals.colors.error)
+                                EsvButton(stringResource(if (NewTabInputPolicy.interpret(videoInput, videoMode) is NewTabInput.Address)
+                                    R.string.new_tab_open_address else R.string.new_tab_continue),
+                                    onClick = { submitVideoInput() }, enabled = videoInput.isNotBlank())
+                                Spacer(Modifier.height(visuals.spacingMedium))
+                            }
                             EsvText(stringResource(R.string.flow_browserscreen_18), color = visuals.colors.muted)
                             Spacer(Modifier.height(visuals.spacingMedium))
                             if (selected?.address != null) EsvButton(stringResource(R.string.flow_browserscreen_19), onClick = browser::reload)
