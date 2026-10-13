@@ -1,0 +1,15 @@
+{
+  "baseline": "Editor Back tested freeze, publication SHA pending",
+  "variants": {
+    "debug": {
+      "same_issue_id_severity_message_multiset": true,
+      "count": 68,
+      "location_bytes_may_shift": true
+    },
+    "release": {
+      "same_issue_id_severity_message_multiset": true,
+      "count": 68,
+      "location_bytes_may_shift": true
+    }
+  }
+}

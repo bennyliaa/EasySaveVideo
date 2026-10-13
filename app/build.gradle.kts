@@ -95,6 +95,11 @@ val contractResourceInputs = fileTree("src/main/res") {
     }
 }
 val contractSourceInputs = files(
+    "src/main/kotlin/com/easysavevideo/app/library/LibraryExportStatus.kt",
+    "src/main/kotlin/com/easysavevideo/app/library/export/AndroidExportRuntime.kt",
+    "src/main/kotlin/com/easysavevideo/app/library/export/DirectoryBatchConfirmation.kt",
+    "src/main/kotlin/com/easysavevideo/app/library/export/LibraryBatchRouteExit.kt",
+    "src/main/kotlin/com/easysavevideo/app/library/destination/DirectoryPickerLifecycle.kt",
     "src/main/kotlin/com/easysavevideo/app/editor/EditorBackPolicy.kt",
     "src/main/kotlin/com/easysavevideo/app/editor/EditorDeadlineGuard.kt",
     "src/main/kotlin/com/easysavevideo/app/editor/ui/EditorBackResources.kt",

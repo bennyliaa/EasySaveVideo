@@ -1,4 +1,7 @@
 package com.easysavevideo.app.library.destination
+import com.easysavevideo.app.library.export.DirectoryBatchConfirmation
+import com.easysavevideo.app.library.export.DirectoryConfirmationDecision
+import com.easysavevideo.app.library.export.consumeDirectoryBatchConfirmation
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.ArrayDeque
@@ -8,6 +11,7 @@ class FolderPickerResultLifecycleTest {
         val owner=Any();var foreground=true;var exactSource=true;var cancelled=false
         var permission=true;var staged=false;var copies=0;var errors=0;var launches=0
         val lifecycle=DirectoryPickerLifecycle()
+        val confirmation=DirectoryBatchConfirmation()
         val worker=ArrayDeque<() -> Unit>();val ui=ArrayDeque<() -> Unit>()
         val bridge=FolderPickerAsyncBridge<Any,Boolean>({}, {worker.add(it)}, {ui.add(it)}, {42000})
         fun launch() {
@@ -23,8 +27,13 @@ class FolderPickerResultLifecycleTest {
         fun cancel(){cancelled=true;lifecycle.cancel()}
         fun canConfirm()=staged && lifecycle.canConfirm(foreground && exactSource && !cancelled)
         fun confirm():Boolean {
-            if(!canConfirm()){cancel();return false}
-            if(!lifecycle.confirm(foreground && exactSource && !cancelled))return false
+            when(consumeDirectoryBatchConfirmation(confirmation,confirmation,lifecycle) {
+                staged && foreground && exactSource && !cancelled
+            }) {
+                DirectoryConfirmationDecision.IGNORED -> return false
+                DirectoryConfirmationDecision.STALE -> {cancel();return false}
+                DirectoryConfirmationDecision.CONFIRMED -> Unit
+            }
             // Model of existing worker registry validation, not an actual Android grant.
             if(!permission)return false
             copies++;return true
@@ -34,6 +43,7 @@ class FolderPickerResultLifecycleTest {
         val f=Flow();f.launch();assertEquals(1,f.launches);f.pause();f.result()
         assertTrue(f.staged);assertEquals(0,f.errors);assertEquals(0,f.copies);assertFalse(f.canConfirm())
         f.resume();assertEquals(0,f.copies);assertTrue(f.confirm());assertEquals(1,f.copies);assertFalse(f.confirm())
+        assertFalse(f.cancelled);assertTrue(f.lifecycle.active());assertEquals(1,f.copies)
     }
     @Test fun cancelledBeforeResultCannotStageOrCopyAfterResume() {
         val f=Flow();f.launch();f.pause();f.cancel();f.result();f.resume()

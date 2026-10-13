@@ -39,6 +39,7 @@ import com.easysavevideo.app.save.SaveTaskScreen
 import com.easysavevideo.app.save.SaveSelectionDialog
 import com.easysavevideo.app.save.VerifiedMediaPreview
 import com.easysavevideo.app.save.LibraryMediaPreview
+import com.easysavevideo.app.library.export.dispatchLibraryBatchRouteExit
 import com.easysavevideo.app.library.AndroidLibraryRuntime
 import com.easysavevideo.app.editor.ui.EditorScreen
 import com.easysavevideo.app.editor.ui.EditorDraftCheckpointCodec
@@ -85,7 +86,6 @@ class MainActivity : ComponentActivity() {
             newTabInputGeneration++
             if (::browser.isInitialized) { browser.setJsDialogUiVisible(false); browser.setVideoPresenceUiVisible(false) }
             libraryBatchExportSelection=null
-            if(destination!=EsvDestination.LIBRARY && ::saves.isInitialized)saves.libraryExports?.cancelBatchForLeavingLibrary()
             discovery.setVisibility(isForeground, false)
             providerManagement.setActive(false)
             if (destination != EsvDestination.LIBRARY) libraryExportReference = null
@@ -201,7 +201,11 @@ class MainActivity : ComponentActivity() {
                 DisposableEffect(controller) {
                     navController = controller
                     val listener = androidx.navigation.NavController.OnDestinationChangedListener { _, destination, _ ->
-                        activeDestination = EsvDestination.fromRoute(destination.route)
+                        val nextDestination = EsvDestination.fromRoute(destination.route)
+                        dispatchLibraryBatchRouteExit(activeDestination, nextDestination) {
+                            if (::saves.isInitialized) saves.libraryExports?.cancelBatchForLeavingLibrary()
+                        }
+                        activeDestination = nextDestination
                         if (activeDestination != EsvDestination.BROWSER) { browser.setJsDialogUiVisible(false); browser.setVideoPresenceUiVisible(false) }
                     }
                     controller.addOnDestinationChangedListener(listener)

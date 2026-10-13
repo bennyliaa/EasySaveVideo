@@ -57,7 +57,7 @@ data class ExportViewState(
     val batchNames: List<String> = emptyList(),
     val batchCleanupPending: Boolean = false,
     val directoryNotice:DirectoryExportNotice? = null,
-    val directoryConfirmation:Boolean = false,
+    val directoryConfirmation:DirectoryBatchConfirmation? = null,
     val initializationDiagnostic:InitializationDiagnostic? = null,
 )
 
@@ -81,6 +81,7 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
     private val directoryGate=FolderSelectionGate()
     private var directoryHost:AndroidFolderPickerHost? = null
     private class DirectorySelection(val ticket:FolderSelectionGate.Ticket,val items:List<MediaItem>,val current:()->Boolean) {
+        val confirmation=DirectoryBatchConfirmation()
         var uri:android.net.Uri?=null;var flags=0;val lifecycle=DirectoryPickerLifecycle()
     }
     private var directorySelection:DirectorySelection?=null
@@ -343,19 +344,25 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
             if(directorySelection!==selected || !directoryGate.receive(ticket) || closed || cancelled.get() || !selected.lifecycle.receive())return@launch
             if(result!=Activity.RESULT_OK || data?.data==null) {cancel();return@launch}
             selected.uri=data.data;selected.flags=data.flags
-            state=state.copy(directoryConfirmation=true,directoryNotice=DirectoryExportNotice.CONFIRM)
+            state=state.copy(directoryConfirmation=selected.confirmation,directoryNotice=DirectoryExportNotice.CONFIRM)
         }}catch(_:Exception){cancel();state=state.copy(directoryNotice=DirectoryExportNotice.UNAVAILABLE)}
     }
-    fun canConfirmBatchFolder():Boolean {
+    fun canConfirmBatchFolder(expected:DirectoryBatchConfirmation):Boolean {
         requireMain();val selection=directorySelection ?: return false
-        return !closed && selection.uri!=null && !cancelled.get() && selection.lifecycle.canConfirm(selection.current())
+        return selection.confirmation===expected && selection.lifecycle.canConfirm(true) &&
+            !closed && selection.uri!=null && !cancelled.get() && selection.current()
     }
-    fun confirmBatchFolderCopy() {
+    fun confirmBatchFolderCopy(expected:DirectoryBatchConfirmation) {
         requireMain();val selection=directorySelection ?: return
-        if(!canConfirmBatchFolder()){cancel();state=state.copy(directoryNotice=DirectoryExportNotice.STALE);return}
-        if(!selection.lifecycle.confirm(selection.current()))return
+        when(consumeDirectoryBatchConfirmation(expected,selection.confirmation,selection.lifecycle) {
+            !closed && selection.uri!=null && !cancelled.get() && selection.current()
+        }) {
+            DirectoryConfirmationDecision.IGNORED -> return
+            DirectoryConfirmationDecision.STALE -> {cancel();state=state.copy(directoryNotice=DirectoryExportNotice.STALE);return}
+            DirectoryConfirmationDecision.CONFIRMED -> Unit
+        }
         val uri=requireNotNull(selection.uri);val cancellation=cancelled
-        state=state.copy(directoryConfirmation=false,directoryNotice=DirectoryExportNotice.COPYING)
+        state=state.copy(directoryConfirmation=null,directoryNotice=DirectoryExportNotice.COPYING)
         submit {
             val registry=AndroidFolderGrantRegistry(application,storage){destinationStateObserver?.invoke()}
             var plan:DirectoryBatchPlan?=null
@@ -414,7 +421,7 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
             directoryGate.cancel(selection.ticket)
             if(!selection.lifecycle.confirmedOnce) {
                 directorySelection=null
-                state=state.copy(busy=false,canCancel=false,directoryConfirmation=false,directoryNotice=DirectoryExportNotice.STOPPED)
+                state=state.copy(busy=false,canCancel=false,directoryConfirmation=null,directoryNotice=DirectoryExportNotice.STOPPED)
                 return
             }
         }
@@ -492,7 +499,7 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
         activeShareBatch=null;batchActive=false
         operationId=null // A new directory picker has no current file operation to cancel yet.
         directoryBatchId=null
-        state = state.copy(busy = true, canCancel = true, notice = null,initializationDiagnostic=null,batchResults=emptyList(),batchNames=emptyList(),batchCleanupPending=false,directoryNotice=null,directoryConfirmation=false)
+        state = state.copy(busy = true, canCancel = true, notice = null,initializationDiagnostic=null,batchResults=emptyList(),batchNames=emptyList(),batchCleanupPending=false,directoryNotice=null,directoryConfirmation=null)
         return true
     }
     private fun request(ref: MediaReadRef, kind: ExportKind) = ExportRequest(UUID.randomUUID().toString(), ref, ExportDestination(kind, UUID.randomUUID().toString()))
@@ -545,12 +552,12 @@ class AndroidExportRuntime(context: Context, private val storage: AndroidSaveSto
                 main.post { if (!closed) {
                     directorySelection?.let{directoryGate.cancel(it.ticket)};directorySelection=null;directoryBatchId=null
                     pendingSaf = null; pendingPickerResult = false
-                    state = state.copy(busy = false, canCancel = false,directoryConfirmation=false, initializationDiagnostic = (failure as? ShareFailure)?.diagnostic, recoverable = counts?.unfinished ?: maxOf(1L, state.recoverable), notice = notice)
+                    state = state.copy(busy = false, canCancel = false,directoryConfirmation=null, initializationDiagnostic = (failure as? ShareFailure)?.diagnostic, recoverable = counts?.unfinished ?: maxOf(1L, state.recoverable), notice = notice)
                 } }
             }
         } } catch (_: java.util.concurrent.RejectedExecutionException) {
             directorySelection?.let{directoryGate.cancel(it.ticket)};directorySelection=null;directoryBatchId=null
-            state = state.copy(busy = false, canCancel = false,directoryConfirmation=false, notice = "导出队列已满，请稍后重试。")
+            state = state.copy(busy = false, canCancel = false,directoryConfirmation=null, notice = "导出队列已满，请稍后重试。")
         }
     }
     private fun submitControl(block: () -> Unit) {

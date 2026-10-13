@@ -48,8 +48,10 @@ internal fun LibraryExportStatus(exports: AndroidExportRuntime, foreground: Bool
             DirectoryExportNotice.UNCERTAIN -> R.string.directory_uncertain
             DirectoryExportNotice.INTERRUPTED -> R.string.directory_interrupted
         }),style=v.captionTextStyle) }
-        if(state.directoryConfirmation)EsvButton(stringResource(R.string.directory_confirm_copy),exports::confirmBatchFolderCopy,
-            enabled=foreground && exports.canConfirmBatchFolder(),modifier=Modifier.fillMaxWidth())
+        val directoryConfirmation = state.directoryConfirmation
+        if(directoryConfirmation!=null)EsvButton(stringResource(R.string.directory_confirm_copy),
+            { exports.confirmBatchFolderCopy(directoryConfirmation) },
+            enabled=foreground && exports.canConfirmBatchFolder(directoryConfirmation),modifier=Modifier.fillMaxWidth())
         state.batchResults.forEachIndexed { index,result ->
             state.batchNames.getOrNull(index)?.let { EsvText(it,maxLines=2,style=v.captionTextStyle) }
             EsvText(stringResource(R.string.library_batch_move_item,index+1,stringResource(when(result.status) {
