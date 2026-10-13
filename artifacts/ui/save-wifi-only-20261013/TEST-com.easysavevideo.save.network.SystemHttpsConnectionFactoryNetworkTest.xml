@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-10-13T05:10:55.178Z" hostname="b5f39a690d03" time="0.095">
+  <properties/>
+  <testcase name="tlsLinkageWithSocketCloseLinkageAlwaysReportsReleaseUnconfirmed" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.091"/>
+  <testcase name="sslSetupLinkageFailureClosesOpenedConnectionAndSanitizes" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="sslSetupAndDisconnectLinkageFailureRequiresRecovery" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.001"/>
+  <testcase name="policyChangeAfterSocketCreationClosesBeforeTcpConnect" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="boundDnsApprovalStillCannotBypassActualPrivatePeerCheck" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="suppliedRouteOpensConnectionResolvesAndCreatesSocketWhileTlsAndHostnameStaySystemOwned" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="boundPrivateDnsFailsBeforeSocketCreation" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.001"/>
+  <testcase name="policyChangeAfterTcpConnectClosesBeforeTls" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="layeredPlatformSocketIsClosedWhenRouteChangesBeforeTls" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="failedRawSocketCloseIsNeverSuppressedByWifiFailure" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="disallowedRoutePerformsZeroOpeningDnsOrSocketWork" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.001"/>
+  <testcase name="noDnsFallbackAfterBoundResolverFails" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="policyChangeAfterDnsRejectsBeforeSocketCreation" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="failedLayeredSocketCloseIsNeverSuppressedByWifiFailure" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="bindingRejectedAfterOpeningIsDisconnectedBeforeReturning" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="rawAndLayeredTlsLinkageFailuresCloseOwnedSocket" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <testcase name="failedDisconnectAfterOpeningReturnsRecoveryInsteadOfNetworkWait" classname="com.easysavevideo.save.network.SystemHttpsConnectionFactoryNetworkTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

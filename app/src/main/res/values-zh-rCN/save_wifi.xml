@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_settings_save">保存</string>
+    <string name="ui_save_wifi_only">仅通过 Wi-Fi 保存</string>
+    <string name="ui_save_wifi_description">适用于①直接下载和②流媒体保存，包括播放列表检查。仅使用已确认的默认 Wi-Fi 网络；网络不明或 VPN 路由时等待。录制和本地编辑不受影响。中断后①需手动继续；未完成的②需返回网页重新选择，新任务从头开始。</string>
+    <string name="save_wifi_required">正在等待已确认的默认 Wi-Fi 网络。请连接 Wi-Fi，或关闭“仅通过 Wi-Fi 保存”后手动重试。</string>
+    <string name="save_wifi_stream_wait">流媒体下载因 Wi-Fi 设置中断。请返回网页重新选择，新任务从头开始；可以取消此旧任务。</string>
+    <string name="save_wifi_settings_unavailable">保存设置尚未确认。请等待设置加载，或在设置中明确选择 Wi-Fi 保存选项后再下载。</string>
+</resources>

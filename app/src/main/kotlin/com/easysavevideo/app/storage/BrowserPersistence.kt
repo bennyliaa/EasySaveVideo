@@ -23,7 +23,10 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
     private val preserveSession = AtomicBoolean(false)
     private val sessionResetRequested = AtomicBoolean(false)
     val sessionWritesPaused: Boolean get() = preserveSession.get()
-    private val settingsPending = AtomicReference<AppSettings?>(null)
+    private data class PendingSettings(val value: AppSettings, val includeNetwork: Boolean)
+    private val settingsPending = AtomicReference<PendingSettings?>(null)
+    private val networkPreferenceConfirmed = AtomicBoolean(false)
+    var settingsLoaded: Boolean = false; private set
     private val sessionPending = AtomicReference<BrowserSessionCheckpoint?>(null)
     private val empty = BrowserSessionCheckpoint(emptyList(), null)
     fun start(onReady: (AppSettings, BrowserSessionCheckpoint?, Boolean) -> Unit) {
@@ -39,13 +42,14 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
         main.postDelayed(timeout, 2_000)
         io.execute {
             var settings = AppSettings()
+            var settingsSucceeded = false
             var checkpoint: BrowserSessionCheckpoint? = null
             val manager = RecoveryManager(EpochClock(System::currentTimeMillis))
             val probes = listOf(
                 object : RecoveryProbe {
                     override val kind = RecoveryObjectKind.SETTINGS
                     override fun check(operation: OperationContext): RecoveryOutcome = try {
-                        settings = settingsStore.load(); RecoveryOutcome(kind, RecoveryDisposition.READY)
+                        settings = settingsStore.load(); settingsSucceeded = true; RecoveryOutcome(kind, RecoveryDisposition.READY)
                     } catch (_: Exception) {
                         val problem = error(ErrorCode.SETTINGS_UNAVAILABLE); errors.report(problem)
                         RecoveryOutcome(kind, RecoveryDisposition.ISOLATED, problem)
@@ -68,7 +72,10 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
                 && !sessionResetRequested.get()) preserveSession.set(true)
             main.post {
                 main.removeCallbacks(timeout)
-                if (!closed.get() && completed.compareAndSet(false, true)) onReady(settings, checkpoint, failed)
+                if (!closed.get() && completed.compareAndSet(false, true)) {
+                    settingsLoaded = settingsSucceeded
+                    onReady(settings, checkpoint, failed)
+                }
             }
         }
     }
@@ -76,9 +83,10 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
         if (!completed.get() || closed.get() || preserveSession.get()) return
         sessionPending.set(if (enabled) checkpoint else empty); scheduleWrite()
     }
-    fun saveSettings(settings: AppSettings) {
+    fun saveSettings(settings: AppSettings, confirmNetworkPreference: Boolean = false) {
         if (closed.get()) return
-        settingsPending.set(settings)
+        if (confirmNetworkPreference) networkPreferenceConfirmed.set(true)
+        settingsPending.set(PendingSettings(settings, settingsLoaded || networkPreferenceConfirmed.get()))
         if (!settings.browser.restoreTabs) {
             // The settings toggle explicitly explains that disabling clears saved addresses.
             sessionResetRequested.set(true); preserveSession.set(false); sessionPending.set(empty)
@@ -88,7 +96,7 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
     private fun scheduleWrite() {
         if (writing.compareAndSet(false, true)) io.execute {
             do {
-                settingsPending.getAndSet(null)?.let { value -> runCatching { settingsStore.save(value) }.onFailure { writeFailure(ErrorCode.SETTINGS_UNAVAILABLE) } }
+                settingsPending.getAndSet(null)?.let { value -> runCatching { settingsStore.save(value.value, value.includeNetwork) }.onFailure { writeFailure(ErrorCode.SETTINGS_UNAVAILABLE) } }
                 sessionPending.getAndSet(null)?.takeUnless { preserveSession.get() }?.let { value -> runCatching { sessionStore.save(value) }.onFailure { writeFailure(ErrorCode.RECOVERY_FAILED) } }
                 writing.set(false)
             } while ((settingsPending.get() != null || sessionPending.get() != null) && writing.compareAndSet(false, true))

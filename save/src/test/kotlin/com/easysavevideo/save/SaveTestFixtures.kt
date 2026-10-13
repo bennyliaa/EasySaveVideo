@@ -54,6 +54,7 @@ internal class SaveHarness(
     verifyBlock: ((StagingArtifact, TransferResult, OperationContext) -> VerificationEvidence)? = null,
     delay: SaveRetryDelay = SaveRetryDelay { _, _ -> },
     releaseUncertain: () -> Boolean = { false },
+    networkGate: SaveNetworkGate = SaveNetworkGate {},
 ) {
     var transfers = 0
     var verifications = 0
@@ -69,7 +70,7 @@ internal class SaveHarness(
     }, ArtifactVerifier { artifact, result, context ->
         verifications++
         verifyBlock?.invoke(artifact, result, context) ?: goodEvidence(artifact, result)
-    }, store, clock, limits, delay)
+    }, store, clock, limits, delay, networkGate = networkGate)
     fun request(id: String = "task") = SaveRequest(id, "key-$id", SelectedMediaResource("candidate", "variant", SourceUrl("https://example.invalid/video.mp4")))
     fun operation(id: String = "operation", deadline: Long = 10_000, retries: Int = 2, cancellation: CancellationToken = CancellationSource()) =
         OperationContext(id, deadline, cancellation, retries, resourceBudget = ResourceBudget(1, limits.maxTotalTransferBytes))

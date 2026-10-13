@@ -19,6 +19,7 @@ class SaveCoordinator(
     private val retryDelay: SaveRetryDelay = ThreadSaveRetryDelay(clock),
     private val stream: StreamSavePort = UnsupportedStreamSave,
     private val recording: RecordSavePort = UnsupportedRecordSave,
+    private val networkGate: SaveNetworkGate = SaveNetworkGate {},
 ) : TaskController {
     private fun portFor(method: TaskMethod): DirectTransferPort? = when (method) {
         TaskMethod.DIRECT -> transfer
@@ -182,6 +183,7 @@ class SaveCoordinator(
     private fun runAttempt(taskId: String, runtime: Runtime) {
         checkActive(taskId, runtime)
         var record = journal.read(taskId) ?: throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+        if (record.needsNetworkTransfer()) networkGate.check()
         var artifact = record.artifact
         if (artifact == null) {
             setPhase(taskId, runtime, SavePhase.PREPARING)
@@ -329,6 +331,20 @@ class SaveCoordinator(
             val running = if (record.task.state == TaskState.QUEUED) save(record, changeState(record, TaskState.RUNNING)) else record
             waitForUser(running, SaveWaitReason.BACKGROUND, null)
         }
+    }
+
+    /** An unstarted network task waits for policy, never masquerading as a background pause. */
+    fun deferForNetwork(taskId: String): SaveRecord? = synchronized(lock) {
+        val record = journal.read(taskId) ?: return@synchronized null
+        if (!record.needsNetworkTransfer() || record.task.state.isTerminal || record.task.state == TaskState.WAITING_USER)
+            return@synchronized record
+        val runtime = runtimes[taskId]
+        if (runtime?.executing == true) return@synchronized record
+        if (runtime?.userCancel == true || runtime?.original?.cancelToken?.isCancelled == true)
+            return@synchronized if (resourcesUnreleased()) record else finishFailure(record, SaveError.CANCELLED)
+        val running = if (record.task.state == TaskState.QUEUED) save(record, changeState(record, TaskState.RUNNING)) else record
+        if (resourcesUnreleased()) waitForUser(running, SaveWaitReason.RECOVERY, SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+        else waitForUser(running, SaveWaitReason.NETWORK, SaveError.WIFI_REQUIRED)
     }
 
     /** A rejected local-recovery schedule must not strand a finalized recording in RUNNING. */

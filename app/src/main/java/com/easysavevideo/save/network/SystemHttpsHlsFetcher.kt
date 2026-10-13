@@ -55,6 +55,7 @@ class SystemHttpsHlsFetcher(
     private val requestContexts: RequestContextLeaseStore = RequestContextLeaseStore(),
     private val clock: EpochClock = EpochClock(System::currentTimeMillis),
     private val connections: DirectConnectionFactory = SystemHttpsConnectionFactory(),
+    private val networkPolicy: TransferNetworkPolicy = UnrestrictedTransferNetworkPolicy,
 ) {
     private val active = AtomicBoolean(false)
     private val cleanupUncertain = AtomicBoolean(false)
@@ -131,8 +132,23 @@ class SystemHttpsHlsFetcher(
                 if (!visited.add(HttpsRequestPolicy.canonical(target))) throw SaveFailure(SaveError.POLICY_BLOCKED)
                 if (CookieHandler.getDefault() != null) throw SaveFailure(SaveError.POLICY_BLOCKED)
                 val timeout = boundedTimeout(limits.connectTimeoutMillis, context)
-                val connection = connections.open(target, timeout)
-                val guard = HlsTransferGuard(connection, guardedContext, limits.noProgressTimeoutMillis, clock)
+                val network = try { networkPolicy.acquireApproved() } catch (failure: Exception) {
+                    checkContext(context) // Explicit cancellation wins over an unavailable network.
+                    throw failure
+                }
+                checkContext(context)
+                val connection = try { connections.open(target, timeout, network) } catch (failure: Exception) {
+                    failure.releaseFailureOrNull()?.let {
+                        cleanupUncertain.set(true)
+                        throw SaveFailure(it)
+                    }
+                    checkContext(context)
+                    network.requireApproved()
+                    throw failure
+                }
+                val guard = initializeNetworkOwner(connection, { cleanupUncertain.set(true) }) {
+                    HlsTransferGuard(connection, guardedContext, limits.noProgressTimeoutMillis, clock, network)
+                }
                 try {
                     connection.instanceFollowRedirects = false
                     connection.useCaches = false
@@ -174,8 +190,26 @@ class SystemHttpsHlsFetcher(
                     guard.check()
                     return result
                 } catch (failure: Exception) {
+                    failure.releaseFailureOrNull()?.let {
+                        cleanupUncertain.set(true)
+                        throw SaveFailure(it)
+                    }
+                    if (cleanupUncertain.get()) {
+                        // use() may suppress a close failure behind the original read/cancel error.
+                        // Never advertise a recoverable network wait while an owned stream leaked.
+                        if (failure is SaveFailure && failure.code == SaveError.STORAGE_FAILURE) throw sanitize(failure)
+                        throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+                    }
                     guard.check()
                     throw sanitize(failure)
+                } catch (failure: LinkageError) {
+                    failure.releaseFailureOrNull()?.let {
+                        cleanupUncertain.set(true)
+                        throw SaveFailure(it)
+                    }
+                    if (cleanupUncertain.get()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+                    guard.check()
+                    throw SaveFailure(SaveError.UNKNOWN_TECHNICAL_ERROR)
                 } finally {
                     // Blocking/failed close retains this single lane, rather than inventing cancellation.
                     try { guard.finish() } catch (_: Exception) {
@@ -184,7 +218,7 @@ class SystemHttpsHlsFetcher(
                     }
                     // disconnect itself may block: a late cancel/deadline must fence the prepared
                     // result after cleanup actually returns, without falsely marking release failed.
-                    guard.check()
+                    if (!cleanupUncertain.get()) guard.check()
                 }
             }
             throw SaveFailure(SaveError.POLICY_BLOCKED)
@@ -378,7 +412,8 @@ class SystemHttpsHlsFetcher(
 
 /** One bounded watchdog per active call. The caller's lane stays occupied until disconnect returns. */
 private class HlsTransferGuard(private val connection: HttpURLConnection, private val context: OperationContext,
-                               private val timeout: Int, private val clock: EpochClock) {
+                               private val timeout: Int, private val clock: EpochClock,
+                            private val network: TransferNetworkBinding) {
     private val finished = AtomicBoolean(false)
     private val disconnectStarted = AtomicBoolean(false)
     private val disconnectFailed = AtomicBoolean(false)
@@ -393,11 +428,15 @@ private class HlsTransferGuard(private val connection: HttpURLConnection, privat
         } catch (_: InterruptedException) { }
     }, "esv-hls-watchdog").apply { isDaemon = true; start() }
     fun progressed() { lastProgress = System.nanoTime() }
-    private fun currentReason(): SaveError? = reason.get() ?: when {
-        context.cancelToken.isCancelled -> SaveError.CANCELLED
-        clock.nowMillis() >= context.deadlineEpochMillis -> SaveError.DEADLINE_EXCEEDED
-        System.nanoTime() - lastProgress >= timeout.toLong() * 1_000_000 -> SaveError.NETWORK_TIMEOUT
-        else -> null
+    private fun currentReason(): SaveError? {
+        // A network failure may already be latched while disconnect is blocked. A later explicit
+        // cancellation must still win when the caller finally observes the released connection.
+        if (context.cancelToken.isCancelled) return SaveError.CANCELLED
+        reason.get()?.let { return it }
+        if (clock.nowMillis() >= context.deadlineEpochMillis) return SaveError.DEADLINE_EXCEEDED
+        network.failureOrNull()?.let { return it }
+        return if (System.nanoTime() - lastProgress >= timeout.toLong() * 1_000_000)
+            SaveError.NETWORK_TIMEOUT else null
     }
     fun check() {
         if (Thread.currentThread().isInterrupted) throw SaveFailure(SaveError.CANCELLED)

@@ -1,0 +1,67 @@
+Final R6 Release compile bytecode review, 2026-10-13 UTC. Technical class/method/constants only; no runtime user data was collected.
+Command: javap -p -c -classpath <app Release classes> <named classes>
+
+CLASS com.easysavevideo.app.save.AndroidSaveRuntime
+  private static final kotlin.Unit _init_$lambda$22(com.easysavevideo.app.save.AndroidSaveRuntime, android.content.Context);
+      26: aload_0
+      27: new           #1987               // class com/easysavevideo/save/network/SystemHttpsDirectTransfer
+      30: dup
+      31: aload_2
+      32: checkcast     #2450               // class com/easysavevideo/save/network/NetworkStagingAccess
+      35: aload_0
+      36: getfield      #143                // Field leases:Lcom/easysavevideo/save/network/RequestContextLeaseStore;
+      39: aconst_null
+      40: aconst_null
+      41: aload_0
+      42: getfield      #63                 // Field networkPolicy:Lcom/easysavevideo/app/save/SaveWifiNetworkPolicy;
+      45: checkcast     #2452               // class com/easysavevideo/save/network/TransferNetworkPolicy
+      48: bipush        12
+      50: aconst_null
+      51: invokespecial #2455               // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer."<init>":(Lcom/easysavevideo/save/network/NetworkStagingAccess;Lcom/easysavevideo/save/network/RequestContextLeaseStore;Lcom/easysavevideo/core/model/EpochClock;Lcom/easysavevideo/save/network/DirectConnectionFactory;Lcom/easysavevideo/save/network/TransferNetworkPolicy;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+      54: putfield      #1984               // Field transport:Lcom/easysavevideo/save/network/SystemHttpsDirectTransfer;
+      57: aload_0
+
+CLASS com.easysavevideo.app.save.AndroidSaveRuntime
+  private static final kotlin.Unit _init_$lambda$22(com.easysavevideo.app.save.AndroidSaveRuntime, android.content.Context);
+      57: aload_0
+      58: new           #640                // class com/easysavevideo/app/save/stream/AndroidHlsStreamPort
+      61: dup
+      62: aload_1
+      63: aload_0
+      64: getfield      #1776               // Field storage:Lcom/easysavevideo/app/save/storage/AndroidSaveStorage;
+      67: dup
+      68: ifnonnull     79
+      71: pop
+      72: ldc_w         #1777               // String storage
+      75: invokestatic  #638                // Method kotlin/jvm/internal/Intrinsics.throwUninitializedPropertyAccessException:(Ljava/lang/String;)V
+      78: aconst_null
+      79: aload_0
+      80: getfield      #143                // Field leases:Lcom/easysavevideo/save/network/RequestContextLeaseStore;
+      83: aload_0
+      84: getfield      #109                // Field limits:Lcom/easysavevideo/save/SaveLimits;
+      87: aload_0
+      88: getfield      #96                 // Field clock:Lcom/easysavevideo/core/model/EpochClock;
+      91: aload_0
+      92: getfield      #63                 // Field networkPolicy:Lcom/easysavevideo/app/save/SaveWifiNetworkPolicy;
+      95: checkcast     #2452               // class com/easysavevideo/save/network/TransferNetworkPolicy
+      98: invokespecial #2458               // Method com/easysavevideo/app/save/stream/AndroidHlsStreamPort."<init>":(Landroid/content/Context;Lcom/easysavevideo/app/save/storage/AndroidSaveStorage;Lcom/easysavevideo/save/network/RequestContextLeaseStore;Lcom/easysavevideo/save/SaveLimits;Lcom/easysavevideo/core/model/EpochClock;Lcom/easysavevideo/save/network/TransferNetworkPolicy;)V
+     101: putfield      #634                // Field stream:Lcom/easysavevideo/app/save/stream/AndroidHlsStreamPort;
+     104: aload_0
+
+CLASS com.easysavevideo.app.save.stream.AndroidHlsStreamPort
+  public final com.easysavevideo.app.save.stream.HlsPreparation prepare(com.easysavevideo.save.SelectedMediaResource, com.easysavevideo.core.model.OperationContext);
+     115: astore        4
+     117: new           #135                // class com/easysavevideo/save/network/SystemHttpsHlsFetcher
+     120: dup
+     121: aload_0
+     122: getfield      #36                 // Field leases:Lcom/easysavevideo/save/network/RequestContextLeaseStore;
+     125: aload_0
+     126: getfield      #42                 // Field clock:Lcom/easysavevideo/core/model/EpochClock;
+     129: aconst_null
+     130: aload_0
+     131: getfield      #45                 // Field networkPolicy:Lcom/easysavevideo/save/network/TransferNetworkPolicy;
+     134: iconst_4
+     135: aconst_null
+     136: invokespecial #204                // Method com/easysavevideo/save/network/SystemHttpsHlsFetcher."<init>":(Lcom/easysavevideo/save/network/RequestContextLeaseStore;Lcom/easysavevideo/core/model/EpochClock;Lcom/easysavevideo/save/network/DirectConnectionFactory;Lcom/easysavevideo/save/network/TransferNetworkPolicy;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+     139: astore        5
+     141: new           #206                // class com/easysavevideo/hls/HlsPlanningBudget

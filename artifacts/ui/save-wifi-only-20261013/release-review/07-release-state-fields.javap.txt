@@ -1,0 +1,187 @@
+Final R6 Release: all declared private/static/instance fields of named classes.
+
+CLASS com.easysavevideo.app.save.AndroidSaveNetworkBackend$bind$1
+  final android.net.Network $network;
+
+CLASS com.easysavevideo.app.save.SaveWifiNetworkPolicy
+  private final com.easysavevideo.app.save.SaveNetworkBackend<N> backend;
+  private volatile com.easysavevideo.core.model.SaveSettings settings;
+  public static final int $stable;
+
+CLASS com.easysavevideo.app.save.SaveWifiNetworkPolicy$acquire$1
+  final com.easysavevideo.app.save.SaveWifiNetworkPolicy<N> this$0;
+  final N $network;
+  final com.easysavevideo.save.network.TransferNetworkBinding $delegate;
+
+CLASS com.easysavevideo.save.network.SystemHttpsConnectionFactory
+  public static final int $stable;
+
+CLASS com.easysavevideo.save.network.PublicPeerTlsSocketFactory
+  private final javax.net.ssl.SSLSocketFactory delegate;
+  private final int timeout;
+  private final com.easysavevideo.save.network.TransferNetworkBinding network;
+  public static final int $stable;
+
+CLASS com.easysavevideo.save.network.SystemHttpsDirectTransfer
+  private static final com.easysavevideo.save.network.SystemHttpsDirectTransfer$Companion Companion;
+  private final com.easysavevideo.save.network.NetworkStagingAccess staging;
+  private final com.easysavevideo.save.network.RequestContextLeaseStore requestContexts;
+  private final com.easysavevideo.core.model.EpochClock clock;
+  private final com.easysavevideo.save.network.DirectConnectionFactory connections;
+  private final com.easysavevideo.save.network.TransferNetworkPolicy networkPolicy;
+  private final java.util.concurrent.atomic.AtomicBoolean active;
+  private final java.util.concurrent.atomic.AtomicBoolean cleanupUncertain;
+  public static final int $stable;
+  private static final java.util.Set<java.lang.Integer> REDIRECTS;
+  public static final long CHECKPOINT_BYTES;
+
+CLASS com.easysavevideo.save.network.TransferGuard
+  private final java.net.HttpURLConnection connection;
+  private final com.easysavevideo.core.model.OperationContext context;
+  private final int timeout;
+  private final com.easysavevideo.core.model.EpochClock clock;
+  private final com.easysavevideo.save.network.TransferNetworkBinding network;
+  private final java.util.concurrent.atomic.AtomicBoolean finished;
+  private final java.util.concurrent.atomic.AtomicBoolean disconnectStarted;
+  private final java.util.concurrent.atomic.AtomicBoolean disconnectFailed;
+  private final java.util.concurrent.atomic.AtomicReference<com.easysavevideo.save.SaveError> reason;
+  private volatile long lastProgress;
+  private final java.lang.Thread watchdog;
+
+CLASS com.easysavevideo.save.network.SystemHttpsHlsFetcher
+  private static final com.easysavevideo.save.network.SystemHttpsHlsFetcher$Companion Companion;
+  private final com.easysavevideo.save.network.RequestContextLeaseStore requestContexts;
+  private final com.easysavevideo.core.model.EpochClock clock;
+  private final com.easysavevideo.save.network.DirectConnectionFactory connections;
+  private final com.easysavevideo.save.network.TransferNetworkPolicy networkPolicy;
+  private final java.util.concurrent.atomic.AtomicBoolean active;
+  private final java.util.concurrent.atomic.AtomicBoolean cleanupUncertain;
+  private com.easysavevideo.save.network.SystemHttpsHlsFetcher$Session session;
+  private volatile long consumed;
+  private boolean exhausted;
+  private boolean cancellationObserved;
+  public static final int $stable;
+  public static final int MAX_MANIFEST_BYTES;
+  private static final java.util.Set<java.lang.Integer> REDIRECTS;
+
+CLASS com.easysavevideo.save.network.HlsTransferGuard
+  private final java.net.HttpURLConnection connection;
+  private final com.easysavevideo.core.model.OperationContext context;
+  private final int timeout;
+  private final com.easysavevideo.core.model.EpochClock clock;
+  private final com.easysavevideo.save.network.TransferNetworkBinding network;
+  private final java.util.concurrent.atomic.AtomicBoolean finished;
+  private final java.util.concurrent.atomic.AtomicBoolean disconnectStarted;
+  private final java.util.concurrent.atomic.AtomicBoolean disconnectFailed;
+  private final java.util.concurrent.atomic.AtomicReference<com.easysavevideo.save.SaveError> reason;
+  private volatile long lastProgress;
+  private final java.lang.Thread watchdog;
+
+CLASS com.easysavevideo.save.network.RequestContextLeaseStore
+  private final com.easysavevideo.core.model.EpochClock clock;
+  private final java.util.LinkedHashMap<java.lang.String, com.easysavevideo.save.network.RequestContextLeaseStore$Lease> leases;
+  public static final int $stable;
+
+CLASS com.easysavevideo.save.network.TransportResourceOwnershipKt
+(no fields)
+
+CLASS com.easysavevideo.app.save.AndroidSaveRuntime
+  public static final com.easysavevideo.app.save.AndroidSaveRuntime$Companion Companion;
+  static final kotlin.reflect.KProperty<java.lang.Object>[] $$delegatedProperties;
+  private final android.content.Context application;
+  private final android.os.Handler main;
+  private final com.easysavevideo.app.save.PageSaveDetector detector;
+  private final com.easysavevideo.app.save.SaveWifiNetworkPolicy<android.net.Network> networkPolicy;
+  private final java.util.concurrent.ThreadPoolExecutor controls;
+  private final java.util.concurrent.ThreadPoolExecutor worker;
+  private final com.easysavevideo.core.model.EpochClock clock;
+  private final com.easysavevideo.save.SaveLimits limits;
+  private final com.easysavevideo.core.domain.FeatureGate gate;
+  private final com.easysavevideo.core.domain.EntitlementManager entitlements;
+  private final com.easysavevideo.save.network.RequestContextLeaseStore leases;
+  private com.easysavevideo.app.save.storage.AndroidSaveStorage storage;
+  private com.easysavevideo.save.SaveCoordinator coordinator;
+  private com.easysavevideo.app.recording.AndroidRecordSavePort recorder;
+  private volatile com.easysavevideo.recording.CaptureDescriptor pendingRecording;
+  private long recordingGeneration;
+  private com.easysavevideo.app.recording.RecordingForegroundService recordingService;
+  private final kotlin.properties.ReadWriteProperty recordingSnapshot$delegate;
+  private final kotlin.properties.ReadWriteProperty currentRecordingId$delegate;
+  private boolean previewUnconfirmed;
+  private com.easysavevideo.save.network.SystemHttpsDirectTransfer transport;
+  private com.easysavevideo.app.save.stream.AndroidHlsStreamPort stream;
+  private com.easysavevideo.app.save.PageSaveSelection streamSelectionContext;
+  private com.easysavevideo.app.discovery.DiscoverySaveOriginHandle streamDiscoveryOrigin;
+  private final androidx.compose.runtime.MutableState discoverySaveOutcomes$delegate;
+  private final com.easysavevideo.app.save.MediaTaskActivitySaveLinks<com.easysavevideo.app.discovery.DiscoverySaveOriginHandle> discoverySaveLinks;
+  private com.easysavevideo.core.model.CancellationSource preparationCancellation;
+  private long preparationGeneration;
+  private final kotlin.properties.ReadWriteProperty hlsPreparation$delegate;
+  private final kotlin.properties.ReadWriteProperty preparingStream$delegate;
+  private final com.easysavevideo.app.save.MediaTaskActivityTracker activityTracker;
+  private final com.easysavevideo.app.save.MediaTaskActivityHandoff initializationActivity;
+  private final com.easysavevideo.app.save.MediaTaskActivityExpiry expiryActivity;
+  private final java.util.concurrent.atomic.AtomicInteger pendingMediaCommands;
+  private final androidx.compose.runtime.MutableState mediaTaskActivity$delegate;
+  private final java.util.concurrent.atomic.AtomicBoolean executing;
+  private final java.util.concurrent.atomic.AtomicBoolean refreshing;
+  private volatile long lastExpiryCheckMillis;
+  private volatile boolean foreground;
+  private final androidx.compose.runtime.MutableState ready$delegate;
+  private final androidx.compose.runtime.MutableState libraryExports$delegate;
+  private final androidx.compose.runtime.MutableState destinations$delegate;
+  private final androidx.compose.runtime.MutableState editor$delegate;
+  private final androidx.compose.runtime.MutableState editorInitializationDiagnostic$delegate;
+  private final androidx.compose.runtime.MutableState editorInitializationStatus$delegate;
+  private final kotlin.properties.ReadWriteProperty segmentRecording$delegate;
+  private final androidx.compose.runtime.MutableState scanning$delegate;
+  private final androidx.compose.runtime.MutableState selection$delegate;
+  private final androidx.compose.runtime.MutableState showFailureBrowserReminder$delegate;
+  private final androidx.compose.runtime.MutableState records$delegate;
+  private final androidx.compose.runtime.MutableState activeTaskCount$delegate;
+  private final androidx.compose.runtime.MutableState mediaDispositions$delegate;
+  private final androidx.compose.runtime.MutableState notice$delegate;
+  private final kotlin.properties.ReadWriteProperty draining$delegate;
+  private final kotlin.properties.ReadWriteProperty networkDraining$delegate;
+  private final kotlin.properties.ReadWriteProperty pendingCommands$delegate;
+  private final com.easysavevideo.app.save.AndroidSaveRuntime$poll$1 poll;
+  public static final int $stable;
+  private static volatile com.easysavevideo.app.save.AndroidSaveRuntime instance;
+
+CLASS com.easysavevideo.app.save.stream.AndroidHlsStreamPort
+  public static final com.easysavevideo.app.save.stream.AndroidHlsStreamPort$Companion Companion;
+  private final com.easysavevideo.app.save.storage.AndroidSaveStorage storage;
+  private final com.easysavevideo.save.network.RequestContextLeaseStore leases;
+  private final com.easysavevideo.save.SaveLimits limits;
+  private final com.easysavevideo.core.model.EpochClock clock;
+  private final com.easysavevideo.save.network.TransferNetworkPolicy networkPolicy;
+  private final com.easysavevideo.app.save.stream.Media3LocalHlsEngine engine;
+  private final java.util.concurrent.atomic.AtomicBoolean active;
+  private final com.easysavevideo.app.save.stream.HlsSessionSlot<com.easysavevideo.app.save.stream.HlsPreparation> sessions;
+  private volatile boolean recoveryRequired;
+  private volatile com.easysavevideo.core.model.CancellationSource preparationCancel;
+  public static final int $stable;
+  private static final com.easysavevideo.hls.HlsLimits HLS_LIMITS;
+  private static final long MAX_SEGMENT_BYTES;
+  private static final com.easysavevideo.app.save.stream.AndroidHlsStreamPort$Companion$PREFLIGHT_PROGRESS$1 PREFLIGHT_PROGRESS;
+
+CLASS com.easysavevideo.save.network.UnrestrictedTransferNetworkBinding
+  public static final com.easysavevideo.save.network.UnrestrictedTransferNetworkBinding INSTANCE;
+  public static final int $stable;
+
+CLASS com.easysavevideo.save.network.UnrestrictedTransferNetworkPolicy
+  public static final com.easysavevideo.save.network.UnrestrictedTransferNetworkPolicy INSTANCE;
+  public static final int $stable;
+
+CLASS com.easysavevideo.save.network.SystemHttpsHlsFetcher$Session
+  private final java.lang.String sourceIdentity;
+  private final com.easysavevideo.core.model.OperationContext context;
+  private final com.easysavevideo.save.SaveLimits limits;
+  private final long totalBudget;
+
+CLASS com.easysavevideo.save.network.SystemHttpsHlsFetcher$request$guard$2
+  final java.net.HttpURLConnection $connection;
+  final com.easysavevideo.core.model.OperationContext $guardedContext;
+  final com.easysavevideo.save.SaveLimits $limits;
+  final com.easysavevideo.save.network.SystemHttpsHlsFetcher this$0;
+  final com.easysavevideo.save.network.TransferNetworkBinding $network;

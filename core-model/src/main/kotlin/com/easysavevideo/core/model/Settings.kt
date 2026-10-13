@@ -25,6 +25,7 @@ data class AppSettings(
     val discovery: DiscoverySettings = DiscoverySettings(),
     val appearance: AppearanceSettings = AppearanceSettings(),
     val editor: EditorSettings = EditorSettings(),
+    val save: SaveSettings = SaveSettings(),
 ) { init { require(schemaVersion == 1) } }
 
 /** Stable values are additive; existing v1 browser/discovery preferences remain readable. */
@@ -55,3 +56,6 @@ enum class EditorCompressionMode(val key: String) {
     }
 }
 data class EditorSettings(val defaultCompression: EditorCompressionMode = EditorCompressionMode.ORIGINAL_QUALITY)
+
+/** Download-only preference; recording and local media work never depend on it. */
+data class SaveSettings(val wifiOnly: Boolean = false)

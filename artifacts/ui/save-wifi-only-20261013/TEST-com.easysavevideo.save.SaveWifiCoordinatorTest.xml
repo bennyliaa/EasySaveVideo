@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.save.SaveWifiCoordinatorTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-13T04:46:56.621Z" hostname="b5f39a690d03" time="0.007">
+  <properties/>
+  <testcase name="unreleasedResourceCannotMasqueradeAsRecoverableWifiWait" classname="com.easysavevideo.save.SaveWifiCoordinatorTest" time="0.001"/>
+  <testcase name="explicitCancellationBeatsNetworkWait" classname="com.easysavevideo.save.SaveWifiCoordinatorTest" time="0.001"/>
+  <testcase name="policyFailurePreservesExistingDirectCheckpoint" classname="com.easysavevideo.save.SaveWifiCoordinatorTest" time="0.001"/>
+  <testcase name="gateWaitsWithoutTransferAndOnlyExplicitResumeCanContinue" classname="com.easysavevideo.save.SaveWifiCoordinatorTest" time="0.001"/>
+  <testcase name="completedTransferLocalWorkAndPublishedSuccessIgnoreLaterNetworkChanges" classname="com.easysavevideo.save.SaveWifiCoordinatorTest" time="0.001"/>
+  <testcase name="schedulingDeferralUsesNetworkReasonAndCancellationWins" classname="com.easysavevideo.save.SaveWifiCoordinatorTest" time="0.001"/>
+  <testcase name="resumeRechecksInsteadOfTreatingButtonAsPermission" classname="com.easysavevideo.save.SaveWifiCoordinatorTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.core.model.SaveSettingsTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-13T04:46:49.631Z" hostname="b5f39a690d03" time="0.001">
+  <properties/>
+  <testcase name="legacyDefaultDoesNotRestrictSaving" classname="com.easysavevideo.core.model.SaveSettingsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

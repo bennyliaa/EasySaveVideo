@@ -31,6 +31,7 @@ class RecordingCoordinatorTest {
         val verify: ((TransferResult) -> VerificationEvidence)? = null,
         val unreleased: () -> Boolean = { false },
         val limits: SaveLimits = SaveLimits(10_000_000, 30_000_000),
+        val networkGate: SaveNetworkGate = SaveNetworkGate {},
     ) {
         var captureCalls = 0; var networkCalls = 0; var verifierCalls = 0
         val commands = mutableListOf<String>()
@@ -58,9 +59,15 @@ class RecordingCoordinatorTest {
                 networkCalls++; error("Capture must never use network transfer")
             }
         }, ArtifactVerifier { _, result, context -> verificationDeadlines += context.deadlineEpochMillis; verifierCalls++; verify?.invoke(result) ?: evidence(result) },
-            store, FakeSaveClock(), limits, recording = port)
+            store, FakeSaveClock(), limits, recording = port, networkGate = networkGate)
         fun submit() = coordinator.submit(request(), operation())
         fun run(): SaveRecord { submit(); return coordinator.execute("capture")!! }
+    }
+    @Test fun wifiRestrictionDoesNotReachRecording() {
+        val h = Harness(networkGate = SaveNetworkGate { throw AssertionError("Recording must not consult Wi-Fi") })
+        h.coordinator.submit(request(), operation())
+        assertEquals(TaskState.SUCCEEDED, h.coordinator.execute("capture")!!.task.state)
+        assertEquals(1, h.captureCalls)
     }
     @Test fun typedCaptureHasNoUrlCredentialsOrNetworkByteAccounting() {
         val h = Harness(); val result = h.run()

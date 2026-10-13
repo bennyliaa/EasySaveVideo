@@ -138,6 +138,7 @@ class MainActivity : ComponentActivity() {
     private var choosing: SystemBrowserHost.FileChoice? = null
     private var settingsChanged = false
     private var settingsReady by mutableStateOf(false)
+    private var saveSettingsChanged = false
     private val picker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val choice = choosing ?: return@registerForActivityResult
         choosing = null
@@ -511,12 +512,19 @@ class MainActivity : ComponentActivity() {
                         discovery.setVisibility(isForeground, false); navigate(EsvDestination.BROWSER); browser.navigate(url)
                     })
                 else if (route == EsvDestination.SETTINGS) EsvSettingsScreen(settings,
-                    onChange = { value -> settingsChanged = true; settings = value; persistence.saveSettings(value) },
+                    onChange = { edit ->
+                        val value = edit.applyTo(settings)
+                        val changedNetwork = edit is SettingsEdit.WifiOnly
+                        if (changedNetwork) { saveSettingsChanged = true; saves.updateSaveSettings(value.save) }
+                        settingsChanged = true; settings = value
+                        persistence.saveSettings(value, confirmNetworkPreference = changedNetwork)
+                    },
                     onSources = ::openProviderManagement, onBack = { backTo() },
                     diagnostics = { DiagnosticSettings(diagnosticState, diagnostics.controller::begin, diagnostics.controller::cancel) })
                 else if (route == EsvDestination.EDITOR) LibraryUnavailableScreen(onBack = { backTo(EsvDestination.LIBRARY) })
                 else BrowserScreen(browser, settings, onSettings = {
-                    settingsChanged = true; settings = it; browser.applySettings(it.browser); persistence.saveSettings(it)
+                    settingsChanged = true; settings = settingsWithBrowser(settings, it)
+                    browser.applySettings(settings.browser); persistence.saveSettings(settings)
                 }, filePrompt = filePrompt,
                     onFileCancel = { filePrompt = null; browser.cancelFiles() },
                     onFileConfirm = { choice -> filePrompt = null; chooseFile(choice) },
@@ -558,6 +566,10 @@ class MainActivity : ComponentActivity() {
         }
         persistence.start { loaded, checkpoint, failed ->
             if (!settingsChanged) { settings = loaded; browser.applySettings(loaded.browser) }
+            // Other early preference edits must not replace a loaded Wi-Fi restriction.
+            if (!saveSettingsChanged && persistence.settingsLoaded) {
+                settings = settings.copy(save = saves.initializeSaveSettings(loaded.save))
+            }
             settingsReady = true
             discovery.updateSettings(settings.discovery)
             if (settings.browser.restoreTabs) browser.restore(checkpoint)

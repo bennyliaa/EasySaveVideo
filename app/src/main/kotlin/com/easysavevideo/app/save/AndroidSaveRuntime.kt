@@ -57,6 +57,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
     private val application = context.applicationContext
     private val main = Handler(Looper.getMainLooper())
     private val detector = PageSaveDetector()
+    private val networkPolicy = SaveWifiNetworkPolicy(AndroidSaveNetworkBackend(application))
     private val controls = executor("esv-save-control", 16)
     private val worker = executor("esv-save-transfer", 1)
     private val clock = EpochClock(System::currentTimeMillis)
@@ -139,8 +140,8 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     override fun rewind(artifact: StagingArtifact, length: Long) = storage.truncateStaging(artifact, length)
                     override fun sync(artifact: StagingArtifact) = storage.syncStaging(artifact)
                 }
-                transport = SystemHttpsDirectTransfer(staging, leases)
-                stream = AndroidHlsStreamPort(application, storage, leases, limits, clock)
+                transport = SystemHttpsDirectTransfer(staging, leases, networkPolicy = networkPolicy)
+                stream = AndroidHlsStreamPort(application, storage, leases, limits, clock, networkPolicy)
                 recorder = AndroidRecordSavePort(application, storage, { canSave(TaskMethod.RECORD) }, ::canPauseRecording) { next ->
                     main.post {
                         if (recordingSnapshot?.revision?.let { it > next.revision } != true) recordingSnapshot = next
@@ -159,7 +160,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     }
                 }
                 coordinator = SaveCoordinator(storage, transport,
-                    AndroidLocalMp4Verifier(storage::verificationFile, limits.verificationTimeoutMillis), storage, clock, limits, stream = stream, recording = recorder)
+                    AndroidLocalMp4Verifier(storage::verificationFile, limits.verificationTimeoutMillis), storage, clock, limits, stream = stream, recording = recorder, networkGate = SaveNetworkGate { networkPolicy.checkAdmission() })
                 coordinator.recover(operation(2_000))
                 val (initial, initialActiveCount) = readTaskSnapshot()
                 val dispositions = readMediaDispositions(initial)
@@ -270,6 +271,21 @@ class AndroidSaveRuntime private constructor(context: Context) {
         hlsPreparation = null; streamSelectionContext = null; preparingStream = false
     }
     fun dismissNotice() { notice = null }
+    fun initializeSaveSettings(settings: SaveSettings): SaveSettings {
+        requireMain(); return networkPolicy.initialize(settings)
+    }
+    fun updateSaveSettings(settings: SaveSettings) {
+        requireMain(); networkPolicy.update(settings)
+        // Active requests observe this immediately through their per-request binding/watchdog.
+        // Do not cancel the shared operation: recording, remux, verify and commit are local work.
+    }
+    private fun networkSaveAllowed(showNotice: Boolean = true): Boolean = try {
+        networkPolicy.checkAdmission(); true
+    } catch (_: SaveFailure) {
+        if (showNotice) main.post { notice = application.getString(if (networkPolicy.initialized)
+            com.easysavevideo.app.R.string.save_wifi_required else com.easysavevideo.app.R.string.save_wifi_settings_unavailable) }
+        false
+    }
     fun choose(candidate: PageSaveCandidate, browser: SystemBrowserHost) {
         requireMain()
         val captured = selection ?: return
@@ -284,6 +300,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         admission: OrdinaryDestinationAdmission) {
         requireMain()
         if (selection !== captured || !captured.isCurrent()) return
+        if (!networkSaveAllowed()) return
         if (!foreground || !allowed() || executing.get() || resourcesDraining()) { notice = "已有保存或系统媒体校验正在退出，请稍后再试。"; return }
         if (!SaveTaskCapacity.hasRoom(activeTaskCount, limits.maxJournalEntries)) { notice = "最多同时保留 ${limits.maxJournalEntries} 条未完成任务，当前已满。已有媒体未被删除。"; return }
         val lease = try { leaseFor(candidate.url, browser) } catch (_: Exception) { notice = "无法安全建立短期请求会话，未开始保存。"; return }
@@ -303,7 +320,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                         acceptedTaskId = result.record.task.taskId
                         discoverySaveLinks.accepted(result.record.task.taskId, saveOrigin, result.existing)
                         launched = launchExecution(result.record.task.taskId, lease)
-                        main.post { notice = "①直接下载任务已接受，请在保存任务查看进度。" }
+                        if (launched) main.post { notice = "①直接下载任务已接受，请在保存任务查看进度。" }
                     }
                     is SaveSubmission.Rejected -> { leases.revoke(lease); main.post { notice = saveErrorText(result.error) } }
                 }
@@ -317,6 +334,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         }
     }
     private fun prepareStream(candidate: PageSaveCandidate, captured: PageSaveSelection, browser: SystemBrowserHost) {
+        if (!networkSaveAllowed()) return
         if (!foreground || !ready || !canSave(TaskMethod.STREAM) || resourcesDraining() || !reserveExecution()) {
             notice = "②流媒体保存暂不可用，请检查权益并等待现有任务退出。"; return
         }
@@ -335,9 +353,10 @@ class AndroidSaveRuntime private constructor(context: Context) {
         try { worker.execute {
             try {
                 if (!foreground || !canSave(TaskMethod.STREAM)) throw SaveFailure(SaveError.INVALID_REQUEST)
+                networkPolicy.checkAdmission()
                 val prepared = stream.prepare(source, operation)
                 main.post {
-                    if (token == preparationGeneration && foreground && captured.isCurrent() && canSave(TaskMethod.STREAM)) {
+                    if (token == preparationGeneration && foreground && captured.isCurrent() && canSave(TaskMethod.STREAM) && networkSaveAllowed()) {
                         hlsPreparation = prepared
                     } else {
                         stream.discard(prepared); discoverySaveLinks.discard(saveOrigin)
@@ -382,6 +401,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         requireMain()
         if (!foreground || hlsPreparation !== prepared || streamSelectionContext !== captured || !captured.isCurrent() ||
             !canSave(TaskMethod.STREAM) || resourcesDraining()) { dismissSelection(); return }
+        if (!networkSaveAllowed()) return
         if (!reserveExecution()) { notice = "已有保存操作处理中。"; return }
         val resource = try { stream.select(prepared, identity) } catch (failure: Exception) {
             setExecuting(false); dismissSelection(); notice = saveErrorText(SaveErrors.classify(failure)); return
@@ -409,7 +429,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                         acceptedTaskId = result.record.task.taskId
                         discoverySaveLinks.accepted(result.record.task.taskId, saveOrigin, result.existing)
                         launched = launchExecution(result.record.task.taskId, resource.requestContextRef, reserved = true)
-                        main.post { notice = "②流媒体任务已接受，固定所选清晰度；仅在独立 MP4 通过验证后完成。" }
+                        if (launched) main.post { notice = "②流媒体任务已接受，固定所选清晰度；仅在独立 MP4 通过验证后完成。" }
                     }
                     is SaveSubmission.Rejected -> {
                         stream.discard(prepared); resource.requestContextRef?.let(leases::revoke)
@@ -451,6 +471,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         if (!foreground || !ready || !canResumeFinalized(record) || executing.get() || resourcesDraining()) {
             notice = "已有保存或系统媒体校验正在退出，请稍后再试。"; return
         }
+        if (record.needsNetworkTransfer() && !networkSaveAllowed()) return
         val source = coordinator.sourceForTask(taskId)
         if (record.request.method == TaskMethod.RECORD && record.transfer == null) {
             notice = "录制会话已中断，不能复用旧授权。请明确开始新录制；旧任务可放弃。"; return
@@ -487,6 +508,11 @@ class AndroidSaveRuntime private constructor(context: Context) {
             if (reserved) setExecuting(false)
             discoverySaveLinks.cancel(taskId)
             lease?.let(leases::revoke); deferUnstartedExecution(taskId); return false
+        }
+        if (coordinator.record(taskId)?.needsNetworkTransfer() == true && !networkSaveAllowed()) {
+            if (reserved) setExecuting(false)
+            discoverySaveLinks.cancel(taskId)
+            lease?.let(leases::revoke); coordinator.deferForNetwork(taskId); return false
         }
         if (!reserved && !reserveExecution()) {
             discoverySaveLinks.cancel(taskId)

@@ -24,7 +24,7 @@ class AndroidSettingsStore(context: Context) : SettingsStore {
         pageSize = prefs.getInt("discovery_page_size", 20).coerceIn(1, 100),
         repeatPolicy = RepeatPolicy.entries.firstOrNull { it.name == prefs.getString("discovery_repeat", null) } ?: RepeatPolicy.PREFER_NEW,
         mode = DiscoveryMode.entries.firstOrNull { it.name == prefs.getString("discovery_mode", null) } ?: DiscoveryMode.BALANCED,
-    ), editor = EditorSettings(EditorCompressionMode.fromKey(prefs.getString("editor_default_compression", null))),
+    ), save = SaveSettings(prefs.getBoolean("save_wifi_only", false)), editor = EditorSettings(EditorCompressionMode.fromKey(prefs.getString("editor_default_compression", null))),
     appearance = AppearanceSettings(
         ThemeMode.fromKey(prefs.getString("ui_theme_mode", null)),
         if (Build.VERSION.SDK_INT >= 33) {
@@ -32,8 +32,11 @@ class AndroidSettingsStore(context: Context) : SettingsStore {
             AppLanguage.fromTag(if (locales.isEmpty) "" else locales[0].toLanguageTag())
         } else AppLanguage.fromTag(prefs.getString("ui_language", null)),
     ))
-    override fun save(settings: AppSettings) {
+    override fun save(settings: AppSettings) = save(settings, includeSaveNetworkPreference = true)
+    /** A failed/unfinished load must not overwrite a previously enabled Wi-Fi restriction. */
+    fun save(settings: AppSettings, includeSaveNetworkPreference: Boolean) {
         check(prefs.edit().putBoolean("restore_tabs", settings.browser.restoreTabs)
+            .apply { if (includeSaveNetworkPreference) putBoolean("save_wifi_only", settings.save.wifiOnly) }
             .putInt("active_views", settings.browser.maxActiveWebViews)
             .putBoolean("javascript", settings.browser.javaScriptEnabled)
             .putBoolean("third_party_cookies", settings.browser.acceptThirdPartyCookies)

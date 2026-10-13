@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -22,7 +23,7 @@ import com.easysavevideo.app.licenses.ThirdPartyNotices
 import com.easysavevideo.app.ui.responsivePaneLayout
 
 @Composable
-fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}) {
+fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}) {
     var categoryKey by rememberSaveable { mutableStateOf<String?>(null) }
     var notices by rememberSaveable { mutableStateOf(false) }
     val noticesListState = rememberLazyListState()
@@ -71,6 +72,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
     SettingsCategory.APPEARANCE -> R.string.ui_appearance
     SettingsCategory.LANGUAGE -> R.string.ui_language
     SettingsCategory.SOURCES -> R.string.ui_sources
+    SettingsCategory.SAVE -> R.string.ui_settings_save
     SettingsCategory.EDITOR -> R.string.ui_settings_editor
     SettingsCategory.DIAGNOSTICS -> R.string.diagnostics_title
     SettingsCategory.ABOUT -> R.string.ui_settings_about
@@ -86,7 +88,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
         }
     }
 }
-@Composable private fun SettingsDetail(category:SettingsCategory,settings:AppSettings,onChange:(AppSettings)->Unit,
+@Composable private fun SettingsDetail(category:SettingsCategory,settings:AppSettings,onChange:(SettingsEdit)->Unit,
     onSources:()->Unit,diagnostics: @Composable () -> Unit,onNotices:()->Unit) {
     val v=LocalEsvVisuals.current
     EsvText(categoryLabel(category),style=v.titleTextStyle)
@@ -96,7 +98,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
             Column(Modifier.selectableGroup()) { ThemeMode.entries.forEach { mode ->
                 val label=when(mode){ThemeMode.SYSTEM->R.string.ui_system;ThemeMode.LIGHT->R.string.ui_light;ThemeMode.DARK->R.string.ui_dark}
                 Row(Modifier.fillMaxWidth().heightIn(min=48.dp).selectable(selected=settings.appearance.themeMode==mode,
-                    role=Role.RadioButton,onClick={onChange(settingsWithTheme(settings,mode))}),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
+                    role=Role.RadioButton,onClick={onChange(SettingsEdit.Theme(mode))}),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
                     RadioButton(selected=settings.appearance.themeMode==mode,onClick=null);EsvText(stringResource(label))
                 }
             } }
@@ -104,13 +106,21 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
         SettingsCategory.LANGUAGE -> Column(Modifier.selectableGroup()) { AppLanguage.entries.forEach { language ->
             val label=when(language){AppLanguage.SYSTEM->R.string.ui_system;AppLanguage.CHINESE->R.string.ui_chinese;AppLanguage.ENGLISH->R.string.ui_english}
             Row(Modifier.fillMaxWidth().heightIn(min=48.dp).selectable(selected=settings.appearance.language==language,
-                role=Role.RadioButton,onClick={onChange(settingsWithLanguage(settings,language))}),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
+                role=Role.RadioButton,onClick={onChange(SettingsEdit.Language(language))}),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
                 RadioButton(selected=settings.appearance.language==language,onClick=null);EsvText(stringResource(label))
             }
         } }
         SettingsCategory.SOURCES -> {
             EsvText(stringResource(R.string.ui_settings_sources_description),style=v.captionTextStyle)
             EsvButton(stringResource(R.string.ui_sources),onSources)
+        }
+        SettingsCategory.SAVE -> {
+            Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=settings.save.wifiOnly,role=Role.Switch,
+                onValueChange={onChange(SettingsEdit.WifiOnly(it))}), verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
+                EsvText(stringResource(R.string.ui_save_wifi_only),modifier=Modifier.weight(1f))
+                Switch(checked=settings.save.wifiOnly,onCheckedChange=null)
+            }
+            EsvText(stringResource(R.string.ui_save_wifi_description),style=v.captionTextStyle)
         }
         SettingsCategory.EDITOR -> {
             EsvText(stringResource(R.string.ui_editor_default_compression))
@@ -121,7 +131,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
                     EditorCompressionMode.SAVE_SPACE -> R.string.ui_editor_save_space
                 }
                 Row(Modifier.fillMaxWidth().heightIn(min=48.dp).selectable(selected=settings.editor.defaultCompression==mode,
-                    role=Role.RadioButton,onClick={onChange(settingsWithEditorCompression(settings,mode))}),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
+                    role=Role.RadioButton,onClick={onChange(SettingsEdit.EditorCompression(mode))}),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
                     RadioButton(selected=settings.editor.defaultCompression==mode,onClick=null);EsvText(stringResource(label))
                 }
             } }

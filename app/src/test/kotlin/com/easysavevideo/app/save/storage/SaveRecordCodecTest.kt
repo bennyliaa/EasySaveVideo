@@ -16,6 +16,12 @@ class SaveRecordCodecTest {
             TransferResult("artifact", 100, "video/mp4", 200), null, null, 150,
             DownloadCheckpoint("artifact", "a".repeat(64), 100, "\"strong-etag\"", 200), SaveWaitReason.RECOVERY, SaveError.RECOVERY_REQUIRED)
     }
+    @Test fun wifiPolicyWaitRoundTripsWithoutChangingJournalFormat() {
+        val value = record().copy(waitReason = SaveWaitReason.NETWORK, error = SaveError.WIFI_REQUIRED)
+        val encoded = SaveRecordCodec.encode(value)
+        assertEquals(6, encoded[7].toInt())
+        assertEquals(value, SaveRecordCodec.decode(encoded))
+    }
     @Test fun functionalRecoveryStateRoundTripsWithoutRequestCredentials() {
         val value = record()
         assertEquals(value, SaveRecordCodec.decode(SaveRecordCodec.encode(value)))

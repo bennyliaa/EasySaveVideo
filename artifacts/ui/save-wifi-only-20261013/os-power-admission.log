@@ -1,0 +1,15 @@
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+Traceback (most recent call last):
+  File "<SOURCE>/scripts/check-os-power-admission.py", line 17, in <module>
+    for row in git('ls-tree','-r',BASE).decode().splitlines():
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<SOURCE>/scripts/check-os-power-admission.py", line 15, in git
+    def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', 'ls-tree', '-r', 'bed084e46fcbf3bffff57177fc21306ddaeec2e1']' returned non-zero exit status 128.

@@ -1,0 +1,73 @@
+Final R6 Release compile bytecode review, 2026-10-13 UTC. Technical class/method/constants only; no runtime user data was collected.
+Command: javap -p -c -classpath <app Release classes> <named classes>
+
+Compiled from "TransportResourceOwnership.kt"
+public final class com.easysavevideo.save.network.TransportResourceOwnershipKt {
+  public static final <T> T initializeNetworkOwner(java.net.HttpURLConnection, kotlin.jvm.functions.Function0<kotlin.Unit>, kotlin.jvm.functions.Function0<? extends T>);
+    Code:
+       0: aload_0
+       1: ldc           #14                 // String connection
+       3: invokestatic  #20                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_1
+       7: ldc           #22                 // String releaseUnconfirmed
+       9: invokestatic  #20                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      12: aload_2
+      13: ldc           #24                 // String initialize
+      15: invokestatic  #20                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      18: nop
+      19: aload_2
+      20: invokeinterface #30,  1           // InterfaceMethod kotlin/jvm/functions/Function0.invoke:()Ljava/lang/Object;
+      25: astore_3
+      26: goto          57
+      29: astore        4
+      31: aload_0
+      32: aload_1
+      33: invokestatic  #34                 // Method closeUnclaimedConnection:(Ljava/net/HttpURLConnection;Lkotlin/jvm/functions/Function0;)V
+      36: aload         4
+      38: athrow
+      39: astore        4
+      41: aload_0
+      42: aload_1
+      43: invokestatic  #34                 // Method closeUnclaimedConnection:(Ljava/net/HttpURLConnection;Lkotlin/jvm/functions/Function0;)V
+      46: new           #36                 // class com/easysavevideo/save/SaveFailure
+      49: dup
+      50: getstatic     #42                 // Field com/easysavevideo/save/SaveError.UNKNOWN_TECHNICAL_ERROR:Lcom/easysavevideo/save/SaveError;
+      53: invokespecial #46                 // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      56: athrow
+      57: aload_3
+      58: areturn
+    Exception table:
+       from    to  target type
+          18    26    29   Class java/lang/Exception
+          18    26    39   Class java/lang/LinkageError
+
+  private static final void closeUnclaimedConnection(java.net.HttpURLConnection, kotlin.jvm.functions.Function0<kotlin.Unit>);
+    Code:
+       0: nop
+       1: aload_0
+       2: invokevirtual #59                 // Method java/net/HttpURLConnection.disconnect:()V
+       5: goto          46
+       8: astore_2
+       9: aload_1
+      10: invokeinterface #30,  1           // InterfaceMethod kotlin/jvm/functions/Function0.invoke:()Ljava/lang/Object;
+      15: pop
+      16: new           #36                 // class com/easysavevideo/save/SaveFailure
+      19: dup
+      20: getstatic     #62                 // Field com/easysavevideo/save/SaveError.RESOURCE_RELEASE_UNCONFIRMED:Lcom/easysavevideo/save/SaveError;
+      23: invokespecial #46                 // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      26: athrow
+      27: astore_2
+      28: aload_1
+      29: invokeinterface #30,  1           // InterfaceMethod kotlin/jvm/functions/Function0.invoke:()Ljava/lang/Object;
+      34: pop
+      35: new           #36                 // class com/easysavevideo/save/SaveFailure
+      38: dup
+      39: getstatic     #62                 // Field com/easysavevideo/save/SaveError.RESOURCE_RELEASE_UNCONFIRMED:Lcom/easysavevideo/save/SaveError;
+      42: invokespecial #46                 // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      45: athrow
+      46: return
+    Exception table:
+       from    to  target type
+           0     5     8   Class java/lang/Exception
+           0     5    27   Class java/lang/LinkageError
+}

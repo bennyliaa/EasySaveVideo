@@ -16,6 +16,7 @@ internal fun taskMethodTextResource(method: TaskMethod) = when (method) {
 }
 
 internal fun saveFailureTextResource(error: SaveError) = when (error) {
+    SaveError.WIFI_REQUIRED -> R.string.save_wifi_required
     SaveError.CANCELLED -> R.string.flow_error_cancelled
     SaveError.AUTHENTICATION_REQUIRED -> R.string.flow_error_authentication
     SaveError.TLS_REJECTED -> R.string.flow_error_tls

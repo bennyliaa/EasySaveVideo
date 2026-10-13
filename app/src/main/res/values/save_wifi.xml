@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_settings_save">Saving</string>
+    <string name="ui_save_wifi_only">Save only over Wi-Fi</string>
+    <string name="ui_save_wifi_description">Applies to Direct and Stream downloads, including playlist checks. Uses a confirmed default Wi-Fi connection; unknown routes and VPN routes wait. Recording and local editing are unaffected. After interruption, resume Direct manually; incomplete streams must be selected again from the webpage and start over.</string>
+    <string name="save_wifi_required">Saving is waiting for a confirmed default Wi-Fi connection. Connect to Wi-Fi or turn off Save only over Wi-Fi, then retry manually.</string>
+    <string name="save_wifi_stream_wait">The stream download stopped for the Wi-Fi setting. Return to the webpage and select the stream again; the new task starts over. You can cancel this task.</string>
+    <string name="save_wifi_settings_unavailable">Saving preferences are not confirmed yet. Wait for settings to load, or explicitly choose the Wi-Fi saving setting before downloading.</string>
+</resources>

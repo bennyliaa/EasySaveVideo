@@ -160,7 +160,9 @@ private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, brow
         else when (record.waitReason) {
             SaveWaitReason.BACKGROUND -> stringResource(R.string.final_copy_49)
             SaveWaitReason.AUTHENTICATION -> stringResource(R.string.final_copy_50)
-            SaveWaitReason.NETWORK -> stringResource(R.string.final_copy_51)
+            SaveWaitReason.NETWORK -> stringResource(if (record.error == SaveError.WIFI_REQUIRED) {
+                if (record.request.method == TaskMethod.STREAM && record.transfer == null) R.string.save_wifi_stream_wait else R.string.save_wifi_required
+            } else R.string.final_copy_51)
             SaveWaitReason.STORAGE -> stringResource(R.string.final_copy_52)
             else -> stringResource(R.string.final_copy_53)
         }, style = v.captionTextStyle)
@@ -283,6 +285,7 @@ internal fun taskLabel(record: SaveRecord): String = when (record.task.state) {
     TaskState.CANCELLED -> "已取消"
 }
 internal fun saveErrorText(error: SaveError): String = when (error) {
+    SaveError.WIFI_REQUIRED -> "正在等待已确认的默认 Wi-Fi 网络。连接 Wi-Fi 或关闭“仅通过 Wi-Fi 保存”后手动重试。"
     SaveError.CANCELLED -> "任务已取消，不会自动换用其他保存方式。"
     SaveError.AUTHENTICATION_REQUIRED -> "资源需要有效的登录会话或访问权限。"
     SaveError.STORAGE_FULL -> "可用存储空间不足。"

@@ -1,0 +1,2765 @@
+Final R6 Release compile bytecode review, 2026-10-13 UTC. Technical class/method/constants only; no runtime user data was collected.
+Command: javap -p -c -classpath <app Release classes> <named classes>
+
+Compiled from "SystemHttpsDirectTransfer.kt"
+public final class com.easysavevideo.save.network.SystemHttpsDirectTransfer implements com.easysavevideo.save.DirectTransferPort {
+  private static final com.easysavevideo.save.network.SystemHttpsDirectTransfer$Companion Companion;
+
+  private final com.easysavevideo.save.network.NetworkStagingAccess staging;
+
+  private final com.easysavevideo.save.network.RequestContextLeaseStore requestContexts;
+
+  private final com.easysavevideo.core.model.EpochClock clock;
+
+  private final com.easysavevideo.save.network.DirectConnectionFactory connections;
+
+  private final com.easysavevideo.save.network.TransferNetworkPolicy networkPolicy;
+
+  private final java.util.concurrent.atomic.AtomicBoolean active;
+
+  private final java.util.concurrent.atomic.AtomicBoolean cleanupUncertain;
+
+  public static final int $stable;
+
+  private static final java.util.Set<java.lang.Integer> REDIRECTS;
+
+  public static final long CHECKPOINT_BYTES;
+
+  public com.easysavevideo.save.network.SystemHttpsDirectTransfer(com.easysavevideo.save.network.NetworkStagingAccess, com.easysavevideo.save.network.RequestContextLeaseStore, com.easysavevideo.core.model.EpochClock, com.easysavevideo.save.network.DirectConnectionFactory, com.easysavevideo.save.network.TransferNetworkPolicy);
+    Code:
+       0: aload_1
+       1: ldc           #11                 // String staging
+       3: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_2
+       7: ldc           #19                 // String requestContexts
+       9: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      12: aload_3
+      13: ldc           #21                 // String clock
+      15: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      18: aload         4
+      20: ldc           #23                 // String connections
+      22: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      25: aload         5
+      27: ldc           #25                 // String networkPolicy
+      29: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      32: aload_0
+      33: invokespecial #28                 // Method java/lang/Object."<init>":()V
+      36: aload_0
+      37: aload_1
+      38: putfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+      41: aload_0
+      42: aload_2
+      43: putfield      #34                 // Field requestContexts:Lcom/easysavevideo/save/network/RequestContextLeaseStore;
+      46: aload_0
+      47: aload_3
+      48: putfield      #37                 // Field clock:Lcom/easysavevideo/core/model/EpochClock;
+      51: aload_0
+      52: aload         4
+      54: putfield      #40                 // Field connections:Lcom/easysavevideo/save/network/DirectConnectionFactory;
+      57: aload_0
+      58: aload         5
+      60: putfield      #43                 // Field networkPolicy:Lcom/easysavevideo/save/network/TransferNetworkPolicy;
+      63: aload_0
+      64: new           #45                 // class java/util/concurrent/atomic/AtomicBoolean
+      67: dup
+      68: iconst_0
+      69: invokespecial #48                 // Method java/util/concurrent/atomic/AtomicBoolean."<init>":(Z)V
+      72: putfield      #52                 // Field active:Ljava/util/concurrent/atomic/AtomicBoolean;
+      75: aload_0
+      76: new           #45                 // class java/util/concurrent/atomic/AtomicBoolean
+      79: dup
+      80: iconst_0
+      81: invokespecial #48                 // Method java/util/concurrent/atomic/AtomicBoolean."<init>":(Z)V
+      84: putfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+      87: return
+
+  public com.easysavevideo.save.network.SystemHttpsDirectTransfer(com.easysavevideo.save.network.NetworkStagingAccess, com.easysavevideo.save.network.RequestContextLeaseStore, com.easysavevideo.core.model.EpochClock, com.easysavevideo.save.network.DirectConnectionFactory, com.easysavevideo.save.network.TransferNetworkPolicy, int, kotlin.jvm.internal.DefaultConstructorMarker);
+    Code:
+       0: iload         6
+       2: iconst_2
+       3: iand
+       4: ifeq          18
+       7: new           #60                 // class com/easysavevideo/save/network/RequestContextLeaseStore
+      10: dup
+      11: aconst_null
+      12: iconst_1
+      13: aconst_null
+      14: invokespecial #63                 // Method com/easysavevideo/save/network/RequestContextLeaseStore."<init>":(Lcom/easysavevideo/core/model/EpochClock;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+      17: astore_2
+      18: iload         6
+      20: iconst_4
+      21: iand
+      22: ifeq          32
+      25: getstatic     #69                 // Field com/easysavevideo/save/network/SystemHttpsDirectTransfer$1.INSTANCE:Lcom/easysavevideo/save/network/SystemHttpsDirectTransfer$1;
+      28: checkcast     #71                 // class com/easysavevideo/core/model/EpochClock
+      31: astore_3
+      32: iload         6
+      34: bipush        8
+      36: iand
+      37: ifeq          52
+      40: new           #73                 // class com/easysavevideo/save/network/SystemHttpsConnectionFactory
+      43: dup
+      44: invokespecial #74                 // Method com/easysavevideo/save/network/SystemHttpsConnectionFactory."<init>":()V
+      47: checkcast     #76                 // class com/easysavevideo/save/network/DirectConnectionFactory
+      50: astore        4
+      52: iload         6
+      54: bipush        16
+      56: iand
+      57: ifeq          68
+      60: getstatic     #81                 // Field com/easysavevideo/save/network/UnrestrictedTransferNetworkPolicy.INSTANCE:Lcom/easysavevideo/save/network/UnrestrictedTransferNetworkPolicy;
+      63: checkcast     #83                 // class com/easysavevideo/save/network/TransferNetworkPolicy
+      66: astore        5
+      68: aload_0
+      69: aload_1
+      70: aload_2
+      71: aload_3
+      72: aload         4
+      74: aload         5
+      76: invokespecial #85                 // Method "<init>":(Lcom/easysavevideo/save/network/NetworkStagingAccess;Lcom/easysavevideo/save/network/RequestContextLeaseStore;Lcom/easysavevideo/core/model/EpochClock;Lcom/easysavevideo/save/network/DirectConnectionFactory;Lcom/easysavevideo/save/network/TransferNetworkPolicy;)V
+      79: return
+
+  public final boolean isDraining();
+    Code:
+       0: aload_0
+       1: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+       4: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+       7: ireturn
+
+  public final boolean isTransferActive();
+    Code:
+       0: aload_0
+       1: getfield      #52                 // Field active:Ljava/util/concurrent/atomic/AtomicBoolean;
+       4: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+       7: ireturn
+
+  public boolean requiresProcessRecovery();
+    Code:
+       0: aload_0
+       1: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+       4: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+       7: ireturn
+
+  public com.easysavevideo.save.TransferResult transfer(com.easysavevideo.save.SelectedMediaResource, com.easysavevideo.save.StagingArtifact, com.easysavevideo.save.DownloadCheckpoint, com.easysavevideo.core.model.OperationContext, com.easysavevideo.save.SaveLimits, com.easysavevideo.save.TransferProgress);
+    Code:
+       0: aload_1
+       1: ldc           #103                // String resource
+       3: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_2
+       7: ldc           #105                // String artifact
+       9: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      12: aload         4
+      14: ldc           #107                // String context
+      16: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      19: aload         5
+      21: ldc           #109                // String limits
+      23: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      26: aload         6
+      28: ldc           #111                // String progress
+      30: invokestatic  #17                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      33: aload_0
+      34: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+      37: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+      40: ifeq          54
+      43: new           #97                 // class com/easysavevideo/save/SaveFailure
+      46: dup
+      47: getstatic     #117                // Field com/easysavevideo/save/SaveError.RECOVERY_REQUIRED:Lcom/easysavevideo/save/SaveError;
+      50: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      53: athrow
+      54: aload_0
+      55: getfield      #52                 // Field active:Ljava/util/concurrent/atomic/AtomicBoolean;
+      58: iconst_0
+      59: iconst_1
+      60: invokevirtual #124                // Method java/util/concurrent/atomic/AtomicBoolean.compareAndSet:(ZZ)Z
+      63: ifne          77
+      66: new           #97                 // class com/easysavevideo/save/SaveFailure
+      69: dup
+      70: getstatic     #127                // Field com/easysavevideo/save/SaveError.BUSY:Lcom/easysavevideo/save/SaveError;
+      73: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      76: athrow
+      77: nop
+      78: aload_0
+      79: aload         4
+      81: invokespecial #131                // Method checkContext:(Lcom/easysavevideo/core/model/OperationContext;)V
+      84: aload_1
+      85: invokevirtual #136                // Method com/easysavevideo/save/SelectedMediaResource.getDurableReference:()Z
+      88: ifeq          102
+      91: new           #97                 // class com/easysavevideo/save/SaveFailure
+      94: dup
+      95: getstatic     #139                // Field com/easysavevideo/save/SaveError.SOURCE_RESELECTION_REQUIRED:Lcom/easysavevideo/save/SaveError;
+      98: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     101: athrow
+     102: aload_1
+     103: invokevirtual #143                // Method com/easysavevideo/save/SelectedMediaResource.getExpiresAtEpochMillis:()Ljava/lang/Long;
+     106: dup
+     107: ifnull        154
+     110: checkcast     #145                // class java/lang/Number
+     113: invokevirtual #149                // Method java/lang/Number.longValue:()J
+     116: lstore        9
+     118: iconst_0
+     119: istore        11
+     121: aload_0
+     122: getfield      #37                 // Field clock:Lcom/easysavevideo/core/model/EpochClock;
+     125: invokeinterface #152,  1          // InterfaceMethod com/easysavevideo/core/model/EpochClock.nowMillis:()J
+     130: lload         9
+     132: lcmp
+     133: iflt          140
+     136: iconst_1
+     137: goto          141
+     140: iconst_0
+     141: nop
+     142: iconst_1
+     143: if_icmpne     150
+     146: iconst_1
+     147: goto          156
+     150: iconst_0
+     151: goto          156
+     154: pop
+     155: iconst_0
+     156: ifeq          170
+     159: new           #97                 // class com/easysavevideo/save/SaveFailure
+     162: dup
+     163: getstatic     #155                // Field com/easysavevideo/save/SaveError.EXPIRED_RESOURCE:Lcom/easysavevideo/save/SaveError;
+     166: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     169: athrow
+     170: getstatic     #160                // Field com/easysavevideo/save/network/HttpsRequestPolicy.INSTANCE:Lcom/easysavevideo/save/network/HttpsRequestPolicy;
+     173: new           #162                // class java/net/URI
+     176: dup
+     177: aload_1
+     178: invokevirtual #166                // Method com/easysavevideo/save/SelectedMediaResource.getUrl:()Lcom/easysavevideo/save/SourceUrl;
+     181: invokevirtual #172                // Method com/easysavevideo/save/SourceUrl.getValue:()Ljava/lang/String;
+     184: invokespecial #175                // Method java/net/URI."<init>":(Ljava/lang/String;)V
+     187: invokevirtual #179                // Method com/easysavevideo/save/network/HttpsRequestPolicy.validate:(Ljava/net/URI;)Ljava/net/URI;
+     190: astore        7
+     192: new           #181                // class kotlin/jvm/internal/Ref$ObjectRef
+     195: dup
+     196: invokespecial #182                // Method kotlin/jvm/internal/Ref$ObjectRef."<init>":()V
+     199: astore        8
+     201: aload         8
+     203: aload         7
+     205: putfield      #186                // Field kotlin/jvm/internal/Ref$ObjectRef.element:Ljava/lang/Object;
+     208: new           #188                // class java/util/LinkedHashSet
+     211: dup
+     212: invokespecial #189                // Method java/util/LinkedHashSet."<init>":()V
+     215: checkcast     #191                // class java/util/Set
+     218: astore        9
+     220: aload_3
+     221: dup
+     222: ifnull        362
+     225: astore        11
+     227: aload         11
+     229: astore        12
+     231: iconst_0
+     232: istore        13
+     234: aload         12
+     236: invokevirtual #196                // Method com/easysavevideo/save/DownloadCheckpoint.getArtifactId:()Ljava/lang/String;
+     239: aload_2
+     240: invokevirtual #199                // Method com/easysavevideo/save/StagingArtifact.getArtifactId:()Ljava/lang/String;
+     243: invokestatic  #203                // Method kotlin/jvm/internal/Intrinsics.areEqual:(Ljava/lang/Object;Ljava/lang/Object;)Z
+     246: ifeq          349
+     249: getstatic     #160                // Field com/easysavevideo/save/network/HttpsRequestPolicy.INSTANCE:Lcom/easysavevideo/save/network/HttpsRequestPolicy;
+     252: aload         12
+     254: invokevirtual #206                // Method com/easysavevideo/save/DownloadCheckpoint.getStrongEtag:()Ljava/lang/String;
+     257: invokevirtual #210                // Method com/easysavevideo/save/network/HttpsRequestPolicy.strongEtag:(Ljava/lang/String;)Ljava/lang/String;
+     260: ifnull        349
+     263: aload         12
+     265: invokevirtual #213                // Method com/easysavevideo/save/DownloadCheckpoint.getOffset:()J
+     268: aload         12
+     270: invokevirtual #216                // Method com/easysavevideo/save/DownloadCheckpoint.getTotalBytes:()J
+     273: lcmp
+     274: ifge          349
+     277: aload         12
+     279: invokevirtual #216                // Method com/easysavevideo/save/DownloadCheckpoint.getTotalBytes:()J
+     282: aload         5
+     284: invokevirtual #221                // Method com/easysavevideo/save/SaveLimits.getMaxArtifactBytes:()J
+     287: lcmp
+     288: ifgt          349
+     291: aload_0
+     292: astore        14
+     294: iconst_0
+     295: istore        15
+     297: nop
+     298: iconst_0
+     299: istore        16
+     301: aload_0
+     302: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+     305: aload_2
+     306: invokeinterface #227,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.length:(Lcom/easysavevideo/save/StagingArtifact;)J
+     311: lstore        17
+     313: goto          334
+     316: astore        19
+     318: aload         19
+     320: athrow
+     321: astore        19
+     323: new           #97                 // class com/easysavevideo/save/SaveFailure
+     326: dup
+     327: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+     330: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     333: athrow
+     334: lload         17
+     336: aload         12
+     338: invokevirtual #213                // Method com/easysavevideo/save/DownloadCheckpoint.getOffset:()J
+     341: lcmp
+     342: iflt          349
+     345: iconst_1
+     346: goto          350
+     349: iconst_0
+     350: ifeq          358
+     353: aload         11
+     355: goto          364
+     358: aconst_null
+     359: goto          364
+     362: pop
+     363: aconst_null
+     364: astore        10
+     366: iconst_0
+     367: istore        11
+     369: aload         5
+     371: invokevirtual #234                // Method com/easysavevideo/save/SaveLimits.getMaxRedirects:()I
+     374: istore        12
+     376: iload         11
+     378: iload         12
+     380: if_icmpgt     1589
+     383: aload_0
+     384: aload         4
+     386: invokespecial #131                // Method checkContext:(Lcom/easysavevideo/core/model/OperationContext;)V
+     389: getstatic     #160                // Field com/easysavevideo/save/network/HttpsRequestPolicy.INSTANCE:Lcom/easysavevideo/save/network/HttpsRequestPolicy;
+     392: aload         8
+     394: getfield      #186                // Field kotlin/jvm/internal/Ref$ObjectRef.element:Ljava/lang/Object;
+     397: checkcast     #162                // class java/net/URI
+     400: invokevirtual #179                // Method com/easysavevideo/save/network/HttpsRequestPolicy.validate:(Ljava/net/URI;)Ljava/net/URI;
+     403: pop
+     404: aload         9
+     406: getstatic     #160                // Field com/easysavevideo/save/network/HttpsRequestPolicy.INSTANCE:Lcom/easysavevideo/save/network/HttpsRequestPolicy;
+     409: aload         8
+     411: getfield      #186                // Field kotlin/jvm/internal/Ref$ObjectRef.element:Ljava/lang/Object;
+     414: checkcast     #162                // class java/net/URI
+     417: invokevirtual #238                // Method com/easysavevideo/save/network/HttpsRequestPolicy.canonical:(Ljava/net/URI;)Ljava/lang/String;
+     420: invokeinterface #242,  2          // InterfaceMethod java/util/Set.add:(Ljava/lang/Object;)Z
+     425: ifne          439
+     428: new           #97                 // class com/easysavevideo/save/SaveFailure
+     431: dup
+     432: getstatic     #245                // Field com/easysavevideo/save/SaveError.POLICY_BLOCKED:Lcom/easysavevideo/save/SaveError;
+     435: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     438: athrow
+     439: invokestatic  #251                // Method java/net/CookieHandler.getDefault:()Ljava/net/CookieHandler;
+     442: ifnull        456
+     445: new           #97                 // class com/easysavevideo/save/SaveFailure
+     448: dup
+     449: getstatic     #245                // Field com/easysavevideo/save/SaveError.POLICY_BLOCKED:Lcom/easysavevideo/save/SaveError;
+     452: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     455: athrow
+     456: aload_0
+     457: aload         5
+     459: invokevirtual #254                // Method com/easysavevideo/save/SaveLimits.getConnectTimeoutMillis:()I
+     462: aload         4
+     464: invokespecial #258                // Method boundedTimeout:(ILcom/easysavevideo/core/model/OperationContext;)I
+     467: istore        13
+     469: nop
+     470: aload_0
+     471: getfield      #43                 // Field networkPolicy:Lcom/easysavevideo/save/network/TransferNetworkPolicy;
+     474: invokestatic  #264                // Method com/easysavevideo/save/network/TransferNetworkPolicyKt.acquireApproved:(Lcom/easysavevideo/save/network/TransferNetworkPolicy;)Lcom/easysavevideo/save/network/TransferNetworkBinding;
+     477: astore        15
+     479: goto          493
+     482: astore        16
+     484: aload_0
+     485: aload         4
+     487: invokespecial #131                // Method checkContext:(Lcom/easysavevideo/core/model/OperationContext;)V
+     490: aload         16
+     492: athrow
+     493: aload         15
+     495: astore        14
+     497: aload_0
+     498: aload         4
+     500: invokespecial #131                // Method checkContext:(Lcom/easysavevideo/core/model/OperationContext;)V
+     503: nop
+     504: aload_0
+     505: getfield      #40                 // Field connections:Lcom/easysavevideo/save/network/DirectConnectionFactory;
+     508: aload         8
+     510: getfield      #186                // Field kotlin/jvm/internal/Ref$ObjectRef.element:Ljava/lang/Object;
+     513: checkcast     #162                // class java/net/URI
+     516: iload         13
+     518: aload         14
+     520: invokeinterface #268,  4          // InterfaceMethod com/easysavevideo/save/network/DirectConnectionFactory.open:(Ljava/net/URI;ILcom/easysavevideo/save/network/TransferNetworkBinding;)Ljava/net/HttpURLConnection;
+     525: astore        16
+     527: goto          586
+     530: astore        17
+     532: aload         17
+     534: checkcast     #270                // class java/lang/Throwable
+     537: invokestatic  #274                // Method com/easysavevideo/save/network/TransferNetworkPolicyKt.releaseFailureOrNull:(Ljava/lang/Throwable;)Lcom/easysavevideo/save/SaveError;
+     540: astore        19
+     542: aload         19
+     544: ifnull        572
+     547: aload         19
+     549: astore        21
+     551: iconst_0
+     552: istore        22
+     554: aload_0
+     555: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+     558: iconst_1
+     559: invokevirtual #277                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+     562: new           #97                 // class com/easysavevideo/save/SaveFailure
+     565: dup
+     566: aload         21
+     568: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     571: athrow
+     572: aload_0
+     573: aload         4
+     575: invokespecial #131                // Method checkContext:(Lcom/easysavevideo/core/model/OperationContext;)V
+     578: aload         14
+     580: invokestatic  #281                // Method com/easysavevideo/save/network/TransferNetworkPolicyKt.requireApproved:(Lcom/easysavevideo/save/network/TransferNetworkBinding;)V
+     583: aload         17
+     585: athrow
+     586: aload         16
+     588: astore        15
+     590: aload         15
+     592: aload_0
+     593: invokedynamic #301,  0            // InvokeDynamic #0:invoke:(Lcom/easysavevideo/save/network/SystemHttpsDirectTransfer;)Lkotlin/jvm/functions/Function0;
+     598: aload         15
+     600: aload         4
+     602: aload         5
+     604: aload_0
+     605: aload         14
+     607: invokedynamic #311,  0            // InvokeDynamic #1:invoke:(Ljava/net/HttpURLConnection;Lcom/easysavevideo/core/model/OperationContext;Lcom/easysavevideo/save/SaveLimits;Lcom/easysavevideo/save/network/SystemHttpsDirectTransfer;Lcom/easysavevideo/save/network/TransferNetworkBinding;)Lkotlin/jvm/functions/Function0;
+     612: invokestatic  #317                // Method com/easysavevideo/save/network/TransportResourceOwnershipKt.initializeNetworkOwner:(Ljava/net/HttpURLConnection;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+     615: checkcast     #319                // class com/easysavevideo/save/network/TransferGuard
+     618: astore        16
+     620: nop
+     621: aload         15
+     623: iconst_0
+     624: invokevirtual #324                // Method java/net/HttpURLConnection.setInstanceFollowRedirects:(Z)V
+     627: aload         15
+     629: iconst_0
+     630: invokevirtual #327                // Method java/net/HttpURLConnection.setUseCaches:(Z)V
+     633: aload         15
+     635: iconst_1
+     636: invokevirtual #330                // Method java/net/HttpURLConnection.setDoInput:(Z)V
+     639: aload         15
+     641: iconst_0
+     642: invokevirtual #333                // Method java/net/HttpURLConnection.setDoOutput:(Z)V
+     645: aload         15
+     647: ldc_w         #335                // String GET
+     650: invokevirtual #338                // Method java/net/HttpURLConnection.setRequestMethod:(Ljava/lang/String;)V
+     653: aload         15
+     655: iload         13
+     657: invokevirtual #342                // Method java/net/HttpURLConnection.setConnectTimeout:(I)V
+     660: aload         15
+     662: aload_0
+     663: aload         5
+     665: invokevirtual #345                // Method com/easysavevideo/save/SaveLimits.getNoProgressTimeoutMillis:()I
+     668: aload         4
+     670: invokespecial #258                // Method boundedTimeout:(ILcom/easysavevideo/core/model/OperationContext;)I
+     673: invokevirtual #348                // Method java/net/HttpURLConnection.setReadTimeout:(I)V
+     676: aload         15
+     678: ldc_w         #350                // String Accept-Encoding
+     681: ldc_w         #352                // String identity
+     684: invokevirtual #356                // Method java/net/HttpURLConnection.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V
+     687: aload         15
+     689: ldc_w         #358                // String Accept
+     692: ldc_w         #360                // String video/mp4, application/mp4, application/octet-stream
+     695: invokevirtual #356                // Method java/net/HttpURLConnection.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V
+     698: aload         15
+     700: ldc_w         #362                // String Connection
+     703: ldc_w         #364                // String close
+     706: invokevirtual #356                // Method java/net/HttpURLConnection.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V
+     709: aload_0
+     710: getfield      #34                 // Field requestContexts:Lcom/easysavevideo/save/network/RequestContextLeaseStore;
+     713: aload_1
+     714: invokevirtual #368                // Method com/easysavevideo/save/SelectedMediaResource.getRequestContextRef:()Lcom/easysavevideo/save/RequestContextRef;
+     717: aload         7
+     719: aload         8
+     721: getfield      #186                // Field kotlin/jvm/internal/Ref$ObjectRef.element:Ljava/lang/Object;
+     724: checkcast     #162                // class java/net/URI
+     727: iload         11
+     729: ifne          736
+     732: iconst_1
+     733: goto          737
+     736: iconst_0
+     737: invokevirtual #372                // Method com/easysavevideo/save/network/RequestContextLeaseStore.headers$app:(Lcom/easysavevideo/save/RequestContextRef;Ljava/net/URI;Ljava/net/URI;Z)Ljava/util/Map;
+     740: astore        17
+     742: nop
+     743: iconst_0
+     744: istore        19
+     746: aload         17
+     748: invokeinterface #378,  1          // InterfaceMethod java/util/Map.entrySet:()Ljava/util/Set;
+     753: invokeinterface #382,  1          // InterfaceMethod java/util/Set.iterator:()Ljava/util/Iterator;
+     758: astore        20
+     760: aload         20
+     762: invokeinterface #387,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     767: ifeq          826
+     770: aload         20
+     772: invokeinterface #390,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     777: checkcast     #392                // class java/util/Map$Entry
+     780: astore        21
+     782: aload         21
+     784: astore        22
+     786: iconst_0
+     787: istore        23
+     789: aload         22
+     791: invokeinterface #395,  1          // InterfaceMethod java/util/Map$Entry.getKey:()Ljava/lang/Object;
+     796: checkcast     #397                // class java/lang/String
+     799: astore        24
+     801: aload         22
+     803: invokeinterface #399,  1          // InterfaceMethod java/util/Map$Entry.getValue:()Ljava/lang/Object;
+     808: checkcast     #397                // class java/lang/String
+     811: astore        25
+     813: aload         15
+     815: aload         24
+     817: aload         25
+     819: invokevirtual #356                // Method java/net/HttpURLConnection.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V
+     822: nop
+     823: goto          760
+     826: nop
+     827: aload         10
+     829: dup
+     830: ifnull        876
+     833: astore        19
+     835: aload         19
+     837: astore        20
+     839: iconst_0
+     840: istore        21
+     842: aload         20
+     844: invokevirtual #402                // Method com/easysavevideo/save/DownloadCheckpoint.getResourceIdentity:()Ljava/lang/String;
+     847: getstatic     #160                // Field com/easysavevideo/save/network/HttpsRequestPolicy.INSTANCE:Lcom/easysavevideo/save/network/HttpsRequestPolicy;
+     850: aload         8
+     852: getfield      #186                // Field kotlin/jvm/internal/Ref$ObjectRef.element:Ljava/lang/Object;
+     855: checkcast     #162                // class java/net/URI
+     858: invokevirtual #404                // Method com/easysavevideo/save/network/HttpsRequestPolicy.identity:(Ljava/net/URI;)Ljava/lang/String;
+     861: invokestatic  #203                // Method kotlin/jvm/internal/Intrinsics.areEqual:(Ljava/lang/Object;Ljava/lang/Object;)Z
+     864: ifeq          872
+     867: aload         19
+     869: goto          878
+     872: aconst_null
+     873: goto          878
+     876: pop
+     877: aconst_null
+     878: astore        17
+     880: aload         17
+     882: ifnull        916
+     885: aload         15
+     887: ldc_w         #406                // String Range
+     890: aload         17
+     892: invokevirtual #213                // Method com/easysavevideo/save/DownloadCheckpoint.getOffset:()J
+     895: invokedynamic #418,  0            // InvokeDynamic #2:makeConcatWithConstants:(J)Ljava/lang/String;
+     900: invokevirtual #356                // Method java/net/HttpURLConnection.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V
+     903: aload         15
+     905: ldc_w         #420                // String If-Range
+     908: aload         17
+     910: invokevirtual #206                // Method com/easysavevideo/save/DownloadCheckpoint.getStrongEtag:()Ljava/lang/String;
+     913: invokevirtual #356                // Method java/net/HttpURLConnection.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V
+     916: aload         16
+     918: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+     921: invokestatic  #251                // Method java/net/CookieHandler.getDefault:()Ljava/net/CookieHandler;
+     924: ifnull        938
+     927: new           #97                 // class com/easysavevideo/save/SaveFailure
+     930: dup
+     931: getstatic     #245                // Field com/easysavevideo/save/SaveError.POLICY_BLOCKED:Lcom/easysavevideo/save/SaveError;
+     934: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     937: athrow
+     938: aload         15
+     940: invokevirtual #426                // Method java/net/HttpURLConnection.getResponseCode:()I
+     943: istore        19
+     945: aload         16
+     947: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+     950: getstatic     #430                // Field REDIRECTS:Ljava/util/Set;
+     953: iload         19
+     955: invokestatic  #436                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+     958: invokeinterface #439,  2          // InterfaceMethod java/util/Set.contains:(Ljava/lang/Object;)Z
+     963: ifeq          1072
+     966: iload         11
+     968: aload         5
+     970: invokevirtual #234                // Method com/easysavevideo/save/SaveLimits.getMaxRedirects:()I
+     973: if_icmpne     987
+     976: new           #97                 // class com/easysavevideo/save/SaveFailure
+     979: dup
+     980: getstatic     #245                // Field com/easysavevideo/save/SaveError.POLICY_BLOCKED:Lcom/easysavevideo/save/SaveError;
+     983: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     986: athrow
+     987: aload         8
+     989: getstatic     #160                // Field com/easysavevideo/save/network/HttpsRequestPolicy.INSTANCE:Lcom/easysavevideo/save/network/HttpsRequestPolicy;
+     992: aload         8
+     994: getfield      #186                // Field kotlin/jvm/internal/Ref$ObjectRef.element:Ljava/lang/Object;
+     997: checkcast     #162                // class java/net/URI
+    1000: aload_0
+    1001: aload         15
+    1003: ldc_w         #441                // String Location
+    1006: invokespecial #445                // Method header:(Ljava/net/HttpURLConnection;Ljava/lang/String;)Ljava/lang/String;
+    1009: dup
+    1010: ifnonnull     1025
+    1013: pop
+    1014: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1017: dup
+    1018: getstatic     #448                // Field com/easysavevideo/save/SaveError.HTTP_FAILURE:Lcom/easysavevideo/save/SaveError;
+    1021: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1024: athrow
+    1025: invokevirtual #452                // Method com/easysavevideo/save/network/HttpsRequestPolicy.redirect:(Ljava/net/URI;Ljava/lang/String;)Ljava/net/URI;
+    1028: putfield      #186                // Field kotlin/jvm/internal/Ref$ObjectRef.element:Ljava/lang/Object;
+    1031: nop
+    1032: nop
+    1033: aload         16
+    1035: invokevirtual #455                // Method com/easysavevideo/save/network/TransferGuard.finish:()V
+    1038: goto          1054
+    1041: astore        20
+    1043: aload_0
+    1044: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1047: iconst_1
+    1048: invokevirtual #277                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+    1051: aload         20
+    1053: athrow
+    1054: aload_0
+    1055: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1058: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+    1061: ifne          1576
+    1064: aload         16
+    1066: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+    1069: goto          1576
+    1072: iload         19
+    1074: lookupswitch  { // 10
+                   200: 1164
+                   206: 1164
+                   401: 1251
+                   403: 1251
+                   404: 1262
+                   408: 1273
+                   410: 1262
+                   416: 1284
+                   429: 1295
+                   504: 1273
+               default: 1306
+          }
+    1164: aload_0
+    1165: aload         15
+    1167: iload         19
+    1169: aload         8
+    1171: getfield      #186                // Field kotlin/jvm/internal/Ref$ObjectRef.element:Ljava/lang/Object;
+    1174: checkcast     #162                // class java/net/URI
+    1177: aload_2
+    1178: aload         17
+    1180: aload         4
+    1182: aload         5
+    1184: aload         6
+    1186: aload         16
+    1188: invokespecial #459                // Method consume:(Ljava/net/HttpURLConnection;ILjava/net/URI;Lcom/easysavevideo/save/StagingArtifact;Lcom/easysavevideo/save/DownloadCheckpoint;Lcom/easysavevideo/core/model/OperationContext;Lcom/easysavevideo/save/SaveLimits;Lcom/easysavevideo/save/TransferProgress;Lcom/easysavevideo/save/network/TransferGuard;)Lcom/easysavevideo/save/TransferResult;
+    1191: astore        21
+    1193: nop
+    1194: aload         16
+    1196: invokevirtual #455                // Method com/easysavevideo/save/network/TransferGuard.finish:()V
+    1199: goto          1215
+    1202: astore        22
+    1204: aload_0
+    1205: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1208: iconst_1
+    1209: invokevirtual #277                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+    1212: aload         22
+    1214: athrow
+    1215: aload_0
+    1216: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1219: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+    1222: ifne          1230
+    1225: aload         16
+    1227: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+    1230: aload_0
+    1231: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1234: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+    1237: ifne          1248
+    1240: aload_0
+    1241: getfield      #52                 // Field active:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1244: iconst_0
+    1245: invokevirtual #277                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+    1248: aload         21
+    1250: areturn
+    1251: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1254: dup
+    1255: getstatic     #462                // Field com/easysavevideo/save/SaveError.AUTHENTICATION_REQUIRED:Lcom/easysavevideo/save/SaveError;
+    1258: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1261: athrow
+    1262: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1265: dup
+    1266: getstatic     #465                // Field com/easysavevideo/save/SaveError.HTTP_NOT_FOUND:Lcom/easysavevideo/save/SaveError;
+    1269: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1272: athrow
+    1273: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1276: dup
+    1277: getstatic     #468                // Field com/easysavevideo/save/SaveError.NETWORK_TIMEOUT:Lcom/easysavevideo/save/SaveError;
+    1280: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1283: athrow
+    1284: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1287: dup
+    1288: getstatic     #471                // Field com/easysavevideo/save/SaveError.INVALID_RANGE:Lcom/easysavevideo/save/SaveError;
+    1291: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1294: athrow
+    1295: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1298: dup
+    1299: getstatic     #474                // Field com/easysavevideo/save/SaveError.RATE_LIMITED:Lcom/easysavevideo/save/SaveError;
+    1302: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1305: athrow
+    1306: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1309: dup
+    1310: sipush        400
+    1313: iload         19
+    1315: if_icmpgt     1334
+    1318: iload         19
+    1320: sipush        500
+    1323: if_icmpge     1330
+    1326: iconst_1
+    1327: goto          1335
+    1330: iconst_0
+    1331: goto          1335
+    1334: iconst_0
+    1335: ifeq          1344
+    1338: getstatic     #477                // Field com/easysavevideo/save/SaveError.HTTP_REJECTED:Lcom/easysavevideo/save/SaveError;
+    1341: goto          1347
+    1344: getstatic     #448                // Field com/easysavevideo/save/SaveError.HTTP_FAILURE:Lcom/easysavevideo/save/SaveError;
+    1347: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1350: athrow
+    1351: astore        19
+    1353: aload         19
+    1355: checkcast     #270                // class java/lang/Throwable
+    1358: invokestatic  #274                // Method com/easysavevideo/save/network/TransferNetworkPolicyKt.releaseFailureOrNull:(Ljava/lang/Throwable;)Lcom/easysavevideo/save/SaveError;
+    1361: astore        20
+    1363: aload         20
+    1365: ifnull        1393
+    1368: aload         20
+    1370: astore        22
+    1372: iconst_0
+    1373: istore        23
+    1375: aload_0
+    1376: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1379: iconst_1
+    1380: invokevirtual #277                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+    1383: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1386: dup
+    1387: aload         22
+    1389: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1392: athrow
+    1393: aload_0
+    1394: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1397: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+    1400: ifeq          1443
+    1403: aload         19
+    1405: instanceof    #97                 // class com/easysavevideo/save/SaveFailure
+    1408: ifeq          1432
+    1411: aload         19
+    1413: checkcast     #97                 // class com/easysavevideo/save/SaveFailure
+    1416: invokevirtual #481                // Method com/easysavevideo/save/SaveFailure.getCode:()Lcom/easysavevideo/save/SaveError;
+    1419: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+    1422: if_acmpne     1432
+    1425: aload_0
+    1426: aload         19
+    1428: invokespecial #485                // Method sanitize:(Ljava/lang/Exception;)Lcom/easysavevideo/save/SaveFailure;
+    1431: athrow
+    1432: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1435: dup
+    1436: getstatic     #488                // Field com/easysavevideo/save/SaveError.RESOURCE_RELEASE_UNCONFIRMED:Lcom/easysavevideo/save/SaveError;
+    1439: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1442: athrow
+    1443: aload         16
+    1445: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+    1448: aload_0
+    1449: aload         19
+    1451: invokespecial #485                // Method sanitize:(Ljava/lang/Exception;)Lcom/easysavevideo/save/SaveFailure;
+    1454: athrow
+    1455: astore        19
+    1457: aload         19
+    1459: checkcast     #270                // class java/lang/Throwable
+    1462: invokestatic  #274                // Method com/easysavevideo/save/network/TransferNetworkPolicyKt.releaseFailureOrNull:(Ljava/lang/Throwable;)Lcom/easysavevideo/save/SaveError;
+    1465: astore        20
+    1467: aload         20
+    1469: ifnull        1497
+    1472: aload         20
+    1474: astore        22
+    1476: iconst_0
+    1477: istore        23
+    1479: aload_0
+    1480: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1483: iconst_1
+    1484: invokevirtual #277                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+    1487: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1490: dup
+    1491: aload         22
+    1493: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1496: athrow
+    1497: aload_0
+    1498: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1501: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+    1504: ifeq          1518
+    1507: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1510: dup
+    1511: getstatic     #488                // Field com/easysavevideo/save/SaveError.RESOURCE_RELEASE_UNCONFIRMED:Lcom/easysavevideo/save/SaveError;
+    1514: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1517: athrow
+    1518: aload         16
+    1520: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+    1523: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1526: dup
+    1527: getstatic     #491                // Field com/easysavevideo/save/SaveError.UNKNOWN_TECHNICAL_ERROR:Lcom/easysavevideo/save/SaveError;
+    1530: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1533: athrow
+    1534: astore        19
+    1536: nop
+    1537: aload         16
+    1539: invokevirtual #455                // Method com/easysavevideo/save/network/TransferGuard.finish:()V
+    1542: goto          1558
+    1545: astore        20
+    1547: aload_0
+    1548: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1551: iconst_1
+    1552: invokevirtual #277                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+    1555: aload         20
+    1557: athrow
+    1558: aload_0
+    1559: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1562: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+    1565: ifne          1573
+    1568: aload         16
+    1570: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+    1573: aload         19
+    1575: athrow
+    1576: iload         11
+    1578: iload         12
+    1580: if_icmpeq     1589
+    1583: iinc          11, 1
+    1586: goto          383
+    1589: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1592: dup
+    1593: getstatic     #245                // Field com/easysavevideo/save/SaveError.POLICY_BLOCKED:Lcom/easysavevideo/save/SaveError;
+    1596: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1599: athrow
+    1600: astore        8
+    1602: aload_0
+    1603: aload         8
+    1605: invokespecial #485                // Method sanitize:(Ljava/lang/Exception;)Lcom/easysavevideo/save/SaveFailure;
+    1608: athrow
+    1609: astore        8
+    1611: aload_0
+    1612: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1615: invokevirtual #90                 // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+    1618: ifne          1629
+    1621: aload_0
+    1622: getfield      #52                 // Field active:Ljava/util/concurrent/atomic/AtomicBoolean;
+    1625: iconst_0
+    1626: invokevirtual #277                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+    1629: aload         8
+    1631: athrow
+    Exception table:
+       from    to  target type
+         297   313   316   Class com/easysavevideo/save/SaveFailure
+         297   313   321   Class java/lang/Exception
+         469   479   482   Class java/lang/Exception
+         503   527   530   Class java/lang/Exception
+        1032  1038  1041   Class java/lang/Exception
+        1193  1199  1202   Class java/lang/Exception
+         620  1032  1351   Class java/lang/Exception
+        1072  1193  1351   Class java/lang/Exception
+        1251  1351  1351   Class java/lang/Exception
+         620  1032  1455   Class java/lang/LinkageError
+        1072  1193  1455   Class java/lang/LinkageError
+        1251  1351  1455   Class java/lang/LinkageError
+        1536  1542  1545   Class java/lang/Exception
+         620  1032  1534   any
+        1072  1193  1534   any
+        1251  1351  1534   any
+        1351  1455  1534   any
+        1455  1534  1534   any
+        1534  1536  1534   any
+          77  1230  1600   Class java/lang/Exception
+        1251  1600  1600   Class java/lang/Exception
+          77  1230  1609   any
+        1251  1600  1609   any
+        1600  1609  1609   any
+        1609  1611  1609   any
+
+  private final com.easysavevideo.save.TransferResult consume(java.net.HttpURLConnection, int, java.net.URI, com.easysavevideo.save.StagingArtifact, com.easysavevideo.save.DownloadCheckpoint, com.easysavevideo.core.model.OperationContext, com.easysavevideo.save.SaveLimits, com.easysavevideo.save.TransferProgress, com.easysavevideo.save.network.TransferGuard);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: ldc_w         #557                // String Content-Encoding
+       5: invokespecial #445                // Method header:(Ljava/net/HttpURLConnection;Ljava/lang/String;)Ljava/lang/String;
+       8: astore        10
+      10: aload         10
+      12: ifnull        38
+      15: aload         10
+      17: ldc_w         #352                // String identity
+      20: iconst_1
+      21: invokestatic  #563                // Method kotlin/text/StringsKt.equals:(Ljava/lang/String;Ljava/lang/String;Z)Z
+      24: ifne          38
+      27: new           #97                 // class com/easysavevideo/save/SaveFailure
+      30: dup
+      31: getstatic     #566                // Field com/easysavevideo/save/SaveError.UNSUPPORTED_MEDIA:Lcom/easysavevideo/save/SaveError;
+      34: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      37: athrow
+      38: aload_0
+      39: aload_1
+      40: ldc_w         #568                // String Content-Type
+      43: invokespecial #445                // Method header:(Ljava/net/HttpURLConnection;Ljava/lang/String;)Ljava/lang/String;
+      46: dup
+      47: ifnonnull     54
+      50: pop
+      51: ldc_w         #570                // String application/octet-stream
+      54: bipush        59
+      56: aconst_null
+      57: iconst_2
+      58: aconst_null
+      59: invokestatic  #574                // Method kotlin/text/StringsKt.substringBefore$default:(Ljava/lang/String;CLjava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+      62: checkcast     #576                // class java/lang/CharSequence
+      65: invokestatic  #580                // Method kotlin/text/StringsKt.trim:(Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
+      68: invokevirtual #583                // Method java/lang/Object.toString:()Ljava/lang/String;
+      71: astore        12
+      73: getstatic     #589                // Field java/util/Locale.ROOT:Ljava/util/Locale;
+      76: dup
+      77: ldc_w         #590                // String ROOT
+      80: invokestatic  #593                // Method kotlin/jvm/internal/Intrinsics.checkNotNullExpressionValue:(Ljava/lang/Object;Ljava/lang/String;)V
+      83: aload         12
+      85: swap
+      86: invokevirtual #597                // Method java/lang/String.toLowerCase:(Ljava/util/Locale;)Ljava/lang/String;
+      89: dup
+      90: ldc_w         #599                // String toLowerCase(...)
+      93: invokestatic  #593                // Method kotlin/jvm/internal/Intrinsics.checkNotNullExpressionValue:(Ljava/lang/Object;Ljava/lang/String;)V
+      96: astore        11
+      98: iconst_3
+      99: anewarray     #397                // class java/lang/String
+     102: astore        12
+     104: aload         12
+     106: iconst_0
+     107: ldc_w         #601                // String video/mp4
+     110: aastore
+     111: aload         12
+     113: iconst_1
+     114: ldc_w         #603                // String application/mp4
+     117: aastore
+     118: aload         12
+     120: iconst_2
+     121: ldc_w         #570                // String application/octet-stream
+     124: aastore
+     125: aload         12
+     127: invokestatic  #609                // Method kotlin/collections/SetsKt.setOf:([Ljava/lang/Object;)Ljava/util/Set;
+     130: aload         11
+     132: invokeinterface #439,  2          // InterfaceMethod java/util/Set.contains:(Ljava/lang/Object;)Z
+     137: ifne          171
+     140: new           #97                 // class com/easysavevideo/save/SaveFailure
+     143: dup
+     144: aload         11
+     146: ldc_w         #611                // String multipart/
+     149: iconst_0
+     150: iconst_2
+     151: aconst_null
+     152: invokestatic  #615                // Method kotlin/text/StringsKt.startsWith$default:(Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Z
+     155: ifeq          164
+     158: getstatic     #471                // Field com/easysavevideo/save/SaveError.INVALID_RANGE:Lcom/easysavevideo/save/SaveError;
+     161: goto          167
+     164: getstatic     #566                // Field com/easysavevideo/save/SaveError.UNSUPPORTED_MEDIA:Lcom/easysavevideo/save/SaveError;
+     167: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     170: athrow
+     171: aload_0
+     172: aload_1
+     173: ldc_w         #617                // String Transfer-Encoding
+     176: invokespecial #445                // Method header:(Ljava/net/HttpURLConnection;Ljava/lang/String;)Ljava/lang/String;
+     179: astore        12
+     181: aload         12
+     183: ifnull        209
+     186: aload         12
+     188: ldc_w         #619                // String chunked
+     191: iconst_1
+     192: invokestatic  #563                // Method kotlin/text/StringsKt.equals:(Ljava/lang/String;Ljava/lang/String;Z)Z
+     195: ifne          209
+     198: new           #97                 // class com/easysavevideo/save/SaveFailure
+     201: dup
+     202: getstatic     #622                // Field com/easysavevideo/save/SaveError.INCOMPLETE_TRANSFER:Lcom/easysavevideo/save/SaveError;
+     205: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     208: athrow
+     209: aload_0
+     210: aload_1
+     211: ldc_w         #624                // String Content-Length
+     214: invokespecial #445                // Method header:(Ljava/net/HttpURLConnection;Ljava/lang/String;)Ljava/lang/String;
+     217: dup
+     218: ifnull        238
+     221: astore        16
+     223: iconst_0
+     224: istore        17
+     226: aload_0
+     227: aload         16
+     229: invokespecial #628                // Method positiveLength:(Ljava/lang/String;)J
+     232: invokestatic  #631                // Method java/lang/Long.valueOf:(J)Ljava/lang/Long;
+     235: goto          240
+     238: pop
+     239: aconst_null
+     240: astore        13
+     242: aload         13
+     244: ifnull        263
+     247: aload         12
+     249: ifnull        263
+     252: new           #97                 // class com/easysavevideo/save/SaveFailure
+     255: dup
+     256: getstatic     #622                // Field com/easysavevideo/save/SaveError.INCOMPLETE_TRANSFER:Lcom/easysavevideo/save/SaveError;
+     259: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     262: athrow
+     263: getstatic     #160                // Field com/easysavevideo/save/network/HttpsRequestPolicy.INSTANCE:Lcom/easysavevideo/save/network/HttpsRequestPolicy;
+     266: aload_0
+     267: aload_1
+     268: ldc_w         #633                // String ETag
+     271: invokespecial #445                // Method header:(Ljava/net/HttpURLConnection;Ljava/lang/String;)Ljava/lang/String;
+     274: invokevirtual #210                // Method com/easysavevideo/save/network/HttpsRequestPolicy.strongEtag:(Ljava/lang/String;)Ljava/lang/String;
+     277: astore        14
+     279: lconst_0
+     280: lstore        15
+     282: aconst_null
+     283: astore        17
+     285: iload_2
+     286: sipush        206
+     289: if_icmpne     527
+     292: aload         5
+     294: dup
+     295: ifnonnull     310
+     298: pop
+     299: new           #97                 // class com/easysavevideo/save/SaveFailure
+     302: dup
+     303: getstatic     #471                // Field com/easysavevideo/save/SaveError.INVALID_RANGE:Lcom/easysavevideo/save/SaveError;
+     306: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     309: athrow
+     310: astore        18
+     312: aload         14
+     314: ifnull        330
+     317: aload         14
+     319: aload         18
+     321: invokevirtual #206                // Method com/easysavevideo/save/DownloadCheckpoint.getStrongEtag:()Ljava/lang/String;
+     324: invokestatic  #203                // Method kotlin/jvm/internal/Intrinsics.areEqual:(Ljava/lang/Object;Ljava/lang/Object;)Z
+     327: ifne          341
+     330: new           #97                 // class com/easysavevideo/save/SaveFailure
+     333: dup
+     334: getstatic     #636                // Field com/easysavevideo/save/SaveError.RESOURCE_CHANGED:Lcom/easysavevideo/save/SaveError;
+     337: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     340: athrow
+     341: aload_0
+     342: aload_0
+     343: aload_1
+     344: ldc_w         #638                // String Content-Range
+     347: invokespecial #445                // Method header:(Ljava/net/HttpURLConnection;Ljava/lang/String;)Ljava/lang/String;
+     350: invokespecial #642                // Method parseRange:(Ljava/lang/String;)Lcom/easysavevideo/save/network/SystemHttpsDirectTransfer$Range;
+     353: astore        19
+     355: aload         19
+     357: invokevirtual #647                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$Range.getStart:()J
+     360: aload         18
+     362: invokevirtual #213                // Method com/easysavevideo/save/DownloadCheckpoint.getOffset:()J
+     365: lcmp
+     366: ifne          430
+     369: aload         19
+     371: invokevirtual #650                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$Range.getTotal:()J
+     374: aload         18
+     376: invokevirtual #216                // Method com/easysavevideo/save/DownloadCheckpoint.getTotalBytes:()J
+     379: lcmp
+     380: ifne          430
+     383: aload         19
+     385: invokevirtual #653                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$Range.getEnd:()J
+     388: aload         19
+     390: invokevirtual #650                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$Range.getTotal:()J
+     393: lconst_1
+     394: lsub
+     395: lcmp
+     396: ifne          430
+     399: aload         13
+     401: ifnull        441
+     404: aload         13
+     406: aload         19
+     408: invokevirtual #653                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$Range.getEnd:()J
+     411: aload         19
+     413: invokevirtual #647                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$Range.getStart:()J
+     416: lsub
+     417: lconst_1
+     418: ladd
+     419: lstore        20
+     421: invokevirtual #654                // Method java/lang/Long.longValue:()J
+     424: lload         20
+     426: lcmp
+     427: ifeq          441
+     430: new           #97                 // class com/easysavevideo/save/SaveFailure
+     433: dup
+     434: getstatic     #471                // Field com/easysavevideo/save/SaveError.INVALID_RANGE:Lcom/easysavevideo/save/SaveError;
+     437: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     440: athrow
+     441: aload_0
+     442: astore        20
+     444: iconst_0
+     445: istore        21
+     447: nop
+     448: iconst_0
+     449: istore        22
+     451: aload_0
+     452: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+     455: aload         4
+     457: invokeinterface #227,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.length:(Lcom/easysavevideo/save/StagingArtifact;)J
+     462: lstore        23
+     464: goto          485
+     467: astore        25
+     469: aload         25
+     471: athrow
+     472: astore        25
+     474: new           #97                 // class com/easysavevideo/save/SaveFailure
+     477: dup
+     478: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+     481: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     484: athrow
+     485: lload         23
+     487: aload         18
+     489: invokevirtual #213                // Method com/easysavevideo/save/DownloadCheckpoint.getOffset:()J
+     492: lcmp
+     493: ifge          507
+     496: new           #97                 // class com/easysavevideo/save/SaveFailure
+     499: dup
+     500: getstatic     #471                // Field com/easysavevideo/save/SaveError.INVALID_RANGE:Lcom/easysavevideo/save/SaveError;
+     503: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     506: athrow
+     507: aload         18
+     509: invokevirtual #213                // Method com/easysavevideo/save/DownloadCheckpoint.getOffset:()J
+     512: lstore        15
+     514: aload         19
+     516: invokevirtual #650                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$Range.getTotal:()J
+     519: invokestatic  #631                // Method java/lang/Long.valueOf:(J)Ljava/lang/Long;
+     522: astore        17
+     524: goto          556
+     527: aload_0
+     528: aload_1
+     529: ldc_w         #638                // String Content-Range
+     532: invokespecial #445                // Method header:(Ljava/net/HttpURLConnection;Ljava/lang/String;)Ljava/lang/String;
+     535: ifnull        549
+     538: new           #97                 // class com/easysavevideo/save/SaveFailure
+     541: dup
+     542: getstatic     #471                // Field com/easysavevideo/save/SaveError.INVALID_RANGE:Lcom/easysavevideo/save/SaveError;
+     545: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     548: athrow
+     549: lconst_0
+     550: lstore        15
+     552: aload         13
+     554: astore        17
+     556: aload         7
+     558: invokevirtual #657                // Method com/easysavevideo/save/SaveLimits.getMaxTotalTransferBytes:()J
+     561: lstore        20
+     563: aload         6
+     565: invokevirtual #661                // Method com/easysavevideo/core/model/OperationContext.getResourceBudget:()Lcom/easysavevideo/core/model/ResourceBudget;
+     568: invokevirtual #666                // Method com/easysavevideo/core/model/ResourceBudget.getMaxBytes:()Ljava/lang/Long;
+     571: dup
+     572: ifnull        581
+     575: invokevirtual #654                // Method java/lang/Long.longValue:()J
+     578: goto          585
+     581: pop
+     582: ldc2_w        #667                // long 9223372036854775807l
+     585: lstore        22
+     587: lload         20
+     589: lload         22
+     591: invokestatic  #674                // Method java/lang/Math.min:(JJ)J
+     594: lstore        18
+     596: aload         17
+     598: ifnull        640
+     601: aload         17
+     603: invokevirtual #654                // Method java/lang/Long.longValue:()J
+     606: aload         7
+     608: invokevirtual #221                // Method com/easysavevideo/save/SaveLimits.getMaxArtifactBytes:()J
+     611: lcmp
+     612: ifgt          629
+     615: aload         17
+     617: invokevirtual #654                // Method java/lang/Long.longValue:()J
+     620: lload         15
+     622: lsub
+     623: lload         18
+     625: lcmp
+     626: ifle          640
+     629: new           #97                 // class com/easysavevideo/save/SaveFailure
+     632: dup
+     633: getstatic     #677                // Field com/easysavevideo/save/SaveError.BYTE_LIMIT_EXCEEDED:Lcom/easysavevideo/save/SaveError;
+     636: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     639: athrow
+     640: aload         17
+     642: ifnull        722
+     645: aload         17
+     647: invokevirtual #654                // Method java/lang/Long.longValue:()J
+     650: lload         15
+     652: lsub
+     653: aload_0
+     654: astore        20
+     656: lstore        62
+     658: iconst_0
+     659: istore        21
+     661: nop
+     662: iconst_0
+     663: istore        22
+     665: aload_0
+     666: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+     669: aload         4
+     671: invokeinterface #680,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.availableBytes:(Lcom/easysavevideo/save/StagingArtifact;)J
+     676: lstore        23
+     678: goto          699
+     681: astore        25
+     683: aload         25
+     685: athrow
+     686: astore        25
+     688: new           #97                 // class com/easysavevideo/save/SaveFailure
+     691: dup
+     692: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+     695: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     698: athrow
+     699: lload         23
+     701: lstore        64
+     703: lload         62
+     705: lload         64
+     707: lcmp
+     708: ifle          722
+     711: new           #97                 // class com/easysavevideo/save/SaveFailure
+     714: dup
+     715: getstatic     #683                // Field com/easysavevideo/save/SaveError.STORAGE_FULL:Lcom/easysavevideo/save/SaveError;
+     718: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     721: athrow
+     722: aload         9
+     724: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+     727: iload_2
+     728: sipush        200
+     731: if_icmpne     744
+     734: aload         8
+     736: invokeinterface #686,  1          // InterfaceMethod com/easysavevideo/save/TransferProgress.onRestart:()V
+     741: goto          848
+     744: aload_0
+     745: astore        20
+     747: iconst_0
+     748: istore        21
+     750: nop
+     751: iconst_0
+     752: istore        22
+     754: aload_0
+     755: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+     758: aload         4
+     760: invokeinterface #227,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.length:(Lcom/easysavevideo/save/StagingArtifact;)J
+     765: lstore        23
+     767: goto          788
+     770: astore        25
+     772: aload         25
+     774: athrow
+     775: astore        25
+     777: new           #97                 // class com/easysavevideo/save/SaveFailure
+     780: dup
+     781: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+     784: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     787: athrow
+     788: lload         23
+     790: lload         15
+     792: lcmp
+     793: ifle          848
+     796: aload_0
+     797: astore        20
+     799: iconst_0
+     800: istore        21
+     802: nop
+     803: iconst_0
+     804: istore        22
+     806: aload_0
+     807: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+     810: aload         4
+     812: lload         15
+     814: invokeinterface #690,  4          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.rewind:(Lcom/easysavevideo/save/StagingArtifact;J)V
+     819: getstatic     #695                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+     822: astore        23
+     824: goto          845
+     827: astore        25
+     829: aload         25
+     831: athrow
+     832: astore        25
+     834: new           #97                 // class com/easysavevideo/save/SaveFailure
+     837: dup
+     838: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+     841: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     844: athrow
+     845: aload         23
+     847: pop
+     848: lconst_0
+     849: lstore        66
+     851: lload         15
+     853: lstore        66
+     855: lconst_0
+     856: lstore        68
+     858: lconst_0
+     859: lstore        70
+     861: lload         15
+     863: lstore        70
+     865: aload         7
+     867: invokevirtual #698                // Method com/easysavevideo/save/SaveLimits.getCopyBufferBytes:()I
+     870: ldc_w         #699                // int 65536
+     873: invokestatic  #702                // Method java/lang/Math.min:(II)I
+     876: newarray       byte
+     878: astore        23
+     880: aload_0
+     881: astore        26
+     883: iconst_0
+     884: istore        27
+     886: nop
+     887: iconst_0
+     888: istore        28
+     890: aload_0
+     891: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+     894: aload         4
+     896: iload_2
+     897: sipush        206
+     900: if_icmpne     907
+     903: iconst_1
+     904: goto          908
+     907: iconst_0
+     908: invokeinterface #705,  3          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.open:(Lcom/easysavevideo/save/StagingArtifact;Z)Ljava/io/OutputStream;
+     913: astore        29
+     915: goto          936
+     918: astore        30
+     920: aload         30
+     922: athrow
+     923: astore        30
+     925: new           #97                 // class com/easysavevideo/save/SaveFailure
+     928: dup
+     929: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+     932: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     935: athrow
+     936: aload         29
+     938: astore        25
+     940: new           #707                // class com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$output$1
+     943: dup
+     944: aload         25
+     946: aload_0
+     947: invokespecial #710                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$output$1."<init>":(Ljava/io/OutputStream;Lcom/easysavevideo/save/network/SystemHttpsDirectTransfer;)V
+     950: astore        26
+     952: nop
+     953: aload_1
+     954: invokevirtual #714                // Method java/net/HttpURLConnection.getInputStream:()Ljava/io/InputStream;
+     957: astore        28
+     959: new           #716                // class com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$ownedInput$1
+     962: dup
+     963: aload_0
+     964: aload         28
+     966: invokespecial #719                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$ownedInput$1."<init>":(Lcom/easysavevideo/save/network/SystemHttpsDirectTransfer;Ljava/io/InputStream;)V
+     969: astore        27
+     971: aload         27
+     973: checkcast     #721                // class java/io/Closeable
+     976: astore        28
+     978: aconst_null
+     979: astore        29
+     981: nop
+     982: aload         28
+     984: checkcast     #716                // class com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$ownedInput$1
+     987: astore        30
+     989: iconst_0
+     990: istore        32
+     992: aload         26
+     994: checkcast     #721                // class java/io/Closeable
+     997: astore        33
+     999: aconst_null
+    1000: astore        34
+    1002: nop
+    1003: aload         33
+    1005: checkcast     #707                // class com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$output$1
+    1008: astore        35
+    1010: iconst_0
+    1011: istore        36
+    1013: nop
+    1014: aload         9
+    1016: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+    1019: nop
+    1020: aload         23
+    1022: arraylength
+    1023: i2l
+    1024: lload         18
+    1026: lload         68
+    1028: lsub
+    1029: lconst_0
+    1030: invokestatic  #726                // Method kotlin/ranges/RangesKt.coerceAtLeast:(JJ)J
+    1033: lload         18
+    1035: lload         68
+    1037: lsub
+    1038: ldc2_w        #667                // long 9223372036854775807l
+    1041: lcmp
+    1042: ifge          1049
+    1045: lconst_1
+    1046: goto          1050
+    1049: lconst_0
+    1050: ladd
+    1051: aload         7
+    1053: invokevirtual #221                // Method com/easysavevideo/save/SaveLimits.getMaxArtifactBytes:()J
+    1056: lload         66
+    1058: lsub
+    1059: lconst_0
+    1060: invokestatic  #726                // Method kotlin/ranges/RangesKt.coerceAtLeast:(JJ)J
+    1063: aload         7
+    1065: invokevirtual #221                // Method com/easysavevideo/save/SaveLimits.getMaxArtifactBytes:()J
+    1068: lload         66
+    1070: lsub
+    1071: ldc2_w        #667                // long 9223372036854775807l
+    1074: lcmp
+    1075: ifge          1082
+    1078: lconst_1
+    1079: goto          1083
+    1082: lconst_0
+    1083: ladd
+    1084: invokestatic  #674                // Method java/lang/Math.min:(JJ)J
+    1087: invokestatic  #674                // Method java/lang/Math.min:(JJ)J
+    1090: lconst_1
+    1091: invokestatic  #726                // Method kotlin/ranges/RangesKt.coerceAtLeast:(JJ)J
+    1094: l2i
+    1095: istore        37
+    1097: aload         30
+    1099: aload         23
+    1101: iconst_0
+    1102: iload         37
+    1104: invokevirtual #730                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$ownedInput$1.read:([BII)I
+    1107: istore        38
+    1109: aload         9
+    1111: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+    1114: iload         38
+    1116: iflt          1485
+    1119: iload         38
+    1121: ifne          1154
+    1124: nop
+    1125: lconst_1
+    1126: invokestatic  #736                // Method java/lang/Thread.sleep:(J)V
+    1129: goto          1151
+    1132: astore        39
+    1134: invokestatic  #740                // Method java/lang/Thread.currentThread:()Ljava/lang/Thread;
+    1137: invokevirtual #743                // Method java/lang/Thread.interrupt:()V
+    1140: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1143: dup
+    1144: getstatic     #746                // Field com/easysavevideo/save/SaveError.CANCELLED:Lcom/easysavevideo/save/SaveError;
+    1147: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1150: athrow
+    1151: goto          1013
+    1154: aload         8
+    1156: iload         38
+    1158: i2l
+    1159: invokeinterface #749,  3          // InterfaceMethod com/easysavevideo/save/TransferProgress.onBytes:(J)V
+    1164: iload         38
+    1166: i2l
+    1167: lload         18
+    1169: lload         68
+    1171: lsub
+    1172: lcmp
+    1173: ifgt          1191
+    1176: iload         38
+    1178: i2l
+    1179: aload         7
+    1181: invokevirtual #221                // Method com/easysavevideo/save/SaveLimits.getMaxArtifactBytes:()J
+    1184: lload         66
+    1186: lsub
+    1187: lcmp
+    1188: ifle          1202
+    1191: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1194: dup
+    1195: getstatic     #677                // Field com/easysavevideo/save/SaveError.BYTE_LIMIT_EXCEEDED:Lcom/easysavevideo/save/SaveError;
+    1198: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1201: athrow
+    1202: aload         17
+    1204: ifnull        1233
+    1207: iload         38
+    1209: i2l
+    1210: aload         17
+    1212: invokevirtual #654                // Method java/lang/Long.longValue:()J
+    1215: lload         66
+    1217: lsub
+    1218: lcmp
+    1219: ifle          1233
+    1222: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1225: dup
+    1226: getstatic     #622                // Field com/easysavevideo/save/SaveError.INCOMPLETE_TRANSFER:Lcom/easysavevideo/save/SaveError;
+    1229: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1232: athrow
+    1233: lload         68
+    1235: iload         38
+    1237: i2l
+    1238: ladd
+    1239: lstore        68
+    1241: aload_0
+    1242: astore        39
+    1244: iconst_0
+    1245: istore        40
+    1247: nop
+    1248: iconst_0
+    1249: istore        41
+    1251: aload_0
+    1252: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+    1255: aload         4
+    1257: invokeinterface #680,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.availableBytes:(Lcom/easysavevideo/save/StagingArtifact;)J
+    1262: lstore        42
+    1264: goto          1285
+    1267: astore        44
+    1269: aload         44
+    1271: athrow
+    1272: astore        44
+    1274: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1277: dup
+    1278: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+    1281: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1284: athrow
+    1285: lload         42
+    1287: iload         38
+    1289: i2l
+    1290: lcmp
+    1291: ifge          1305
+    1294: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1297: dup
+    1298: getstatic     #683                // Field com/easysavevideo/save/SaveError.STORAGE_FULL:Lcom/easysavevideo/save/SaveError;
+    1301: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1304: athrow
+    1305: aload_0
+    1306: astore        39
+    1308: aload         4
+    1310: astore        40
+    1312: iload         38
+    1314: i2l
+    1315: lstore        45
+    1317: iconst_0
+    1318: istore        44
+    1320: nop
+    1321: iconst_0
+    1322: istore        47
+    1324: aload         35
+    1326: aload         23
+    1328: iconst_0
+    1329: iload         38
+    1331: invokevirtual #753                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$output$1.write:([BII)V
+    1334: getstatic     #695                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+    1337: astore        48
+    1339: goto          1403
+    1342: astore        49
+    1344: aload         49
+    1346: athrow
+    1347: astore        49
+    1349: nop
+    1350: aload         39
+    1352: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+    1355: aload         40
+    1357: invokeinterface #680,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.availableBytes:(Lcom/easysavevideo/save/StagingArtifact;)J
+    1362: lstore        50
+    1364: goto          1374
+    1367: astore        52
+    1369: ldc2_w        #667                // long 9223372036854775807l
+    1372: lstore        50
+    1374: lload         50
+    1376: lstore        53
+    1378: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1381: dup
+    1382: lload         53
+    1384: lload         45
+    1386: lcmp
+    1387: ifge          1396
+    1390: getstatic     #683                // Field com/easysavevideo/save/SaveError.STORAGE_FULL:Lcom/easysavevideo/save/SaveError;
+    1393: goto          1399
+    1396: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+    1399: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1402: athrow
+    1403: aload         48
+    1405: nop
+    1406: pop
+    1407: lload         66
+    1409: iload         38
+    1411: i2l
+    1412: ladd
+    1413: lstore        66
+    1415: aload         9
+    1417: invokevirtual #756                // Method com/easysavevideo/save/network/TransferGuard.progressed:()V
+    1420: aload         14
+    1422: ifnull        1013
+    1425: aload         17
+    1427: ifnull        1013
+    1430: lload         66
+    1432: aload         17
+    1434: invokevirtual #654                // Method java/lang/Long.longValue:()J
+    1437: lcmp
+    1438: ifge          1013
+    1441: lload         66
+    1443: lload         70
+    1445: lsub
+    1446: ldc2_w        #757                // long 4194304l
+    1449: lcmp
+    1450: iflt          1013
+    1453: aload_0
+    1454: aload         35
+    1456: checkcast     #760                // class java/io/OutputStream
+    1459: aload         4
+    1461: aload_3
+    1462: lload         66
+    1464: aload         14
+    1466: aload         17
+    1468: invokevirtual #654                // Method java/lang/Long.longValue:()J
+    1471: aload         8
+    1473: aload         9
+    1475: invokespecial #763                // Method checkpoint:(Ljava/io/OutputStream;Lcom/easysavevideo/save/StagingArtifact;Ljava/net/URI;JLjava/lang/String;JLcom/easysavevideo/save/TransferProgress;Lcom/easysavevideo/save/network/TransferGuard;)V
+    1478: lload         66
+    1480: lstore        70
+    1482: goto          1013
+    1485: aload         9
+    1487: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+    1490: lload         66
+    1492: lconst_0
+    1493: lcmp
+    1494: ifeq          1513
+    1497: aload         17
+    1499: ifnull        1524
+    1502: lload         66
+    1504: aload         17
+    1506: invokevirtual #654                // Method java/lang/Long.longValue:()J
+    1509: lcmp
+    1510: ifeq          1524
+    1513: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1516: dup
+    1517: getstatic     #622                // Field com/easysavevideo/save/SaveError.INCOMPLETE_TRANSFER:Lcom/easysavevideo/save/SaveError;
+    1520: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1523: athrow
+    1524: aload_0
+    1525: astore        37
+    1527: aload         4
+    1529: astore        38
+    1531: lconst_1
+    1532: lstore        55
+    1534: iconst_0
+    1535: istore        41
+    1537: nop
+    1538: iconst_0
+    1539: istore        42
+    1541: aload         35
+    1543: invokevirtual #766                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$output$1.flush:()V
+    1546: aload_0
+    1547: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+    1550: aload         4
+    1552: invokeinterface #770,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.sync:(Lcom/easysavevideo/save/StagingArtifact;)V
+    1557: getstatic     #695                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+    1560: astore        44
+    1562: goto          1626
+    1565: astore        47
+    1567: aload         47
+    1569: athrow
+    1570: astore        47
+    1572: nop
+    1573: aload         37
+    1575: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+    1578: aload         38
+    1580: invokeinterface #680,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.availableBytes:(Lcom/easysavevideo/save/StagingArtifact;)J
+    1585: lstore        57
+    1587: goto          1597
+    1590: astore        59
+    1592: ldc2_w        #667                // long 9223372036854775807l
+    1595: lstore        57
+    1597: lload         57
+    1599: lstore        60
+    1601: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1604: dup
+    1605: lload         60
+    1607: lload         55
+    1609: lcmp
+    1610: ifge          1619
+    1613: getstatic     #683                // Field com/easysavevideo/save/SaveError.STORAGE_FULL:Lcom/easysavevideo/save/SaveError;
+    1616: goto          1622
+    1619: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+    1622: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1625: athrow
+    1626: aload         44
+    1628: nop
+    1629: pop
+    1630: aload         9
+    1632: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+    1635: nop
+    1636: getstatic     #695                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+    1639: astore        35
+    1641: aload         33
+    1643: aload         34
+    1645: invokestatic  #776                // Method kotlin/io/CloseableKt.closeFinally:(Ljava/io/Closeable;Ljava/lang/Throwable;)V
+    1648: aload         35
+    1650: goto          1674
+    1653: astore        36
+    1655: aload         36
+    1657: astore        34
+    1659: aload         36
+    1661: athrow
+    1662: astore        36
+    1664: aload         33
+    1666: aload         34
+    1668: invokestatic  #776                // Method kotlin/io/CloseableKt.closeFinally:(Ljava/io/Closeable;Ljava/lang/Throwable;)V
+    1671: aload         36
+    1673: athrow
+    1674: pop
+    1675: nop
+    1676: getstatic     #695                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+    1679: astore        30
+    1681: aload         28
+    1683: aload         29
+    1685: invokestatic  #776                // Method kotlin/io/CloseableKt.closeFinally:(Ljava/io/Closeable;Ljava/lang/Throwable;)V
+    1688: aload         30
+    1690: goto          1714
+    1693: astore        32
+    1695: aload         32
+    1697: astore        29
+    1699: aload         32
+    1701: athrow
+    1702: astore        32
+    1704: aload         28
+    1706: aload         29
+    1708: invokestatic  #776                // Method kotlin/io/CloseableKt.closeFinally:(Ljava/io/Closeable;Ljava/lang/Throwable;)V
+    1711: aload         32
+    1713: athrow
+    1714: pop
+    1715: aload         26
+    1717: invokevirtual #778                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$output$1.close:()V
+    1720: goto          1733
+    1723: astore        27
+    1725: aload         26
+    1727: invokevirtual #778                // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$consume$output$1.close:()V
+    1730: aload         27
+    1732: athrow
+    1733: aload_0
+    1734: astore        27
+    1736: iconst_0
+    1737: istore        28
+    1739: nop
+    1740: iconst_0
+    1741: istore        29
+    1743: aload_0
+    1744: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+    1747: aload         4
+    1749: invokeinterface #227,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.length:(Lcom/easysavevideo/save/StagingArtifact;)J
+    1754: lstore        30
+    1756: goto          1777
+    1759: astore        32
+    1761: aload         32
+    1763: athrow
+    1764: astore        32
+    1766: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1769: dup
+    1770: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+    1773: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1776: athrow
+    1777: lload         30
+    1779: lload         66
+    1781: lcmp
+    1782: ifeq          1796
+    1785: new           #97                 // class com/easysavevideo/save/SaveFailure
+    1788: dup
+    1789: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+    1792: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+    1795: athrow
+    1796: aload         9
+    1798: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+    1801: new           #553                // class com/easysavevideo/save/TransferResult
+    1804: dup
+    1805: aload         4
+    1807: invokevirtual #199                // Method com/easysavevideo/save/StagingArtifact.getArtifactId:()Ljava/lang/String;
+    1810: lload         66
+    1812: aload         11
+    1814: aload         17
+    1816: aconst_null
+    1817: aconst_null
+    1818: bipush        48
+    1820: aconst_null
+    1821: invokespecial #781                // Method com/easysavevideo/save/TransferResult."<init>":(Ljava/lang/String;JLjava/lang/String;Ljava/lang/Long;Lcom/easysavevideo/save/StreamArtifactExpectation;Lcom/easysavevideo/recording/RecordingArtifactExpectation;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+    1824: areturn
+    Exception table:
+       from    to  target type
+         447   464   467   Class com/easysavevideo/save/SaveFailure
+         447   464   472   Class java/lang/Exception
+         661   678   681   Class com/easysavevideo/save/SaveFailure
+         661   678   686   Class java/lang/Exception
+         750   767   770   Class com/easysavevideo/save/SaveFailure
+         750   767   775   Class java/lang/Exception
+         802   824   827   Class com/easysavevideo/save/SaveFailure
+         802   824   832   Class java/lang/Exception
+         886   915   918   Class com/easysavevideo/save/SaveFailure
+         886   915   923   Class java/lang/Exception
+        1124  1129  1132   Class java/lang/InterruptedException
+        1247  1264  1267   Class com/easysavevideo/save/SaveFailure
+        1247  1264  1272   Class java/lang/Exception
+        1320  1339  1342   Class com/easysavevideo/save/SaveFailure
+        1320  1339  1347   Class java/lang/Exception
+        1349  1364  1367   Class java/lang/Exception
+        1537  1562  1565   Class com/easysavevideo/save/SaveFailure
+        1537  1562  1570   Class java/lang/Exception
+        1572  1587  1590   Class java/lang/Exception
+        1002  1641  1653   Class java/lang/Throwable
+        1002  1641  1662   any
+        1653  1662  1662   any
+        1662  1664  1662   any
+         981  1681  1693   Class java/lang/Throwable
+         981  1681  1702   any
+        1693  1702  1702   any
+        1702  1704  1702   any
+         952  1715  1723   any
+        1723  1725  1723   any
+        1739  1756  1759   Class com/easysavevideo/save/SaveFailure
+        1739  1756  1764   Class java/lang/Exception
+
+  private final void checkpoint(java.io.OutputStream, com.easysavevideo.save.StagingArtifact, java.net.URI, long, java.lang.String, long, com.easysavevideo.save.TransferProgress, com.easysavevideo.save.network.TransferGuard);
+    Code:
+       0: aload_0
+       1: astore        11
+       3: aload_2
+       4: astore        12
+       6: lconst_1
+       7: lstore        13
+       9: iconst_0
+      10: istore        15
+      12: nop
+      13: iconst_0
+      14: istore        16
+      16: aload_1
+      17: invokevirtual #830                // Method java/io/OutputStream.flush:()V
+      20: aload_0
+      21: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+      24: aload_2
+      25: invokeinterface #770,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.sync:(Lcom/easysavevideo/save/StagingArtifact;)V
+      30: getstatic     #695                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+      33: astore        17
+      35: goto          99
+      38: astore        18
+      40: aload         18
+      42: athrow
+      43: astore        18
+      45: nop
+      46: aload         11
+      48: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+      51: aload         12
+      53: invokeinterface #680,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.availableBytes:(Lcom/easysavevideo/save/StagingArtifact;)J
+      58: lstore        19
+      60: goto          70
+      63: astore        21
+      65: ldc2_w        #667                // long 9223372036854775807l
+      68: lstore        19
+      70: lload         19
+      72: lstore        22
+      74: new           #97                 // class com/easysavevideo/save/SaveFailure
+      77: dup
+      78: lload         22
+      80: lload         13
+      82: lcmp
+      83: ifge          92
+      86: getstatic     #683                // Field com/easysavevideo/save/SaveError.STORAGE_FULL:Lcom/easysavevideo/save/SaveError;
+      89: goto          95
+      92: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+      95: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      98: athrow
+      99: nop
+     100: aload         10
+     102: invokevirtual #423                // Method com/easysavevideo/save/network/TransferGuard.check:()V
+     105: aload         9
+     107: new           #193                // class com/easysavevideo/save/DownloadCheckpoint
+     110: dup
+     111: aload_2
+     112: invokevirtual #199                // Method com/easysavevideo/save/StagingArtifact.getArtifactId:()Ljava/lang/String;
+     115: getstatic     #160                // Field com/easysavevideo/save/network/HttpsRequestPolicy.INSTANCE:Lcom/easysavevideo/save/network/HttpsRequestPolicy;
+     118: aload_3
+     119: invokevirtual #404                // Method com/easysavevideo/save/network/HttpsRequestPolicy.identity:(Ljava/net/URI;)Ljava/lang/String;
+     122: lload         4
+     124: aload         6
+     126: lload         7
+     128: invokespecial #833                // Method com/easysavevideo/save/DownloadCheckpoint."<init>":(Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;J)V
+     131: invokeinterface #837,  2          // InterfaceMethod com/easysavevideo/save/TransferProgress.onCheckpoint:(Lcom/easysavevideo/save/DownloadCheckpoint;)V
+     136: return
+    Exception table:
+       from    to  target type
+          12    35    38   Class com/easysavevideo/save/SaveFailure
+          45    60    63   Class java/lang/Exception
+          12    35    43   Class java/lang/Exception
+
+  private final void checkContext(com.easysavevideo.core.model.OperationContext);
+    Code:
+       0: aload_1
+       1: invokevirtual #842                // Method com/easysavevideo/core/model/OperationContext.getCancelToken:()Lcom/easysavevideo/core/model/CancellationToken;
+       4: invokeinterface #847,  1          // InterfaceMethod com/easysavevideo/core/model/CancellationToken.isCancelled:()Z
+       9: ifne          21
+      12: invokestatic  #740                // Method java/lang/Thread.currentThread:()Ljava/lang/Thread;
+      15: invokevirtual #850                // Method java/lang/Thread.isInterrupted:()Z
+      18: ifeq          32
+      21: new           #97                 // class com/easysavevideo/save/SaveFailure
+      24: dup
+      25: getstatic     #746                // Field com/easysavevideo/save/SaveError.CANCELLED:Lcom/easysavevideo/save/SaveError;
+      28: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      31: athrow
+      32: aload_0
+      33: getfield      #37                 // Field clock:Lcom/easysavevideo/core/model/EpochClock;
+      36: invokeinterface #152,  1          // InterfaceMethod com/easysavevideo/core/model/EpochClock.nowMillis:()J
+      41: aload_1
+      42: invokevirtual #853                // Method com/easysavevideo/core/model/OperationContext.getDeadlineEpochMillis:()J
+      45: lcmp
+      46: iflt          60
+      49: new           #97                 // class com/easysavevideo/save/SaveFailure
+      52: dup
+      53: getstatic     #856                // Field com/easysavevideo/save/SaveError.DEADLINE_EXCEEDED:Lcom/easysavevideo/save/SaveError;
+      56: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      59: athrow
+      60: return
+
+  private final int boundedTimeout(int, com.easysavevideo.core.model.OperationContext);
+    Code:
+       0: aload_0
+       1: aload_2
+       2: invokespecial #131                // Method checkContext:(Lcom/easysavevideo/core/model/OperationContext;)V
+       5: iload_1
+       6: i2l
+       7: aload_2
+       8: invokevirtual #853                // Method com/easysavevideo/core/model/OperationContext.getDeadlineEpochMillis:()J
+      11: aload_0
+      12: getfield      #37                 // Field clock:Lcom/easysavevideo/core/model/EpochClock;
+      15: invokeinterface #152,  1          // InterfaceMethod com/easysavevideo/core/model/EpochClock.nowMillis:()J
+      20: lsub
+      21: invokestatic  #674                // Method java/lang/Math.min:(JJ)J
+      24: lconst_1
+      25: ldc2_w        #857                // long 2147483647l
+      28: invokestatic  #862                // Method kotlin/ranges/RangesKt.coerceIn:(JJJ)J
+      31: l2i
+      32: ireturn
+
+  private final <T> T storage(kotlin.jvm.functions.Function0<? extends T>);
+    Code:
+       0: iconst_0
+       1: istore_2
+       2: nop
+       3: aload_1
+       4: invokeinterface #869,  1          // InterfaceMethod kotlin/jvm/functions/Function0.invoke:()Ljava/lang/Object;
+       9: astore_3
+      10: goto          31
+      13: astore        4
+      15: aload         4
+      17: athrow
+      18: astore        4
+      20: new           #97                 // class com/easysavevideo/save/SaveFailure
+      23: dup
+      24: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+      27: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      30: athrow
+      31: aload_3
+      32: areturn
+    Exception table:
+       from    to  target type
+           2    10    13   Class com/easysavevideo/save/SaveFailure
+           2    10    18   Class java/lang/Exception
+
+  private final <T> T storageWrite(com.easysavevideo.save.StagingArtifact, long, kotlin.jvm.functions.Function0<? extends T>);
+    Code:
+       0: iconst_0
+       1: istore        5
+       3: nop
+       4: aload         4
+       6: invokeinterface #869,  1          // InterfaceMethod kotlin/jvm/functions/Function0.invoke:()Ljava/lang/Object;
+      11: astore        6
+      13: goto          74
+      16: astore        7
+      18: aload         7
+      20: athrow
+      21: astore        7
+      23: nop
+      24: aload_0
+      25: getfield      #31                 // Field staging:Lcom/easysavevideo/save/network/NetworkStagingAccess;
+      28: aload_1
+      29: invokeinterface #680,  2          // InterfaceMethod com/easysavevideo/save/network/NetworkStagingAccess.availableBytes:(Lcom/easysavevideo/save/StagingArtifact;)J
+      34: lstore        10
+      36: goto          46
+      39: astore        12
+      41: ldc2_w        #667                // long 9223372036854775807l
+      44: lstore        10
+      46: lload         10
+      48: lstore        8
+      50: new           #97                 // class com/easysavevideo/save/SaveFailure
+      53: dup
+      54: lload         8
+      56: lload_2
+      57: lcmp
+      58: ifge          67
+      61: getstatic     #683                // Field com/easysavevideo/save/SaveError.STORAGE_FULL:Lcom/easysavevideo/save/SaveError;
+      64: goto          70
+      67: getstatic     #230                // Field com/easysavevideo/save/SaveError.STORAGE_FAILURE:Lcom/easysavevideo/save/SaveError;
+      70: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      73: athrow
+      74: aload         6
+      76: areturn
+    Exception table:
+       from    to  target type
+           3    13    16   Class com/easysavevideo/save/SaveFailure
+          23    36    39   Class java/lang/Exception
+           3    13    21   Class java/lang/Exception
+
+  private final com.easysavevideo.save.SaveFailure sanitize(java.lang.Exception);
+    Code:
+       0: aload_1
+       1: astore_2
+       2: aload_2
+       3: instanceof    #97                 // class com/easysavevideo/save/SaveFailure
+       6: ifeq          26
+       9: new           #97                 // class com/easysavevideo/save/SaveFailure
+      12: dup
+      13: aload_1
+      14: checkcast     #97                 // class com/easysavevideo/save/SaveFailure
+      17: invokevirtual #481                // Method com/easysavevideo/save/SaveFailure.getCode:()Lcom/easysavevideo/save/SaveError;
+      20: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      23: goto          123
+      26: aload_2
+      27: instanceof    #878                // class javax/net/ssl/SSLException
+      30: ifeq          46
+      33: new           #97                 // class com/easysavevideo/save/SaveFailure
+      36: dup
+      37: getstatic     #881                // Field com/easysavevideo/save/SaveError.TLS_REJECTED:Lcom/easysavevideo/save/SaveError;
+      40: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      43: goto          123
+      46: aload_2
+      47: instanceof    #883                // class java/net/SocketTimeoutException
+      50: ifeq          66
+      53: new           #97                 // class com/easysavevideo/save/SaveFailure
+      56: dup
+      57: getstatic     #468                // Field com/easysavevideo/save/SaveError.NETWORK_TIMEOUT:Lcom/easysavevideo/save/SaveError;
+      60: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      63: goto          123
+      66: aload_2
+      67: instanceof    #885                // class java/net/UnknownHostException
+      70: ifne          80
+      73: aload_2
+      74: instanceof    #887                // class java/net/ConnectException
+      77: ifeq          93
+      80: new           #97                 // class com/easysavevideo/save/SaveFailure
+      83: dup
+      84: getstatic     #890                // Field com/easysavevideo/save/SaveError.NETWORK_UNAVAILABLE:Lcom/easysavevideo/save/SaveError;
+      87: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      90: goto          123
+      93: aload_2
+      94: instanceof    #892                // class java/io/IOException
+      97: ifeq          113
+     100: new           #97                 // class com/easysavevideo/save/SaveFailure
+     103: dup
+     104: getstatic     #890                // Field com/easysavevideo/save/SaveError.NETWORK_UNAVAILABLE:Lcom/easysavevideo/save/SaveError;
+     107: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     110: goto          123
+     113: new           #97                 // class com/easysavevideo/save/SaveFailure
+     116: dup
+     117: getstatic     #491                // Field com/easysavevideo/save/SaveError.UNKNOWN_TECHNICAL_ERROR:Lcom/easysavevideo/save/SaveError;
+     120: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     123: areturn
+
+  private final java.lang.String header(java.net.HttpURLConnection, java.lang.String);
+    Code:
+       0: aload_1
+       1: invokevirtual #896                // Method java/net/HttpURLConnection.getHeaderFields:()Ljava/util/Map;
+       4: invokeinterface #378,  1          // InterfaceMethod java/util/Map.entrySet:()Ljava/util/Set;
+       9: checkcast     #898                // class java/lang/Iterable
+      12: astore        4
+      14: iconst_0
+      15: istore        5
+      17: aload         4
+      19: astore        6
+      21: new           #900                // class java/util/ArrayList
+      24: dup
+      25: invokespecial #901                // Method java/util/ArrayList."<init>":()V
+      28: checkcast     #903                // class java/util/Collection
+      31: astore        7
+      33: iconst_0
+      34: istore        8
+      36: aload         6
+      38: invokeinterface #904,  1          // InterfaceMethod java/lang/Iterable.iterator:()Ljava/util/Iterator;
+      43: astore        9
+      45: aload         9
+      47: invokeinterface #387,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+      52: ifeq          105
+      55: aload         9
+      57: invokeinterface #390,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+      62: astore        10
+      64: aload         10
+      66: checkcast     #392                // class java/util/Map$Entry
+      69: astore        11
+      71: iconst_0
+      72: istore        12
+      74: aload         11
+      76: invokeinterface #395,  1          // InterfaceMethod java/util/Map$Entry.getKey:()Ljava/lang/Object;
+      81: checkcast     #397                // class java/lang/String
+      84: aload_2
+      85: iconst_1
+      86: invokestatic  #563                // Method kotlin/text/StringsKt.equals:(Ljava/lang/String;Ljava/lang/String;Z)Z
+      89: ifeq          45
+      92: aload         7
+      94: aload         10
+      96: invokeinterface #905,  2          // InterfaceMethod java/util/Collection.add:(Ljava/lang/Object;)Z
+     101: pop
+     102: goto          45
+     105: aload         7
+     107: checkcast     #907                // class java/util/List
+     110: nop
+     111: checkcast     #898                // class java/lang/Iterable
+     114: astore        4
+     116: nop
+     117: iconst_0
+     118: istore        5
+     120: aload         4
+     122: astore        6
+     124: new           #900                // class java/util/ArrayList
+     127: dup
+     128: invokespecial #901                // Method java/util/ArrayList."<init>":()V
+     131: checkcast     #903                // class java/util/Collection
+     134: astore        7
+     136: iconst_0
+     137: istore        8
+     139: aload         6
+     141: invokeinterface #904,  1          // InterfaceMethod java/lang/Iterable.iterator:()Ljava/util/Iterator;
+     146: astore        9
+     148: aload         9
+     150: invokeinterface #387,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     155: ifeq          207
+     158: aload         9
+     160: invokeinterface #390,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     165: astore        10
+     167: aload         10
+     169: checkcast     #392                // class java/util/Map$Entry
+     172: astore        11
+     174: iconst_0
+     175: istore        12
+     177: aload         11
+     179: invokeinterface #399,  1          // InterfaceMethod java/util/Map$Entry.getValue:()Ljava/lang/Object;
+     184: dup
+     185: ldc_w         #909                // String <get-value>(...)
+     188: invokestatic  #593                // Method kotlin/jvm/internal/Intrinsics.checkNotNullExpressionValue:(Ljava/lang/Object;Ljava/lang/String;)V
+     191: checkcast     #898                // class java/lang/Iterable
+     194: astore        11
+     196: aload         7
+     198: aload         11
+     200: invokestatic  #915                // Method kotlin/collections/CollectionsKt.addAll:(Ljava/util/Collection;Ljava/lang/Iterable;)Z
+     203: pop
+     204: goto          148
+     207: aload         7
+     209: checkcast     #907                // class java/util/List
+     212: nop
+     213: astore_3
+     214: aload_3
+     215: invokeinterface #918,  1          // InterfaceMethod java/util/List.isEmpty:()Z
+     220: ifeq          225
+     223: aconst_null
+     224: areturn
+     225: aload_3
+     226: invokeinterface #921,  1          // InterfaceMethod java/util/List.size:()I
+     231: iconst_1
+     232: if_icmpne     342
+     235: aload_3
+     236: invokestatic  #925                // Method kotlin/collections/CollectionsKt.single:(Ljava/util/List;)Ljava/lang/Object;
+     239: checkcast     #397                // class java/lang/String
+     242: invokevirtual #927                // Method java/lang/String.length:()I
+     245: sipush        8192
+     248: if_icmpgt     342
+     251: aload_3
+     252: invokestatic  #925                // Method kotlin/collections/CollectionsKt.single:(Ljava/util/List;)Ljava/lang/Object;
+     255: dup
+     256: ldc_w         #929                // String single(...)
+     259: invokestatic  #593                // Method kotlin/jvm/internal/Intrinsics.checkNotNullExpressionValue:(Ljava/lang/Object;Ljava/lang/String;)V
+     262: checkcast     #576                // class java/lang/CharSequence
+     265: astore        4
+     267: iconst_0
+     268: istore        5
+     270: iconst_0
+     271: istore        6
+     273: iload         6
+     275: aload         4
+     277: invokeinterface #930,  1          // InterfaceMethod java/lang/CharSequence.length:()I
+     282: if_icmpge     338
+     285: aload         4
+     287: iload         6
+     289: invokeinterface #934,  2          // InterfaceMethod java/lang/CharSequence.charAt:(I)C
+     294: istore        7
+     296: iload         7
+     298: istore        8
+     300: iconst_0
+     301: istore        9
+     303: iload         8
+     305: bipush        32
+     307: invokestatic  #937                // Method kotlin/jvm/internal/Intrinsics.compare:(II)I
+     310: iflt          320
+     313: iload         8
+     315: bipush        127
+     317: if_icmpne     324
+     320: iconst_1
+     321: goto          325
+     324: iconst_0
+     325: ifeq          332
+     328: iconst_1
+     329: goto          339
+     332: iinc          6, 1
+     335: goto          273
+     338: iconst_0
+     339: ifeq          353
+     342: new           #97                 // class com/easysavevideo/save/SaveFailure
+     345: dup
+     346: getstatic     #448                // Field com/easysavevideo/save/SaveError.HTTP_FAILURE:Lcom/easysavevideo/save/SaveError;
+     349: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     352: athrow
+     353: aload_3
+     354: invokestatic  #925                // Method kotlin/collections/CollectionsKt.single:(Ljava/util/List;)Ljava/lang/Object;
+     357: dup
+     358: ldc_w         #929                // String single(...)
+     361: invokestatic  #593                // Method kotlin/jvm/internal/Intrinsics.checkNotNullExpressionValue:(Ljava/lang/Object;Ljava/lang/String;)V
+     364: checkcast     #397                // class java/lang/String
+     367: checkcast     #576                // class java/lang/CharSequence
+     370: invokestatic  #580                // Method kotlin/text/StringsKt.trim:(Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
+     373: invokevirtual #583                // Method java/lang/Object.toString:()Ljava/lang/String;
+     376: areturn
+
+  private final long positiveLength(java.lang.String);
+    Code:
+       0: aload_1
+       1: checkcast     #576                // class java/lang/CharSequence
+       4: astore_2
+       5: new           #961                // class kotlin/text/Regex
+       8: dup
+       9: ldc_w         #963                // String [0-9]{1,19}
+      12: invokespecial #964                // Method kotlin/text/Regex."<init>":(Ljava/lang/String;)V
+      15: aload_2
+      16: invokevirtual #968                // Method kotlin/text/Regex.matches:(Ljava/lang/CharSequence;)Z
+      19: ifne          33
+      22: new           #97                 // class com/easysavevideo/save/SaveFailure
+      25: dup
+      26: getstatic     #622                // Field com/easysavevideo/save/SaveError.INCOMPLETE_TRANSFER:Lcom/easysavevideo/save/SaveError;
+      29: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      32: athrow
+      33: aload_1
+      34: invokestatic  #972                // Method kotlin/text/StringsKt.toLongOrNull:(Ljava/lang/String;)Ljava/lang/Long;
+      37: dup
+      38: ifnull        84
+      41: astore_3
+      42: aload_3
+      43: checkcast     #145                // class java/lang/Number
+      46: invokevirtual #149                // Method java/lang/Number.longValue:()J
+      49: lstore        4
+      51: iconst_0
+      52: istore        6
+      54: lload         4
+      56: lconst_0
+      57: lcmp
+      58: iflt          65
+      61: iconst_1
+      62: goto          66
+      65: iconst_0
+      66: ifeq          73
+      69: aload_3
+      70: goto          74
+      73: aconst_null
+      74: dup
+      75: ifnull        84
+      78: invokevirtual #654                // Method java/lang/Long.longValue:()J
+      81: goto          96
+      84: pop
+      85: new           #97                 // class com/easysavevideo/save/SaveFailure
+      88: dup
+      89: getstatic     #622                // Field com/easysavevideo/save/SaveError.INCOMPLETE_TRANSFER:Lcom/easysavevideo/save/SaveError;
+      92: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      95: athrow
+      96: lreturn
+
+  private final com.easysavevideo.save.network.SystemHttpsDirectTransfer$Range parseRange(java.lang.String);
+    Code:
+       0: aload_1
+       1: dup
+       2: ifnull        33
+       5: astore        5
+       7: iconst_0
+       8: istore        6
+      10: new           #961                // class kotlin/text/Regex
+      13: dup
+      14: ldc_w         #975                // String bytes ([0-9]{1,19})-([0-9]{1,19})/([0-9]{1,19})
+      17: invokespecial #964                // Method kotlin/text/Regex."<init>":(Ljava/lang/String;)V
+      20: aload         5
+      22: checkcast     #576                // class java/lang/CharSequence
+      25: invokevirtual #979                // Method kotlin/text/Regex.matchEntire:(Ljava/lang/CharSequence;)Lkotlin/text/MatchResult;
+      28: nop
+      29: dup
+      30: ifnonnull     45
+      33: pop
+      34: new           #97                 // class com/easysavevideo/save/SaveFailure
+      37: dup
+      38: getstatic     #471                // Field com/easysavevideo/save/SaveError.INVALID_RANGE:Lcom/easysavevideo/save/SaveError;
+      41: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      44: athrow
+      45: astore_2
+      46: aload_2
+      47: invokeinterface #985,  1          // InterfaceMethod kotlin/text/MatchResult.getGroupValues:()Ljava/util/List;
+      52: checkcast     #898                // class java/lang/Iterable
+      55: iconst_1
+      56: invokestatic  #989                // Method kotlin/collections/CollectionsKt.drop:(Ljava/lang/Iterable;I)Ljava/util/List;
+      59: checkcast     #898                // class java/lang/Iterable
+      62: astore        4
+      64: iconst_0
+      65: istore        5
+      67: aload         4
+      69: astore        6
+      71: new           #900                // class java/util/ArrayList
+      74: dup
+      75: aload         4
+      77: bipush        10
+      79: invokestatic  #993                // Method kotlin/collections/CollectionsKt.collectionSizeOrDefault:(Ljava/lang/Iterable;I)I
+      82: invokespecial #995                // Method java/util/ArrayList."<init>":(I)V
+      85: checkcast     #903                // class java/util/Collection
+      88: astore        7
+      90: iconst_0
+      91: istore        8
+      93: aload         6
+      95: invokeinterface #904,  1          // InterfaceMethod java/lang/Iterable.iterator:()Ljava/util/Iterator;
+     100: astore        9
+     102: aload         9
+     104: invokeinterface #387,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     109: ifeq          177
+     112: aload         9
+     114: invokeinterface #390,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     119: astore        10
+     121: aload         7
+     123: aload         10
+     125: checkcast     #397                // class java/lang/String
+     128: astore        11
+     130: astore        13
+     132: iconst_0
+     133: istore        12
+     135: aload         11
+     137: invokestatic  #972                // Method kotlin/text/StringsKt.toLongOrNull:(Ljava/lang/String;)Ljava/lang/Long;
+     140: dup
+     141: ifnull        150
+     144: invokevirtual #654                // Method java/lang/Long.longValue:()J
+     147: goto          162
+     150: pop
+     151: new           #97                 // class com/easysavevideo/save/SaveFailure
+     154: dup
+     155: getstatic     #471                // Field com/easysavevideo/save/SaveError.INVALID_RANGE:Lcom/easysavevideo/save/SaveError;
+     158: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     161: athrow
+     162: invokestatic  #631                // Method java/lang/Long.valueOf:(J)Ljava/lang/Long;
+     165: aload         13
+     167: swap
+     168: invokeinterface #905,  2          // InterfaceMethod java/util/Collection.add:(Ljava/lang/Object;)Z
+     173: pop
+     174: goto          102
+     177: aload         7
+     179: checkcast     #907                // class java/util/List
+     182: nop
+     183: astore_3
+     184: aload_3
+     185: iconst_0
+     186: invokeinterface #998,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     191: checkcast     #145                // class java/lang/Number
+     194: invokevirtual #149                // Method java/lang/Number.longValue:()J
+     197: lstore        4
+     199: aload_3
+     200: iconst_1
+     201: invokeinterface #998,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     206: checkcast     #145                // class java/lang/Number
+     209: invokevirtual #149                // Method java/lang/Number.longValue:()J
+     212: lstore        6
+     214: aload_3
+     215: iconst_2
+     216: invokeinterface #998,  2          // InterfaceMethod java/util/List.get:(I)Ljava/lang/Object;
+     221: checkcast     #145                // class java/lang/Number
+     224: invokevirtual #149                // Method java/lang/Number.longValue:()J
+     227: lstore        8
+     229: lload         4
+     231: lconst_0
+     232: lcmp
+     233: iflt          252
+     236: lload         6
+     238: lload         4
+     240: lcmp
+     241: iflt          252
+     244: lload         8
+     246: lload         6
+     248: lcmp
+     249: ifgt          263
+     252: new           #97                 // class com/easysavevideo/save/SaveFailure
+     255: dup
+     256: getstatic     #471                // Field com/easysavevideo/save/SaveError.INVALID_RANGE:Lcom/easysavevideo/save/SaveError;
+     259: invokespecial #120                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+     262: athrow
+     263: new           #644                // class com/easysavevideo/save/network/SystemHttpsDirectTransfer$Range
+     266: dup
+     267: lload         4
+     269: lload         6
+     271: lload         8
+     273: invokespecial #1001               // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$Range."<init>":(JJJ)V
+     276: areturn
+
+  public java.lang.String toString();
+    Code:
+       0: ldc_w         #1013               // String SystemHttpsDirectTransfer([redacted])
+       3: areturn
+
+  private static final kotlin.Unit transfer$lambda$4(com.easysavevideo.save.network.SystemHttpsDirectTransfer);
+    Code:
+       0: aload_0
+       1: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+       4: iconst_1
+       5: invokevirtual #277                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+       8: getstatic     #695                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+      11: areturn
+
+  private static final com.easysavevideo.save.network.TransferGuard transfer$lambda$5(java.net.HttpURLConnection, com.easysavevideo.core.model.OperationContext, com.easysavevideo.save.SaveLimits, com.easysavevideo.save.network.SystemHttpsDirectTransfer, com.easysavevideo.save.network.TransferNetworkBinding);
+    Code:
+       0: new           #319                // class com/easysavevideo/save/network/TransferGuard
+       3: dup
+       4: aload_0
+       5: aload_1
+       6: aload_2
+       7: invokevirtual #345                // Method com/easysavevideo/save/SaveLimits.getNoProgressTimeoutMillis:()I
+      10: aload_3
+      11: getfield      #37                 // Field clock:Lcom/easysavevideo/core/model/EpochClock;
+      14: aload         4
+      16: invokespecial #1017               // Method com/easysavevideo/save/network/TransferGuard."<init>":(Ljava/net/HttpURLConnection;Lcom/easysavevideo/core/model/OperationContext;ILcom/easysavevideo/core/model/EpochClock;Lcom/easysavevideo/save/network/TransferNetworkBinding;)V
+      19: areturn
+
+  public static final java.util.concurrent.atomic.AtomicBoolean access$getCleanupUncertain$p(com.easysavevideo.save.network.SystemHttpsDirectTransfer);
+    Code:
+       0: aload_0
+       1: getfield      #55                 // Field cleanupUncertain:Ljava/util/concurrent/atomic/AtomicBoolean;
+       4: areturn
+
+  public static final java.util.Set access$getREDIRECTS$cp();
+    Code:
+       0: getstatic     #430                // Field REDIRECTS:Ljava/util/Set;
+       3: areturn
+
+  static {};
+    Code:
+       0: new           #1028               // class com/easysavevideo/save/network/SystemHttpsDirectTransfer$Companion
+       3: dup
+       4: aconst_null
+       5: invokespecial #1031               // Method com/easysavevideo/save/network/SystemHttpsDirectTransfer$Companion."<init>":(Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+       8: putstatic     #1035               // Field Companion:Lcom/easysavevideo/save/network/SystemHttpsDirectTransfer$Companion;
+      11: bipush        8
+      13: putstatic     #1038               // Field $stable:I
+      16: iconst_5
+      17: anewarray     #432                // class java/lang/Integer
+      20: astore_0
+      21: aload_0
+      22: iconst_0
+      23: sipush        301
+      26: invokestatic  #436                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      29: aastore
+      30: aload_0
+      31: iconst_1
+      32: sipush        302
+      35: invokestatic  #436                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      38: aastore
+      39: aload_0
+      40: iconst_2
+      41: sipush        303
+      44: invokestatic  #436                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      47: aastore
+      48: aload_0
+      49: iconst_3
+      50: sipush        307
+      53: invokestatic  #436                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      56: aastore
+      57: aload_0
+      58: iconst_4
+      59: sipush        308
+      62: invokestatic  #436                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      65: aastore
+      66: aload_0
+      67: invokestatic  #609                // Method kotlin/collections/SetsKt.setOf:([Ljava/lang/Object;)Ljava/util/Set;
+      70: putstatic     #430                // Field REDIRECTS:Ljava/util/Set;
+      73: return
+}
+Compiled from "SystemHttpsDirectTransfer.kt"
+final class com.easysavevideo.save.network.TransferGuard {
+  private final java.net.HttpURLConnection connection;
+
+  private final com.easysavevideo.core.model.OperationContext context;
+
+  private final int timeout;
+
+  private final com.easysavevideo.core.model.EpochClock clock;
+
+  private final com.easysavevideo.save.network.TransferNetworkBinding network;
+
+  private final java.util.concurrent.atomic.AtomicBoolean finished;
+
+  private final java.util.concurrent.atomic.AtomicBoolean disconnectStarted;
+
+  private final java.util.concurrent.atomic.AtomicBoolean disconnectFailed;
+
+  private final java.util.concurrent.atomic.AtomicReference<com.easysavevideo.save.SaveError> reason;
+
+  private volatile long lastProgress;
+
+  private final java.lang.Thread watchdog;
+
+  public com.easysavevideo.save.network.TransferGuard(java.net.HttpURLConnection, com.easysavevideo.core.model.OperationContext, int, com.easysavevideo.core.model.EpochClock, com.easysavevideo.save.network.TransferNetworkBinding);
+    Code:
+       0: aload_1
+       1: ldc           #9                  // String connection
+       3: invokestatic  #15                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_2
+       7: ldc           #17                 // String context
+       9: invokestatic  #15                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      12: aload         4
+      14: ldc           #19                 // String clock
+      16: invokestatic  #15                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      19: aload         5
+      21: ldc           #21                 // String network
+      23: invokestatic  #15                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+      26: aload_0
+      27: invokespecial #24                 // Method java/lang/Object."<init>":()V
+      30: aload_0
+      31: aload_1
+      32: putfield      #27                 // Field connection:Ljava/net/HttpURLConnection;
+      35: aload_0
+      36: aload_2
+      37: putfield      #30                 // Field context:Lcom/easysavevideo/core/model/OperationContext;
+      40: aload_0
+      41: iload_3
+      42: putfield      #34                 // Field timeout:I
+      45: aload_0
+      46: aload         4
+      48: putfield      #37                 // Field clock:Lcom/easysavevideo/core/model/EpochClock;
+      51: aload_0
+      52: aload         5
+      54: putfield      #40                 // Field network:Lcom/easysavevideo/save/network/TransferNetworkBinding;
+      57: aload_0
+      58: new           #42                 // class java/util/concurrent/atomic/AtomicBoolean
+      61: dup
+      62: iconst_0
+      63: invokespecial #45                 // Method java/util/concurrent/atomic/AtomicBoolean."<init>":(Z)V
+      66: putfield      #49                 // Field finished:Ljava/util/concurrent/atomic/AtomicBoolean;
+      69: aload_0
+      70: new           #42                 // class java/util/concurrent/atomic/AtomicBoolean
+      73: dup
+      74: iconst_0
+      75: invokespecial #45                 // Method java/util/concurrent/atomic/AtomicBoolean."<init>":(Z)V
+      78: putfield      #52                 // Field disconnectStarted:Ljava/util/concurrent/atomic/AtomicBoolean;
+      81: aload_0
+      82: new           #42                 // class java/util/concurrent/atomic/AtomicBoolean
+      85: dup
+      86: iconst_0
+      87: invokespecial #45                 // Method java/util/concurrent/atomic/AtomicBoolean."<init>":(Z)V
+      90: putfield      #55                 // Field disconnectFailed:Ljava/util/concurrent/atomic/AtomicBoolean;
+      93: aload_0
+      94: new           #57                 // class java/util/concurrent/atomic/AtomicReference
+      97: dup
+      98: aconst_null
+      99: invokespecial #60                 // Method java/util/concurrent/atomic/AtomicReference."<init>":(Ljava/lang/Object;)V
+     102: putfield      #64                 // Field reason:Ljava/util/concurrent/atomic/AtomicReference;
+     105: aload_0
+     106: invokestatic  #70                 // Method java/lang/System.nanoTime:()J
+     109: putfield      #74                 // Field lastProgress:J
+     112: aload_0
+     113: new           #76                 // class java/lang/Thread
+     116: dup
+     117: aload_0
+     118: invokedynamic #93,  0             // InvokeDynamic #0:run:(Lcom/easysavevideo/save/network/TransferGuard;)Ljava/lang/Runnable;
+     123: ldc           #95                 // String esv-direct-watchdog
+     125: invokespecial #98                 // Method java/lang/Thread."<init>":(Ljava/lang/Runnable;Ljava/lang/String;)V
+     128: astore        6
+     130: aload         6
+     132: astore        7
+     134: astore        9
+     136: iconst_0
+     137: istore        8
+     139: aload         7
+     141: iconst_1
+     142: invokevirtual #101                // Method java/lang/Thread.setDaemon:(Z)V
+     145: aload         7
+     147: invokevirtual #104                // Method java/lang/Thread.start:()V
+     150: aload         9
+     152: aload         6
+     154: putfield      #108                // Field watchdog:Ljava/lang/Thread;
+     157: return
+
+  public final void progressed();
+    Code:
+       0: aload_0
+       1: invokestatic  #70                 // Method java/lang/System.nanoTime:()J
+       4: putfield      #74                 // Field lastProgress:J
+       7: return
+
+  private final com.easysavevideo.save.SaveError currentReason();
+    Code:
+       0: aload_0
+       1: getfield      #30                 // Field context:Lcom/easysavevideo/core/model/OperationContext;
+       4: invokevirtual #121                // Method com/easysavevideo/core/model/OperationContext.getCancelToken:()Lcom/easysavevideo/core/model/CancellationToken;
+       7: invokeinterface #127,  1          // InterfaceMethod com/easysavevideo/core/model/CancellationToken.isCancelled:()Z
+      12: ifeq          19
+      15: getstatic     #133                // Field com/easysavevideo/save/SaveError.CANCELLED:Lcom/easysavevideo/save/SaveError;
+      18: areturn
+      19: aload_0
+      20: getfield      #64                 // Field reason:Ljava/util/concurrent/atomic/AtomicReference;
+      23: invokevirtual #137                // Method java/util/concurrent/atomic/AtomicReference.get:()Ljava/lang/Object;
+      26: checkcast     #129                // class com/easysavevideo/save/SaveError
+      29: astore_1
+      30: aload_1
+      31: ifnull        40
+      34: aload_1
+      35: astore_2
+      36: iconst_0
+      37: istore_3
+      38: aload_2
+      39: areturn
+      40: aload_0
+      41: getfield      #37                 // Field clock:Lcom/easysavevideo/core/model/EpochClock;
+      44: invokeinterface #142,  1          // InterfaceMethod com/easysavevideo/core/model/EpochClock.nowMillis:()J
+      49: aload_0
+      50: getfield      #30                 // Field context:Lcom/easysavevideo/core/model/OperationContext;
+      53: invokevirtual #145                // Method com/easysavevideo/core/model/OperationContext.getDeadlineEpochMillis:()J
+      56: lcmp
+      57: iflt          64
+      60: getstatic     #148                // Field com/easysavevideo/save/SaveError.DEADLINE_EXCEEDED:Lcom/easysavevideo/save/SaveError;
+      63: areturn
+      64: aload_0
+      65: getfield      #40                 // Field network:Lcom/easysavevideo/save/network/TransferNetworkBinding;
+      68: invokestatic  #154                // Method com/easysavevideo/save/network/TransferNetworkPolicyKt.failureOrNull:(Lcom/easysavevideo/save/network/TransferNetworkBinding;)Lcom/easysavevideo/save/SaveError;
+      71: astore_1
+      72: aload_1
+      73: ifnull        82
+      76: aload_1
+      77: astore_2
+      78: iconst_0
+      79: istore_3
+      80: aload_2
+      81: areturn
+      82: invokestatic  #70                 // Method java/lang/System.nanoTime:()J
+      85: aload_0
+      86: getfield      #74                 // Field lastProgress:J
+      89: lsub
+      90: aload_0
+      91: getfield      #34                 // Field timeout:I
+      94: i2l
+      95: ldc           #155                // int 1000000
+      97: i2l
+      98: lmul
+      99: lcmp
+     100: iflt          109
+     103: getstatic     #158                // Field com/easysavevideo/save/SaveError.NETWORK_TIMEOUT:Lcom/easysavevideo/save/SaveError;
+     106: goto          110
+     109: aconst_null
+     110: areturn
+
+  public final void check();
+    Code:
+       0: invokestatic  #166                // Method java/lang/Thread.currentThread:()Ljava/lang/Thread;
+       3: invokevirtual #169                // Method java/lang/Thread.isInterrupted:()Z
+       6: ifeq          20
+       9: new           #171                // class com/easysavevideo/save/SaveFailure
+      12: dup
+      13: getstatic     #133                // Field com/easysavevideo/save/SaveError.CANCELLED:Lcom/easysavevideo/save/SaveError;
+      16: invokespecial #174                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      19: athrow
+      20: aload_0
+      21: invokespecial #176                // Method currentReason:()Lcom/easysavevideo/save/SaveError;
+      24: astore_1
+      25: aload_1
+      26: ifnull        52
+      29: aload_1
+      30: astore_2
+      31: iconst_0
+      32: istore_3
+      33: aload_0
+      34: getfield      #64                 // Field reason:Ljava/util/concurrent/atomic/AtomicReference;
+      37: aconst_null
+      38: aload_2
+      39: invokevirtual #180                // Method java/util/concurrent/atomic/AtomicReference.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z
+      42: pop
+      43: new           #171                // class com/easysavevideo/save/SaveFailure
+      46: dup
+      47: aload_2
+      48: invokespecial #174                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      51: athrow
+      52: return
+
+  private final void disconnect();
+    Code:
+       0: aload_0
+       1: getfield      #52                 // Field disconnectStarted:Ljava/util/concurrent/atomic/AtomicBoolean;
+       4: iconst_0
+       5: iconst_1
+       6: invokevirtual #189                // Method java/util/concurrent/atomic/AtomicBoolean.compareAndSet:(ZZ)Z
+       9: ifeq          44
+      12: nop
+      13: aload_0
+      14: getfield      #27                 // Field connection:Ljava/net/HttpURLConnection;
+      17: invokevirtual #193                // Method java/net/HttpURLConnection.disconnect:()V
+      20: goto          44
+      23: astore_1
+      24: aload_0
+      25: getfield      #55                 // Field disconnectFailed:Ljava/util/concurrent/atomic/AtomicBoolean;
+      28: iconst_1
+      29: invokevirtual #196                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+      32: goto          44
+      35: astore_1
+      36: aload_0
+      37: getfield      #55                 // Field disconnectFailed:Ljava/util/concurrent/atomic/AtomicBoolean;
+      40: iconst_1
+      41: invokevirtual #196                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+      44: return
+    Exception table:
+       from    to  target type
+          12    20    23   Class java/lang/Exception
+          12    20    35   Class java/lang/LinkageError
+
+  public final void finish();
+    Code:
+       0: aload_0
+       1: getfield      #49                 // Field finished:Ljava/util/concurrent/atomic/AtomicBoolean;
+       4: iconst_1
+       5: invokevirtual #196                // Method java/util/concurrent/atomic/AtomicBoolean.set:(Z)V
+       8: aload_0
+       9: getfield      #108                // Field watchdog:Ljava/lang/Thread;
+      12: invokevirtual #205                // Method java/lang/Thread.interrupt:()V
+      15: iconst_0
+      16: istore_1
+      17: aload_0
+      18: getfield      #108                // Field watchdog:Ljava/lang/Thread;
+      21: invokevirtual #208                // Method java/lang/Thread.isAlive:()Z
+      24: ifeq          44
+      27: nop
+      28: aload_0
+      29: getfield      #108                // Field watchdog:Ljava/lang/Thread;
+      32: invokevirtual #211                // Method java/lang/Thread.join:()V
+      35: goto          17
+      38: astore_2
+      39: iconst_1
+      40: istore_1
+      41: goto          17
+      44: aload_0
+      45: invokespecial #212                // Method disconnect:()V
+      48: iload_1
+      49: ifeq          58
+      52: invokestatic  #166                // Method java/lang/Thread.currentThread:()Ljava/lang/Thread;
+      55: invokevirtual #205                // Method java/lang/Thread.interrupt:()V
+      58: aload_0
+      59: getfield      #55                 // Field disconnectFailed:Ljava/util/concurrent/atomic/AtomicBoolean;
+      62: invokevirtual #214                // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+      65: ifeq          79
+      68: new           #171                // class com/easysavevideo/save/SaveFailure
+      71: dup
+      72: getstatic     #217                // Field com/easysavevideo/save/SaveError.RECOVERY_REQUIRED:Lcom/easysavevideo/save/SaveError;
+      75: invokespecial #174                // Method com/easysavevideo/save/SaveFailure."<init>":(Lcom/easysavevideo/save/SaveError;)V
+      78: athrow
+      79: return
+    Exception table:
+       from    to  target type
+          27    35    38   Class java/lang/InterruptedException
+
+  private static final void watchdog$lambda$1(com.easysavevideo.save.network.TransferGuard);
+    Code:
+       0: nop
+       1: aload_0
+       2: getfield      #49                 // Field finished:Ljava/util/concurrent/atomic/AtomicBoolean;
+       5: invokevirtual #214                // Method java/util/concurrent/atomic/AtomicBoolean.get:()Z
+       8: ifne          57
+      11: aload_0
+      12: invokespecial #176                // Method currentReason:()Lcom/easysavevideo/save/SaveError;
+      15: astore_1
+      16: aload_1
+      17: ifnull        39
+      20: aload_1
+      21: astore_2
+      22: iconst_0
+      23: istore_3
+      24: aload_0
+      25: getfield      #64                 // Field reason:Ljava/util/concurrent/atomic/AtomicReference;
+      28: aconst_null
+      29: aload_2
+      30: invokevirtual #180                // Method java/util/concurrent/atomic/AtomicReference.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z
+      33: pop
+      34: aload_0
+      35: invokespecial #212                // Method disconnect:()V
+      38: return
+      39: ldc2_w        #221                // long 50l
+      42: aload_0
+      43: getfield      #34                 // Field timeout:I
+      46: i2l
+      47: invokestatic  #228                // Method java/lang/Math.min:(JJ)J
+      50: invokestatic  #232                // Method java/lang/Thread.sleep:(J)V
+      53: goto          1
+      56: astore_1
+      57: return
+    Exception table:
+       from    to  target type
+           0    56    56   Class java/lang/InterruptedException
+}

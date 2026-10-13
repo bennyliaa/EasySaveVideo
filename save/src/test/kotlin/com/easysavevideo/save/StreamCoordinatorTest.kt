@@ -5,7 +5,7 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class StreamCoordinatorTest {
-    private class Harness(val limits: SaveLimits = SaveLimits(1024, 2048)) {
+    private class Harness(val limits: SaveLimits = SaveLimits(1024, 2048), val networkGate: SaveNetworkGate = SaveNetworkGate {}) {
         val journal = MemorySaveJournal()
         var inspectionCalls = 0
         val store = object : FakeMediaStore() {
@@ -48,7 +48,17 @@ class StreamCoordinatorTest {
                     return TransferResult(artifact.artifactId, 400, "video/mp4", 400,
                         if (missingExpectation) null else StreamArtifactExpectation(2000, 1, 0, 16, 16, if (missingConservation) null else testStreamConservation()))
                 }
-            })
+            }, networkGate = networkGate)
+    }
+    @Test fun wifiRestrictionWaitsBeforeAnyStreamTransfer() {
+        val h = Harness(networkGate = SaveNetworkGate { throw SaveFailure(SaveError.WIFI_REQUIRED) })
+        h.coordinator.submit(h.request, h.operation, 50)
+        val result = h.coordinator.execute("task")!!
+        assertEquals(TaskState.WAITING_USER, result.task.state)
+        assertEquals(SaveWaitReason.NETWORK, result.waitReason)
+        assertEquals(SaveError.WIFI_REQUIRED, result.error)
+        assertEquals(0, h.streamCalls); assertEquals(0, h.directCalls)
+        assertEquals(50L, result.bytesTransferred)
     }
     @Test fun selectedStreamUsesOwnPortAndStillValidatesAndCommits() {
         val h = Harness(); h.coordinator.submit(h.request, h.operation, 50)

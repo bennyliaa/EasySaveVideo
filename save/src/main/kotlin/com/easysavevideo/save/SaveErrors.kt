@@ -8,7 +8,7 @@ data class SaveErrorPolicy(val retryable: Boolean = false, val waitReason: SaveW
 object SaveErrors {
     fun policy(code: SaveError) = when (code) {
         SaveError.NETWORK_TIMEOUT, SaveError.HTTP_FAILURE, SaveError.INCOMPLETE_TRANSFER -> SaveErrorPolicy(retryable = true)
-        SaveError.NETWORK_UNAVAILABLE, SaveError.RATE_LIMITED -> SaveErrorPolicy(waitReason = SaveWaitReason.NETWORK)
+        SaveError.WIFI_REQUIRED, SaveError.NETWORK_UNAVAILABLE, SaveError.RATE_LIMITED -> SaveErrorPolicy(waitReason = SaveWaitReason.NETWORK)
         SaveError.AUTHENTICATION_REQUIRED, SaveError.EXPIRED_RESOURCE -> SaveErrorPolicy(waitReason = SaveWaitReason.AUTHENTICATION)
         SaveError.STORAGE_FULL, SaveError.STORAGE_FAILURE -> SaveErrorPolicy(waitReason = SaveWaitReason.STORAGE)
         SaveError.COMMIT_MISMATCH, SaveError.RECOVERY_REQUIRED, SaveError.RESOURCE_RELEASE_UNCONFIRMED, SaveError.SOURCE_RESELECTION_REQUIRED -> SaveErrorPolicy(waitReason = SaveWaitReason.RECOVERY)
@@ -18,7 +18,7 @@ object SaveErrors {
         SaveError.CANCELLED -> ErrorCode.OPERATION_CANCELLED
         SaveError.DEADLINE_EXCEEDED -> ErrorCode.DEADLINE_EXCEEDED
         SaveError.RETRY_EXHAUSTED -> ErrorCode.RETRY_EXHAUSTED
-        SaveError.NETWORK_UNAVAILABLE -> ErrorCode.NETWORK_UNAVAILABLE
+        SaveError.WIFI_REQUIRED, SaveError.NETWORK_UNAVAILABLE -> ErrorCode.NETWORK_UNAVAILABLE
         SaveError.NETWORK_TIMEOUT -> ErrorCode.NETWORK_TIMEOUT
         SaveError.HTTP_FAILURE, SaveError.HTTP_NOT_FOUND, SaveError.HTTP_REJECTED, SaveError.RATE_LIMITED -> ErrorCode.HTTP_FAILURE
         SaveError.TLS_REJECTED -> ErrorCode.TLS_REJECTED

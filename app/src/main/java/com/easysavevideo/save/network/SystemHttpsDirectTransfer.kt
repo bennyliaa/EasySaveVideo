@@ -3,6 +3,7 @@ package com.easysavevideo.save.network
 import com.easysavevideo.core.model.EpochClock
 import com.easysavevideo.core.model.OperationContext
 import com.easysavevideo.save.*
+import java.io.FilterInputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.net.ConnectException
@@ -25,6 +26,7 @@ class SystemHttpsDirectTransfer(
     private val requestContexts: RequestContextLeaseStore = RequestContextLeaseStore(),
     private val clock: EpochClock = EpochClock(System::currentTimeMillis),
     private val connections: DirectConnectionFactory = SystemHttpsConnectionFactory(),
+    private val networkPolicy: TransferNetworkPolicy = UnrestrictedTransferNetworkPolicy,
 ) : DirectTransferPort {
     private val active = AtomicBoolean(false)
     private val cleanupUncertain = AtomicBoolean(false)
@@ -59,8 +61,23 @@ class SystemHttpsDirectTransfer(
                 // store another origin's cookies. The app does not install a global CookieHandler.
                 if (CookieHandler.getDefault() != null) throw SaveFailure(SaveError.POLICY_BLOCKED)
                 val timeout = boundedTimeout(limits.connectTimeoutMillis, context)
-                val connection = connections.open(target, timeout)
-                val guard = TransferGuard(connection, context, limits.noProgressTimeoutMillis, clock)
+                val network = try { networkPolicy.acquireApproved() } catch (failure: Exception) {
+                    checkContext(context) // Explicit cancellation wins over an unavailable network.
+                    throw failure
+                }
+                checkContext(context)
+                val connection = try { connections.open(target, timeout, network) } catch (failure: Exception) {
+                    failure.releaseFailureOrNull()?.let {
+                        cleanupUncertain.set(true)
+                        throw SaveFailure(it)
+                    }
+                    checkContext(context)
+                    network.requireApproved()
+                    throw failure
+                }
+                val guard = initializeNetworkOwner(connection, { cleanupUncertain.set(true) }) {
+                    TransferGuard(connection, context, limits.noProgressTimeoutMillis, clock, network)
+                }
                 try {
                     connection.instanceFollowRedirects = false
                     connection.useCaches = false
@@ -99,11 +116,32 @@ class SystemHttpsDirectTransfer(
                         else -> throw SaveFailure(if (status in 400..499) SaveError.HTTP_REJECTED else SaveError.HTTP_FAILURE)
                     }
                 } catch (failure: Exception) {
+                    failure.releaseFailureOrNull()?.let {
+                        cleanupUncertain.set(true)
+                        throw SaveFailure(it)
+                    }
+                    if (cleanupUncertain.get()) {
+                        // use() may suppress a close failure behind the original read/cancel error.
+                        // Never advertise a recoverable network wait while an owned stream leaked.
+                        if (failure is SaveFailure && failure.code == SaveError.STORAGE_FAILURE) throw sanitize(failure)
+                        throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+                    }
                     guard.check() // Cancellation/deadline takes precedence over its resulting socket error.
                     throw sanitize(failure)
+                } catch (failure: LinkageError) {
+                    failure.releaseFailureOrNull()?.let {
+                        cleanupUncertain.set(true)
+                        throw SaveFailure(it)
+                    }
+                    if (cleanupUncertain.get()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+                    guard.check()
+                    throw SaveFailure(SaveError.UNKNOWN_TECHNICAL_ERROR)
                 } finally {
                     // A hung disconnect or native close retains the slot and never pretends to be stopped.
                     try { guard.finish() } catch (failure: Exception) { cleanupUncertain.set(true); throw failure }
+                    // A condition/cancellation change during disconnect fences a late success.
+                    // A previously failed resource release must never become an ordinary Wi-Fi wait.
+                    if (!cleanupUncertain.get()) guard.check()
                 }
             }
             throw SaveFailure(SaveError.POLICY_BLOCKED)
@@ -168,11 +206,22 @@ class SystemHttpsDirectTransfer(
                 closed = true
                 try { rawOutput.close() } catch (_: Exception) {
                     cleanupUncertain.set(true); throw SaveFailure(SaveError.STORAGE_FAILURE)
+                } catch (_: LinkageError) {
+                    cleanupUncertain.set(true); throw SaveFailure(SaveError.STORAGE_FAILURE)
                 }
             }
         }
         try {
-            connection.inputStream.use { input ->
+            val ownedInput = object : FilterInputStream(connection.inputStream) {
+                override fun close() {
+                    try { super.close() } catch (_: Exception) {
+                        cleanupUncertain.set(true); throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+                    } catch (_: LinkageError) {
+                        cleanupUncertain.set(true); throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+                    }
+                }
+            }
+            ownedInput.use { input ->
                 output.use { sink ->
                     while (true) {
                         guard.check()
@@ -209,10 +258,10 @@ class SystemHttpsDirectTransfer(
                     guard.check()
                 }
             }
-        } catch (failure: Exception) {
-            // inputStream can fail before entering output.use; close still must finish before return.
-            try { output.close() } catch (_: Exception) { }
-            throw failure
+        } finally {
+            // The input getter can fail before output.use, including with LinkageError. The owned
+            // output is idempotently closed on every exit; an unconfirmed close must retain the lane.
+            output.close()
         }
         if (storage { staging.length(artifact) } != bytes) throw SaveFailure(SaveError.STORAGE_FAILURE)
         guard.check()
@@ -280,7 +329,8 @@ class SystemHttpsDirectTransfer(
 
 /** One daemon per active transfer, no unbounded cancel executor or false stopped callback. */
 private class TransferGuard(private val connection: HttpURLConnection, private val context: OperationContext,
-                            private val timeout: Int, private val clock: EpochClock) {
+                            private val timeout: Int, private val clock: EpochClock,
+                            private val network: TransferNetworkBinding) {
     private val finished = AtomicBoolean(false)
     private val disconnectStarted = AtomicBoolean(false)
     private val disconnectFailed = AtomicBoolean(false)
@@ -296,11 +346,15 @@ private class TransferGuard(private val connection: HttpURLConnection, private v
     }, "esv-direct-watchdog").apply { isDaemon = true; start() }
 
     fun progressed() { lastProgress = System.nanoTime() }
-    private fun currentReason(): SaveError? = reason.get() ?: when {
-        context.cancelToken.isCancelled -> SaveError.CANCELLED
-        clock.nowMillis() >= context.deadlineEpochMillis -> SaveError.DEADLINE_EXCEEDED
-        System.nanoTime() - lastProgress >= timeout.toLong() * 1_000_000 -> SaveError.NETWORK_TIMEOUT
-        else -> null
+    private fun currentReason(): SaveError? {
+        // A network failure may already be latched while disconnect is blocked. A later explicit
+        // cancellation must still win when the caller finally observes the released connection.
+        if (context.cancelToken.isCancelled) return SaveError.CANCELLED
+        reason.get()?.let { return it }
+        if (clock.nowMillis() >= context.deadlineEpochMillis) return SaveError.DEADLINE_EXCEEDED
+        network.failureOrNull()?.let { return it }
+        return if (System.nanoTime() - lastProgress >= timeout.toLong() * 1_000_000)
+            SaveError.NETWORK_TIMEOUT else null
     }
     fun check() {
         if (Thread.currentThread().isInterrupted) throw SaveFailure(SaveError.CANCELLED)

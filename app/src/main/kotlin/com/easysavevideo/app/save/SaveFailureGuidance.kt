@@ -37,7 +37,7 @@ internal fun saveFailureAdvice(state: TaskState, method: TaskMethod, error: Save
             SaveError.AUTHENTICATION_REQUIRED, SaveError.HTTP_REJECTED -> SaveFailureAdvice.AUTHENTICATION
             SaveError.EXPIRED_RESOURCE, SaveError.HTTP_NOT_FOUND, SaveError.INVALID_RANGE,
             SaveError.RESOURCE_CHANGED, SaveError.SOURCE_RESELECTION_REQUIRED -> SaveFailureAdvice.SOURCE_CHANGED
-            SaveError.NETWORK_UNAVAILABLE, SaveError.NETWORK_TIMEOUT, SaveError.HTTP_FAILURE,
+            SaveError.WIFI_REQUIRED, SaveError.NETWORK_UNAVAILABLE, SaveError.NETWORK_TIMEOUT, SaveError.HTTP_FAILURE,
             SaveError.RETRY_EXHAUSTED, SaveError.DEADLINE_EXCEEDED, SaveError.INCOMPLETE_TRANSFER -> SaveFailureAdvice.NETWORK
             SaveError.RATE_LIMITED -> SaveFailureAdvice.RATE_LIMITED
             SaveError.METHOD_UNSUPPORTED, SaveError.UNSUPPORTED_MEDIA -> SaveFailureAdvice.REASSESS_METHOD

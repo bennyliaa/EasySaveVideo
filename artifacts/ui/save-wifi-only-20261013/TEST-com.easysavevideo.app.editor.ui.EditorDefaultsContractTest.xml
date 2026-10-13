@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.editor.ui.EditorDefaultsContractTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-13T05:10:53.259Z" hostname="b5f39a690d03" time="0.007">
+  <properties/>
+  <testcase name="bothLocalesHaveSameNonblankLabelsAndExistingRadioGroupSemantics" classname="com.easysavevideo.app.editor.ui.EditorDefaultsContractTest" time="0.004"/>
+  <testcase name="storeReadsAndWritesSameStableAdditiveKey" classname="com.easysavevideo.app.editor.ui.EditorDefaultsContractTest" time="0.0"/>
+  <testcase name="bothEntrypointsUseCurrentSettingsAndOnlyNewDraftsConsumeThem" classname="com.easysavevideo.app.editor.ui.EditorDefaultsContractTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

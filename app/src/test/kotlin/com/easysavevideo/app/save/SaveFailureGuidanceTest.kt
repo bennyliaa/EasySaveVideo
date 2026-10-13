@@ -18,7 +18,7 @@ class SaveFailureGuidanceTest {
         SaveFailureAdvice.AUTHENTICATION to setOf(SaveError.AUTHENTICATION_REQUIRED, SaveError.HTTP_REJECTED),
         SaveFailureAdvice.SOURCE_CHANGED to setOf(SaveError.EXPIRED_RESOURCE, SaveError.HTTP_NOT_FOUND,
             SaveError.INVALID_RANGE, SaveError.RESOURCE_CHANGED, SaveError.SOURCE_RESELECTION_REQUIRED),
-        SaveFailureAdvice.NETWORK to setOf(SaveError.NETWORK_UNAVAILABLE, SaveError.NETWORK_TIMEOUT, SaveError.HTTP_FAILURE,
+        SaveFailureAdvice.NETWORK to setOf(SaveError.WIFI_REQUIRED, SaveError.NETWORK_UNAVAILABLE, SaveError.NETWORK_TIMEOUT, SaveError.HTTP_FAILURE,
             SaveError.RETRY_EXHAUSTED, SaveError.DEADLINE_EXCEEDED, SaveError.INCOMPLETE_TRANSFER),
         SaveFailureAdvice.RATE_LIMITED to setOf(SaveError.RATE_LIMITED),
         SaveFailureAdvice.REASSESS_METHOD to setOf(SaveError.METHOD_UNSUPPORTED, SaveError.UNSUPPORTED_MEDIA),

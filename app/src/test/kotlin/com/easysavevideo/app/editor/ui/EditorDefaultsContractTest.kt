@@ -43,6 +43,6 @@ class EditorDefaultsContractTest {
         }
         val section = source("ui/shell/EsvSettingsScreen.kt").substringAfter("SettingsCategory.EDITOR -> {").substringBefore("SettingsCategory.DIAGNOSTICS -> diagnostics()")
         assertTrue(section.contains("selectableGroup()")); assertTrue(section.contains("role=Role.RadioButton"))
-        assertTrue(section.contains("settingsWithEditorCompression(settings,mode)")); assertTrue(section.contains("heightIn(min=48.dp)"))
+        assertTrue(section.contains("onChange(SettingsEdit.EditorCompression(mode))")); assertTrue(section.contains("heightIn(min=48.dp)"))
     }
 }

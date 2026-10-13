@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.save.network.TransferNetworkEnforcementTest" tests="24" skipped="0" failures="0" errors="0" timestamp="2026-10-13T05:10:56.261Z" hostname="b5f39a690d03" time="1.509">
+  <properties/>
+  <testcase name="cancellationDuringAcquisitionStillWinsOverWifiFailure" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.007"/>
+  <testcase name="inputGetterLinkageAndFailedOutputCloseRetainRecoveryFence" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.014"/>
+  <testcase name="failedOutputCloseCannotBeSuppressedBehindNetworkAbort" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.109"/>
+  <testcase name="releaseFailureDuringFactoryOpenLatchesRecoveryEvenWhenNetworkBecomesDisallowed" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.006"/>
+  <testcase name="disallowedPolicyOpensNoConnectionOrOutputIncludingManifest" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.001"/>
+  <testcase name="failedInputCloseDuringNetworkAbortRetainsLaneAndReportsUnreleasedResource" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.103"/>
+  <testcase name="inputGetterLinkageClosesOutputBeforeReleasingLane" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.006"/>
+  <testcase name="cancelledTaskWinsOverDisallowedPolicyWithoutEvenAcquiring" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.0"/>
+  <testcase name="bodyLinkageFailureStillDisconnectsAndSanitizesWithoutClaimingReleaseFailure" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.002"/>
+  <testcase name="changedApprovedNetworkInvalidatesExistingBindingInsteadOfReselecting" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.157"/>
+  <testcase name="bindingThatChangesDuringConnectionOpenBlocksResponseAndClosesConnection" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.001"/>
+  <testcase name="failedGuardInitializationAndDisconnectNeverReleaseTheLane" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.001"/>
+  <testcase name="failedNetworkCleanupStillRequiresRecoveryRatherThanClaimingWifiWait" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.154"/>
+  <testcase name="bodyLinkageWithOutputCloseLinkageRetainsLaneInsteadOfBecomingWifiWait" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.055"/>
+  <testcase name="conditionChangeDuringFinalDisconnectFencesSuccess" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.002"/>
+  <testcase name="explicitCancellationOverridesLatchedWifiAndBusySlotWaitsForRealRelease" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.307"/>
+  <testcase name="networkLossInterruptsBlockedBodyAndReleasesBeforeReturning" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.156"/>
+  <testcase name="failedGuardInitializationClosesUnclaimedConnection" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.001"/>
+  <testcase name="failedPolicyReaderDuringBlockedIoDisconnectsRatherThanKillingWatchdog" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.158"/>
+  <testcase name="bodyLinkageWithInputCloseLinkageRetainsLaneInsteadOfBecomingWifiWait" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.157"/>
+  <testcase name="eachRedirectRequiresNewPermissionBeforeItsConnection" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.002"/>
+  <testcase name="unavailablePolicyReaderFailsClosedBeforeAnyRequest" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.0"/>
+  <testcase name="wrappedSocketReleaseFailureCannotBeOverwrittenByWifiOrCancellation" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.001"/>
+  <testcase name="networkLossInterruptsBlockedResponseBeforeAnyStagingOrBody" classname="com.easysavevideo.save.network.TransferNetworkEnforcementTest" time="0.105"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,104 @@
+[
+  {
+    "class": "com.easysavevideo.app.save.AndroidSaveNetworkBackend$bind$1",
+    "sha256": "e744c6449b7c841976a9d76a132509230ed0f666a6a02cadd4702f49dc8bf24d",
+    "bytes": 2243,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/app/save/AndroidSaveNetworkBackend$bind$1.class"
+  },
+  {
+    "class": "com.easysavevideo.app.save.AndroidSaveRuntime",
+    "sha256": "f7b7e063015bfc8e3eaac07d8d1b8d665cf3ff225bb5e8a0b5e7f1a949e58135",
+    "bytes": 127670,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/app/save/AndroidSaveRuntime.class"
+  },
+  {
+    "class": "com.easysavevideo.app.save.SaveWifiNetworkPolicy",
+    "sha256": "fa5264a56f72f7ff9c7add084c860f04732dc77ac8020e2c474ee5c0557dba0a",
+    "bytes": 5901,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/app/save/SaveWifiNetworkPolicy.class"
+  },
+  {
+    "class": "com.easysavevideo.app.save.SaveWifiNetworkPolicy$acquire$1",
+    "sha256": "1d7aa15bfd8497f81040f95c9619d2a1fea769527bdbc27720b6fc4c947524c3",
+    "bytes": 6092,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/app/save/SaveWifiNetworkPolicy$acquire$1.class"
+  },
+  {
+    "class": "com.easysavevideo.app.save.stream.AndroidHlsStreamPort",
+    "sha256": "be13f6d0c3dde25865d4637336308c50d42941c1e1c8656b8f0c57cf56f14b79",
+    "bytes": 26862,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/app/save/stream/AndroidHlsStreamPort.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.HlsTransferGuard",
+    "sha256": "2c96e7ffc36d80aa5b598942d35b2ec6f54ab944ddf4cc803baa7fb99dada3fd",
+    "bytes": 6754,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/HlsTransferGuard.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.PublicPeerTlsSocketFactory",
+    "sha256": "e3e4c057a9dabf316fb8cf4cadb8e2855e17d7cb645dd376181f671c27e0bada",
+    "bytes": 7469,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/PublicPeerTlsSocketFactory.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.RequestContextLeaseStore",
+    "sha256": "679ca37fbc6db40539b07f2779cd615c907143d4b69d20d52b8a237709596be6",
+    "bytes": 8604,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/RequestContextLeaseStore.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.SystemHttpsConnectionFactory",
+    "sha256": "bd4f779a5d92c5f7b154b9b0d6d816f936ad489dca8c75716559b5c494cb83e0",
+    "bytes": 4058,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/SystemHttpsConnectionFactory.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.SystemHttpsDirectTransfer",
+    "sha256": "281a3360b1c15f391ffb57089018eeaf4586bdb9ae71f72c2fb662b0b12343d0",
+    "bytes": 42103,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/SystemHttpsDirectTransfer.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.SystemHttpsHlsFetcher",
+    "sha256": "52a6622ff412edf933df17ecce92df10a361931d161782c976184d2cfd1b30b0",
+    "bytes": 56881,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/SystemHttpsHlsFetcher.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.SystemHttpsHlsFetcher$Session",
+    "sha256": "23f07a005b7881b6462e021f623142d7518338a88d224b4c035ab18f9681642f",
+    "bytes": 2037,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/SystemHttpsHlsFetcher$Session.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.SystemHttpsHlsFetcher$request$guard$2",
+    "sha256": "bb4b6fec513e4a4053c83d369688e1860cabc5ad1b7b79344d35fd09d9fb1399",
+    "bytes": 3024,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/SystemHttpsHlsFetcher$request$guard$2.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.TransferGuard",
+    "sha256": "7765af7099ee369b9548ec585c093e350319595666d67b35c813cad4471c2d91",
+    "bytes": 6751,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/TransferGuard.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.TransportResourceOwnershipKt",
+    "sha256": "25ddcc69bed406d834116d033dd62ead796f4c70a90ec40320c68e64453a6920",
+    "bytes": 2324,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/TransportResourceOwnershipKt.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.UnrestrictedTransferNetworkBinding",
+    "sha256": "e1f491b669c099e30160f150b4caf3dd0e9c5142e57fea09a47caba6869c7fe3",
+    "bytes": 2279,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/UnrestrictedTransferNetworkBinding.class"
+  },
+  {
+    "class": "com.easysavevideo.save.network.UnrestrictedTransferNetworkPolicy",
+    "sha256": "616f69eea7fc4c284ac7980c7a1053cd6cc8af921ae4bd5f7aac8c622272a8d3",
+    "bytes": 1402,
+    "relative_path": "app/build/intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes/com/easysavevideo/save/network/UnrestrictedTransferNetworkPolicy.class"
+  }
+]

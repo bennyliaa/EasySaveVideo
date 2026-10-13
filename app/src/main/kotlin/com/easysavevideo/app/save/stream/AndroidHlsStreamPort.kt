@@ -30,7 +30,8 @@ class HlsPreparation internal constructor(
 /** User-triggered preparation, then a fixed selected stream using the ordinary Save commit pipeline. */
 class AndroidHlsStreamPort(context: Context, private val storage: AndroidSaveStorage,
     private val leases: RequestContextLeaseStore, private val limits: SaveLimits,
-    private val clock: EpochClock = EpochClock(System::currentTimeMillis)) : StreamSavePort {
+    private val clock: EpochClock = EpochClock(System::currentTimeMillis),
+    private val networkPolicy: com.easysavevideo.save.network.TransferNetworkPolicy = com.easysavevideo.save.network.UnrestrictedTransferNetworkPolicy) : StreamSavePort {
     private val engine = Media3LocalHlsEngine(context.applicationContext)
     private val active = AtomicBoolean(false)
     private val sessions = HlsSessionSlot<HlsPreparation>()
@@ -55,7 +56,7 @@ class AndroidHlsStreamPort(context: Context, private val storage: AndroidSaveSto
             val combined = operation.copy(cancelToken = object : CancellationToken {
                 override val isCancelled get() = cancel.isCancelled || operation.cancelToken.isCancelled
             })
-            val fetcher = SystemHttpsHlsFetcher(leases, clock)
+            val fetcher = SystemHttpsHlsFetcher(leases, clock, networkPolicy = networkPolicy)
             val planning = HlsPlanningBudget(HLS_LIMITS)
             try {
                 val manifest = fetcher.fetchManifest(source, source.url, combined, limits, HLS_LIMITS.maxManifestBytes, PREFLIGHT_PROGRESS)

@@ -1,0 +1,36 @@
+> Task :core-model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core-model:processResources NO-SOURCE
+> Task :core-model:processTestResources NO-SOURCE
+> Task :core-domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :recording:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :recording:compileKotlin UP-TO-DATE
+> Task :recording:compileJava NO-SOURCE
+> Task :save:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :save:processResources NO-SOURCE
+> Task :core-domain:processResources NO-SOURCE
+> Task :recording:processResources NO-SOURCE
+> Task :recording:classes UP-TO-DATE
+> Task :recording:jar UP-TO-DATE
+> Task :save:processTestResources NO-SOURCE
+> Task :core-model:compileKotlin
+> Task :core-model:compileJava NO-SOURCE
+> Task :core-model:classes UP-TO-DATE
+> Task :core-model:jar
+> Task :core-domain:compileKotlin
+> Task :core-domain:compileJava NO-SOURCE
+> Task :core-model:compileTestKotlin
+> Task :core-model:compileTestJava NO-SOURCE
+> Task :core-model:testClasses UP-TO-DATE
+> Task :core-model:test
+> Task :core-domain:classes UP-TO-DATE
+> Task :core-domain:jar UP-TO-DATE
+> Task :save:compileKotlin
+> Task :save:compileJava NO-SOURCE
+> Task :save:classes UP-TO-DATE
+> Task :save:jar
+> Task :save:compileTestKotlin
+> Task :save:compileTestJava NO-SOURCE
+> Task :save:testClasses UP-TO-DATE
+> Task :save:test
+BUILD SUCCESSFUL in 27s
+12 actionable tasks: 9 executed, 3 up-to-date

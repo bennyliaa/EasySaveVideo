@@ -1,0 +1,197 @@
+[
+  {
+    "path": "app/build.gradle.kts",
+    "size": 9484,
+    "sha256": "41c53181e5c323333153f76de76880181c8a1b09f494e0f89965459cca97e267"
+  },
+  {
+    "path": "app/src/main/java/com/easysavevideo/save/network/SystemHttpsConnectionFactory.kt",
+    "size": 6264,
+    "sha256": "9ab0a8661ced60b4ab9ac555dd346f4fd7be1cd84e409e4bdc49868ba126e022"
+  },
+  {
+    "path": "app/src/main/java/com/easysavevideo/save/network/SystemHttpsDirectTransfer.kt",
+    "size": 22783,
+    "sha256": "d03e0d2c7ee5dc0ee70cc805174f4adeaeaa8d9d830c8a7ed62222eea6ed7b2a"
+  },
+  {
+    "path": "app/src/main/java/com/easysavevideo/save/network/SystemHttpsHlsFetcher.kt",
+    "size": 27046,
+    "sha256": "467aa6970ca5eff7291ba2f505ca91f08aad27e5054b7f318213c4779ddf854c"
+  },
+  {
+    "path": "app/src/main/java/com/easysavevideo/save/network/TransferNetworkPolicy.kt",
+    "size": 3222,
+    "sha256": "dd844d2ab6326b4f2228036ee5f4af4c435480227a616014f2d2bc75f07d4c18"
+  },
+  {
+    "path": "app/src/main/java/com/easysavevideo/save/network/TransportResourceOwnership.kt",
+    "size": 1211,
+    "sha256": "841c263919dab4a8241c55a250af5b2a704950a88f093dbcc21b94ba12061e8c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+    "size": 47430,
+    "sha256": "837e5c80c7a666d4c5cccd60808c6c2cde5cb4eae029f1a6c3a6846a31443154"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveNetworkBackend.kt",
+    "size": 2304,
+    "sha256": "a927fa1ebfca9584c2697c8e711ef990c17a29477766b51386d66a06cc70e1cd"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
+    "size": 58132,
+    "sha256": "f90373b7e7d6a86386cfeec148ea43c4c3364d5eff41be462ec963e85e073951"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveFailureGuidance.kt",
+    "size": 4678,
+    "sha256": "8c814a73ac3585cfa6946a99694f4892edbc982432ee1eec2546455c7760389b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveTaskScreen.kt",
+    "size": 23087,
+    "sha256": "fd4e6056a5b4b664fe50341d01216c7355b2cf78120e04b7775c86aa9ea01a2b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveTaskTextResources.kt",
+    "size": 2532,
+    "sha256": "59366fd596ca0cd9480b66dacdd2a1cee40ef3147669974b6dcb84c255c3af9a"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveWifiNetworkPolicy.kt",
+    "size": 4295,
+    "sha256": "e5712b83c0e80b946aab30846cb385f268330e97dcefd19d9c60f3e506e4195b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/stream/AndroidHlsStreamPort.kt",
+    "size": 13109,
+    "sha256": "4c1db6f7b0effd0fd0e9eddc47301b9eab403b5b4c7ace7c9fd277d44f0a1783"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/storage/AndroidStores.kt",
+    "size": 6315,
+    "sha256": "1597e0c2c9f937cff37676586707f3df03f8a6eb67ee6aac8f297672206ebaf5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/storage/BrowserPersistence.kt",
+    "size": 6363,
+    "sha256": "0a8d27f508ee3eab42eb35a24b1448060c4e08b4b1d64ed8e492d754bb2fcf85"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/EsvSettingsScreen.kt",
+    "size": 9036,
+    "sha256": "b8a6fe8e6450c6db768ec0a08c8162bca3db48f5c6032130b87bbe3831a7c527"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/SettingsNavigation.kt",
+    "size": 2758,
+    "sha256": "fa409c0bd91e744e90ccd540bb025f71358fc9585bb6acbf77e25f41875131df"
+  },
+  {
+    "path": "app/src/main/res/values-zh-rCN/save_wifi.xml",
+    "size": 1041,
+    "sha256": "7695025eec8fc68fb75c20a1ccf23295dd9f211b2b28f545ee5c4ba266329ebf"
+  },
+  {
+    "path": "app/src/main/res/values/save_wifi.xml",
+    "size": 1122,
+    "sha256": "d1903e8ed86bbe833d0642415da4dd993f71f20d34b3f2a8d2983ecba9110e5c"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/editor/ui/EditorDefaultsContractTest.kt",
+    "size": 3637,
+    "sha256": "04ea58821280b0be0ef736278d2ee41e8419444c7eb90515e9ea574a3bbad8e7"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/SaveFailureGuidanceTest.kt",
+    "size": 7881,
+    "sha256": "46550769d4d70d6b0aaa0a3f68a87c3415cbb97e79ea29574c6822f8d5e4f315"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/SaveWifiNetworkPolicyTest.kt",
+    "size": 9769,
+    "sha256": "ed34e2243275b7e7d039a768bad05ae8204a1ffb0feae48f0f0664eb5fc98d6f"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/SaveWifiWiringContractTest.kt",
+    "size": 5937,
+    "sha256": "c0ae81e34112912ac4f806ac4b487b843f749179343b28803ca80b3f772f79a2"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/SaveRecordCodecTest.kt",
+    "size": 30476,
+    "sha256": "68ba5cb9b29f9f161940a1b4515a8807404c147c767ee42beec7cddd84591d65"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/shell/SettingsNavigationTest.kt",
+    "size": 4724,
+    "sha256": "3322093fb3e7aefb6d64c9425c7e24eb5a71bf6ec0f81d7a03ac81fc1d67ce77"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/save/network/SystemHttpsConnectionFactoryNetworkTest.kt",
+    "size": 13587,
+    "sha256": "41e39956f1405b4cae26104bc44dda653bed47bb419a0ade437d89d2c9870e04"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/save/network/TransferNetworkEnforcementTest.kt",
+    "size": 26073,
+    "sha256": "3f1434870ef2e2ffd444fee49563f3e21e18bd34db2b3afce0d9e40bcc165db4"
+  },
+  {
+    "path": "core-model/src/main/kotlin/com/easysavevideo/core/model/Settings.kt",
+    "size": 2593,
+    "sha256": "0c1fa52ce1a648438529898818eec9da2961224d3cc9bd98401b327fb5269722"
+  },
+  {
+    "path": "core-model/src/test/kotlin/com/easysavevideo/core/model/SaveSettingsTest.kt",
+    "size": 578,
+    "sha256": "0b35850f6afe5ae6c7e1d10d431bebf523c5fd97a7181b6006bf32818f8c5cc0"
+  },
+  {
+    "path": "docs/ui/implementation/SAVE_WIFI_ONLY_20261013.md",
+    "size": 6356,
+    "sha256": "f591aa1227ecd03412323a039fef1df3b9607ad8959847ab5ea58d9f7331db94"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveCoordinator.kt",
+    "size": 35178,
+    "sha256": "30d09ace5b100fab793c216c09067bc06b06a445bc8cd489ddcc4d7d393b13cc"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveErrors.kt",
+    "size": 4101,
+    "sha256": "648886e47fa059a8e88ea2c7dc1a3db43eaabfac4e2eab3fa40ebde526fc3f4d"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveModels.kt",
+    "size": 15552,
+    "sha256": "5eb7b7b55d143cfd15a34a3e8e580589b3688ea74e206026f9771ad1a3142583"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveNetworkGate.kt",
+    "size": 452,
+    "sha256": "5d3217e43d2988756e60e1a434e73096eaafb6289ece3777358895bec7e0238e"
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/RecordingCoordinatorTest.kt",
+    "size": 28008,
+    "sha256": "e61870efbafa0067fe77a35211f00791680f42af9a62b293d9039cb0d7b43831"
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/SaveTestFixtures.kt",
+    "size": 6154,
+    "sha256": "f3d741a9457fd93344a409c37b56c47f04639064ff6ac64a551c9f007ad54bfd"
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/SaveWifiCoordinatorTest.kt",
+    "size": 4399,
+    "sha256": "4f4cb4c44aacb7b575a0c71c5218ad2acda0e1d90c212b24a8134536dd472696"
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/StreamCoordinatorTest.kt",
+    "size": 13663,
+    "sha256": "aee116493c11dc4886b4025d63227e61977790498ea35f96fc18a3c4a06616df"
+  }
+]
