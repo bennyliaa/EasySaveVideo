@@ -72,8 +72,8 @@ class SaveUiPolicyTest {
         RecordingError.entries.forEach { assertTrue(recordingErrorLabel(it).isNotBlank()) }
         assertTrue(recordingAudioStatusLabel(RecordingAudioStatus.PCM_OBSERVED).contains("不保证"))
         assertTrue(recordingAudioOutcomeLabel(RecordingAudioOutcome.INTERNAL_AUDIO_SILENT_OR_UNKNOWN).contains("未知"))
-        assertTrue(saveErrorText(SaveError.AUDIO_PERMISSION_DENIED).contains("明确选择"))
-        assertFalse(saveErrorText(SaveError.UNSUPPORTED_MEDIA).contains("录制和转码不受支持"))
+        assertTrue(detailedFailureChinese(SaveError.AUDIO_PERMISSION_DENIED).contains("明确选择"))
+        assertFalse(detailedFailureChinese(SaveError.UNSUPPORTED_MEDIA).contains("录制和转码不受支持"))
     }
     @Test fun effectiveTimeUsesProvidedMicrosecondsRatherThanWallClock() {
         assertEquals("00:00:00", recordingDurationLabel(-1))
@@ -103,4 +103,14 @@ class SaveUiPolicyTest {
         assertEquals(setOf("requestId", "stage", "cancelled", "defaultDisplayOnly"), PendingRecordingConsent::class.java.declaredFields
             .filterNot { it.isSynthetic || java.lang.reflect.Modifier.isStatic(it.modifiers) }.map { it.name }.toSet())
     }
+    private fun detailedFailureChinese(error: SaveError): String {
+        val id = saveRuntimeFailureNoticeResource(saveRuntimeFailureNotice(error).code)
+        val resourceName = com.easysavevideo.app.R.string::class.java.fields.single { it.getInt(null) == id }.name
+        val document = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder()
+            .parse(java.io.File("src/main/res/values-zh-rCN/save_runtime_notice.xml"))
+        val strings = document.getElementsByTagName("string")
+        return (0 until strings.length).map { strings.item(it) }
+            .single { it.attributes.getNamedItem("name").nodeValue == resourceName }.textContent
+    }
+
 }

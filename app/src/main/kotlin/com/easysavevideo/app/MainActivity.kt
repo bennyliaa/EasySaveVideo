@@ -31,6 +31,7 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import com.easysavevideo.app.ui.BrowserScreen
 import com.easysavevideo.app.ui.DiscoveryScreen
 import com.easysavevideo.app.ui.ProviderManagementScreen
+import com.easysavevideo.app.save.saveRuntimeNoticeText
 import com.easysavevideo.app.save.AndroidSaveRuntime
 import com.easysavevideo.app.library.destination.OrdinaryDestinationDialog
 import com.easysavevideo.app.library.destination.AndroidFolderPickerHost
@@ -438,7 +439,7 @@ class MainActivity : ComponentActivity() {
                     onBack = {
                         pendingRecordedEditorReference = null; recordedEditorNotice = null
                         navigate(EsvDestination.TASKS)
-                    }, notice = recordedEditorNotice ?: saves.notice,
+                    }, notice = recordedEditorNotice ?: saves.notice?.let { saveRuntimeNoticeText(it) },
                     regionSetup = RecordingRegionSetup(regionGeometry, DefaultDisplayCaptureGeometry.scopeEvidence(),
                         canStart = saves.ready && saves.segmentRecording?.ready == true && saves.canRegionRecording() && saves.currentRecordingId == null,
                         unavailableReason = if (regionGeometry == null) "当前默认显示屏几何不可用，请返回前台后重新选择。"
@@ -559,7 +560,7 @@ class MainActivity : ComponentActivity() {
                     onSaveTasks = { navigate(EsvDestination.TASKS) },
                     onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) },
                     saveScanning = saves.scanning,
-                    saveNotice = saves.notice,
+                    saveNotice = saves.notice?.let { saveRuntimeNoticeText(it) },
                     onDismissSaveNotice = saves::dismissNotice, destinations = saves.destinations, bookmarks = bookmarks, saveRuntime = saves)
                 }
                 BackHandler(enabled = previewHost) {

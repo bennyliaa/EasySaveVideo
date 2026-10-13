@@ -1,0 +1,11 @@
+<testsuite name="com.easysavevideo.app.save.SaveRuntimeNoticeTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-13T08:57:13.930Z" hostname="[redacted]" time="0.007">
+  <properties />
+  <testcase name="onlyTheCapturedCapacityIntegerEntersTheVariableNotice" classname="com.easysavevideo.app.save.SaveRuntimeNoticeTest" time="0.0" />
+  <testcase name="fixedAndDetectionInventoriesAreExhaustiveAndStructurallyStable" classname="com.easysavevideo.app.save.SaveRuntimeNoticeTest" time="0.0" />
+  <testcase name="allOldSameTextErrorsRemainEqualAndDifferentTextsRemainDifferent" classname="com.easysavevideo.app.save.SaveRuntimeNoticeTest" time="0.003" />
+  <testcase name="diagnosticStringsContainOnlySafeKindsAndRedactedCapacity" classname="com.easysavevideo.app.save.SaveRuntimeNoticeTest" time="0.003" />
+  <testcase name="everyDomainErrorMapsToExactlyItsOriginalDetailedTextGroup" classname="com.easysavevideo.app.save.SaveRuntimeNoticeTest" time="0.001" />
+  <testcase name="payloadAndConstructorTypesCannotRetainUserTextOrRuntimeAuthority" classname="com.easysavevideo.app.save.SaveRuntimeNoticeTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

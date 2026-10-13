@@ -121,7 +121,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
     var records by mutableStateOf<List<SaveRecord>>(emptyList()); private set
     var activeTaskCount by mutableStateOf(0); private set
     var mediaDispositions by mutableStateOf<Map<String, MediaLifecycle>>(emptyMap()); private set
-    var notice by mutableStateOf<String?>(null); private set
+    internal var notice by mutableStateOf<SaveRuntimeNotice?>(null); private set
     var draining by activityStateOf(false); private set
     var networkDraining by activityStateOf(false); private set
     var pendingCommands by activityStateOf<Set<String>>(emptySet()); private set
@@ -253,12 +253,12 @@ class AndroidSaveRuntime private constructor(context: Context) {
     fun inspectFromUserClick(browser: SystemBrowserHost) {
         requireMain()
         showFailureBrowserReminder = false
-        if (!ready || !foreground || !allowed()) { notice = "保存暂时不可用，请稍后重试。"; return }
+        if (!ready || !foreground || !allowed()) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SAVE_UNAVAILABLE); return }
         if (scanning) return
         val captured = inspectionPage(browser)
         val view = browser.selectedView()
         if (captured == null || !captured.isUsable() || view == null) {
-            notice = "请先打开网页，等待页面加载完成后再保存。"; return
+            notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.OPEN_LOADED_PAGE); return
         }
         val pageUrl = captured.pageUrl ?: return
         fun isCurrent(): Boolean = captured.matches(inspectionPage(browser), foreground)
@@ -267,14 +267,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
             scanning = false
             when (result) {
                 is PageSaveDetection.Found -> selection = result.selection
-                is PageSaveDetection.Unavailable -> notice = when (result.reason) {
-                    PageSaveDetection.Reason.STALE_PAGE -> "页面或标签已变化，请在当前页面重新点击保存。"
-                    PageSaveDetection.Reason.JAVASCRIPT_DISABLED -> "当前关闭了 JavaScript。启用后可在页面点击保存进行一次检测。"
-                    PageSaveDetection.Reason.TIMED_OUT -> "页面检测超时，未开始下载。"
-                    PageSaveDetection.Reason.UNSUPPORTED -> "当前资源属于 blob 或其他未支持类型。仅支持 HTTPS MP4 与受限静态 HLS。"
-                    PageSaveDetection.Reason.NO_MEDIA -> "当前主页面未找到可检测的视频。跨域播放器、blob 或嵌套页面可能无法检测。"
-                    PageSaveDetection.Reason.INVALID_RESPONSE -> "页面返回的检测数据无法安全读取，未开始下载。"
-                }
+                is PageSaveDetection.Unavailable -> notice = SaveRuntimeNotice.DetectionUnavailable(result.reason)
             }
         }
     }
@@ -302,16 +295,16 @@ class AndroidSaveRuntime private constructor(context: Context) {
     private fun networkSaveAllowed(showNotice: Boolean = true): Boolean = try {
         networkPolicy.checkAdmission(); true
     } catch (_: SaveFailure) {
-        if (showNotice) main.post { notice = application.getString(if (networkPolicy.initialized)
-            com.easysavevideo.app.R.string.save_wifi_required else com.easysavevideo.app.R.string.save_wifi_settings_unavailable) }
+        if (showNotice) main.post { notice = SaveRuntimeNotice.Fixed(if (networkPolicy.initialized)
+            SaveRuntimeFixedNotice.WIFI_REQUIRED else SaveRuntimeFixedNotice.WIFI_SETTINGS_UNAVAILABLE) }
         false
     }
     fun choose(candidate: PageSaveCandidate, browser: SystemBrowserHost) {
         requireMain()
         val captured = selection ?: return
-        if (!captured.isCurrent() || captured.candidates.none { it === candidate }) { selection = null; notice = "候选已过期，请重新检测当前页面。"; return }
-        if (candidate.protected || !candidate.supported) { notice = "该资源受保护或格式未支持，未开始保存。"; return }
-        if (!canSave(candidate.method)) { notice = "②流媒体保存需要有效权益。本开发版本没有真实购买入口。"; return }
+        if (!captured.isCurrent() || captured.candidates.none { it === candidate }) { selection = null; notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.CANDIDATE_EXPIRED); return }
+        if (candidate.protected || !candidate.supported) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.CANDIDATE_PROTECTED_OR_UNSUPPORTED); return }
+        if (!canSave(candidate.method)) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_ENTITLEMENT_REQUIRED); return }
         if (candidate.method == TaskMethod.STREAM) { prepareStream(candidate, captured, browser); return }
         destinations?.select(isCurrent = { foreground && selection === captured && captured.isCurrent() },
             accepted = { admission -> chooseDirect(candidate, captured, browser, admission) })
@@ -321,9 +314,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
         requireMain()
         if (selection !== captured || !captured.isCurrent()) return
         if (!networkSaveAllowed()) return
-        if (!foreground || !allowed() || executing.get() || resourcesDraining()) { notice = "已有保存或系统媒体校验正在退出，请稍后再试。"; return }
-        if (!SaveTaskCapacity.hasRoom(activeTaskCount, limits.maxJournalEntries)) { notice = "最多同时保留 ${limits.maxJournalEntries} 条未完成任务，当前已满。已有媒体未被删除。"; return }
-        val lease = try { leaseFor(candidate.url, browser) } catch (_: Exception) { notice = "无法安全建立短期请求会话，未开始保存。"; return }
+        if (!foreground || !allowed() || executing.get() || resourcesDraining()) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.MEDIA_RESOURCES_EXITING); return }
+        if (!SaveTaskCapacity.hasRoom(activeTaskCount, limits.maxJournalEntries)) { notice = SaveRuntimeNotice.TaskCapacityReached(limits.maxJournalEntries); return }
+        val lease = try { leaseFor(candidate.url, browser) } catch (_: Exception) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.DIRECT_REQUEST_SESSION_UNAVAILABLE); return }
         val id = admission.creationId
         val request = SaveRequest(id, id, SelectedMediaResource(candidate.id, candidate.id, candidate.url,
             expectedAudio = candidate.expectedAudio, requestContextRef = lease))
@@ -340,9 +333,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
                         acceptedTaskId = result.record.task.taskId
                         discoverySaveLinks.accepted(result.record.task.taskId, saveOrigin, result.existing)
                         launched = launchExecution(result.record.task.taskId, lease)
-                        if (launched) main.post { notice = "①直接下载任务已接受，请在保存任务查看进度。" }
+                        if (launched) main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.DIRECT_TASK_ACCEPTED) }
                     }
-                    is SaveSubmission.Rejected -> { leases.revoke(lease); main.post { notice = saveErrorText(result.error) } }
+                    is SaveSubmission.Rejected -> { leases.revoke(lease); main.post { notice = saveRuntimeFailureNotice(result.error) } }
                 }
                 publishRecords()
             } finally {
@@ -356,10 +349,10 @@ class AndroidSaveRuntime private constructor(context: Context) {
     private fun prepareStream(candidate: PageSaveCandidate, captured: PageSaveSelection, browser: SystemBrowserHost) {
         if (!networkSaveAllowed()) return
         if (!foreground || !ready || !canSave(TaskMethod.STREAM) || resourcesDraining() || !reserveExecution()) {
-            notice = "②流媒体保存暂不可用，请检查权益并等待现有任务退出。"; return
+            notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_UNAVAILABLE); return
         }
         val lease = try { leaseFor(candidate.url, browser) } catch (_: Exception) {
-            setExecuting(false); notice = "无法建立短期请求会话。"; return
+            setExecuting(false); notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_REQUEST_SESSION_UNAVAILABLE); return
         }
         val saveOrigin = try { browser.captureSaveOrigin() } catch (_: Exception) { null }
         discoverySaveLinks.discard(streamDiscoveryOrigin); streamDiscoveryOrigin = saveOrigin
@@ -387,7 +380,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 discoverySaveLinks.discard(saveOrigin)
                 main.post {
                     if (streamDiscoveryOrigin === saveOrigin) streamDiscoveryOrigin = null
-                    if (token == preparationGeneration) notice = saveErrorText(SaveErrors.classify(failure))
+                    if (token == preparationGeneration) notice = saveRuntimeFailureNotice(SaveErrors.classify(failure))
                 }
                 leases.revoke(lease)
             } finally {
@@ -402,7 +395,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
             cancellation.cancel(); leases.revoke(lease)
             if (token == preparationGeneration) dismissSelection()
             setExecuting(false)
-            notice = "流媒体检查队列暂不可用，未开始保存。"
+            notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_PREPARATION_QUEUE_UNAVAILABLE)
         }
     }
     fun chooseHlsVariant(identity: String?) {
@@ -410,9 +403,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
         val prepared = hlsPreparation ?: return
         val captured = streamSelectionContext ?: return
         if (!foreground || !captured.isCurrent() || !canSave(TaskMethod.STREAM) || executing.get() || resourcesDraining()) {
-            dismissSelection(); notice = "页面、来源或权益已变化，请重新检查。"; return
+            dismissSelection(); notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_CONTEXT_CHANGED); return
         }
-        if (!SaveTaskCapacity.hasRoom(activeTaskCount, limits.maxJournalEntries)) { notice = "保存任务容量已满，已有媒体未被删除。"; return }
+        if (!SaveTaskCapacity.hasRoom(activeTaskCount, limits.maxJournalEntries)) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.TASK_CAPACITY_FULL); return }
         destinations?.select(isCurrent = { foreground && hlsPreparation === prepared && streamSelectionContext === captured && captured.isCurrent() },
             accepted = { admission -> chooseHlsVariantSelected(identity, prepared, captured, admission) })
     }
@@ -422,9 +415,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
         if (!foreground || hlsPreparation !== prepared || streamSelectionContext !== captured || !captured.isCurrent() ||
             !canSave(TaskMethod.STREAM) || resourcesDraining()) { dismissSelection(); return }
         if (!networkSaveAllowed()) return
-        if (!reserveExecution()) { notice = "已有保存操作处理中。"; return }
+        if (!reserveExecution()) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SAVE_OPERATION_BUSY); return }
         val resource = try { stream.select(prepared, identity) } catch (failure: Exception) {
-            setExecuting(false); dismissSelection(); notice = saveErrorText(SaveErrors.classify(failure)); return
+            setExecuting(false); dismissSelection(); notice = saveRuntimeFailureNotice(SaveErrors.classify(failure)); return
         }
         val operation = stream.operation(prepared)
         val id = admission.creationId
@@ -449,11 +442,11 @@ class AndroidSaveRuntime private constructor(context: Context) {
                         acceptedTaskId = result.record.task.taskId
                         discoverySaveLinks.accepted(result.record.task.taskId, saveOrigin, result.existing)
                         launched = launchExecution(result.record.task.taskId, resource.requestContextRef, reserved = true)
-                        if (launched) main.post { notice = "②流媒体任务已接受，固定所选清晰度；仅在独立 MP4 通过验证后完成。" }
+                        if (launched) main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_TASK_ACCEPTED) }
                     }
                     is SaveSubmission.Rejected -> {
                         stream.discard(prepared); resource.requestContextRef?.let(leases::revoke)
-                        main.post { notice = saveErrorText(result.error) }
+                        main.post { notice = saveRuntimeFailureNotice(result.error) }
                     }
                 }
                 publishRecords()
@@ -489,27 +482,27 @@ class AndroidSaveRuntime private constructor(context: Context) {
         requireMain()
         val record = records.firstOrNull { it.task.taskId == taskId } ?: return
         if (!foreground || !ready || !canResumeFinalized(record) || executing.get() || resourcesDraining()) {
-            notice = "已有保存或系统媒体校验正在退出，请稍后再试。"; return
+            notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.MEDIA_RESOURCES_EXITING); return
         }
         if (record.needsNetworkTransfer() && !networkSaveAllowed()) return
         val source = coordinator.sourceForTask(taskId)
         if (record.request.method == TaskMethod.RECORD && record.transfer == null) {
-            notice = "录制会话已中断，不能复用旧授权。请明确开始新录制；旧任务可放弃。"; return
+            notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_RESTART_REQUIRES_FRESH_CONSENT); return
         }
         if (record.request.method == TaskMethod.STREAM && record.transfer == null) {
-            notice = "流媒体片段未完成。请返回网页重新选择固定清晰度，新任务从头开始；旧任务可取消。"
+            notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_RESELECT_REQUIRED)
             return
         }
         if (source == null && record.transfer == null) {
-            notice = "重启后不会保留完整来源地址。请返回网页重新检测并选择，新任务会从头下载；旧任务可取消。"
+            notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SOURCE_RESELECT_AFTER_RESTART)
             return
         }
         if (record.waitReason == SaveWaitReason.AUTHENTICATION && source != null &&
             !sameOrigin(browser.state.selectedTab?.address?.value, source.url.value)) {
-            notice = "请先在浏览器打开并登录该资源的同源页面，再回来手动继续。"; return
+            notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SAME_ORIGIN_LOGIN_REQUIRED); return
         }
         val lease = try { source?.let { leaseFor(it.url, browser) } } catch (_: Exception) {
-            notice = "无法安全建立短期请求会话，未继续保存。"; return
+            notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RESUME_REQUEST_SESSION_UNAVAILABLE); return
         }
         pendingCommands = pendingCommands + taskId
         command(mediaWork = true, onRejected = { pendingCommands = pendingCommands - taskId; lease?.let(leases::revoke) }) {
@@ -546,7 +539,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     if (!foreground) deferUnstartedExecution(taskId)
                     coordinator.execute(taskId)
                     executed = true
-                } catch (_: Exception) { main.post { notice = "任务状态暂时无法读取，已保留私有文件供恢复。" } }
+                } catch (_: Exception) { main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.TASK_STATE_READ_FAILED) } }
                 finally {
                     // Optional discovery work has its own failure boundary. It cannot retry Save,
                     // alter a committed media result, or turn a history error into a Save error.
@@ -561,7 +554,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         } catch (_: java.util.concurrent.RejectedExecutionException) {
             discoverySaveLinks.cancel(taskId)
             setExecuting(false); lease?.let(leases::revoke); deferUnstartedExecution(taskId)
-            main.post { notice = "保存执行队列暂不可用，任务已暂停。" }; return false
+            main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.EXECUTION_QUEUE_UNAVAILABLE) }; return false
         }
         return true
     }
@@ -590,10 +583,10 @@ class AndroidSaveRuntime private constructor(context: Context) {
         requireMain()
         if (!ready || !foreground || !canSave(TaskMethod.RECORD) || resourcesDraining() ||
             VerifiedMediaPreviewResources.isOccupied || pendingRecording != null || currentRecordingId != null || recordingService != null || !reserveExecution()) {
-            notice = "③暂不可开始。请检查录制权益，并等待现有保存或预览资源退出。"; return null
+            notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_UNAVAILABLE); return null
         }
         if (!SaveTaskCapacity.hasRoom(activeTaskCount, limits.maxJournalEntries) || width <= 0 || height <= 0 || density <= 0) {
-            setExecuting(false); notice = "任务容量或显示尺寸不适合开始录制。"; return null
+            setExecuting(false); notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_CAPACITY_OR_GEOMETRY_INVALID); return null
         }
         try {
             // A truthful initial canvas intent, then CodecProfileSelector checks real supported alignment.
@@ -605,12 +598,12 @@ class AndroidSaveRuntime private constructor(context: Context) {
             val audioAllowed = choice == RecordingAudioChoice.NONE ||
                 application.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
             if (!recorder.prepare(descriptor, audioAllowed)) {
-                setExecuting(false); notice = "录制会话仍在退出，请稍后重新开始。"; return null
+                setExecuting(false); notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_SESSION_EXITING); return null
             }
             pendingRecording = descriptor; currentRecordingId = id; notice = null
             main.postDelayed({ if (pendingRecording?.sessionId == id && recordingService == null) abandonRecordingRequest(id) }, 120_000)
             return id
-        } catch (_: RuntimeException) { setExecuting(false); notice = "无法建立有效的录制配置。"; return null }
+        } catch (_: RuntimeException) { setExecuting(false); notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_CONFIGURATION_INVALID); return null }
     }
     fun isRecordingRequestAllowed(id: String): Boolean = if (segmentRecording?.owns(id) == true)
         segmentRecording?.allowsConsent(id) == true else pendingRecording?.sessionId == id && canSave(TaskMethod.RECORD) && !resourcesDraining()
@@ -622,14 +615,14 @@ class AndroidSaveRuntime private constructor(context: Context) {
     fun prepareRegionRecording(choice: RecordingAudioChoice, recipe: RegionCaptureRecipe, admission: OrdinaryDestinationAdmission): String? {
         requireMain()
         val id = segmentRecording?.prepare(choice, recipe, admission)
-        if (id == null) { notice = "选区、权益或媒体资源尚未就绪。请重新核对选区并等待现有任务退出。"; return null }
+        if (id == null) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.REGION_RECORDING_UNAVAILABLE); return null }
         setExecuting(true); currentRecordingId = id; recordingSnapshot = null; notice = null
         return id
     }
     fun preparePreviewRecording(choice: RecordingAudioChoice, admission: OrdinaryDestinationAdmission): String? {
         requireMain()
         val id = segmentRecording?.preparePreview(choice, admission)
-        if (id == null) { notice = "当前显示几何、权益或媒体资源尚未就绪，未取得预览或开始录制。"; return null }
+        if (id == null) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.PREVIEW_RECORDING_UNAVAILABLE); return null }
         setExecuting(true); currentRecordingId = id; recordingSnapshot = null; notice = null
         return id
     }
@@ -674,7 +667,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         pendingRecording = null; ProjectionGrantHandoff.discard(id)
         recorder.denied(id, RecordingError.FGS_START_REJECTED)
         currentRecordingId = null; setExecuting(false)
-        notice = "系统未能启动本次前台录制服务。旧授权已丢弃，请手动重新开始。"
+        notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_FOREGROUND_START_REJECTED)
     }
     fun onRecordingServiceReady(service: RecordingForegroundService, id: String) {
         requireMain()
@@ -695,7 +688,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 if (result !is SaveSubmission.Accepted) throw SaveFailure((result as SaveSubmission.Rejected).error)
                 worker.execute {
                     try { coordinator.execute(id) }
-                    catch (_: Exception) { main.post { notice = "录制任务未能结束，私有文件已保留供本地恢复。" } }
+                    catch (_: Exception) { main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_EXECUTION_FAILED) } }
                     finally {
                         setExecuting(false)
                         command { publishRecords() }
@@ -703,7 +696,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                             if (pendingRecording?.sessionId == id) pendingRecording = null
                             if (currentRecordingId != id) return@post
                             if (recorder.nativeOccupied) {
-                                notice = "系统录制资源仍未确认退出。已保留前台状态与文件；不能开始另一项录制。必要时请在系统中完全结束应用。"
+                                notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_NATIVE_RELEASE_UNCONFIRMED)
                                 service.showStatus(id, "系统资源仍未退出，请在系统中结束应用")
                             } else finishRecordingOwnerIfReleased(id)
                         }
@@ -717,7 +710,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     recorder.denied(id, RecordingError.CAPTURE_UNAVAILABLE)
                     try { coordinator.cancel(id) } catch (_: Exception) { /* Preserve journal for recovery. */ }
                 }
-                main.post { notice = saveErrorText(SaveErrors.classify(failure)) }
+                main.post { notice = saveRuntimeFailureNotice(SaveErrors.classify(failure)) }
             } finally {
                 if (!launched) main.post {
                     if (pendingRecording?.sessionId == id) pendingRecording = null
@@ -751,13 +744,13 @@ class AndroidSaveRuntime private constructor(context: Context) {
     fun pauseRecording(id: String) {
         requireMain()
         if (segmentRecording?.owns(id) == true) { segmentRecording?.pause(id); return }
-        if (!canPauseRecording()) { notice = "暂停/继续按现有契约需要录制与片段录制权益。"; return }
+        if (!canPauseRecording()) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_PAUSE_RESUME_ENTITLEMENT_REQUIRED); return }
         if (currentRecordingId == id) recorder.pause(id)
     }
     fun resumeRecording(id: String) {
         requireMain()
         if (segmentRecording?.owns(id) == true) { segmentRecording?.resume(id); return }
-        if (!canPauseRecording()) { notice = "暂停/继续按现有契约需要录制与片段录制权益。"; return }
+        if (!canPauseRecording()) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_PAUSE_RESUME_ENTITLEMENT_REQUIRED); return }
         if (currentRecordingId == id) recorder.resume(id)
     }
     fun stopRecording(id: String) {
@@ -905,12 +898,12 @@ class AndroidSaveRuntime private constructor(context: Context) {
         try {
             controls.execute {
                 try { action() }
-                catch (_: Exception) { main.post { notice = "保存存储暂时不可用，原有媒体未被清除。" } }
+                catch (_: Exception) { main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SAVE_STORAGE_UNAVAILABLE) } }
                 finally { released() }
             }
         } catch (_: java.util.concurrent.RejectedExecutionException) {
             try { onRejected() } finally { released() }
-            main.post { notice = "任务操作较多，请稍后再试。" }
+            main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.CONTROL_QUEUE_FULL) }
         }
     }
     private fun operation(lifetime: Long = 2L * 60 * 60 * 1000) = OperationContext(UUID.randomUUID().toString(),

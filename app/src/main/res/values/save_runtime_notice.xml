@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fixed runtime notices -->
+    <string name="save_runtime_notice_save_unavailable">Saving is temporarily unavailable. Please try again later.</string>
+    <string name="save_runtime_notice_open_loaded_page">Open a webpage and wait for it to finish loading before saving.</string>
+    <string name="save_runtime_notice_candidate_expired">The candidate has expired. Detect media on the current page again.</string>
+    <string name="save_runtime_notice_candidate_protected_or_unsupported">This resource is protected or its format is unsupported. Saving has not started.</string>
+    <string name="save_runtime_notice_stream_entitlement_required">② Stream saving requires a valid entitlement. This development version has no real purchase entry point.</string>
+    <string name="save_runtime_notice_media_resources_exiting">An existing save or system media verification operation is still shutting down. Please try again later.</string>
+    <string name="save_runtime_notice_direct_request_session_unavailable">A short-lived request session could not be established safely. Saving has not started.</string>
+    <string name="save_runtime_notice_direct_task_accepted">① The Direct download task has been accepted. View its progress in Save tasks.</string>
+    <string name="save_runtime_notice_stream_unavailable">② Stream saving is temporarily unavailable. Check your entitlement and wait for existing tasks to shut down.</string>
+    <string name="save_runtime_notice_stream_request_session_unavailable">A short-lived request session could not be established.</string>
+    <string name="save_runtime_notice_stream_preparation_queue_unavailable">The stream inspection queue is temporarily unavailable. Saving has not started.</string>
+    <string name="save_runtime_notice_stream_context_changed">The page, source, or entitlement has changed. Check again.</string>
+    <string name="save_runtime_notice_task_capacity_full">Save task capacity is full. Existing media has not been deleted.</string>
+    <string name="save_runtime_notice_save_operation_busy">A save operation is already in progress.</string>
+    <string name="save_runtime_notice_stream_task_accepted">② The Stream task has been accepted with the selected quality fixed. It completes only after the standalone MP4 passes verification.</string>
+    <string name="save_runtime_notice_recording_restart_requires_fresh_consent">The recording session was interrupted. The old consent cannot be reused. Explicitly start a new recording; the old task can be abandoned.</string>
+    <string name="save_runtime_notice_stream_reselect_required">The stream segments are incomplete. Return to the webpage and select a fixed quality again. The new task starts over; the old task can be cancelled.</string>
+    <string name="save_runtime_notice_source_reselect_after_restart">The full source address is not retained after a restart. Return to the webpage to detect and select media again. The new task downloads from the beginning; the old task can be cancelled.</string>
+    <string name="save_runtime_notice_same_origin_login_required">Open and sign in to a same-origin page for this resource in the browser, then return and resume manually.</string>
+    <string name="save_runtime_notice_resume_request_session_unavailable">A short-lived request session could not be established safely. Saving has not resumed.</string>
+    <string name="save_runtime_notice_task_state_read_failed">The task state cannot be read right now. Private files have been retained for recovery.</string>
+    <string name="save_runtime_notice_execution_queue_unavailable">The save execution queue is temporarily unavailable. The task has been paused.</string>
+    <string name="save_runtime_notice_recording_unavailable">③ Recording cannot start right now. Check your recording entitlement and wait for existing save or preview resources to shut down.</string>
+    <string name="save_runtime_notice_recording_capacity_or_geometry_invalid">Task capacity or display dimensions are unsuitable for starting a recording.</string>
+    <string name="save_runtime_notice_recording_session_exiting">The recording session is still shutting down. Start again later.</string>
+    <string name="save_runtime_notice_recording_configuration_invalid">A valid recording configuration could not be established.</string>
+    <string name="save_runtime_notice_region_recording_unavailable">The region, entitlement, or media resources are not ready. Check the region again and wait for existing tasks to shut down.</string>
+    <string name="save_runtime_notice_preview_recording_unavailable">The current display geometry, entitlement, or media resources are not ready. No preview was acquired and recording has not started.</string>
+    <string name="save_runtime_notice_recording_foreground_start_rejected">The system could not start this foreground recording service. The old consent has been discarded. Start again manually.</string>
+    <string name="save_runtime_notice_recording_execution_failed">The recording task could not finish. Private files have been retained for local recovery.</string>
+    <string name="save_runtime_notice_recording_native_release_unconfirmed">System recording resources have not been confirmed released. The foreground state and files have been retained; another recording cannot start. If necessary, fully stop the app through the system.</string>
+    <string name="save_runtime_notice_recording_pause_resume_entitlement_required">Under the existing contract, pause and resume require both recording and segment-recording entitlements.</string>
+    <string name="save_runtime_notice_save_storage_unavailable">Save storage is temporarily unavailable. Existing media has not been cleared.</string>
+    <string name="save_runtime_notice_control_queue_full">Too many task operations are pending. Please try again later.</string>
+    <!-- Page detection outcomes -->
+    <string name="save_runtime_notice_detection_stale_page">The page or tab has changed. Tap Save again on the current page.</string>
+    <string name="save_runtime_notice_detection_javascript_disabled">JavaScript is currently disabled. After enabling it, tap Save on the page to run one detection.</string>
+    <string name="save_runtime_notice_detection_timed_out">Page detection timed out. Downloading has not started.</string>
+    <string name="save_runtime_notice_detection_unsupported">This resource is a blob or another unsupported type. Only HTTPS MP4 and restricted static HLS are supported.</string>
+    <string name="save_runtime_notice_detection_no_media">No detectable video was found on the current main page. Cross-origin players, blobs, or nested pages may not be detectable.</string>
+    <string name="save_runtime_notice_detection_invalid_response">The detection data returned by the page could not be read safely. Downloading has not started.</string>
+    <!-- Detailed failure notices -->
+    <string name="save_runtime_notice_failure_wifi_required">Saving is waiting for a confirmed default Wi-Fi connection. Connect to Wi-Fi or turn off Save only over Wi-Fi, then retry manually.</string>
+    <string name="save_runtime_notice_failure_cancelled">The task was cancelled. It will not automatically switch to another saving method.</string>
+    <string name="save_runtime_notice_failure_authentication_required">This resource requires a valid signed-in session or access permission.</string>
+    <string name="save_runtime_notice_failure_storage_full">There is not enough available storage space.</string>
+    <string name="save_runtime_notice_failure_storage_failure">Private storage is temporarily unavailable. Existing media has not been cleared.</string>
+    <string name="save_runtime_notice_failure_network_timeout">The operation timed out. Late results will not be committed.</string>
+    <string name="save_runtime_notice_failure_network_unavailable">The network operation did not complete within bounded retries. Please try again later.</string>
+    <string name="save_runtime_notice_failure_tls_rejected">The secure connection to the website could not be verified. Certificate checks were not bypassed.</string>
+    <string name="save_runtime_notice_failure_policy_blocked">The resource address or connection does not meet the safety restrictions.</string>
+    <string name="save_runtime_notice_failure_byte_limit_exceeded">The file-size or cumulative transfer budget for this development version has been reached.</string>
+    <string name="save_runtime_notice_failure_protected_media">Protected content was detected. Saving is not supported.</string>
+    <string name="save_runtime_notice_failure_unsupported_media">This media or saving method is outside the compatibility scope of this development version. Network saving does not support live streams, encryption, separate tracks, format changes, or transcoding.</string>
+    <string name="save_runtime_notice_failure_invalid_media">The file is incomplete or did not pass actual media verification. It was not added to the library as a successfully saved video.</string>
+    <string name="save_runtime_notice_failure_invalid_range">The source resource or resume identity does not match. Mismatched bytes were not joined.</string>
+    <string name="save_runtime_notice_failure_expired_resource">The candidate resource has expired. Return to the webpage and detect media again.</string>
+    <string name="save_runtime_notice_failure_resource_release_unconfirmed">System resources have not been confirmed released. Task files are retained and late results will not be committed.</string>
+    <string name="save_runtime_notice_failure_verification_unavailable">System media verification resources are not available yet. Please try again later.</string>
+    <string name="save_runtime_notice_failure_commit_mismatch">The commit state needs to be verified again. Files have been retained for recovery.</string>
+    <string name="save_runtime_notice_failure_rate_limited">The website is limiting requests. Please try again later.</string>
+    <string name="save_runtime_notice_failure_source_reselection_required">The short-lived source context has been cleared. Return to the webpage to detect and select media again; the new task downloads from the beginning.</string>
+    <string name="save_runtime_notice_failure_http_not_found">The resource no longer exists (404). Return to the webpage and select it again.</string>
+    <string name="save_runtime_notice_failure_http_rejected">The website rejected this resource request. No automatic switch to another saving method was made.</string>
+    <string name="save_runtime_notice_failure_http_failure">The website did not return complete media that can be saved.</string>
+    <string name="save_runtime_notice_failure_busy">A task is already in progress. Please try again later.</string>
+    <string name="save_runtime_notice_failure_consent_denied">System consent for this recording was not obtained. Recording has not started.</string>
+    <string name="save_runtime_notice_failure_audio_permission_denied">Internal audio permission was not granted. Explicitly choose to start again without audio, or cancel.</string>
+    <string name="save_runtime_notice_failure_capture_unavailable">The system cannot start this recording right now. The old consent will not be reused.</string>
+    <string name="save_runtime_notice_failure_profile_unsupported">The device encoder does not support this recording configuration.</string>
+    <string name="save_runtime_notice_failure_capture_empty">Valid recording samples are empty or too short. No finished video was published.</string>
+    <string name="save_runtime_notice_failure_keyframe_timeout">Waiting for a recording keyframe timed out. A complete finished video has not been confirmed.</string>
+    <string name="save_runtime_notice_failure_timestamp_invalid">The recorded media timeline does not meet the requirements. No finished video was published.</string>
+    <string name="save_runtime_notice_failure_audio_failed">Internal playback audio capture failed. No automatic switch to the microphone or to recording without audio was made.</string>
+    <string name="save_runtime_notice_failure_encoder_failed">The system recording encoder failed. Successful saving has not been confirmed.</string>
+    <string name="save_runtime_notice_failure_finalization_failed">The recording file was not fully finalized. No finished video was published.</string>
+    <string name="save_runtime_notice_failure_invalid_request">The task did not complete. Check the page and storage, then try again.</string>
+    <plurals name="save_runtime_notice_task_capacity_reached">
+        <item quantity="one">At most %1$s unfinished task can be retained at a time. Capacity is currently full. Existing media has not been deleted.</item>
+        <item quantity="other">At most %1$s unfinished tasks can be retained at a time. Capacity is currently full. Existing media has not been deleted.</item>
+    </plurals>
+</resources>

@@ -1,0 +1,404 @@
+{
+  "forced_tasks": [
+    ":app:testDebugUnitTest",
+    ":app:compileDebugKotlin",
+    ":app:compileReleaseKotlin",
+    ":app:lintAnalyzeDebug",
+    ":app:lintReportDebug",
+    ":app:lintDebug",
+    ":app:lintAnalyzeRelease",
+    ":app:lintReportRelease",
+    ":app:lintRelease",
+    ":app:verifyRuntimeAdmission"
+  ],
+  "observations": {
+    ":core-domain:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":core-model:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":core-model:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":core-model:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":core-domain:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":core-domain:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":recording:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":recording:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":recording:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":save:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":save:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":save:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":save:processResources": [
+      "NO-SOURCE"
+    ],
+    ":save:classes": [
+      "UP-TO-DATE"
+    ],
+    ":save:jar": [
+      "UP-TO-DATE"
+    ],
+    ":core-domain:processResources": [
+      "NO-SOURCE"
+    ],
+    ":core-domain:classes": [
+      "UP-TO-DATE"
+    ],
+    ":core-domain:jar": [
+      "UP-TO-DATE"
+    ],
+    ":commons-provider:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":discovery:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":discovery:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":discovery:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":commons-provider:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":commons-provider:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":commons-provider:processResources": [
+      "NO-SOURCE"
+    ],
+    ":commons-provider:classes": [
+      "UP-TO-DATE"
+    ],
+    ":commons-provider:jar": [
+      "UP-TO-DATE"
+    ],
+    ":searxng-provider:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":searxng-provider:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":searxng-provider:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":searxng-provider:processResources": [
+      "NO-SOURCE"
+    ],
+    ":searxng-provider:classes": [
+      "UP-TO-DATE"
+    ],
+    ":searxng-provider:jar": [
+      "UP-TO-DATE"
+    ],
+    ":verification-client:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":verification-client:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":verification-client:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":verification-client:processResources": [
+      "NO-SOURCE"
+    ],
+    ":verification-client:classes": [
+      "UP-TO-DATE"
+    ],
+    ":verification-client:jar": [
+      "UP-TO-DATE"
+    ],
+    ":verification-local:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":verification-local:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":verification-local:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":verification-local:processResources": [
+      "NO-SOURCE"
+    ],
+    ":verification-local:classes": [
+      "UP-TO-DATE"
+    ],
+    ":verification-local:jar": [
+      "UP-TO-DATE"
+    ],
+    ":discovery:processResources": [
+      "NO-SOURCE"
+    ],
+    ":discovery:classes": [
+      "UP-TO-DATE"
+    ],
+    ":discovery:jar": [
+      "UP-TO-DATE"
+    ],
+    ":core-model:processResources": [
+      "NO-SOURCE"
+    ],
+    ":core-model:classes": [
+      "UP-TO-DATE"
+    ],
+    ":core-model:jar": [
+      "UP-TO-DATE"
+    ],
+    ":recording:processResources": [
+      "NO-SOURCE"
+    ],
+    ":recording:classes": [
+      "UP-TO-DATE"
+    ],
+    ":recording:jar": [
+      "UP-TO-DATE"
+    ],
+    ":library:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":library:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":library:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":library:processResources": [
+      "NO-SOURCE"
+    ],
+    ":library:classes": [
+      "UP-TO-DATE"
+    ],
+    ":library:jar": [
+      "UP-TO-DATE"
+    ],
+    ":hls:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":hls:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":hls:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":hls:processResources": [
+      "NO-SOURCE"
+    ],
+    ":hls:classes": [
+      "UP-TO-DATE"
+    ],
+    ":hls:jar": [
+      "UP-TO-DATE"
+    ],
+    ":ui-theme:checkKotlinGradlePluginConfigurationErrors": [
+      "SKIPPED"
+    ],
+    ":ui-theme:compileKotlin": [
+      "UP-TO-DATE"
+    ],
+    ":ui-theme:compileJava": [
+      "NO-SOURCE"
+    ],
+    ":ui-theme:processResources": [
+      "NO-SOURCE"
+    ],
+    ":ui-theme:classes": [
+      "UP-TO-DATE"
+    ],
+    ":ui-theme:jar": [
+      "UP-TO-DATE"
+    ],
+    ":app:verifyRuntimeAdmission": [
+      "EXECUTED"
+    ],
+    ":app:preBuild": [
+      "EXECUTED"
+    ],
+    ":app:preDebugBuild": [
+      "EXECUTED"
+    ],
+    ":app:generateDebugBuildConfig": [
+      "UP-TO-DATE"
+    ],
+    ":app:generateDebugResources": [
+      "EXECUTED"
+    ],
+    ":app:packageDebugResources": [
+      "EXECUTED"
+    ],
+    ":app:processDebugNavigationResources": [
+      "EXECUTED"
+    ],
+    ":app:javaPreCompileDebug": [
+      "UP-TO-DATE"
+    ],
+    ":app:checkDebugAarMetadata": [
+      "UP-TO-DATE"
+    ],
+    ":app:mapDebugSourceSetPaths": [
+      "EXECUTED"
+    ],
+    ":app:compileDebugNavigationResources": [
+      "UP-TO-DATE"
+    ],
+    ":app:parseDebugLocalResources": [
+      "EXECUTED"
+    ],
+    ":app:mergeDebugResources": [
+      "EXECUTED"
+    ],
+    ":app:createDebugCompatibleScreenManifests": [
+      "UP-TO-DATE"
+    ],
+    ":app:extractDeepLinksDebug": [
+      "UP-TO-DATE"
+    ],
+    ":app:generateDebugRFile": [
+      "EXECUTED"
+    ],
+    ":app:processDebugMainManifest": [
+      "UP-TO-DATE"
+    ],
+    ":app:processDebugManifest": [
+      "UP-TO-DATE"
+    ],
+    ":app:processDebugManifestForPackage": [
+      "UP-TO-DATE"
+    ],
+    ":app:processDebugResources": [
+      "EXECUTED"
+    ],
+    ":app:preDebugUnitTestBuild": [
+      "EXECUTED"
+    ],
+    ":app:javaPreCompileDebugUnitTest": [
+      "UP-TO-DATE"
+    ],
+    ":app:preReleaseBuild": [
+      "EXECUTED"
+    ],
+    ":app:generateReleaseBuildConfig": [
+      "UP-TO-DATE"
+    ],
+    ":app:generateReleaseResources": [
+      "EXECUTED"
+    ],
+    ":app:packageReleaseResources": [
+      "EXECUTED"
+    ],
+    ":app:processReleaseNavigationResources": [
+      "EXECUTED"
+    ],
+    ":app:parseReleaseLocalResources": [
+      "EXECUTED"
+    ],
+    ":app:generateReleaseRFile": [
+      "EXECUTED"
+    ],
+    ":app:compileDebugKotlin": [
+      "EXECUTED",
+      "EXECUTED"
+    ],
+    ":app:compileReleaseKotlin": [
+      "EXECUTED"
+    ],
+    ":app:extractProguardFiles": [
+      "UP-TO-DATE"
+    ],
+    ":app:preDebugAndroidTestBuild": [
+      "SKIPPED"
+    ],
+    ":app:javaPreCompileRelease": [
+      "UP-TO-DATE"
+    ],
+    ":app:compileReleaseJavaWithJavac": [
+      "UP-TO-DATE"
+    ],
+    ":app:compileDebugJavaWithJavac": [
+      "UP-TO-DATE"
+    ],
+    ":app:bundleDebugClassesToRuntimeJar": [
+      "EXECUTED"
+    ],
+    ":app:bundleDebugClassesToCompileJar": [
+      "EXECUTED"
+    ],
+    ":app:processDebugJavaRes": [
+      "EXECUTED"
+    ],
+    ":app:compileDebugUnitTestKotlin": [
+      "EXECUTED"
+    ],
+    ":app:compileDebugUnitTestJavaWithJavac": [
+      "NO-SOURCE"
+    ],
+    ":app:processDebugUnitTestJavaRes": [
+      "UP-TO-DATE"
+    ],
+    ":app:testDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":app:generateDebugAndroidTestLintModel": [
+      "EXECUTED"
+    ],
+    ":app:generateDebugLintReportModel": [
+      "EXECUTED"
+    ],
+    ":app:generateDebugUnitTestLintModel": [
+      "EXECUTED"
+    ],
+    ":app:lintAnalyzeDebugAndroidTest": [
+      "EXECUTED"
+    ],
+    ":app:lintAnalyzeDebug": [
+      "EXECUTED"
+    ],
+    ":app:lintAnalyzeDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":app:extractDeepLinksRelease": [
+      "UP-TO-DATE"
+    ],
+    ":app:processReleaseMainManifest": [
+      "UP-TO-DATE"
+    ],
+    ":app:lintAnalyzeRelease": [
+      "EXECUTED"
+    ],
+    ":app:lintReportDebug": [
+      "EXECUTED"
+    ],
+    ":app:lintDebug": [
+      "EXECUTED"
+    ],
+    ":app:generateReleaseLintReportModel": [
+      "EXECUTED"
+    ],
+    ":app:lintReportRelease": [
+      "EXECUTED"
+    ],
+    ":app:lintRelease": [
+      "EXECUTED"
+    ]
+  }
+}

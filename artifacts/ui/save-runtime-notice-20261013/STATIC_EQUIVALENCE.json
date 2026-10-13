@@ -1,0 +1,17 @@
+{
+  "runtime_baseline_sha256": "0c0f3c806b60ba63290db802b185df6301570211f3e4319926e5231d36e55a76",
+  "runtime_final_sha256": "44d101eab4837219d0d0fff9a9a836b045079c5259885cfd37805c2942cd358e",
+  "reverse_substitutions_restore_entire_runtime": true,
+  "assignments": 49,
+  "emissions": 44,
+  "clears": 5,
+  "posted_emissions": 13,
+  "other_existing_main_entry_callback_emissions": 31,
+  "original_frozen_inputs": 1391,
+  "original_inputs_unchanged": 1386,
+  "scoped_existing_modifications": 5,
+  "scoped_new_files": 8,
+  "final_inputs": 1399,
+  "changes_during_build": [],
+  "notes": "Byte-inverse source check plus JVM contracts; not Android execution. Native service, codec, domain, detector and browser notification/permission sources unchanged."
+}

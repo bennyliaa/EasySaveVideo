@@ -75,7 +75,7 @@ fun SaveTaskScreen(
             if (runtime.draining) EsvText(if (runtime.networkDraining) stringResource(R.string.final_copy_46)
                 else stringResource(R.string.final_copy_47), color = v.colors.error)
             runtime.notice?.let { text ->
-                EsvText(text, color = v.colors.error)
+                EsvText(saveRuntimeNoticeText(text), color = v.colors.error)
                 EsvButton(stringResource(R.string.flow_savetaskscreen_10), onClick = runtime::dismissNotice)
             }
             runtime.destinations?.let { OrdinaryDestinationHistory(it) }
@@ -306,41 +306,4 @@ internal fun taskLabel(record: SaveRecord): String = when (record.task.state) {
     TaskState.SUCCEEDED -> "完成"
     TaskState.FAILED -> "失败"
     TaskState.CANCELLED -> "已取消"
-}
-internal fun saveErrorText(error: SaveError): String = when (error) {
-    SaveError.WIFI_REQUIRED -> "正在等待已确认的默认 Wi-Fi 网络。连接 Wi-Fi 或关闭“仅通过 Wi-Fi 保存”后手动重试。"
-    SaveError.CANCELLED -> "任务已取消，不会自动换用其他保存方式。"
-    SaveError.AUTHENTICATION_REQUIRED -> "资源需要有效的登录会话或访问权限。"
-    SaveError.STORAGE_FULL -> "可用存储空间不足。"
-    SaveError.STORAGE_FAILURE, SaveError.JOURNAL_UNAVAILABLE -> "私有存储暂时不可用，未清除已有媒体。"
-    SaveError.NETWORK_TIMEOUT, SaveError.DEADLINE_EXCEEDED -> "操作超时，迟到结果不会提交。"
-    SaveError.NETWORK_UNAVAILABLE, SaveError.RETRY_EXHAUSTED -> "网络未能在有限重试内完成，请稍后重试。"
-    SaveError.TLS_REJECTED -> "无法验证网站安全连接，未绕过证书检查。"
-    SaveError.POLICY_BLOCKED -> "资源地址或连接不符合安全限制。"
-    SaveError.BYTE_LIMIT_EXCEEDED -> "已达到本开发版本的文件或累计传输预算。"
-    SaveError.PROTECTED_MEDIA -> "检测到受保护内容，不支持保存。"
-    SaveError.UNSUPPORTED_MEDIA, SaveError.METHOD_UNSUPPORTED -> "该媒体或保存方式不符合本开发版本的兼容范围。网络保存不支持直播、加密、分轨、格式变化或转码。"
-    SaveError.INVALID_MEDIA, SaveError.INCOMPLETE_TRANSFER -> "文件不完整或未通过真实媒体验证，没有作为成功视频入库。"
-    SaveError.INVALID_RANGE, SaveError.RESOURCE_CHANGED -> "源资源或断点身份不一致，没有拼接不匹配的字节。"
-    SaveError.EXPIRED_RESOURCE -> "候选资源已过期，请回到网页重新检测。"
-    SaveError.RESOURCE_RELEASE_UNCONFIRMED -> "系统资源尚未确认退出，任务文件保留，迟到结果不会提交。"
-    SaveError.VERIFICATION_UNAVAILABLE -> "系统媒体校验资源尚未可用，请稍后重试。"
-    SaveError.COMMIT_MISMATCH, SaveError.RECOVERY_REQUIRED -> "提交状态需要重新核验，文件已保留供恢复。"
-    SaveError.RATE_LIMITED -> "网站限制了请求，请稍后重试。"
-    SaveError.SOURCE_RESELECTION_REQUIRED -> "短期来源上下文已清除。请回网页重新检测并选择；新任务从头下载。"
-    SaveError.HTTP_NOT_FOUND -> "资源已不存在（404），请回网页重新选择。"
-    SaveError.HTTP_REJECTED -> "网站拒绝了此资源请求，未自动换用其他保存方式。"
-    SaveError.HTTP_FAILURE -> "网站未返回可保存的完整媒体。"
-    SaveError.BUSY -> "已有任务处理中，请稍后再试。"
-    SaveError.CONSENT_DENIED -> "未获得本次系统录制授权，没有开始录制。"
-    SaveError.AUDIO_PERMISSION_DENIED -> "内部声音权限未允许；必须明确选择无声音重新开始，或取消。"
-    SaveError.CAPTURE_UNAVAILABLE, SaveError.FGS_START_REJECTED -> "系统暂时无法开始本次录制；不会重复使用旧授权。"
-    SaveError.PROFILE_UNSUPPORTED -> "设备编码器不支持本次录制配置。"
-    SaveError.CAPTURE_EMPTY, SaveError.CAPTURE_TOO_SHORT -> "有效录制样本为空或太短，未发布成片。"
-    SaveError.KEYFRAME_TIMEOUT -> "等待录制关键帧超时，未确认完整成片。"
-    SaveError.TIMESTAMP_INVALID -> "录制媒体时间线不符合要求，未发布成片。"
-    SaveError.AUDIO_FAILED -> "内部播放音频采集失败；没有自动改用麦克风或无声音。"
-    SaveError.ENCODER_FAILED -> "系统录制编码器失败，未确认保存成功。"
-    SaveError.FINALIZATION_FAILED -> "录制文件未完整收尾，未发布成片。"
-    else -> "任务未完成，请检查页面与存储后重试。"
 }

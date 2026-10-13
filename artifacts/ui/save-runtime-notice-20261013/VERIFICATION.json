@@ -1,0 +1,74 @@
+{
+  "result": "PASS_SOURCE_JVM_ONLY_PENDING_PUBLICATION",
+  "publication_parent": "ef5d6fc35328e8881db26df3982c0e675c37dd4d",
+  "production_baseline": "b0c5647e6759dd212423647742e4923c8d0dce93",
+  "terminal_exit_code_observed": 0,
+  "recorded_at": "2026-10-13T08:59:31.980877+00:00",
+  "command": [
+    "${TOOLCHAIN}/run-gradle.sh",
+    "--offline",
+    ":app:testDebugUnitTest",
+    "--rerun",
+    ":app:compileDebugKotlin",
+    "--rerun",
+    ":app:compileReleaseKotlin",
+    "--rerun",
+    ":app:lintAnalyzeDebug",
+    "--rerun",
+    ":app:lintReportDebug",
+    "--rerun",
+    ":app:lintDebug",
+    "--rerun",
+    ":app:lintAnalyzeRelease",
+    "--rerun",
+    ":app:lintReportRelease",
+    "--rerun",
+    ":app:lintRelease",
+    "--rerun",
+    ":app:verifyRuntimeAdmission",
+    "--rerun"
+  ],
+  "input_manifest_sha256": "f4e03c1d1b911c8a1610477ba372058d0c5c84fc9a6c13a511986803efcecb00",
+  "frozen_input_count": 1399,
+  "changed_during_build": [],
+  "app_junit": {
+    "tests": 1905,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_tests": 19,
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "runtime_exact_artifacts": 90,
+  "all_ten_requested_tasks": "ACTUALLY_EXECUTED",
+  "other_module_tests": "NOT_RERUN_THIS_SLICE; last complete thirteen-module results bind b0c5647 only",
+  "not_run": [
+    "APK",
+    "device/emulator/OPPO",
+    "actual WebView/native media",
+    "Compose live locale/disclosure/recreation",
+    "200%/window/RTL/TalkBack",
+    "PPT/pixel comparison",
+    "Windows fixture rerun"
+  ],
+  "preserved_open_issues": [
+    "OPPO editing STORAGE_UNAVAILABLE",
+    "OPPO sharing INITIALIZATION_FAILED",
+    "historical ANR/second recording",
+    "Windows symlink setup/guard"
+  ],
+  "compiled_boundary": {
+    "script": "scripts/check-boundaries.py",
+    "exit_code": 0,
+    "result": "PASS_SCOPED; seven reported checks; device NOT_RUN"
+  }
+}

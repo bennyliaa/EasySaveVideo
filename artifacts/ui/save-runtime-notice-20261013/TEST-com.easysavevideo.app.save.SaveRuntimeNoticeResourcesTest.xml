@@ -1,0 +1,13 @@
+<testsuite name="com.easysavevideo.app.save.SaveRuntimeNoticeResourcesTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-13T08:57:13.895Z" hostname="[redacted]" time="0.033">
+  <properties />
+  <testcase name="englishRetainsManualRecoveryPrivacyAndMediaTruthClauses" classname="com.easysavevideo.app.save.SaveRuntimeNoticeResourcesTest" time="0.009" />
+  <testcase name="matchedParametersAreConfinedToTheSingleCapturedCapacityInteger" classname="com.easysavevideo.app.save.SaveRuntimeNoticeResourcesTest" time="0.004" />
+  <testcase name="everyMapperRetainsItsExactResourceAndAllSeventyEightChineseGroups" classname="com.easysavevideo.app.save.SaveRuntimeNoticeResourcesTest" time="0.005" />
+  <testcase name="rendererUsesCurrentComposeResourcesAndHasNoStateOrTaskAuthority" classname="com.easysavevideo.app.save.SaveRuntimeNoticeResourcesTest" time="0.005" />
+  <testcase name="pureLocaleFixturesKeepEveryTokenUnchangedThroughEnglishChineseEnglish" classname="com.easysavevideo.app.save.SaveRuntimeNoticeResourcesTest" time="0.006" />
+  <testcase name="capacityOneOneHundredAndOneThousandHaveCorrectPluralAndCurrentLocaleDigits" classname="com.easysavevideo.app.save.SaveRuntimeNoticeResourcesTest" time="0.001" />
+  <testcase name="onlyTheTwoVerbatimNetworkResourcesAreReused" classname="com.easysavevideo.app.save.SaveRuntimeNoticeResourcesTest" time="0.001" />
+  <testcase name="exactBilingualKeySetHasSeventyFiveStringsAndOneCapacityPlural" classname="com.easysavevideo.app.save.SaveRuntimeNoticeResourcesTest" time="0.002" />
+  <system-out />
+  <system-err />
+</testsuite>
