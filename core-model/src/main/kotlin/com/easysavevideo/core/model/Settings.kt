@@ -24,6 +24,7 @@ data class AppSettings(
     val browser: BrowserSettings = BrowserSettings(),
     val discovery: DiscoverySettings = DiscoverySettings(),
     val appearance: AppearanceSettings = AppearanceSettings(),
+    val editor: EditorSettings = EditorSettings(),
 ) { init { require(schemaVersion == 1) } }
 
 /** Stable values are additive; existing v1 browser/discovery preferences remain readable. */
@@ -45,3 +46,12 @@ interface SettingsStore {
     fun load(): AppSettings
     fun save(settings: AppSettings)
 }
+
+/** Editor-only defaults. Persist stable keys, never enum ordinals or library/platform types. */
+enum class EditorCompressionMode(val key: String) {
+    ORIGINAL_QUALITY("original_quality"), SAVE_SPACE("save_space");
+    companion object {
+        fun fromKey(key: String?) = entries.firstOrNull { it.key == key } ?: ORIGINAL_QUALITY
+    }
+}
+data class EditorSettings(val defaultCompression: EditorCompressionMode = EditorCompressionMode.ORIGINAL_QUALITY)

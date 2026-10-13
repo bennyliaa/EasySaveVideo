@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_settings_editor">Editor</string>
+    <string name="ui_editor_default_compression">Default for new edits</string>
+    <string name="ui_editor_original_quality">Original quality</string>
+    <string name="ui_editor_save_space">Save space</string>
+    <string name="ui_editor_default_compression_description">Applies only to new editor drafts. Existing and restored drafts keep their selections. Save space still requires the Video Tools Pro compression capability at submission; a smaller output is not guaranteed. Recording settings are unchanged.</string>
+</resources>

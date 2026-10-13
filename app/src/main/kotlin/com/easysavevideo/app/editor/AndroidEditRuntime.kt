@@ -51,6 +51,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
             notice = "已请求停止，但后台处理或文件资源仍未确认退出。相关文件保留，不能开始新编辑。可继续等待，或完全退出应用后重新打开进行恢复检查。")
     })
     private var recovered = false
+    private var draftStarted = false
     private val draftRestoreGuard = EditorDraftRestoreGuard()
     private var pendingDraftCheckpoint: String? = null
     private var restoringDraftCheckpoint: String? = null
@@ -71,12 +72,12 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
             }
         }
     }
-    fun open(item: MediaItem, available: List<MediaItem>) {
+    fun open(item: MediaItem, available: List<MediaItem>, settings: EditorSettings) {
         requireMain()
         if (state.busy || state.phase == EditorPhase.BLOCKED) return
         draftRestoreGuard.userChanged(); restoredNeedsExplicitAction = false; pendingDraftCheckpoint = null; restoringDraftCheckpoint = null
-        val draft = if (state.draft.segments.isEmpty() || state.phase == EditorPhase.SUCCEEDED) addEditorSegment(EditorDraft(), item)
-            else if (state.draft.segments.any { it.reference == item.readRef() }) state.draft else addEditorSegment(state.draft, item)
+        val draft = openEditorDraft(state.draft, item, settings, startNew = !draftStarted || state.phase == EditorPhase.SUCCEEDED)
+        draftStarted = true
         state = state.copy(draft = draft, displayGeometries = state.displayGeometries.filterKeys { ref -> draft.segments.any { it.reference == ref } }, availableItems = available.filter { it.lifecycle == MediaLifecycle.READY },
             phase = EditorPhase.IDLE, completedReference = null, executionRanges = emptyList(), draftRestoration = EditorDraftRestoration.NONE)
     }
@@ -88,6 +89,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
     fun changeDraft(draft: EditorDraft) {
         requireMain()
         if (!state.editable || activeCancellation != null) return
+        draftStarted = true
         draftRestoreGuard.userChanged(); restoredNeedsExplicitAction = false; pendingDraftCheckpoint = null; restoringDraftCheckpoint = null
         state = state.copy(draft = draft, displayGeometries = state.displayGeometries.filterKeys { ref -> draft.segments.any { it.reference == ref } },
             phase = EditorPhase.IDLE, notice = null, completedReference = null, executionRanges = emptyList(), draftRestoration = EditorDraftRestoration.NONE)
@@ -249,6 +251,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
                     state = state.copy(draftRestoration = if (resolution.isSuccess) EditorDraftRestoration.STALE else EditorDraftRestoration.UNAVAILABLE)
                     return@post
                 }
+                draftStarted = true
                 // Capability review uses fresh catalog metadata; native profile review waits for user action.
                 val request = runCatching { draft.toEditRequest("draft-review") }.getOrNull()
                 val required = if (request == null) setOf(Feature.VIDEO_CROP, Feature.VIDEO_MERGE, Feature.VIDEO_COMPRESS)

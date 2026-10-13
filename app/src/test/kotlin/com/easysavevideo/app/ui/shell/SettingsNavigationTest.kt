@@ -7,8 +7,8 @@ import org.junit.Test
 
 class SettingsNavigationTest {
     @Test fun categoryKeysAreUniqueStableAndInvalidRestoresHaveControlledFallback() {
-        assertEquals(listOf("appearance","language","sources","diagnostics","about"),SettingsCategory.entries.map{it.key})
-        assertEquals(5,SettingsCategory.entries.map{it.key}.toSet().size)
+        assertEquals(listOf("appearance","language","sources","editor","diagnostics","about"),SettingsCategory.entries.map{it.key})
+        assertEquals(6,SettingsCategory.entries.map{it.key}.toSet().size)
         for(key in listOf(null,"", "1","unknown")) {
             assertNull(SettingsCategory.fromKey(key));assertTrue(settingsPresentation(key,false).categories)
             assertFalse(settingsPresentation(key,false).detail);assertEquals(SettingsCategory.APPEARANCE,settingsPresentation(key,true).active)
@@ -54,5 +54,14 @@ class SettingsNavigationTest {
             val next=settingsWithLanguage(old,language);assertEquals(language,next.appearance.language);assertEquals(ThemeMode.DARK,next.appearance.themeMode)
             assertSame(old.browser,next.browser);assertSame(old.discovery,next.discovery);assertEquals(old.schemaVersion,next.schemaVersion)
         }
+    }
+    @Test fun editorPreferenceOnlyChangesEditorAndSurvivesOtherSettingsChanges() {
+        val old=AppSettings(browser=BrowserSettings(false,4,false,true),discovery=DiscoverySettings(6,100),appearance=AppearanceSettings(ThemeMode.DARK,AppLanguage.CHINESE))
+        val next=settingsWithEditorCompression(old,EditorCompressionMode.SAVE_SPACE)
+        assertSame(old.browser,next.browser);assertSame(old.discovery,next.discovery);assertSame(old.appearance,next.appearance)
+        assertEquals(old.schemaVersion,next.schemaVersion)
+        assertEquals(EditorCompressionMode.SAVE_SPACE,next.editor.defaultCompression)
+        assertSame(next.editor,settingsWithTheme(next,ThemeMode.LIGHT).editor)
+        assertSame(next.editor,settingsWithLanguage(next,AppLanguage.ENGLISH).editor)
     }
 }

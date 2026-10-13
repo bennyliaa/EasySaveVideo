@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="com.easysavevideo.app.ui.shell.SettingsNavigationTest" tests="8" skipped="0" failures="0" errors="0" time="0.003">
+  <testcase name="selectionSurvivesWindowAndFontFallbackWithoutMutatingPreferenceValues" classname="com.easysavevideo.app.ui.shell.SettingsNavigationTest" time="0.001" />
+  <testcase name="languageOnlyChangesLanguageAndPreservesOtherOwnedSettings" classname="com.easysavevideo.app.ui.shell.SettingsNavigationTest" time="0.001" />
+  <testcase name="themeOnlyChangesThemeAndPreservesBrowserDiscoveryLanguageAndSchema" classname="com.easysavevideo.app.ui.shell.SettingsNavigationTest" time="0.0" />
+  <testcase name="wideHasBothPanelsAndBackExitsRatherThanInventingAnotherRoot" classname="com.easysavevideo.app.ui.shell.SettingsNavigationTest" time="0.0" />
+  <testcase name="editorPreferenceOnlyChangesEditorAndSurvivesOtherSettingsChanges" classname="com.easysavevideo.app.ui.shell.SettingsNavigationTest" time="0.0" />
+  <testcase name="compactListThenDetailThenBackIsOneAuxiliaryRoute" classname="com.easysavevideo.app.ui.shell.SettingsNavigationTest" time="0.0" />
+  <testcase name="categoryKeysAreUniqueStableAndInvalidRestoresHaveControlledFallback" classname="com.easysavevideo.app.ui.shell.SettingsNavigationTest" time="0.001" />
+  <testcase name="noticesBackHasPriorityAndDoesNotEraseCategory" classname="com.easysavevideo.app.ui.shell.SettingsNavigationTest" time="0.0" />
+  </testsuite>

@@ -24,7 +24,8 @@ class AndroidSettingsStore(context: Context) : SettingsStore {
         pageSize = prefs.getInt("discovery_page_size", 20).coerceIn(1, 100),
         repeatPolicy = RepeatPolicy.entries.firstOrNull { it.name == prefs.getString("discovery_repeat", null) } ?: RepeatPolicy.PREFER_NEW,
         mode = DiscoveryMode.entries.firstOrNull { it.name == prefs.getString("discovery_mode", null) } ?: DiscoveryMode.BALANCED,
-    ), appearance = AppearanceSettings(
+    ), editor = EditorSettings(EditorCompressionMode.fromKey(prefs.getString("editor_default_compression", null))),
+    appearance = AppearanceSettings(
         ThemeMode.fromKey(prefs.getString("ui_theme_mode", null)),
         if (Build.VERSION.SDK_INT >= 33) {
             val locales = application.getSystemService(android.app.LocaleManager::class.java).applicationLocales
@@ -38,6 +39,7 @@ class AndroidSettingsStore(context: Context) : SettingsStore {
             .putBoolean("third_party_cookies", settings.browser.acceptThirdPartyCookies)
             .putInt("discovery_columns", settings.discovery.columns).putInt("discovery_page_size", settings.discovery.pageSize)
             .putString("discovery_repeat", settings.discovery.repeatPolicy.name).putString("discovery_mode", settings.discovery.mode.name)
+            .putString("editor_default_compression", settings.editor.defaultCompression.key)
             .putString("ui_theme_mode", settings.appearance.themeMode.key)
             .apply { if (Build.VERSION.SDK_INT < 33) putString("ui_language", settings.appearance.language.tag) }.commit())
         if (Build.VERSION.SDK_INT >= 33) {

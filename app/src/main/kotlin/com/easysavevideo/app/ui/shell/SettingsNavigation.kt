@@ -4,7 +4,7 @@ import com.easysavevideo.core.model.*
 
 /** Local auxiliary-page selection only; stable keys, no second navigation or preference owner. */
 internal enum class SettingsCategory(val key:String) {
-    APPEARANCE("appearance"), LANGUAGE("language"), SOURCES("sources"), DIAGNOSTICS("diagnostics"), ABOUT("about");
+    APPEARANCE("appearance"), LANGUAGE("language"), SOURCES("sources"), EDITOR("editor"), DIAGNOSTICS("diagnostics"), ABOUT("about");
     companion object { fun fromKey(key:String?)=entries.firstOrNull{it.key==key} }
 }
 internal data class SettingsPresentation(val active:SettingsCategory?,val categories:Boolean,val detail:Boolean,val backToCategories:Boolean)
@@ -21,3 +21,4 @@ internal fun settingsBackAction(notices:Boolean,presentation:SettingsPresentatio
 }
 internal fun settingsWithTheme(settings:AppSettings,mode:ThemeMode)=settings.copy(appearance=settings.appearance.copy(themeMode=mode))
 internal fun settingsWithLanguage(settings:AppSettings,language:AppLanguage)=settings.copy(appearance=settings.appearance.copy(language=language))
+internal fun settingsWithEditorCompression(settings:AppSettings,mode:EditorCompressionMode)=settings.copy(editor=settings.editor.copy(defaultCompression=mode))

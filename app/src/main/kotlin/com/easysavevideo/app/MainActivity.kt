@@ -137,6 +137,7 @@ class MainActivity : ComponentActivity() {
     private var filePrompt by mutableStateOf<SystemBrowserHost.FileChoice?>(null)
     private var choosing: SystemBrowserHost.FileChoice? = null
     private var settingsChanged = false
+    private var settingsReady by mutableStateOf(false)
     private val picker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val choice = choosing ?: return@registerForActivityResult
         choosing = null
@@ -293,7 +294,7 @@ class MainActivity : ComponentActivity() {
                         recordedEditorNotice = "编辑器仍在处理或等待恢复，请稍后从媒体库打开已保存视频。"
                     } else {
                         val available = listOf(item) + (library?.state?.items ?: emptyList()).filter { it.itemId != item.itemId }
-                        editor.open(item, available)
+                        editor.open(item, available, settings.editor)
                         if (editor.state.draft.segments.none { it.reference == reference }) {
                             recordedEditorNotice = "编辑器草稿未能添加此视频，请先在媒体库打开编辑器调整现有片段。"
                             return@LaunchedEffect
@@ -357,8 +358,8 @@ class MainActivity : ComponentActivity() {
                     LibraryScreen(library,
                         onBack = { libraryExportReference = null; libraryBatchExportSelection=null; backTo() },
                         onPreview = { libraryPreviewReference = it },
-                        onEdit = if (editor == null) null else { item ->
-                            editor.open(item, library.state.items); navigate(EsvDestination.EDITOR); libraryExportReference = null
+                        onEdit = if (editor == null || !settingsReady) null else { item ->
+                            editor.open(item, library.state.items, settings.editor); navigate(EsvDestination.EDITOR); libraryExportReference = null
                         },
                         onExport = if (exports == null) null else { ref -> libraryExportReference = ref },
                         onBatchExport = if(exports==null)null else { selection -> libraryBatchExportSelection=selection },
@@ -475,7 +476,7 @@ class MainActivity : ComponentActivity() {
                     onNextSegments = saves::nextRecordedSegments,
                     onRetrySegments = saves::retryRecordedSegments,
                     onDiscardSegments = saves::discardRecordedSegments,
-                    onOpenVerifiedEditor = if (recordedOutputReference == null || editor == null || repository == null) null else {
+                    onOpenVerifiedEditor = if (!settingsReady || recordedOutputReference == null || editor == null || repository == null) null else {
                         {
                             if (pendingRecordedEditorReference == null && isForeground && showingRecording) {
                                 recordedEditorNotice = null
@@ -557,6 +558,7 @@ class MainActivity : ComponentActivity() {
         }
         persistence.start { loaded, checkpoint, failed ->
             if (!settingsChanged) { settings = loaded; browser.applySettings(loaded.browser) }
+            settingsReady = true
             discovery.updateSettings(settings.discovery)
             if (settings.browser.restoreTabs) browser.restore(checkpoint)
             if (browser.hasUserInteracted) browser.persistCurrentSession()

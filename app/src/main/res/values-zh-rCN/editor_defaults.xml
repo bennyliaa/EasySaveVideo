@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_settings_editor">编辑</string>
+    <string name="ui_editor_default_compression">新编辑默认压缩模式</string>
+    <string name="ui_editor_original_quality">原质量</string>
+    <string name="ui_editor_save_space">节省空间</string>
+    <string name="ui_editor_default_compression_description">仅用于新建编辑草稿；现有及恢复的草稿保留原选择。提交节省空间编辑仍需 Video Tools Pro 压缩权益，输出不保证更小。不改变录制设置。</string>
+</resources>

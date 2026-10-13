@@ -71,6 +71,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
     SettingsCategory.APPEARANCE -> R.string.ui_appearance
     SettingsCategory.LANGUAGE -> R.string.ui_language
     SettingsCategory.SOURCES -> R.string.ui_sources
+    SettingsCategory.EDITOR -> R.string.ui_settings_editor
     SettingsCategory.DIAGNOSTICS -> R.string.diagnostics_title
     SettingsCategory.ABOUT -> R.string.ui_settings_about
 })
@@ -110,6 +111,20 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(AppSettings)->Unit,onSource
         SettingsCategory.SOURCES -> {
             EsvText(stringResource(R.string.ui_settings_sources_description),style=v.captionTextStyle)
             EsvButton(stringResource(R.string.ui_sources),onSources)
+        }
+        SettingsCategory.EDITOR -> {
+            EsvText(stringResource(R.string.ui_editor_default_compression))
+            EsvText(stringResource(R.string.ui_editor_default_compression_description),style=v.captionTextStyle)
+            Column(Modifier.selectableGroup()) { EditorCompressionMode.entries.forEach { mode ->
+                val label=when(mode) {
+                    EditorCompressionMode.ORIGINAL_QUALITY -> R.string.ui_editor_original_quality
+                    EditorCompressionMode.SAVE_SPACE -> R.string.ui_editor_save_space
+                }
+                Row(Modifier.fillMaxWidth().heightIn(min=48.dp).selectable(selected=settings.editor.defaultCompression==mode,
+                    role=Role.RadioButton,onClick={onChange(settingsWithEditorCompression(settings,mode))}),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
+                    RadioButton(selected=settings.editor.defaultCompression==mode,onClick=null);EsvText(stringResource(label))
+                }
+            } }
         }
         SettingsCategory.DIAGNOSTICS -> diagnostics()
         SettingsCategory.ABOUT -> {
