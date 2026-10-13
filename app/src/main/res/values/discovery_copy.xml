@@ -16,7 +16,6 @@
     <string name="discovery_copy_13">Enter a query for open media; adjust filters or repeat policy and try again.</string>
     <string name="discovery_copy_14">Video thumbnail placeholder</string>
     <string name="discovery_copy_15">Webpage video evidence; playback, download and saving permissions are unverified</string>
-    <string name="discovery_copy_16">Page %1$s</string>
     <string name="discovery_copy_17">Unknown dates/durations sort last. Prefer-new groups shown and unseen items first. Source order is not a unified relevance score.</string>
     <string name="discovery_copy_18">%1$s per page; %2$s phone columns, more on wider tablets.</string>
     <string name="discovery_copy_19">Save power: concurrency 1</string>
@@ -96,4 +95,9 @@
     <string name="discovery_copy_93">Waiting for policy confirmation</string>
     <string name="discovery_copy_94">Unknown</string>
     <string name="discovery_copy_95">Current requests-per-round limit %1$s</string>
+    <string name="discovery_pages_none">No pages yet</string>
+    <string name="discovery_pages_materialized">Page %1$d · Pages loaded: %2$d</string>
+    <string name="discovery_page_waiting">Looking for the next page. Your current page stays visible.</string>
+    <string name="discovery_page_cancel">Stay on this page</string>
+    <string name="discovery_pages_exhausted">No more results from the current sources. Try another query or source.</string>
 </resources>

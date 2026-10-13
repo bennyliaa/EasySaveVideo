@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.easysavevideo.app.discovery.AndroidDiscoveryController
 import com.easysavevideo.app.discovery.BuildDiscovery
+import com.easysavevideo.app.discovery.DiscoveryPagerPolicy
 import com.easysavevideo.app.discovery.DiscoveryPresentationPolicy
 import com.easysavevideo.app.discovery.DiscoveryControlRequest
 import com.easysavevideo.app.discovery.DiscoveryLocalAction
@@ -349,10 +350,17 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
             Column(Modifier.fillMaxWidth().heightIn(max = paneLayout.footerMaxHeightDp.dp).verticalScroll(pagerScroll)) {
 
             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvButton(stringResource(R.string.flow_discoveryscreen_17), onClick = { controller.movePage(-1) }, enabled = state.pageIndex > 0)
-                EsvText(stringResource(R.string.discovery_copy_16, state.pageIndex + 1), style = v.captionTextStyle)
-                EsvButton(stringResource(R.string.flow_discoveryscreen_19), onClick = { controller.movePage(1) }, enabled = state.results.isNotEmpty())
-                EsvButton(stringResource(R.string.flow_discoveryscreen_20), onClick = controller::retry, enabled = state.ready && !state.storageUnavailable)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_17), onClick = { controller.movePage(-1, state.controlTarget, state.pageIndex) }, enabled = state.ready && !state.storageUnavailable && state.pageIndex > 0)
+                EsvText(if (state.materializedPages == 0) stringResource(R.string.discovery_pages_none)
+                    else stringResource(R.string.discovery_pages_materialized, state.pageIndex + 1, state.materializedPages), style = v.captionTextStyle)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_19), onClick = { controller.movePage(1, state.controlTarget, state.pageIndex) }, enabled = state.ready && !state.storageUnavailable && !state.nextPagePending && DiscoveryPagerPolicy.canAdvance(state.pageIndex, state.materializedPages, state.status))
+                EsvButton(stringResource(R.string.flow_discoveryscreen_20), onClick = controller::retry, enabled = state.ready && !state.storageUnavailable && !state.nextPagePending && !DiscoveryPagerPolicy.sourcesExhausted(state.status))
+            }
+            if (state.nextPagePending) {
+                EsvText(stringResource(R.string.discovery_page_waiting), style = v.captionTextStyle)
+                EsvButton(stringResource(R.string.discovery_page_cancel), onClick = { controller.cancelNextPage(state.controlTarget) })
+            } else if (DiscoveryPagerPolicy.sourcesExhausted(state.status)) {
+                EsvText(stringResource(R.string.discovery_pages_exhausted), style = v.captionTextStyle)
             }
 
             }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-10-13T03:19:21.450Z" hostname="[redacted]" time="0.006">
+  <properties/>
+  <testcase name="retirementDuringSlowStatusReadIsCheckedAgainBeforeMaterialization" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.002"/>
+  <testcase name="unknownZeroAndMixedSourcesDoNotClaimExhaustion" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="boundedRoundEndIsNotAllSourceExhaustion" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="backwardNavigationOrUnavailableAuthorityRetiresDemand" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="readOnlyBackgroundAndHiddenRefreshCannotConsumeDemand" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="hideResumeRetiresIntentBeforeQueuedRefreshEvenWhenCurrentlyVisible" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.001"/>
+  <testcase name="newSessionRevisionOwnerOrProfileRetiresDemand" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="requestRoundSettlesWithoutInventingPageOrAutomaticallyRequestingAgain" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="delayedResultFulfillsExactlyOnceWithoutDisplacingCurrentPageWhileWaiting" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.001"/>
+  <testcase name="cancellationDoesNotMaterializeOrResume" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="remainingInventoryWinsOverSourceExhaustion" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="repeatedClicksNeverQueueSeveralPages" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="missingPageCannotInventPageOne" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.001"/>
+  <testcase name="failedMaterializationNeverAdvancesAndPartialPageCanSucceedLater" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="invalidIndicesCannotOverflow" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="allSourcesEndedDisablesFurtherDemandButStillAllowsLoadedPages" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <testcase name="retriesAndPrioritySuspensionDoNotPretendToBeExhaustion" classname="com.easysavevideo.app.discovery.DiscoveryPageDemandTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

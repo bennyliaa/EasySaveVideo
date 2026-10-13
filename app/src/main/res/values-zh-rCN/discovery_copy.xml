@@ -16,7 +16,6 @@
     <string name="discovery_copy_13">输入关键词查找开放媒体资料；可调整筛选或重复策略后重试。</string>
     <string name="discovery_copy_14">视频封面占位</string>
     <string name="discovery_copy_15">网页视频证据；播放、下载及保存权限尚未验证</string>
-    <string name="discovery_copy_16">第 %1$s 页</string>
     <string name="discovery_copy_17">未知日期或时长排后；优先新内容策略先分已展示与未展示。来源顺序不代表统一相关度分数。</string>
     <string name="discovery_copy_18">每页 %1$s；手机 %2$s 列，平板随宽度增加。</string>
     <string name="discovery_copy_19">省电：并发 1</string>
@@ -96,4 +95,9 @@
     <string name="discovery_copy_93">等待策略确认</string>
     <string name="discovery_copy_94">未知</string>
     <string name="discovery_copy_95">当前每轮上限 %1$s</string>
+    <string name="discovery_pages_none">尚未生成结果页</string>
+    <string name="discovery_pages_materialized">第 %1$d 页 · 已生成 %2$d 页</string>
+    <string name="discovery_page_waiting">正在查找下一页，当前页保持显示。</string>
+    <string name="discovery_page_cancel">留在当前页</string>
+    <string name="discovery_pages_exhausted">当前来源暂无更多结果，可更换关键词或来源。</string>
 </resources>

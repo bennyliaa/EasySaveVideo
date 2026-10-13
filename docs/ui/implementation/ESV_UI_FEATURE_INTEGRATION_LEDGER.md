@@ -773,3 +773,32 @@ Save-failure freeze follow-through: Release lint independently executed PASS wit
 0 errors/60 warnings/8 hints. Debug lint separately PASS with
 0 errors/60 warnings/8 hints. Production13 hashes unchanged; final evidence XML
 hostnames and absolute environment paths redacted before publication hashes.
+
+## Discovery one-shot next-page demand (2026-10-13)
+
+Original Product§5.2/5.3 and Technical TR-02/TR-15: an explicit Next click now
+survives empty inventory until a delayed partial page arrives, retaining the
+current page while waiting. One target/session/view/controller/lifecycle-scoped
+intent prevents queued page skips. Stay-on-page/Back/new query/view/source owner,
+local history/progress controls and background retire it; synchronous lifecycle
+invalidation plus pre-materialization and post-read checks fence hide/resume races.
+Read-only refresh never materializes. Settled bounded rounds never auto-repeat.
+The pager shows actual materialized pages, no fictitious page1 or total, and
+separates all-provider exhaustion from merely finishing one request round.
+Existing loaded pages remain navigable after sources end. No source, retention,
+rights, entitlement or scheduler budget policy was changed.
+
+Final app1573 JVM tests actually executed PASS/0 failures/errors/skips, including
+20 new helper/real-coordinator offline tests. Discovery307 existing tests were
+UP-TO-DATE, not rerun. Both Kotlin compilers and both lint variants actually
+executed PASS; each lint60 warnings/8 hints/0 errors/fatals, no new warning.
+Exact reviewed runtime graph90 unchanged. Final build77 tasks:32 executed/45 cached.
+Independent review found and then closed one lifecycle race; eight final code,
+resource and test hashes verified. Five new paired resources replace one obsolete
+pair; parity inventory280. Initial fixture compile/count-test failures and one
+interrupted superseded lint run are preserved separately, not counted as PASS.
+
+Evidence artifacts/ui/discovery-page-demand-20261013; implementation notes
+DISCOVERY_PAGE_DEMAND_20261013.md. Actual Android/SQLite/Compose lifecycle, rendering,
+accessibility and font200 acceptance NOT_RUN. No APK/device/emulator/public-site,
+network thumbnail or real media operation. Installed packages remain unchanged.

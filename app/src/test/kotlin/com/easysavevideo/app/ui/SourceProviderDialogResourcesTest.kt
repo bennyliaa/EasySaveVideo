@@ -43,7 +43,7 @@ class SourceProviderDialogResourcesTest {
 
     @Test fun languageKeysAndParametersMatchAcrossEveryNewResource() {
         val zh = strings("values-zh-rCN")
-        assertEquals(276, en.size)
+        assertEquals(280, en.size)
         assertEquals(en.keys, zh.keys)
         val format = Regex("%(?:[0-9]+\\$)?(?:\\.[0-9]+)?[dsf]")
         en.keys.forEach { key ->

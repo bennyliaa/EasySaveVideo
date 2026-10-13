@@ -27,6 +27,7 @@ data class DiscoveryUiState(
     val results: List<VideoSearchResult> = emptyList(),
     val pageIndex: Int = 0,
     val materializedPages: Int = 0,
+    val nextPagePending: Boolean = false,
     val demo: Boolean = false,
     val storageUnavailable: Boolean = false,
     val notice: String? = null,
@@ -116,6 +117,8 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     private var controllerGeneration = 0L
     // Polling can fulfill earlier explicit page demand, but local controls never create demand.
     private var pageDemandPending = false
+    private val nextPageDemand = DiscoveryPageDemand()
+    private val pageLifecycle = java.util.concurrent.atomic.AtomicLong(0)
     private var historyStatistics: DiscoveryHistoryStatistics? = null
     private var historyStatisticsUnavailable = false
     var state by mutableStateOf(DiscoveryUiState())
@@ -201,6 +204,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         if (!configurationCurrent(claim, verification)) { pageDemandPending = false; return }
         val recoveringUnavailable = unavailable || appliedSourceIntent != expectedIntent
         controllerGeneration++
+        nextPageDemand.cancel()
         pageDemandPending = true; historyStatistics = null; historyStatisticsUnavailable = false
         coordinator?.close(); runtime?.close(); timer?.close()
         CommonsSourceRegistration.initialize(appContext)
@@ -311,12 +315,16 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         c.setVisibility(active, shown, generation)
     }
     fun setVisibility(isForeground: Boolean, discoveryVisible: Boolean) {
-        if (!isForeground || !discoveryVisible) state = state.copy(verificationSummary = null)
+        if (!isForeground || !discoveryVisible) {
+            pageLifecycle.incrementAndGet() // Retire intent now, before any queued refresh can resume.
+            state = state.copy(verificationSummary = null, nextPagePending = false)
+        }
         foreground = isForeground; visible = discoveryVisible
         if (!isForeground || !discoveryVisible) coordinator?.suspendImmediately()
         osSignals.setActive(isForeground && discoveryVisible)
         submit {
             coordinator?.let(::applyLifecycle)
+            if (!isForeground || !discoveryVisible) nextPageDemand.cancel()
             if (foreground && visible && polling == null) polling = io.scheduleWithFixedDelay({
                 if (!closed.get() && foreground && visible) guarded { refresh() }
             }, 300, 300, TimeUnit.MILLISECONDS)
@@ -399,18 +407,43 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         } else notice = null
         refresh()
     }
-    fun movePage(delta: Int) = submit {
+    fun movePage(delta: Int, target: DiscoveryControlTarget? = state.controlTarget, from: Int = state.pageIndex,
+        lifecycle: Long = pageLifecycle.get()) = submit {
         val c = coordinator ?: return@submit
-        val target = (pageIndex + delta).coerceAtLeast(0)
-        pageDemandPending = true
-        val page = c.page(target)
-        if (page != null) { pageIndex = target; notice = null }
-        else { c.requestMore(); notice = "正在检查下一页；有新结果后可继续。" }
+        if (target == null || target != currentControlTarget(c) || from != pageIndex || lifecycle != pageLifecycle.get() ||
+            !foreground || !visible || managementRevision != CommonsSourceRegistration.managementRevision ||
+            delta !in setOf(-1, 1)) return@submit
+        val checkpoint = c.currentCheckpoint() ?: return@submit
+        if (delta == -1) {
+            nextPageDemand.cancel()
+            if (from > 0 && checkpoint.pool.pages.any { it.pageIndex == from - 1 }) pageIndex = from - 1
+        } else {
+            if (!DiscoveryPagerPolicy.canAdvance(from, checkpoint.pool.pages.size, c.status()) ||
+                !nextPageDemand.begin(target, from, lifecycle)) return@submit
+            if (lifecycle != pageLifecycle.get() || !foreground || !visible) {
+                nextPageDemand.cancel(); return@submit
+            }
+            val page = c.page(from + 1)
+            if (page != null) {
+                if (lifecycle == pageLifecycle.get() && foreground && visible) pageIndex = from + 1
+                nextPageDemand.cancel()
+            }
+            else c.requestMore()
+        }
+        notice = null
         refresh()
+    }
+    fun cancelNextPage(target: DiscoveryControlTarget? = state.controlTarget) = submit {
+        val c = coordinator ?: return@submit
+        if (target == null || target != currentControlTarget(c)) return@submit
+        nextPageDemand.cancel()
+        refresh(readOnly = true)
     }
     fun retry() = submit {
         if (unavailable) { notice = "本地发现数据暂不可读，原数据已保留。地址栏仍可使用。"; refresh() }
-        else { pageDemandPending = true; coordinator?.requestMore(); notice = null; refresh() }
+        else if (nextPageDemand.targetPage(coordinator?.let(::currentControlTarget), pageIndex, pageLifecycle.get()) == null) {
+            pageDemandPending = true; coordinator?.requestMore(); notice = null; refresh()
+        }
     }
     /** Reads only local counts; never initializes a source, materializes a page, or creates demand. */
     fun refreshHistoryStatistics(target: DiscoveryControlTarget?) = submit {
@@ -431,6 +464,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         if (outcome != DiscoveryControlOutcome.STALE) {
             // A later status tick must not turn cleared history or reset progress into new demand.
             pageDemandPending = false
+            nextPageDemand.cancel()
             updateHistoryStatistics(c)
         }
         notice = DiscoveryPresentationPolicy.controlOutcomeText(request.action, outcome)
@@ -521,6 +555,11 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             initialize(demo); return
         }
         val c = coordinator ?: return
+        val lifecycle = pageLifecycle.get()
+        nextPageDemand.fulfill(currentControlTarget(c), pageIndex, c.status(),
+            !readOnly && initialized && !unavailable && foreground && visible, lifecycle,
+            stillCurrent = { lifecycle == pageLifecycle.get() && foreground && visible }) { c.page(it) != null }
+            ?.let { if (lifecycle == pageLifecycle.get() && foreground && visible) pageIndex = it }
         val checkpoint = c.currentCheckpoint()
         var page = checkpoint?.pool?.pages?.firstOrNull { it.pageIndex == pageIndex }
         if (DiscoveryPresentationPolicy.mayFulfillPageDemand(readOnly, pageDemandPending, page == null, initialized,
@@ -535,6 +574,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         val target = currentControlTarget(c)
         publish(DiscoveryUiState(ready = true, profile = updated?.profile ?: SearchProfile("local", ""), status = status, page = page,
             results = page?.let(c::results).orEmpty(), pageIndex = pageIndex, materializedPages = updated?.pool?.pages?.size ?: 0,
+            nextPagePending = nextPageDemand.targetPage(target, pageIndex, pageLifecycle.get()) != null,
             demo = demo, storageUnavailable = unavailable, notice = notice, commonsConfigured = CommonsSourceRegistration.configured,
             commonsEnabled = commonsEnabled == true, controlTarget = target,
             historyStatistics = historyStatistics?.takeIf { it.target == target },
