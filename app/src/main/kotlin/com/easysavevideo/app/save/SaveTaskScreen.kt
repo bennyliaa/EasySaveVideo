@@ -217,7 +217,7 @@ fun SaveSelectionPanel(runtime: AndroidSaveRuntime, browser: SystemBrowserHost, 
         EsvText(stringResource(R.string.flow_savetaskscreen_24), style = v.captionTextStyle)
         selection.candidates.forEach { candidate ->
             Column(verticalArrangement = Arrangement.spacedBy(v.spacingExtraSmall)) {
-                EsvText(candidate.label)
+                EsvText(pageSaveCandidateLabel(candidate.displayIndices))
                 EsvText(stringResource(R.string.save_display_candidate,
                     URI(candidate.url.value).host ?: stringResource(R.string.final_copy_54),
                     if (candidate.width != null && candidate.height != null) saveResolutionText(candidate.width, candidate.height)

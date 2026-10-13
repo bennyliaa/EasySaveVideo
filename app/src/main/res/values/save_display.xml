@@ -21,4 +21,5 @@
         <item quantity="one">%1$s audio track</item>
         <item quantity="other">%1$s audio tracks</item>
     </plurals>
+    <string name="save_display_candidate_label">Video %1$s · Resource %2$s</string>
 </resources>

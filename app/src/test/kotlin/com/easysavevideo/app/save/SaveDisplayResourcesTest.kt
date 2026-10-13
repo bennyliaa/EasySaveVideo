@@ -35,7 +35,7 @@ class SaveDisplayResourcesTest {
     private val en by lazy { resourceMap("values") }
     private val zh by lazy { resourceMap("values-zh-rCN") }
     @Test fun pairedStringsAndLocaleAppropriatePluralQuantitiesHaveMatchingParameters() {
-        assertEquals(14, en.keys.count { '/' !in it })
+        assertEquals(15, en.keys.count { '/' !in it })
         assertEquals(en.keys.filter { '/' !in it }.toSet(), zh.keys.filter { '/' !in it }.toSet())
         val pattern = Regex("""%[0-9]+[$]s""")
         for (key in en.keys) {
@@ -87,9 +87,9 @@ class SaveDisplayResourcesTest {
         assertFalse(text.contains("mediaTaskDiscoveryOutcomeLabel(")); assertFalse(text.contains("formatBytes("))
         assertFalse(Regex("""[\u4e00-\u9fff]""").containsMatchIn(text))
     }
-    @Test fun originalSourceMetadataAndSaveActionsAreKeptAsIs() {
+    @Test fun originalSourceMetadataAndSaveActionsAreKeptAlongsideGeneratedLabel() {
         val text = source("SaveTaskScreen")
-        assertTrue(text.contains("EsvText(candidate.label)"))
+        assertTrue(text.contains("EsvText(pageSaveCandidateLabel(candidate.displayIndices))"))
         assertTrue(text.contains("URI(candidate.url.value).host"))
         assertTrue(text.contains("runtime.choose(candidate, browser)"))
         assertTrue(text.contains("runtime.chooseHlsVariant(variant.identity)"))

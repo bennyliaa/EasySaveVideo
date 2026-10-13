@@ -86,7 +86,7 @@ val contractResourceInputs = fileTree("src/main/res") {
     for (locale in listOf("values", "values-zh-rCN")) {
         for (resource in listOf(
             "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "input_clear.xml",
-            "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
+            "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "browser_permission_notice.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
             "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
             "library_batch_export.xml", "library_multi.xml", "provider_copy.xml",
             "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "final_*.xml"
@@ -125,9 +125,12 @@ val contractSourceInputs = files(
     "src/main/kotlin/com/easysavevideo/app/browser/BrowserInspectionDocument.kt",
     "src/main/kotlin/com/easysavevideo/app/browser/BrowserVideoPresenceScript.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/BrowserNoticeResources.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/shell/EsvLocaleHost.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/BrowserJsDialog.kt",
     "src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
     "src/main/kotlin/com/easysavevideo/app/save/PageSaveDetector.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/PageSaveCandidateIndices.kt",
     "src/main/kotlin/com/easysavevideo/app/save/SaveFailureGuidanceUi.kt",
     "src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/EsvSettingsScreen.kt",

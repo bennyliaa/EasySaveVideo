@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_permission_camera_microphone_denied">%1$s requested camera or microphone access. This version does not enable it; the request was denied.</string>
+    <string name="browser_permission_location_denied">%1$s requested location access. This version does not enable it; the request was denied.</string>
+    <string name="browser_permission_unknown_origin">Unknown source</string>
+</resources>

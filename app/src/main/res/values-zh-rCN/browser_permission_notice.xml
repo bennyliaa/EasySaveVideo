@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_permission_camera_microphone_denied">%1$s 请求摄像头或麦克风；此版本未启用，已拒绝。</string>
+    <string name="browser_permission_location_denied">%1$s 请求位置；此版本未启用，已拒绝。</string>
+    <string name="browser_permission_unknown_origin">未知来源</string>
+</resources>

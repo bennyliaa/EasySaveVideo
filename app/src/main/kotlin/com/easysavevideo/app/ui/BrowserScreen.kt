@@ -278,7 +278,7 @@ fun BrowserScreen(
                 browser.notice?.let { message ->
                     Row(Modifier.fillMaxWidth().background(visuals.colors.surface).padding(visuals.spacingMedium),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
-                        EsvText(message, modifier = Modifier.weight(1f), style = visuals.captionTextStyle)
+                        EsvText(browserNoticeText(message), modifier = Modifier.weight(1f), style = visuals.captionTextStyle)
                         EsvButton(stringResource(R.string.flow_browserscreen_15), onClick = browser::dismissNotice)
                     }
                 }

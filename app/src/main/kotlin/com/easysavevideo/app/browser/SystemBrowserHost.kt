@@ -40,7 +40,7 @@ class SystemBrowserHost(
     private val controller = BrowserSessionController(maxTabs = 12)
     var state by mutableStateOf(controller.state); private set
     var settings by mutableStateOf(BrowserSettings()); private set
-    var notice by mutableStateOf<String?>(null); private set
+    internal var notice by mutableStateOf<BrowserNotice?>(null); private set
     var fullScreenView by mutableStateOf<View?>(null); private set
     var viewRevision by mutableStateOf(0); private set
     var platformAvailable by mutableStateOf(true); private set
@@ -186,7 +186,7 @@ class SystemBrowserHost(
     fun newTab(userAction: Boolean = true) {
         requireMain(); if (closed) return
         if (userAction) touched()
-        if (controller.state.tabs.size >= 12) { notice = "最多保留 12 个标签，请先关闭一个。"; return }
+        if (controller.state.tabs.size >= 12) { notice = BrowserNotice.Text("最多保留 12 个标签，请先关闭一个。"); return }
         leaveCurrentTab()
         controller.openTab(UUID.randomUUID().toString(), UUID.randomUUID().toString())
         publish()
@@ -213,7 +213,7 @@ class SystemBrowserHost(
         requireMain(); if (closed) return
         touched()
         val address = BrowserInputPolicy.address(input, allowBareHost = true)
-        if (address == null) { notice = "请输入有效的 http 或 https 网页地址。暂不提供搜索 Provider。"; return }
+        if (address == null) { notice = BrowserNotice.Text("请输入有效的 http 或 https 网页地址。暂不提供搜索 Provider。"); return }
         val tab = controller.state.selectedTab ?: return
         val request = controller.beginNavigation(tab.context.tabId, address, operation())
         load(request)
@@ -326,7 +326,7 @@ class SystemBrowserHost(
         requireMain(); cancelFiles()
         CookieManager.getInstance().removeAllCookies { changed ->
             CookieManager.getInstance().flush()
-            notice = "所有普通标签共享的 Cookie 已清除，登录状态可能失效。"
+            notice = BrowserNotice.Text("所有普通标签共享的 Cookie 已清除，登录状态可能失效。")
             onComplete(changed)
         }
     }
@@ -339,12 +339,12 @@ class SystemBrowserHost(
                 val temporary = WebView(context)
                 try { temporary.clearCache(true) } finally { releaseView(temporary) }
             }
-            notice = "网页缓存清理已请求。Cookie 需单独清除。"
-        } catch (_: RuntimeException) { notice = "系统 WebView 未能清除缓存，请稍后重试。" }
+            notice = BrowserNotice.Text("网页缓存清理已请求。Cookie 需单独清除。")
+        } catch (_: RuntimeException) { notice = BrowserNotice.Text("系统 WebView 未能清除缓存，请稍后重试。") }
     }
     fun persistCurrentSession() { requireMain(); onCheckpoint(controller.persistableSession()) }
     fun dismissNotice() { notice = null }
-    fun showNotice(text: String) { notice = text }
+    fun showNotice(text: String) { notice = BrowserNotice.Text(text) }
     fun resume() {
         requireMain(); foreground = true
         entries.values.firstOrNull()?.view?.resumeTimers()
@@ -424,7 +424,7 @@ class SystemBrowserHost(
         try {
             parcel.writeBundle(bundle)
             if (parcel.dataSize() <= 128 * 1024) history[entry.context.tabId] = bundle
-            else notice = "标签历史过大，已仅保留当前地址。"
+            else notice = BrowserNotice.Text("标签历史过大，已仅保留当前地址。")
         } finally { parcel.recycle() }
     }
     private fun recreateEntry(ref: BrowserContextRef): Entry? {
@@ -443,14 +443,14 @@ class SystemBrowserHost(
             history.remove(ref.tabId)?.let { view.restoreState(it) }
             view.webViewClient = client(entry)
             view.webChromeClient = chrome(entry)
-            view.setDownloadListener { _, _, _, _, _ -> notice = "网页下载未自动开始。请使用保存按钮检测并选择兼容 MP4。" }
+            view.setDownloadListener { _, _, _, _, _ -> notice = BrowserNotice.Text("网页下载未自动开始。请使用保存按钮检测并选择兼容 MP4。") }
             if (foreground) view.resumeTimers()
             if (!foreground || ref.tabId != state.selectedTabId) view.onPause()
             trimViews(except = ref.tabId); viewRevision++; platformAvailable = true
             entry
         } catch (_: RuntimeException) {
             entries.remove(ref.tabId)?.let { releaseView(it.view) }
-            platformAvailable = false; notice = "系统 WebView 不可用。请检查系统 WebView，或用系统浏览器打开地址。"
+            platformAvailable = false; notice = BrowserNotice.Text("系统 WebView 不可用。请检查系统 WebView，或用系统浏览器打开地址。")
             errors.report(ErrorEnvelope(ErrorCode.WEBVIEW_UNAVAILABLE, ErrorModule.BROWSER, true, UserAction.OPEN_SYSTEM_BROWSER))
             null
         }
@@ -500,7 +500,7 @@ class SystemBrowserHost(
     private fun client(entry: Entry) = object : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
             val address = BrowserInputPolicy.address(request.url.toString())
-            if (address == null) { notice = "已阻止网页发起的外部或不安全地址跳转。"; return true }
+            if (address == null) { notice = BrowserNotice.Text("已阻止网页发起的外部或不安全地址跳转。"); return true }
             if (!request.isForMainFrame) return false
             if (entries[entry.context.tabId] !== entry || closed) return true
             jsDialogs.cancel(view); cancelFiles(); hideFullscreen()
@@ -589,7 +589,7 @@ class SystemBrowserHost(
             current(entry)?.takeIf { entry.admission?.expects(error.url) == true }?.let { fail(it, ErrorCode.TLS_REJECTED) }
         }
         override fun onReceivedHttpAuthRequest(view: WebView, handler: HttpAuthHandler, host: String, realm: String) {
-            handler.cancel(); notice = "此版本不处理 HTTP 身份验证弹窗；普通网站登录表单可在网页内使用。"
+            handler.cancel(); notice = BrowserNotice.Text("此版本不处理 HTTP 身份验证弹窗；普通网站登录表单可在网页内使用。")
         }
         override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
             if (closed || entries[entry.context.tabId] !== entry) { releaseView(view, rendererDead = true); return true }
@@ -601,7 +601,7 @@ class SystemBrowserHost(
             controller.rendererGone(setOf(entry.context.tabId))
             history.remove(entry.context.tabId); releaseView(view, rendererDead = true)
             errors.report(ErrorEnvelope(ErrorCode.RENDERER_GONE, ErrorModule.BROWSER, true, UserAction.RETRY))
-            notice = "网页渲染进程已停止，受影响页面已释放。点击重新加载可安全重建。"
+            notice = BrowserNotice.Text("网页渲染进程已停止，受影响页面已释放。点击重新加载可安全重建。")
             viewRevision++; publish(); return true
         }
     }
@@ -615,11 +615,12 @@ class SystemBrowserHost(
         }
         override fun onPermissionRequest(request: PermissionRequest) {
             request.deny()
-            notice = "${BrowserInputPolicy.origin(request.origin.toString()) ?: "未知来源"} 请求摄像头或麦克风；此版本未启用，已拒绝。"
+            notice = BrowserNotice.PermissionDenied(BrowserPermissionKind.CAMERA_OR_MICROPHONE,
+                BrowserInputPolicy.origin(request.origin.toString()))
         }
         override fun onGeolocationPermissionsShowPrompt(origin: String, callback: GeolocationPermissions.Callback) {
             callback.invoke(origin, false, false)
-            notice = "${BrowserInputPolicy.origin(origin) ?: "未知来源"} 请求位置；此版本未启用，已拒绝。"
+            notice = BrowserNotice.PermissionDenied(BrowserPermissionKind.LOCATION, BrowserInputPolicy.origin(origin))
         }
         override fun onShowFileChooser(webView: WebView, callback: ValueCallback<Array<Uri>>, params: FileChooserParams): Boolean {
             cancelFiles()

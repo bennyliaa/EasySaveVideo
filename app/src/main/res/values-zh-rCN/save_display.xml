@@ -19,4 +19,5 @@
     <plurals name="save_display_audio_tracks">
         <item quantity="other">音轨 %1$s</item>
     </plurals>
+    <string name="save_display_candidate_label">视频 %1$s · 资源 %2$s</string>
 </resources>

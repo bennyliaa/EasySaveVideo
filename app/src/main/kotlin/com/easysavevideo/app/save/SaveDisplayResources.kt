@@ -36,3 +36,8 @@ internal fun saveDiscoveryOutcomeResource(history: DiscoveryOriginHistoryOutcome
     DiscoveryOriginHistoryOutcome.HISTORY_FAILED -> R.string.save_display_history_failed
     DiscoveryOriginHistoryOutcome.IDENTITY_UNVERIFIED -> R.string.save_display_history_unverified
 }
+
+/** Only generated numeric indices are localized; no webpage title or user filename is inspected. */
+@Composable internal fun pageSaveCandidateLabel(indices: PageSaveCandidateIndices): String = stringResource(
+    R.string.save_display_candidate_label, saveIntegerText(indices.videoNumber.toLong()),
+    saveIntegerText(indices.resourceNumber.toLong()))

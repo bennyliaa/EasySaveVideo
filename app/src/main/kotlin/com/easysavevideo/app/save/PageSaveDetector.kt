@@ -14,7 +14,7 @@ import java.util.UUID
 data class PageSaveCandidate(
     val id: String,
     val url: SourceUrl,
-    val label: String,
+    val displayIndices: PageSaveCandidateIndices,
     val width: Int?,
     val height: Int?,
     val durationMillis: Long?,
@@ -112,7 +112,7 @@ class PageSaveDetector {
                             return@repeat
                         }
                         candidates.add(PageSaveCandidate(UUID.randomUUID().toString(), source,
-                            "视频 ${item.optInt("video", i + 1).coerceIn(1, 32)} · 资源 ${i + 1}", width, height, duration,
+                            pageSaveCandidateIndices(item.optInt("video", i + 1), i), width, height, duration,
                             item.optBoolean("audio"), item.optBoolean("protected"), mp4 || hls,
                             if (hls) com.easysavevideo.core.model.TaskMethod.STREAM else com.easysavevideo.core.model.TaskMethod.DIRECT))
                     }
