@@ -25,8 +25,8 @@ fun PendingCandidateCards(candidates: List<PendingVideoCandidate>, columns: Int,
         LazyVerticalGrid(GridCells.Fixed(columns), modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
             items(candidates, key = { "pending-${it.candidateId}" }) { candidate ->
-                Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.corner))
-                    .background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingSmall),
+                Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.cardCorner))
+                    .background(v.colors.surface, RoundedCornerShape(v.cardCorner)).padding(v.spacingSmall),
                     verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                     EsvText("待验证 · 来源报告", style = v.captionTextStyle, color = v.colors.error)
                     EsvText(candidate.sourceReported?.title ?: "标题未知", style = v.bodyTextStyle)

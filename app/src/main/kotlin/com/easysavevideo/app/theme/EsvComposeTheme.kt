@@ -68,6 +68,7 @@ import dev.skinkit.contract.VisualState
 data class EsvComposeColors(
     val bg: Color,
     val surface: Color,
+    val elevated: Color,
     val text: Color,
     val muted: Color,
     val accent: Color,
@@ -86,12 +87,18 @@ data class EsvComposeVisuals(
     val generation: Long,
     val colors: EsvComposeColors,
     val titleTextStyle: TextStyle,
+    val sectionTextStyle: TextStyle,
     val bodyTextStyle: TextStyle,
     val captionTextStyle: TextStyle,
+    val spacingExtraSmall: Dp,
+    val spacingCompact: Dp,
+    val spacingExtraLarge: Dp,
     val spacingSmall: Dp,
     val spacingMedium: Dp,
     val spacingLarge: Dp,
     val corner: Dp,
+    val cardCorner: Dp,
+    val sheetCorner: Dp,
     val borderWidth: Dp,
     val buttonPaddingHorizontal: Dp,
     val buttonPaddingVertical: Dp,
@@ -144,8 +151,15 @@ fun EsvThemeHost(
     SideEffect { currentTheme.provider.updateConfiguration(configuration) }
 
     val visuals = remember(currentTheme, generation) { currentTheme.readSnapshot().toComposeVisuals() }
-    val colors = visuals.colors
-    val scheme = lightColorScheme(
+    CompositionLocalProvider(LocalEsvVisuals provides visuals) {
+        MaterialTheme(colorScheme = visuals.toMaterialColors(), typography = visuals.toMaterialTypography(),
+            shapes = visuals.toMaterialShapes(), content = content)
+    }
+}
+
+/** Value-only mappings; no provider, resource lookup or state lifetime is created here. */
+internal fun EsvComposeVisuals.toMaterialColors(): androidx.compose.material3.ColorScheme {
+    return lightColorScheme(
         primary = colors.accent, onPrimary = colors.onAccent,
         primaryContainer = colors.surface, onPrimaryContainer = colors.text,
         inversePrimary = colors.accent,
@@ -163,26 +177,28 @@ fun EsvThemeHost(
         outline = colors.border, outlineVariant = colors.border,
         scrim = colors.text,
         surfaceBright = colors.surface, surfaceDim = colors.bg,
-        surfaceContainer = colors.surface, surfaceContainerHigh = colors.surface,
-        surfaceContainerHighest = colors.surface, surfaceContainerLow = colors.bg,
+        surfaceContainer = colors.elevated, surfaceContainerHigh = colors.elevated,
+        surfaceContainerHighest = colors.elevated, surfaceContainerLow = colors.bg,
         surfaceContainerLowest = colors.bg,
     )
-    val typography = Typography(
-        displayLarge = visuals.titleTextStyle, displayMedium = visuals.titleTextStyle,
-        displaySmall = visuals.titleTextStyle, headlineLarge = visuals.titleTextStyle,
-        headlineMedium = visuals.titleTextStyle, headlineSmall = visuals.titleTextStyle,
-        titleLarge = visuals.titleTextStyle, titleMedium = visuals.bodyTextStyle,
-        titleSmall = visuals.bodyTextStyle, bodyLarge = visuals.bodyTextStyle,
-        bodyMedium = visuals.bodyTextStyle, bodySmall = visuals.captionTextStyle,
-        labelLarge = visuals.bodyTextStyle, labelMedium = visuals.captionTextStyle,
-        labelSmall = visuals.captionTextStyle,
-    )
-    val shape = RoundedCornerShape(visuals.corner)
-    CompositionLocalProvider(LocalEsvVisuals provides visuals) {
-        MaterialTheme(colorScheme = scheme, typography = typography,
-            shapes = Shapes(shape, shape, shape, shape, shape), content = content)
-    }
 }
+internal fun EsvComposeVisuals.toMaterialTypography(): Typography {
+    return Typography(
+        displayLarge = titleTextStyle, displayMedium = titleTextStyle,
+        displaySmall = titleTextStyle, headlineLarge = titleTextStyle,
+        headlineMedium = titleTextStyle, headlineSmall = titleTextStyle,
+        titleLarge = titleTextStyle, titleMedium = sectionTextStyle,
+        titleSmall = bodyTextStyle, bodyLarge = bodyTextStyle,
+        bodyMedium = bodyTextStyle, bodySmall = captionTextStyle,
+        labelLarge = bodyTextStyle, labelMedium = captionTextStyle,
+        labelSmall = captionTextStyle,
+    )
+}
+internal fun EsvComposeVisuals.toMaterialShapes(): Shapes = Shapes(
+    extraSmall = RoundedCornerShape(corner), small = RoundedCornerShape(corner),
+    medium = RoundedCornerShape(cardCorner), large = RoundedCornerShape(sheetCorner),
+    extraLarge = RoundedCornerShape(sheetCorner),
+)
 
 @Composable
 fun EsvText(
@@ -301,7 +317,7 @@ fun EsvThemeIcon(contentDescription: String?, modifier: Modifier = Modifier) {
     }
 }
 
-private fun EsvVisualSnapshot.toComposeVisuals(): EsvComposeVisuals {
+internal fun EsvVisualSnapshot.toComposeVisuals(): EsvComposeVisuals {
     fun buttonVisual(state: VisualState): EsvComposeButtonVisual = button.forState(state).let {
         EsvComposeButtonVisual(it.background.toComposeColor(), it.foreground.toComposeColor(), it.typography.toTextStyle())
     }
@@ -310,6 +326,7 @@ private fun EsvVisualSnapshot.toComposeVisuals(): EsvComposeVisuals {
         colors = EsvComposeColors(
             bg = colors.bg.toComposeColor(),
             surface = colors.surface.toComposeColor(),
+            elevated = colors.elevated.toComposeColor(),
             text = colors.text.toComposeColor(),
             muted = colors.muted.toComposeColor(),
             accent = colors.accent.toComposeColor(),
@@ -318,12 +335,18 @@ private fun EsvVisualSnapshot.toComposeVisuals(): EsvComposeVisuals {
             border = colors.border.toComposeColor(),
         ),
         titleTextStyle = title.toTextStyle(),
+        sectionTextStyle = section.toTextStyle(),
         bodyTextStyle = body.toTextStyle(),
         captionTextStyle = caption.toTextStyle(),
+        spacingExtraSmall = spacingExtraSmall.amount.toFloat().dp,
+        spacingCompact = spacingCompact.amount.toFloat().dp,
+        spacingExtraLarge = spacingExtraLarge.amount.toFloat().dp,
         spacingSmall = spacingSmall.amount.toFloat().dp,
         spacingMedium = spacingMedium.amount.toFloat().dp,
         spacingLarge = spacingLarge.amount.toFloat().dp,
         corner = corner.amount.toFloat().dp,
+        cardCorner = cardCorner.amount.toFloat().dp,
+        sheetCorner = sheetCorner.amount.toFloat().dp,
         borderWidth = borderWidth.amount.toFloat().dp,
         buttonPaddingHorizontal = buttonPaddingHorizontal.amount.toFloat().dp,
         buttonPaddingVertical = buttonPaddingVertical.amount.toFloat().dp,

@@ -1,0 +1,12 @@
+{
+  "checked_original_production_config_files": 471,
+  "changed_files": [],
+  "previous_frozen_inputs_unchanged": {
+    "esv-current-contracts-frozen-20261013": 15,
+    "esv-shell-labels-frozen-20261013": 16
+  },
+  "old_business_helpers_byte_equal": true,
+  "independent_review_identical_callbacks": 16,
+  "independent_review_identical_enabled_conditions": 6,
+  "independent_review_identical_targeted_runtime_calls": 9
+}

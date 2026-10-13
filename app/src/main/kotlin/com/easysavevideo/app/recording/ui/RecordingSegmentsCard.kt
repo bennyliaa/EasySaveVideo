@@ -30,10 +30,10 @@ fun RecordingSegmentsCard(
     onNextSegments: (() -> Unit)? = null,
 ) {
     val v = LocalEsvVisuals.current
-    Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium),
+    Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.cardCorner)).padding(v.spacingMedium),
         verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
         val phaseLabel = stringResource(recordingSegmentsPhaseResource(state.phase, state.verifiedOutputAvailable))
-        EsvText(phaseLabel, style = v.titleTextStyle, modifier = Modifier.semantics { stateDescription = phaseLabel })
+        EsvText(phaseLabel, style = v.sectionTextStyle, modifier = Modifier.semantics { stateDescription = phaseLabel })
         if (retainedSessionCount > 0) EsvText("共有 $retainedSessionCount 组待查看的私有片段。", style = v.captionTextStyle)
         if ((retainedSessionCount > 1 || retainedSessionCount > 0 && state.closedSegments.isEmpty()) && !state.active && onNextSegments != null)
             EsvButton("下一组保留片段", onNextSegments, modifier = Modifier.fillMaxWidth())

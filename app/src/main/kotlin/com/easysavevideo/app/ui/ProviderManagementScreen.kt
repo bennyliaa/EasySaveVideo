@@ -95,7 +95,7 @@ fun ProviderManagementScreen(
             ProviderManagementOperation.INSPECT -> false
         }
         Dialog(onDismissRequest = { confirmation = null }) {
-            Column(Modifier.fillMaxWidth().heightIn(max = 620.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
+            Column(Modifier.fillMaxWidth().heightIn(max = 620.dp).background(v.colors.elevated, RoundedCornerShape(v.sheetCorner))
                 .padding(v.spacingLarge).verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
                 EsvText(if (action == ProviderManagementOperation.REJECT_CANDIDATE) stringResource(R.string.provider_dialog_4, snapshot?.pendingVersion?.toString() ?: stringResource(R.string.discovery_copy_94)) else stringResource(R.string.provider_dialog_5),
@@ -161,10 +161,10 @@ private fun QuarantineSection(view: ProviderManagementPresentation, loaded: Bool
 @Composable
 private fun ProviderSection(title: String, lines: List<String>, content: @Composable ColumnScope.() -> Unit = {}) {
     val v = LocalEsvVisuals.current
-    Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.corner))
-        .background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium),
+    Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.cardCorner))
+        .background(v.colors.surface, RoundedCornerShape(v.cardCorner)).padding(v.spacingMedium),
         verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-        EsvText(title, style = v.titleTextStyle)
+        EsvText(title, style = v.sectionTextStyle)
         lines.forEach { EsvText(it, style = v.bodyTextStyle) }
         content()
     }

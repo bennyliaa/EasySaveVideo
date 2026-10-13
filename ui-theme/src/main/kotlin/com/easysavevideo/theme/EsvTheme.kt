@@ -25,8 +25,8 @@ import dev.skinkit.defaults.DefaultThemeProvider
 import dev.skinkit.defaults.StandardSchemas
 
 /**
- * App-owned, offline M1 defaults. SDK types come from the pinned SkinKit 0.0.1
- * Contract/Default artifacts; this module neither copies nor replaces the SDK.
+ * App-owned, offline defaults. SDK types come from the pinned SkinKit 1.0.0
+ * Contract/Default artifacts (contract protocol 0.0.1); this module neither copies nor replaces the SDK.
  *
  * All seven categories have explicit light/dark values. Fonts, shapes and
  * built-in icons need no resource decoder, network, Core or animation runtime.
@@ -36,6 +36,7 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
 
     val background = tokens.color("color.background", ColorRole.BACKGROUND)
     val surface = tokens.color("color.surface", ColorRole.BACKGROUND)
+    val elevated = tokens.color("color.surface.elevated", ColorRole.BACKGROUND)
     val text = tokens.color("color.text.primary")
     val muted = tokens.color("color.text.secondary")
     val accent = tokens.color("color.accent", ColorRole.ACCENT)
@@ -43,12 +44,18 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
     val error = tokens.color("color.error")
     val border = tokens.color("color.border", ColorRole.BORDER)
     val title = tokens.typography("typography.title")
+    val section = tokens.typography("typography.section")
     val body = tokens.typography("typography.body")
     val caption = tokens.typography("typography.caption")
+    val spacingExtraSmall = tokens.dimension("dimension.spacing.extra.small", DimensionPurpose.SPACING)
+    val spacingCompact = tokens.dimension("dimension.spacing.compact", DimensionPurpose.SPACING)
+    val spacingExtraLarge = tokens.dimension("dimension.spacing.extra.large", DimensionPurpose.SPACING)
     val spacingSmall = tokens.dimension("dimension.spacing.small", DimensionPurpose.SPACING)
     val spacingMedium = tokens.dimension("dimension.spacing.medium", DimensionPurpose.SPACING)
     val spacingLarge = tokens.dimension("dimension.spacing.large", DimensionPurpose.SPACING)
     val corner = tokens.dimension("dimension.corner.control", DimensionPurpose.CORNER)
+    val cardCorner = tokens.dimension("dimension.corner.card", DimensionPurpose.CORNER)
+    val sheetCorner = tokens.dimension("dimension.corner.sheet", DimensionPurpose.CORNER)
     val buttonPaddingHorizontal = tokens.dimension("dimension.padding.button.horizontal", DimensionPurpose.PADDING)
     val buttonPaddingVertical = tokens.dimension("dimension.padding.button.vertical", DimensionPurpose.PADDING)
     val borderWidth = tokens.dimension("dimension.border.width", DimensionPurpose.BORDER)
@@ -61,6 +68,7 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
         for (foreground in listOf(text, muted, accent, error)) {
             contrastPair(foreground, background)
             contrastPair(foreground, surface)
+            contrastPair(foreground, elevated)
         }
     }.build()
 
@@ -84,6 +92,7 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
             colors = EsvColors(
                 bg = view.getColor(background),
                 surface = view.getColor(surface),
+                elevated = view.getColor(elevated),
                 text = view.getColor(text),
                 muted = view.getColor(muted),
                 accent = view.getColor(accent),
@@ -92,12 +101,18 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
                 border = view.getColor(border),
             ),
             title = view.getTypography(title),
+            section = view.getTypography(section),
             body = view.getTypography(body),
             caption = view.getTypography(caption),
+            spacingExtraSmall = view.getDimension(spacingExtraSmall),
+            spacingCompact = view.getDimension(spacingCompact),
+            spacingExtraLarge = view.getDimension(spacingExtraLarge),
             spacingSmall = view.getDimension(spacingSmall),
             spacingMedium = view.getDimension(spacingMedium),
             spacingLarge = view.getDimension(spacingLarge),
             corner = view.getDimension(corner),
+            cardCorner = view.getDimension(cardCorner),
+            sheetCorner = view.getDimension(sheetCorner),
             buttonPaddingHorizontal = view.getDimension(buttonPaddingHorizontal),
             buttonPaddingVertical = view.getDimension(buttonPaddingVertical),
             borderWidth = view.getDimension(borderWidth),
@@ -128,6 +143,7 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
 
             builder.put(mode, background, canvas)
             builder.put(mode, surface, card)
+            builder.put(mode, elevated, color(0xffedf4f6, 0xff1c3440))
             builder.put(mode, text, ink)
             builder.put(mode, muted, secondaryInk)
             builder.put(mode, accent, primary)
@@ -135,12 +151,18 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
             builder.put(mode, error, danger)
             builder.put(mode, border, line)
             builder.put(mode, title, TypographyValue(FontRef.System(), 24.0, 700, 32.0))
+            builder.put(mode, section, TypographyValue(FontRef.System(), 20.0, 600, 28.0))
             builder.put(mode, body, normalType)
             builder.put(mode, caption, TypographyValue(FontRef.System(), 12.0, 400, 16.0))
+            builder.put(mode, spacingExtraSmall, dimension(4.0, DimensionPurpose.SPACING))
+            builder.put(mode, spacingCompact, dimension(12.0, DimensionPurpose.SPACING))
+            builder.put(mode, spacingExtraLarge, dimension(32.0, DimensionPurpose.SPACING))
             builder.put(mode, spacingSmall, dimension(8.0, DimensionPurpose.SPACING))
             builder.put(mode, spacingMedium, dimension(16.0, DimensionPurpose.SPACING))
             builder.put(mode, spacingLarge, dimension(24.0, DimensionPurpose.SPACING))
             builder.put(mode, corner, controlCorner)
+            builder.put(mode, cardCorner, dimension(16.0, DimensionPurpose.CORNER))
+            builder.put(mode, sheetCorner, dimension(24.0, DimensionPurpose.CORNER))
             builder.put(mode, buttonPaddingHorizontal, dimension(20.0, DimensionPurpose.PADDING))
             builder.put(mode, buttonPaddingVertical, dimension(12.0, DimensionPurpose.PADDING))
             builder.put(mode, borderWidth, dimension(1.0, DimensionPurpose.BORDER))
@@ -150,7 +172,7 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
                 dimension(24.0, DimensionPurpose.ICON),
                 TintPolicy.Color(primary),
             ))
-            // Default 0.0.1 has no player. Explicitly disabled is a valid terminal value.
+            // The selected Default provider has no player. Disabled is a valid terminal value.
             builder.put(mode, animation, AnimationValue.Disabled)
             builder.put(mode, button, ButtonStyle.of(mapOf(
                 VisualState.NORMAL to ButtonVisual(primary, onPrimary, buttonType),
@@ -179,6 +201,7 @@ class EsvTheme(initialConfiguration: VisualConfiguration = VisualConfiguration()
 data class EsvColors(
     val bg: ColorValue,
     val surface: ColorValue,
+    val elevated: ColorValue,
     val text: ColorValue,
     val muted: ColorValue,
     val accent: ColorValue,
@@ -192,12 +215,18 @@ data class EsvVisualSnapshot(
     val configuration: VisualConfiguration,
     val colors: EsvColors,
     val title: TypographyValue,
+    val section: TypographyValue,
     val body: TypographyValue,
     val caption: TypographyValue,
+    val spacingExtraSmall: DimensionValue,
+    val spacingCompact: DimensionValue,
+    val spacingExtraLarge: DimensionValue,
     val spacingSmall: DimensionValue,
     val spacingMedium: DimensionValue,
     val spacingLarge: DimensionValue,
     val corner: DimensionValue,
+    val cardCorner: DimensionValue,
+    val sheetCorner: DimensionValue,
     val buttonPaddingHorizontal: DimensionValue,
     val buttonPaddingVertical: DimensionValue,
     val borderWidth: DimensionValue,

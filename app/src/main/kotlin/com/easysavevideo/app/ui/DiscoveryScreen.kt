@@ -333,8 +333,8 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                 } else LazyVerticalGrid(GridCells.Fixed(columns), state = grid, modifier = Modifier.weight(1f).fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                     items(state.results, key = { it.resultId }) { result ->
-                        Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.corner))
-                            .background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                        Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.cardCorner))
+                            .background(v.colors.surface, RoundedCornerShape(v.cardCorner)).padding(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                             Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(v.backdrop, RoundedCornerShape(v.corner)), contentAlignment = Alignment.Center) {
                                 EsvThemeIcon(stringResource(R.string.discovery_copy_14), Modifier.size(v.iconSize))
                             }
@@ -378,7 +378,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
 
     safeDisableConfirm?.let { captured -> Dialog(onDismissRequest = { safeDisableConfirm = null }) {
         val valid = currentClaimValid(captured)
-        Column(Modifier.background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingLarge),
+        Column(Modifier.background(v.colors.elevated, RoundedCornerShape(v.sheetCorner)).padding(v.spacingLarge),
             verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
             EsvText(stringResource(R.string.discovery_copy_55), style = v.titleTextStyle)
             EsvText(stringResource(R.string.discovery_copy_56))
@@ -391,7 +391,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
         }
     } }
     rightsDetails?.let { result -> Dialog(onDismissRequest = { rightsDetails = null }) {
-        Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
+        Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.elevated, RoundedCornerShape(v.sheetCorner))
             .padding(v.spacingLarge).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
             EsvText(stringResource(R.string.discovery_copy_60), style = v.titleTextStyle)
             EsvButton(stringResource(R.string.discovery_copy_61), onClick = { rightsDetails = null })
@@ -414,7 +414,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
         val current = state.controlTarget
         val valid = !state.storageUnavailable && DiscoveryPresentationPolicy.validControl(request, current,
             state.status?.providers?.map { it.providerId }?.toSet().orEmpty())
-        Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
+        Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.elevated, RoundedCornerShape(v.sheetCorner))
             .padding(v.spacingLarge).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
             EsvText(DiscoveryPresentationPolicy.controlTitle(request), style = v.titleTextStyle)
             if (state.demo) EsvText(stringResource(R.string.discovery_copy_69), style = v.captionTextStyle)

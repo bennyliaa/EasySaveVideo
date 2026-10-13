@@ -20,14 +20,15 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.selected
 import com.easysavevideo.app.ui.responsivePaneLayout
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Dialog
 import com.easysavevideo.app.browser.SystemBrowserHost
 import com.easysavevideo.app.theme.*
 import androidx.compose.ui.res.stringResource
 import com.easysavevideo.app.R
-import com.easysavevideo.app.recording.recordingAudioOutcomeLabel
-import com.easysavevideo.app.recording.recordingDurationLabel
-import com.easysavevideo.app.recording.recordingStopReasonLabel
+import com.easysavevideo.app.recording.recordingAudioOutcomeResource
+import com.easysavevideo.app.recording.recordingStopReasonResource
 import com.easysavevideo.core.model.TaskState
 import com.easysavevideo.core.model.TaskMethod
 import com.easysavevideo.save.*
@@ -91,7 +92,7 @@ fun SaveTaskScreen(
             LazyColumn(listModifier, state = listState, verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
               items(runtime.records, key = { it.task.taskId }) { record ->
                 Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                  if (layout.split) Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium)) {
+                  if (layout.split) Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.cardCorner)).padding(v.spacingMedium)) {
                     EsvText("${stringResource(taskMethodTextResource(record.request.method))} · ${stringResource(taskStateTextResource(record))}", style = v.bodyTextStyle)
                     EsvText(stringResource(R.string.flow_task_id, record.task.taskId.take(8)), style = v.captionTextStyle, color = v.colors.muted)
                   } else SaveTaskDetail(record, runtime, browser, onRecord, onPreview, onBrowser)
@@ -101,7 +102,7 @@ fun SaveTaskScreen(
               }
             }
             if (layout.split) Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(detailScroll), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-              EsvText(stringResource(R.string.task_detail_heading), style = v.titleTextStyle)
+              EsvText(stringResource(R.string.task_detail_heading), style = v.sectionTextStyle)
               if (detail != null) SaveTaskDetail(detail, runtime, browser, onRecord, onPreview, onBrowser)
               else EsvText(stringResource(if (selectedTaskId == null) R.string.task_detail_empty else R.string.task_detail_unavailable))
               if (selectedTaskId != null) EsvButton(stringResource(R.string.task_detail_clear), onClick = { selectedTaskId = null })
@@ -116,13 +117,13 @@ fun SaveTaskScreen(
 private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, browser: SystemBrowserHost,
     onRecord: (() -> Unit)?, onPreview: ((SaveRecord) -> Unit)?, onBrowser: (() -> Unit)?) {
     val v = LocalEsvVisuals.current
-    Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium),
+    Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.cardCorner)).padding(v.spacingMedium),
         verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
         EsvText("${stringResource(taskMethodTextResource(record.request.method))} · ${stringResource(taskStateTextResource(record))}", style = v.titleTextStyle)
         EsvText(stringResource(R.string.flow_task_id, record.task.taskId.take(8)), style = v.captionTextStyle, color = v.colors.muted)
         if (record.task.state == TaskState.SUCCEEDED) {
             runtime.discoverySaveOutcomes[record.task.taskId]?.let { outcome ->
-                EsvText(mediaTaskDiscoveryOutcomeLabel(outcome), style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(stringResource(saveDiscoveryOutcomeResource(outcome.history)), style = v.captionTextStyle, color = v.colors.muted)
             }
             val evidence = record.verification
             val disposition = record.receipt?.let { runtime.mediaDispositions[it.mediaId] }
@@ -132,23 +133,27 @@ private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, brow
                 MediaLifecycle.DELETED -> stringResource(R.string.flow_disposition_deleted)
                 null -> stringResource(R.string.flow_disposition_unknown)
             })
-            if (evidence != null) EsvText("${formatBytes(evidence.sizeBytes)} · ${evidence.width} × ${evidence.height} · ${evidence.durationMillis / 1000} 秒 · 音轨 ${evidence.audioTrackCount}", style = v.captionTextStyle)
+            if (evidence != null) EsvText(stringResource(R.string.save_display_verified,
+                saveSizeText(evidence.sizeBytes), saveResolutionText(evidence.width, evidence.height),
+                saveSecondsText(evidence.durationMillis / 1000), saveAudioTracksText(evidence.audioTrackCount)), style = v.captionTextStyle)
             onPreview?.let { preview -> EsvButton(stringResource(R.string.flow_savetaskscreen_16), onClick = { preview(record) }, enabled = disposition == MediaLifecycle.READY && runtime.currentRecordingId == null && !runtime.draining) }
             EsvText(stringResource(R.string.flow_savetaskscreen_17), style = v.captionTextStyle, color = v.colors.muted)
         } else if (record.task.state in setOf(TaskState.RUNNING, TaskState.WAITING_USER, TaskState.QUEUED)) {
             val checkpoint = record.checkpoint
             val bytes = record.transfer?.bytesOnDisk
             EsvText(if (bytes != null) {
-                    stringResource(R.string.flow_output_pending, formatBytes(bytes))
+                    stringResource(R.string.flow_output_pending, saveSizeText(bytes))
                 }
-                else if (checkpoint != null) stringResource(R.string.flow_transfer_progress, formatBytes(checkpoint.offset), formatBytes(checkpoint.totalBytes))
+                else if (checkpoint != null) stringResource(R.string.flow_transfer_progress, saveSizeText(checkpoint.offset), saveSizeText(checkpoint.totalBytes))
                 else if (record.request.method == TaskMethod.RECORD) stringResource(R.string.flow_record_progress)
                 else stringResource(R.string.flow_progress_unknown), style = v.captionTextStyle)
         }
         record.transfer?.recordingExpectation?.let { recording ->
-            EsvText("有效录制时长 ${recordingDurationLabel(recording.effectiveDurationUs)} · ${recording.actualProfile.width} × ${recording.actualProfile.height}", style = v.captionTextStyle)
-            EsvText(recordingAudioOutcomeLabel(recording.audioOutcome), style = v.captionTextStyle)
-            EsvText(recordingStopReasonLabel(recording.stopReason), style = v.captionTextStyle)
+            EsvText(stringResource(R.string.save_display_recording,
+                saveDurationText(recording.effectiveDurationUs),
+                saveResolutionText(recording.actualProfile.width, recording.actualProfile.height)), style = v.captionTextStyle)
+            EsvText(stringResource(recordingAudioOutcomeResource(recording.audioOutcome)), style = v.captionTextStyle)
+            EsvText(stringResource(recordingStopReasonResource(recording.stopReason)), style = v.captionTextStyle)
         }
         if (record.request.method == TaskMethod.RECORD && !record.task.state.isTerminal) onRecord?.let { open ->
             EsvButton(stringResource(R.string.flow_savetaskscreen_19), onClick = open)
@@ -185,27 +190,37 @@ fun SaveSelectionDialog(runtime: AndroidSaveRuntime, browser: SystemBrowserHost)
     }
     if (runtime.selection == null) return
     Dialog(onDismissRequest = runtime::dismissSelection) {
-        SaveSelectionPanel(runtime, browser, Modifier.heightIn(max = 680.dp))
+        SaveSelectionPanel(runtime, browser, Modifier.heightIn(max = 680.dp), SaveSelectionPresentation.FLOATING)
     }
 
 }
+enum class SaveSelectionPresentation { INLINE, FLOATING }
+internal data class SaveSelectionVisuals(val background: Color, val corner: Dp, val padding: Dp)
+internal fun saveSelectionVisuals(v: EsvComposeVisuals, presentation: SaveSelectionPresentation) = when (presentation) {
+    SaveSelectionPresentation.INLINE -> SaveSelectionVisuals(v.colors.surface, v.cardCorner, v.spacingMedium)
+    SaveSelectionPresentation.FLOATING -> SaveSelectionVisuals(v.colors.elevated, v.sheetCorner, v.spacingExtraLarge)
+}
+
 @Composable
-fun SaveSelectionPanel(runtime: AndroidSaveRuntime, browser: SystemBrowserHost, modifier: Modifier = Modifier) {
+fun SaveSelectionPanel(runtime: AndroidSaveRuntime, browser: SystemBrowserHost, modifier: Modifier = Modifier,
+    presentation: SaveSelectionPresentation = SaveSelectionPresentation.INLINE) {
     val v = LocalEsvVisuals.current
     val selection = runtime.selection ?: return
-    Column(modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner))
-        .verticalScroll(rememberScrollState()).padding(v.spacingLarge), verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
+    val panel = saveSelectionVisuals(v, presentation)
+    Column(modifier.fillMaxWidth().background(panel.background, RoundedCornerShape(panel.corner))
+        .verticalScroll(rememberScrollState()).padding(panel.padding), verticalArrangement = Arrangement.spacedBy(v.spacingCompact)) {
         EsvText(stringResource(R.string.flow_savetaskscreen_22), style = v.titleTextStyle)
         EsvText(stringResource(R.string.flow_savetaskscreen_23), style = v.captionTextStyle)
         EsvText(stringResource(R.string.flow_savetaskscreen_24), style = v.captionTextStyle)
         selection.candidates.forEach { candidate ->
-            Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+            Column(verticalArrangement = Arrangement.spacedBy(v.spacingExtraSmall)) {
                 EsvText(candidate.label)
-                EsvText(buildList {
-                    add(URI(candidate.url.value).host ?: stringResource(R.string.final_copy_54))
-                    add(if (candidate.width != null && candidate.height != null) "${candidate.width} × ${candidate.height}" else stringResource(R.string.final_copy_55))
-                    add(candidate.durationMillis?.let { "${it / 1000} 秒" } ?: stringResource(R.string.final_copy_56))
-                }.joinToString(" · "), style = v.captionTextStyle, color = v.colors.muted)
+                EsvText(stringResource(R.string.save_display_candidate,
+                    URI(candidate.url.value).host ?: stringResource(R.string.final_copy_54),
+                    if (candidate.width != null && candidate.height != null) saveResolutionText(candidate.width, candidate.height)
+                        else stringResource(R.string.final_copy_55),
+                    candidate.durationMillis?.let { saveSecondsText(it / 1000) } ?: stringResource(R.string.final_copy_56)),
+                    style = v.captionTextStyle, color = v.colors.muted)
                 EsvButton(when {
                     candidate.protected -> stringResource(R.string.final_copy_57)
                     !candidate.supported -> stringResource(R.string.final_copy_58)
@@ -225,19 +240,24 @@ private fun HlsSelectionDialog(runtime: AndroidSaveRuntime) {
     val v = LocalEsvVisuals.current
     val prepared = runtime.hlsPreparation
     Dialog(onDismissRequest = runtime::dismissSelection) {
-        Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
+        Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.elevated, RoundedCornerShape(v.sheetCorner))
             .verticalScroll(rememberScrollState()).padding(v.spacingLarge), verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
             EsvText(stringResource(R.string.flow_savetaskscreen_26), style = v.titleTextStyle)
             EsvText(stringResource(R.string.flow_savetaskscreen_27), style = v.captionTextStyle)
             if (prepared == null) EsvText(stringResource(R.string.flow_savetaskscreen_28))
             else {
-                EsvText("已检查清单 ${formatBytes(prepared.bytesTransferred)}；这部分流量计入任务预算。选择有效期最多 60 秒，不延长原执行时限。", style = v.captionTextStyle)
+                EsvText(stringResource(R.string.save_display_hls_budget, saveSizeText(prepared.bytesTransferred)), style = v.captionTextStyle)
                 if (prepared.directMedia) EsvButton(stringResource(R.string.flow_savetaskscreen_30), onClick = { runtime.chooseHlsVariant(null) },
                     enabled = runtime.canSave(TaskMethod.STREAM))
                 prepared.variants.forEach { variant ->
                     val metadata = variant.metadata
-                    val size = if (metadata.width != null && metadata.height != null) "${metadata.width} × ${metadata.height}" else "清晰度未声明"
-                    EsvButton("${variant.index + 1}. $size · ${metadata.bandwidth / 1000} kbps", onClick = { runtime.chooseHlsVariant(variant.identity) },
+                    val width = metadata.width
+                    val height = metadata.height
+                    val size = if (width != null && height != null) saveResolutionText(width, height)
+                        else stringResource(R.string.save_display_resolution_undeclared)
+                    EsvButton(stringResource(R.string.save_display_hls_variant,
+                        saveIntegerText(variant.index.toLong() + 1), size, saveIntegerText(metadata.bandwidth / 1000)),
+                        onClick = { runtime.chooseHlsVariant(variant.identity) },
                         enabled = runtime.canSave(TaskMethod.STREAM))
                 }
             }
@@ -320,9 +340,4 @@ internal fun saveErrorText(error: SaveError): String = when (error) {
     SaveError.ENCODER_FAILED -> "系统录制编码器失败，未确认保存成功。"
     SaveError.FINALIZATION_FAILED -> "录制文件未完整收尾，未发布成片。"
     else -> "任务未完成，请检查页面与存储后重试。"
-}
-private fun formatBytes(bytes: Long): String = when {
-    bytes >= 1024L * 1024 * 1024 -> "%.2f GiB".format(bytes / (1024.0 * 1024 * 1024))
-    bytes >= 1024L * 1024 -> "%.1f MiB".format(bytes / (1024.0 * 1024))
-    else -> "${bytes / 1024} KiB"
 }

@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
 import com.easysavevideo.app.save.AndroidSaveRuntime
 import com.easysavevideo.app.save.SaveSelectionPanel
+import com.easysavevideo.app.save.SaveSelectionPresentation
 import com.easysavevideo.app.save.SaveSelectionDialog
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.contentDescription
@@ -131,11 +132,11 @@ fun BrowserScreen(
         if (saveRuntime?.selection != null) saveRuntime.dismissSelection()
         else if (bookmarksOpen) { bookmarksOpen = false; focus.clearFocus() } else if (settingsOpen) settingsOpen = false else browser.back()
     }
-    val inspectorContent: @Composable (Modifier) -> Unit = { modifier ->
-        saveRuntime?.let { SaveSelectionPanel(it, browser, modifier) }
+    val inspectorContent: @Composable (Modifier, SaveSelectionPresentation) -> Unit = { modifier, presentation ->
+        saveRuntime?.let { SaveSelectionPanel(it, browser, modifier, presentation) }
     }
     val latestInspectorContent = rememberUpdatedState(inspectorContent)
-    val inspectorPanel = remember { movableContentOf<Modifier> { modifier -> latestInspectorContent.value(modifier) } }
+    val inspectorPanel = remember { movableContentOf<Modifier, SaveSelectionPresentation> { modifier, presentation -> latestInspectorContent.value(modifier, presentation) } }
     EsvBackdrop(Modifier.fillMaxSize()) {
         BoxWithConstraints(Modifier.fillMaxSize().imePadding()) {
             val pane = responsivePaneLayout(maxWidth.value, maxHeight.value, LocalDensity.current.fontScale, visuals.spacingMedium.value)
@@ -288,7 +289,7 @@ fun BrowserScreen(
                             EsvText(stringResource(R.string.flow_browserscreen_21), style = visuals.captionTextStyle, color = visuals.colors.muted)
                         }
                     }
-                    if (inspector.sidePane) inspectorPanel(Modifier.width(pane.sideWidthDp.dp).fillMaxHeight())
+                    if (inspector.sidePane) inspectorPanel(Modifier.width(pane.sideWidthDp.dp).fillMaxHeight(), SaveSelectionPresentation.INLINE)
                     if (bookmarksOpen && wide && bookmarks != null) Box(Modifier.width(360.dp).fillMaxHeight().background(visuals.colors.surface)) {
                         BookmarkPanel(bookmarks, onOpen = { item ->
                             bookmarks.addressForOpen(item)?.let { target ->
@@ -316,7 +317,7 @@ fun BrowserScreen(
             if (inspector.modal) saveRuntime?.let { runtime ->
                 if (runtime.preparingStream || runtime.hlsPreparation != null) SaveSelectionDialog(runtime, browser)
                 else Dialog(onDismissRequest = runtime::dismissSelection) {
-                    inspectorPanel(Modifier.heightIn(max = maxHeight.coerceAtMost(680.dp)))
+                    inspectorPanel(Modifier.heightIn(max = maxHeight.coerceAtMost(680.dp)), SaveSelectionPresentation.FLOATING)
                 }
             }
             browser.fullScreenView?.let { view ->
@@ -352,7 +353,7 @@ fun BrowserScreen(
 @Composable private fun EsvDialog(onDismiss: () -> Unit, content: @Composable () -> Unit) {
     val v = LocalEsvVisuals.current
     Dialog(onDismissRequest = onDismiss) {
-        Box(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingLarge)) { content() }
+        Box(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.elevated, RoundedCornerShape(v.sheetCorner)).padding(v.spacingLarge)) { content() }
     }
 }
 @Composable private fun SettingsPanel(settings: AppSettings, update: (AppSettings) -> Unit, browser: SystemBrowserHost,

@@ -1,0 +1,14 @@
+<testsuite name="com.easysavevideo.theme.EsvThemeTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-13T06:29:56.485Z" hostname="[redacted]" time="0.043">
+  <properties />
+  <testcase name="buttonStatesAreDistinctAndDisabledTakesPrecedence" classname="com.easysavevideo.theme.EsvThemeTest" time="0.002" />
+  <testcase name="defaultsAreCompleteWithoutSafeFallbackAcrossConfigurationMatrix" classname="com.easysavevideo.theme.EsvThemeTest" time="0.018" />
+  <testcase name="textAndEveryButtonStateMeetNormalTextContrast" classname="com.easysavevideo.theme.EsvThemeTest" time="0.008" />
+  <testcase name="readFailureStillReleasesThePin" classname="com.easysavevideo.theme.EsvThemeTest" time="0.004" />
+  <testcase name="observerReplaysPublishesOnlyChangesAndStopsAfterClose" classname="com.easysavevideo.theme.EsvThemeTest" time="0.005" />
+  <testcase name="oldPinnedGenerationAndDetachedFrameStayStableAcrossLightDarkChanges" classname="com.easysavevideo.theme.EsvThemeTest" time="0.001" />
+  <testcase name="frameReadsAllSevenCategoriesThroughExactlyOnePinAndReleasesIt" classname="com.easysavevideo.theme.EsvThemeTest" time="0.001" />
+  <testcase name="allSevenCategoriesHaveRequiredAppOwnedTokens" classname="com.easysavevideo.theme.EsvThemeTest" time="0.002" />
+  <testcase name="scaledTextRemainsLogicalAndSpacingDoesNotScale" classname="com.easysavevideo.theme.EsvThemeTest" time="0.001" />
+  <system-out />
+  <system-err />
+</testsuite>

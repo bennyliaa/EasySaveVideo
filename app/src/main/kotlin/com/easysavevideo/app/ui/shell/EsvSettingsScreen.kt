@@ -91,7 +91,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
 @Composable private fun SettingsDetail(category:SettingsCategory,settings:AppSettings,onChange:(SettingsEdit)->Unit,
     onSources:()->Unit,diagnostics: @Composable () -> Unit,onNotices:()->Unit) {
     val v=LocalEsvVisuals.current
-    EsvText(categoryLabel(category),style=v.titleTextStyle)
+    EsvText(categoryLabel(category),style=v.sectionTextStyle)
     when(category) {
         SettingsCategory.APPEARANCE -> {
             EsvText(stringResource(R.string.ui_theme))

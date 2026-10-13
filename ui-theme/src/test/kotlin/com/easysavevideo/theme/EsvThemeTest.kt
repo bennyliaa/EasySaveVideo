@@ -164,7 +164,7 @@ class EsvThemeTest {
             theme.provider.updateConfiguration(VisualConfiguration(mode))
             val frame = theme.readSnapshot()
             for (foreground in listOf(frame.colors.text, frame.colors.muted, frame.colors.accent, frame.colors.error)) {
-                for (background in listOf(frame.colors.bg, frame.colors.surface)) {
+                for (background in listOf(frame.colors.bg, frame.colors.surface, frame.colors.elevated)) {
                     val ratio = contrast(foreground, background)
                     assertTrue("$mode foreground/background contrast: $ratio", ratio >= 4.5)
                 }

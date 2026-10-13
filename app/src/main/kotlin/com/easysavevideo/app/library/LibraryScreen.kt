@@ -220,7 +220,7 @@ fun LibraryScreen(
                     }
                     if (state.folders.isNotEmpty()) {
                         item(key = "folder_header", span = { GridItemSpan(maxLineSpan) }) {
-                            EsvText("文件夹（${state.folders.size}）", style = v.titleTextStyle)
+                            EsvText("文件夹（${state.folders.size}）", style = v.sectionTextStyle)
                         }
                         items(state.folders.drop(state.folderPage * AndroidLibraryRuntime.FOLDER_PAGE_SIZE).take(AndroidLibraryRuntime.FOLDER_PAGE_SIZE), key = { "folder:${it.folderId}" }, span = { GridItemSpan(maxLineSpan) }) { folder ->
                             LibraryCard {
@@ -241,7 +241,7 @@ fun LibraryScreen(
                     }
                     if (state.move == null) {
                         item(key = "media_header", span = { GridItemSpan(maxLineSpan) }) {
-                            EsvText(if (state.query.text.isEmpty()) "视频" else "当前文件夹搜索结果", style = v.titleTextStyle)
+                            EsvText(if (state.query.text.isEmpty()) "视频" else "当前文件夹搜索结果", style = v.sectionTextStyle)
                         }
                         if (state.ready && !state.loading && state.items.isEmpty()) item(key = "empty_media", span = { GridItemSpan(maxLineSpan) }) {
                             EsvText(if (state.query.text.isEmpty()) "此文件夹暂无已入库视频。" else stringResource(R.string.flow_library_no_match), color = v.colors.muted)
@@ -278,10 +278,10 @@ fun LibraryScreen(
                 }
                 }
                 if (expanded) Column(Modifier.width(layout.detailWidthDp.dp).fillMaxHeight()
-                    .background(v.colors.surface, RoundedCornerShape(v.corner))
+                    .background(v.colors.surface, RoundedCornerShape(v.cardCorner))
                     .verticalScroll(rememberScrollState()).padding(v.spacingMedium),
                     verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
-                    EsvText(stringResource(R.string.library_detail_heading), style = v.titleTextStyle)
+                    EsvText(stringResource(R.string.library_detail_heading), style = v.sectionTextStyle)
                     if (multi.active) EsvText(stringResource(R.string.library_multi_count, currentMulti.count), color = v.colors.muted)
                     else SelectedDetailContent(runtime, onPreview, onExport, onEdit, editorInitialization, editorDiagnostic)
                 }
@@ -398,7 +398,7 @@ private fun DeleteDialog(runtime: AndroidLibraryRuntime, confirmation: LibraryDe
 @Composable
 private fun LibraryCard(content: @Composable ColumnScope.() -> Unit) {
     val v = LocalEsvVisuals.current
-    Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingMedium),
+    Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.cardCorner)).padding(v.spacingMedium),
         verticalArrangement = Arrangement.spacedBy(v.spacingSmall), content = content)
 }
 
@@ -407,7 +407,7 @@ internal fun LibraryDialog(onDismiss: () -> Unit, content: @Composable ColumnSco
     val v = LocalEsvVisuals.current
     Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.widthIn(max = 680.dp).fillMaxWidth().heightIn(max = 720.dp)
-            .background(v.colors.surface, RoundedCornerShape(v.corner)).verticalScroll(rememberScrollState()).padding(v.spacingLarge),
+            .background(v.colors.elevated, RoundedCornerShape(v.sheetCorner)).verticalScroll(rememberScrollState()).padding(v.spacingLarge),
             verticalArrangement = Arrangement.spacedBy(v.spacingMedium), content = content)
     }
 }

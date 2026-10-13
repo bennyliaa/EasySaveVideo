@@ -1,0 +1,22 @@
+<resources>
+    <string name="save_display_verified">%1$s · %2$s · %3$s · %4$s</string>
+    <string name="save_display_recording">有效录制时长 %1$s · %2$s</string>
+    <string name="save_display_candidate">%1$s · %2$s · %3$s</string>
+    <string name="save_display_resolution">%1$s × %2$s</string>
+    <string name="save_display_resolution_undeclared">清晰度未声明</string>
+    <string name="save_display_hls_budget">已检查清单 %1$s；这部分流量计入任务预算。选择有效期最多 60 秒，不延长原执行时限。</string>
+    <string name="save_display_hls_variant">%1$s. %2$s · %3$s kbps</string>
+    <string name="save_display_kib">%1$s KiB</string>
+    <string name="save_display_mib">%1$s MiB</string>
+    <string name="save_display_gib">%1$s GiB</string>
+    <string name="save_display_history_recorded">媒体保存已完成；发现历史已记录。</string>
+    <string name="save_display_history_stale">媒体保存已完成；发现关联已过期或不可用，本次发现历史未记录。</string>
+    <string name="save_display_history_failed">媒体保存已完成；发现历史未记录。</string>
+    <string name="save_display_history_unverified">媒体保存已完成；仅能确认来自此页面，发现视频的保存状态仍未知。</string>
+    <plurals name="save_display_seconds">
+        <item quantity="other">%1$s 秒</item>
+    </plurals>
+    <plurals name="save_display_audio_tracks">
+        <item quantity="other">音轨 %1$s</item>
+    </plurals>
+</resources>

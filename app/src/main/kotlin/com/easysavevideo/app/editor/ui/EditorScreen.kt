@@ -114,7 +114,7 @@ fun EditorScreen(
     }
     val sequenceItems: LazyListScope.() -> Unit = {
         item(key = "sequence_header") {
-            EsvText("片段顺序（${draft.segments.size} / ${EditLimits.MAX_SEGMENTS}）", style = v.titleTextStyle)
+            EsvText("片段顺序（${draft.segments.size} / ${EditLimits.MAX_SEGMENTS}）", style = v.sectionTextStyle)
         }
         if (draft.segments.isEmpty()) item(key = "empty") {
             EsvText(stringResource(R.string.final_copy_5), color = v.colors.muted)
@@ -123,7 +123,7 @@ fun EditorScreen(
             val index = draft.segments.indexOfFirst { it.id == segment.id }
             val selected = draft.selectedSegmentId == segment.id
             EditorCard(selected = selected) {
-                EsvText("${index + 1}. ${segment.item.displayName}", style = v.titleTextStyle, maxLines = 2)
+                EsvText("${index + 1}. ${segment.item.displayName}", style = v.sectionTextStyle, maxLines = 2)
                 EsvText("${segment.startSeconds} → ${segment.endSeconds.ifEmpty { stringResource(R.string.final_pending_entry) }} 秒 · ${cropSummary(segment.crop)}",
                     style = v.captionTextStyle, color = v.colors.muted)
                 EditorResponsivePair(first = { modifier ->
@@ -145,7 +145,7 @@ fun EditorScreen(
         }
         item(key = "sources_header") {
             Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvText(stringResource(R.string.advanced_copy_8), style = v.titleTextStyle)
+                EsvText(stringResource(R.string.advanced_copy_8), style = v.sectionTextStyle)
                 EsvText(stringResource(R.string.final_copy_34), style = v.captionTextStyle, color = v.colors.muted)
                 if (state.availableItems.isEmpty()) EsvText(stringResource(R.string.advanced_copy_6), color = v.colors.muted)
                 if (draft.segments.size >= EditLimits.MAX_SEGMENTS) EsvText(stringResource(R.string.final_copy_35), color = v.colors.muted)
@@ -168,7 +168,7 @@ fun EditorScreen(
             item(key = "segment_controls:${segment.id}") {
                 val geometry = state.displayGeometries[segment.reference]
                 EditorCard {
-                    EsvText("编辑片段 ${draft.segments.indexOf(segment) + 1}", style = v.titleTextStyle)
+                    EsvText("编辑片段 ${draft.segments.indexOf(segment) + 1}", style = v.sectionTextStyle)
                     EsvText(segment.item.displayName, maxLines = 2)
                     EsvButton(stringResource(R.string.final_copy_11), { requestPreview(segment.reference) },
                         enabled = state.foreground && !state.busy && !pendingSubmit && geometry != null, modifier = Modifier.fillMaxWidth())
@@ -209,7 +209,7 @@ fun EditorScreen(
         }
         if (state.executionRanges.isNotEmpty()) item(key = "execution_boundaries") {
             EditorCard {
-                EsvText(stringResource(R.string.final_copy_23), style = v.titleTextStyle)
+                EsvText(stringResource(R.string.final_copy_23), style = v.sectionTextStyle)
                 state.executionRanges.forEachIndexed { index, range ->
                     EsvText("片段 ${index + 1}：请求 ${editorSeconds(range.requestedStartUs)}–${editorSeconds(range.requestedEndUs)} 秒", style = v.captionTextStyle)
                     EsvText("向内对齐后执行 ${editorSeconds(range.executionStartUs)}–${editorSeconds(range.executionEndUs)} 秒 · ${range.frameCount} 帧", style = v.captionTextStyle)
@@ -219,7 +219,7 @@ fun EditorScreen(
         }
         item(key = "compression") {
             EditorCard {
-                EsvText(stringResource(R.string.advanced_copy_7), style = v.titleTextStyle)
+                EsvText(stringResource(R.string.advanced_copy_7), style = v.sectionTextStyle)
                 EsvButton((if (draft.compression == EditCompression.ORIGINAL_QUALITY) stringResource(R.string.final_copy_24) else "") + stringResource(R.string.final_copy_25), {
                     changeDraft(draft.copy(compression = EditCompression.ORIGINAL_QUALITY))
                 }, enabled = editable, modifier = Modifier.fillMaxWidth())
@@ -254,7 +254,7 @@ fun EditorScreen(
     val previewContent: @Composable (Modifier) -> Unit = { modifier ->
         Column(modifier.fillMaxWidth().verticalScroll(previewScroll).padding(v.spacingMedium),
             verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-            EsvText(stringResource(R.string.editor_inline_heading), style = v.titleTextStyle)
+            EsvText(stringResource(R.string.editor_inline_heading), style = v.sectionTextStyle)
             EsvText(stringResource(R.string.editor_inline_readonly), style = v.captionTextStyle, color = v.colors.muted)
             val active = editorActivePreview(state, requestedPreview)
             if (active == null) EsvText(stringResource(if (!state.foreground) R.string.editor_inline_background
@@ -311,8 +311,8 @@ fun EditorScreen(
 @Composable
 private fun EditorCard(selected: Boolean = false, content: @Composable ColumnScope.() -> Unit) {
     val v = LocalEsvVisuals.current
-    Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner))
-        .border(v.borderWidth, if (selected) v.colors.accent else v.colors.border, RoundedCornerShape(v.corner))
+    Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.cardCorner))
+        .border(v.borderWidth, if (selected) v.colors.accent else v.colors.border, RoundedCornerShape(v.cardCorner))
         .padding(v.spacingMedium), verticalArrangement = Arrangement.spacedBy(v.spacingSmall), content = content)
 }
 
@@ -346,7 +346,7 @@ private fun EditorCropDialog(
     Dialog(onDismissRequest = onCancel, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Box(Modifier.fillMaxSize().systemBarsPadding().padding(v.spacingMedium), contentAlignment = Alignment.Center) {
             Column(Modifier.widthIn(max = 800.dp).fillMaxWidth()
-                .background(v.colors.surface, RoundedCornerShape(v.corner))
+                .background(v.colors.elevated, RoundedCornerShape(v.sheetCorner))
                 .verticalScroll(rememberScrollState()).padding(v.spacingMedium),
                 verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvText(stringResource(R.string.advanced_copy_9), style = v.titleTextStyle)

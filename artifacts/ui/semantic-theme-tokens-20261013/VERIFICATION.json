@@ -1,0 +1,61 @@
+{
+  "result": "PASS_SOURCE_JVM_ONLY",
+  "final_run": "build2.log",
+  "final_exit": 0,
+  "offline": true,
+  "commands": [
+    ":ui-theme:test",
+    ":app:testDebugUnitTest",
+    ":app:compileDebugKotlin",
+    ":app:compileReleaseKotlin",
+    ":app:lintDebug",
+    ":app:lintRelease",
+    ":app:verifyRuntimeAdmission"
+  ],
+  "tests_executed": {
+    "app": {
+      "tests": 1801,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ui-theme": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "new_tests_executed": 18,
+  "production_compilers": {
+    "debug": "EXECUTED build1; final build2 UP-TO-DATE",
+    "release": "EXECUTED PASS build2"
+  },
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "lint_tasks": "both EXECUTED PASS build2",
+  "runtime_exact_artifacts": 90,
+  "final_tasks": {
+    "executed": 23,
+    "up_to_date": 54
+  },
+  "initial_failure": "SDK rejected underscore spacing IDs. Corrected to legal dot-separated IDs; failure log and XML retained. No SDK/admission/protocol weakened.",
+  "not_run": [
+    "APK assembly",
+    "device/emulator",
+    "actual Light/Dark/System and 200% rendering",
+    "TalkBack",
+    "keyboard/focus",
+    "window transition scroll/state",
+    "PPT image comparison",
+    "native media acceptance"
+  ]
+}
