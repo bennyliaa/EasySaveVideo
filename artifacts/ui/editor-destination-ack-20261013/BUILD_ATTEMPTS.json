@@ -1,0 +1,35 @@
+{
+  "attempts": [
+    {
+      "name": "build1",
+      "terminal_exit_code": 1,
+      "duration": "2m46s",
+      "tasks": 60,
+      "executed": 9,
+      "up_to_date": 51,
+      "tests": 2050,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "production_regression_observed": false,
+      "failure": "OrdinaryDestinationPresentationTest: old total reference count26 does not match semantic reuse29 across existing26 kinds",
+      "correction": "TEST_ASSERTION_CORRECTION.json",
+      "full_first_junit": "FIRST_ATTEMPT_JUNIT.zip",
+      "all_1422_inputs_unchanged": true
+    },
+    {
+      "name": "build2",
+      "terminal_exit_code": 0,
+      "duration": "3m10s",
+      "tasks": 75,
+      "executed": 17,
+      "up_to_date": 58,
+      "tests": 2050,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "all_ten_requested_tasks_actually_executed": true,
+      "all_1422_inputs_unchanged": true
+    }
+  ]
+}

@@ -74,7 +74,7 @@ fun EditorScreen(
     val draft = state.draft
     val guard = remember { EditorSubmitGuard() }
     var pendingSubmissionRevision by remember { mutableStateOf<Long?>(null) }
-    val pendingSubmit = pendingSubmissionRevision == state.submissionRevision
+    val pendingSubmit = state.submissionPending || pendingSubmissionRevision == state.submissionRevision
     val editable = state.editable && !pendingSubmit
     var cropSegmentId by remember { mutableStateOf<Long?>(null) }
     val error = editorDraftError(draft, state.displayGeometries)

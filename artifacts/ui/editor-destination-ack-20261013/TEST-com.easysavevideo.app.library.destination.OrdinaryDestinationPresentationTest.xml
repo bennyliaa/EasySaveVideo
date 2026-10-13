@@ -1,0 +1,12 @@
+<testsuite name="com.easysavevideo.app.library.destination.OrdinaryDestinationPresentationTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-13T11:35:58.247Z" hostname="[redacted]" time="0.154">
+  <properties />
+  <testcase name="allSeventyTwoChoiceSavedAndPhaseCombinationsPreserveOriginalPrecedence" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationPresentationTest" time="0.046" />
+  <testcase name="everyTypedNoticeStateAndKindHasItsOwnExplicitResource" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationPresentationTest" time="0.014" />
+  <testcase name="exactNewResourceKeysArePairedWithOnlySixSingleKindArguments" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationPresentationTest" time="0.057" />
+  <testcase name="allRuntimeEmissionsStayTypedNullableAndOnlyCurrentCompositionResolvesText" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationPresentationTest" time="0.013" />
+  <testcase name="englishRetainsSafetyQualifiersWithoutClaimingSuccess" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationPresentationTest" time="0.005" />
+  <testcase name="everyResourceHasAProductionConsumerAndEveryReadSourceIsTracked" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationPresentationTest" time="0.008" />
+  <testcase name="originalChineseNoticesAndCopySentencesRemainExact" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationPresentationTest" time="0.005" />
+  <system-out />
+  <system-err />
+</testsuite>

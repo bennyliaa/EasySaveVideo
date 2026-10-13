@@ -237,7 +237,11 @@ class OrdinaryDestinationPresentationTest {
 
     @Test fun allRuntimeEmissionsStayTypedNullableAndOnlyCurrentCompositionResolvesText() {
         val emitted = Regex("OrdinaryDestinationNoticeCode\\.([A-Z_]+)").findAll(runtime).map { it.groupValues[1] }.toList()
-        assertEquals(26, emitted.size)
+        // Coverage is the closed set of localized kinds, not one textual reference per kind.
+        // Failed source fences reuse LOCATION_UNAVAILABLE; ASK keeps its missing-folder
+        // prompt pending while automatic selection rejects with that same localized kind.
+        val reusedKinds = emitted.groupingBy { it }.eachCount().filterValues { it > 1 }
+        assertEquals(mapOf("LOCATION_UNAVAILABLE" to 3, "REMEMBERED_FOLDER_REQUIRED" to 2), reusedKinds)
         assertEquals(OrdinaryDestinationNoticeCode.entries.map { it.name }.toSet(), emitted.toSet())
         assertTrue(runtime.contains("var notice by mutableStateOf<OrdinaryDestinationNoticeCode?>(null); private set"))
         assertEquals(4, Regex("notice = null").findAll(runtime).count())

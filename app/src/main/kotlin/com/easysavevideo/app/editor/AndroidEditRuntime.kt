@@ -13,6 +13,7 @@ import com.easysavevideo.app.editor.workflow.*
 import com.easysavevideo.app.library.thumbnail.OrdinaryMediaNativeResources
 import com.easysavevideo.app.save.storage.AndroidSaveStorage
 import com.easysavevideo.app.library.destination.AndroidOrdinaryDestinationRuntime
+import com.easysavevideo.app.library.destination.OrdinaryDestinationReceipt
 import com.easysavevideo.library.destination.OrdinaryDestinationAdmission
 import com.easysavevideo.app.entitlements.BuildEntitlements
 import com.easysavevideo.core.domain.EntitlementManager
@@ -43,6 +44,8 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
     private var activeCancellation: EditPublicationCancellation? = null
     private var activeOperation: String? = null
     private var admissionGeneration = 0L
+    private val submissionAttempts = EditorSubmissionAttempts()
+    private var pendingDestination: OrdinaryDestinationReceipt? = null
     private val deadlines = EditorDeadlineGuard(EditorTimerScheduler { delayMillis, action ->
         val callback = Runnable(action); main.postDelayed(callback, delayMillis)
         AutoCloseable { main.removeCallbacks(callback) }
@@ -75,6 +78,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
     fun open(item: MediaItem, available: List<MediaItem>, settings: EditorSettings) {
         requireMain()
         if (state.busy || state.phase == EditorPhase.BLOCKED) return
+        retireSubmission()
         draftRestoreGuard.userChanged(); restoredNeedsExplicitAction = false; pendingDraftCheckpoint = null; restoringDraftCheckpoint = null
         val draft = openEditorDraft(state.draft, item, settings, startNew = !draftStarted || state.phase == EditorPhase.SUCCEEDED)
         draftStarted = true
@@ -96,8 +100,9 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
         inspectMissingSources()
     }
     /** Metadata inspection is free; no edit capability is exercised until explicit Submit. */
-    private fun inspectMissingSources() {
-        if (restoredNeedsExplicitAction || !state.foreground || !recovered || state.busy || activeCancellation != null) return
+    private fun inspectMissingSources(selectionAccepted: Boolean = false) {
+        if (restoredNeedsExplicitAction || !state.foreground || !recovered || state.busy ||
+            (state.submissionPending && !selectionAccepted) || activeCancellation != null) return
         val refs = state.draft.segments.map { it.reference }.distinct().filter { it !in state.displayGeometries }
         if (refs.isEmpty()) return
         val generation = ++admissionGeneration
@@ -149,21 +154,42 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
     }
     fun submit(draft: EditorDraft) {
         requireMain()
-        if (!state.editable || state.draft != draft) return
+        // A new composition can tap the same revision; it must not retire the original attempt.
+        val attempt = submissionAttempts.begin(state.submissionRevision) ?: return
+        if (!recovered || !state.editable || state.draft != draft || activeCancellation != null) {
+            finishSubmission(attempt); return
+        }
+        state = state.copy(submissionPending = true)
         draftRestoreGuard.userChanged(); restoredNeedsExplicitAction = false; pendingDraftCheckpoint = null; restoringDraftCheckpoint = null
         val generation = admissionGeneration
-        destinations.select(isCurrent = { state.foreground && state.editable && state.draft == draft && admissionGeneration == generation },
-            accepted = { admission -> submitSelected(draft, admission) })
+        val receipt = destinations.select(isCurrent = { submissionAttempts.isCurrent(attempt) &&
+            state.foreground && !state.busy && state.phase != EditorPhase.BLOCKED &&
+            state.draft == draft && admissionGeneration == generation },
+            onTerminal = { finishSubmission(attempt) },
+            accepted = { admission -> if (submissionAttempts.isCurrent(attempt)) submitSelected(draft, admission) })
+        // Rejection may have acknowledged synchronously before select returns its receipt.
+        if (submissionAttempts.isCurrent(attempt)) pendingDestination = receipt
+    }
+    private fun finishSubmission(attempt: EditorSubmissionAttempts.Attempt) {
+        val revision = submissionAttempts.finish(attempt) ?: return
+        pendingDestination = null
+        state = state.copy(submissionRevision = revision, submissionPending = false)
+    }
+    private fun retireSubmission() {
+        val attempt = submissionAttempts.current ?: return
+        val receipt = pendingDestination
+        finishSubmission(attempt)
+        // Retire only this editor selection; another save/record selection is never cancelled.
+        receipt?.let(destinations::cancelSelection)
     }
     private fun submitSelected(draft: EditorDraft, admission: OrdinaryDestinationAdmission) {
         requireMain()
-        state = state.copy(submissionRevision = state.submissionRevision + 1)
         if (!recovered || !state.foreground || state.busy || activeCancellation != null || state.phase == EditorPhase.BLOCKED) return
         val request = try { draft.toEditRequest(admission.creationId) }
         catch (_: Exception) { state = state.copy(notice = editorDraftError(draft, state.displayGeometries) ?: "编辑参数无效。"); return }
         if (request.segments.any { it.source !in state.displayGeometries }) {
             state = state.copy(notice = "请先等待来源格式检查完成，再提交编辑。")
-            inspectMissingSources(); return
+            inspectMissingSources(selectionAccepted = true); return
         }
         val required = editorFeatures(request, state.displayGeometries.mapValues { it.value.durationUs })
         if (required.isEmpty()) { state = state.copy(notice = "参数未改变时间、画面或压缩方式，可直接预览原件，无需重复转码。"); return }
@@ -227,7 +253,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
     /** Restores editable parameters only. Never calls a reader, probe, destination, task or player. */
     internal fun restoreDraftCheckpoint(encoded: String) {
         requireMain()
-        fun ownerPresent() = state.draft.segments.isNotEmpty() || state.busy || activeCancellation != null || state.phase == EditorPhase.BLOCKED
+        fun ownerPresent() = state.draft.segments.isNotEmpty() || state.busy || state.submissionPending || activeCancellation != null || state.phase == EditorPhase.BLOCKED
         if (state.phase == EditorPhase.BLOCKED) { state = state.copy(draftRestoration = EditorDraftRestoration.UNAVAILABLE); return }
         if (ownerPresent()) { state = state.copy(draftRestoration = EditorDraftRestoration.OWNER_KEPT); return }
         val checkpoint = EditorDraftCheckpointCodec.decode(encoded)
@@ -277,6 +303,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
     }
     fun cancel() {
         requireMain(); admissionGeneration++
+        retireSubmission()
         val cancellation = activeCancellation
         if (cancellation != null) {
             val result = cancellation.cancel(); deadlines.cancelled(cancellation)

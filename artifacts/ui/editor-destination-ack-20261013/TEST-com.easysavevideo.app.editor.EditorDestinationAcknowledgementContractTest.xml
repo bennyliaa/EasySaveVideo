@@ -1,0 +1,14 @@
+<testsuite name="com.easysavevideo.app.editor.EditorDestinationAcknowledgementContractTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-13T11:36:01.405Z" hostname="[redacted]" time="0.013">
+  <properties />
+  <testcase name="dialogDismissAndCancelShareTerminalPathAndOwnerSpecificCancelIsFenced" classname="com.easysavevideo.app.editor.EditorDestinationAcknowledgementContractTest" time="0.0" />
+  <testcase name="acceptedMissingGeometryStillStartsOriginalProbeButWaitingAndNonAcceptedTerminalsDoNot" classname="com.easysavevideo.app.editor.EditorDestinationAcknowledgementContractTest" time="0.005" />
+  <testcase name="runtimeOwnsAttemptBeforeSelectingAndStaleAcknowledgementCannotMutateNewState" classname="com.easysavevideo.app.editor.EditorDestinationAcknowledgementContractTest" time="0.002" />
+  <testcase name="backgroundCancelAndDraftReplacementRetireOnlyEditorsOwnDestinationReceipt" classname="com.easysavevideo.app.editor.EditorDestinationAcknowledgementContractTest" time="0.004" />
+  <testcase name="runtimePendingSurvivesCompositionRecreationAndLocalLatchPrecedesSubmitCallback" classname="com.easysavevideo.app.editor.EditorDestinationAcknowledgementContractTest" time="0.001" />
+  <testcase name="originalSelectSignatureRemainsAndOptInReceiptCoversEarlyRejectionAndBusyGate" classname="com.easysavevideo.app.editor.EditorDestinationAcknowledgementContractTest" time="0.0" />
+  <testcase name="unavailableAskFolderChoiceDoesNotPrematurelyUnlockWaitingAttempt" classname="com.easysavevideo.app.editor.EditorDestinationAcknowledgementContractTest" time="0.0" />
+  <testcase name="completionConsumesOwnerAndSetsNoticeBeforeAnyExternalCallback" classname="com.easysavevideo.app.editor.EditorDestinationAcknowledgementContractTest" time="0.001" />
+  <testcase name="delayedAdmissionSuccessFailureAndSourceChangeAllUseMatchingOwnerFence" classname="com.easysavevideo.app.editor.EditorDestinationAcknowledgementContractTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

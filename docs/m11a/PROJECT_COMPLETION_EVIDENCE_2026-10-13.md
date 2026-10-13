@@ -7,18 +7,24 @@ Original requirements and historical evidence are unchanged.
 
 ## 1. Source baseline and what “published” means
 
-Latest verified source publication: [c794ef84344d638f20966a1cd05bb5b340ade7e0](https://github.com/bennyliaa/EasySaveVideo/commit/c794ef84344d638f20966a1cd05bb5b340ade7e0),
-on `development/cloud-followup-20261013`, complete AndroidSaveRuntime.notice typed display.
-The receipt verifies 32 changed blobs and the evidence ZIP with exact readback, no deletions or
-forced ref update. Parent is `ef5d6fc35328e8881db26df3982c0e675c37dd4d` (16 full-regression
-evidence/docs files, no production change). Main remains
+Latest verified source publication: [1f25214fcea79113b0278ac24ddc316e6910a9f0](https://github.com/bennyliaa/EasySaveVideo/commit/1f25214fcea79113b0278ac24ddc316e6910a9f0),
+on `development/cloud-followup-20261013`, recording foreground notification typed display
+and bounded existing-session language refresh. Its receipt verifies **41 changed blobs**,
+including the complete final and first-attempt JUnit evidence ZIPs, with exact readback,
+no deletions and no forced ref update. Parent is `4f22d43d023b7db6e3051613ed02c144bf3ad75b`
+(live-original-page authentication navigation), following `55c51cd71763159b203e52ece44f09da8cab1507`
+(Discovery reading anchor and small pre-anchor packaging reports). Main remains
 `ea87963dee631a498774f648c9a1dabd9f665b90`; the repository remains private.
 The scoped changed blobs are verified; whole remote-tree equality is not claimed.
 Publication is not a main merge, installation or release acceptance.
 
-A subsequent code8 Debug APK was built from c794ef and is retained **locally only**, with no upload
-or install. It predates the current reading-anchor source. That anchor slice and this fact refresh
-are verified locally but **await publication**; the separate stages below must not be conflated.
+The code8 Debug APK built from c794ef remains unchanged and **locally only**, with no
+upload or install. It predates all three later published source slices and contains none
+of those later changes. The editor destination-attempt acknowledgement repair is now
+source/JVM tested: build2 passed 2,050 App tests, including 24 new tests, with no failures,
+errors or skips. It awaits final evidence review and publication; native acceptance remains
+NOT_RUN. This two-document refresh also awaits its own publication. Published
+anchor, authentication-origin and notification work must not be relabeled as pending.
 
 The following later publications supersede the former `2986ada` editor-default checkpoint:
 
@@ -34,8 +40,12 @@ The following later publications supersede the former `2986ada` editor-default c
 | [b0c5647](https://github.com/bennyliaa/EasySaveVideo/commit/b0c5647e6759dd212423647742e4923c8d0dce93) | Generated candidate display and typed denied-permission notices; 30 changed files, 30 exact readbacks | `/workspace/shared/esv-candidate-permission-publication-20261013/SUMMARY.json` |
 | [ef5d6fc](https://github.com/bennyliaa/EasySaveVideo/commit/ef5d6fc35328e8881db26df3982c0e675c37dd4d) | Full cloud regression evidence only; 16 files/readbacks, no production change | `/workspace/shared/esv-full-ui-regression-publication-20261013/SUMMARY.json` |
 | [c794ef8](https://github.com/bennyliaa/EasySaveVideo/commit/c794ef84344d638f20966a1cd05bb5b340ade7e0) | Complete Save runtime notice typed-display channel; 32 files/readbacks including evidence ZIP | `/workspace/shared/esv-save-notice-publication-20261013/SUMMARY.json` |
+| [55c51cd](https://github.com/bennyliaa/EasySaveVideo/commit/55c51cd71763159b203e52ece44f09da8cab1507) | Discovery reading anchors, exact display-only restore provenance and small c794ef packaging reports; 47 files/readbacks, APK excluded | `/workspace/shared/esv-anchor-candidate-publication-20261013/SUMMARY.json` |
+| [4f22d43](https://github.com/bennyliaa/EasySaveVideo/commit/4f22d43d023b7db6e3051613ed02c144bf3ad75b) | Explicit process-local, same-origin, still-live original-page selection; 31 files/readbacks | `/workspace/shared/esv-auth-origin-publication-20261013/SUMMARY.json` |
+| [1f25214f](https://github.com/bennyliaa/EasySaveVideo/commit/1f25214fcea79113b0278ac24ddc316e6910a9f0) | Existing recording foreground-notification text channel and bounded language refresh; 41 files/readbacks | `/workspace/shared/esv-recording-notification-publication-20261013/SUMMARY.json` |
 
-The latest two receipts were read in this refresh alongside the eight previously verified receipts. Receipt paths are local verification inputs,
+The three latest publication receipts and slice reports were read for this refresh;
+earlier receipt-backed facts are retained as dated evidence. Receipt paths are local verification inputs,
 not portable repository attachments; commit links and the in-repository slice reports
 are the durable source references. Wi-Fi's original 77-file source/evidence freeze is
 historical input to its 79-file publication group, not a still-pending publication.
@@ -70,7 +80,8 @@ native media correctness; publication readback establishes bytes, not installed 
 Report: `docs/m11a/FULL_CLOUD_UI_REGRESSION_20261013.md`.
 Evidence: `artifacts/regression/full-ui-20261013/VERIFICATION.json`.
 This full run binds b0c5647 production bytes. It is not rerun evidence for the later
-Save-notice or reading-anchor source, and is not a sum of overlapping slice totals:
+Save-notice, reading-anchor, authentication-origin or recording-notification source, nor
+the separately source/JVM-tested editor destination acknowledgement repair. It is not a sum of overlapping slice totals:
 
 - All **13 selected module test tasks actually reran with `--rerun`**. **307 fresh JUnit
   XML suites** registered **3,149 cases: 3,147 passed, 0 failures, 0 errors, 2 skipped**. App **1,886** and
@@ -113,7 +124,7 @@ Save-notice or reading-anchor source, and is not a sum of overlapping slice tota
   The next bounded native checks are recorded, not executed, in
   `docs/m11a/UI_DEVICE_ACCEPTANCE_CHECKLIST_20261013.md`.
 
-### Published UI slices and their historical verification numbers
+### UI slices and their dated verification numbers
 
 These reports remain dated evidence; their totals overlap and must not be added to
 one another or the full regression. Pre-publication wording in frozen slice reports
@@ -131,8 +142,9 @@ is superseded by the exact publication receipts above, not edited retroactively.
   Reports: `docs/m11a/AUTHENTICATION_BROWSER_NAVIGATION_20261013.md` and
   `docs/m11a/ORDINARY_DESTINATION_FIXED_COPY_20261013.md`;
   evidence: `artifacts/ui/auth-destination-copy-20261013/VERIFICATION.json`.
-  It is published; the earlier pending-publication status is superseded. The action returns
-  only to the current Browser; full `OpenOriginForLogin` remains incomplete.
+  It is published; the earlier pending-publication status is superseded. This earlier action
+  returns only to the current Browser. The distinct bounded live-original-page selection was
+  subsequently published in `4f22d43`; full login/recovery/resume remains unestablished.
 - `795b6bb`: typed-destination App **1,864** and filter-role App **1,870** are separate
   slice runs, with 7 and 6 new tests respectively. The latter executed dual Kotlin/lint,
   retaining 60 warnings/8 hints/0 errors and runtime 90. Reports:
@@ -153,12 +165,60 @@ is superseded by the exact publication receipts above, not edited retroactively.
   checks passed. Three consumers now resolve 78 groups in current Compose Locale; no service
   notification, storage/wire or recording/save behavior change. Other module tests were not rerun.
   See `docs/m11a/SAVE_RUNTIME_NOTICE_DISPLAY_20261013.md`.
-- Current reading-anchor slice, **not yet published**: App **1,953** actually passed,
-  including 48 new tests, zero failure/error/skip; dual compile/lint, runtime90 and seven boundary
-  checks passed. Other module tests were not rerun. Stable result/offset and exact read-only
-  restore provenance are source/JVM verified; actual Compose saved-state/navigation/drag and
-  device restoration are NOT_RUN. No new APK contains this slice. See
-  `docs/m11a/DISCOVERY_READING_ANCHOR_20261013.md`.
+- Published reading anchor `55c51cd`: App **1,953** actually passed, including **48 new
+  tests**, zero failure/error/skip; dual compile/lint, each lint **60 warnings/8 hints/0
+  errors**, runtime90 and seven boundary checks passed. Other module tests were not rerun.
+  Stable result/offset and exact read-only restore provenance are source/JVM verified;
+  actual Compose saved-state/navigation/drag and device restoration are NOT_RUN. No new
+  APK contains this slice. See `docs/m11a/DISCOVERY_READING_ANCHOR_20261013.md` and
+  `artifacts/ui/discovery-reading-anchor-20261013/VERIFICATION.json`.
+- Published authentication-origin selection `4f22d43`: App **1,998** actually passed,
+  including **45 new tests** (36 policy/concurrency and 9 wiring/resource), zero failures,
+  errors or skips. Dual compile/lint actually executed, each lint **60 warnings/8 hints/0
+  errors**; runtime90 and seven boundary checks passed. All 1,409 frozen inputs stayed
+  unchanged. Other module tests were not rerun. Newly accepted Direct/Stream tasks can
+  explicitly select only their process-local, same-origin, still-live original document;
+  the ordinary Browser fallback remains separate. No login, URL loading/reload, View
+  recreation, retry or task resume is performed. Recovered/cross-origin/expired/background-
+  cleared associations fail closed. Native WebView/login/resume/Compose acceptance is
+  NOT_RUN. The first run's new test-reader compilation failure and test-only repair are
+  retained; the complete second forced run supplies the final result. See
+  `docs/m11a/AUTHENTICATION_ORIGIN_NAVIGATION_20261013.md` and
+  `artifacts/ui/authentication-origin-20261013/`.
+- Published recording foreground notifications `1f25214f`: App **2,026** actually passed,
+  including **28 new tests** (6 status/resource, 12 display/language and 10 source-wiring),
+  zero failures/errors/skips. Dual compile/lint actually executed, each lint **60 warnings/
+  8 hints/0 errors**; runtime90 and seven boundary checks passed. All 1,417 frozen inputs
+  stayed unchanged. Other module tests were not rerun. Twelve typed status cases and the
+  existing channel/title/action cover **15 actual display leaves**. The existing language
+  owner drives display-only refresh of an already-promoted, matching, unfinished session;
+  no capture/start/stop behavior or whole-App localization claim is added. The first run
+  executed 2,026 tests with one newly authored assertion-scope failure; a test-only
+  correction and complete rerun supplied the final pass. The failed log and all first-run
+  JUnit XMLs remain preserved. Native first-frame language, active/paused continuity,
+  channel/action/permission visibility and post-finish no-resurrection are NOT_RUN. See
+  `docs/m11a/RECORDING_NOTIFICATION_LOCALIZATION_20261013.md` and
+  `artifacts/ui/recording-notification-20261013/VERIFICATION.json`.
+- Current editor destination-attempt acknowledgement repair: **source/JVM tested,
+  awaiting final evidence review and publication**. Build2 terminated with exit 0 after
+  **2,050 App tests / 24 new / 0 failures / 0 errors / 0 skips**. All ten requested tasks
+  were forced and actually executed, including Debug/Release compile and lint; each lint
+  retained **60 warnings/8 hints/0 errors**. Runtime admission reverified **90 artifacts**
+  and the compiled-boundary checker passed **seven checks**. All **1,422 frozen inputs**
+  remained unchanged. Other module tests were not rerun; this is not a full regression.
+  Build1 terminated with exit 1 after 2,050 tests and one existing total-enum-occurrence
+  assertion failure. Its assumption of 26 textual occurrences did not allow semantic
+  reuse across the same 26 closed kinds. The independently reviewed test-only correction
+  preserves 26 unique kinds, exhaustive enumeration/resource/localization coverage and
+  exact reuse counts `LOCATION_UNAVAILABLE: 3` / `REMEMBERED_FOLDER_REQUIRED: 2`.
+  All **226 first-attempt JUnit XMLs**, full failed log, census and input pin are preserved;
+  the complete fresh build2 supplies the final result. No APK was built or installed.
+  Actual Compose ASK dismissal, retry/editor interaction and lifecycle; native editing,
+  media/provider behavior; emulator/device, accessibility, PPT/pixel and Windows fixture
+  rerun remain **NOT_RUN**. Editor Back confirmation is outside the repair. Evidence:
+  `artifacts/ui/editor-destination-ack-20261013/VERIFICATION.json`, `BUILD_ATTEMPTS.json`,
+  `TEST_ASSERTION_CORRECTION.json` and `FIRST_ATTEMPT_JUNIT.zip` in that same directory.
+  Report in preparation: `docs/m11a/EDITOR_DESTINATION_ACKNOWLEDGEMENT_20261013.md`.
 - Separate local-only APK: code8 / 0.8.0-ui-dev, min31/target36, 45,988,354 bytes, source c794ef
   before anchor work. Existing signer matched; APK v2 and static integrity passed. No key,
   version or project configuration change; no upload/install/release claim. The unchanged global
@@ -167,7 +227,8 @@ is superseded by the exact publication receipts above, not edited retroactively.
   `docs/m11a/DEBUG_CANDIDATE_STATIC_ACCEPTANCE_20261013.md`.
 - Theme **17** ran in the earlier semantic-token slice and again in the new full
   regression. It did **not** run in the intermediate input-clear, authentication,
-  destination/filter or candidate/permission slices; no historical run is relabeled.
+  destination/filter, candidate/permission, Save-notice, reading-anchor, authentication-origin,
+  recording-notification or editor destination acknowledgement slices; no historical run is relabeled.
   Earlier App totals remain Browser copy 1,747, current storage contracts 1,761,
   Shell labels 1,774, Save locale 1,791, semantic tokens 1,801 and Discovery body 1,813.
   Their executed/cached task details remain in their individual reports.
@@ -213,10 +274,10 @@ published in `172fa3c`. R6 is no longer awaiting source publication.
 | Browser JS dialogs and video detection | Native guarded alert/confirm/prompt; bounded advisory video-element hint; full detection remains explicit; READY same-document revision invalidates stale candidates | Real WebView callback ordering needs device acceptance. Hint is not playback, media identity, rights, or automatic recording authority. Same-document credential forwarding is intentionally narrower than inspection. |
 | Browser ordinary history | Policy, bounded codec, serial controller and private atomic store, 43 focused JVM cases | No runtime collection/list UI. Explicit retention decision needed: 200 recent distinct addresses with 30-day expiry, or without time expiry. No default choice is made. `docs/ui/implementation/BROWSER_HISTORY_FOUNDATION_20261012.md`. |
 | Incognito and site permissions | Incognito guards exclude ordinary persisted session/history paths, but no user-facing incognito entry is implemented; current WebChromeClient explicitly denies camera/microphone and location, with typed localized denial notices | Shared CookieManager/storage is not isolated browsing. Permission selection/Android result correlation and granted-capture lifecycle are absent; do not call deny-only a completed permissions manager. `app/src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt`. |
-| Discovery paging and results | Explicit one-shot next-page demand, bounded provider/local validation framework; truthful missing metadata; distinct empty/loading/waiting/error body presentation, explicit query Clear and shared inline/floating filter roles | Real image capability/source admission, Android decode/owner and viewport/UI binding missing. Current Discovery placeholder remains honest. `docs/ui/implementation/DISCOVERY_THUMBNAIL_FOUNDATION_20261012.md`. |
-| Direct / Stream / Record | Real bounded save/capture pipelines, explicit user triggers, verified media publication and safe failure guidance; Wi-Fi-only save enforcement passed R6 source verification and was published in `172fa3c` | Full native stream/codec/AV/background/recovery coverage pending. A failed network save offers fresh explicit reinspection only; it does not auto-retry, broaden sources or silently start recording. |
+| Discovery paging and results | Explicit one-shot next-page demand, bounded provider/local validation framework; truthful missing metadata; distinct empty/loading/waiting/error body presentation, explicit query Clear, shared inline/floating filter roles and published stable-result reading anchors with exact restore provenance (`55c51cd`) | Actual Compose saved-state/navigation/drag restoration remains NOT_RUN. Real image capability/source admission, Android decode/owner and viewport/UI binding missing. Current Discovery placeholder remains honest. `docs/ui/implementation/DISCOVERY_THUMBNAIL_FOUNDATION_20261012.md`. |
+| Direct / Stream / Record | Real bounded save/capture pipelines, explicit user triggers, verified media publication and safe failure guidance; Wi-Fi-only save enforcement published in `172fa3c`, bounded live-original-page selection in `4f22d43`, and the existing recording foreground-notification text channel in `1f25214f` | Full native stream/codec/AV/background/recovery, live-WebView login/resume and notification continuity coverage pending. Published original-page selection performs no login, reload or task resume. A failed network save offers fresh explicit reinspection only; it does not auto-retry, broaden sources or silently start recording. |
 | Save location, library and batch Files | App Library/ASK/album plus remembered ordinary SAF folder; batch export uses one selected folder and per-item verified results; fixed and typed dynamic destination display localized; originals retained for copies | Native provider/revocation/uncertain cleanup matrix remains partial. Old “choose batch Files behavior” note was resolved by later one-folder implementation. `docs/m5a4b/REQUIREMENTS_DECISION.md`; `docs/ui/implementation/BATCH_DIRECTORY_COPY_20261012.md`. |
-| Editing and default compression | Trim/merge/crop/compress with existing entitlement gates; default applies once to new edits, never overwrites active/restored drafts | OPPO edit initialization failure unresolved. Default editor compression is not recording compression, successful encoding, or a paid unlock. `docs/ui/implementation/EDITOR_DEFAULT_COMPRESSION_20261013.md`. |
+| Editing and default compression | Trim/merge/crop/compress with existing entitlement gates; default applies once to new edits, never overwrites active/restored drafts | The editor destination-attempt acknowledgement repair passed 2,050 App tests (24 new) and awaits final evidence review/publication; native dismissal/retry acceptance is NOT_RUN and Editor Back confirmation is excluded. OPPO edit initialization failure remains unresolved. Default editor compression is not recording compression, successful encoding, or a paid unlock. `docs/ui/implementation/EDITOR_DEFAULT_COMPRESSION_20261013.md`. |
 | Power/settings/notices | Real lifecycle OS battery/thermal/network observation and fail-closed policy; localized status; scrollable offline notices and responsive settings panes | Physical energy benefit, platform callback timing, full accessibility/large-font/phone/tablet acceptance absent. The old OS NOT_CONNECTED label is obsolete. `docs/m8b4/VERIFICATION.md`; `docs/ui/implementation/CLOUD_NOTICES_POWER_20261012.md`. |
 | Diagnostics and sharing | Bounded typed initialization diagnostics and log-export implementation; no sensitive media/path/URL logging allowed | New diagnostics must be run on the failing device build before determining edit/share root cause. Existing failure enums alone do not prove codec failure or a repair. `docs/ui/implementation/INITIALIZATION_DIAGNOSTICS_CLOUD_20261012.md`; `docs/diagnostics-export/IMPLEMENTATION_AND_VALIDATION.md`. |
 | Vault / dynamic rules / new local video import | Explicitly deferred; Vault/rules disabled or isolated | Do not reopen blocked reviews, substitute integrations or count these as implemented. Import is a deferred extension, not automatically an original requirement failure. `docs/ui/implementation/ESV_UI_FEATURE_INTEGRATION_LEDGER.md`; `AGENTS.md`. |
@@ -233,16 +294,21 @@ Authentication-waiting return to the current Browser and 26-pair fixed destinati
 copy are published in `62b5f6d`. Typed destination notices/copy-state display and Discovery
 filter roles are published in `795b6bb`; candidate labels and typed denied-permission
 notices are published in `b0c5647`; the complete Save runtime notice channel is published
-in `c794ef`. Full `OpenOriginForLogin`, native service/other owners’ raw notices and native
-acceptance remain outside those bounded completed scopes. The reading-anchor source is tested
-but awaiting publication and device acceptance.
+in `c794ef`. Reading anchors are published in `55c51cd`, explicit process-local same-origin
+still-live original-page selection in `4f22d43`, and the current recording foreground-service
+notification text channel in `1f25214f`. Full login/recovery/resume, other recording/runtime
+owners' raw notices and whole-App localization remain incomplete/unverified; native acceptance
+remains NOT_RUN. The editor destination acknowledgement slice is now source/JVM tested;
+its final evidence review/publication and this ledger refresh's publication remain pending.
 
 ## 4. Older device evidence: useful, bounded, not overwritten
 
 The delivery owner reports signed OPPO code8 / `0.8.0-ui-dev`, with bounded two-item
 copy/move, recording/replay and nested-scroll/dialog correction checks accepted.
 The same device still reported editor `STORAGE_UNAVAILABLE` and share
-`INITIALIZATION_FAILED`. These are open failures, not a complete device pass.
+`INITIALIZATION_FAILED`. Known ANR/second-recording and Windows symlink/setup-guard
+issues also remain open as retained by the later slice reports. None is cleared by cloud
+tests or this documentation refresh. These are open failures, not a complete device pass.
 
 Reported delivery reference: `delivery/ui-code8-debug-signed-c09c5db`, commit
 `16fb2923b329c81ac01b6010d0e7c9861e605849`.
@@ -267,19 +333,35 @@ one editor entry and one share preparation, record fixed stage/category/numeric 
 only, stop at failure and preserve originals. Do not operate the handed-back OPPO
 or infer that emulator authorization permits it. This refresh starts no device work.
 
-## 5. Concrete remaining source work that need not wait for a product decision or installation
+## 5. Current repair and remaining functional source work
 
-These are bounded implementation candidates, not claims that they already passed.
-Keep one build owner and review/freeze each slice before combining it with other work.
+The current repair has bounded source/JVM evidence; the later items remain implementation
+candidates, not passing results. Keep one build owner and review/freeze each slice before
+combining it with other work.
 
 Wi-Fi-only enforcement, BrowserScreen's bounded settings/origin/error localization,
 Shell labels, Save display locale, the bounded semantic-token slice, Discovery body
 states, explicit input Clear, current-Browser authentication return, fixed/typed
-destination display, Discovery filter roles and candidate/denial display have been
-published. Do not relist those completed
-source scopes as new work; their device and full-original-UI acceptance remains open.
+destination display, Discovery filter roles, candidate/denial display, Save runtime
+notices, reading anchors, bounded live-original-page selection and recording foreground
+notification localization have been published. Do not relist those completed source
+scopes as new work; native and full-original-UI acceptance remains open. Prioritize the
+concrete functional gaps below before additional copy-only migrations.
 
-1. **Integrate the real owned-fixture Discovery thumbnail path under the original reuse policy.**
+1. **Finish evidence review and publication of the editor destination-attempt acknowledgement repair.** Pre-repair
+   read-only source review found `EditorScreen.kt:239` latching submission before `onSubmit(draft)`,
+   while pre-repair `AndroidEditRuntime.kt:160` advanced `submissionRevision` only inside
+   accepted `submitSelected`. The old destination call supplied only an accepted callback;
+   cancel/reject/failure gave the editor no acknowledgement, leaving its attempt latched.
+   The bounded repair is now **source/JVM tested: 2,050 App passes, 24 new tests**, plus
+   dual compile/lint, runtime90 and seven boundary checks. Final evidence review and
+   publication remain pending. The final review must retain cancellation/rejection/failure
+   retry coverage and stale/duplicate acknowledgement fences, with admission, freshness,
+   foreground and media ownership guards preserved. Actual Compose/native retry behavior
+   remains NOT_RUN. Editor Back confirmation is expressly excluded. No root-cause claim
+   is made about the separate OPPO `STORAGE_UNAVAILABLE` failure. Report in preparation:
+   `docs/m11a/EDITOR_DESTINATION_ACKNOWLEDGEMENT_20261013.md`.
+2. **Integrate the real owned-fixture Discovery thumbnail path under the original reuse policy.**
    Original UI `08_ESV_UI_additional_technical_framework_policy_2026-10-11.md` §§2/3/7
    requires existing media Reader/thumbnail capabilities and already-admitted mature
    image loaders first. Any new loader candidate must pass the existing exact-version,
@@ -299,7 +381,7 @@ source scopes as new work; their device and full-original-UI acceptance remains 
    obtain the required reuse/admission decision before extending a generic framework.
    Do not invent image-read grants from metadata or activate arbitrary remote URLs.
    Production source admission remains a separate gate before real fetching.
-2. **Implement bounded per-request webpage audio consent.** Current `SystemBrowserHost`
+3. **Implement bounded per-request webpage audio consent.** Current `SystemBrowserHost`
    deny-only callback is a concrete gap. A native SkinKit confirmation may grant only
    AUDIO_CAPTURE to the exact current same-origin HTTPS request, after independent Android
    RECORD_AUDIO authorization/result correlation. Keep camera/location denied; no remembered
@@ -309,25 +391,28 @@ source scopes as new work; their device and full-original-UI acceptance remains 
    does not prove already-granted capture stops; resolve the active WebView teardown/reload
    behavior and review it before claiming a full permission lifecycle. No new permission or
    personal-data transmission is authorized merely by listing this task.
-3. **Review the remaining original authentication-recovery seam.** The published action
-   returns to the current Browser only. Full `OpenOriginForLogin` is still incomplete;
-   any further origin resolution or task-resume work needs explicit source/credential,
-   freshness, ownership and lifecycle review. Do not repeat the completed navigation
-   button, infer a safe origin from media URLs, or promise authentication/resume success.
-4. **Review remaining original UI coverage after those bounded repairs.** Use the recovered
-   nine Markdown originals and `ESV_UI_TOKEN_AND_COMPONENT_MAP.md` to select remaining
-   semantic-state/component coverage or other app-owned locale gaps. BrowserScreen's
-   already-published copy, destination typed display, candidate/denial display and filter
-   panel roles and the published Save runtime notice channel are not pending targets. The
-   reading-anchor slice is source-tested but awaiting publication/device evidence, not a fresh
-   implementation target. Full app localization, native service/other owners’ raw notices, success/warning/
-   selected/loading/scrim/system-bar tokens and all-component acceptance remain partial.
+4. **Review only the remaining authentication-recovery cases.** The `4f22d43` publication
+   already supplies explicit selection of a same-origin, exact still-live original document
+   for a newly accepted task; ordinary Browser fallback remains available. Recovered tasks,
+   background/process loss and cross-origin/CDN cases intentionally remain unavailable.
+   Full login and task resume need separate source/credential, freshness, ownership and
+   lifecycle review and native evidence. Do not repeat the completed action, infer a safe
+   origin from media URLs, expand authority from persisted metadata, or promise resume success.
+5. **Review remaining original UI coverage after the functional repairs.** Use the recovered
+   nine Markdown originals and `ESV_UI_TOKEN_AND_COMPONENT_MAP.md` to select actual remaining
+   component/state gaps. Published Browser/destination/candidate/denial/filter/Save-notice,
+   reading-anchor, original-page-selection and recording foreground-notification scopes
+   are not pending implementation targets. Other owners' or recording runtime notices,
+   success/warning/selected/loading/scrim/system-bar tokens and all-component localization
+   remain partial. Copy-only expansion is lower priority than a confirmed functional gap.
    Source coverage does not substitute for the missing PPT or rendered-device evidence.
 
-Items 1–4 require normal scope review and must preserve existing source-admission,
-privacy, entitlement and lifecycle gates. They can produce source/test progress without
-selecting history retention, activating billing/Vault, or installing an APK. They do
-not cure the unresolved OPPO root cause by assumption.
+Item 1 has a bounded source/JVM pass and awaits final evidence review/publication; native
+acceptance remains NOT_RUN.
+Items 2–5 remain bounded candidates requiring normal scope review. All preserve existing
+source-admission, privacy, entitlement and lifecycle gates. They can produce source/test
+progress without selecting history retention, activating billing/Vault, or installing
+an APK. They do not cure the unresolved OPPO root cause by assumption.
 
 ## 6. Decisions and external evidence that really do gate completion
 
@@ -355,12 +440,22 @@ not cure the unresolved OPPO root cause by assumption.
 
 ## 7. Documentation refresh and publication boundary
 
-This minimal refresh changes only this overview and MILESTONE_STATUS, reconciling c794ef notice
-publication, the separate local-only pre-anchor APK, and the currently unpublished anchor slice.
-Each source/test/build stage retains its own exact evidence; totals are not added. The last full
-13-module regression remains bound to b0c5647, with original skips, historical gate failures and
-OPPO/Windows issues preserved. The two updated ledgers and anchor evidence await a combined
-publication with small packaging reports. The local 46 MB APK is excluded; no install or upload
-was performed. Original Markdown recovery is distinct from still-unavailable PPT imagery.
-This documentation refresh creates no additional build/device result and does not retroactively
-change old evidence, original requirements, package/version, device state or published commits.
+This refresh changes only this overview and MILESTONE_STATUS, reconciling the published
+chain through `1f25214f`: reading anchors `55c51cd`, bounded live-original-page selection
+`4f22d43` and recording foreground notifications `1f25214f` follow Save notices `c794ef`.
+Each source/test/build stage retains its own exact evidence; totals are not added. The
+last full 13-module regression remains bound only to b0c5647, with the original two
+corpus skips, historical gate failures and OPPO/Windows issues preserved.
+
+This two-ledger refresh and the new editor destination-attempt acknowledgement repair
+await final evidence review/publication. The repair's build2 passed 2,050 App tests with
+24 new tests, zero failures/errors/skips, dual compile/lint, runtime90 and seven boundary
+checks; 1,422 frozen inputs remained unchanged. Its failed first attempt and reviewed
+test-only assertion correction are retained. This is source/JVM evidence only, with no
+other module rerun or native acceptance. Editor Back confirmation remains outside it.
+The older small packaging reports were already published with `55c51cd`; the unchanged local 46 MB
+c794ef APK is excluded, uninstalled and unuploaded. Original Markdown recovery remains
+distinct from still-unavailable PPT imagery and the separate local handoff directory.
+This documentation refresh creates no additional build/test/device result and does not
+retroactively change old evidence, original requirements, package/version, device state
+or published commits.

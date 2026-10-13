@@ -51,7 +51,7 @@ class AndroidOrdinaryDestinationRuntime internal constructor(
     private val settingsObserved = AtomicLong(0)
     private var pending: Pending? = null
     private class Pending(val ticket: OrdinaryDestinationSelection.Ticket, val current: () -> Boolean,
-        val accepted: (OrdinaryDestinationAdmission) -> Unit)
+        val receipt: OrdinaryDestinationReceipt)
     var ready by mutableStateOf(false); private set
     var preference by mutableStateOf(OrdinaryDestinationPreference.APP_LIBRARY); private set
     var savingPreference by mutableStateOf(false); private set
@@ -69,42 +69,93 @@ class AndroidOrdinaryDestinationRuntime internal constructor(
     }
     /** Called for a fresh explicit creation, with a source/version fence captured by that caller. */
     fun select(isCurrent: () -> Boolean, accepted: (OrdinaryDestinationAdmission) -> Unit) {
+        select(isCurrent, onTerminal = {}, accepted = accepted)
+    }
+    /** Optional terminal receipt for callers that latch UI before destination selection completes. */
+    internal fun select(isCurrent: () -> Boolean, onTerminal: (OrdinaryDestinationSelectionResult) -> Unit,
+        accepted: (OrdinaryDestinationAdmission) -> Unit): OrdinaryDestinationReceipt {
         requireMain()
-        if (!ready || savingPreference || choosingFolder || !isCurrent()) { notice = OrdinaryDestinationNoticeCode.LOCATION_OR_SOURCE_NOT_READY; return }
-        val ticket = gate.begin(preference, folderGrantId) ?: return
-        pending = Pending(ticket, isCurrent, accepted)
+        val receipt = OrdinaryDestinationReceipt(accepted, onTerminal)
+        val source = if (!ready || savingPreference || choosingFolder) OrdinaryDestinationSourceCheck.CHANGED
+            else ordinaryDestinationSourceCheck(isCurrent)
+        if (source != OrdinaryDestinationSourceCheck.CURRENT) {
+            if (pending == null) notice = if (source == OrdinaryDestinationSourceCheck.FAILED)
+                OrdinaryDestinationNoticeCode.LOCATION_UNAVAILABLE else OrdinaryDestinationNoticeCode.LOCATION_OR_SOURCE_NOT_READY
+            receipt.complete(if (source == OrdinaryDestinationSourceCheck.FAILED)
+                OrdinaryDestinationSelectionResult.Failed else OrdinaryDestinationSelectionResult.Rejected)
+            return receipt
+        }
+        val ticket = gate.begin(preference, folderGrantId)
+        if (ticket == null) {
+            receipt.complete(OrdinaryDestinationSelectionResult.Rejected)
+            return receipt
+        }
+        pending = Pending(ticket, isCurrent, receipt)
         notice = null
         val automatic = automaticDestination(ticket.preference)
         if (automatic == null) asking = true else choose(automatic)
+        return receipt
     }
     fun choose(choice: OrdinaryDestinationChoice) {
         requireMain()
         val selection = pending ?: return
-        if (!selection.current()) { cancelSelection(); notice = OrdinaryDestinationNoticeCode.SOURCE_CHANGED_BEFORE_SELECTION; return }
+        if (!selectionCurrent(selection, OrdinaryDestinationNoticeCode.SOURCE_CHANGED_BEFORE_SELECTION)) return
         val selectedFolder = if (choice == OrdinaryDestinationChoice.FOLDER_COPY) selection.ticket.folderGrantId else null
         if (choice == OrdinaryDestinationChoice.FOLDER_COPY && selectedFolder == null) {
-            notice = OrdinaryDestinationNoticeCode.REMEMBERED_FOLDER_REQUIRED; return
+            if (selection.ticket.preference == OrdinaryDestinationPreference.ASK) {
+                // This choice is recoverable: keep the dialog and its caller's latch pending.
+                notice = OrdinaryDestinationNoticeCode.REMEMBERED_FOLDER_REQUIRED
+            } else completeSelection(selection, OrdinaryDestinationSelectionResult.Rejected,
+                OrdinaryDestinationNoticeCode.REMEMBERED_FOLDER_REQUIRED)
+            return
         }
         if (!gate.choose(selection.ticket)) return
         asking = false; admitting = true
         val id = UUID.randomUUID().toString()
-        enqueue(onFailure = {
-            if (gate.cancel(selection.ticket)) { pending = null; asking = false; admitting = false; true } else false
+        enqueueAdmission(onFailure = { failureNotice ->
+            completeSelection(selection, OrdinaryDestinationSelectionResult.Failed, failureNotice)
         }) {
             val admitted = storage.destinations.admit(id, choice, selectedFolder)
             main.post {
-                if (!gate.active(selection.ticket)) return@post
-                if (!selection.current()) { cancelSelection(); notice = OrdinaryDestinationNoticeCode.SOURCE_CHANGED_BEFORE_CREATION; return@post }
-                if (!gate.finish(selection.ticket)) return@post
-                pending = null; admitting = false
+                if (pending !== selection || !gate.active(selection.ticket)) return@post
+                if (!selectionCurrent(selection, OrdinaryDestinationNoticeCode.SOURCE_CHANGED_BEFORE_CREATION)) return@post
                 // The ticket contains the durable choice and stable copy identity. Later settings
                 // changes cannot affect this job. Callback is consumed before entering creation.
-                selection.accepted(admitted)
+                completeSelection(selection, OrdinaryDestinationSelectionResult.Accepted(admitted))
             }
         }
     }
     fun cancelSelection() {
-        requireMain(); gate.cancel(); pending = null; asking = false; admitting = false
+        requireMain()
+        pending?.let { completeSelection(it, OrdinaryDestinationSelectionResult.Cancelled) }
+    }
+    internal fun cancelSelection(receipt: OrdinaryDestinationReceipt) {
+        requireMain()
+        val selection = pending ?: return
+        if (selection.receipt !== receipt) return
+        completeSelection(selection, OrdinaryDestinationSelectionResult.Cancelled)
+    }
+    private fun selectionCurrent(selection: Pending, changedNotice: OrdinaryDestinationNoticeCode): Boolean {
+        return when (ordinaryDestinationSourceCheck(selection.current)) {
+            OrdinaryDestinationSourceCheck.CURRENT -> pending === selection && gate.active(selection.ticket)
+            OrdinaryDestinationSourceCheck.CHANGED -> {
+                completeSelection(selection, OrdinaryDestinationSelectionResult.Rejected, changedNotice); false
+            }
+            OrdinaryDestinationSourceCheck.FAILED -> {
+                completeSelection(selection, OrdinaryDestinationSelectionResult.Failed,
+                    OrdinaryDestinationNoticeCode.LOCATION_UNAVAILABLE); false
+            }
+        }
+    }
+    private fun completeSelection(selection: Pending, result: OrdinaryDestinationSelectionResult,
+        nextNotice: OrdinaryDestinationNoticeCode? = notice): Boolean {
+        if (pending !== selection) return false
+        val consumed = if (result is OrdinaryDestinationSelectionResult.Accepted) gate.finish(selection.ticket)
+            else gate.cancel(selection.ticket)
+        if (!consumed) return false
+        pending = null; asking = false; admitting = false; notice = nextNotice
+        // Nothing below this call may mutate owner state: callbacks may begin another selection.
+        return selection.receipt.complete(result)
     }
     fun updatePreference(value: OrdinaryDestinationPreference) {
         requireMain()
@@ -309,18 +360,22 @@ class AndroidOrdinaryDestinationRuntime internal constructor(
         preference = saved.preference; folderGrantId = saved.folderGrantId; hasRememberedFolder = saved.folderGrantId != null
         return true
     }
-    private fun enqueueFolder(onFailure: () -> Boolean, action: () -> Unit) = enqueueOn(folderWorker, onFailure, action)
-    private fun enqueue(onFailure: () -> Boolean = { true }, action: () -> Unit) = enqueueOn(worker, onFailure, action)
-    private fun enqueueOn(lane: ThreadPoolExecutor, onFailure: () -> Boolean, action: () -> Unit) {
+    private fun enqueueAdmission(onFailure: (OrdinaryDestinationNoticeCode) -> Unit, action: () -> Unit) =
+        enqueueOn(worker, onFailure, action)
+    private fun enqueueFolder(onFailure: () -> Boolean, action: () -> Unit) =
+        enqueueOn(folderWorker, { if (onFailure()) notice = it }, action)
+    private fun enqueue(onFailure: () -> Boolean = { true }, action: () -> Unit) =
+        enqueueOn(worker, { if (onFailure()) notice = it }, action)
+    private fun enqueueOn(lane: ThreadPoolExecutor, onFailure: (OrdinaryDestinationNoticeCode) -> Unit, action: () -> Unit) {
         try { lane.execute {
             try { action() } catch (_: Exception) { main.post {
-                if (onFailure()) notice = OrdinaryDestinationNoticeCode.LOCATION_UNAVAILABLE
+                onFailure(OrdinaryDestinationNoticeCode.LOCATION_UNAVAILABLE)
             } } finally {
                 // A full control queue can defer a refresh, but completing queued work retries it.
                 if (lane === worker && settingsRequested.get() != settingsObserved.get()) startSettingsRefresh()
             }
         } } catch (_: java.util.concurrent.RejectedExecutionException) {
-            main.post { if (onFailure()) notice = OrdinaryDestinationNoticeCode.LOCATION_BUSY }
+            main.post { onFailure(OrdinaryDestinationNoticeCode.LOCATION_BUSY) }
         }
     }
     private fun requireMain() = check(Looper.myLooper() == Looper.getMainLooper())

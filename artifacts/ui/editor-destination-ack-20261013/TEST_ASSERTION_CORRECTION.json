@@ -1,0 +1,6 @@
+{
+  "path": "app/src/test/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationPresentationTest.kt",
+  "before": "        assertEquals(26, emitted.size)\n",
+  "after": "        // Coverage is the closed set of localized kinds, not one textual reference per kind.\n        // Failed source fences reuse LOCATION_UNAVAILABLE; ASK keeps its missing-folder\n        // prompt pending while automatic selection rejects with that same localized kind.\n        val reusedKinds = emitted.groupingBy { it }.eachCount().filterValues { it > 1 }\n        assertEquals(mapOf(\"LOCATION_UNAVAILABLE\" to 3, \"REMEMBERED_FOLDER_REQUIRED\" to 2), reusedKinds)\n",
+  "scope": "Test only: preserve exhaustive26-kind resource/locale contracts, explicitly account for shared semantic branches rather than conflating count with allowed kinds"
+}

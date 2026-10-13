@@ -1,0 +1,13 @@
+<testsuite name="com.easysavevideo.app.library.destination.OrdinaryDestinationReceiptTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-13T11:36:01.914Z" hostname="[redacted]" time="0.005">
+  <properties />
+  <testcase name="callbacksAreConsumedBeforeAcceptanceAndTerminalStillRunsWhenAcceptanceThrows" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationReceiptTest" time="0.001" />
+  <testcase name="everyTerminalResultIsAcknowledgedExactlyOnceAndOnlyAcceptedCreates" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationReceiptTest" time="0.0" />
+  <testcase name="cancellationDuringAdmissionFencesLateSuccessAndFailureFromNewSelection" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationReceiptTest" time="0.001" />
+  <testcase name="terminalCanStartFreshSelectionWithoutOldReceiptConsumingIt" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationReceiptTest" time="0.0" />
+  <testcase name="waitingForAskOrDurableAdmissionDoesNotAcknowledgeEarly" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationReceiptTest" time="0.001" />
+  <testcase name="throwingTerminalRemainsConsumed" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationReceiptTest" time="0.0" />
+  <testcase name="sourceFenceSeparatesCurrentChangedAndFailureWithoutRethrowingOrRetrying" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationReceiptTest" time="0.001" />
+  <testcase name="cancellationBeforeChoiceCannotCreateAndAcknowledgesOnce" classname="com.easysavevideo.app.library.destination.OrdinaryDestinationReceiptTest" time="0.001" />
+  <system-out />
+  <system-err />
+</testsuite>

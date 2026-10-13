@@ -1,0 +1,119 @@
+{
+  "at": "2026-10-13T11:35:02.550629+00:00",
+  "result": "PASS_SOURCE_REVIEW",
+  "source_baseline": "1f25214fcea79113b0278ac24ddc316e6910a9f0",
+  "checks": {
+    "exact_reviewed_inputs": 11,
+    "modified_baseline_inputs": 6,
+    "unchanged_baseline_inputs": 1411,
+    "baseline_files_missing": [],
+    "before_snapshots_match_baseline": [
+      "app/build.gradle.kts",
+      "app/src/main/kotlin/com/easysavevideo/app/editor/AndroidEditRuntime.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/editor/ui/EditorPresentation.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/editor/ui/EditorScreen.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidOrdinaryDestinationRuntime.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationPresentationTest.kt"
+    ],
+    "receipt_once_consumed_before_callbacks": true,
+    "accepted_callback_precedes_terminal_finally": true,
+    "stale_attempt_cannot_acknowledge_new_attempt": true,
+    "stale_selection_cannot_change_current_pending_or_notice": true,
+    "owner_specific_editor_retirement": true,
+    "composition_recreation_keeps_pending": true,
+    "runtime_pending_default_and_copy_preserved": true,
+    "accepted_missing_geometry_probe_explicitly_bypasses_only_pending_guard": true,
+    "draft_restore_pending_owner_retained": true,
+    "source_fence_exception_maps_to_failed": true,
+    "source_predicate_reentrancy_rechecks_owner": true,
+    "shared_select_signature_unchanged": true,
+    "save_and_recording_call_sites_hash_unchanged": true,
+    "destination_gate_storage_native_workflow_wire_and_workers_unchanged": true,
+    "ask_missing_folder_keeps_selection_pending": true,
+    "automatic_missing_folder_rejects": true,
+    "all_sourcecontract_source_reads_registered": true,
+    "tests_use_production_pure_policy_classes_no_android_mocks": true,
+    "new_test_methods": {
+      "EditorSubmissionAttemptsTest": 7,
+      "EditorDestinationAcknowledgementContractTest": 9,
+      "OrdinaryDestinationReceiptTest": 8
+    },
+    "reviewer_ran_gradle": false,
+    "device_compose_native_execution": "NOT_RUN",
+    "remaining_source_blockers": [],
+    "only_post_build1_change_is_test_semantic_occurrence_assertion": true,
+    "existing_presentation_all_seven_test_methods_preserved": true,
+    "exact_enum_set_and_null_locale_resource_contracts_preserved": true,
+    "final_input_manifest_sha256": "e4e6d4b88efd0367536ece1653a9242e542670438042c31cfd753d82634da5be",
+    "final_input_count": 1422,
+    "source_production_unchanged_since_build1": true
+  },
+  "files": [
+    {
+      "path": "app/build.gradle.kts",
+      "sha256": "51d19ffb0aee678c3459919f03fba20fdf2fd2e28695fc65252e35e9c5fbed7f",
+      "bytes": 12846,
+      "operation": "modify"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/editor/AndroidEditRuntime.kt",
+      "sha256": "72f50337ddd3a0aaeb06907692e956819f5138483e37718b4118206089fcb10c",
+      "bytes": 25903,
+      "operation": "modify"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/editor/EditorSubmissionAttempts.kt",
+      "sha256": "bd96f72bd418a82a65c6e0bbb916db1ceb676c4b887cf7eeaa284ce0e6356193",
+      "bytes": 761,
+      "operation": "add"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/editor/ui/EditorPresentation.kt",
+      "sha256": "0326219a13a8b5cacaacc910570e180fe24c72119e3d906eddd69f074ff0b413",
+      "bytes": 16000,
+      "operation": "modify"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/editor/ui/EditorScreen.kt",
+      "sha256": "11ec71230ae9eab95d25d724dabad70d2dd7447e07ff0680989eb3966c5ecffd",
+      "bytes": 30928,
+      "operation": "modify"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/destination/AndroidOrdinaryDestinationRuntime.kt",
+      "sha256": "46e255ea88dd2857ce493448054a4da6a520f0f1c9cee8d105ea94a7cf813298",
+      "bytes": 21985,
+      "operation": "modify"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationReceipt.kt",
+      "sha256": "e8fc87e3ece9ca37c888855ba9f686bdb6e5d5ff44dc60149327a018106c723e",
+      "bytes": 1932,
+      "operation": "add"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/editor/EditorDestinationAcknowledgementContractTest.kt",
+      "sha256": "41481780d62e1a128a032b9f018162df30646962ca6b0f8f1d03a06b9f6d53fa",
+      "bytes": 12133,
+      "operation": "add"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/editor/EditorSubmissionAttemptsTest.kt",
+      "sha256": "288b2adf891d456744c9933aeaad64638afbe9f4e46c7d6f3dcbd7437bf9ed05",
+      "bytes": 5406,
+      "operation": "add"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationPresentationTest.kt",
+      "sha256": "a7278885d7b22720abad1bb07ab4d3e1191e4d9b2026d9e92861df40b7afca6a",
+      "bytes": 25809,
+      "operation": "modify"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationReceiptTest.kt",
+      "sha256": "e7354021a4d5bdafe3fb51bd8a25116fcd5513a4d6e167f64dd2aee52c4a8ba7",
+      "bytes": 7366,
+      "operation": "add"
+    }
+  ]
+}

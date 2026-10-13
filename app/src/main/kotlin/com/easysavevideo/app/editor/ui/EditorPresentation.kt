@@ -91,10 +91,12 @@ class EditorViewState(
     displayGeometries: Map<MediaReadRef, EditorDisplayGeometry> = emptyMap(),
     val notice: String? = null,
     val completedReference: MediaReadRef? = null,
-    /** Increment after EVERY submit attempt, even one rejected before a task starts. */
+    /** Increment once when the matching submit attempt ends admission, including rejection/cancel. */
     val submissionRevision: Long = 0,
     executionRanges: List<EditorExecutionRange> = emptyList(),
     val draftRestoration: EditorDraftRestoration = EditorDraftRestoration.NONE,
+    /** Runtime-owned admission latch survives destination dialogs and composition recreation. */
+    val submissionPending: Boolean = false,
 ) {
     val availableItems: List<MediaItem> = Collections.unmodifiableList(ArrayList(availableItems.take(100)))
     val displayGeometries: Map<MediaReadRef, EditorDisplayGeometry> =
@@ -102,7 +104,7 @@ class EditorViewState(
     val executionRanges: List<EditorExecutionRange> = Collections.unmodifiableList(ArrayList(executionRanges.take(EditLimits.MAX_SEGMENTS)))
     val busy: Boolean get() = phase in setOf(EditorPhase.PROBING, EditorPhase.PREPARING, EditorPhase.PROCESSING,
         EditorPhase.VERIFYING, EditorPhase.PUBLISHING, EditorPhase.CANCELLING, EditorPhase.WAITING_NATIVE_RELEASE)
-    val editable: Boolean get() = foreground && !busy && phase != EditorPhase.BLOCKED
+    val editable: Boolean get() = foreground && !busy && phase != EditorPhase.BLOCKED && !submissionPending
     fun copy(
         draft: EditorDraft = this.draft,
         availableItems: List<MediaItem> = this.availableItems,
@@ -114,8 +116,9 @@ class EditorViewState(
         submissionRevision: Long = this.submissionRevision,
         executionRanges: List<EditorExecutionRange> = this.executionRanges,
         draftRestoration: EditorDraftRestoration = this.draftRestoration,
+        submissionPending: Boolean = this.submissionPending,
     ) = EditorViewState(draft, availableItems, foreground, phase, displayGeometries, notice,
-        completedReference, submissionRevision, executionRanges, draftRestoration)
+        completedReference, submissionRevision, executionRanges, draftRestoration, submissionPending)
     override fun toString() = "EditorViewState(phase=$phase, [redacted])"
 }
 

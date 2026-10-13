@@ -1,0 +1,12 @@
+<testsuite name="com.easysavevideo.app.editor.EditorSubmissionAttemptsTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-13T11:36:01.431Z" hostname="[redacted]" time="0.004">
+  <properties />
+  <testcase name="pendingRuntimeStateKeepsAllEditingDisabledAcrossStateCopiesAndRecreation" classname="com.easysavevideo.app.editor.EditorSubmissionAttemptsTest" time="0.001" />
+  <testcase name="acceptedMediaTaskStillLocksControlsAfterAdmissionAcknowledgement" classname="com.easysavevideo.app.editor.EditorSubmissionAttemptsTest" time="0.0" />
+  <testcase name="everyDestinationTerminalReleasesOnlyItsMatchingEditorLatch" classname="com.easysavevideo.app.editor.EditorSubmissionAttemptsTest" time="0.003" />
+  <testcase name="lifecycleRetirementIsOnceAndOldCompletionCannotUnlockNewAttempt" classname="com.easysavevideo.app.editor.EditorSubmissionAttemptsTest" time="0.0" />
+  <testcase name="synchronousRejectionAcknowledgesOriginalLatchAndAllowsRetry" classname="com.easysavevideo.app.editor.EditorSubmissionAttemptsTest" time="0.0" />
+  <testcase name="duplicateSubmitFromRecreatedCompositionCannotUnlockOrReplacePendingAttempt" classname="com.easysavevideo.app.editor.EditorSubmissionAttemptsTest" time="0.0" />
+  <testcase name="synchronousReceiptCompletionCannotBeInstalledAsCurrentPendingOwner" classname="com.easysavevideo.app.editor.EditorSubmissionAttemptsTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>
