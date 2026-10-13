@@ -163,6 +163,7 @@ private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, brow
         record.error?.let { EsvText(stringResource(saveFailureTextResource(it)), color = v.colors.error, style = v.captionTextStyle) }
         SaveFailureGuidance(record, runtime, onBrowser)
         SaveAuthenticationGuidance(record, runtime, onBrowser, canOpenBrowserForAuthentication)
+        SaveAuthenticationOriginGuidance(record, runtime, browser, onBrowser, canOpenBrowserForAuthentication)
         if (record.task.state == TaskState.WAITING_USER) EsvText(if (record.request.method == TaskMethod.RECORD && record.transfer == null)
             stringResource(R.string.final_copy_48)
         else when (record.waitReason) {

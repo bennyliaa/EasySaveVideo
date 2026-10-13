@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_auth_origin_open">回到原页面</string>
+    <string name="save_auth_origin_boundary">仅在原标签页的同源页面仍可用时切回。请自行登录，再检查任务可用操作。此操作不会登录或继续任务。</string>
+    <string name="save_auth_origin_unavailable">原页面已不可用。仍可打开浏览器，自行选择页面。不会重建网页或自动继续任务。</string>
+</resources>

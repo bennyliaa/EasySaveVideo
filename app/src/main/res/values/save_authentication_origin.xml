@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_auth_origin_open">Return to original page</string>
+    <string name="save_auth_origin_boundary">Select the original tab only while its same-site page is still available. Sign in yourself, then check the task action. This does not sign in or resume the task.</string>
+    <string name="save_auth_origin_unavailable">The original page is unavailable. You can still open Browser and choose a page yourself. No page will be recreated and no task will resume automatically.</string>
+</resources>

@@ -1,0 +1,71 @@
+{
+  "result": "PASS_SOURCE_JVM_ONLY_PENDING_PUBLICATION",
+  "initial_attempt": "build1 failed at new wiring-test compile: Files.readString unavailable in this Android unit-test compilation/toolchain; replaced only test read with Files.readAllBytes plus UTF-8, then all ten tasks forced again",
+  "source_baseline": "55c51cd71763159b203e52ece44f09da8cab1507",
+  "terminal_exit_code_observed": 0,
+  "recorded_at": "2026-10-13T10:23:16.818755+00:00",
+  "command": [
+    "${TOOLCHAIN}/run-gradle.sh",
+    "--offline",
+    ":app:testDebugUnitTest",
+    "--rerun",
+    ":app:compileDebugKotlin",
+    "--rerun",
+    ":app:compileReleaseKotlin",
+    "--rerun",
+    ":app:lintAnalyzeDebug",
+    "--rerun",
+    ":app:lintReportDebug",
+    "--rerun",
+    ":app:lintDebug",
+    "--rerun",
+    ":app:lintAnalyzeRelease",
+    "--rerun",
+    ":app:lintReportRelease",
+    "--rerun",
+    ":app:lintRelease",
+    "--rerun",
+    ":app:verifyRuntimeAdmission",
+    "--rerun"
+  ],
+  "input_manifest_sha256": "81bbf71978f8ba1112aaac769827c368b8f53f75dfc0ece31ee3b604e67c4c5f",
+  "frozen_input_count": 1409,
+  "changed_during_build": [],
+  "app_junit": {
+    "tests": 1998,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_tests": 45,
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "runtime_exact_artifacts": 90,
+  "boundary_checks": 7,
+  "all_ten_requested_tasks": "ACTUALLY_EXECUTED",
+  "other_module_tests": "NOT_RERUN_THIS_SLICE; full thirteen-module results bind b0c5647 only",
+  "apk": "NOT_BUILT; existing code8 candidate remains local-only, pre-anchor c794ef",
+  "not_run": [
+    "APK/install/device/emulator/OPPO",
+    "real WebView document selection/no-reload",
+    "native callbacks/renderer death/Activity recreation",
+    "manual login/manual resume/owned fixture traffic",
+    "Compose 200%/RTL/TalkBack",
+    "PPT/pixel comparison",
+    "Windows fixture rerun"
+  ],
+  "preserved_open_issues": [
+    "OPPO editing STORAGE_UNAVAILABLE",
+    "OPPO sharing INITIALIZATION_FAILED",
+    "historical ANR/second recording",
+    "Windows symlink setup/guard"
+  ]
+}

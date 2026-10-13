@@ -1,0 +1,22 @@
+{
+  "attempt1": {
+    "exit_code": 1,
+    "log": "build1.log",
+    "input_manifest": "INPUT_MANIFEST.build1.json",
+    "failure": "New source-wiring test used Files.readString, unavailable in this Android unit-test compilation/toolchain",
+    "tests_executed": false
+  },
+  "correction": {
+    "only_changed_input": "app/src/test/kotlin/com/easysavevideo/app/save/AuthenticationOriginWiringTest.kt",
+    "before": "Files.readString(Paths.get(...))",
+    "after": "String(Files.readAllBytes(Paths.get(...)), Charsets.UTF_8)",
+    "production_changes": []
+  },
+  "attempt2": {
+    "input_manifest": "INPUT_MANIFEST.json",
+    "log": "build2.log",
+    "status": "PASS",
+    "exit_code": 0,
+    "elapsed": "3m 2s"
+  }
+}

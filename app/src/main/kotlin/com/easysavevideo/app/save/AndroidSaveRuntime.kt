@@ -81,6 +81,8 @@ class AndroidSaveRuntime private constructor(context: Context) {
     private lateinit var stream: AndroidHlsStreamPort
     private var streamSelectionContext: PageSaveSelection? = null
     private var streamDiscoveryOrigin: DiscoverySaveOriginHandle? = null
+    private val authenticationOrigins = AuthenticationTaskOrigins()
+    private var streamAuthenticationOrigin: AuthenticationOriginCapture? = null
     var discoverySaveOutcomes by mutableStateOf<Map<String, DiscoveryOriginSaveOutcome>>(emptyMap()); private set
     private val discoverySaveLinks = MediaTaskActivitySaveLinks<DiscoverySaveOriginHandle>(
         bind = { origin, taskId -> origin.bindTask(taskId) },
@@ -199,6 +201,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         foreground = value; segmentRecording?.setForeground(value); main.removeCallbacks(poll)
         if (value) { main.post(poll) }
         else {
+            authenticationOrigins.clear(); streamAuthenticationOrigin = null
             destinations?.cancelSelection()
             val ownedPreparation = hlsPreparation
             discoverySaveLinks.discard(streamDiscoveryOrigin); streamDiscoveryOrigin = null
@@ -224,6 +227,32 @@ class AndroidSaveRuntime private constructor(context: Context) {
         !preparingStream && hlsPreparation == null && destinations?.asking != true && destinations?.notice == null &&
         segmentRecording?.let { it.busy || it.recoveryActive || it.nativeOccupied || it.previewActive || it.requiresRecovery } != true
 
+    internal fun authenticationOriginAvailable(taskId: String, browser: SystemBrowserHost): Boolean {
+        requireMain()
+        val token = authenticationOrigins.token(taskId) ?: return false
+        return browser.canSelectAuthenticationOrigin(token)
+    }
+    internal fun returnToOriginForAuthentication(command: AuthenticationBrowserCommand,
+        browser: SystemBrowserHost, expectedBrowserRevision: Long): AuthenticationNavigationResult {
+        requireMain()
+        if (!authenticationOriginInteractionCurrent(expectedBrowserRevision, browser.saveInspectionRevision))
+            return AuthenticationNavigationResult.STALE
+        val token = authenticationOrigins.token(command.taskId) ?: return AuthenticationNavigationResult.UNAVAILABLE
+        if (!browser.canSelectAuthenticationOrigin(token)) return AuthenticationNavigationResult.UNAVAILABLE
+        val accepted = returnToBrowserForAuthentication(command)
+        if (accepted != AuthenticationNavigationResult.ACCEPTED) return accepted
+        return if (browser.selectAuthenticationOrigin(token, expectedBrowserRevision)) AuthenticationNavigationResult.ACCEPTED
+            else AuthenticationNavigationResult.UNAVAILABLE
+    }
+    private fun captureAuthenticationOrigin(selection: PageSaveSelection, browser: SystemBrowserHost,
+        source: String): AuthenticationOriginCapture? = try {
+        browser.captureAuthenticationOrigin(selection, source)?.let(authenticationOrigins::capture)
+    } catch (_: Exception) { null } // Optional UI provenance must never fail a Save.
+    private fun bindAuthenticationOrigin(taskId: String, capture: AuthenticationOriginCapture?,
+        existing: Boolean, source: String) {
+        if (capture != null) try { authenticationOrigins.accepted(taskId, capture, existing, source) }
+        catch (_: Exception) { authenticationOrigins.discard(capture) }
+    }
     /** Navigation authority only. No source lookup, credential lease, task command or selection mutation. */
     internal fun returnToBrowserForAuthentication(command: AuthenticationBrowserCommand): AuthenticationNavigationResult {
         requireMain()
@@ -276,6 +305,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         val ownedPreparation = hlsPreparation
         val ownedCancellation = preparationCancellation
         discoverySaveLinks.discard(streamDiscoveryOrigin); streamDiscoveryOrigin = null
+        authenticationOrigins.discard(streamAuthenticationOrigin); streamAuthenticationOrigin = null
         detector.cancel(); scanning = false; selection = null
         preparationCancellation = null; preparationGeneration++
         ownedCancellation?.cancel()
@@ -321,9 +351,10 @@ class AndroidSaveRuntime private constructor(context: Context) {
         val request = SaveRequest(id, id, SelectedMediaResource(candidate.id, candidate.id, candidate.url,
             expectedAudio = candidate.expectedAudio, requestContextRef = lease))
         val saveOrigin = try { browser.captureSaveOrigin() } catch (_: Exception) { null }
+        val authenticationOrigin = captureAuthenticationOrigin(captured, browser, candidate.url.value)
         // Clear immediately, so repeated taps cannot create fresh idempotency keys for one selection.
         selection = null
-        command(mediaWork = true, onRejected = { leases.revoke(lease); discoverySaveLinks.discard(saveOrigin) }) {
+        command(mediaWork = true, onRejected = { leases.revoke(lease); discoverySaveLinks.discard(saveOrigin); authenticationOrigins.discard(authenticationOrigin) }) {
             var acceptedTaskId: String? = null
             var launched = false
             try {
@@ -332,6 +363,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     is SaveSubmission.Accepted -> {
                         acceptedTaskId = result.record.task.taskId
                         discoverySaveLinks.accepted(result.record.task.taskId, saveOrigin, result.existing)
+                        bindAuthenticationOrigin(result.record.task.taskId, authenticationOrigin, result.existing, candidate.url.value)
                         launched = launchExecution(result.record.task.taskId, lease)
                         if (launched) main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.DIRECT_TASK_ACCEPTED) }
                     }
@@ -342,6 +374,8 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 if (!launched) {
                     acceptedTaskId?.let(discoverySaveLinks::cancel)
                     discoverySaveLinks.discard(saveOrigin); leases.revoke(lease)
+                    acceptedTaskId?.let(authenticationOrigins::cancel)
+                    authenticationOrigins.discard(authenticationOrigin)
                 }
             }
         }
@@ -356,6 +390,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
         }
         val saveOrigin = try { browser.captureSaveOrigin() } catch (_: Exception) { null }
         discoverySaveLinks.discard(streamDiscoveryOrigin); streamDiscoveryOrigin = saveOrigin
+        authenticationOrigins.discard(streamAuthenticationOrigin)
+        val authenticationOrigin = captureAuthenticationOrigin(captured, browser, candidate.url.value)
+        streamAuthenticationOrigin = authenticationOrigin
         val cancellation = CancellationSource()
         preparationCancellation = cancellation
         val token = ++preparationGeneration
@@ -373,12 +410,16 @@ class AndroidSaveRuntime private constructor(context: Context) {
                         hlsPreparation = prepared
                     } else {
                         stream.discard(prepared); discoverySaveLinks.discard(saveOrigin)
+                        authenticationOrigins.discard(authenticationOrigin)
+                        if (streamAuthenticationOrigin === authenticationOrigin) streamAuthenticationOrigin = null
                         if (streamDiscoveryOrigin === saveOrigin) streamDiscoveryOrigin = null
                     }
                 }
             } catch (failure: Exception) {
                 discoverySaveLinks.discard(saveOrigin)
+                authenticationOrigins.discard(authenticationOrigin)
                 main.post {
+                    if (streamAuthenticationOrigin === authenticationOrigin) streamAuthenticationOrigin = null
                     if (streamDiscoveryOrigin === saveOrigin) streamDiscoveryOrigin = null
                     if (token == preparationGeneration) notice = saveRuntimeFailureNotice(SaveErrors.classify(failure))
                 }
@@ -424,11 +465,14 @@ class AndroidSaveRuntime private constructor(context: Context) {
         val request = SaveRequest(id, id, resource, TaskMethod.STREAM)
         val saveOrigin = streamDiscoveryOrigin
         streamDiscoveryOrigin = null
+        val authenticationOrigin = streamAuthenticationOrigin
+        streamAuthenticationOrigin = null
         // Fixed variant is now an independent task; later tab changes do not change that selection.
         hlsPreparation = null; streamSelectionContext = null; preparationCancellation = null
         preparingStream = false; preparationGeneration++
         command(mediaWork = true, onRejected = {
             discoverySaveLinks.discard(saveOrigin)
+            authenticationOrigins.discard(authenticationOrigin)
             setExecuting(false); stream.discard(prepared); resource.requestContextRef?.let(leases::revoke)
         }) {
             var launched = false
@@ -441,6 +485,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     is SaveSubmission.Accepted -> {
                         acceptedTaskId = result.record.task.taskId
                         discoverySaveLinks.accepted(result.record.task.taskId, saveOrigin, result.existing)
+                        bindAuthenticationOrigin(result.record.task.taskId, authenticationOrigin, result.existing, resource.url.value)
                         launched = launchExecution(result.record.task.taskId, resource.requestContextRef, reserved = true)
                         if (launched) main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_TASK_ACCEPTED) }
                     }
@@ -454,6 +499,8 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 if (!launched) {
                     acceptedTaskId?.let(discoverySaveLinks::cancel)
                     discoverySaveLinks.discard(saveOrigin)
+                    acceptedTaskId?.let(authenticationOrigins::cancel)
+                    authenticationOrigins.discard(authenticationOrigin)
                     // Discard while the execution reservation still owns task priority.
                     try { stream.discard(prepared); resource.requestContextRef?.let(leases::revoke) }
                     finally { setExecuting(false) }
@@ -464,6 +511,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
 
     fun cancel(taskId: String) {
         requireMain()
+        authenticationOrigins.cancel(taskId)
         discoverySaveLinks.cancel(taskId)
         if (segmentRecording?.owns(taskId) == true) { segmentRecording?.discard(taskId); return }
         if (pendingRecording?.sessionId == taskId && recordingService == null) { recorder.cancel(taskId); abandonRecordingRequest(taskId); return }
@@ -839,6 +887,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
             )
         }
         val (next, count) = readTaskSnapshot()
+        authenticationOrigins.retainNonterminal(next.filterNot { it.task.state.isTerminal }.map { it.task.taskId }.toSet())
         val dispositions = readMediaDispositions(next)
         main.post { records = next; activeTaskCount = count; mediaDispositions = dispositions; draining = resourcesDraining(); networkDraining = AndroidLocalMp4Verifier.requiresRestart || Media3LocalHlsEngine.requiresRestart || (::transport.isInitialized && transport.isDraining) || (::stream.isInitialized && stream.isDraining) }
     }
