@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ordinary_destination_notice_location_or_source_not_ready">保存位置或来源尚未就绪，请重新选择。</string>
+    <string name="ordinary_destination_notice_source_changed_before_selection">来源或页面已变化，请重新选择保存位置。</string>
+    <string name="ordinary_destination_notice_remembered_folder_required">尚未记住可用文件夹，请先在普通媒体保存位置设置中明确选择文件夹。</string>
+    <string name="ordinary_destination_notice_source_changed_before_creation">来源或页面已变化，尚未创建媒体；请重新选择。</string>
+    <string name="ordinary_destination_notice_folder_picker_detached">文件夹选择页面已变化，本次结果不会设为保存位置。请重新选择；系统授权可在系统设置中管理。</string>
+    <string name="ordinary_destination_notice_folder_picker_not_ready">文件夹选择器尚未就绪，请稍后重试。</string>
+    <string name="ordinary_destination_notice_folder_picker_associations_exhausted">本机文件夹选择关联次数已达安全上限，不能通过重试恢复。已有任务保留；可继续使用 App媒体库、相册或媒体库中的单次另存。</string>
+    <string name="ordinary_destination_notice_folder_picker_pending">上一次系统文件夹选择尚未返回。请先关闭或完成那个选择器；本次没有打开新的选择器，App媒体库仍可使用。</string>
+    <string name="ordinary_destination_notice_folder_picker_association_invalid">文件夹选择关联记录不可用，未重置或重复使用旧关联。可继续使用 App媒体库、相册或媒体库中的单次另存。</string>
+    <string name="ordinary_destination_notice_folder_picker_association_storage_failed">本次文件夹选择关联未能安全保存，尚未打开系统选择器。请检查本机存储后重试。</string>
+    <string name="ordinary_destination_notice_folder_picker_launch_failed">系统文件夹选择器未能打开，请稍后重试。</string>
+    <string name="ordinary_destination_notice_folder_selection_cancelled">已取消文件夹选择，原保存位置未改变。</string>
+    <string name="ordinary_destination_notice_folder_result_unconfirmed">文件夹选择结果未能确认，保存位置需要重新核对。系统可能已记住授权，可在系统设置中管理；原件不会被删除。</string>
+    <string name="ordinary_destination_notice_folder_grant_capacity_reached">文件夹授权记录已达到本机安全上限，暂不能记住新文件夹；已有任务和记录保留。系统撤销授权不会清除此记录，可继续使用 App媒体库、相册或媒体库中的单次另存。</string>
+    <string name="ordinary_destination_notice_folder_adoption_failed">未能采用本次文件夹选择。系统可能已记住授权，可在系统设置中核对；检测到失效的旧授权不会随再次选择而复活，原件保留。</string>
+    <string name="ordinary_destination_notice_folder_selected">之后新建媒体会保留 App媒体库原件，并向所选文件夹另存一份。该文件提供方可能同步到云端；副本在校验前就可能可见。</string>
+    <string name="ordinary_destination_notice_folder_selection_changed">文件夹选择后授权或设置已有变化，后续新建媒体将使用当前显示的保存位置；原件保留。</string>
+    <string name="ordinary_destination_notice_folder_change_cancelled">已取消更改保存位置，迟到结果不会被采用。系统授权可在系统设置中管理。</string>
+    <string name="ordinary_destination_notice_folder_forgotten">已停止记住此文件夹，后续默认保存到 App媒体库。已接受任务和未确认副本仍使用原选择；为保留它们的处理或清理能力，未撤销系统授权。可在系统设置手动管理，撤销后可能需要自行清理遗留副本。</string>
+    <string name="ordinary_destination_notice_folder_permission_invalidated">文件夹授权已失效，后续默认保存到 App媒体库。请明确重新选择文件夹；旧操作不会自动重建副本，原件保留。</string>
+    <string name="ordinary_destination_notice_copy_status_unavailable">额外副本状态暂不可读取，App媒体库原件保留。可稍后恢复核对。</string>
+    <string name="ordinary_destination_notice_copy_cancellation_requested">已请求取消本次额外副本。正在等待读写退出并核对清理；App媒体库原件保留。</string>
+    <string name="ordinary_destination_notice_copy_cancellation_unavailable">本次副本已完成、已进入最终提交或暂不可取消，请恢复核对。App媒体库原件保留。</string>
+    <string name="ordinary_destination_notice_remembered_folder_unavailable">已记住的文件夹选择不再可用，后续默认保存到 App媒体库。需要文件夹副本时请明确重新选择；旧失效授权的任务不会自动重建副本，原件保留。</string>
+    <string name="ordinary_destination_notice_location_unavailable">普通媒体保存位置暂不可用。已有原件保留，未确认的额外副本请恢复核对。</string>
+    <string name="ordinary_destination_notice_location_busy">保存位置操作暂忙，请稍后重试。</string>
+    <string name="ordinary_destination_copy_kind_album">相册副本</string>
+    <string name="ordinary_destination_copy_kind_folder">文件夹副本</string>
+    <string name="ordinary_destination_copy_not_selected">%1$s：本次未选择</string>
+    <string name="ordinary_destination_copy_waiting_for_library">%1$s：等待本次成片验证入库</string>
+    <string name="ordinary_destination_copy_waiting_to_copy">%1$s：等待复制</string>
+    <string name="ordinary_destination_copy_verified_saved">%1$s：已完整校验并保存</string>
+    <string name="ordinary_destination_copy_incomplete">%1$s：未完成。本次复制不会删除 App媒体库原件；请在媒体库核对来源后重新明确选择另存一份</string>
+    <string name="ordinary_destination_copy_check_required">%1$s：处理中或结果待核对，请恢复检查。不会自动新建重复副本</string>
+</resources>

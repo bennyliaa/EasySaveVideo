@@ -1,0 +1,47 @@
+{
+  "result": "PASS_SOURCE_JVM_ONLY_PENDING_PUBLICATION",
+  "depends_on_frozen_manifest": "48f99bfd9e0acb77dc4fcc7a94ed34b5d6b4a51302a57c22c375c1fe7b4f3d26",
+  "final_run": "build2.log",
+  "offline": true,
+  "commands": [
+    ":app:testDebugUnitTest",
+    ":app:compileDebugKotlin",
+    ":app:compileReleaseKotlin",
+    ":app:lintDebug",
+    ":app:lintRelease",
+    ":app:verifyRuntimeAdmission"
+  ],
+  "app_tests_executed": {
+    "tests": 1864,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_tests_executed": 7,
+  "production_compilers": "Debug/Release executed PASS build1; production inputs unchanged for build2",
+  "lint_tasks": "Debug/Release PASS final build2",
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "runtime_exact_artifacts": 90,
+  "theme_tests": "NOT_RERUN_THIS_GROUP",
+  "not_run": [
+    "APK",
+    "device/emulator",
+    "actual WebView login/navigation",
+    "process restart acceptance",
+    "Compose event ordering",
+    "locale switching",
+    "SAF/provider copy",
+    "200% rendering",
+    "TalkBack",
+    "PPT/screenshots"
+  ]
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ordinary_destination_notice_location_or_source_not_ready">The save location or source is not ready. Please select again.</string>
+    <string name="ordinary_destination_notice_source_changed_before_selection">The source or page has changed. Please select the save location again.</string>
+    <string name="ordinary_destination_notice_remembered_folder_required">No usable folder is remembered. First explicitly choose a folder in ordinary media save location settings.</string>
+    <string name="ordinary_destination_notice_source_changed_before_creation">The source or page has changed. Media has not been created yet; please select again.</string>
+    <string name="ordinary_destination_notice_folder_picker_detached">The folder selection page has changed, so this result will not become the save location. Please select again; system permission can be managed in system settings.</string>
+    <string name="ordinary_destination_notice_folder_picker_not_ready">The folder picker is not ready. Please try again later.</string>
+    <string name="ordinary_destination_notice_folder_picker_associations_exhausted">This device has reached the safety limit for folder picker associations; retrying cannot recover it. Existing tasks are kept. You can still use the App Library, the album, or a one-time Save a copy action in the library.</string>
+    <string name="ordinary_destination_notice_folder_picker_pending">The previous system folder selection has not returned. Close or complete that picker first. No new picker was opened this time; the App Library is still available.</string>
+    <string name="ordinary_destination_notice_folder_picker_association_invalid">The folder picker association record is unavailable. Old associations have not been reset or reused. You can still use the App Library, the album, or a one-time Save a copy action in the library.</string>
+    <string name="ordinary_destination_notice_folder_picker_association_storage_failed">The association for this folder selection could not be saved safely. The system picker has not been opened. Check device storage before retrying.</string>
+    <string name="ordinary_destination_notice_folder_picker_launch_failed">The system folder picker could not open. Please try again later.</string>
+    <string name="ordinary_destination_notice_folder_selection_cancelled">Folder selection was canceled. The previous save location is unchanged.</string>
+    <string name="ordinary_destination_notice_folder_result_unconfirmed">The folder selection result could not be confirmed. The save location needs to be checked again. The system may have retained permission; you can manage it in system settings. The original will not be deleted.</string>
+    <string name="ordinary_destination_notice_folder_grant_capacity_reached">Folder permission records have reached the safety limit on this device, so a new folder cannot be remembered for now. Existing tasks and records are kept. Revoking system permission does not clear this record. You can still use the App Library, the album, or a one-time Save a copy action in the library.</string>
+    <string name="ordinary_destination_notice_folder_adoption_failed">This folder selection could not be adopted. The system may have retained permission; check system settings. Selecting again does not revive old permissions detected as invalid. The original is kept.</string>
+    <string name="ordinary_destination_notice_folder_selected">Newly created media will keep the App Library original and save an extra copy to the selected folder. The file provider may sync to the cloud; the copy may be visible before verification.</string>
+    <string name="ordinary_destination_notice_folder_selection_changed">Permission or settings changed after folder selection. Newly created media will use the save location currently displayed; the original is kept.</string>
+    <string name="ordinary_destination_notice_folder_change_cancelled">The save location change was canceled. Late results will not be adopted. System permission can be managed in system settings.</string>
+    <string name="ordinary_destination_notice_folder_forgotten">This folder is no longer remembered. New media will default to the App Library. Accepted tasks and unconfirmed copies still use their original choice. System permission has not been revoked, so those tasks and copies can still be processed or cleaned up. You can manage permission manually in system settings; revoking it may require you to clean up leftover copies yourself.</string>
+    <string name="ordinary_destination_notice_folder_permission_invalidated">Folder permission is no longer valid. New media will default to the App Library. Explicitly select a folder again. Old operations will not automatically recreate copies; the original is kept.</string>
+    <string name="ordinary_destination_notice_copy_status_unavailable">Extra copy status is temporarily unavailable. The App Library original is kept. You can resume checking later.</string>
+    <string name="ordinary_destination_notice_copy_cancellation_requested">Cancellation of this extra copy was requested. Waiting for reading and writing to stop and for cleanup to be checked; the App Library original is kept.</string>
+    <string name="ordinary_destination_notice_copy_cancellation_unavailable">This copy has completed, entered final commit, or is temporarily unavailable for cancellation. Please resume checking. The App Library original is kept.</string>
+    <string name="ordinary_destination_notice_remembered_folder_unavailable">The remembered folder choice is no longer available. New media will default to the App Library. Explicitly select a folder again when you need a folder copy. Tasks with old invalid permissions will not automatically recreate copies; the original is kept.</string>
+    <string name="ordinary_destination_notice_location_unavailable">The ordinary media save location is temporarily unavailable. Existing originals are kept. Please resume checking unconfirmed extra copies.</string>
+    <string name="ordinary_destination_notice_location_busy">The save location operation is temporarily busy. Please try again later.</string>
+    <string name="ordinary_destination_copy_kind_album">Album copy</string>
+    <string name="ordinary_destination_copy_kind_folder">Folder copy</string>
+    <string name="ordinary_destination_copy_not_selected">%1$s: not selected for this media</string>
+    <string name="ordinary_destination_copy_waiting_for_library">%1$s: waiting for this media to be verified and saved in the App Library</string>
+    <string name="ordinary_destination_copy_waiting_to_copy">%1$s: waiting to copy</string>
+    <string name="ordinary_destination_copy_verified_saved">%1$s: fully verified and saved</string>
+    <string name="ordinary_destination_copy_incomplete">%1$s: incomplete. This copy operation will not delete the App Library original. Check the source in the library, then explicitly choose Save a copy again</string>
+    <string name="ordinary_destination_copy_check_required">%1$s: in progress or awaiting verification of the result. Please resume checking. No duplicate copy will be created automatically</string>
+</resources>

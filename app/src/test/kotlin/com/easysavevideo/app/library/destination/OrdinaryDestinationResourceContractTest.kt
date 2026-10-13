@@ -87,10 +87,10 @@ class OrdinaryDestinationResourceContractTest {
 
     @Test fun fixedCopyUsesCompositionResourcesOnTheExistingRealEntryPoints() {
         val references = Regex("R\\.string\\.(ordinary_destination_[a-z_]+)").findAll(ui + mapper)
-            .map { it.groupValues[1] }.toSet()
+            .map { it.groupValues[1] }.filterNot { it.startsWith(prefix + "notice_") || it.startsWith(prefix + "copy_") }.toSet()
         assertEquals(expectedKeys, references)
         assertTrue(ui.contains("import androidx.compose.ui.res.stringResource"))
-        // This file owns only fixed copy plus the explicitly deferred runtime strings below.
+        // All app-generated display text resolves through the current Composition.
         assertFalse(ui.contains('"'))
         assertFalse(Regex("[\\u4e00-\\u9fff]").containsMatchIn(ui + mapper))
         listOf("Locale.getDefault", "getString(", "remember {", "LaunchedEffect", "DisposableEffect")
@@ -118,7 +118,7 @@ class OrdinaryDestinationResourceContractTest {
             Regex("runtime\\.([A-Za-z]+)\\(").findAll(ui).map { it.groupValues[1] }.toList())
     }
 
-    @Test fun busyFolderAndSavedRowGatesAndDeferredRuntimeCopyRemainUnchanged() {
+    @Test fun busyFolderAndSavedRowGatesAndTypedDisplayConsumersRemainUnchanged() {
         val ready = "runtime.ready && !runtime.savingPreference && !runtime.choosingFolder"
         assertEquals(listOf(ready, ready, ready, "runtime.hasRememberedFolder"),
             Regex("enabled = ([^,\\n)]+)").findAll(ui).map { it.groupValues[1].trim() }.toList())
@@ -127,8 +127,10 @@ class OrdinaryDestinationResourceContractTest {
             "if (runtime.hasRememberedFolder) EsvButton", "if (runtime.choosingFolder) EsvButton",
             "if (runtime.admitting) EsvText", "if (!runtime.asking)", "val notice = runtime.notice ?: return",
             "runtime.statuses.filter { it.internalSaved }.take(8).forEach { status ->",
-            "if (ordinaryCopyCanCancel(status)) EsvButton", "runtime.notice?.let {", "EsvText(it,",
-            "EsvText(notice)", "EsvText(ordinaryCopyStatus(status),",
+            "if (ordinaryCopyCanCancel(status)) EsvButton", "runtime.notice?.let {", "EsvText(stringResource(ordinaryDestinationNoticeResource(it)),",
+            "EsvText(stringResource(ordinaryDestinationNoticeResource(notice)))", "val display = ordinaryCopyDisplay(status)",
+            "EsvText(stringResource(ordinaryCopyStateResource(display.state),",
+            "stringResource(ordinaryCopyKindResource(display.kind))), style = v.captionTextStyle)",
             "heightIn(max = 600.dp)", "verticalScroll(rememberScrollState())"
         ).forEach { assertTrue(it, ui.contains(it)) }
     }

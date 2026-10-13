@@ -146,8 +146,9 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
             delay(100)
         }
     }
-    val optionsContent: @Composable (Modifier) -> Unit = { panelModifier ->
-        Column(panelModifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner))
+    val optionsContent: @Composable (Modifier, DiscoveryFilterPanelPresentation) -> Unit = { panelModifier, presentation ->
+        val panel = discoveryFilterPanelVisuals(v, presentation)
+        Column(panelModifier.fillMaxWidth().background(panel.background, RoundedCornerShape(panel.corner))
             .padding(v.spacingLarge).verticalScroll(optionsScroll), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
             EsvText(stringResource(R.string.flow_discoveryscreen_21), style = v.titleTextStyle)
             EsvButton(stringResource(R.string.flow_discoveryscreen_22), onClick = { options = false })
@@ -266,7 +267,9 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
     val optionsContentState = rememberUpdatedState(optionsContent)
     // Move the same composition: source-editor local drafts/claims survive dialog/sidebar changes.
     val optionsPanel = remember {
-        movableContentOf<Modifier> { modifier -> optionsContentState.value(modifier) }
+        movableContentOf<Modifier, DiscoveryFilterPanelPresentation> { modifier, presentation ->
+            optionsContentState.value(modifier, presentation)
+        }
     }
     EsvBackdrop(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxSize().padding(v.spacingMedium), horizontalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
@@ -393,11 +396,11 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
 
             }
         }
-        if (options && paneLayout.split) optionsPanel(Modifier.width(paneLayout.sideWidthDp.dp).fillMaxHeight())
+        if (options && paneLayout.split) optionsPanel(Modifier.width(paneLayout.sideWidthDp.dp).fillMaxHeight(), DiscoveryFilterPanelPresentation.INLINE)
         }
     }
     if (options && !paneLayout.split) Dialog(onDismissRequest = { options = false }) {
-        optionsPanel(Modifier.heightIn(max = maxHeight.coerceAtMost(680.dp)))
+        optionsPanel(Modifier.heightIn(max = maxHeight.coerceAtMost(680.dp)), DiscoveryFilterPanelPresentation.FLOATING)
     }
 
     safeDisableConfirm?.let { captured -> Dialog(onDismissRequest = { safeDisableConfirm = null }) {

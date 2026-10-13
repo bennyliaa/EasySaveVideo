@@ -38,9 +38,8 @@ fun OrdinaryDestinationSettings(runtime: AndroidOrdinaryDestinationRuntime) {
 @Composable
 fun OrdinaryDestinationNotice(runtime: AndroidOrdinaryDestinationRuntime) {
     val v = LocalEsvVisuals.current
-    // Runtime notices remain source text until the typed-message migration.
     runtime.notice?.let {
-        EsvText(it, style = v.captionTextStyle)
+        EsvText(stringResource(ordinaryDestinationNoticeResource(it)), style = v.captionTextStyle)
         EsvButton(stringResource(R.string.ordinary_destination_close_notice), onClick = runtime::clearNotice)
     }
     if (runtime.admitting) EsvText(stringResource(R.string.ordinary_destination_admitting), style = v.captionTextStyle)
@@ -55,7 +54,7 @@ fun OrdinaryDestinationDialog(runtime: AndroidOrdinaryDestinationRuntime) {
             Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingLarge),
                 verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
                 EsvText(stringResource(R.string.ordinary_destination_title), style = v.titleTextStyle)
-                EsvText(notice)
+                EsvText(stringResource(ordinaryDestinationNoticeResource(notice)))
                 EsvButton(stringResource(R.string.ordinary_destination_acknowledge), onClick = runtime::clearNotice)
             }
         }
@@ -84,8 +83,9 @@ fun OrdinaryDestinationHistory(runtime: AndroidOrdinaryDestinationRuntime) {
     OrdinaryDestinationNotice(runtime)
     runtime.statuses.filter { it.internalSaved }.take(8).forEach { status ->
         EsvText(stringResource(R.string.ordinary_destination_task_summary, status.creationId.take(8)), style = v.captionTextStyle)
-        // Copy status remains source text until the typed-message migration.
-        EsvText(ordinaryCopyStatus(status), style = v.captionTextStyle)
+        val display = ordinaryCopyDisplay(status)
+        EsvText(stringResource(ordinaryCopyStateResource(display.state),
+            stringResource(ordinaryCopyKindResource(display.kind))), style = v.captionTextStyle)
         if (ordinaryCopyCanCancel(status)) EsvButton(stringResource(R.string.ordinary_destination_cancel_copy), onClick = { runtime.cancelCopy(status.creationId) })
     }
     EsvText(stringResource(R.string.ordinary_destination_history_notice), style = v.captionTextStyle, color = v.colors.muted)

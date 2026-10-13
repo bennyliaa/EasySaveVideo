@@ -61,7 +61,11 @@ corner and state visuals; custom inputs retain control corners and48dp host mini
   host even on a wide window. HLS keeps its separate existing modal path. Candidate inner
   spacing4 and panel spacing12 now consume the remaining added spacing tokens.
 
-Discovery's shared filter presentation is deliberately not migrated by this bounded change.
+The earlier bounded token slice deliberately left Discovery's shared filter presentation unchanged.
+The later Discovery filter-role slice now supplies explicit INLINE (surface/card) and FLOATING
+(elevated/sheet) from the actual hosts, retaining spacingLarge padding and one movableContent.
+Its separate verification is recorded in DISCOVERY_FILTER_PANEL_ROLE_20261013.md. The floating
+host remains the existing Dialog; this does not implement a bottom Sheet or claim visual parity.
 Separate success/warning, selected/loading, scrim/system-bar token coverage, all-component state
 coverage, full image/lease scenarios and the complete original Token acceptance remain future
 work; this map is not a declaration that all original required tokens are complete.

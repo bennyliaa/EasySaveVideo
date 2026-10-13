@@ -1,0 +1,45 @@
+{
+  "result": "PASS_SOURCE_JVM_ONLY_PENDING_PUBLICATION",
+  "depends_on_frozen_manifest": "8a56fddb73eff3249fa71bb29fb24ee260dcb915d302f8e845d3d0a464432cfc",
+  "final_run": "build1.log",
+  "offline": true,
+  "commands": [
+    ":app:testDebugUnitTest",
+    ":app:compileDebugKotlin",
+    ":app:compileReleaseKotlin",
+    ":app:lintDebug",
+    ":app:lintRelease",
+    ":app:verifyRuntimeAdmission"
+  ],
+  "app_tests_executed": {
+    "tests": 1870,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_tests_executed": 6,
+  "production_compilers": "Debug/Release executed PASS build1",
+  "lint_tasks": "Debug/Release PASS final build1",
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "runtime_exact_artifacts": 90,
+  "theme_tests": "NOT_RERUN_THIS_GROUP",
+  "not_run": [
+    "APK",
+    "device/emulator",
+    "open-panel window transitions",
+    "Compose event ordering",
+    "editor draft and scroll preservation on device",
+    "200% rendering",
+    "TalkBack",
+    "PPT/screenshots"
+  ]
+}
