@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_copy_origin">Source: %1$s</string>
+    <string name="browser_copy_third_party_cookies">Allow third-party cookies</string>
+    <string name="browser_copy_restore_tabs">Save tab addresses for restoration</string>
+    <string name="browser_copy_active_limit">Active webpage limit: %1$d</string>
+    <string name="browser_copy_toggle">%1$s: %2$s</string>
+    <string name="browser_copy_on">On</string>
+    <string name="browser_copy_off">Off</string>
+    <string name="browser_copy_error_tls">The website security certificate could not be verified. Connection refused.</string>
+    <string name="browser_copy_error_renderer">The webpage rendering process has stopped</string>
+    <string name="browser_copy_error_timeout">The webpage took too long to load</string>
+    <string name="browser_copy_error_network">Network connection unavailable</string>
+    <string name="browser_copy_error_http">The website returned an error</string>
+    <string name="browser_copy_error_unavailable">The webpage cannot be opened right now</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_copy_origin">来源：%1$s</string>
+    <string name="browser_copy_third_party_cookies">允许第三方 Cookie</string>
+    <string name="browser_copy_restore_tabs">保存标签地址以供恢复</string>
+    <string name="browser_copy_active_limit">活动网页上限：%1$d</string>
+    <string name="browser_copy_toggle">%1$s：%2$s</string>
+    <string name="browser_copy_on">开</string>
+    <string name="browser_copy_off">关</string>
+    <string name="browser_copy_error_tls">网站安全证书无法验证，已拒绝连接</string>
+    <string name="browser_copy_error_renderer">网页渲染进程已停止</string>
+    <string name="browser_copy_error_timeout">网页加载超时</string>
+    <string name="browser_copy_error_network">网络连接不可用</string>
+    <string name="browser_copy_error_http">网站返回了错误</string>
+    <string name="browser_copy_error_unavailable">网页暂时无法打开</string>
+</resources>

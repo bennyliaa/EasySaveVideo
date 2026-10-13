@@ -1,0 +1,51 @@
+{
+  "time_utc": "2026-10-13T05:20:51.551954+00:00",
+  "scope": "BrowserScreen finite bilingual copy; 13 paired resources",
+  "baseline": "Wi-Fi-only frozen handoff 20261013; app test baseline 1742",
+  "commands": [
+    {
+      "log": "aggregate.log",
+      "result": "SUCCESS; 67 tasks, 28 executed, 39 up-to-date",
+      "tests": "1747 actual; 0 failures/errors/skipped",
+      "compile": "Debug and Release Kotlin actual",
+      "lint": "Debug actual"
+    },
+    {
+      "log": "final-aggregate.log",
+      "command": "run-gradle.sh --offline :app:compileDebugKotlin :app:compileReleaseKotlin :app:testDebugUnitTest :app:lintDebug :app:lintRelease",
+      "result": "SUCCESS; 75 tasks, 6 executed, 69 up-to-date",
+      "compile_and_tests": "UP-TO-DATE against unchanged source after first actual run",
+      "lint": "Release actual; Debug up-to-date"
+    }
+  ],
+  "app_tests": {
+    "tests": 1747,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_contract_tests": 5,
+  "lint": {
+    "debug": {
+      "Warning": 60,
+      "Hint": 8
+    },
+    "release": {
+      "Warning": 60,
+      "Hint": 8
+    }
+  },
+  "lint_affected_files_issues": 0,
+  "independent_review": "PASS; no blocking findings",
+  "not_run": [
+    "Device/emulator",
+    "Visual rendering, font scaling, TalkBack",
+    "APK build/install",
+    "Real WebView acceptance"
+  ],
+  "limitations": [
+    "Not whole-app bilingual completion",
+    "Existing 60 warnings and 8 hints in each lint variant retained"
+  ],
+  "source_released": true
+}

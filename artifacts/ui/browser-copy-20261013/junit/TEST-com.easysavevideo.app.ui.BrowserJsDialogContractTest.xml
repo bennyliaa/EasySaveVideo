@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.ui.BrowserJsDialogContractTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-13T05:17:23.701Z" hostname="b5f39a690d03" time="0.024">
+  <properties/>
+  <testcase name="previewIsNotAnInteractiveDialogSurface" classname="com.easysavevideo.app.ui.BrowserJsDialogContractTest" time="0.001"/>
+  <testcase name="consecutiveDialogsRestartAtSourceAndMessage" classname="com.easysavevideo.app.ui.BrowserJsDialogContractTest" time="0.0"/>
+  <testcase name="backgroundNavigationOnlyCancelsItsOwnView" classname="com.easysavevideo.app.ui.BrowserJsDialogContractTest" time="0.0"/>
+  <testcase name="promptInputIsEphemeralMaskedAndSecure" classname="com.easysavevideo.app.ui.BrowserJsDialogContractTest" time="0.001"/>
+  <testcase name="bothLocalesMatchKeysAndFormatArguments" classname="com.easysavevideo.app.ui.BrowserJsDialogContractTest" time="0.021"/>
+  <testcase name="hostCompletesThreeKindsAndRefusesBeforeUnload" classname="com.easysavevideo.app.ui.BrowserJsDialogContractTest" time="0.001"/>
+  <testcase name="boundedDialogHasOneScrollOwnerWithoutWeightedStarvation" classname="com.easysavevideo.app.ui.BrowserJsDialogContractTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

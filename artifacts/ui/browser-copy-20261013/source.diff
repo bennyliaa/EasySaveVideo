@@ -1,0 +1,69 @@
+--- before/app/build.gradle.kts
++++ after/app/build.gradle.kts
+@@ -85,7 +85,7 @@
+ val contractResourceInputs = fileTree("src/main/res") {
+     for (locale in listOf("values", "values-zh-rCN")) {
+         for (resource in listOf(
+-            "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
++            "browser_copy.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
+             "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
+             "library_batch_export.xml", "library_multi.xml", "provider_copy.xml",
+             "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "final_*.xml"
+--- before/app/src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt
++++ after/app/src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt
+@@ -252,7 +252,7 @@
+                         if (showEmpty) Column(Modifier.fillMaxSize().background(visuals.colors.bg).padding(visuals.spacingLarge)
+                             .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.Center,
+                             horizontalAlignment = Alignment.CenterHorizontally) {
+-                            EsvText(if (!browser.platformAvailable) stringResource(R.string.flow_web_unavailable) else if (selected?.loadState == BrowserLoadState.CANCELLED) stringResource(R.string.flow_web_stopped) else if (selected?.error != null) errorText(selected.error!!.code) else stringResource(R.string.flow_browse_empty),
++                            EsvText(if (!browser.platformAvailable) stringResource(R.string.flow_web_unavailable) else if (selected?.loadState == BrowserLoadState.CANCELLED) stringResource(R.string.flow_web_stopped) else if (selected?.error != null) stringResource(browserErrorResource(selected.error!!.code)) else stringResource(R.string.flow_browse_empty),
+                                 style = visuals.titleTextStyle)
+                             Spacer(Modifier.height(visuals.spacingMedium))
+                             if (selected?.address == null && onVideoSearchDraft != null) {
+@@ -341,7 +341,7 @@
+     filePrompt?.let { choice -> EsvDialog(onDismiss = onFileCancel) {
+         Column(verticalArrangement = Arrangement.spacedBy(visuals.spacingMedium)) {
+             EsvText(stringResource(R.string.flow_browserscreen_27), style = visuals.titleTextStyle)
+-            EsvText("来源：${choice.origin}")
++            EsvText(stringResource(R.string.browser_copy_origin, choice.origin))
+             EsvText(stringResource(R.string.flow_browserscreen_29))
+             EsvButton(stringResource(R.string.flow_browserscreen_30), onClick = { onFileConfirm(choice) })
+             EsvButton(stringResource(R.string.flow_browserscreen_26), onClick = onFileCancel)
+@@ -369,11 +369,11 @@
+         EsvButton(stringResource(R.string.flow_browserscreen_33), onClick = onClose)
+         Toggle("JavaScript", settings.browser.javaScriptEnabled) { update(settings.copy(browser = settings.browser.copy(javaScriptEnabled = it))) }
+         EsvText(stringResource(R.string.flow_browserscreen_34), style = v.captionTextStyle)
+-        Toggle("允许第三方 Cookie", settings.browser.acceptThirdPartyCookies) { update(settings.copy(browser = settings.browser.copy(acceptThirdPartyCookies = it))) }
++        Toggle(stringResource(R.string.browser_copy_third_party_cookies), settings.browser.acceptThirdPartyCookies) { update(settings.copy(browser = settings.browser.copy(acceptThirdPartyCookies = it))) }
+         EsvText(stringResource(R.string.flow_browserscreen_35), style = v.captionTextStyle)
+-        Toggle("保存标签地址以供恢复", settings.browser.restoreTabs) { update(settings.copy(browser = settings.browser.copy(restoreTabs = it))) }
++        Toggle(stringResource(R.string.browser_copy_restore_tabs), settings.browser.restoreTabs) { update(settings.copy(browser = settings.browser.copy(restoreTabs = it))) }
+         EsvText(stringResource(R.string.flow_browserscreen_36), style = v.captionTextStyle)
+-        EsvText("活动网页上限：${settings.browser.maxActiveWebViews}")
++        EsvText(stringResource(R.string.browser_copy_active_limit, settings.browser.maxActiveWebViews))
+         Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+             EsvButton(stringResource(R.string.flow_browserscreen_38), onClick = { update(settings.copy(browser = settings.browser.copy(maxActiveWebViews = settings.browser.maxActiveWebViews - 1))) }, enabled = settings.browser.maxActiveWebViews > 1)
+             EsvButton(stringResource(R.string.flow_browserscreen_39), onClick = { update(settings.copy(browser = settings.browser.copy(maxActiveWebViews = settings.browser.maxActiveWebViews + 1))) }, enabled = settings.browser.maxActiveWebViews < 4)
+@@ -390,13 +390,14 @@
+     }
+ }
+ @Composable private fun Toggle(label: String, enabled: Boolean, onChange: (Boolean) -> Unit) {
+-    EsvButton("$label：${if (enabled) "开" else "关"}", onClick = { onChange(!enabled) }, modifier = Modifier.fillMaxWidth())
++    EsvButton(stringResource(R.string.browser_copy_toggle, label,
++        stringResource(if (enabled) R.string.browser_copy_on else R.string.browser_copy_off)), onClick = { onChange(!enabled) }, modifier = Modifier.fillMaxWidth())
+ }
+-private fun errorText(code: ErrorCode): String = when (code) {
+-    ErrorCode.TLS_REJECTED -> "网站安全证书无法验证，已拒绝连接"
+-    ErrorCode.RENDERER_GONE -> "网页渲染进程已停止"
+-    ErrorCode.DEADLINE_EXCEEDED, ErrorCode.NETWORK_TIMEOUT -> "网页加载超时"
+-    ErrorCode.NETWORK_UNAVAILABLE -> "网络连接不可用"
+-    ErrorCode.HTTP_FAILURE -> "网站返回了错误"
+-    else -> "网页暂时无法打开"
++internal fun browserErrorResource(code: ErrorCode): Int = when (code) {
++    ErrorCode.TLS_REJECTED -> R.string.browser_copy_error_tls
++    ErrorCode.RENDERER_GONE -> R.string.browser_copy_error_renderer
++    ErrorCode.DEADLINE_EXCEEDED, ErrorCode.NETWORK_TIMEOUT -> R.string.browser_copy_error_timeout
++    ErrorCode.NETWORK_UNAVAILABLE -> R.string.browser_copy_error_network
++    ErrorCode.HTTP_FAILURE -> R.string.browser_copy_error_http
++    else -> R.string.browser_copy_error_unavailable
+ }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.easysavevideo.app.ui.shell.RootNavigationTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-13T05:17:23.809Z" hostname="b5f39a690d03" time="0.005">
+  <properties/>
+  <testcase name="oldSavedAuxiliaryTailIsDiscardedAfterRootRestore" classname="com.easysavevideo.app.ui.shell.RootNavigationTest" time="0.002"/>
+  <testcase name="oversizedAuxiliaryChainIsBoundedAndDoesNotNavigateOrSave" classname="com.easysavevideo.app.ui.shell.RootNavigationTest" time="0.0"/>
+  <testcase name="auxiliaryToDifferentRootsSavesOnlyLegitimateRootState" classname="com.easysavevideo.app.ui.shell.RootNavigationTest" time="0.0"/>
+  <testcase name="ordinaryRootSwitchStillSavesAndRestoresRootMarker" classname="com.easysavevideo.app.ui.shell.RootNavigationTest" time="0.0"/>
+  <testcase name="sameRootDoesNotPopOrNavigate" classname="com.easysavevideo.app.ui.shell.RootNavigationTest" time="0.0"/>
+  <testcase name="allAuxiliaryPagesReturnToCurrentRootByPopOnly" classname="com.easysavevideo.app.ui.shell.RootNavigationTest" time="0.003"/>
+  <testcase name="rejectsNonRootTargetWithoutChangingState" classname="com.easysavevideo.app.ui.shell.RootNavigationTest" time="0.0"/>
+  <testcase name="blockedPopDoesNotSaveAuxiliaryOrClaimSuccess" classname="com.easysavevideo.app.ui.shell.RootNavigationTest" time="0.0"/>
+  <testcase name="recreatedAuxiliaryOnlyGraphDoesNotSaveAuxiliaryAsRoot" classname="com.easysavevideo.app.ui.shell.RootNavigationTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
