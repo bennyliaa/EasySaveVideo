@@ -1,0 +1,8 @@
+{
+  "baseline": "24bc104a51e1b87dc2752c01bd616be29b44dc08",
+  "comparison": "complete multiset of issue id/severity/message, not source locations",
+  "equal": {
+    "debug": true,
+    "release": true
+  }
+}

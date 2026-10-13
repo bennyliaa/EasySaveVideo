@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="editor_back_title">继续处理，还是请求安全停止？</string>
+    <string name="editor_back_body">视频仍在处理或验证。你可以继续处理，或请求安全停止并留在此页核对结果。如果最终入库提交已获准，停止请求可能已来不及。原件保留。</string>
+    <string name="editor_back_continue">继续处理</string>
+    <string name="editor_back_request_stop">请求安全停止并留在此页</string>
+    <string name="editor_back_publication_title">核对入库结果</string>
+    <string name="editor_back_publication_body">正在入库，请留在此页查看实际结果和状态。这不代表视频已经完成，也不代表停止请求已被接受。原件保留。</string>
+    <string name="editor_back_check_status">查看结果和状态</string>
+    <string name="editor_back_stop_requested">已请求安全停止，正在等待处理和媒体资源实际退出。请留在此页核对结果；原件保留。</string>
+    <string name="editor_back_stop_too_late">最终入库提交已获准，不能再确认停止。正在核对实际入库结果；原件保留。</string>
+    <string name="editor_back_stop_waiting">已请求停止，但后台处理或文件资源仍未确认退出。相关文件保留，不能开始新编辑。可继续等待，或完全退出应用后重新打开进行恢复检查。</string>
+</resources>

@@ -31,12 +31,16 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.easysavevideo.app.theme.*
+import com.easysavevideo.app.editor.EditorBackPage
+import com.easysavevideo.app.editor.EditorBackConfirmation
+import com.easysavevideo.app.editor.EditorBackRequest
 import com.easysavevideo.library.MediaReadRef
 import com.easysavevideo.library.edit.EditCompression
 import com.easysavevideo.library.edit.EditGeometry
@@ -50,11 +54,15 @@ import java.util.Locale
  * Back, crop cancellation and safe stop are deliberately independent of feature entitlements.
  */
 @Composable
-fun EditorScreen(
+internal fun EditorScreen(
     state: EditorViewState,
+    backPage: EditorBackPage,
     onDraftChange: (EditorDraft) -> Unit,
     onSubmit: (EditorDraft) -> Unit,
     onCancel: () -> Unit,
+    onRequestBack: () -> EditorBackRequest,
+    onDismissBack: (EditorBackConfirmation) -> Unit,
+    onConfirmBackStop: (EditorBackConfirmation) -> Unit,
     onBack: () -> Unit,
     openPreviewMedia: (MediaReadRef) -> FileInputStream,
     onPreviewReleaseUnconfirmed: () -> Unit,
@@ -67,7 +75,6 @@ fun EditorScreen(
     }
     fun changeDraft(value: EditorDraft) { requestedPreview = null; onDraftChange(value) }
     val cancelEdit: () -> Unit = { requestedPreview = null; onCancel() }
-    val leaveEditor: () -> Unit = { requestedPreview = null; onBack() }
     LaunchedEffect(state.foreground, state.phase, state.draft.selectedSegment?.reference, state.displayGeometries, state.completedReference) {
         if (editorActivePreview(state, requestedPreview) == null) requestedPreview = null
     }
@@ -77,16 +84,38 @@ fun EditorScreen(
     val pendingSubmit = state.submissionPending || pendingSubmissionRevision == state.submissionRevision
     val editable = state.editable && !pendingSubmit
     var cropSegmentId by remember { mutableStateOf<Long?>(null) }
+    var backDialog by remember(backPage) { mutableStateOf<EditorBackDialog?>(null) }
+    fun dismissBackDialog(dialog: EditorBackDialog) {
+        (dialog.request as? EditorBackRequest.ConfirmStop)?.let { onDismissBack(it.confirmation) }
+        if (backDialog === dialog) backDialog = null
+    }
+    val requestBack: () -> Unit = {
+        val dialog = backDialog
+        when {
+            cropSegmentId != null -> cropSegmentId = null
+            dialog != null -> dismissBackDialog(dialog)
+            else -> when (val request = onRequestBack()) {
+                EditorBackRequest.Ignored -> Unit
+                EditorBackRequest.Legacy -> { requestedPreview = null; onBack() }
+                else -> backDialog = EditorBackDialog(request)
+            }
+        }
+    }
+    LaunchedEffect(state.foreground, state.phase, backDialog) {
+        if (!state.foreground || state.phase !in setOf(EditorPhase.PROCESSING, EditorPhase.VERIFYING, EditorPhase.PUBLISHING)) {
+            backDialog?.let(::dismissBackDialog)
+        }
+    }
     val error = editorDraftError(draft, state.displayGeometries)
     val publishedReference = editorPublishedReference(state)
     val status = stringResource(editorPhaseResource(state.phase, state.completedReference != null))
-    BackHandler(onBack = leaveEditor)
+    BackHandler(onBack = requestBack)
     val headerItems: LazyListScope.() -> Unit = {
         item(key = "header") {
             Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvText(stringResource(R.string.advanced_copy_1), style = v.titleTextStyle)
                 EditorResponsivePair(first = { modifier ->
-                    EsvButton(stringResource(R.string.advanced_copy_2), leaveEditor, modifier = modifier)
+                    EsvButton(stringResource(R.string.advanced_copy_2), requestBack, modifier = modifier)
                 }, second = { modifier ->
                     EsvButton(stringResource(R.string.advanced_copy_3), cancelEdit, modifier = modifier)
                 })
@@ -101,6 +130,9 @@ fun EditorScreen(
                 EsvText(status, modifier = Modifier.semantics { stateDescription = status },
                     color = if (state.phase == EditorPhase.FAILED || state.phase == EditorPhase.BLOCKED) v.colors.error else v.colors.text)
                 if (!state.foreground) EsvText(stringResource(R.string.advanced_copy_4), style = v.captionTextStyle, color = v.colors.muted)
+                editorStopFeedbackResource(state.phase, state.stopFeedback)?.let {
+                    EsvText(stringResource(it), style = v.captionTextStyle)
+                }
                 state.notice?.let { EsvDiagnosticNotice(it) }
                 editorRestorationResource(state.draftRestoration)?.let {
                     EsvText(stringResource(it), style = v.captionTextStyle, color = v.colors.muted)
@@ -305,6 +337,45 @@ fun EditorScreen(
                 if (editable) changeDraft(updateEditorSegment(draft, cropSegment.id) { it.copy(crop = crop) })
                 cropSegmentId = null
             }, onCancel = { cropSegmentId = null })
+    }
+    backDialog?.let { dialog ->
+        DisposableEffect(dialog) { onDispose {
+            (dialog.request as? EditorBackRequest.ConfirmStop)?.let { onDismissBack(it.confirmation) }
+        } }
+        EditorBackDialogContent(dialog.request,
+            onDismiss = { dismissBackDialog(dialog) },
+            onStop = {
+                val request = dialog.request as? EditorBackRequest.ConfirmStop
+                if (backDialog === dialog && request != null) {
+                    onConfirmBackStop(request.confirmation)
+                    if (backDialog === dialog) backDialog = null
+                }
+            })
+    }
+}
+
+/** A fresh identity for each visible dialog, including status-only dialogs with no command. */
+private class EditorBackDialog(val request: EditorBackRequest)
+
+@Composable
+private fun EditorBackDialogContent(request: EditorBackRequest, onDismiss: () -> Unit, onStop: () -> Unit) {
+    val v = LocalEsvVisuals.current
+    val confirming = request is EditorBackRequest.ConfirmStop
+    val title = stringResource(if (confirming) R.string.editor_back_title else R.string.editor_back_publication_title)
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        Box(Modifier.fillMaxSize().systemBarsPadding().padding(v.spacingMedium), contentAlignment = Alignment.Center) {
+            Column(Modifier.widthIn(max = 600.dp).fillMaxWidth()
+                .background(v.colors.elevated, RoundedCornerShape(v.sheetCorner))
+                .semantics { paneTitle = title }.verticalScroll(rememberScrollState()).padding(v.spacingMedium),
+                verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                EsvText(title, style = v.titleTextStyle)
+                EsvText(stringResource(if (confirming) R.string.editor_back_body else R.string.editor_back_publication_body))
+                EsvButton(stringResource(if (confirming) R.string.editor_back_continue else R.string.editor_back_check_status),
+                    onClick = onDismiss, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp))
+                if (confirming) EsvButton(stringResource(R.string.editor_back_request_stop), onClick = onStop,
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp))
+            }
+        }
     }
 }
 

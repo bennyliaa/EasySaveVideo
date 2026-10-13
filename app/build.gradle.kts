@@ -85,6 +85,7 @@ dependencies {
 val contractResourceInputs = fileTree("src/main/res") {
     for (locale in listOf("values", "values-zh-rCN")) {
         for (resource in listOf(
+            "editor_back.xml",
             "recording_notification.xml", "save_authentication_origin.xml", "save_runtime_notice.xml", "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "input_clear.xml",
             "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "browser_permission_notice.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
             "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
@@ -94,6 +95,12 @@ val contractResourceInputs = fileTree("src/main/res") {
     }
 }
 val contractSourceInputs = files(
+    "src/main/kotlin/com/easysavevideo/app/editor/EditorBackPolicy.kt",
+    "src/main/kotlin/com/easysavevideo/app/editor/EditorDeadlineGuard.kt",
+    "src/main/kotlin/com/easysavevideo/app/editor/ui/EditorBackResources.kt",
+    "src/main/kotlin/com/easysavevideo/app/editor/ui/EditorDraftCheckpoint.kt",
+    "src/main/kotlin/com/easysavevideo/app/editor/storage/AndroidEditStorage.kt",
+    "src/main/kotlin/com/easysavevideo/app/editor/workflow/EditWorkflow.kt",
     "src/main/kotlin/com/easysavevideo/app/editor/ui/EditorPresentation.kt",
     "src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationReceipt.kt",
     "src/main/kotlin/com/easysavevideo/app/recording/RecordingNotificationStatus.kt",

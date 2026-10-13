@@ -42,6 +42,7 @@ import com.easysavevideo.app.save.LibraryMediaPreview
 import com.easysavevideo.app.library.AndroidLibraryRuntime
 import com.easysavevideo.app.editor.ui.EditorScreen
 import com.easysavevideo.app.editor.ui.EditorDraftCheckpointCodec
+import com.easysavevideo.app.editor.EditorBackRequest
 import com.easysavevideo.app.library.LibraryScreen
 import com.easysavevideo.app.library.LibraryUnavailableScreen
 import com.easysavevideo.app.library.LibraryExportDialog
@@ -349,11 +350,30 @@ class MainActivity : ComponentActivity() {
                     onBack = { previewReceipt = null }, onReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
                 else if (libraryReference != null) LibraryMediaPreview(libraryReference, isForeground, saves::openLibraryMedia,
                     onBack = { libraryPreviewReference = null }, onReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
-                else if (route == EsvDestination.EDITOR && editor != null) EditorScreen(editor.state,
-                    onDraftChange = editor::changeDraft, onSubmit = editor::submit,
-                    onCancel = { editor.cancelDraftRestoration(); editor.cancel() },
-                    onBack = { editor.cancelDraftRestoration(); editor.cancel(); backTo(EsvDestination.LIBRARY); library?.refresh() },
-                    openPreviewMedia = saves::openLibraryMedia, onPreviewReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
+                else if (route == EsvDestination.EDITOR && editor != null) {
+                    // Capture this composition's exact entry, not a route string that can be reused.
+                    val editorBackEntry = remember(editor, controller) { controller.currentBackStackEntry }
+                    val editorBackGeneration = newTabInputGeneration
+                    val editorBackPage = remember(editor, editorBackEntry, editorBackGeneration, isForeground) { editor.openBackPage() }
+                    DisposableEffect(editor, editorBackPage) { onDispose { editor.closeBackPage(editorBackPage) } }
+                    fun editorBackHostCurrent(): Boolean = isForeground && !isDestroyed && !isFinishing &&
+                        libraryPreviewReference == null && saves.editor === editor && navController === controller &&
+                        editorBackEntry != null && controller.currentBackStackEntry === editorBackEntry &&
+                        editorBackEntry.destination.route == EsvDestination.EDITOR.route &&
+                        newTabInputGeneration == editorBackGeneration && editor.isBackPageCurrent(editorBackPage)
+                    EditorScreen(editor.state, backPage = editorBackPage,
+                        onDraftChange = editor::changeDraft, onSubmit = editor::submit,
+                        onCancel = { editor.cancelDraftRestoration(); editor.cancel() },
+                        onRequestBack = { if (editorBackHostCurrent()) editor.requestBack(editorBackPage) else EditorBackRequest.Ignored },
+                        onDismissBack = { editor.dismissBack(editorBackPage, it) },
+                        onConfirmBackStop = { if (editorBackHostCurrent()) editor.confirmBackStop(editorBackPage, it) },
+                        onBack = {
+                            if (editorBackHostCurrent() && editor.consumeLegacyBack(editorBackPage)) {
+                                editor.cancelDraftRestoration(); editor.cancel(); backTo(EsvDestination.LIBRARY); library?.refresh()
+                            }
+                        },
+                        openPreviewMedia = saves::openLibraryMedia, onPreviewReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
+                }
                 else if (route == EsvDestination.LIBRARY && library != null) {
                     val thumbnails = remember(library) { AndroidLibraryThumbnails(saves::openLibraryMedia, saves::retainLibraryNativeReader) }
                     DisposableEffect(thumbnails) { onDispose { thumbnails.close() } }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="editor_back_title">Keep processing or request a safe stop?</string>
+    <string name="editor_back_body">The video is still being processed or verified. You can continue, or request a safe stop and stay here while the result is checked. If final publication has already been admitted, stopping may be too late. The original is kept.</string>
+    <string name="editor_back_continue">Continue processing</string>
+    <string name="editor_back_request_stop">Request safe stop and stay</string>
+    <string name="editor_back_publication_title">Check the publication result</string>
+    <string name="editor_back_publication_body">Publication is in progress. Stay here to check the actual result and status. This does not mean the video has finished or that a stop request has been accepted. The original is kept.</string>
+    <string name="editor_back_check_status">Check result and status</string>
+    <string name="editor_back_stop_requested">Safe stop requested. Waiting for processing and media resources to exit. Stay here to check the result; the original is kept.</string>
+    <string name="editor_back_stop_too_late">Final publication has already been admitted, so stopping cannot be confirmed. Checking the actual publication result; the original is kept.</string>
+    <string name="editor_back_stop_waiting">Stop was requested, but processing or file resources have not yet confirmed exit. Files are kept and a new edit cannot start. Continue waiting, or fully exit and reopen the app for recovery checks.</string>
+</resources>

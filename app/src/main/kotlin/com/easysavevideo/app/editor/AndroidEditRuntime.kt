@@ -44,14 +44,19 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
     private var activeCancellation: EditPublicationCancellation? = null
     private var activeOperation: String? = null
     private var admissionGeneration = 0L
+    private val backGate = EditorBackGate()
     private val submissionAttempts = EditorSubmissionAttempts()
     private var pendingDestination: OrdinaryDestinationReceipt? = null
     private val deadlines = EditorDeadlineGuard(EditorTimerScheduler { delayMillis, action ->
         val callback = Runnable(action); main.postDelayed(callback, delayMillis)
         AutoCloseable { main.removeCallbacks(callback) }
-    }, onDeadline = { cancel() }, onUnconfirmedStop = {
-        state = state.copy(phase = EditorPhase.WAITING_NATIVE_RELEASE,
-            notice = "已请求停止，但后台处理或文件资源仍未确认退出。相关文件保留，不能开始新编辑。可继续等待，或完全退出应用后重新打开进行恢复检查。")
+    }, onDeadline = { cancel() }, onUnconfirmedStop = { identity ->
+        val feedback = editorUnconfirmedStopFeedback(identity, activeCancellation)
+        if (feedback != null) state = state.copy(
+            phase = if (feedback == EditorStopFeedback.CHECKING_RESULT) EditorPhase.PUBLISHING else EditorPhase.WAITING_NATIVE_RELEASE,
+            notice = if (feedback == EditorStopFeedback.CHECKING_RESULT) publicationCheckingNotice
+                else "已请求停止，但后台处理或文件资源仍未确认退出。相关文件保留，不能开始新编辑。可继续等待，或完全退出应用后重新打开进行恢复检查。",
+            stopFeedback = feedback)
     })
     private var recovered = false
     private var draftStarted = false
@@ -87,6 +92,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
     }
     fun setForeground(value: Boolean) {
         requireMain(); state = state.copy(foreground = value)
+        if (!value) backGate.revoke()
         if (!value) { admissionGeneration++; cancel() }
         else if (recovered && !state.busy && state.phase != EditorPhase.BLOCKED) inspectMissingSources()
     }
@@ -301,17 +307,44 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
         requireMain(); draftRestoreGuard.userChanged(); pendingDraftCheckpoint = null; restoringDraftCheckpoint = null
         if (state.draftRestoration == EditorDraftRestoration.RESTORING) state = state.copy(draftRestoration = EditorDraftRestoration.USER_CHANGED)
     }
+    internal fun openBackPage(): EditorBackPage { requireMain(); return backGate.openPage() }
+    internal fun closeBackPage(page: EditorBackPage) { requireMain(); backGate.closePage(page) }
+    internal fun isBackPageCurrent(page: EditorBackPage): Boolean { requireMain(); return backGate.isCurrent(page) }
+    internal fun requestBack(page: EditorBackPage): EditorBackRequest {
+        requireMain()
+        return backGate.request(page, state.foreground, state.phase, activeCancellation, activeOperation)
+    }
+    internal fun dismissBack(page: EditorBackPage, confirmation: EditorBackConfirmation) {
+        requireMain(); backGate.dismiss(page, confirmation)
+    }
+    internal fun confirmBackStop(page: EditorBackPage, confirmation: EditorBackConfirmation): EditCancelResult? {
+        requireMain()
+        val cancellation = backGate.consume(page, confirmation, state.foreground, activeCancellation, activeOperation) ?: return null
+        // Validate and consume before *any* mutation; an old dialog cannot retire a new submission.
+        admissionGeneration++
+        retireSubmission()
+        return cancelActive(cancellation)
+    }
+    internal fun consumeLegacyBack(page: EditorBackPage): Boolean {
+        requireMain(); return backGate.consumeLegacy(page, state.foreground, state.phase)
+    }
     fun cancel() {
         requireMain(); admissionGeneration++
         retireSubmission()
         val cancellation = activeCancellation
         if (cancellation != null) {
-            val result = cancellation.cancel(); deadlines.cancelled(cancellation)
-            if (state.phase != EditorPhase.WAITING_NATIVE_RELEASE) state = if (result == EditCancelResult.TOO_LATE)
-                state.copy(phase = EditorPhase.PUBLISHING, notice = "最终入库提交已开始，不能再确认取消。正在核对提交结果；原件保留。")
-            else state.copy(phase = EditorPhase.CANCELLING, notice = "已请求安全停止，等待媒体资源实际退出；原件保留。")
+            cancelActive(cancellation)
         }
         else if (state.phase == EditorPhase.PROBING) state = state.copy(phase = EditorPhase.IDLE)
+    }
+    private fun cancelActive(cancellation: EditPublicationCancellation): EditCancelResult {
+        val result = cancellation.cancel(); deadlines.cancelled(cancellation)
+        if (state.phase != EditorPhase.WAITING_NATIVE_RELEASE) state = if (result == EditCancelResult.TOO_LATE)
+            state.copy(phase = EditorPhase.PUBLISHING, notice = publicationCheckingNotice,
+                stopFeedback = EditorStopFeedback.CHECKING_RESULT)
+        else state.copy(phase = EditorPhase.CANCELLING, notice = "已请求安全停止，等待媒体资源实际退出；原件保留。",
+            stopFeedback = EditorStopFeedback.REQUESTED)
+        return result
     }
     private fun featuresAllowed(required: Set<Feature>): Boolean = required.all { feature ->
         featureGate.evaluate(FeatureRequest(feature), entitlements.snapshot(), PlatformCapabilities(required),
@@ -334,6 +367,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
         cancellation, resourceBudget = ResourceBudget(1, EditLimits.MAX_OUTPUT_BYTES))
     private fun requireMain() = check(Looper.myLooper() == Looper.getMainLooper())
     private val releaseNotice = "媒体资源退出或提交状态尚未确认，已停止新编辑且保留相关文件。请完全退出应用后重新打开进行恢复检查。"
+    private val publicationCheckingNotice = "最终入库提交已开始，不能再确认取消。正在核对提交结果；原件保留。"
 }
 
 /** Existing independent capabilities; cancellation and original viewing never call this function. */

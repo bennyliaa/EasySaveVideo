@@ -7,24 +7,27 @@ Original requirements and historical evidence are unchanged.
 
 ## 1. Source baseline and what “published” means
 
-Latest verified source publication: [1f25214fcea79113b0278ac24ddc316e6910a9f0](https://github.com/bennyliaa/EasySaveVideo/commit/1f25214fcea79113b0278ac24ddc316e6910a9f0),
-on `development/cloud-followup-20261013`, recording foreground notification typed display
-and bounded existing-session language refresh. Its receipt verifies **41 changed blobs**,
-including the complete final and first-attempt JUnit evidence ZIPs, with exact readback,
-no deletions and no forced ref update. Parent is `4f22d43d023b7db6e3051613ed02c144bf3ad75b`
-(live-original-page authentication navigation), following `55c51cd71763159b203e52ece44f09da8cab1507`
-(Discovery reading anchor and small pre-anchor packaging reports). Main remains
+Latest verified source publication: [24bc104a51e1b87dc2752c01bd616be29b44dc08](https://github.com/bennyliaa/EasySaveVideo/commit/24bc104a51e1b87dc2752c01bd616be29b44dc08),
+on `development/cloud-followup-20261013`, editor destination-attempt acknowledgement.
+Its receipt verifies **42 changed blobs**, including the complete final and first-attempt
+JUnit evidence ZIPs, with exact readback, no deletions and no forced ref update. Parent is
+`1f25214fcea79113b0278ac24ddc316e6910a9f0` (recording foreground notifications), following
+`4f22d43d023b7db6e3051613ed02c144bf3ad75b` (live-original-page authentication navigation)
+and `55c51cd71763159b203e52ece44f09da8cab1507` (Discovery reading anchor and small
+pre-anchor packaging reports). Main remains
 `ea87963dee631a498774f648c9a1dabd9f665b90`; the repository remains private.
 The scoped changed blobs are verified; whole remote-tree equality is not claimed.
 Publication is not a main merge, installation or release acceptance.
 
 The code8 Debug APK built from c794ef remains unchanged and **locally only**, with no
-upload or install. It predates all three later published source slices and contains none
-of those later changes. The editor destination-attempt acknowledgement repair is now
-source/JVM tested: build2 passed 2,050 App tests, including 24 new tests, with no failures,
-errors or skips. It awaits final evidence review and publication; native acceptance remains
-NOT_RUN. This two-document refresh also awaits its own publication. Published
-anchor, authentication-origin and notification work must not be relabeled as pending.
+upload or install. It predates all later published source slices and the current Editor
+Back repair. Editor destination-attempt acknowledgement is published in `24bc104a`:
+build2 passed 2,050 App tests, including 24 new, with no failures/errors/skips. Its failed
+first attempt and reviewed semantic-test correction remain preserved. The separate Editor
+Back confirmation/publication-feedback slice passed its first and only build with 2,077
+App tests, including 27 new, and no failures/errors/skips; publication is pending. Native
+acceptance remains NOT_RUN. This two-document refresh also awaits its own publication.
+Already published source scopes must not be relabeled as pending.
 
 The following later publications supersede the former `2986ada` editor-default checkpoint:
 
@@ -43,8 +46,10 @@ The following later publications supersede the former `2986ada` editor-default c
 | [55c51cd](https://github.com/bennyliaa/EasySaveVideo/commit/55c51cd71763159b203e52ece44f09da8cab1507) | Discovery reading anchors, exact display-only restore provenance and small c794ef packaging reports; 47 files/readbacks, APK excluded | `/workspace/shared/esv-anchor-candidate-publication-20261013/SUMMARY.json` |
 | [4f22d43](https://github.com/bennyliaa/EasySaveVideo/commit/4f22d43d023b7db6e3051613ed02c144bf3ad75b) | Explicit process-local, same-origin, still-live original-page selection; 31 files/readbacks | `/workspace/shared/esv-auth-origin-publication-20261013/SUMMARY.json` |
 | [1f25214f](https://github.com/bennyliaa/EasySaveVideo/commit/1f25214fcea79113b0278ac24ddc316e6910a9f0) | Existing recording foreground-notification text channel and bounded language refresh; 41 files/readbacks | `/workspace/shared/esv-recording-notification-publication-20261013/SUMMARY.json` |
+| [24bc104a](https://github.com/bennyliaa/EasySaveVideo/commit/24bc104a51e1b87dc2752c01bd616be29b44dc08) | Editor destination-attempt acknowledgement; 42 files/readbacks, including preserved first-failure and final evidence ZIPs | `/workspace/shared/esv-editor-destination-ack-publication-20261013/SUMMARY.json` |
 
-The three latest publication receipts and slice reports were read for this refresh;
+The latest destination-acknowledgement receipt and the current Editor Back report and
+verification were read for this refresh;
 earlier receipt-backed facts are retained as dated evidence. Receipt paths are local verification inputs,
 not portable repository attachments; commit links and the in-repository slice reports
 are the durable source references. Wi-Fi's original 77-file source/evidence freeze is
@@ -80,8 +85,8 @@ native media correctness; publication readback establishes bytes, not installed 
 Report: `docs/m11a/FULL_CLOUD_UI_REGRESSION_20261013.md`.
 Evidence: `artifacts/regression/full-ui-20261013/VERIFICATION.json`.
 This full run binds b0c5647 production bytes. It is not rerun evidence for the later
-Save-notice, reading-anchor, authentication-origin or recording-notification source, nor
-the separately source/JVM-tested editor destination acknowledgement repair. It is not a sum of overlapping slice totals:
+Save-notice, reading-anchor, authentication-origin, recording-notification or editor
+destination-acknowledgement source, nor the separately source/JVM-tested Editor Back repair. It is not a sum of overlapping slice totals:
 
 - All **13 selected module test tasks actually reran with `--rerun`**. **307 fresh JUnit
   XML suites** registered **3,149 cases: 3,147 passed, 0 failures, 0 errors, 2 skipped**. App **1,886** and
@@ -199,8 +204,8 @@ is superseded by the exact publication receipts above, not edited retroactively.
   channel/action/permission visibility and post-finish no-resurrection are NOT_RUN. See
   `docs/m11a/RECORDING_NOTIFICATION_LOCALIZATION_20261013.md` and
   `artifacts/ui/recording-notification-20261013/VERIFICATION.json`.
-- Current editor destination-attempt acknowledgement repair: **source/JVM tested,
-  awaiting final evidence review and publication**. Build2 terminated with exit 0 after
+- Published editor destination-attempt acknowledgement `24bc104a`: Build2 terminated
+  with exit 0 after
   **2,050 App tests / 24 new / 0 failures / 0 errors / 0 skips**. All ten requested tasks
   were forced and actually executed, including Debug/Release compile and lint; each lint
   retained **60 warnings/8 hints/0 errors**. Runtime admission reverified **90 artifacts**
@@ -215,10 +220,31 @@ is superseded by the exact publication receipts above, not edited retroactively.
   the complete fresh build2 supplies the final result. No APK was built or installed.
   Actual Compose ASK dismissal, retry/editor interaction and lifecycle; native editing,
   media/provider behavior; emulator/device, accessibility, PPT/pixel and Windows fixture
-  rerun remain **NOT_RUN**. Editor Back confirmation is outside the repair. Evidence:
+  rerun remain **NOT_RUN**. Editor Back confirmation was outside that earlier repair. Evidence:
   `artifacts/ui/editor-destination-ack-20261013/VERIFICATION.json`, `BUILD_ATTEMPTS.json`,
   `TEST_ASSERTION_CORRECTION.json` and `FIRST_ATTEMPT_JUNIT.zip` in that same directory.
-  Report in preparation: `docs/m11a/EDITOR_DESTINATION_ACKNOWLEDGEMENT_20261013.md`.
+  Report: `docs/m11a/EDITOR_DESTINATION_ACKNOWLEDGEMENT_20261013.md`.
+- Current Editor Back confirmation/publication feedback: **source/JVM tested, pending
+  publication**, based on published `24bc104a`. The first and only build passed **2,077
+  App tests / 27 new / 0 failures / 0 errors / 0 skips** across **230 fresh JUnit suites**.
+  All ten requested tasks actually executed: full App unit tests, Debug/Release Kotlin,
+  both lint analyses/reports/entry tasks and runtime admission. Each lint retains **60
+  warnings/8 hints/0 errors**; complete issue-ID/severity/message multisets match the
+  published baseline. Runtime admission verified **90 exact artifacts**, the unchanged
+  boundary checker passed **seven checks**, and all **1,430 pinned inputs** stayed unchanged.
+  PROCESSING/VERIFYING Back asks for stop confirmation and stays on the editor; PUBLISHING
+  Back shows a status-only dialog. One-shot page/dialog/operation ownership blocks stale
+  or duplicate confirmation; the current cancellation token decides accepted/already-stopped
+  versus too-late publication feedback. Neither confirmation nor worker callbacks navigate.
+  A fresh Back in other phases, including CANCELLING/WAITING_NATIVE_RELEASE, retains the
+  existing exit behavior. Background/deadline cancellation and recording watchdog ownership
+  remain unchanged. Other modules were not rerun; this is not a full thirteen-module regression.
+  Native system/predictive Back, dialogs/accessibility, rotation/background/foreground,
+  codec/publication timing, device/emulator, 200%/RTL/TalkBack, Windows fixture and PPT/pixel
+  acceptance remain **NOT_RUN**. No APK was built or installed. The preceding group's
+  first-failure/semantic-correction evidence is unchanged; this slice had no failed build.
+  Report: `docs/m11a/EDITOR_BACK_CONFIRMATION_20261013.md`; evidence:
+  `artifacts/ui/editor-back-20261013/VERIFICATION.json` and `COMPLETE_APP_EVIDENCE.zip`.
 - Separate local-only APK: code8 / 0.8.0-ui-dev, min31/target36, 45,988,354 bytes, source c794ef
   before anchor work. Existing signer matched; APK v2 and static integrity passed. No key,
   version or project configuration change; no upload/install/release claim. The unchanged global
@@ -228,7 +254,7 @@ is superseded by the exact publication receipts above, not edited retroactively.
 - Theme **17** ran in the earlier semantic-token slice and again in the new full
   regression. It did **not** run in the intermediate input-clear, authentication,
   destination/filter, candidate/permission, Save-notice, reading-anchor, authentication-origin,
-  recording-notification or editor destination acknowledgement slices; no historical run is relabeled.
+  recording-notification, editor destination acknowledgement or Editor Back slices; no historical run is relabeled.
   Earlier App totals remain Browser copy 1,747, current storage contracts 1,761,
   Shell labels 1,774, Save locale 1,791, semantic tokens 1,801 and Discovery body 1,813.
   Their executed/cached task details remain in their individual reports.
@@ -277,7 +303,7 @@ published in `172fa3c`. R6 is no longer awaiting source publication.
 | Discovery paging and results | Explicit one-shot next-page demand, bounded provider/local validation framework; truthful missing metadata; distinct empty/loading/waiting/error body presentation, explicit query Clear, shared inline/floating filter roles and published stable-result reading anchors with exact restore provenance (`55c51cd`) | Actual Compose saved-state/navigation/drag restoration remains NOT_RUN. Real image capability/source admission, Android decode/owner and viewport/UI binding missing. Current Discovery placeholder remains honest. `docs/ui/implementation/DISCOVERY_THUMBNAIL_FOUNDATION_20261012.md`. |
 | Direct / Stream / Record | Real bounded save/capture pipelines, explicit user triggers, verified media publication and safe failure guidance; Wi-Fi-only save enforcement published in `172fa3c`, bounded live-original-page selection in `4f22d43`, and the existing recording foreground-notification text channel in `1f25214f` | Full native stream/codec/AV/background/recovery, live-WebView login/resume and notification continuity coverage pending. Published original-page selection performs no login, reload or task resume. A failed network save offers fresh explicit reinspection only; it does not auto-retry, broaden sources or silently start recording. |
 | Save location, library and batch Files | App Library/ASK/album plus remembered ordinary SAF folder; batch export uses one selected folder and per-item verified results; fixed and typed dynamic destination display localized; originals retained for copies | Native provider/revocation/uncertain cleanup matrix remains partial. Old “choose batch Files behavior” note was resolved by later one-folder implementation. `docs/m5a4b/REQUIREMENTS_DECISION.md`; `docs/ui/implementation/BATCH_DIRECTORY_COPY_20261012.md`. |
-| Editing and default compression | Trim/merge/crop/compress with existing entitlement gates; default applies once to new edits, never overwrites active/restored drafts | The editor destination-attempt acknowledgement repair passed 2,050 App tests (24 new) and awaits final evidence review/publication; native dismissal/retry acceptance is NOT_RUN and Editor Back confirmation is excluded. OPPO edit initialization failure remains unresolved. Default editor compression is not recording compression, successful encoding, or a paid unlock. `docs/ui/implementation/EDITOR_DEFAULT_COMPRESSION_20261013.md`. |
+| Editing and default compression | Trim/merge/crop/compress with existing entitlement gates; default applies once to new edits, never overwrites active/restored drafts | Editor destination-attempt acknowledgement is published in `24bc104a` (2,050 App tests, 24 new). The separate Editor Back confirmation/publication-feedback slice passed 2,077 App tests (27 new) and awaits publication: PROCESSING/VERIFYING confirms stop without navigation, PUBLISHING shows status only, and fresh Back in other phases retains existing behavior. Native dismissal/retry/Back/lifecycle acceptance is NOT_RUN. OPPO edit initialization failure remains unresolved. Default editor compression is not recording compression, successful encoding, or a paid unlock. `docs/ui/implementation/EDITOR_DEFAULT_COMPRESSION_20261013.md`. |
 | Power/settings/notices | Real lifecycle OS battery/thermal/network observation and fail-closed policy; localized status; scrollable offline notices and responsive settings panes | Physical energy benefit, platform callback timing, full accessibility/large-font/phone/tablet acceptance absent. The old OS NOT_CONNECTED label is obsolete. `docs/m8b4/VERIFICATION.md`; `docs/ui/implementation/CLOUD_NOTICES_POWER_20261012.md`. |
 | Diagnostics and sharing | Bounded typed initialization diagnostics and log-export implementation; no sensitive media/path/URL logging allowed | New diagnostics must be run on the failing device build before determining edit/share root cause. Existing failure enums alone do not prove codec failure or a repair. `docs/ui/implementation/INITIALIZATION_DIAGNOSTICS_CLOUD_20261012.md`; `docs/diagnostics-export/IMPLEMENTATION_AND_VALIDATION.md`. |
 | Vault / dynamic rules / new local video import | Explicitly deferred; Vault/rules disabled or isolated | Do not reopen blocked reviews, substitute integrations or count these as implemented. Import is a deferred extension, not automatically an original requirement failure. `docs/ui/implementation/ESV_UI_FEATURE_INTEGRATION_LEDGER.md`; `AGENTS.md`. |
@@ -296,10 +322,11 @@ filter roles are published in `795b6bb`; candidate labels and typed denied-permi
 notices are published in `b0c5647`; the complete Save runtime notice channel is published
 in `c794ef`. Reading anchors are published in `55c51cd`, explicit process-local same-origin
 still-live original-page selection in `4f22d43`, and the current recording foreground-service
-notification text channel in `1f25214f`. Full login/recovery/resume, other recording/runtime
-owners' raw notices and whole-App localization remain incomplete/unverified; native acceptance
-remains NOT_RUN. The editor destination acknowledgement slice is now source/JVM tested;
-its final evidence review/publication and this ledger refresh's publication remain pending.
+notification text channel in `1f25214f`; editor destination acknowledgement is published
+in `24bc104a`. Full login/recovery/resume, other recording/runtime owners' raw notices and
+whole-App localization remain incomplete/unverified; native acceptance remains NOT_RUN.
+The separate Editor Back confirmation/publication-feedback slice is source/JVM tested;
+its publication and this ledger refresh's publication remain pending.
 
 ## 4. Older device evidence: useful, bounded, not overwritten
 
@@ -343,24 +370,25 @@ Wi-Fi-only enforcement, BrowserScreen's bounded settings/origin/error localizati
 Shell labels, Save display locale, the bounded semantic-token slice, Discovery body
 states, explicit input Clear, current-Browser authentication return, fixed/typed
 destination display, Discovery filter roles, candidate/denial display, Save runtime
-notices, reading anchors, bounded live-original-page selection and recording foreground
-notification localization have been published. Do not relist those completed source
+notices, reading anchors, bounded live-original-page selection, recording foreground
+notification localization and editor destination-attempt acknowledgement have been published. Do not relist those completed source
 scopes as new work; native and full-original-UI acceptance remains open. Prioritize the
 concrete functional gaps below before additional copy-only migrations.
 
-1. **Finish evidence review and publication of the editor destination-attempt acknowledgement repair.** Pre-repair
-   read-only source review found `EditorScreen.kt:239` latching submission before `onSubmit(draft)`,
-   while pre-repair `AndroidEditRuntime.kt:160` advanced `submissionRevision` only inside
-   accepted `submitSelected`. The old destination call supplied only an accepted callback;
-   cancel/reject/failure gave the editor no acknowledgement, leaving its attempt latched.
-   The bounded repair is now **source/JVM tested: 2,050 App passes, 24 new tests**, plus
-   dual compile/lint, runtime90 and seven boundary checks. Final evidence review and
-   publication remain pending. The final review must retain cancellation/rejection/failure
-   retry coverage and stale/duplicate acknowledgement fences, with admission, freshness,
-   foreground and media ownership guards preserved. Actual Compose/native retry behavior
-   remains NOT_RUN. Editor Back confirmation is expressly excluded. No root-cause claim
-   is made about the separate OPPO `STORAGE_UNAVAILABLE` failure. Report in preparation:
-   `docs/m11a/EDITOR_DESTINATION_ACKNOWLEDGEMENT_20261013.md`.
+1. **Finish publication of the source/JVM-tested Editor Back confirmation slice.** The preceding
+   destination-attempt acknowledgement repair is already published in `24bc104a` (42 exact
+   readbacks, 2,050 App tests / 24 new). Its first failed assertion and reviewed semantic
+   correction remain retained; Back confirmation was excluded only from that earlier stage.
+   The new Back slice passed its first and only build: **2,077 App tests / 27 new / zero
+   failures/errors/skips**, all ten requested full-App/dual-compile/lint/runtime tasks
+   actually executed, each lint 60 warnings/8 hints/0 errors, runtime90, seven boundary
+   checks and 1,430 unchanged pinned inputs. PROCESSING/VERIFYING Back confirms stop while
+   staying on the editor; PUBLISHING Back is status-only. Preserve exact page/operation
+   ownership, one-shot confirmation and actual-token publication feedback, with no worker
+   auto-navigation. Fresh Back in other phases retains legacy behavior, including after
+   a stop request. Actual Compose/native Back, retry, lifecycle and publication timing
+   remain NOT_RUN. No root-cause claim is made about OPPO `STORAGE_UNAVAILABLE`.
+   Report: `docs/m11a/EDITOR_BACK_CONFIRMATION_20261013.md`.
 2. **Integrate the real owned-fixture Discovery thumbnail path under the original reuse policy.**
    Original UI `08_ESV_UI_additional_technical_framework_policy_2026-10-11.md` §§2/3/7
    requires existing media Reader/thumbnail capabilities and already-admitted mature
@@ -407,7 +435,7 @@ concrete functional gaps below before additional copy-only migrations.
    remain partial. Copy-only expansion is lower priority than a confirmed functional gap.
    Source coverage does not substitute for the missing PPT or rendered-device evidence.
 
-Item 1 has a bounded source/JVM pass and awaits final evidence review/publication; native
+Item 1 has a bounded source/JVM pass and awaits publication; native
 acceptance remains NOT_RUN.
 Items 2–5 remain bounded candidates requiring normal scope review. All preserve existing
 source-admission, privacy, entitlement and lifecycle gates. They can produce source/test
@@ -441,18 +469,22 @@ an APK. They do not cure the unresolved OPPO root cause by assumption.
 ## 7. Documentation refresh and publication boundary
 
 This refresh changes only this overview and MILESTONE_STATUS, reconciling the published
-chain through `1f25214f`: reading anchors `55c51cd`, bounded live-original-page selection
-`4f22d43` and recording foreground notifications `1f25214f` follow Save notices `c794ef`.
+chain through `24bc104a`: reading anchors `55c51cd`, bounded live-original-page selection
+`4f22d43`, recording foreground notifications `1f25214f` and editor destination
+acknowledgement `24bc104a` follow Save notices `c794ef`.
 Each source/test/build stage retains its own exact evidence; totals are not added. The
 last full 13-module regression remains bound only to b0c5647, with the original two
 corpus skips, historical gate failures and OPPO/Windows issues preserved.
 
-This two-ledger refresh and the new editor destination-attempt acknowledgement repair
-await final evidence review/publication. The repair's build2 passed 2,050 App tests with
-24 new tests, zero failures/errors/skips, dual compile/lint, runtime90 and seven boundary
-checks; 1,422 frozen inputs remained unchanged. Its failed first attempt and reviewed
-test-only assertion correction are retained. This is source/JVM evidence only, with no
-other module rerun or native acceptance. Editor Back confirmation remains outside it.
+This two-ledger refresh and the new Editor Back confirmation/publication-feedback slice
+await publication. The Back slice passed its first and only build with 2,077 App tests,
+27 new tests, zero failures/errors/skips; all ten requested full-App/dual-compile/lint/
+runtime tasks actually executed, each lint retains 60 warnings/8 hints/0 errors,
+runtime90 and seven boundary checks passed, and 1,430 pinned inputs remained unchanged.
+The earlier acknowledgement group's 2,050-test build2 pass, failed first attempt and
+reviewed semantic-test correction remain preserved in their published evidence. Back
+confirmation was outside that earlier group, not outside current M6 source coverage.
+These are separate source/JVM results, with no other module rerun or native acceptance.
 The older small packaging reports were already published with `55c51cd`; the unchanged local 46 MB
 c794ef APK is excluded, uninstalled and unuploaded. Original Markdown recovery remains
 distinct from still-unavailable PPT imagery and the separate local handoff directory.

@@ -1,0 +1,351 @@
+--- before/app/build.gradle.kts
++++ after/app/build.gradle.kts
+@@ -85,6 +85,7 @@
+ val contractResourceInputs = fileTree("src/main/res") {
+     for (locale in listOf("values", "values-zh-rCN")) {
+         for (resource in listOf(
++            "editor_back.xml",
+             "recording_notification.xml", "save_authentication_origin.xml", "save_runtime_notice.xml", "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "input_clear.xml",
+             "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "browser_permission_notice.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
+             "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
+@@ -94,6 +95,12 @@
+     }
+ }
+ val contractSourceInputs = files(
++    "src/main/kotlin/com/easysavevideo/app/editor/EditorBackPolicy.kt",
++    "src/main/kotlin/com/easysavevideo/app/editor/EditorDeadlineGuard.kt",
++    "src/main/kotlin/com/easysavevideo/app/editor/ui/EditorBackResources.kt",
++    "src/main/kotlin/com/easysavevideo/app/editor/ui/EditorDraftCheckpoint.kt",
++    "src/main/kotlin/com/easysavevideo/app/editor/storage/AndroidEditStorage.kt",
++    "src/main/kotlin/com/easysavevideo/app/editor/workflow/EditWorkflow.kt",
+     "src/main/kotlin/com/easysavevideo/app/editor/ui/EditorPresentation.kt",
+     "src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationReceipt.kt",
+     "src/main/kotlin/com/easysavevideo/app/recording/RecordingNotificationStatus.kt",
+--- before/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt
++++ after/app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt
+@@ -42,6 +42,7 @@
+ import com.easysavevideo.app.library.AndroidLibraryRuntime
+ import com.easysavevideo.app.editor.ui.EditorScreen
+ import com.easysavevideo.app.editor.ui.EditorDraftCheckpointCodec
++import com.easysavevideo.app.editor.EditorBackRequest
+ import com.easysavevideo.app.library.LibraryScreen
+ import com.easysavevideo.app.library.LibraryUnavailableScreen
+ import com.easysavevideo.app.library.LibraryExportDialog
+@@ -349,11 +350,30 @@
+                     onBack = { previewReceipt = null }, onReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
+                 else if (libraryReference != null) LibraryMediaPreview(libraryReference, isForeground, saves::openLibraryMedia,
+                     onBack = { libraryPreviewReference = null }, onReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
+-                else if (route == EsvDestination.EDITOR && editor != null) EditorScreen(editor.state,
+-                    onDraftChange = editor::changeDraft, onSubmit = editor::submit,
+-                    onCancel = { editor.cancelDraftRestoration(); editor.cancel() },
+-                    onBack = { editor.cancelDraftRestoration(); editor.cancel(); backTo(EsvDestination.LIBRARY); library?.refresh() },
+-                    openPreviewMedia = saves::openLibraryMedia, onPreviewReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
++                else if (route == EsvDestination.EDITOR && editor != null) {
++                    // Capture this composition's exact entry, not a route string that can be reused.
++                    val editorBackEntry = remember(editor, controller) { controller.currentBackStackEntry }
++                    val editorBackGeneration = newTabInputGeneration
++                    val editorBackPage = remember(editor, editorBackEntry, editorBackGeneration, isForeground) { editor.openBackPage() }
++                    DisposableEffect(editor, editorBackPage) { onDispose { editor.closeBackPage(editorBackPage) } }
++                    fun editorBackHostCurrent(): Boolean = isForeground && !isDestroyed && !isFinishing &&
++                        libraryPreviewReference == null && saves.editor === editor && navController === controller &&
++                        editorBackEntry != null && controller.currentBackStackEntry === editorBackEntry &&
++                        editorBackEntry.destination.route == EsvDestination.EDITOR.route &&
++                        newTabInputGeneration == editorBackGeneration && editor.isBackPageCurrent(editorBackPage)
++                    EditorScreen(editor.state, backPage = editorBackPage,
++                        onDraftChange = editor::changeDraft, onSubmit = editor::submit,
++                        onCancel = { editor.cancelDraftRestoration(); editor.cancel() },
++                        onRequestBack = { if (editorBackHostCurrent()) editor.requestBack(editorBackPage) else EditorBackRequest.Ignored },
++                        onDismissBack = { editor.dismissBack(editorBackPage, it) },
++                        onConfirmBackStop = { if (editorBackHostCurrent()) editor.confirmBackStop(editorBackPage, it) },
++                        onBack = {
++                            if (editorBackHostCurrent() && editor.consumeLegacyBack(editorBackPage)) {
++                                editor.cancelDraftRestoration(); editor.cancel(); backTo(EsvDestination.LIBRARY); library?.refresh()
++                            }
++                        },
++                        openPreviewMedia = saves::openLibraryMedia, onPreviewReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
++                }
+                 else if (route == EsvDestination.LIBRARY && library != null) {
+                     val thumbnails = remember(library) { AndroidLibraryThumbnails(saves::openLibraryMedia, saves::retainLibraryNativeReader) }
+                     DisposableEffect(thumbnails) { onDispose { thumbnails.close() } }
+--- before/app/src/main/kotlin/com/easysavevideo/app/editor/AndroidEditRuntime.kt
++++ after/app/src/main/kotlin/com/easysavevideo/app/editor/AndroidEditRuntime.kt
+@@ -44,14 +44,19 @@
+     private var activeCancellation: EditPublicationCancellation? = null
+     private var activeOperation: String? = null
+     private var admissionGeneration = 0L
++    private val backGate = EditorBackGate()
+     private val submissionAttempts = EditorSubmissionAttempts()
+     private var pendingDestination: OrdinaryDestinationReceipt? = null
+     private val deadlines = EditorDeadlineGuard(EditorTimerScheduler { delayMillis, action ->
+         val callback = Runnable(action); main.postDelayed(callback, delayMillis)
+         AutoCloseable { main.removeCallbacks(callback) }
+-    }, onDeadline = { cancel() }, onUnconfirmedStop = {
+-        state = state.copy(phase = EditorPhase.WAITING_NATIVE_RELEASE,
+-            notice = "已请求停止，但后台处理或文件资源仍未确认退出。相关文件保留，不能开始新编辑。可继续等待，或完全退出应用后重新打开进行恢复检查。")
++    }, onDeadline = { cancel() }, onUnconfirmedStop = { identity ->
++        val feedback = editorUnconfirmedStopFeedback(identity, activeCancellation)
++        if (feedback != null) state = state.copy(
++            phase = if (feedback == EditorStopFeedback.CHECKING_RESULT) EditorPhase.PUBLISHING else EditorPhase.WAITING_NATIVE_RELEASE,
++            notice = if (feedback == EditorStopFeedback.CHECKING_RESULT) publicationCheckingNotice
++                else "已请求停止，但后台处理或文件资源仍未确认退出。相关文件保留，不能开始新编辑。可继续等待，或完全退出应用后重新打开进行恢复检查。",
++            stopFeedback = feedback)
+     })
+     private var recovered = false
+     private var draftStarted = false
+@@ -87,6 +92,7 @@
+     }
+     fun setForeground(value: Boolean) {
+         requireMain(); state = state.copy(foreground = value)
++        if (!value) backGate.revoke()
+         if (!value) { admissionGeneration++; cancel() }
+         else if (recovered && !state.busy && state.phase != EditorPhase.BLOCKED) inspectMissingSources()
+     }
+@@ -301,17 +307,44 @@
+         requireMain(); draftRestoreGuard.userChanged(); pendingDraftCheckpoint = null; restoringDraftCheckpoint = null
+         if (state.draftRestoration == EditorDraftRestoration.RESTORING) state = state.copy(draftRestoration = EditorDraftRestoration.USER_CHANGED)
+     }
++    internal fun openBackPage(): EditorBackPage { requireMain(); return backGate.openPage() }
++    internal fun closeBackPage(page: EditorBackPage) { requireMain(); backGate.closePage(page) }
++    internal fun isBackPageCurrent(page: EditorBackPage): Boolean { requireMain(); return backGate.isCurrent(page) }
++    internal fun requestBack(page: EditorBackPage): EditorBackRequest {
++        requireMain()
++        return backGate.request(page, state.foreground, state.phase, activeCancellation, activeOperation)
++    }
++    internal fun dismissBack(page: EditorBackPage, confirmation: EditorBackConfirmation) {
++        requireMain(); backGate.dismiss(page, confirmation)
++    }
++    internal fun confirmBackStop(page: EditorBackPage, confirmation: EditorBackConfirmation): EditCancelResult? {
++        requireMain()
++        val cancellation = backGate.consume(page, confirmation, state.foreground, activeCancellation, activeOperation) ?: return null
++        // Validate and consume before *any* mutation; an old dialog cannot retire a new submission.
++        admissionGeneration++
++        retireSubmission()
++        return cancelActive(cancellation)
++    }
++    internal fun consumeLegacyBack(page: EditorBackPage): Boolean {
++        requireMain(); return backGate.consumeLegacy(page, state.foreground, state.phase)
++    }
+     fun cancel() {
+         requireMain(); admissionGeneration++
+         retireSubmission()
+         val cancellation = activeCancellation
+         if (cancellation != null) {
+-            val result = cancellation.cancel(); deadlines.cancelled(cancellation)
+-            if (state.phase != EditorPhase.WAITING_NATIVE_RELEASE) state = if (result == EditCancelResult.TOO_LATE)
+-                state.copy(phase = EditorPhase.PUBLISHING, notice = "最终入库提交已开始，不能再确认取消。正在核对提交结果；原件保留。")
+-            else state.copy(phase = EditorPhase.CANCELLING, notice = "已请求安全停止，等待媒体资源实际退出；原件保留。")
++            cancelActive(cancellation)
+         }
+         else if (state.phase == EditorPhase.PROBING) state = state.copy(phase = EditorPhase.IDLE)
++    }
++    private fun cancelActive(cancellation: EditPublicationCancellation): EditCancelResult {
++        val result = cancellation.cancel(); deadlines.cancelled(cancellation)
++        if (state.phase != EditorPhase.WAITING_NATIVE_RELEASE) state = if (result == EditCancelResult.TOO_LATE)
++            state.copy(phase = EditorPhase.PUBLISHING, notice = publicationCheckingNotice,
++                stopFeedback = EditorStopFeedback.CHECKING_RESULT)
++        else state.copy(phase = EditorPhase.CANCELLING, notice = "已请求安全停止，等待媒体资源实际退出；原件保留。",
++            stopFeedback = EditorStopFeedback.REQUESTED)
++        return result
+     }
+     private fun featuresAllowed(required: Set<Feature>): Boolean = required.all { feature ->
+         featureGate.evaluate(FeatureRequest(feature), entitlements.snapshot(), PlatformCapabilities(required),
+@@ -334,6 +367,7 @@
+         cancellation, resourceBudget = ResourceBudget(1, EditLimits.MAX_OUTPUT_BYTES))
+     private fun requireMain() = check(Looper.myLooper() == Looper.getMainLooper())
+     private val releaseNotice = "媒体资源退出或提交状态尚未确认，已停止新编辑且保留相关文件。请完全退出应用后重新打开进行恢复检查。"
++    private val publicationCheckingNotice = "最终入库提交已开始，不能再确认取消。正在核对提交结果；原件保留。"
+ }
+ 
+ /** Existing independent capabilities; cancellation and original viewing never call this function. */
+--- before/app/src/main/kotlin/com/easysavevideo/app/editor/EditorDeadlineGuard.kt
++++ after/app/src/main/kotlin/com/easysavevideo/app/editor/EditorDeadlineGuard.kt
+@@ -9,7 +9,7 @@
+ internal class EditorDeadlineGuard(
+     private val scheduler: EditorTimerScheduler,
+     private val onDeadline: () -> Unit,
+-    private val onUnconfirmedStop: () -> Unit,
++    private val onUnconfirmedStop: (Any) -> Unit,
+     private val stopNoticeMillis: Long = 10_000,
+ ) {
+     private var active: Any? = null
+@@ -25,7 +25,7 @@
+     fun cancelled(identity: Any) {
+         if (active !== identity || pendingStop != null) return
+         pendingStop = scheduler.schedule(stopNoticeMillis) {
+-            if (active === identity) onUnconfirmedStop()
++            if (active === identity) onUnconfirmedStop(identity)
+         }
+     }
+     /** Actual worker completion only, including an explicit retained/recovery result. */
+--- before/app/src/main/kotlin/com/easysavevideo/app/editor/ui/EditorPresentation.kt
++++ after/app/src/main/kotlin/com/easysavevideo/app/editor/ui/EditorPresentation.kt
+@@ -81,6 +81,9 @@
+     IDLE, PROBING, PREPARING, PROCESSING, VERIFYING, PUBLISHING, CANCELLING,
+     WAITING_NATIVE_RELEASE, BLOCKED, SUCCEEDED, FAILED, CANCELLED,
+ }
++
++/** Presentation only; no cancellation, operation or navigation authority. */
++enum class EditorStopFeedback { REQUESTED, CHECKING_RESULT, WAITING_FOR_RELEASE }
+ 
+ /** The runtime owns lifecycle, source probes, feature checks, native ownership, and publication. */
+ class EditorViewState(
+@@ -97,6 +100,7 @@
+     val draftRestoration: EditorDraftRestoration = EditorDraftRestoration.NONE,
+     /** Runtime-owned admission latch survives destination dialogs and composition recreation. */
+     val submissionPending: Boolean = false,
++    val stopFeedback: EditorStopFeedback? = null,
+ ) {
+     val availableItems: List<MediaItem> = Collections.unmodifiableList(ArrayList(availableItems.take(100)))
+     val displayGeometries: Map<MediaReadRef, EditorDisplayGeometry> =
+@@ -117,8 +121,9 @@
+         executionRanges: List<EditorExecutionRange> = this.executionRanges,
+         draftRestoration: EditorDraftRestoration = this.draftRestoration,
+         submissionPending: Boolean = this.submissionPending,
++        stopFeedback: EditorStopFeedback? = this.stopFeedback.takeIf { phase == this.phase },
+     ) = EditorViewState(draft, availableItems, foreground, phase, displayGeometries, notice,
+-        completedReference, submissionRevision, executionRanges, draftRestoration, submissionPending)
++        completedReference, submissionRevision, executionRanges, draftRestoration, submissionPending, stopFeedback)
+     override fun toString() = "EditorViewState(phase=$phase, [redacted])"
+ }
+ 
+--- before/app/src/main/kotlin/com/easysavevideo/app/editor/ui/EditorScreen.kt
++++ after/app/src/main/kotlin/com/easysavevideo/app/editor/ui/EditorScreen.kt
+@@ -31,12 +31,16 @@
+ import androidx.compose.ui.semantics.contentDescription
+ import androidx.compose.ui.semantics.semantics
+ import androidx.compose.ui.semantics.stateDescription
++import androidx.compose.ui.semantics.paneTitle
+ import androidx.compose.ui.text.input.ImeAction
+ import androidx.compose.ui.text.input.KeyboardType
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.window.Dialog
+ import androidx.compose.ui.window.DialogProperties
+ import com.easysavevideo.app.theme.*
++import com.easysavevideo.app.editor.EditorBackPage
++import com.easysavevideo.app.editor.EditorBackConfirmation
++import com.easysavevideo.app.editor.EditorBackRequest
+ import com.easysavevideo.library.MediaReadRef
+ import com.easysavevideo.library.edit.EditCompression
+ import com.easysavevideo.library.edit.EditGeometry
+@@ -50,11 +54,15 @@
+  * Back, crop cancellation and safe stop are deliberately independent of feature entitlements.
+  */
+ @Composable
+-fun EditorScreen(
++internal fun EditorScreen(
+     state: EditorViewState,
++    backPage: EditorBackPage,
+     onDraftChange: (EditorDraft) -> Unit,
+     onSubmit: (EditorDraft) -> Unit,
+     onCancel: () -> Unit,
++    onRequestBack: () -> EditorBackRequest,
++    onDismissBack: (EditorBackConfirmation) -> Unit,
++    onConfirmBackStop: (EditorBackConfirmation) -> Unit,
+     onBack: () -> Unit,
+     openPreviewMedia: (MediaReadRef) -> FileInputStream,
+     onPreviewReleaseUnconfirmed: () -> Unit,
+@@ -67,7 +75,6 @@
+     }
+     fun changeDraft(value: EditorDraft) { requestedPreview = null; onDraftChange(value) }
+     val cancelEdit: () -> Unit = { requestedPreview = null; onCancel() }
+-    val leaveEditor: () -> Unit = { requestedPreview = null; onBack() }
+     LaunchedEffect(state.foreground, state.phase, state.draft.selectedSegment?.reference, state.displayGeometries, state.completedReference) {
+         if (editorActivePreview(state, requestedPreview) == null) requestedPreview = null
+     }
+@@ -77,16 +84,38 @@
+     val pendingSubmit = state.submissionPending || pendingSubmissionRevision == state.submissionRevision
+     val editable = state.editable && !pendingSubmit
+     var cropSegmentId by remember { mutableStateOf<Long?>(null) }
++    var backDialog by remember(backPage) { mutableStateOf<EditorBackDialog?>(null) }
++    fun dismissBackDialog(dialog: EditorBackDialog) {
++        (dialog.request as? EditorBackRequest.ConfirmStop)?.let { onDismissBack(it.confirmation) }
++        if (backDialog === dialog) backDialog = null
++    }
++    val requestBack: () -> Unit = {
++        val dialog = backDialog
++        when {
++            cropSegmentId != null -> cropSegmentId = null
++            dialog != null -> dismissBackDialog(dialog)
++            else -> when (val request = onRequestBack()) {
++                EditorBackRequest.Ignored -> Unit
++                EditorBackRequest.Legacy -> { requestedPreview = null; onBack() }
++                else -> backDialog = EditorBackDialog(request)
++            }
++        }
++    }
++    LaunchedEffect(state.foreground, state.phase, backDialog) {
++        if (!state.foreground || state.phase !in setOf(EditorPhase.PROCESSING, EditorPhase.VERIFYING, EditorPhase.PUBLISHING)) {
++            backDialog?.let(::dismissBackDialog)
++        }
++    }
+     val error = editorDraftError(draft, state.displayGeometries)
+     val publishedReference = editorPublishedReference(state)
+     val status = stringResource(editorPhaseResource(state.phase, state.completedReference != null))
+-    BackHandler(onBack = leaveEditor)
++    BackHandler(onBack = requestBack)
+     val headerItems: LazyListScope.() -> Unit = {
+         item(key = "header") {
+             Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                 EsvText(stringResource(R.string.advanced_copy_1), style = v.titleTextStyle)
+                 EditorResponsivePair(first = { modifier ->
+-                    EsvButton(stringResource(R.string.advanced_copy_2), leaveEditor, modifier = modifier)
++                    EsvButton(stringResource(R.string.advanced_copy_2), requestBack, modifier = modifier)
+                 }, second = { modifier ->
+                     EsvButton(stringResource(R.string.advanced_copy_3), cancelEdit, modifier = modifier)
+                 })
+@@ -101,6 +130,9 @@
+                 EsvText(status, modifier = Modifier.semantics { stateDescription = status },
+                     color = if (state.phase == EditorPhase.FAILED || state.phase == EditorPhase.BLOCKED) v.colors.error else v.colors.text)
+                 if (!state.foreground) EsvText(stringResource(R.string.advanced_copy_4), style = v.captionTextStyle, color = v.colors.muted)
++                editorStopFeedbackResource(state.phase, state.stopFeedback)?.let {
++                    EsvText(stringResource(it), style = v.captionTextStyle)
++                }
+                 state.notice?.let { EsvDiagnosticNotice(it) }
+                 editorRestorationResource(state.draftRestoration)?.let {
+                     EsvText(stringResource(it), style = v.captionTextStyle, color = v.colors.muted)
+@@ -305,6 +337,45 @@
+                 if (editable) changeDraft(updateEditorSegment(draft, cropSegment.id) { it.copy(crop = crop) })
+                 cropSegmentId = null
+             }, onCancel = { cropSegmentId = null })
++    }
++    backDialog?.let { dialog ->
++        DisposableEffect(dialog) { onDispose {
++            (dialog.request as? EditorBackRequest.ConfirmStop)?.let { onDismissBack(it.confirmation) }
++        } }
++        EditorBackDialogContent(dialog.request,
++            onDismiss = { dismissBackDialog(dialog) },
++            onStop = {
++                val request = dialog.request as? EditorBackRequest.ConfirmStop
++                if (backDialog === dialog && request != null) {
++                    onConfirmBackStop(request.confirmation)
++                    if (backDialog === dialog) backDialog = null
++                }
++            })
++    }
++}
++
++/** A fresh identity for each visible dialog, including status-only dialogs with no command. */
++private class EditorBackDialog(val request: EditorBackRequest)
++
++@Composable
++private fun EditorBackDialogContent(request: EditorBackRequest, onDismiss: () -> Unit, onStop: () -> Unit) {
++    val v = LocalEsvVisuals.current
++    val confirming = request is EditorBackRequest.ConfirmStop
++    val title = stringResource(if (confirming) R.string.editor_back_title else R.string.editor_back_publication_title)
++    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
++        Box(Modifier.fillMaxSize().systemBarsPadding().padding(v.spacingMedium), contentAlignment = Alignment.Center) {
++            Column(Modifier.widthIn(max = 600.dp).fillMaxWidth()
++                .background(v.colors.elevated, RoundedCornerShape(v.sheetCorner))
++                .semantics { paneTitle = title }.verticalScroll(rememberScrollState()).padding(v.spacingMedium),
++                verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
++                EsvText(title, style = v.titleTextStyle)
++                EsvText(stringResource(if (confirming) R.string.editor_back_body else R.string.editor_back_publication_body))
++                EsvButton(stringResource(if (confirming) R.string.editor_back_continue else R.string.editor_back_check_status),
++                    onClick = onDismiss, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp))
++                if (confirming) EsvButton(stringResource(R.string.editor_back_request_stop), onClick = onStop,
++                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp))
++            }
++        }
+     }
+ }
+ 

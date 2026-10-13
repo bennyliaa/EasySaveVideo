@@ -1,0 +1,19 @@
+{
+  "attempts": [
+    {
+      "name": "build",
+      "terminal_exit_code": 0,
+      "duration": "3m21s",
+      "tasks": 75,
+      "executed": 33,
+      "up_to_date": 42,
+      "tests": 2077,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "all_ten_requested_tasks_actually_executed": true,
+      "all_1430_inputs_unchanged": true
+    }
+  ],
+  "initial_build_failure": false
+}

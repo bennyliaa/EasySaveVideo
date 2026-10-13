@@ -9,7 +9,7 @@ internal fun interface EditorTimerScheduler {
 internal class EditorDeadlineGuard(
     private val scheduler: EditorTimerScheduler,
     private val onDeadline: () -> Unit,
-    private val onUnconfirmedStop: () -> Unit,
+    private val onUnconfirmedStop: (Any) -> Unit,
     private val stopNoticeMillis: Long = 10_000,
 ) {
     private var active: Any? = null
@@ -25,7 +25,7 @@ internal class EditorDeadlineGuard(
     fun cancelled(identity: Any) {
         if (active !== identity || pendingStop != null) return
         pendingStop = scheduler.schedule(stopNoticeMillis) {
-            if (active === identity) onUnconfirmedStop()
+            if (active === identity) onUnconfirmedStop(identity)
         }
     }
     /** Actual worker completion only, including an explicit retained/recovery result. */

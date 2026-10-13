@@ -1,0 +1,15 @@
+# Editor Back confirmation and truthful publication feedback
+
+Baseline input set: the completed editor destination acknowledgement slice (1,422 inputs), publication receipt to be bound before final pin. Its 42-file immutable freeze is untouched. This plan follows original UI01 section2 Back priority, UI03 section8 safe explicit commands and UI04 T-20 editing cancellation.
+
+## Narrow behavior
+System Back and header Return share one decision. PROCESSING/VERIFYING ask whether to continue processing or request safe stop while staying in Editor. Dismissal makes no cancellation/navigation. PUBLISHING initial Back only explains ongoing result checking; phase alone does not prove cancellation is too late. A previously opened confirmation may advance into publication for the same operation; the real atomic cancellation result determines accepted/already-cancelled/too-late feedback. Neither confirmation nor worker result automatically navigates. Only a fresh later user action exits. Idle drafts, crop-dialog-first Back, explicit Safe Stop, shell busy-disabled navigation and other phase Back behavior remain unchanged. Therefore a fresh Back during CANCELLING/WAITING_NATIVE_RELEASE may still exit; no enforced residence until terminal is promised.
+
+## Freshness and state
+Use app-only opaque one-shot operation ownership plus revocable page/dialog lifetime. Current foreground and submissionRevision alone are insufficient. Revalidate actual active cancellation/operation and lifetime before any mutation. Closing, leaving, background, replacement or completion revokes old commands; no old callback may stop a successor or pop a newer route. No command is persisted in SavedState/wire/storage. No navigation callback is retained by worker/runtime completion.
+
+## Truthful late-publication feedback
+Current cancellation schedules delayed waiting feedback even if publication admission has already made cancellation TOO_LATE. The delayed feedback must inspect the current matching token's publication-admitted state and keep factual publication/result-check state instead of claiming accepted native stop. Timer scheduling, deadlines, foreground/background stopping, native ownership, file preservation and publication linearization do not change. Only a real published MediaReadRef enables existing preview; uncertain publication remains existing recovery/blocked behavior.
+
+## Verification
+Pure phase/lifetime/command tests, real atomic cancellation ordering, repeated confirmation, operation replacement, background-resume/reentry/recreation, final completion while dialog open, delayed TOO_LATE versus accepted-stop feedback and no automatic navigation. Source wiring contracts include both Back entries, actual runtime/main-thread fences, crop and Safe Stop preservation and existing destination acknowledgement. Paired current-Compose language resources, standard theme-backed dialog and 48dp targets. Independent source review before frozen-input full App tests, forced Debug/Release compile/lint, runtime90 and boundary7; preserve failures and retry evidence. No APK, device, native editing, actual Compose gestures or PPT acceptance.

@@ -1,0 +1,17 @@
+<testsuite name="com.easysavevideo.app.editor.EditorBackPolicyTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-13T12:06:27.658Z" hostname="[redacted]" time="0.029">
+  <properties />
+  <testcase name="validConfirmationCanAdvanceToPublishingAndOnlyAtomicAdmissionDecidesOutcome" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.004" />
+  <testcase name="confirmedStopAndPublicationRaceStillHaveExactlyOneAtomicWinner" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.019" />
+  <testcase name="repeatedBackUsesOneDialogAndContinueOrDismissCannotCancel" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.001" />
+  <testcase name="everyPhaseHasAnExplicitPolicyAndPublishingIsOnlyStatus" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.0" />
+  <testcase name="matchingTokenAndOperationAreBothRequiredAndStaleFailureIsOneShot" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.001" />
+  <testcase name="backgroundMissingOwnerAndForgedPageCannotIssueACommand" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.0" />
+  <testcase name="oldOperationCompletionCannotCancelItsSuccessorEvenWithSameOperationText" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.0" />
+  <testcase name="confirmationIsConsumedBeforeAnActionCanReenterIt" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.0" />
+  <testcase name="foregroundAloneCannotReviveAnInvalidCommandAndForgedCommandsCannotRetireCurrent" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.0" />
+  <testcase name="aNewStatusOrLegacyRequestRetiresTheSupersededStopDialog" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.001" />
+  <testcase name="laterExplicitReturnRetainsLegacyPhasesAndIsItselfOneShot" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.0" />
+  <testcase name="backgroundResumeReentryAndNewActivityPermanentlyRevokeOldPageAndDialog" classname="com.easysavevideo.app.editor.EditorBackPolicyTest" time="0.0" />
+  <system-out />
+  <system-err />
+</testsuite>

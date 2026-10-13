@@ -82,6 +82,9 @@ enum class EditorPhase {
     WAITING_NATIVE_RELEASE, BLOCKED, SUCCEEDED, FAILED, CANCELLED,
 }
 
+/** Presentation only; no cancellation, operation or navigation authority. */
+enum class EditorStopFeedback { REQUESTED, CHECKING_RESULT, WAITING_FOR_RELEASE }
+
 /** The runtime owns lifecycle, source probes, feature checks, native ownership, and publication. */
 class EditorViewState(
     val draft: EditorDraft = EditorDraft(),
@@ -97,6 +100,7 @@ class EditorViewState(
     val draftRestoration: EditorDraftRestoration = EditorDraftRestoration.NONE,
     /** Runtime-owned admission latch survives destination dialogs and composition recreation. */
     val submissionPending: Boolean = false,
+    val stopFeedback: EditorStopFeedback? = null,
 ) {
     val availableItems: List<MediaItem> = Collections.unmodifiableList(ArrayList(availableItems.take(100)))
     val displayGeometries: Map<MediaReadRef, EditorDisplayGeometry> =
@@ -117,8 +121,9 @@ class EditorViewState(
         executionRanges: List<EditorExecutionRange> = this.executionRanges,
         draftRestoration: EditorDraftRestoration = this.draftRestoration,
         submissionPending: Boolean = this.submissionPending,
+        stopFeedback: EditorStopFeedback? = this.stopFeedback.takeIf { phase == this.phase },
     ) = EditorViewState(draft, availableItems, foreground, phase, displayGeometries, notice,
-        completedReference, submissionRevision, executionRanges, draftRestoration, submissionPending)
+        completedReference, submissionRevision, executionRanges, draftRestoration, submissionPending, stopFeedback)
     override fun toString() = "EditorViewState(phase=$phase, [redacted])"
 }
 
