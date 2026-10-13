@@ -127,7 +127,19 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
         searchPending = controller.filterSearchPending, nextPagePending = state.nextPagePending, status = state.status,
     )
     val page = state.page
-    LaunchedEffect(page?.stamp, page?.revision, page?.pageIndex) { grid.scrollToItem(0) }
+    PreserveDiscoveryReadingAnchor(
+        grid = grid,
+        pageKey = com.easysavevideo.app.discovery.DiscoveryReadingAnchorPolicy.key(page, state.profile.queryKey, state.demo),
+        resultIds = state.results.map { it.resultId },
+        restoredFromStamp = state.restoredPageFromStamp,
+        visible = active && bodyState == DiscoveryBodyState.CONTENT && !showPending && !optionsIsModal &&
+            localControlConfirm == null && safeDisableConfirm == null && rightsDetails == null,
+        currentPageKey = {
+            controller.state.let { current ->
+                com.easysavevideo.app.discovery.DiscoveryReadingAnchorPolicy.key(current.page, current.profile.queryKey, current.demo)
+            }
+        },
+    )
     LaunchedEffect(page?.stamp, page?.revision, page?.pageIndex, active, showPending, optionsIsModal, localControlConfirm, safeDisableConfirm, rightsDetails) {
         if (page == null || !active || showPending || optionsIsModal || localControlConfirm != null || safeDisableConfirm != null || rightsDetails != null) return@LaunchedEffect
         val tracker = ShownVisibilityTracker()

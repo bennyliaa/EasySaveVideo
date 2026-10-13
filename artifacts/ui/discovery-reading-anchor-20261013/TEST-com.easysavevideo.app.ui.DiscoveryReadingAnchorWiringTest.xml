@@ -1,0 +1,12 @@
+<testsuite name="com.easysavevideo.app.ui.DiscoveryReadingAnchorWiringTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-13T09:38:20.963Z" hostname="[redacted]" time="0.037">
+  <properties />
+  <testcase name="actualGridUsesStableResultIdsAndOnlyTheNewRestorationAdapter" classname="com.easysavevideo.app.ui.DiscoveryReadingAnchorWiringTest" time="0.001" />
+  <testcase name="onlySuccessfulExistingRestoreCreatesReadonlyProvenance" classname="com.easysavevideo.app.ui.DiscoveryReadingAnchorWiringTest" time="0.001" />
+  <testcase name="restorationHasNoSearchDemandHistoryStorageOrTimerAuthority" classname="com.easysavevideo.app.ui.DiscoveryReadingAnchorWiringTest" time="0.0" />
+  <testcase name="restorationUsesSaveableCodecAndRetiresOldClaimsBeforeAllowingCaptures" classname="com.easysavevideo.app.ui.DiscoveryReadingAnchorWiringTest" time="0.0" />
+  <testcase name="userScrollMutationCancellationDoesNotDisableFutureCapture" classname="com.easysavevideo.app.ui.DiscoveryReadingAnchorWiringTest" time="0.028" />
+  <testcase name="hiddenAndBackgroundGridCannotCaptureOrRestoreThroughThisAdapter" classname="com.easysavevideo.app.ui.DiscoveryReadingAnchorWiringTest" time="0.0" />
+  <testcase name="parentEffectCancellationCannotContinueIntoCapture" classname="com.easysavevideo.app.ui.DiscoveryReadingAnchorWiringTest" time="0.007" />
+  <system-out />
+  <system-err />
+</testsuite>

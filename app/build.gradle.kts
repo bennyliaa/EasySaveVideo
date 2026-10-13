@@ -94,6 +94,8 @@ val contractResourceInputs = fileTree("src/main/res") {
     }
 }
 val contractSourceInputs = files(
+    "src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryReadingAnchorPolicy.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/DiscoveryReadingAnchor.kt",
     "src/main/kotlin/com/easysavevideo/app/save/SaveRuntimeNotice.kt",
     "src/main/kotlin/com/easysavevideo/app/save/SaveRuntimeNoticeResources.kt",
     "src/main/kotlin/com/easysavevideo/app/recording/RecordingScreen.kt",

@@ -1,0 +1,13 @@
+{
+  "screen_single_display_replacement_inverse_equal": true,
+  "controller_six_display_only_insertions_inverse_equal": true,
+  "original_tracker_demand_scheduling_unchanged": true,
+  "prior_inputs_checked": 1399,
+  "prior_inputs_unchanged": 1396,
+  "scoped_existing_modifications": 3,
+  "scoped_new_files": 4,
+  "final_inputs_checked": 1403,
+  "changed_during_build": [],
+  "direct_restore_proof": "display-only, exact old/new stamp; not access authority; not serialized",
+  "missing_direct_chain_proof": "fails closed to top"
+}

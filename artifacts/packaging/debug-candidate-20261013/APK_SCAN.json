@@ -1,0 +1,235 @@
+{
+  "result": "STATIC_PATTERN_SCAN_ONLY",
+  "apk_sha256": "b161a25abf9ed09aa834886cf2be4a8812248e9fe2b4c677dcbec947a1d170da",
+  "apk_bytes": 45988354,
+  "zip_crc": "PASS",
+  "member_count": 205,
+  "dex": [
+    {
+      "path": "classes.dex",
+      "strings": 87180,
+      "bytes": 17756960,
+      "sha256": "147838affa61dd27946ad684ad4d79ba4959a724f0dff3a9a4bfcd339c2ff8c3"
+    },
+    {
+      "path": "classes10.dex",
+      "strings": 281,
+      "bytes": 23496,
+      "sha256": "30bd39ccad5922717166814e8cd417de6628cd8790831e9da9ff7c87c33e4e2c"
+    },
+    {
+      "path": "classes11.dex",
+      "strings": 1358,
+      "bytes": 147108,
+      "sha256": "2b0c3938c3056400bf5f146a9e0a496f411945561a831c280c14e2f9c6c1e041"
+    },
+    {
+      "path": "classes12.dex",
+      "strings": 1746,
+      "bytes": 92800,
+      "sha256": "75365bea9dca125c12257288dfc433eaa960d1b352d5637792f03c1a4461ad5b"
+    },
+    {
+      "path": "classes13.dex",
+      "strings": 1826,
+      "bytes": 200040,
+      "sha256": "1a0513619c86d8e69e751f5d2c1e6eaf815d9e3a5de0dfbbfb05526fbfdeac05"
+    },
+    {
+      "path": "classes14.dex",
+      "strings": 5673,
+      "bytes": 616720,
+      "sha256": "ba84c58475f6f7d732ee38187b43e1630aefc419744a7dd1c4e35d345e479dfb"
+    },
+    {
+      "path": "classes15.dex",
+      "strings": 10397,
+      "bytes": 1249968,
+      "sha256": "f02855f879bf2273a76f9c54042d662b9d3dd4b11b9159440fd741683df09548"
+    },
+    {
+      "path": "classes16.dex",
+      "strings": 5621,
+      "bytes": 645076,
+      "sha256": "00fdcf91d39972b979b015d40d7e4c4608fe421986b3aef0f82d7b6a426245ef"
+    },
+    {
+      "path": "classes17.dex",
+      "strings": 6668,
+      "bytes": 754380,
+      "sha256": "c071e87f14f6416f8d0da7b0f56d33f528e1b5f2859f8af1644cca647e2ebc51"
+    },
+    {
+      "path": "classes18.dex",
+      "strings": 290,
+      "bytes": 18172,
+      "sha256": "a2746340c56dd647ab66804b08958f9130f21e24de93f2c1bcc1e42be9d4f203"
+    },
+    {
+      "path": "classes19.dex",
+      "strings": 4976,
+      "bytes": 522348,
+      "sha256": "d87630c872965d738d3bb5b6cf94bce7fd532e855934a6ef06221de5397ff6c0"
+    },
+    {
+      "path": "classes2.dex",
+      "strings": 789,
+      "bytes": 66724,
+      "sha256": "c78b01b830f60fad67508a34cd280d33b19d5f2f2ae66b0f3484bc48ead087ed"
+    },
+    {
+      "path": "classes20.dex",
+      "strings": 1021,
+      "bytes": 126856,
+      "sha256": "603d40a0806a898edd535f052f6eba203b349a8cc23a181b27f1814c5ff3ad8c"
+    },
+    {
+      "path": "classes21.dex",
+      "strings": 3198,
+      "bytes": 317800,
+      "sha256": "e0617b495ea8b68282613dc6999802840fe4f06a2e4ce534c4efbd9425b26109"
+    },
+    {
+      "path": "classes22.dex",
+      "strings": 882,
+      "bytes": 68984,
+      "sha256": "e5f30aa8489d90017c11bcea4656c7a5062b122bb75ec8017edfef2a40af032c"
+    },
+    {
+      "path": "classes23.dex",
+      "strings": 1552,
+      "bytes": 161036,
+      "sha256": "5ea434e5e32c59d7530bfa493e34ed7252b8d6cd4c8f3c4481acdbfdffb137f6"
+    },
+    {
+      "path": "classes24.dex",
+      "strings": 2476,
+      "bytes": 243192,
+      "sha256": "bc4eb89c3edc6de8083a5428fe109b4f928667f7c4046305db43486b79981e8d"
+    },
+    {
+      "path": "classes25.dex",
+      "strings": 6372,
+      "bytes": 683612,
+      "sha256": "32a538b26a48fd8eee89eddf90e0e8a3fc72fc69de47fbca3e575f8639a104bd"
+    },
+    {
+      "path": "classes26.dex",
+      "strings": 1353,
+      "bytes": 97912,
+      "sha256": "de78e45ed832567480b6629502cbe1344183bb43e53f3dd0ba4b24f652e701c4"
+    },
+    {
+      "path": "classes27.dex",
+      "strings": 473,
+      "bytes": 44096,
+      "sha256": "de142963f71bd0c13af819cc30dd9412b5b8fed82374e9f36d79e00f8baf500c"
+    },
+    {
+      "path": "classes28.dex",
+      "strings": 69314,
+      "bytes": 9588584,
+      "sha256": "8c1bedc5fd1fe12232d45fb6d3a68cb3e33e3827f239a6833f1420ff7275af98"
+    },
+    {
+      "path": "classes29.dex",
+      "strings": 52932,
+      "bytes": 9531680,
+      "sha256": "19d49a4c49cbee4919be961402bdc6be9aea8d7424bc8047c5e44a0b9bd89dc0"
+    },
+    {
+      "path": "classes3.dex",
+      "strings": 473,
+      "bytes": 37832,
+      "sha256": "134e591a09bebaed29933ca5e99bfa79213bf887f9a1afa26bf4408e173216d7"
+    },
+    {
+      "path": "classes4.dex",
+      "strings": 3975,
+      "bytes": 585548,
+      "sha256": "e19c43235f28957e5b626db8e2ba0e86c7cf9c974d387f6a7beaf8d80f17b593"
+    },
+    {
+      "path": "classes5.dex",
+      "strings": 1665,
+      "bytes": 197636,
+      "sha256": "af1acbdf5607b4aa3289c269822d9995e39427d63c792a7b0d768ec383ec86c9"
+    },
+    {
+      "path": "classes6.dex",
+      "strings": 2550,
+      "bytes": 303936,
+      "sha256": "d7cb443e1d6c9ddd1b0e305b5429e0d2b7b6f33133e92d0de2db520c4367f2a7"
+    },
+    {
+      "path": "classes7.dex",
+      "strings": 2202,
+      "bytes": 269732,
+      "sha256": "08bec3db7d2962c9662c88821138e85f56847499a47dfd8dfe1f8a0d1c409d1c"
+    },
+    {
+      "path": "classes8.dex",
+      "strings": 1412,
+      "bytes": 141380,
+      "sha256": "87ea5a98c204d577967e6332268cad0d451749e30e113628bf4be9a5d9729121"
+    },
+    {
+      "path": "classes9.dex",
+      "strings": 565,
+      "bytes": 35528,
+      "sha256": "8d050071f3b2f7485c43f87b8fd710a4f58261c1b685a6918d37b5bc428872c4"
+    }
+  ],
+  "source_inputs_checked": 1399,
+  "source_inputs_changed": [],
+  "strong_secret_patterns": [
+    "private_key_block",
+    "aws_access_key_id",
+    "github_classic_token",
+    "github_fine_grained_token",
+    "google_api_key"
+  ],
+  "strong_secret_pattern_hits": [],
+  "private_key_or_env_named_members": [],
+  "static_url_host_counts": {
+    "127.0.0.1": 2,
+    "aomedia.org": 1,
+    "cloud.google.com": 1,
+    "commons.wikimedia.org": 3,
+    "default.url": 1,
+    "developer.android.com": 2,
+    "developer.apple.com": 1,
+    "developers.google.com": 1,
+    "dummy.example": 1,
+    "esv-verification.invalid": 1,
+    "example.invalid": 1,
+    "g.co": 1,
+    "github.com": 2,
+    "goo.gle": 1,
+    "jsoup.org": 1,
+    "ns.adobe.com": 2,
+    "ns.google.com": 3,
+    "schemas.android.com": 1,
+    "schemas.microsoft.com": 1,
+    "www.w3.org": 6,
+    "youtrack.jetbrains.com": 3
+  },
+  "expected_literal_endpoints": {
+    "http://127.0.0.1:8765/v1/verify": true,
+    "https://commons.wikimedia.org/w/api.php": true
+  },
+  "expected_debug_and_new_notice_class_presence": {
+    "FakeEntitlementSource": true,
+    "OwnedFixtureActivity": true,
+    "DebugLoopbackVerificationEngine": true,
+    "SaveRuntimeNotice": true,
+    "EsvVault": false
+  },
+  "app_vault_rule_class_descriptors": [],
+  "limits": [
+    "Static string/reference inventory does not establish runtime reachability or all network destinations.",
+    "No high-confidence listed secret pattern is not proof of absence of all secrets.",
+    "No device, external endpoint request, credentials or signing-key content inspected.",
+    "Debug intentionally includes fake entitlement and owned fixture loopback surfaces; not release acceptance."
+  ]
+}

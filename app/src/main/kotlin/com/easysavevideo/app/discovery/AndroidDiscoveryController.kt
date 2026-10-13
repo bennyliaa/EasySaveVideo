@@ -24,6 +24,7 @@ data class DiscoveryUiState(
     val profile: SearchProfile = SearchProfile("local", ""),
     val status: DiscoveryStatus? = null,
     val page: PageSnapshot? = null,
+    val restoredPageFromStamp: SessionStamp? = null,
     val results: List<VideoSearchResult> = emptyList(),
     val pageIndex: Int = 0,
     val materializedPages: Int = 0,
@@ -113,6 +114,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     private var initialized = false
     @Volatile private var managementRevision = -1L
     private var savedViewport: Pair<SessionStamp, Int>? = null
+    private var readingRestoreProof: DiscoveryReadingRestoreProof? = null
     private var polling: ScheduledFuture<*>? = null
     private var controllerGeneration = 0L
     // Polling can fulfill earlier explicit page demand, but local controls never create demand.
@@ -230,6 +232,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     }
     private fun initialize(enableDemo: Boolean, expectedIntent: Long = sourceIntent.get(),
         expectedConfiguration: SearxngSourceConfiguration? = sourceConfiguration) {
+        readingRestoreProof = null
         if (!sourceConfigurationLoaded) { main.post { sourceSettings.reload() }; return }
         val claim = DiscoverySourceInitializationClaim(expectedIntent, expectedConfiguration?.generation)
         val verification = verificationConfiguration
@@ -281,6 +284,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
                     }
                     return
                 }
+                readingRestoreProof = DiscoveryReadingAnchorPolicy.restoreProof(previous, c.currentCheckpoint())
                 sortOrder = previous.profile.sortOrder
                 pageIndex = store.loadViewport(previous.stamp).coerceAtMost(previous.pool.pages.lastIndex.coerceAtLeast(0))
             } else c.start(SESSION, profile("", SearchFilters()))
@@ -607,6 +611,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         val target = currentControlTarget(c)
         publish(DiscoveryUiState(ready = true, profile = updated?.profile ?: SearchProfile("local", ""), status = status, page = page,
             results = page?.let(c::results).orEmpty(), pageIndex = pageIndex, materializedPages = updated?.pool?.pages?.size ?: 0,
+            restoredPageFromStamp = if (unavailable) null else DiscoveryReadingAnchorPolicy.restoredFromStamp(readingRestoreProof, updated, page),
             nextPagePending = nextPageDemand.targetPage(target, pageIndex, pageLifecycle.get()) != null,
             demo = demo, storageUnavailable = unavailable, notice = notice, commonsConfigured = CommonsSourceRegistration.configured,
             commonsEnabled = commonsEnabled == true, controlTarget = target,
@@ -634,6 +639,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     private fun submit(action: () -> Unit) { if (!closed.get()) runCatching { io.execute { if (!closed.get()) { osSignals.revalidate(); guarded(action) } } } }
     private fun guarded(action: () -> Unit) {
         try { action() } catch (_: Exception) {
+            readingRestoreProof = null
             unavailable = true; coordinator?.suspendSourcesImmediately()
             errors.report(ErrorEnvelope(ErrorCode.RECOVERY_FAILED, ErrorModule.RECOVERY, true, UserAction.RETRY))
             val failedIntent = sourceIntent.get()

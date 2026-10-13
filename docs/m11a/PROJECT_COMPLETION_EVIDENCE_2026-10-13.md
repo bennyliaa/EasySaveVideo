@@ -7,14 +7,18 @@ Original requirements and historical evidence are unchanged.
 
 ## 1. Source baseline and what “published” means
 
-Latest verified source publication: [b0c5647e6759dd212423647742e4923c8d0dce93](https://github.com/bennyliaa/EasySaveVideo/commit/b0c5647e6759dd212423647742e4923c8d0dce93),
-on `development/cloud-followup-20261013`, generated candidate-label display and typed
-website-permission denial notices. The publication receipt records 30 changed files,
-all 30 blobs read back with exact byte equality, no deletions and no forced ref update.
-Parent: `795b6bb9dc0353be55682a53d402bf6773aed9e8`.
-Main remained `ea87963dee631a498774f648c9a1dabd9f665b90`; the repository remained private.
-The 30 changed blobs are verified; whole remote-tree equality is not claimed.
-This is source publication, not a main merge, new APK, installation or release acceptance.
+Latest verified source publication: [c794ef84344d638f20966a1cd05bb5b340ade7e0](https://github.com/bennyliaa/EasySaveVideo/commit/c794ef84344d638f20966a1cd05bb5b340ade7e0),
+on `development/cloud-followup-20261013`, complete AndroidSaveRuntime.notice typed display.
+The receipt verifies 32 changed blobs and the evidence ZIP with exact readback, no deletions or
+forced ref update. Parent is `ef5d6fc35328e8881db26df3982c0e675c37dd4d` (16 full-regression
+evidence/docs files, no production change). Main remains
+`ea87963dee631a498774f648c9a1dabd9f665b90`; the repository remains private.
+The scoped changed blobs are verified; whole remote-tree equality is not claimed.
+Publication is not a main merge, installation or release acceptance.
+
+A subsequent code8 Debug APK was built from c794ef and is retained **locally only**, with no upload
+or install. It predates the current reading-anchor source. That anchor slice and this fact refresh
+are verified locally but **await publication**; the separate stages below must not be conflated.
 
 The following later publications supersede the former `2986ada` editor-default checkpoint:
 
@@ -28,8 +32,10 @@ The following later publications supersede the former `2986ada` editor-default c
 | [62b5f6d](https://github.com/bennyliaa/EasySaveVideo/commit/62b5f6d4076fe1ea4ec727ae4dcd87c9113697e3) | Authentication-waiting return to current Browser and 26-pair fixed destination copy; 33 changed files, 33 exact readbacks | `/workspace/shared/esv-auth-destination-copy-publication-20261013/SUMMARY.json` |
 | [795b6bb](https://github.com/bennyliaa/EasySaveVideo/commit/795b6bb9dc0353be55682a53d402bf6773aed9e8) | Typed destination notices/copy status and Discovery inline/floating filter roles; 42 changed files, 42 exact readbacks | `/workspace/shared/esv-destination-filter-publication-20261013/SUMMARY.json` |
 | [b0c5647](https://github.com/bennyliaa/EasySaveVideo/commit/b0c5647e6759dd212423647742e4923c8d0dce93) | Generated candidate display and typed denied-permission notices; 30 changed files, 30 exact readbacks | `/workspace/shared/esv-candidate-permission-publication-20261013/SUMMARY.json` |
+| [ef5d6fc](https://github.com/bennyliaa/EasySaveVideo/commit/ef5d6fc35328e8881db26df3982c0e675c37dd4d) | Full cloud regression evidence only; 16 files/readbacks, no production change | `/workspace/shared/esv-full-ui-regression-publication-20261013/SUMMARY.json` |
+| [c794ef8](https://github.com/bennyliaa/EasySaveVideo/commit/c794ef84344d638f20966a1cd05bb5b340ade7e0) | Complete Save runtime notice typed-display channel; 32 files/readbacks including evidence ZIP | `/workspace/shared/esv-save-notice-publication-20261013/SUMMARY.json` |
 
-All eight receipts were read across this documentation refresh. Receipt paths are local verification inputs,
+The latest two receipts were read in this refresh alongside the eight previously verified receipts. Receipt paths are local verification inputs,
 not portable repository attachments; commit links and the in-repository slice reports
 are the durable source references. Wi-Fi's original 77-file source/evidence freeze is
 historical input to its 79-file publication group, not a still-pending publication.
@@ -59,11 +65,12 @@ Requirements describe desired behavior. Source-contract, JVM and host tests esta
 only their checked conditions. Compilation/lint establish neither rendered pixels nor
 native media correctness; publication readback establishes bytes, not installed behavior.
 
-### Current full cloud regression on the published UI source
+### Latest full cloud regression: b0c5647 only
 
 Report: `docs/m11a/FULL_CLOUD_UI_REGRESSION_20261013.md`.
 Evidence: `artifacts/regression/full-ui-20261013/VERIFICATION.json`.
-This is a new recorded run, not a sum of overlapping UI-slice totals:
+This full run binds b0c5647 production bytes. It is not rerun evidence for the later
+Save-notice or reading-anchor source, and is not a sum of overlapping slice totals:
 
 - All **13 selected module test tasks actually reran with `--rerun`**. **307 fresh JUnit
   XML suites** registered **3,149 cases: 3,147 passed, 0 failures, 0 errors, 2 skipped**. App **1,886** and
@@ -97,7 +104,9 @@ This is a new recorded run, not a sum of overlapping UI-slice totals:
 - The latest publication receipt has zero workflows/runs/checks/statuses. Empty combined
   `pending` is neither running nor passing CI. This local regression is not GitHub
   Actions green status, and the publisher itself ran no builds or device tests.
-- APK/device/emulator, original-PPT comparison, rendered IME/TalkBack/large-font behavior,
+- APK assembly was NOT_RUN in that full regression; the later local-only c794ef Debug
+  build/static result is recorded separately below. Device/emulator, original-PPT comparison,
+  rendered IME/TalkBack/large-font behavior,
   real media/network/provider acceptance and physical energy measurements remain
   **NOT_RUN**. Original PPT bytes are still unavailable. Older OPPO and Windows failures
   remain separately open; there is no whole UI-B/UI-E/M9/M11 or release acceptance.
@@ -139,6 +148,23 @@ is superseded by the exact publication receipts above, not edited retroactively.
   See `docs/m11a/CANDIDATE_PERMISSION_DISPLAY_20261013.md`. Candidate numbering is
   locale-rendered; two website-denial notices are typed until current-locale display.
   Camera/microphone/location remain denied. Other Browser raw notices are not all migrated.
+- Published `c794ef`: complete Save runtime notice display, App **1,905** actually passed,
+  19 new tests, zero failure/error/skip. Both compilers/lints, runtime90 and seven compiled-boundary
+  checks passed. Three consumers now resolve 78 groups in current Compose Locale; no service
+  notification, storage/wire or recording/save behavior change. Other module tests were not rerun.
+  See `docs/m11a/SAVE_RUNTIME_NOTICE_DISPLAY_20261013.md`.
+- Current reading-anchor slice, **not yet published**: App **1,953** actually passed,
+  including 48 new tests, zero failure/error/skip; dual compile/lint, runtime90 and seven boundary
+  checks passed. Other module tests were not rerun. Stable result/offset and exact read-only
+  restore provenance are source/JVM verified; actual Compose saved-state/navigation/drag and
+  device restoration are NOT_RUN. No new APK contains this slice. See
+  `docs/m11a/DISCOVERY_READING_ANCHOR_20261013.md`.
+- Separate local-only APK: code8 / 0.8.0-ui-dev, min31/target36, 45,988,354 bytes, source c794ef
+  before anchor work. Existing signer matched; APK v2 and static integrity passed. No key,
+  version or project configuration change; no upload/install/release claim. The unchanged global
+  cleartext setting is disclosed. Local source hashes match before/after; one existing metadata
+  POM differs from the remote tree only by CRLF/LF. See
+  `docs/m11a/DEBUG_CANDIDATE_STATIC_ACCEPTANCE_20261013.md`.
 - Theme **17** ran in the earlier semantic-token slice and again in the new full
   regression. It did **not** run in the intermediate input-clear, authentication,
   destination/filter or candidate/permission slices; no historical run is relabeled.
@@ -206,8 +232,10 @@ superseded by the publication chain above, not instructions to repeat completed 
 Authentication-waiting return to the current Browser and 26-pair fixed destination
 copy are published in `62b5f6d`. Typed destination notices/copy-state display and Discovery
 filter roles are published in `795b6bb`; candidate labels and typed denied-permission
-notices are published in `b0c5647`. Full `OpenOriginForLogin`, remaining Save/Browser
-raw notices and native acceptance are still outside those bounded completed scopes.
+notices are published in `b0c5647`; the complete Save runtime notice channel is published
+in `c794ef`. Full `OpenOriginForLogin`, native service/other owners’ raw notices and native
+acceptance remain outside those bounded completed scopes. The reading-anchor source is tested
+but awaiting publication and device acceptance.
 
 ## 4. Older device evidence: useful, bounded, not overwritten
 
@@ -290,8 +318,9 @@ source scopes as new work; their device and full-original-UI acceptance remains 
    nine Markdown originals and `ESV_UI_TOKEN_AND_COMPONENT_MAP.md` to select remaining
    semantic-state/component coverage or other app-owned locale gaps. BrowserScreen's
    already-published copy, destination typed display, candidate/denial display and filter
-   panel roles are not pending targets. Full app localization, remaining app-owned
-   Save/Browser raw notices, success/warning/
+   panel roles and the published Save runtime notice channel are not pending targets. The
+   reading-anchor slice is source-tested but awaiting publication/device evidence, not a fresh
+   implementation target. Full app localization, native service/other owners’ raw notices, success/warning/
    selected/loading/scrim/system-bar tokens and all-component acceptance remain partial.
    Source coverage does not substitute for the missing PPT or rendered-device evidence.
 
@@ -324,19 +353,14 @@ not cure the unresolved OPPO root cause by assumption.
   lifecycle/native-media matrix before full UI/M9/M11 acceptance. Markdown recovery
   does not supply screenshot comparison or close UI-E.
 
-## 7. Documentation-only validation and publication boundary
+## 7. Documentation refresh and publication boundary
 
-Only this overview and `docs/m11a/MILESTONE_STATUS.md` are changed by this document
-refresh. The separate full-regression owner ran the checks recorded above; this
-editor ran no Gradle or device task and changed no production source, build input,
-old evidence, original requirement, package/version, device state or Git remote.
-The three newest publication receipts, bounded UI reports, full-regression report/
-evidence and native acceptance checklist were read and reconciled with earlier
-receipt/report history. Original Markdown recovery is distinct from unavailable PPT
-imagery; unavailable device/PPT artifacts are not presented as local proof.
-
-The two edited documents await the coordinating owner's combined review/publication
-of the regression evidence group. This refresh creates no separate freeze and performs
-no publication. That pending documentation/evidence delivery does not make already
-published source slices pending again, and the current source publication remains
-`b0c5647`. Later source changes need their own exact validation and publication evidence.
+This minimal refresh changes only this overview and MILESTONE_STATUS, reconciling c794ef notice
+publication, the separate local-only pre-anchor APK, and the currently unpublished anchor slice.
+Each source/test/build stage retains its own exact evidence; totals are not added. The last full
+13-module regression remains bound to b0c5647, with original skips, historical gate failures and
+OPPO/Windows issues preserved. The two updated ledgers and anchor evidence await a combined
+publication with small packaging reports. The local 46 MB APK is excluded; no install or upload
+was performed. Original Markdown recovery is distinct from still-unavailable PPT imagery.
+This documentation refresh creates no additional build/device result and does not retroactively
+change old evidence, original requirements, package/version, device state or published commits.
