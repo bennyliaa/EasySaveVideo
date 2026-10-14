@@ -1,0 +1,54 @@
+[
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedVerificationBindings.kt",
+    "sha256": "438511562f048b5c28aec2ece3431fb616636fa0192addad9441d7a0eb81670e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalOutputOwner.kt",
+    "sha256": "429c5f75bab35fb0eb907cfec08b62b5c5ab939ff19111296571c6c120da4e8a"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalRafIo.kt",
+    "sha256": "de58cf833c7b107a44a79ecdf59c84aefd38570f8ca6842c00a0603f13d712a1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalMutationPolicy.kt",
+    "sha256": "9b631352b10c754ef47ec58e2c15447654580881ce79cba08b0b07af4997cd91"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+    "sha256": "85f3374cf1791fed4ede35719a27bc1dfd4bd68a0c22ba5fb99137ff5efce7ad"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationAttemptOwner.kt",
+    "sha256": "5788d527eff1ff3bca0170e4e1565f85d278a08f77d7b1e56700bf661780f1ee"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedVerificationBindingsTest.kt",
+    "sha256": "9046709e672f9cc2707699ac780555441f118096ba149bdfd1a7ca77da20f456"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalOutputOwnerTest.kt",
+    "sha256": "f70a748f7302c2bafe45def29014965921713f5a6c969ebcc413c41a2e91963c"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalOwnerRaceTest.kt",
+    "sha256": "500112725ebf074259825225ffd429119bc2ba44eae0bc8cc5890393f5ea77d2"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalTestFixtures.kt",
+    "sha256": "80a7717b95bbea58307cb4f23510e7ffab1bc8b539f9f0e9ec500a6c52288fe4"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalMutationPolicyTest.kt",
+    "sha256": "fa991c5f3b139baed2136be4db28ef77fa1fc23c9f4ab6713da8ed330da951c4"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationCanonicalConflictTest.kt",
+    "sha256": "fb8ad2b8c308abaf149e055f7b5858c9998b7a6f810e910912bd03d10ff2cd29"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedStorageWiringContractTest.kt",
+    "sha256": "92176d13bf50a26400a68609d26fe24978ee6f2ff24debc9081a74fc2b433e19"
+  }
+]

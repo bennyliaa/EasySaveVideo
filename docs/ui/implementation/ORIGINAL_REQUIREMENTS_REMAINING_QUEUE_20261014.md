@@ -33,7 +33,7 @@ unblocked row after recording the preceding row's actual result.
 | PR-05/06 discovery policy | Scheduler, lifecycle cancellation, progress/history, four policies, finite pagination, recovery exits and stable reading | SOURCE IMPLEMENTED; sources/network/power/native lifecycle TO TEST; no further generic race-hardening slice assumed |
 | PR-07/08 source management | Admission/runtime interfaces, local enablement, maintenance/repository/rollback groundwork and UI | PARTIAL. Production signed declarative interpreter remains disabled pending its gate; configuration/update/rollback native acceptance TO TEST |
 | PR-09 detection | Existing user-triggered detector, candidate/revision/quality selector | SOURCE IMPLEMENTED; owned actual media and native WebView inspection TO TEST |
-| PR-10/11 save | Direct/HLS runtime, verified publication, output/recovery ports | PARTIAL SOURCE IMPLEMENTED for admitted MP4/HLS. Product section 7.1 basic free MOV/WebM-compatible MP4 normalization is PARTIAL: contracts/storage and narrow silent MOV host adapter are source implemented; see BASIC_NORMALIZATION_ADAPTER_20261014.md. Production Direct still sends output straight to MP4 verification; inactive persistent owned-file adapter is now source implemented (MOV_PERSISTENT_FILES_20261014.md), with real Android storage acceptance and blocking-IO activation gates open; runtime and typed final native verification are DEVELOPABLE NEXT. Real output/playback/interruption TO TEST; no all-site/all-format guarantee |
+| PR-10/11 save | Direct/HLS runtime, verified publication, output/recovery ports | PARTIAL SOURCE IMPLEMENTED for admitted MP4/HLS. Product section 7.1 basic free MOV/WebM-compatible MP4 normalization is PARTIAL: contracts/storage and narrow silent MOV host adapter are source implemented; see BASIC_NORMALIZATION_ADAPTER_20261014.md. Production Direct still sends output straight to MP4 verification; inactive persistent owned-file adapter is now source implemented (MOV_PERSISTENT_FILES_20261014.md), with real Android storage acceptance and blocking-IO activation gates open; typed final native verification and inactive adopted read owner are source implemented (MOV_TYPED_NATIVE_VERIFICATION_20261014.md; MOV_ADOPTED_READ_OWNER_20261014.md); complete controlled runtime pipeline is DEVELOPABLE NEXT. Real output/playback/interruption TO TEST; no all-site/all-format guarantee |
 | PR-12/16 task flow | Save state mapping, cancellation, authentication/source reinspection, task detail/recovery; Save failure guidance report | PARTIAL. Supported explicit Direct→Stream reassessment/Coordinator confirmation is source implemented in `METHOD_ALTERNATIVE_20261014.md` for the documented suitable-error allowlist. Trusted webpage→Record handoff remains UNKNOWN/GATE; this is not automatic fallback or completion of all PR-12. Native closed loop TO TEST |
 | PR-13/14 recording | Existing consent/basic/segment/region runtimes and UI | SOURCE IMPLEMENTED for existing capabilities; actual capture/audio/output/segment/native lifecycle TO TEST; no fabricated consent or audio |
 | PR-15 editor | Existing crop/merge/compression engine, non-destructive publication, responsive preview and defaults | SOURCE IMPLEMENTED; encoder/output/playback/Tools-gated native acceptance TO TEST |
@@ -94,7 +94,7 @@ unblocked row after recording the preceding row's actual result.
    confirmed controls. Shared controller operation ownership survives view exit;
    both old and central entry points use the same prompt adapter. These are not
    a stored keyword-input list. See `SETTINGS_DISCOVERY_PRIVACY_20261014.md`.
-8. PR-25 Incognito and per-site permissions (DESIGN RECONCILED / DEPENDENCY EVALUATION PASSED / INTEGRATION DECISION PENDING): see
+8. PR-25 Incognito and per-site permissions (DESIGN RECONCILED / DEPENDENCY EVALUATION PASSED / INTEGRATION APPROVED): see
    `PR25_BROWSER_PRIVACY_DESIGN_20261014.md`. Reconcile existing
    context/session/history/authentication boundaries against real WebView storage
    isolation and platform permission APIs. Do not equate omitted history with
@@ -102,7 +102,7 @@ unblocked row after recording the preceding row's actual result.
    site-permission manager. Identify exact dependency/permission/native gates
    before implementing this larger original requirement.
 
-9. Free basic output normalization (LAYERS 1–3 SOURCE IMPLEMENTED / FINAL VERIFICATION NEXT): see
+9. Free basic output normalization (LAYERS 1–4 SOURCE IMPLEMENTED / ADOPTED OWNER SOURCE IMPLEMENTED / CONTROLLED PIPELINE NEXT): see
    `BASIC_NORMALIZATION_DESIGN_20261014.md` for the initial bounded free MOV remux
    profile, separate source/output evidence and exact-owned recovery protocol.
    Contracts/storage layer passed 4,073 tests plus two existing skips; see
@@ -113,11 +113,15 @@ unblocked row after recording the preceding row's actual result.
    `MOV_PERSISTENT_FILES_20261014.md` for final validation status and the blocking
    temporary-IO/close limitation. Production activation requires memory-only
    cancellation/release responsiveness, real retirement and UI nonblocking tests.
-   Typed final Android verification is now in implementation. The exact tail/helper
-   layer passed 32 official-wrapper JVM tests and independent source review;
-   Android adapter, ownership port, native observations and real release acceptance
-   remain distinct gates (MOV_TYPED_NATIVE_VERIFICATION_DESIGN_20261014.md and
-   MOV_NORMALIZED_OWNERSHIP_PORT_20261014.md). Runtime MOV admission and native acceptance
+   Typed final Android verification source passed 4,261 tests plus two skips;
+   its exact tail/helper layer passed 32 official-wrapper tests and app-focused
+   policy/RAF/native-observation tests passed 141. See
+   MOV_TYPED_NATIVE_VERIFICATION_20261014.md. The inactive adopted canonical owner
+   and exact local permit passed focused tests (33 gate and 121 app), independent
+   review and forced 13-module regression (4,354 PASS plus two existing skips). See MOV_ADOPTED_READ_OWNER_20261014.md. The next slice
+   connects actual claim/accepted Runtime/batch, normalization/adoption, typed
+   commit/atomic publication/terminal cleanup and recovery, including mandatory
+   off-lock temporary-IO changes. Runtime MOV admission and native acceptance
    remain open. Original product section
    7.1 and technical sections 5.1/5.3 require feasible MOV/WebM to playable MP4 as
    basic output, independent of paid advanced editing. Current Direct does not
@@ -148,8 +152,10 @@ frozen APKs/evidence immutable and never advance main as part of this queue.
   evaluation completed: both isolated compile variants passed with the unchanged
   SDK/toolchain, candidate graph 90→91 added only WebKit and preserved the original
   90 artifact hashes; Apache and Chromium BSD notice obligations were retained.
-  See the separate ESV WebKit evaluation report. User confirmation for integration
-  was requested separately at approximately 11:11 UTC and remains PENDING. The
+  See the separate ESV WebKit evaluation report. The user approved exact WebKit 1.17.1 integration and isolated Incognito
+  development at approximately 12:17 UTC, retaining camera/microphone/location
+  denials. Implementation design and exact dependency/notice patches are being
+  prepared separately while MOV finishes its current checkpoint. The
   production runtime inventory is still 90; site camera/microphone/location grants
   remain separate. Without
   new dependencies, a dedicated platform WebView process/data suffix is possible

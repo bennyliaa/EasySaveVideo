@@ -27,6 +27,7 @@ internal class NormalizationAttemptOwner(
     private val closed: () -> Boolean,
     private val ensureNoExistingHandles: (NormalizationOwner) -> Unit,
     private val checkOperation: (OperationContext) -> Unit,
+    private val ensureNoCanonicalReaders: (NormalizationOwner) -> Unit = {},
 ) {
     private val sessions = mutableMapOf<String, OwnedMovRemuxAttempt?>()
     init { require(ownerLock === files.ownerLock) }
@@ -40,7 +41,7 @@ internal class NormalizationAttemptOwner(
         files.requireAvailable()
     }
     private fun active(owner: NormalizationOwner, context: OperationContext, phase: SavePhase = SavePhase.NORMALIZING): SaveRecord {
-        available(); checkOperation(context)
+        available(); ensureNoCanonicalReaders(owner); checkOperation(context)
         val record = readSave(owner.taskId) ?: fail()
         val transfer = record.transfer ?: fail()
         val artifact = record.artifact ?: fail()
@@ -163,14 +164,14 @@ internal class NormalizationAttemptOwner(
         } finally { attempt.finishEnded(); retire(attempt) }
     }
     private fun noSession(key: NormalizationKey) {
-        available()
+        available(); ensureNoCanonicalReaders(key.owner)
         if (sessions.containsKey(key.owner.artifactId)) fail()
         ensureNoExistingHandles(key.owner)
     }
     fun inspect(owner: NormalizationOwner): NormalizationInspection = synchronized(ownerLock) {
         try {
             if (closed() || sessions.containsKey(owner.artifactId)) NormalizationInspection.Unreadable
-            else { ensureNoExistingHandles(owner); protocol().inspect(owner) }
+            else { ensureNoCanonicalReaders(owner); ensureNoExistingHandles(owner); protocol().inspect(owner) }
         } catch (_: Exception) { NormalizationInspection.Unreadable }
     }
     fun recordAdoptionIntent(key: NormalizationKey, proof: DirectNormalizationProof, context: OperationContext): NormalizationWorkspace = synchronized(ownerLock) {

@@ -1,0 +1,21 @@
+{
+  "gate_focused": {
+    "tests": 33,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "actual local gate; 11 existing and 22 new tests"
+  },
+  "app_focused": {
+    "tests": 121,
+    "suites": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "55 owner/binding real host RAF plus injected metadata/authority; 6 production mutation policy; 5 remux conflict; 5 source contracts; existing regressions"
+  },
+  "new_pinned_media3_execution": false,
+  "android_native_or_sqlite_execution": false,
+  "independent_code_review": "passed frozen inactive owner scope; shared-parent metadata and late directory-open findings closed",
+  "remaining_bridge_encapsulation": "move consumed/complete into registry private state before production bridge; current default has no issuing authority"
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/DirectLocalProcessingGate.kt",
+    "sha256": "cc94d9c2d32b5372e8a896b34387b531628ea587ccfef1a6b3adc024c219a452"
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/DirectLocalProcessingPermitTest.kt",
+    "sha256": "dadc0ed3ddc654f5552d475a61334e95b1efa05fdc5b14084b1c2fcd9d5e39a3"
+  }
+]

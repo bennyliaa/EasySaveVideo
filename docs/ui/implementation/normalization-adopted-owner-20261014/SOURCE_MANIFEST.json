@@ -1,0 +1,191 @@
+[
+  {
+    "path": "app/build.gradle.kts",
+    "bytes": 18011,
+    "sha256": "b10957e1fca94f45227f53a6177ce2785e2b7ae52b5d6caffba4b743527be633",
+    "git_sha": "80b90b53f285ba5b189d8c7c6c3733272639ab6d",
+    "base_git_sha": "a817e876b5363be21b69efde416815c5c005b880"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalMutationPolicy.kt",
+    "bytes": 1597,
+    "sha256": "9b631352b10c754ef47ec58e2c15447654580881ce79cba08b0b07af4997cd91",
+    "git_sha": "c42216d3645a6db579a1db5439395f36d3e3c892",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalOutputOwner.kt",
+    "bytes": 21610,
+    "sha256": "429c5f75bab35fb0eb907cfec08b62b5c5ab939ff19111296571c6c120da4e8a",
+    "git_sha": "d0978e113bfcf3644681c4c8d7b4bd299a4570a9",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalRafIo.kt",
+    "bytes": 3480,
+    "sha256": "de58cf833c7b107a44a79ecdf59c84aefd38570f8ca6842c00a0603f13d712a1",
+    "git_sha": "78dd065bf7b1315d3409690f099be6862c181732",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedVerificationBindings.kt",
+    "bytes": 4887,
+    "sha256": "438511562f048b5c28aec2ece3431fb616636fa0192addad9441d7a0eb81670e",
+    "git_sha": "5f070a00ac2f9cb10c3a7b3c6a2256cba5a1eb20",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+    "bytes": 54629,
+    "sha256": "85f3374cf1791fed4ede35719a27bc1dfd4bd68a0c22ba5fb99137ff5efce7ad",
+    "git_sha": "3368a2f726bbb2c86ad456cb36426078ef832896",
+    "base_git_sha": "fe04f1448ab8d0e77290d8e015e6e5f17d53e73b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationAttemptOwner.kt",
+    "bytes": 13075,
+    "sha256": "5788d527eff1ff3bca0170e4e1565f85d278a08f77d7b1e56700bf661780f1ee",
+    "git_sha": "ece15f404fcf4b716a7c49c34a7e4821e3fdbb4a",
+    "base_git_sha": "d8873db79b6c5148101a4dcd019aa2f780b4a1dc"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalMutationPolicyTest.kt",
+    "bytes": 5432,
+    "sha256": "fa991c5f3b139baed2136be4db28ef77fa1fc23c9f4ab6713da8ed330da951c4",
+    "git_sha": "81fb77e33c760f6c42a8f27b675cf641e60e3555",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalOutputOwnerTest.kt",
+    "bytes": 25138,
+    "sha256": "f70a748f7302c2bafe45def29014965921713f5a6c969ebcc413c41a2e91963c",
+    "git_sha": "0bc99140b4b00f7a0d92fe876b5879c3c2801112",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalOwnerRaceTest.kt",
+    "bytes": 19399,
+    "sha256": "500112725ebf074259825225ffd429119bc2ba44eae0bc8cc5890393f5ea77d2",
+    "git_sha": "219fba125c50d93bae7ab09078523a7f6aa999a1",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalTestFixtures.kt",
+    "bytes": 10072,
+    "sha256": "80a7717b95bbea58307cb4f23510e7ffab1bc8b539f9f0e9ec500a6c52288fe4",
+    "git_sha": "3e2f22bd980c97b5d413e07d77be594d5eabb668",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedStorageWiringContractTest.kt",
+    "bytes": 4994,
+    "sha256": "92176d13bf50a26400a68609d26fe24978ee6f2ff24debc9081a74fc2b433e19",
+    "git_sha": "ca741f0157ee179964cd0d8364ef771e23201ac8",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AdoptedVerificationBindingsTest.kt",
+    "bytes": 10238,
+    "sha256": "9046709e672f9cc2707699ac780555441f118096ba149bdfd1a7ca77da20f456",
+    "git_sha": "47da6fab547a9e165d2da073e76124b414ec68ea",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationCanonicalConflictTest.kt",
+    "bytes": 4289,
+    "sha256": "fb8ad2b8c308abaf149e055f7b5858c9998b7a6f810e910912bd03d10ff2cd29",
+    "git_sha": "5b9144a2b5ec3865a710c9a80009a79e466b1e92",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/MOV_ADOPTED_OWNER_DESIGN_20261014.md",
+    "bytes": 46937,
+    "sha256": "0ccade4043565c9a60fbce52aa7773312fff4d0b4c9f75c4d8798dc8658c388b",
+    "git_sha": "86112956f5e57462dbcd8e42669b4c0d6d9ada1e",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/MOV_ADOPTED_READ_OWNER_20261014.md",
+    "bytes": 4536,
+    "sha256": "ec28ccaee1046460d82f71182205c6441d718b413179a02d04550c8fed6aded8",
+    "git_sha": "dd3632ecaaae4533c263f7b5788cb01466d16d55",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/ORIGINAL_REQUIREMENTS_REMAINING_QUEUE_20261014.md",
+    "bytes": 18877,
+    "sha256": "eda87a3dcc160be85141f3de6fe2ef792ca4f2cd4a60fcfb1c960441d1852549",
+    "git_sha": "c50340b1c8fa500bf9b213c44f3710ccf03977ce",
+    "base_git_sha": "bd3329072a61a95c3d51df01556efa62ff66003f"
+  },
+  {
+    "path": "docs/ui/implementation/normalization-adopted-owner-20261014/APP_REVIEW_SOURCE_HASHES.json",
+    "bytes": 2502,
+    "sha256": "3d0168c13bcec6219af7e473cd8d2eca636593551106271153b04e2d5cbc2855",
+    "git_sha": "5f1fccb12d0c2718999128cfb183bec938e480c8",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/normalization-adopted-owner-20261014/BOUNDARIES.json",
+    "bytes": 421,
+    "sha256": "bcfeb662c64e6d4d0b6bd34913f501a6de3da0ba95912f99026a3f2ff76199a2",
+    "git_sha": "242e4bb8fc1638ccef9fcc262c1769ac1540e97c",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/normalization-adopted-owner-20261014/GATE_REVIEW_SOURCE_HASHES.json",
+    "bytes": 365,
+    "sha256": "1f8be16a6873cf154a2de3b3fdd12000e892178626040e1e8ff401decfe55afe",
+    "git_sha": "ecffcfb635d3a761154e5f9eaaf42f98dec695e2",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/normalization-adopted-owner-20261014/HOST_SUMMARY.json",
+    "bytes": 819,
+    "sha256": "399c2b5dcd03a8e4f4da40bc21a0930bcc2a552e40e0f59974eb3468c391aed0",
+    "git_sha": "a5792892e9d5b521c9b48ecf5b849c874e7ce5a8",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/normalization-adopted-owner-20261014/LINT_SUMMARY.json",
+    "bytes": 107,
+    "sha256": "6a3e4cf0aad98ed8b8ba019ff346b8f0d15a50fddd780112496a0ae5663df33b",
+    "git_sha": "bf8ee09566aa2eb297ed9ac3f2c358177af4355e",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/normalization-adopted-owner-20261014/STORAGE_AND_RUNTIME_SUMMARY.json",
+    "bytes": 384,
+    "sha256": "98d557992e228039dbdefdd831970143dfdf095b52829ba6c6b1de6d63ba201f",
+    "git_sha": "0a825c4020c8ce6ebc5bf3d7e8c7c95bafdf2dfe",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/normalization-adopted-owner-20261014/TASK_STATUS.json",
+    "bytes": 9250,
+    "sha256": "bb84397d815688bb4d5d825421e71a86043c1349abc39a65e83e7c92e576ebaf",
+    "git_sha": "d3083453605b78c43a47ae065f1b539c98e47e27",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/normalization-adopted-owner-20261014/TEST_SUMMARY.json",
+    "bytes": 1403,
+    "sha256": "9ca008c0966a6faa22261912e2b9930a03ad5781d3c83311b17ff8af1837e244",
+    "git_sha": "1e20228980d875e5960246fb74068ab688d5749f",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/DirectLocalProcessingGate.kt",
+    "bytes": 6751,
+    "sha256": "cc94d9c2d32b5372e8a896b34387b531628ea587ccfef1a6b3adc024c219a452",
+    "git_sha": "5b22c764099ee2bc5742fad62536cd9f902f0642",
+    "base_git_sha": "9159a9e8c09ba185ac76e465f5c13cc12679e293"
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/DirectLocalProcessingPermitTest.kt",
+    "bytes": 15415,
+    "sha256": "dadc0ed3ddc654f5552d475a61334e95b1efa05fdc5b14084b1c2fcd9d5e39a3",
+    "git_sha": "d48ead17d75d5b85024c7bcacdde541bfd16a652",
+    "base_git_sha": null
+  }
+]

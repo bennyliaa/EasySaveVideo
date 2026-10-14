@@ -89,6 +89,8 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
     private val nativeWriters = mutableSetOf<String>()
     private var openReaders = 0
     @Volatile private var normalizationFilesOwner: NormalizationAttemptOwner? = null
+    @Volatile private var canonicalReadOwner: AdoptedCanonicalOutputOwner? = null
+    private var canonicalReadBindings: AdoptedVerificationBindings? = null
     // Sole monitor for Save, Library and Editor. Never nest this under an instance monitor.
     private val fileLock = Any()
     private val ownerLease: PrivateDirectoryLease
@@ -139,6 +141,10 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             if (prior.task.revision != expectedRevision || prior.task.state.isTerminal ||
                 next.task.revision != expectedRevision + 1 || next.commitId != prior.commitId ||
                 next.request != prior.request) return@transaction false
+            val readOwnedArtifact = listOfNotNull(prior.artifact?.artifactId, next.artifact?.artifactId)
+                .firstOrNull { canonicalReadOwner?.hasReservation(it) == true }
+            if (readOwnedArtifact != null && !AdoptedCanonicalMutationPolicy.permitsStopOnly(prior, next))
+                return@transaction false
             if (next.task.state == TaskState.SUCCEEDED) {
                 val receipt = next.receipt ?: return@transaction false
                 val row = catalog.findOwned(next.commitId) ?: return@transaction false
@@ -155,6 +161,9 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             val changed = db.update("save_tasks", recordValues(next), "task_id=? AND revision=?",
                 arrayOf(next.task.taskId, expectedRevision.toString()))
             if (changed != 1) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE) // Roll back provisional publication too.
+            // Revocation never closes or retires a native reader. If transaction completion later
+            // becomes unknown, retaining a revoked reader is conservative; no evidence may publish.
+            readOwnedArtifact?.let { canonicalReadOwner?.revoke(it) }
             true
         }
     }
@@ -287,8 +296,8 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         synchronized(failedOwnerLock) {
             if (failedStorageOwner?.second === ownerLease) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
         }
-        if (normalizationFilesOwner?.releaseUnconfirmed() == true) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
-        if (normalizationFilesOwner?.hasAnyLeases() == true || openWriters.isNotEmpty() || nativeWriters.isNotEmpty() || openReaders != 0 || libraryStorage.hasActiveReaders() || editorStorage?.hasActiveOwners() == true || segmentStorage?.hasActiveOwners() == true) throw SaveFailure(SaveError.BUSY)
+        if (normalizationFilesOwner?.releaseUnconfirmed() == true || canonicalReadOwner?.requiresProcessRecovery() == true) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+        if (normalizationFilesOwner?.hasAnyLeases() == true || canonicalReadOwner?.hasAnyLeases() == true || openWriters.isNotEmpty() || nativeWriters.isNotEmpty() || openReaders != 0 || libraryStorage.hasActiveReaders() || editorStorage?.hasActiveOwners() == true || segmentStorage?.hasActiveOwners() == true) throw SaveFailure(SaveError.BUSY)
         if (!closed) {
             closed = true
             releaseStorageOwner(helper)
@@ -336,8 +345,24 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             throw SaveFailure(SaveError.INVALID_REQUEST)
     }
     private fun ensureNoWriter(artifact: StagingArtifact) {
+        ensureNoLegacyOrRemuxWriter(artifact)
+        ensureNoCanonicalReader(artifact.artifactId)
+    }
+    /** A canonical acquisition checks other owners, never its own installed reservation. */
+    private fun ensureNoLegacyOrRemuxWriter(artifact: StagingArtifact) {
         if (artifact.artifactId in openWriters || artifact.artifactId in nativeWriters || normalizationFilesOwner?.hasActiveSession(artifact.artifactId) == true)
             throw SaveFailure(SaveError.BUSY)
+    }
+    private fun ensureNoCanonicalAcquisitionConflict(artifact: StagingArtifact) {
+        ensureNoLegacyOrRemuxWriter(artifact)
+        if (normalizationFilesOwner?.releaseUnconfirmed() == true)
+            throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+        if (normalizationFilesOwner?.hasAnyLeases() == true || openReaders != 0 ||
+            libraryStorage.hasActiveReaders() || editorStorage?.hasActiveOwners() == true ||
+            segmentStorage?.hasActiveOwners() == true) throw SaveFailure(SaveError.BUSY)
+    }
+    private fun ensureNoCanonicalReader(artifactId: String) {
+        if (canonicalReadOwner?.hasReservation(artifactId) == true) throw SaveFailure(SaveError.BUSY)
     }
     private fun queryRecord(selection: String, args: Array<String>): SaveRecord? {
         val rowId = helper.readableDatabase.query("save_tasks", arrayOf("rowid", "length(record)"),
@@ -500,17 +525,34 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             ownerLock = fileLock,
             closed = { closed },
             ensureNoExistingHandles = { owner -> ensureNoWriter(StagingArtifact(owner.artifactId, owner.commitId)) },
-            checkOperation = { context ->
-                if (Thread.currentThread().isInterrupted) throw SaveFailure(SaveError.CANCELLED)
-                val error = when (context.stopReason(System.currentTimeMillis())) {
-                    com.easysavevideo.core.model.OperationStopReason.CANCELLED -> SaveError.CANCELLED
-                    com.easysavevideo.core.model.OperationStopReason.DEADLINE_EXCEEDED -> SaveError.DEADLINE_EXCEEDED
-                    com.easysavevideo.core.model.OperationStopReason.RETRY_EXHAUSTED -> SaveError.RETRY_EXHAUSTED
-                    null -> null
-                }
-                if (error != null) throw SaveFailure(error)
-            },
+            checkOperation = ::checkNormalizationOperation,
+            ensureNoCanonicalReaders = { ensureNoCanonicalReader(it.artifactId) },
         ).also { normalizationFilesOwner = it }
+    }
+    private fun checkNormalizationOperation(context: OperationContext) {
+        if (Thread.currentThread().isInterrupted) throw SaveFailure(SaveError.CANCELLED)
+        val error = when (context.stopReason(System.currentTimeMillis())) {
+            com.easysavevideo.core.model.OperationStopReason.CANCELLED -> SaveError.CANCELLED
+            com.easysavevideo.core.model.OperationStopReason.DEADLINE_EXCEEDED -> SaveError.DEADLINE_EXCEEDED
+            com.easysavevideo.core.model.OperationStopReason.RETRY_EXHAUSTED -> SaveError.RETRY_EXHAUSTED
+            null -> null
+        }
+        if (error != null) throw SaveFailure(error)
+    }
+    /** Inactive port: an unbound registry cannot authorize acquisition; no runtime caller exists. */
+    internal fun adoptedCanonicalOutputOwner(bindings: AdoptedVerificationBindings): AdoptedCanonicalOutputOwner = synchronized(fileLock) {
+        if (closed) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+        canonicalReadOwner?.let {
+            if (canonicalReadBindings !== bindings) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+            return@synchronized it
+        }
+        AdoptedCanonicalOutputOwner(
+            root = directory, bindings = bindings, ledger = normalizationLedger,
+            readSave = { queryRecord("task_id=?", arrayOf(it)) },
+            readCatalog = { catalog.findOwned(it) }, ownerLock = fileLock,
+            closed = { closed }, ensureNoExistingHandles = ::ensureNoCanonicalAcquisitionConflict,
+            checkOperation = ::checkNormalizationOperation,
+        ).also { canonicalReadBindings = bindings; canonicalReadOwner = it }
     }
     internal fun prepareMovRemux(owner: NormalizationOwner, context: OperationContext, limits: SaveLimits): OwnedMovRemuxAttempt =
         normalizationCall { normalizationOwner().prepare(owner, context, limits) }
@@ -523,7 +565,8 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
     internal fun adoptNormalization(key: NormalizationKey, context: OperationContext): NormalizationWorkspace = normalizationCall { normalizationOwner().adopt(key, context) }
     internal fun cleanupNormalization(key: NormalizationKey, expectedRevision: Long): NormalizationWorkspace = normalizationCall { normalizationOwner().cleanup(key, expectedRevision) }
     /** Memory-only: safe for a future admission hook, without touching storage/fileLock. */
-    internal fun normalizationReleaseUnconfirmed(): Boolean = normalizationFilesOwner?.releaseUnconfirmed() == true
+    internal fun normalizationReleaseUnconfirmed(): Boolean =
+        normalizationFilesOwner?.releaseUnconfirmed() == true || canonicalReadOwner?.requiresProcessRecovery() == true
 
     /** Independent file-lifecycle journal; terminal Save rows are deliberately not filtered out. */
     internal val normalizationLedger: NormalizationLedger by lazy { NormalizationJournal() }
