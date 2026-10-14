@@ -607,6 +607,13 @@ class MainActivity : ComponentActivity() {
                     },
                     discoveryEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.SETTINGS,
                     persistenceWarning = settingsWriteFailed, loadWarning = settingsReadFailed,
+                    entitlements = {
+                        val generation = newTabInputGeneration
+                        EntitlementSettingsDetail(generation, BuildConfig.DEBUG,
+                            canRead = { generation == newTabInputGeneration && isForeground &&
+                                activeDestination == EsvDestination.SETTINGS && !isDestroyed && !isFinishing },
+                            readSnapshot = entitlements::snapshot)
+                    },
                     privacy = {
                         val generation = newTabInputGeneration
                         PrivacySettingsDetail(ordinaryHistory, generation,

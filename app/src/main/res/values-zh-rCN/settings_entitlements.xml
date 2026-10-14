@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="entitlements_title">功能与权益</string>
+    <string name="entitlements_readonly_scope">只读展示本机授权快照。下列状态不代表购买凭证，也不保证设备能够执行相应操作。</string>
+    <string name="entitlements_debug_notice">Debug模拟：本构建的授权状态仅供开发测试，不代表已购买或正式授权。</string>
+    <string name="entitlements_store_unconfigured">此构建尚未配置真实商店。这里不提供购买或恢复购买；价格与最终商店商品标识尚未确定。</string>
+    <string name="entitlements_free_title">免费基础</string>
+    <string name="entitlements_free_available">浏览器、Direct直接保存和普通媒体库管理无需付费权益。商店状态未知不会阻断这些免费能力。</string>
+    <string name="entitlements_free_vault">保险箱规划为免费功能，但此构建仍未开放。本页面不会启用认证或加密。</string>
+    <string name="entitlements_planned_scope">以下为产品规格中的规划模块。每行仅展示该功能的授权要求当前是否满足，不代表最终商店商品。</string>
+    <string name="entitlements_provider_plus">Provider Plus（规划模块）</string>
+    <string name="entitlements_save_pro">Save Pro（规划模块）</string>
+    <string name="entitlements_video_tools_pro">Video Tools Pro（规划模块）</string>
+    <string name="entitlements_feature_sources">扩展搜索来源</string>
+    <string name="entitlements_feature_stream">Stream流媒体保存</string>
+    <string name="entitlements_feature_record">基础录制</string>
+    <string name="entitlements_feature_segments">暂停、继续与分段录制</string>
+    <string name="entitlements_feature_region">区域录制</string>
+    <string name="entitlements_feature_crop">视频裁剪</string>
+    <string name="entitlements_feature_merge">视频合并</string>
+    <string name="entitlements_feature_compress">视频压缩</string>
+    <string name="entitlements_status_satisfied">授权要求已满足</string>
+    <string name="entitlements_status_not_satisfied">授权要求未满足</string>
+    <string name="entitlements_status_unknown">授权状态未知</string>
+    <string name="entitlements_feature_status">%1$s：%2$s</string>
+    <string name="entitlements_recording_dependency">高级录制还需要Save Pro中的基础录制权益。编辑已有视频仅需对应工具权益。</string>
+    <string name="entitlements_operation_scope">实际使用时仍会检查来源与格式支持、系统授权、内容保护、资源条件及当时权益。本页面不会启动搜索、保存、录制或支付。</string>
+    <string name="entitlements_read_again">重新读取本机状态</string>
+    <string name="entitlements_reading">等待读取本机授权状态。</string>
+</resources>

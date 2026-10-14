@@ -23,7 +23,7 @@ import com.easysavevideo.app.licenses.ThirdPartyNotices
 import com.easysavevideo.app.ui.responsivePaneLayout
 
 @Composable
-fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}, discoveryEditable: Boolean = true, persistenceWarning: Boolean = false, loadWarning: Boolean = false, privacy: @Composable () -> Unit = {}) {
+fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}, discoveryEditable: Boolean = true, persistenceWarning: Boolean = false, loadWarning: Boolean = false, privacy: @Composable () -> Unit = {}, entitlements: @Composable () -> Unit = {}) {
     var categoryKey by rememberSaveable { mutableStateOf<String?>(null) }
     var notices by rememberSaveable { mutableStateOf(false) }
     val noticesListState = rememberLazyListState()
@@ -48,7 +48,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
                         SettingsCategories(presentation.active){categoryKey=it.key}
                     }
                     Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
-                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,privacy){notices=true}
+                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,privacy,entitlements){notices=true}
                     }
                 }
             }
@@ -58,7 +58,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
                 verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
                 SettingsHeading(onBack={goBack()}, persistenceWarning=persistenceWarning,loadWarning=loadWarning)
                 if(presentation.categories)SettingsCategories(null){categoryKey=it.key}
-                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,privacy){notices=true}
+                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,privacy,entitlements){notices=true}
             }
         }
     }
@@ -78,6 +78,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
     SettingsCategory.SAVE -> R.string.ui_settings_save
     SettingsCategory.EDITOR -> R.string.ui_settings_editor
     SettingsCategory.PRIVACY -> R.string.settings_privacy_title
+    SettingsCategory.ENTITLEMENTS -> R.string.entitlements_title
     SettingsCategory.DIAGNOSTICS -> R.string.diagnostics_title
     SettingsCategory.ABOUT -> R.string.ui_settings_about
 })
@@ -93,7 +94,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
     }
 }
 @Composable private fun SettingsDetail(category:SettingsCategory,settings:AppSettings,onChange:(SettingsEdit)->Unit,
-    onSources:()->Unit,diagnostics: @Composable () -> Unit,discoveryEditable:Boolean,privacy: @Composable () -> Unit,onNotices:()->Unit) {
+    onSources:()->Unit,diagnostics: @Composable () -> Unit,discoveryEditable:Boolean,privacy: @Composable () -> Unit,entitlements: @Composable () -> Unit,onNotices:()->Unit) {
     val v=LocalEsvVisuals.current
     EsvText(categoryLabel(category),style=v.sectionTextStyle)
     when(category) {
@@ -142,6 +143,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
             } }
         }
         SettingsCategory.PRIVACY -> privacy()
+        SettingsCategory.ENTITLEMENTS -> entitlements()
         SettingsCategory.DIAGNOSTICS -> diagnostics()
         SettingsCategory.ABOUT -> {
             EsvButton(stringResource(R.string.ui_licenses),onNotices)

@@ -39,7 +39,7 @@ unblocked row after recording the preceding row's actual result.
 | PR-15 editor | Existing crop/merge/compression engine, non-destructive publication, responsive preview and defaults | SOURCE IMPLEMENTED; encoder/output/playback/Tools-gated native acceptance TO TEST |
 | PR-17 library | Stable IDs/folders/rename/move/delete/preview/share/gallery/batch Files; display/search controls report | SOURCE IMPLEMENTED for existing paths; actual SAF/MediaStore/receiver permissions and recovery TO TEST. No local import is added |
 | PR-18 Vault | Exact crypto dependency admission only; Vault disabled | DECISION/GATE: security design and implementation admission, not a switch. Do not enable an unfinished Vault or claim encryption |
-| PR-19 entitlements | FeatureGate/Store boundaries plus Debug-only fake; Release isolation checks | SOURCE IMPLEMENTED abstraction; read-only product/free-capability explanation page is DEVELOPABLE (PPT24); real billing DECISION/GATE (store/channel/package/product/validation); no new price or payment action |
+| PR-19 entitlements | FeatureGate/Store boundaries plus Debug-only fake; Release isolation checks | SOURCE IMPLEMENTED abstraction; read-only product/free-capability explanation page SOURCE IMPLEMENTED in `SETTINGS_ENTITLEMENTS_20261014.md` (PPT24); real billing DECISION/GATE (store/channel/package/product/validation); no new price or payment action |
 | PR-20 discovery settings | Preferences already persisted and used by Discovery's filter panel; central Settings category absent in baseline | SOURCE IMPLEMENTED in this slice: central discovery category/detail with shared owner, four controls/defaults; see `SETTINGS_DISCOVERY_20261014.md` |
 | PR-20 save settings | Wi-Fi preference real; destination control already in Browser settings | PARTIAL. Central destination entry is DEVELOPABLE using existing picker/admission. Concurrent-task control is missing original scope but requires independent bounded execution scheduling, not exposing a number over the existing single lane |
 | PR-20 privacy settings | Existing browser cache/Cookie/session controls and separate browser/discovery history/progress controls | PARTIAL SOURCE IMPLEMENTED: central ordinary-history and webpage-cache actions with separate confirmation/status; `SETTINGS_PRIVACY_20261014.md`. Cookie/session and Discovery cleanup remain separate existing controls; native acceptance TO TEST |
@@ -62,7 +62,7 @@ unblocked row after recording the preceding row's actual result.
    production-controller tests. Cookie/session and Discovery history/progress
    remain separate existing controls; they are not invoked by these two actions.
    Actual Android/native acceptance remains open.
-3. Read-only entitlement explanation (NEXT): original UI framework section4.7 /
+3. Read-only entitlement explanation (SOURCE IMPLEMENTED; native acceptance open): original UI framework section4.7 /
    PPT24 requires free capabilities and the three planned modules. Read the current
    entitlement snapshot without issuing purchase/restore/refresh or changing grants.
    Preserve UNKNOWN and unavailable-store states; Debug simulated grants must be
@@ -109,7 +109,8 @@ frozen APKs/evidence immutable and never advance main as part of this queue.
 
 The discovery-settings slice and bounded history/cache privacy slice now have
 source implementations. After the privacy slice's final test/review/backup,
-continue row 3 (read-only entitlement explanation), then browser/destination access. Report a concrete blocker
+continue row 4 (central saving destination / browser settings access) after the
+read-only entitlement explanation slice has its final test/review/backup. Report a concrete blocker
 only for the blocked action and continue another unblocked original requirement.
 If every remaining row really needs a decision or native acceptance, list those
 specific gates and request the smallest choice. Do not report the entire ESV

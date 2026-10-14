@@ -4,7 +4,7 @@ import com.easysavevideo.core.model.*
 
 /** Local auxiliary-page selection only; stable keys, no second navigation or preference owner. */
 internal enum class SettingsCategory(val key:String) {
-    APPEARANCE("appearance"), LANGUAGE("language"), SOURCES("sources"), DISCOVERY("discovery"), SAVE("save"), EDITOR("editor"), PRIVACY("privacy"), DIAGNOSTICS("diagnostics"), ABOUT("about");
+    APPEARANCE("appearance"), LANGUAGE("language"), SOURCES("sources"), DISCOVERY("discovery"), SAVE("save"), EDITOR("editor"), PRIVACY("privacy"), ENTITLEMENTS("entitlements"), DIAGNOSTICS("diagnostics"), ABOUT("about");
     companion object { fun fromKey(key:String?)=entries.firstOrNull{it.key==key} }
 }
 internal data class SettingsPresentation(val active:SettingsCategory?,val categories:Boolean,val detail:Boolean,val backToCategories:Boolean)

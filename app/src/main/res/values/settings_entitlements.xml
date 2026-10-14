@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="entitlements_title">Features and entitlements</string>
+    <string name="entitlements_readonly_scope">Read-only explanation of the local entitlement snapshot. These labels do not confirm a purchase or that a device can perform an operation.</string>
+    <string name="entitlements_debug_notice">Debug simulation: entitlement states on this build are for development testing. They are not purchases or production grants.</string>
+    <string name="entitlements_store_unconfigured">The real store is not configured in this build. Purchase and purchase restoration are not available here; prices and final store product identifiers are undecided.</string>
+    <string name="entitlements_free_title">Free foundation</string>
+    <string name="entitlements_free_available">Browser, Direct saving, and ordinary media-library management require no paid entitlement. Unknown store state does not block these free features.</string>
+    <string name="entitlements_free_vault">Vault is planned as a free feature, but remains disabled in this build. This page does not enable authentication or encryption.</string>
+    <string name="entitlements_planned_scope">Planned modules from the product specification. The rows show only whether the feature’s entitlement requirements are currently satisfied. They do not define final store products.</string>
+    <string name="entitlements_provider_plus">Provider Plus (planned module)</string>
+    <string name="entitlements_save_pro">Save Pro (planned module)</string>
+    <string name="entitlements_video_tools_pro">Video Tools Pro (planned module)</string>
+    <string name="entitlements_feature_sources">Additional search sources</string>
+    <string name="entitlements_feature_stream">Stream saving</string>
+    <string name="entitlements_feature_record">Basic recording</string>
+    <string name="entitlements_feature_segments">Pause, resume, and segment recording</string>
+    <string name="entitlements_feature_region">Region recording</string>
+    <string name="entitlements_feature_crop">Video cropping</string>
+    <string name="entitlements_feature_merge">Video merging</string>
+    <string name="entitlements_feature_compress">Video compression</string>
+    <string name="entitlements_status_satisfied">Entitlement requirements satisfied</string>
+    <string name="entitlements_status_not_satisfied">Entitlement requirements not satisfied</string>
+    <string name="entitlements_status_unknown">Entitlement status unknown</string>
+    <string name="entitlements_feature_status">%1$s: %2$s</string>
+    <string name="entitlements_recording_dependency">Advanced recording also requires the basic recording entitlement in Save Pro. Editing an existing video only requires the relevant tool entitlement.</string>
+    <string name="entitlements_operation_scope">Actual use still checks supported sources and formats, system permissions, protection rules, available resources, and current entitlements. This page starts no search, saving, recording, or payment.</string>
+    <string name="entitlements_read_again">Read local status again</string>
+    <string name="entitlements_reading">Waiting to read the local entitlement state.</string>
+</resources>
