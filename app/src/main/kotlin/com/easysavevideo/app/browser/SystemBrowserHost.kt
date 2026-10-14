@@ -286,17 +286,17 @@ class SystemBrowserHost(
     fun acceptBookmarkPage(expected: BookmarkPageToken?): BookmarkPageToken? =
         BookmarkPolicy.accept(expected, bookmarkPage())
     /** Origin authority is process-local and never restored with tab addresses or history. */
-    fun openDiscoveryResult(target: DiscoveryControlTarget?, page: PageSnapshot, result: VideoSearchResult): Boolean {
+    fun openDiscoveryResult(target: DiscoveryControlTarget, page: PageSnapshot, result: VideoSearchResult): Boolean {
         requireMain()
+        if (closed || !foreground || !browserCommandAllowed() || state.selectedTab?.incognito == true ||
+            !com.easysavevideo.app.discovery.discoveryTargetMatchesPage(target, page, result)) return false
         navigate(result.canonicalPageUrl)
         val tab = state.selectedTab ?: return false
         val entry = entries[tab.context.tabId] ?: return false
         if (closed || tab.incognito || tab.loadState != BrowserLoadState.LOADING ||
             tab.address?.value != result.canonicalPageUrl || current(entry) == null) return false
-        if (target != null) {
-            discoveryOrigin = discoveryOrigins.open(target, page, result, discoveryBrowserState(tab))
-            if (discoveryOrigin != null) discoveryNavigation = DiscoveryNavigationFence(result.canonicalPageUrl)
-        }
+        discoveryOrigin = discoveryOrigins.open(target, page, result, discoveryBrowserState(tab))
+        if (discoveryOrigin != null) discoveryNavigation = DiscoveryNavigationFence(result.canonicalPageUrl)
         return true
     }
     fun captureSaveOrigin(): DiscoverySaveOriginHandle? {

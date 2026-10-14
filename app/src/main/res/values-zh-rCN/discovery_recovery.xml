@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_recovery_sources">管理来源</string>
+    <string name="discovery_recovery_filters">查看关键词和筛选</string>
+    <string name="discovery_open_unavailable">未能打开这条结果。请重新选择当前结果，或打开浏览器。</string>
+</resources>

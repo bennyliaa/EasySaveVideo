@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_recovery_sources">Manage sources</string>
+    <string name="discovery_recovery_filters">Review query and filters</string>
+    <string name="discovery_open_unavailable">This result could not be opened. Select a current result again, or open the browser.</string>
+</resources>

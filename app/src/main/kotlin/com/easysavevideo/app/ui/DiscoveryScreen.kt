@@ -28,7 +28,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.easysavevideo.app.discovery.DiscoveryCardOpenRequest
+import com.easysavevideo.app.discovery.discoveryCardOpenRequest
 import com.easysavevideo.app.discovery.AndroidDiscoveryController
+import com.easysavevideo.app.discovery.discoveryBodyRecovery
+import com.easysavevideo.app.discovery.discoveryBodyRecoveryLabel
+import com.easysavevideo.app.discovery.dispatchDiscoveryBodyRecovery
 import com.easysavevideo.app.discovery.DiscoveryBodyState
 import com.easysavevideo.app.discovery.discoveryBodyState
 import com.easysavevideo.app.discovery.discoveryBodyText
@@ -56,8 +61,8 @@ import androidx.compose.material3.Text
 
 @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
-fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoverySettings, active: Boolean,
-    onSettings: (DiscoverySettings) -> Unit, onBrowser: () -> Unit, onOpen: (PageSnapshot, VideoSearchResult) -> Unit,
+internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoverySettings, active: Boolean,
+    onSettings: (DiscoverySettings) -> Unit, onBrowser: () -> Unit, onOpen: (DiscoveryCardOpenRequest) -> Boolean,
     onLink: (String) -> Unit, onLibrary: () -> Unit, onManageProviders: () -> Unit,
     canClearQuery: () -> Boolean = { false }) {
     val v = LocalEsvVisuals.current
@@ -73,6 +78,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
     val optionsIsModal = options && !paneLayout.split
     BackHandler(enabled = options) { options = false }
     var showPending by remember { mutableStateOf(false) }
+    var cardOpenRejected by remember { mutableStateOf(false) }
     var localControlConfirm by remember { mutableStateOf<DiscoveryControlRequest?>(null) }
     var safeDisableConfirm by remember { mutableStateOf<DiscoveryFilterClaim?>(null) }
     var rightsDetails by remember { mutableStateOf<VideoSearchResult?>(null) }
@@ -82,6 +88,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
     val draft = DiscoveryFilterPresentationPolicy.reconcile(storedDraft, state.profile, state.demo, appliedReadable)
     val editClaim = state.controlTarget?.let { DiscoveryFilterClaim(it, state.demo, draft) }
     val queryClearLifecycle = controller.clearQueryLifecycle
+    val cardNavigationLifecycle = controller.cardNavigationLifecycle
     val currentQueryClearInteractive by rememberUpdatedState {
         active && canClearQuery() && !(options && !paneLayout.split) && localControlConfirm == null &&
             safeDisableConfirm == null && rightsDetails == null
@@ -127,6 +134,7 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
         searchPending = controller.filterSearchPending, nextPagePending = state.nextPagePending, status = state.status,
     )
     val page = state.page
+    LaunchedEffect(page, state.controlTarget) { cardOpenRejected = false }
     PreserveDiscoveryReadingAnchor(
         grid = grid,
         pageKey = com.easysavevideo.app.discovery.DiscoveryReadingAnchorPolicy.key(page, state.profile.queryKey, state.demo),
@@ -338,6 +346,8 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
             if (state.status?.state == DiscoveryState.CAPACITY_REACHED) EsvText(
                 stringResource(R.string.discovery_copy_4), style = v.captionTextStyle)
             state.notice?.let { EsvText(it, style = v.captionTextStyle) }
+            if (cardOpenRejected) EsvText(stringResource(R.string.discovery_open_unavailable),
+                style = v.captionTextStyle, color = v.colors.error)
             if (state.needsExplicitSearch) EsvText(stringResource(R.string.flow_discoveryscreen_9), style = v.captionTextStyle)
             EsvText(stringResource(R.string.discovery_copy_5, state.localSourceAdmission), style = v.captionTextStyle)
             state.verificationSummary?.let { summary ->
@@ -368,6 +378,15 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                         EsvText(stringResource(R.string.discovery_copy_12), color = v.colors.muted)
                     }
                     Spacer(Modifier.height(v.spacingMedium))
+                    discoveryBodyRecovery(bodyState)?.let { recovery ->
+                        EsvButton(stringResource(discoveryBodyRecoveryLabel(recovery)), onClick = {
+                            dispatchDiscoveryBodyRecovery(recovery, state, controller.state,
+                                cardNavigationLifecycle, controller.cardNavigationLifecycle,
+                                interactive = currentQueryClearInteractive() && !controller.filterSearchPending,
+                                openSources = { options = false; onManageProviders() },
+                                openFilters = { options = true })
+                        }, enabled = active && state.ready && !state.storageUnavailable && !controller.filterSearchPending)
+                    }
                     EsvButton(stringResource(R.string.flow_discoveryscreen_14), onClick = onBrowser)
                 } else LazyVerticalGrid(GridCells.Fixed(columns), state = grid, modifier = Modifier.weight(1f).fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -384,7 +403,13 @@ fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoveryS
                             EsvText(result.durationMs?.let { "${it / 60_000}:${(it / 1_000 % 60).toString().padStart(2, '0')}" } ?: stringResource(R.string.flow_duration_unknown), style = v.captionTextStyle)
                             RightsPresentationPolicy.summary(result.rights).forEach { EsvText(it, style = v.captionTextStyle) }
                             EsvButton(stringResource(R.string.flow_discoveryscreen_15), onClick = { rightsDetails = result }, modifier = Modifier.fillMaxWidth())
-                            EsvButton(stringResource(R.string.flow_discoveryscreen_16), onClick = { page?.let { onOpen(it, result) } }, modifier = Modifier.fillMaxWidth())
+                            val openRequest = discoveryCardOpenRequest(state, result, cardNavigationLifecycle)
+                            EsvButton(stringResource(R.string.flow_discoveryscreen_16),
+                                onClick = { if (currentQueryClearInteractive() && !controller.filterControlsBusy && openRequest != null)
+                                    cardOpenRejected = !onOpen(openRequest) },
+                                enabled = active && openRequest != null && !controller.filterControlsBusy && !optionsIsModal &&
+                                    localControlConfirm == null && safeDisableConfirm == null && rightsDetails == null,
+                                modifier = Modifier.fillMaxWidth())
                         }
                     }
                 }

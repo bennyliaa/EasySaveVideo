@@ -172,6 +172,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     }
     /** Explicit clear is stricter than continuous IME edits: a stale claim must never erase newer input. */
     internal val clearQueryLifecycle: Long get() = pageLifecycle.get()
+    internal val cardNavigationLifecycle: Long get() = pageLifecycle.get()
     fun clearFilterQuery(claim: DiscoveryFilterClaim, expectedLifecycle: Long): Boolean {
         if (closed.get() || !foreground || !visible) return false
         val current = filterDraft

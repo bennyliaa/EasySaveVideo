@@ -561,10 +561,17 @@ class MainActivity : ComponentActivity() {
                         persistence.saveSettings(settings); discovery.updateSettings(value)
                     }, onManageProviders = ::openProviderManagement,
                     onBrowser = { navigate(EsvDestination.BROWSER); discovery.setVisibility(isForeground, false) },
-                    onOpen = { page, result ->
-                        val originTarget = discovery.captureOriginTarget(page, result)
-                        discovery.setVisibility(isForeground, false); navigate(EsvDestination.BROWSER)
-                        if (browser.openDiscoveryResult(originTarget, page, result)) discovery.recordSeen(page, result, SeenEvent.OPENED)
+                    onOpen = { request ->
+                        com.easysavevideo.app.discovery.dispatchDiscoveryCardOpen(request, { discovery.state },
+                            { discovery.cardNavigationLifecycle },
+                            interactive = { isForeground && activeDestination == EsvDestination.DISCOVER && !isDestroyed && !isFinishing &&
+                                !saves.scanning && saves.selection == null && !saves.preparingStream && saves.hlsPreparation == null &&
+                                saves.destinations?.asking != true && saves.destinations?.notice == null &&
+                                saves.segmentRecording?.previewActive != true && previewReceipt == null && libraryPreviewReference == null },
+                            controlsBusy = { discovery.filterControlsBusy },
+                            open = browser::openDiscoveryResult,
+                            showBrowser = { navigate(EsvDestination.BROWSER) },
+                            recordOpened = { page, result -> discovery.recordSeen(page, result, SeenEvent.OPENED) })
                     }, onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) }, onLink = { url ->
                         discovery.setVisibility(isForeground, false); navigate(EsvDestination.BROWSER); browser.navigate(url)
                     })
