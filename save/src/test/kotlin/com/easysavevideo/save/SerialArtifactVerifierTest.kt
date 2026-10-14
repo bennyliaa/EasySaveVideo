@@ -15,6 +15,30 @@ import java.util.concurrent.atomic.AtomicReference
 import kotlin.concurrent.thread
 
 class SerialArtifactVerifierTest {
+    @Test fun typedDescriptorIsForwardedWithoutManufacturingAnotherTransfer() {
+        val transfer = TransferResult("artifact", 1, "video/mp4")
+        val output = ArtifactOutputDescriptor.Transferred(transfer)
+        val context = operation()
+        val delegate = object : ArtifactVerifier {
+            override fun verify(artifact: StagingArtifact, transfer: TransferResult,
+                context: OperationContext): VerificationEvidence = error("Typed dispatch lost")
+            override fun verify(artifact: StagingArtifact, received: ArtifactOutputDescriptor,
+                receivedContext: OperationContext): VerificationEvidence {
+                assertSame(output, received); assertSame(context, receivedContext)
+                return evidence
+            }
+        }
+        assertSame(evidence, SerialArtifactVerifier(delegate, EpochClock { 0 })
+            .verify(StagingArtifact("artifact", "commit"), output, context))
+    }
+
+    @Test fun typedTransferredDescriptorKeepsLegacyAdapterCompatible() {
+        val transfer = TransferResult("artifact", 1, "video/mp4")
+        val delegate = ArtifactVerifier { _, actual, _ -> assertSame(transfer, actual); evidence }
+        assertSame(evidence, SerialArtifactVerifier(delegate, EpochClock { 0 }).verify(
+            StagingArtifact("artifact", "commit"), ArtifactOutputDescriptor.Transferred(transfer), operation()))
+    }
+
     @Test fun oneDelegateAtATimeAndOriginalContextsArePreserved() {
         val entered = CountDownLatch(1); val finish = CountDownLatch(1)
         val calls = AtomicInteger(); val active = AtomicInteger(); val maximum = AtomicInteger()

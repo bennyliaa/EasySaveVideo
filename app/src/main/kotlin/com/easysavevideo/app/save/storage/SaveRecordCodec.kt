@@ -10,7 +10,7 @@ internal object SaveRecordCodec {
     const val MAX_BYTES = 32 * 1024
     private const val MAGIC = 0x45535633
     private const val EVIDENCE_MAGIC = 0x45535645
-    private const val VERSION = 6
+    private const val VERSION = 7
     fun encode(record: SaveRecord): ByteArray {
         require(record.schemaVersion == 1 && record.request.networkResource?.let {
             it.requestContextRef == null && it.durableReference && it.url == it.url.originOnly()
@@ -45,7 +45,7 @@ internal object SaveRecordCodec {
                 }
                 o.nullable(it.recordingExpectation) { e -> writeRecordingExpectation(o, e) }
             }
-            o.nullable(record.verification) { writeEvidence(o, it) }
+            o.nullable(record.verification) { evidenceBytes(it); writeEvidence(o, it) }
             o.nullable(record.receipt) { writeReceipt(o, it) }
             o.writeLong(record.bytesTransferred)
             o.nullable(record.checkpoint) {
@@ -53,6 +53,7 @@ internal object SaveRecordCodec {
                 o.writeUTF(it.strongEtag); o.writeLong(it.totalBytes)
             }
             o.nullable(record.waitReason) { o.writeUTF(it.name) }; o.nullable(record.error) { o.writeUTF(it.name) }
+            o.nullable(record.directNormalization) { writeDirectNormalization(o, it) }
         }
         return buffer.toByteArray().also { require(it.size <= MAX_BYTES) }
     }
@@ -82,28 +83,31 @@ internal object SaveRecordCodec {
                         if (version >= 3) i.nullable { readConservation(i) } else null) } else null,
                     if (version >= 4) i.nullable { readRecordingExpectation(i, version >= 5, version >= 6) } else null)
             }
-            val verification = i.nullable { readEvidence(i, version >= 3, version >= 4, version >= 5) }; val receipt = i.nullable { readReceipt(i) }
+            val verification = i.nullable { readEvidence(i, version >= 3, version >= 4, version >= 5, version >= 7) }; val receipt = i.nullable { readReceipt(i) }
             val count = i.readLong()
             val checkpoint = i.nullable { DownloadCheckpoint(i.readUTF(), i.readUTF(), i.readLong(), i.readUTF(), i.readLong()) }
             val wait = i.nullable { SaveWaitReason.valueOf(i.readUTF()) }; val error = i.nullable { SaveError.valueOf(i.readUTF()) }
+            val directNormalization = if (version >= 7) i.nullable { readDirectNormalization(i) } else null
             require(i.available() == 0)
             SaveRecord(SaveRequest(requestId, key, input, method, origin), task, commit, operation, deadline, retry,
-                attempt, phase, artifact, transfer, verification, receipt, count, checkpoint, wait, error)
+                attempt, phase, artifact, transfer, verification, receipt, count, checkpoint, wait, error,
+                directNormalization = directNormalization)
         }
     }
     internal fun evidenceBytes(evidence: VerificationEvidence): ByteArray = ByteArrayOutputStream().also { buffer ->
-        DataOutputStream(buffer).use { o -> o.writeInt(EVIDENCE_MAGIC); o.writeInt(3); writeEvidence(o, evidence) }
+        DataOutputStream(buffer).use { o -> o.writeInt(EVIDENCE_MAGIC); o.writeInt(4); writeEvidence(o, evidence) }
     }.toByteArray().also { require(it.size <= 4096) }
     internal fun evidence(bytes: ByteArray): VerificationEvidence {
         require(bytes.size in 1..4096)
         return DataInputStream(ByteArrayInputStream(bytes)).use { i ->
             i.mark(8)
             val versioned = bytes.size >= 8 && i.readInt() == EVIDENCE_MAGIC
-            val version = if (versioned) i.readInt().also { require(it in 1..3) } else { i.reset(); 0 }
-            readEvidence(i, version >= 1, version >= 2, version >= 3).also { require(i.available() == 0) }
+            val version = if (versioned) i.readInt().also { require(it in 1..4) } else { i.reset(); 0 }
+            readEvidence(i, version >= 1, version >= 2, version >= 3, version >= 4).also { require(i.available() == 0) }
         }
     }
     private fun writeEvidence(o: DataOutputStream, e: VerificationEvidence) {
+        requireEvidenceDiscriminator(e)
         o.writeUTF(e.artifactId); o.writeLong(e.sizeBytes); o.writeUTF(e.sha256); o.writeBoolean(e.containerIsMp4)
         o.writeInt(e.videoTrackCount); o.writeInt(e.audioTrackCount); o.writeLong(e.durationMillis)
         o.writeInt(e.width); o.writeInt(e.height); o.writeBoolean(e.encrypted)
@@ -114,8 +118,11 @@ internal object SaveRecordCodec {
             o.writeLong(proof.terminalOutputTimeUs); o.writeBoolean(proof.outputEos)
         }
         o.nullable(e.recordingProof) { writeRecordingProof(o, it) }
+        o.nullable(e.directNormalizationProof) { writeDirectVerification(o, it) }
     }
-    private fun readEvidence(i: DataInputStream, includeStream: Boolean, includeRecording: Boolean, includeResumeBoundaries: Boolean): VerificationEvidence {
+    private fun readEvidence(i: DataInputStream, includeStream: Boolean, includeRecording: Boolean, includeResumeBoundaries: Boolean,
+        includeDirect: Boolean): VerificationEvidence {
+        val before = i.available()
         val id = i.readUTF(); val size = i.readLong(); val sha = i.readUTF(); val mp4 = i.readBoolean()
         require(id.matches(Regex("[A-Za-z0-9_.-]{1,128}")) && size > 0 && sha.matches(Regex("[a-f0-9]{64}")))
         val video = i.readInt(); val audio = i.readInt(); val duration = i.readLong(); val width = i.readInt(); val height = i.readInt()
@@ -126,7 +133,15 @@ internal object SaveRecordCodec {
             DecodePosition.entries.filter { flags and (1 shl it.ordinal) != 0 }.toSet(), audioReadable,
             if (includeStream) i.nullable { readConservation(i) } else null,
             if (includeStream) i.nullable { StreamTailProof(readSample(i), readSample(i), i.readLong(), i.readBoolean()) } else null,
-            if (includeRecording) i.nullable { readRecordingProof(i, includeResumeBoundaries) } else null)
+            if (includeRecording) i.nullable { readRecordingProof(i, includeResumeBoundaries) } else null,
+            if (includeDirect) i.nullable { readDirectVerification(i) } else null).also {
+                require(before - i.available() + 8 <= 4096)
+                requireEvidenceDiscriminator(it)
+            }
+    }
+    private fun requireEvidenceDiscriminator(e: VerificationEvidence) {
+        val stream = e.streamConservation != null || e.streamTailProof != null
+        require(listOf(stream, e.recordingProof != null, e.directNormalizationProof != null).count { it } <= 1)
     }
     private fun writeProfile(o: DataOutputStream, p: RecordingProfile) {
         o.writeInt(p.width); o.writeInt(p.height); o.writeInt(p.frameRate); o.writeInt(p.videoBitrate)
@@ -211,10 +226,70 @@ internal object SaveRecordCodec {
     }
     private fun readSample(i: DataInputStream): StreamSampleIdentity = StreamSampleIdentity(
         i.readLong(), i.readLong(), i.readInt(), i.readUTF(), i.readInt())
+    private fun writeDirectNormalization(o: DataOutputStream, p: DirectNormalizationProof) {
+        o.writeInt(p.schemaVersion); o.writeUTF(p.profile.name)
+        o.writeUTF(p.normalizationId); o.writeUTF(p.taskId); o.writeUTF(p.sourceIdentity)
+        o.writeUTF(p.artifactId); o.writeUTF(p.commitId)
+        o.writeLong(p.rawSizeBytes); o.writeUTF(p.rawSha256); o.writeUTF(p.sourceTransferSha256)
+        o.writeLong(p.outputSizeBytes); o.writeUTF(p.outputSha256)
+        o.writeInt(p.engineRevision); o.writeInt(p.policyRevision); o.writeBoolean(p.noEncoding)
+        writeDirectConservation(o, p.conservation)
+    }
+    private fun readDirectNormalization(i: DataInputStream): DirectNormalizationProof {
+        val version = i.readInt(); require(version == 1)
+        val profile = DirectNormalizationProfile.valueOf(i.readUTF())
+        val id = i.readUTF(); val task = i.readUTF(); val source = i.readUTF(); val artifact = i.readUTF(); val commit = i.readUTF()
+        val rawSize = i.readLong(); val rawHash = i.readUTF(); val transferHash = i.readUTF()
+        val size = i.readLong(); val hash = i.readUTF(); val engine = i.readInt(); val policy = i.readInt(); val noEncoding = i.readStrictBoolean()
+        return DirectNormalizationProof(id, task, source, artifact, commit, rawSize, rawHash, transferHash, size, hash,
+            readDirectConservation(i), version, profile, engine, policy, noEncoding)
+    }
+    private fun writeDirectVerification(o: DataOutputStream, p: DirectNormalizationVerificationProof) {
+        o.writeUTF(p.normalizationId); o.writeUTF(p.taskId); o.writeUTF(p.sourceIdentity)
+        o.writeUTF(p.artifactId); o.writeUTF(p.commitId); o.writeUTF(p.normalizationProofSha256)
+        writeDirectConservation(o, p.conservation)
+        writeDirectSample(o, p.videoTail.precedingSync); writeDirectSample(o, p.videoTail.lastSample)
+        o.writeLong(p.videoTail.terminalOutputTimeUs); o.writeBoolean(p.videoTail.outputEos)
+    }
+    private fun readDirectVerification(i: DataInputStream) = DirectNormalizationVerificationProof(
+        i.readUTF(), i.readUTF(), i.readUTF(), i.readUTF(), i.readUTF(), i.readUTF(), readDirectConservation(i),
+        DirectVideoTailProof(readDirectSample(i), readDirectSample(i), i.readLong(), i.readStrictBoolean()))
+    private fun writeDirectConservation(o: DataOutputStream, c: DirectRemuxConservation) {
+        o.writeInt(c.representationVersion); o.writeInt(c.width); o.writeInt(c.height); o.writeInt(c.frameRate)
+        o.writeLong(c.sourceOriginOffsetUs); writeDirectTrack(o, c.video)
+        o.nullable(c.audio) { writeDirectTrack(o, it) }; o.nullable(c.audioSampleRate) { o.writeInt(it) }
+        o.nullable(c.audioChannelCount) { o.writeInt(it) }; writeDirectSample(o, c.precedingVideoSync)
+    }
+    private fun readDirectConservation(i: DataInputStream): DirectRemuxConservation {
+        val version = i.readInt(); require(version == 1)
+        val width = i.readInt(); val height = i.readInt(); val rate = i.readInt(); val origin = i.readLong()
+        return DirectRemuxConservation(width, height, rate, readDirectTrack(i), i.nullable { readDirectTrack(i) },
+            i.nullable { i.readInt() }, i.nullable { i.readInt() }, readDirectSample(i), origin, version)
+    }
+    private fun writeDirectTrack(o: DataOutputStream, t: DirectTrackConservation) {
+        o.writeInt(t.representationVersion); o.writeUTF(t.kind.name); o.writeUTF(t.timingRepresentation.name)
+        o.writeUTF(t.codecConfigurationSha256); o.writeLong(t.sampleCount); o.writeLong(t.canonicalBytes)
+        o.writeUTF(t.payloadSha256); o.writeUTF(t.sampleFlagsSha256); o.writeUTF(t.timingSha256)
+        o.writeLong(t.firstPresentationTimeUs); writeDirectSample(o, t.lastSample)
+        o.writeLong(t.endpoint.minimumUs); o.writeLong(t.endpoint.maximumUs)
+    }
+    private fun readDirectTrack(i: DataInputStream): DirectTrackConservation {
+        val version = i.readInt(); require(version == 1)
+        val kind = DirectSampleKind.valueOf(i.readUTF()); val timing = DirectTimingRepresentation.valueOf(i.readUTF())
+        return DirectTrackConservation(kind, i.readUTF(), i.readLong(), i.readLong(), i.readUTF(), i.readUTF(), i.readUTF(),
+            i.readLong(), readDirectSample(i), DirectTrackEndpoint(i.readLong(), i.readLong()), version, timing)
+    }
+    private fun writeDirectSample(o: DataOutputStream, p: DirectSampleIdentity) {
+        o.writeLong(p.index); o.writeLong(p.presentationTimeUs); o.writeInt(p.canonicalBytes); o.writeUTF(p.sha256); o.writeInt(p.flags)
+    }
+    private fun readDirectSample(i: DataInputStream) = DirectSampleIdentity(i.readLong(), i.readLong(), i.readInt(), i.readUTF(), i.readInt())
     private fun writeReceipt(o: DataOutputStream, r: MediaCommitReceipt) {
         o.writeUTF(r.commitId); o.writeUTF(r.artifactId); o.writeUTF(r.mediaId); o.writeLong(r.sizeBytes); o.writeUTF(r.sha256)
     }
     private fun readReceipt(i: DataInputStream) = MediaCommitReceipt(i.readUTF(), i.readUTF(), i.readUTF(), i.readLong(), i.readUTF())
     private inline fun <T> DataOutputStream.nullable(value: T?, write: (T) -> Unit) { writeBoolean(value != null); if (value != null) write(value) }
-    private inline fun <T> DataInputStream.nullable(read: () -> T): T? = if (readBoolean()) read() else null
+    private fun DataInputStream.readStrictBoolean(): Boolean = when (readUnsignedByte()) {
+        0 -> false; 1 -> true; else -> throw IllegalArgumentException("Invalid boolean")
+    }
+    private inline fun <T> DataInputStream.nullable(read: () -> T): T? = if (readStrictBoolean()) read() else null
 }

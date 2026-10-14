@@ -52,6 +52,12 @@ fun interface ArtifactVerifier {
     /** An uninterruptible abandoned native call keeps the lane occupied until it really finishes. */
     fun requiresProcessRecovery(): Boolean = false
     fun verify(artifact: StagingArtifact, transfer: TransferResult, context: OperationContext): VerificationEvidence
+    /** Old adapters may verify unchanged outputs only; normalized bytes need explicit support. */
+    fun verify(artifact: StagingArtifact, output: ArtifactOutputDescriptor, context: OperationContext): VerificationEvidence =
+        when (output) {
+            is ArtifactOutputDescriptor.Transferred -> verify(artifact, output.transfer, context)
+            is ArtifactOutputDescriptor.NormalizedDirect -> throw SaveFailure(SaveError.METHOD_UNSUPPORTED)
+        }
 }
 
 /**

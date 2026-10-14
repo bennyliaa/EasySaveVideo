@@ -34,6 +34,8 @@ internal fun taskStateTextResource(record: SaveRecord) = when (record.task.state
     TaskState.QUEUED -> R.string.flow_status_queued
     TaskState.RUNNING -> when (record.phase) {
         SavePhase.PREPARING -> R.string.flow_status_preparing
+        SavePhase.NORMALIZING -> R.string.save_status_normalizing
+        SavePhase.ADOPTING -> R.string.save_status_adopting
         SavePhase.VERIFYING -> R.string.flow_status_verifying
         SavePhase.COMMITTING -> R.string.flow_status_committing
         SavePhase.CLEANUP -> R.string.flow_status_cleanup

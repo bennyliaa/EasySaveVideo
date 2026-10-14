@@ -82,7 +82,7 @@ data class SaveRequest(
 }
 
 /** RUNNING subphases, not additional TaskState values. */
-enum class SavePhase { PREPARING, EXECUTING, VERIFYING, COMMITTING, CLEANUP, CANCELLING }
+enum class SavePhase { PREPARING, EXECUTING, NORMALIZING, ADOPTING, VERIFYING, COMMITTING, CLEANUP, CANCELLING }
 enum class SaveWaitReason { BACKGROUND, NETWORK, AUTHENTICATION, STORAGE, RECOVERY }
 enum class SaveError {
     INVALID_REQUEST, METHOD_UNSUPPORTED, BUSY, EXPIRED_RESOURCE, CANCELLED, DEADLINE_EXCEEDED,
@@ -189,19 +189,43 @@ data class VerificationEvidence(
     val streamConservation: StreamConservationContract? = null,
     val streamTailProof: StreamTailProof? = null,
     val recordingProof: RecordingVerificationProof? = null,
+    val directNormalizationProof: DirectNormalizationVerificationProof? = null,
 ) {
+    /** Compatibility for existing ordinary MP4, Stream and Record callers only. */
     fun isValidFor(artifact: StagingArtifact, transfer: TransferResult, expectedAudio: Boolean): Boolean =
-        artifactId == artifact.artifactId && artifactId == transfer.artifactId && sizeBytes > 0 &&
-            sizeBytes == transfer.bytesOnDisk && (transfer.expectedTotalBytes == null || sizeBytes == transfer.expectedTotalBytes) &&
-            sha256.matches(Regex("[a-f0-9]{64}")) && containerIsMp4 && videoTrackCount > 0 && audioTrackCount >= 0 &&
-            durationMillis > 0 && width > 0 && height > 0 && !encrypted &&
-            decodedPositions.containsAll(DecodePosition.entries) &&
-            (!expectedAudio || audioTrackCount > 0) && (audioTrackCount == 0 || audioTrackReadable) &&
-            ((recordingProof != null) == (transfer.recordingExpectation != null)) &&
-            (transfer.streamExpectation?.matches(this) ?: true) &&
-            (transfer.recordingExpectation?.matches(this) ?: true)
+        isValidFor(artifact, ArtifactOutputDescriptor.Transferred(transfer), expectedAudio)
+
+    fun isValidFor(artifact: StagingArtifact, output: ArtifactOutputDescriptor, expectedAudio: Boolean): Boolean {
+        if (artifactId != artifact.artifactId || artifactId != output.sourceTransfer.artifactId || sizeBytes <= 0 ||
+            sizeBytes != output.sizeBytes || !sha256.matches(Regex("[a-f0-9]{64}")) || !containerIsMp4 ||
+            videoTrackCount <= 0 || audioTrackCount < 0 || durationMillis <= 0 || width <= 0 || height <= 0 || encrypted ||
+            !decodedPositions.containsAll(DecodePosition.entries) || (expectedAudio && audioTrackCount == 0) ||
+            (audioTrackCount > 0 && !audioTrackReadable)) return false
+        return when (output) {
+            is ArtifactOutputDescriptor.Transferred -> {
+                val transfer = output.transfer
+                (transfer.expectedTotalBytes == null || sizeBytes == transfer.expectedTotalBytes) &&
+                    directNormalizationProof == null &&
+                    ((recordingProof != null) == (transfer.recordingExpectation != null)) &&
+                    (transfer.streamExpectation != null || (streamConservation == null && streamTailProof == null)) &&
+                    (transfer.streamExpectation?.matches(this) ?: true) &&
+                    (transfer.recordingExpectation?.matches(this) ?: true)
+            }
+            is ArtifactOutputDescriptor.NormalizedDirect -> {
+                val proof = output.normalizationProof
+                proof.artifactId == artifact.artifactId && proof.commitId == artifact.commitId &&
+                    proof.matchesTransfer(output.sourceTransfer) && sha256 == proof.outputSha256 &&
+                    streamConservation == null && streamTailProof == null && recordingProof == null &&
+                    directNormalizationProof?.matches(proof) == true && videoTrackCount == 1 &&
+                    audioTrackCount == (if (proof.conservation.audio == null) 0 else 1) &&
+                    width == proof.conservation.width && height == proof.conservation.height &&
+                    durationMillis <= DirectNormalizationLimits.MAX_DURATION_US / 1000 &&
+                    proof.conservation.endpoint.contains(durationMillis * 1000, 1000)
+            }
+        }
+    }
 }
-/** Created only after the coordinator has checked VerificationEvidence against the selected transfer. */
+/** Created only after the coordinator has checked VerificationEvidence against the selected canonical output. */
 class VerifiedArtifact internal constructor(val artifact: StagingArtifact, val evidence: VerificationEvidence)
 
 data class MediaCommitReceipt(
@@ -240,6 +264,7 @@ data class SaveRecord(
     val waitReason: SaveWaitReason? = null,
     val error: SaveError? = null,
     val schemaVersion: Int = 1,
+    val directNormalization: DirectNormalizationProof? = null,
 ) {
     init {
         require(request.networkResource?.let { it.requestContextRef == null && it.durableReference } != false) {
@@ -252,15 +277,23 @@ data class SaveRecord(
         require(transfer == null || transfer.matchesMethod(request)) {
             "Stored transfer method and media constraints disagree"
         }
+        require(directNormalization == null || (request.method == TaskMethod.DIRECT && artifact != null &&
+            transfer != null && checkpoint == null && request.networkResource?.let {
+                directNormalization.matchesSource(task.taskId, it.sourceIdentity, artifact, transfer)
+            } == true))
+        val selectedOutput = selectedOutputDescriptor()
         // Legacy Stream/Record journals are readable, but missing policy evidence cannot become a new proof.
         // Coordinator refuses publication until a complete conserved contract exists.
         require(verification == null || (artifact != null && transfer != null && when {
             request.method == TaskMethod.RECORD && transfer.recordingExpectation?.resumeBoundaries == null ->
                 transfer.recordingExpectation?.matchesLegacyEvidence(verification) == true &&
-                    verification.copy(recordingProof = null).isValidFor(artifact, transfer.copy(recordingExpectation = null),
+                    verification.copy(recordingProof = null).isValidFor(artifact,
+                        ArtifactOutputDescriptor.Transferred(transfer.copy(recordingExpectation = null)),
                         request.networkResource?.expectedAudio ?: false)
-            else -> verification.isValidFor(artifact, if (request.method == TaskMethod.STREAM &&
-                transfer.streamExpectation?.conservation == null) transfer.copy(streamExpectation = null) else transfer,
+            request.method == TaskMethod.STREAM && transfer.streamExpectation?.conservation == null ->
+                verification.isValidFor(artifact, ArtifactOutputDescriptor.Transferred(transfer.copy(streamExpectation = null)),
+                    request.networkResource?.expectedAudio ?: false)
+            else -> verification.isValidFor(artifact, requireNotNull(selectedOutput),
                 request.networkResource?.expectedAudio ?: false)
         }))
         require(receipt == null || (artifact != null && verification != null && receipt.matches(VerifiedArtifact(artifact, verification))))

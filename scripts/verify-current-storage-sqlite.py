@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Current Save DB v8 contract gate; historical scripts stay byte-for-byte unchanged.
+"""Current Save DB v9 contract gate; historical scripts stay byte-for-byte unchanged.
 
 Executes production-extracted SQL on temporary on-disk host SQLite. The transaction /
 helper-dispatch model is explicit, checked against the current Kotlin source, and is
 NOT Android SQLiteOpenHelper execution. Frozen v1/v3/v5 DDL and v4 source-table DDL
-are read as data only; composed v2/v4/v6/v7 baselines are SYNTHETIC, not recovered
+are read as data only; composed v2/v4/v6/v7/v8 baselines are SYNTHETIC, not recovered
 historical databases. Opaque seed blobs are NOT codec or playable-media evidence.
 v1 covers empty/non-published backfill only; real legacy publication decoding remains
 in the separately executed JVM tests. No files outside TemporaryDirectory are changed.
@@ -79,6 +79,7 @@ DESTINATION = read(BASE / 'library/destination/OrdinaryDestinationSchema.kt')
 FOLDER = read(BASE / 'library/destination/FolderDestinationSchema.kt')
 BATCH = read(BASE / 'library/export/DirectoryBatchSchema.kt')
 JOURNAL = read(BASE / 'library/export/AndroidDirectoryBatchJournal.kt')
+NORMALIZATION = read(BASE / 'save/storage/NormalizationWorkspaceSchema.kt')
 V1 = frozen_assignment(ROOT / 'scripts/verify-library-sqlite.py', 'LEGACY')
 V3 = frozen_assignment(ROOT / 'scripts/verify-editor-sqlite.py', 'V3_DDL')
 V5 = read(ROOT / 'app/src/test/resources/destination/frozen-v5-schema.sql')
@@ -95,6 +96,9 @@ FOLDER_DDL = sql(function(FOLDER, 'migrate'))
 BATCH_DDL = [a or b for a, b in re.findall(r'"""(.*?)"""|"([^"\n]+)"', BATCH.split('val statements=listOf(', 1)[1].split('fun create', 1)[0], re.S)]
 assert [len(x) for x in (LIB_DDL, EXP_DDL, REC_DDL, EDIT_JOB_DDL, EDIT_SOURCE_DDL, EDIT_LIBRARY_DDL, SOURCE_MIGRATION, DEST_DDL, FOLDER_DDL, BATCH_DDL)] == [10, 5, 3, 2, 1, 6, 3, 8, 26, 9]
 assert all('$' not in x and '\\' not in x for x in BATCH_DDL)
+NORMALIZATION_DDL = [a or b for a, b in re.findall(r'"""(.*?)"""|"([^"\n]+)"', NORMALIZATION.split('val statements = listOf(', 1)[1].split('fun create', 1)[0], re.S)]
+assert len(NORMALIZATION_DDL) == 8
+assert all('$' not in x and '\\' not in x for x in NORMALIZATION_DDL)
 BACKFILL_SELECTOR = re.search(r'db.rawQuery\("""(SELECT m.rowid,.*?)"""', LIBRARY, re.S).group(1)
 
 
@@ -137,7 +141,7 @@ def clean(db):
 
 def create_baseline(db, version):
     db.execute('PRAGMA foreign_keys=OFF' if version == 4 else 'PRAGMA foreign_keys=ON')
-    if version in (5, 6, 7):
+    if version in (5, 6, 7, 8):
         db.executescript(V5)
     else:
         db.execute('BEGIN')
@@ -161,6 +165,8 @@ def create_baseline(db, version):
         execute_all(db, DEST_DDL)
     if version >= 7:
         execute_all(db, FOLDER_DDL)
+    if version >= 8:
+        execute_all(db, BATCH_DDL)
     db.execute('PRAGMA user_version=' + str(version))
     db.commit()
     db.execute('PRAGMA foreign_keys=ON')
@@ -231,15 +237,17 @@ def upgrade_steps(old):
         result += DEST_DDL
     if old < 7:
         result += FOLDER_DDL
-    return result + BATCH_DDL
+    if old < 8:
+        result += BATCH_DDL
+    return result + NORMALIZATION_DDL
 
 
 class Fault(RuntimeError):
     pass
 
 
-def upgrade(db, old, new=8, fail_at=None):
-    if old not in range(1, 8) or new != 8:
+def upgrade(db, old, new=9, fail_at=None):
+    if old not in range(1, 9) or new != 9:
         raise ValueError('Unsupported upgrade contract')
     assert not db.in_transaction
     db.execute('PRAGMA foreign_keys=' + ('OFF' if old <= 3 else 'ON'))
@@ -257,7 +265,7 @@ def upgrade(db, old, new=8, fail_at=None):
                 db.execute(statement)
             checkpoint('sql-' + str(i))
         foreign_keys_clean(db); checkpoint('integrity')
-        db.execute('PRAGMA user_version=8'); checkpoint('version')
+        db.execute('PRAGMA user_version=9'); checkpoint('version')
         db.commit()
     except BaseException:
         db.rollback()
@@ -270,13 +278,13 @@ def upgrade(db, old, new=8, fail_at=None):
 
 def fresh(db):
     db.execute('PRAGMA foreign_keys=ON'); db.execute('BEGIN')
-    execute_all(db, sql(function(SAVE, 'onCreate')) + LIB_DDL + EXP_DDL + REC_DDL + EDIT_JOB_DDL + EDIT_SOURCE_DDL + EDIT_LIBRARY_DDL + DEST_DDL + FOLDER_DDL + BATCH_DDL)
-    db.execute('PRAGMA user_version=8'); db.commit(); clean(db)
+    execute_all(db, sql(function(SAVE, 'onCreate')) + LIB_DDL + EXP_DDL + REC_DDL + EDIT_JOB_DDL + EDIT_SOURCE_DDL + EDIT_LIBRARY_DDL + DEST_DDL + FOLDER_DDL + BATCH_DDL + NORMALIZATION_DDL)
+    db.execute('PRAGMA user_version=9'); db.commit(); clean(db)
 
 
 class CurrentStorageContracts(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(prefix='esv-v8-contract-')
+        self.temp = tempfile.TemporaryDirectory(prefix='esv-v9-contract-')
         self.path = Path(self.temp.name) / 'synthetic.db'
         self.db = sqlite3.connect(self.path)
 
@@ -289,7 +297,7 @@ class CurrentStorageContracts(unittest.TestCase):
 
     def test_source_dispatch_is_exactly_current_contract_not_only_version_string(self):
         expected = '''
-            if (oldVersion !in 1..7 || newVersion != 8) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+            if (oldVersion !in 1..8 || newVersion != 9) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
             try {
                 if (oldVersion == 1) {
                     LibrarySchema.create(db)
@@ -301,15 +309,16 @@ class CurrentStorageContracts(unittest.TestCase):
                 else if (oldVersion == 4) EditSchema.migrateRecordedSources(db)
                 if (oldVersion < 6) OrdinaryDestinationSchema.create(db)
                 if(oldVersion<7)FolderDestinationSchema.migrate(db)
-                DirectoryBatchSchema.create(db)
+                if(oldVersion<8)DirectoryBatchSchema.create(db)
+                NormalizationWorkspaceSchema.create(db)
                 EditSchema.requireForeignKeysValid(db)
             } catch (_: Exception) { throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE) }
         '''
         self.assertEqual(compact(expected).replace(';', ''), compact(function(SAVE, 'onUpgrade')).replace(';', ''))
-        self.assertIn('file.absolutePath,null,8,', compact(SAVE))
+        self.assertIn('file.absolutePath,null,9,', compact(SAVE))
         calls = re.findall(r'(\w+Schema\.\w+)\(db\)', function(SAVE, 'onCreate'))
         self.assertEqual(['LibrarySchema.create', 'ExportSchema.create', 'RecordedSegmentSchema.create', 'EditSchema.create',
-                          'EditSchema.migrateLibrary', 'OrdinaryDestinationSchema.create', 'FolderDestinationSchema.migrate', 'DirectoryBatchSchema.create'], calls)
+                          'EditSchema.migrateLibrary', 'OrdinaryDestinationSchema.create', 'FolderDestinationSchema.migrate', 'DirectoryBatchSchema.create', 'NormalizationWorkspaceSchema.create'], calls)
         self.assertEqual([compact(x) for x in V1], [compact(x) for x in sql(function(SAVE, 'onCreate'))])
         self.assertIn('db.setForeignKeyConstraintsEnabled(db.version !in 1..3)', function(SAVE, 'onConfigure'))
         self.assertIn('db.setForeignKeyConstraintsEnabled(true)', function(SAVE, 'onOpen'))
@@ -343,7 +352,7 @@ class CurrentStorageContracts(unittest.TestCase):
         self.assertEqual('check(db.inTransaction())' + 'SQL;' * 26, dispatch_shape(function(FOLDER, 'migrate')))
         self.assertEqual('SQL;' * 3 + ''.join(name + '(db)' for name in [
             'LibrarySchema.create', 'ExportSchema.create', 'RecordedSegmentSchema.create', 'EditSchema.create',
-            'EditSchema.migrateLibrary', 'OrdinaryDestinationSchema.create', 'FolderDestinationSchema.migrate', 'DirectoryBatchSchema.create']),
+            'EditSchema.migrateLibrary', 'OrdinaryDestinationSchema.create', 'FolderDestinationSchema.migrate', 'DirectoryBatchSchema.create', 'NormalizationWorkspaceSchema.create']),
             dispatch_shape(function(SAVE, 'onCreate')))
         self.assertEqual(compact('db.rawQuery("PRAGMA foreign_key_check", null).use { check(!it.moveToFirst()) { "EDIT_MIGRATION_FOREIGN_KEY" } }'),
                          compact(function(EDIT, 'requireForeignKeysValid')))
@@ -357,17 +366,17 @@ class CurrentStorageContracts(unittest.TestCase):
         self.assertLess(block.index('AndroidEditStorage('), block.index('editorStorage = it'))
         # Static wiring only; no claim that this executes the Android constructor.
 
-    def test_all_seven_supported_baselines_preserve_rows_reopen_and_match_fresh_schema(self):
+    def test_all_eight_supported_baselines_preserve_rows_reopen_and_match_fresh_schema(self):
         fresh(self.db); expected = schema_signature(self.db)
         self.db.close()
-        for old in range(1, 8):
+        for old in range(1, 9):
             with self.subTest(old=old):
                 self.path = Path(self.temp.name) / ('v' + str(old) + '.db')
                 self.db = sqlite3.connect(self.path); create_baseline(self.db, old); seed(self.db, old)
                 before = rows_and_columns(self.db)
                 upgrade(self.db, old)
                 self.reopen()
-                self.assertEqual(8, self.db.execute('PRAGMA user_version').fetchone()[0])
+                self.assertEqual(9, self.db.execute('PRAGMA user_version').fetchone()[0])
                 self.assertEqual(expected, schema_signature(self.db))
                 for table, (columns, rows) in before.items():
                     self.assertEqual(rows, list(self.db.execute('SELECT rowid,' + ','.join(columns) + ' FROM ' + table + ' ORDER BY rowid')), table)
@@ -382,7 +391,7 @@ class CurrentStorageContracts(unittest.TestCase):
 
     def test_every_ddl_backfill_check_integrity_and_version_boundary_rolls_back(self):
         self.db.close()
-        for old in range(1, 8):
+        for old in range(1, 9):
             self.path = Path(self.temp.name) / ('rollback-' + str(old) + '.db')
             self.db = sqlite3.connect(self.path); create_baseline(self.db, old); seed(self.db, old)
             before = snapshot(self.db)
@@ -394,13 +403,13 @@ class CurrentStorageContracts(unittest.TestCase):
                     self.reopen()
                     self.assertEqual(before, snapshot(self.db))
             upgrade(self.db, old); self.reopen()
-            self.assertEqual(8, self.db.execute('PRAGMA user_version').fetchone()[0])
+            self.assertEqual(9, self.db.execute('PRAGMA user_version').fetchone()[0])
             self.db.close()
         self.db = sqlite3.connect(self.path)
 
     def test_unsupported_upgrade_and_downgrade_model_preserves_database(self):
         create_baseline(self.db, 7); seed(self.db, 7); before = snapshot(self.db)
-        for old, new in [(0, 8), (8, 8), (9, 8), (7, 7), (7, 9), (8, 7)]:
+        for old, new in [(0, 9), (9, 9), (10, 9), (7, 7), (8, 8), (9, 8)]:
             with self.assertRaises(ValueError): upgrade(self.db, old, new)
             self.assertEqual(before, snapshot(self.db))
 
@@ -423,6 +432,82 @@ class CurrentStorageContracts(unittest.TestCase):
         before = snapshot(self.db)
         with self.assertRaisesRegex(AssertionError, 'real codec/media validation'): upgrade(self.db, 1)
         self.assertEqual(before, snapshot(self.db))
+
+    def normalization(self, n=1):
+        if n == 1: fresh(self.db)
+        artifact = '00000000-0000-0000-0000-' + str(n).zfill(12)
+        key = '10000000-0000-0000-0000-' + str(n).zfill(12)
+        task = 'norm-task-' + str(n); commit = 'norm-commit-' + str(n)
+        with self.db:
+            insert(self.db, 'save_tasks', task_id=task, idempotency_key='norm-key-' + str(n), revision=1,
+                   state='RUNNING', commit_id=commit, record=b'synthetic-save-record')
+            insert(self.db, 'save_owned', commit_id=commit, task_id=task, artifact_id=artifact,
+                   media_id='20000000-0000-0000-0000-' + str(n).zfill(12), state='STAGING', evidence=None)
+        values = dict(normalization_id=key, task_id=task, artifact_id=artifact, commit_id=commit,
+                      revision=1, lifecycle='RAW_COMPLETE', disposition='CONTINUE', raw_size=10,
+                      raw_sha='a'*64, source_sha='b'*64, record=b'synthetic-workspace-record')
+        with self.db: insert(self.db, 'save_normalization_workspace', **values)
+        return values
+
+    def test_normalization_exact_parent_and_single_live_generation_are_enforced(self):
+        row = self.normalization()
+        fields = ','.join(row); placeholders = ','.join('?' for _ in row)
+        statement = 'INSERT INTO save_normalization_workspace(' + fields + ') VALUES(' + placeholders + ')'
+        for changes in [dict(normalization_id='30000000-0000-0000-0000-000000000001'),
+                        dict(normalization_id='30000000-0000-0000-0000-000000000001', task_id='foreign'),
+                        dict(normalization_id='30000000-0000-0000-0000-000000000001', commit_id='foreign'),
+                        dict(normalization_id='30000000-0000-0000-0000-000000000001', artifact_id='30000000-0000-0000-0000-000000000002')]:
+            candidate = dict(row, **changes)
+            self.rejected(statement, tuple(candidate.values()))
+        self.reopen()
+        self.assertEqual(1, self.db.execute('SELECT count(*) FROM save_normalization_workspace').fetchone()[0])
+
+    def test_normalization_raw_identity_revision_and_retained_history_are_immutable(self):
+        self.normalization()
+        for column, value in [('task_id','wrong'),('commit_id','wrong'),('artifact_id','30000000-0000-0000-0000-000000000001'),
+                              ('normalization_id','30000000-0000-0000-0000-000000000001'),('raw_size',11),('raw_sha','c'*64),('source_sha','c'*64)]:
+            self.rejected('UPDATE save_normalization_workspace SET revision=2,' + column + '=?', (value,))
+        self.rejected('UPDATE save_normalization_workspace SET revision=3')
+        self.rejected('DELETE FROM save_normalization_workspace')
+
+    def test_normalization_ready_output_proof_cannot_be_replaced_or_removed(self):
+        self.normalization()
+        with self.db:
+            self.db.execute("UPDATE save_normalization_workspace SET revision=2,lifecycle='OUTPUT_READY',output_size=12,output_sha=?,proof_sha=?", ('c'*64,'d'*64))
+        for column, value in [('output_size',13),('output_sha','e'*64),('proof_sha','e'*64),('output_size',None)]:
+            self.rejected('UPDATE save_normalization_workspace SET revision=3,' + column + '=?',(value,))
+        self.reopen()
+        self.assertEqual((12,'c'*64,'d'*64), self.db.execute('SELECT output_size,output_sha,proof_sha FROM save_normalization_workspace').fetchone())
+
+    def test_normalization_terminal_authority_overrides_stale_continue_and_success_discard(self):
+        self.normalization()
+        with self.db: self.db.execute("UPDATE save_tasks SET state='CANCELLED'")
+        self.rejected("UPDATE save_normalization_workspace SET revision=2,lifecycle='WRITING'")
+        with self.db: self.db.execute("UPDATE save_normalization_workspace SET revision=2,lifecycle='CLEANUP_PENDING',disposition='DISCARD_ONLY'")
+        self.rejected("UPDATE save_normalization_workspace SET revision=3,disposition='CONTINUE'")
+        # A second exact owner models success winning a different cancellation race.
+        self.normalization(2)
+        with self.db: self.db.execute("UPDATE save_tasks SET state='SUCCEEDED' WHERE task_id='norm-task-2'")
+        self.rejected("UPDATE save_normalization_workspace SET revision=2,lifecycle='CLEANUP_PENDING',disposition='DISCARD_ONLY' WHERE task_id='norm-task-2'")
+
+    def test_normalization_pending_keyset_includes_terminal_discarded_parent_and_excludes_cleaned(self):
+        self.normalization(); self.normalization(2); self.normalization(3)
+        with self.db:
+            self.db.execute("UPDATE save_tasks SET state='FAILED' WHERE task_id='norm-task-1'")
+            self.db.execute("UPDATE save_owned SET state='DISCARDED' WHERE task_id='norm-task-1'")
+            self.db.execute("UPDATE save_normalization_workspace SET revision=2,lifecycle='CLEANED' WHERE task_id='norm-task-2'")
+        self.rejected("UPDATE save_normalization_workspace SET revision=3,lifecycle='RAW_COMPLETE' WHERE task_id='norm-task-2'")
+        query = re.search(r'rawQuery\("""(SELECT sequence,length\(record\) FROM save_normalization_workspace.*?)"""', SAVE, re.S).group(1)
+        first = list(self.db.execute(query,(0,1))); second = list(self.db.execute(query,(first[0][0],2)))
+        self.assertEqual([1], [x[0] for x in first]); self.assertEqual([3], [x[0] for x in second])
+        self.assertEqual([],list(self.db.execute(query,(second[0][0],2))))
+        self.assertIn('save_normalization_pending', ' '.join(str(x) for x in self.db.execute('EXPLAIN QUERY PLAN ' + query,(0,2))))
+        self.assertIn('rows.take(limit)', SAVE); self.assertIn('(limit + 1).toString()', SAVE)
+
+    def test_normalization_sql_bounds_fail_atomically(self):
+        self.normalization()
+        for column,value in [('raw_size',0),('raw_size',2147483649),('raw_sha','A'*64),('record',b'x'),('record',b'x'*2049),('lifecycle','UNKNOWN')]:
+            self.rejected('UPDATE save_normalization_workspace SET revision=2,' + column + '=?',(value,))
 
     def batch(self):
         fresh(self.db)
@@ -536,12 +621,12 @@ class CurrentStorageContracts(unittest.TestCase):
 if __name__ == '__main__':
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(CurrentStorageContracts)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
-    print(json.dumps({'kind': 'CURRENT_V8_HOST_SQLITE_CONTRACT', 'sqlite_version': sqlite3.sqlite_version,
+    print(json.dumps({'kind': 'CURRENT_V9_HOST_SQLITE_CONTRACT', 'sqlite_version': sqlite3.sqlite_version,
                       'tests': result.testsRun, 'failures': len(result.failures), 'errors': len(result.errors),
-                      'rollback_fault_boundaries': sum(len(upgrade_steps(v)) + 3 for v in range(1, 8)),
+                      'rollback_fault_boundaries': sum(len(upgrade_steps(v)) + 3 for v in range(1, 9)),
                       'baseline_provenance': {'1': 'frozen LEGACY literal', '2': 'synthetic frozen-v3 pre-export prefix',
                         '3': 'frozen V3_DDL literal', '4': 'synthetic v3 plus current edit-job/library DDL and frozen v4 source table',
-                        '5': 'frozen a3a028d v5 DDL', '6': 'synthetic v5 plus production v6 DDL', '7': 'synthetic v6 plus production v7 DDL'},
+                        '5': 'frozen a3a028d v5 DDL', '6': 'synthetic v5 plus production v6 DDL', '7': 'synthetic v6 plus production v7 DDL', '8': 'synthetic v7 plus production v8 batch DDL'},
                       'v1_published_media_backfill': 'NOT_EXECUTED_REAL_CODEC_MEDIA_REQUIRED',
                       'kotlin_codec': 'SEPARATE_JVM_GATE', 'android_sqlite_runtime': 'NOT_RUN',
                       'input_sha256': INPUTS}, indent=2))

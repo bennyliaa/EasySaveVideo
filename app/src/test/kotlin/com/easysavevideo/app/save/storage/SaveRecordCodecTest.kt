@@ -19,7 +19,7 @@ class SaveRecordCodecTest {
     @Test fun wifiPolicyWaitRoundTripsWithoutChangingJournalFormat() {
         val value = record().copy(waitReason = SaveWaitReason.NETWORK, error = SaveError.WIFI_REQUIRED)
         val encoded = SaveRecordCodec.encode(value)
-        assertEquals(6, encoded[7].toInt())
+        assertEquals(7, encoded[7].toInt())
         assertEquals(value, SaveRecordCodec.decode(encoded))
     }
     @Test fun functionalRecoveryStateRoundTripsWithoutRequestCredentials() {
@@ -44,7 +44,7 @@ class SaveRecordCodecTest {
     @Test fun truncationUnknownSchemaAndTrailingBytesFailClosed() {
         val bytes = SaveRecordCodec.encode(record())
         assertThrows(Exception::class.java) { SaveRecordCodec.decode(bytes.copyOf(bytes.size - 1)) }
-        assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.decode(bytes.copyOf().also { it[7] = 7 }) }
+        assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.decode(bytes.copyOf().also { it[7] = 8 }) }
         assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.decode(bytes + byteArrayOf(0)) }
         assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.decode(ByteArray(SaveRecordCodec.MAX_BYTES + 1)) }
     }
@@ -55,14 +55,18 @@ class SaveRecordCodecTest {
         assertEquals(value, SaveRecordCodec.decode(SaveRecordCodec.encode(value)))
         assertFalse(SaveRecordCodec.encode(value).toString(Charsets.ISO_8859_1).contains("retained-functional-state"))
     }
-    @Test fun genuineV1V2AndV3DirectTransfersKeepEvidenceAndReceipts() {
+    @Test fun genuineV1ThroughV6DirectTransfersKeepEvidenceAndNeverGainNormalizationProof() {
         val start = record()
         val proof = VerificationEvidence("artifact", 100, "a".repeat(64), true, 1, 1, 5000, 1280, 720,
             false, DecodePosition.entries.toSet(), true)
         val value = start.copy(task = start.task.copy(state = TaskState.SUCCEEDED, waitingUser = null), waitReason = null,
             transfer = start.transfer!!.copy(expectedTotalBytes = 100), verification = proof,
             receipt = MediaCommitReceipt("commit", "artifact", "media", 100, "a".repeat(64)))
-        for (version in 1..3) assertEquals(value, SaveRecordCodec.decode(legacyRecord(value, version)))
+        for (version in 1..6) {
+            val decoded = SaveRecordCodec.decode(legacyRecord(value, version))
+            assertEquals(value, decoded); assertNull(decoded.directNormalization)
+            assertNull(decoded.verification!!.directNormalizationProof)
+        }
     }
     @Test fun genuineLegacyV2StreamRemainsReadableButNeverAcquiresProof() {
         val start = record()
@@ -119,7 +123,7 @@ class SaveRecordCodecTest {
     }
     @Test fun v5PersistsEveryConservationAndActualEosFieldInBoundedSpace() {
         val value = provenStream(); val encoded = SaveRecordCodec.encode(value)
-        assertEquals(6, encoded[7].toInt()); assertTrue(encoded.size < 4096)
+        assertEquals(7, encoded[7].toInt()); assertTrue(encoded.size < 4096)
         assertEquals(value, SaveRecordCodec.decode(encoded))
         assertEquals(value.verification, SaveRecordCodec.evidence(SaveRecordCodec.evidenceBytes(value.verification!!)))
         assertEquals(-10_000L, SaveRecordCodec.decode(encoded).transfer!!.streamExpectation!!.conservation!!.audioStartOffsetUs)
@@ -157,7 +161,7 @@ class SaveRecordCodecTest {
         val bytes = SaveRecordCodec.encode(provenStream())
         for (size in bytes.indices) assertThrows(Exception::class.java) { SaveRecordCodec.decode(bytes.copyOf(size)) }
         val evidence = SaveRecordCodec.evidenceBytes(provenStream().verification!!)
-        assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.evidence(evidence.copyOf().also { it[7] = 4 }) }
+        assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.evidence(evidence.copyOf().also { it[7] = 5 }) }
         assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.evidence(evidence + byteArrayOf(0)) }
         assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.evidence(ByteArray(4097)) }
     }
@@ -195,7 +199,7 @@ class SaveRecordCodecTest {
     @Test fun v5CaptureWithAudioAndWithoutAudioRoundTripsWithoutNetworkSourceOrGrant() {
         for (audio in listOf(false, true)) {
             val value = capturedRecord(audio); val encoded = SaveRecordCodec.encode(value)
-            assertEquals(6, encoded[7].toInt()); assertEquals(value, SaveRecordCodec.decode(encoded))
+            assertEquals(7, encoded[7].toInt()); assertEquals(value, SaveRecordCodec.decode(encoded))
             assertNull(SaveRecordCodec.decode(encoded).request.networkResource)
             val text = encoded.toString(Charsets.ISO_8859_1)
             assertFalse(text.contains("https")); assertFalse(text.contains("NETWORK"))
@@ -256,10 +260,10 @@ class SaveRecordCodecTest {
 
     @Test fun v5AndEvidenceV3PersistAllThirtyTwoIndependentBoundaries() {
         val value = resumedRecord(); val bytes = SaveRecordCodec.encode(value)
-        assertEquals(6, bytes[7].toInt()); assertTrue(bytes.size < SaveRecordCodec.MAX_BYTES)
+        assertEquals(7, bytes[7].toInt()); assertTrue(bytes.size < SaveRecordCodec.MAX_BYTES)
         assertEquals(value, SaveRecordCodec.decode(bytes))
         val owned = SaveRecordCodec.evidenceBytes(value.verification!!)
-        assertEquals(3, owned[7].toInt()); assertTrue(owned.size < 4096)
+        assertEquals(4, owned[7].toInt()); assertTrue(owned.size < 4096)
         assertEquals(value.verification, SaveRecordCodec.evidence(owned))
         assertEquals(32, SaveRecordCodec.decode(bytes).transfer!!.recordingExpectation!!.resumeBoundaries!!.size)
     }
@@ -309,7 +313,7 @@ class SaveRecordCodecTest {
         val value = old.copy(request = old.request.copy(input = SaveInput.Capture(descriptor)),
             transfer = old.transfer!!.copy(recordingExpectation = old.transfer!!.recordingExpectation!!.copy(descriptor = descriptor)))
         val bytes = SaveRecordCodec.encode(value)
-        assertEquals(6, bytes[7].toInt()); assertEquals(value, SaveRecordCodec.decode(bytes))
+        assertEquals(7, bytes[7].toInt()); assertEquals(value, SaveRecordCodec.decode(bytes))
         assertEquals(region, SaveRecordCodec.decode(bytes).request.captureDescriptor!!.regionCaptureRecipe)
         for (length in bytes.indices) assertThrows(Exception::class.java) { SaveRecordCodec.decode(bytes.copyOf(length)) }
     }

@@ -437,7 +437,120 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
                 "commit_id=? AND artifact_id=? AND state='STAGING'", arrayOf(row.artifact.commitId, row.artifact.artifactId))
         }
     }
-    private class Database(context: Context, private val file: File) : SQLiteOpenHelper(context, file.absolutePath, null, 8,
+    /** Independent file-lifecycle journal; terminal Save rows are deliberately not filtered out. */
+    internal val normalizationLedger: NormalizationLedger by lazy { NormalizationJournal() }
+    internal fun normalizationAuthority(owner: NormalizationOwner): NormalizationAuthority = dbCall {
+        val task = queryRecord("task_id=?", arrayOf(owner.taskId)) ?: throw NormalizationRecovery()
+        val owned = catalog.findOwned(owner.commitId) ?: throw NormalizationRecovery()
+        val artifact = StagingArtifact(owner.artifactId, owner.commitId)
+        if (task.commitId != owner.commitId || task.artifact != artifact || owned.taskId != owner.taskId || owned.artifact != artifact ||
+            task.request.method != com.easysavevideo.core.model.TaskMethod.DIRECT) throw NormalizationRecovery()
+        val transfer = task.transfer ?: throw NormalizationRecovery()
+        if (transfer.artifactId != owner.artifactId || transfer.bytesOnDisk !in 1..NORMALIZATION_MAX_BYTES ||
+            (transfer.expectedTotalBytes != null && transfer.expectedTotalBytes != transfer.bytesOnDisk)) throw NormalizationRecovery()
+        val proof = task.directNormalization
+        if (proof != null && !proof.matchesSource(owner.taskId, task.request.networkResource?.sourceIdentity ?: throw NormalizationRecovery(), artifact, transfer)) throw NormalizationRecovery()
+        val state = when (task.task.state) {
+            TaskState.SUCCEEDED -> NormalizationTaskState.SUCCEEDED
+            TaskState.FAILED -> NormalizationTaskState.FAILED
+            TaskState.CANCELLED -> NormalizationTaskState.CANCELLED
+            else -> NormalizationTaskState.ACTIVE
+        }
+        // Historical publication is sufficient for temporary raw cleanup even if the user later
+        // deletes the Library item. This never acquires a reader or recreates canonical media.
+        val published = if (state == NormalizationTaskState.SUCCEEDED) {
+            val receipt = task.receipt ?: throw NormalizationRecovery()
+            if (owned.state != OwnedState.INDEXED || owned.receipt() != receipt || catalog.indexed(owner.commitId) != receipt || owned.evidence != task.verification) throw NormalizationRecovery()
+            val visible = helper.readableDatabase.rawQuery("SELECT visible FROM save_media WHERE commit_id=? AND media_id=?", arrayOf(owner.commitId, receipt.mediaId)).use { it.moveToFirst() && it.getInt(0) == 1 }
+            if (!visible) throw NormalizationRecovery()
+            NormalizationFingerprint(receipt.sizeBytes, receipt.sha256)
+        } else null
+        NormalizationAuthority(owner, state, when {
+            published != null -> NormalizationParentState.PUBLISHED
+            owned.state == OwnedState.STAGING -> NormalizationParentState.STAGING
+            owned.state == OwnedState.DISCARDED -> NormalizationParentState.DISCARDED
+            else -> NormalizationParentState.COMMIT_PENDING
+        }, sourceTransferFingerprint(transfer), proof?.digest(), published)
+    }
+    private inner class NormalizationJournal : NormalizationLedger {
+        override fun lookup(owner: NormalizationOwner): NormalizationLookup = try { dbCall {
+            val live = normalizationSequences(owner, true)
+            if (live.size > 1) return@dbCall NormalizationLookup.Unreadable
+            val sequence = live.firstOrNull() ?: normalizationSequences(owner, false).firstOrNull()
+                ?: return@dbCall NormalizationLookup.Absent
+            val row = normalizationRow(sequence)
+            if (row.key.owner != owner) NormalizationLookup.Unreadable else NormalizationLookup.Present(row)
+        } } catch (_: Exception) { NormalizationLookup.Unreadable }
+        override fun insert(row: NormalizationWorkspace): Boolean = dbCall { transaction { db ->
+            require(row.revision == 1L && row.lifecycle == NormalizationLifecycle.RAW_COMPLETE && row.disposition == NormalizationDisposition.CONTINUE && row.output == null && row.cleanup == null)
+            when (val found = lookup(row.key.owner)) {
+                NormalizationLookup.Unreadable -> throw NormalizationRecovery()
+                is NormalizationLookup.Present -> if (found.row.lifecycle != NormalizationLifecycle.CLEANED) return@transaction false
+                NormalizationLookup.Absent -> Unit
+            }
+            requireNormalizationAuthority(row)
+            db.insertOrThrow("save_normalization_workspace", null, normalizationValues(row))
+            true
+        } }
+        override fun compareAndSet(expected: NormalizationWorkspace, next: NormalizationWorkspace): Boolean = dbCall { transaction { db ->
+            expected.requireSuccessor(next)
+            if ((lookup(expected.key.owner) as? NormalizationLookup.Present)?.row != expected) return@transaction false
+            requireNormalizationAuthority(next)
+            db.update("save_normalization_workspace", normalizationValues(next), "normalization_id=? AND revision=?",
+                arrayOf(expected.key.normalizationId, expected.revision.toString())) == 1
+        } }
+        override fun pending(after: Long, limit: Int): NormalizationPendingPage {
+            require(after >= 0 && limit in 1..100)
+            return try { dbCall {
+                val rows = helper.readableDatabase.rawQuery("""SELECT sequence,length(record) FROM save_normalization_workspace
+                    INDEXED BY save_normalization_pending WHERE lifecycle!='CLEANED' AND sequence>? ORDER BY sequence LIMIT ?""",
+                    arrayOf(after.toString(), (limit + 1).toString())).use { c -> buildList {
+                    while (c.moveToNext()) { if (c.getLong(1) !in 8..NormalizationWorkspaceCodec.MAX_BYTES.toLong()) throw NormalizationRecovery(); add(c.getLong(0)) }
+                } }
+                val entries = rows.take(limit).map { NormalizationPendingEntry(it, normalizationRow(it)) }
+                NormalizationPendingPage.Readable(entries, if (rows.size > limit) entries.last().cursor else null)
+            } } catch (_: Exception) { NormalizationPendingPage.Unreadable }
+        }
+        private fun requireNormalizationAuthority(row: NormalizationWorkspace) {
+            val auth = normalizationAuthority(row.key.owner)
+            val task = queryRecord("task_id=?", arrayOf(row.key.owner.taskId)) ?: throw NormalizationRecovery()
+            if (auth.sourceTransferSha256 != row.sourceTransferSha256 || task.transfer?.bytesOnDisk != row.raw.size) throw NormalizationRecovery()
+            if (auth.taskState in setOf(NormalizationTaskState.FAILED, NormalizationTaskState.CANCELLED) && row.disposition != NormalizationDisposition.DISCARD_ONLY) throw NormalizationRecovery()
+            if (row.disposition == NormalizationDisposition.DISCARD_ONLY && auth.taskState !in setOf(NormalizationTaskState.FAILED, NormalizationTaskState.CANCELLED)) throw NormalizationRecovery()
+            if (auth.taskState == NormalizationTaskState.SUCCEEDED && (row.disposition == NormalizationDisposition.DISCARD_ONLY || row.lifecycle !in setOf(NormalizationLifecycle.CLEANUP_PENDING, NormalizationLifecycle.CLEANED))) throw NormalizationRecovery()
+            if (row.lifecycle in setOf(NormalizationLifecycle.ADOPT_INTENT, NormalizationLifecycle.ADOPTED)) {
+                val proof = task.directNormalization ?: throw NormalizationRecovery()
+                if (auth.proofSha256 != row.proofSha256 || proof.normalizationId != row.key.normalizationId || proof.rawSizeBytes != row.raw.size || proof.rawSha256 != row.raw.sha256 ||
+                    row.output != NormalizationFingerprint(proof.outputSizeBytes, proof.outputSha256)) throw NormalizationRecovery()
+            }
+        }
+        private fun normalizationSequences(owner: NormalizationOwner, live: Boolean): List<Long> = helper.readableDatabase.rawQuery("""SELECT sequence,length(record)
+            FROM save_normalization_workspace WHERE (artifact_id=? OR commit_id=? OR task_id=?) ${if (live) "AND lifecycle!='CLEANED'" else ""}
+            ORDER BY sequence DESC LIMIT ${if (live) 2 else 1}""", arrayOf(owner.artifactId, owner.commitId, owner.taskId)).use { c -> buildList {
+                while (c.moveToNext()) { if (c.getLong(1) !in 8..NormalizationWorkspaceCodec.MAX_BYTES.toLong()) throw NormalizationRecovery(); add(c.getLong(0)) }
+            } }
+        private fun normalizationRow(sequence: Long): NormalizationWorkspace = helper.readableDatabase.rawQuery("""SELECT record,normalization_id,task_id,artifact_id,commit_id,revision,lifecycle,disposition,raw_size,raw_sha,source_sha,output_size,output_sha,proof_sha
+            FROM save_normalization_workspace WHERE sequence=? AND length(record) BETWEEN 8 AND 2048
+            AND length(normalization_id)=36 AND length(task_id) BETWEEN 1 AND 128 AND length(artifact_id)=36 AND length(commit_id) BETWEEN 1 AND 128
+            AND length(lifecycle) BETWEEN 1 AND 32 AND length(disposition) BETWEEN 1 AND 32
+            AND length(raw_sha)=64 AND length(source_sha)=64 AND (output_sha IS NULL OR length(output_sha)=64) AND (proof_sha IS NULL OR length(proof_sha)=64)""", arrayOf(sequence.toString())).use { c ->
+            if (!c.moveToFirst()) throw NormalizationRecovery()
+            val row = NormalizationWorkspaceCodec.decode(c.getBlob(0))
+            if (row.key.normalizationId != c.getString(1) || row.key.owner != NormalizationOwner(c.getString(2), c.getString(3), c.getString(4)) || row.revision != c.getLong(5) || row.lifecycle.name != c.getString(6) || row.disposition.name != c.getString(7) ||
+                row.raw != NormalizationFingerprint(c.getLong(8), c.getString(9)) || row.sourceTransferSha256 != c.getString(10) ||
+                row.output != (if (c.isNull(11)) null else NormalizationFingerprint(c.getLong(11), c.getString(12))) || row.proofSha256 != (if (c.isNull(13)) null else c.getString(13))) throw NormalizationRecovery()
+            row
+        }
+        private fun normalizationValues(row: NormalizationWorkspace) = ContentValues().apply {
+            put("normalization_id", row.key.normalizationId); put("task_id", row.key.owner.taskId); put("artifact_id", row.key.owner.artifactId); put("commit_id", row.key.owner.commitId)
+            put("revision", row.revision); put("lifecycle", row.lifecycle.name); put("disposition", row.disposition.name)
+            put("raw_size", row.raw.size); put("raw_sha", row.raw.sha256); put("source_sha", row.sourceTransferSha256)
+            if (row.output == null) { putNull("output_size"); putNull("output_sha"); putNull("proof_sha") }
+            else { put("output_size", row.output.size); put("output_sha", row.output.sha256); put("proof_sha", row.proofSha256) }
+            put("record", NormalizationWorkspaceCodec.encode(row))
+        }
+    }
+    private class Database(context: Context, private val file: File) : SQLiteOpenHelper(context, file.absolutePath, null, 9,
         DatabaseErrorHandler { throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE) }) {
         override fun onConfigure(db: SQLiteDatabase) {
             // Legacy parent-table migration requires this before the version transaction.
@@ -462,6 +575,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             OrdinaryDestinationSchema.create(db)
             FolderDestinationSchema.migrate(db)
             DirectoryBatchSchema.create(db)
+            NormalizationWorkspaceSchema.create(db)
         }
         override fun onOpen(db: SQLiteDatabase) {
             db.setForeignKeyConstraintsEnabled(true)
@@ -472,7 +586,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             }
         }
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-            if (oldVersion !in 1..7 || newVersion != 8) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+            if (oldVersion !in 1..8 || newVersion != 9) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
             // SQLiteOpenHelper rolls DDL, every backfilled row and user_version back together on failure.
             try {
                 if (oldVersion == 1) {
@@ -487,7 +601,8 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
                 } else if (oldVersion == 4) EditSchema.migrateRecordedSources(db)
                 if (oldVersion < 6) OrdinaryDestinationSchema.create(db)
                 if(oldVersion<7)FolderDestinationSchema.migrate(db)
-                DirectoryBatchSchema.create(db)
+                if (oldVersion < 8) DirectoryBatchSchema.create(db)
+                NormalizationWorkspaceSchema.create(db)
                 EditSchema.requireForeignKeysValid(db)
             }
             catch (_: Exception) { throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE) }

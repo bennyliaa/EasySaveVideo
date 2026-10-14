@@ -1,0 +1,247 @@
+[
+  {
+    "path": "app/build.gradle.kts",
+    "bytes": 17679,
+    "sha256": "325e3e440392de73e23ca3f91165aacd8f146a59a120490619a4df959c943110",
+    "git_sha": "281ec55a06fa9b1ec3d6097070646fffb0ca953c",
+    "base_git_sha": "0120785320b6503f46289e5fdcb4ac20ad7ab574"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/library/storage/LibraryPublicationEvidence.kt",
+    "bytes": 1526,
+    "sha256": "c54b518718ef357982dfd4825643343780dff01d2fc737259934773ddb26097a",
+    "git_sha": "b7897b1fee822c1f80fd173074325bd097d04d88",
+    "base_git_sha": "46f9df0b9f3fb7f0df40982d0bf46ca4ada134e2"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/MediaTaskActivitySaveOutcome.kt",
+    "bytes": 2093,
+    "sha256": "17a1e3005db3a4d64b80a170f974e952e2191ee2b8e32df00dda18e468308927",
+    "git_sha": "1620a1a691bd493229cd8afd800fa471fb818023",
+    "base_git_sha": "2c21944567c5bcebd1b94bb60ec78a3a3ef9645b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveTaskScreen.kt",
+    "bytes": 22465,
+    "sha256": "dedde684ddc06c807ca8b681610ee233568fd36f57671aa564e6cb0beecf4a9a",
+    "git_sha": "df1d8a8c5b665ee8e94449721d3fdc9cceed52dd",
+    "base_git_sha": "37ee0e9c22ac67a7b403dbad16931b53909d348f"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveTaskTextResources.kt",
+    "bytes": 2658,
+    "sha256": "37be4abe210f99d70e8a05434d98f71527d4a12b7b72ff624e7587ce5631dc13",
+    "git_sha": "b26a3aad93770781d6435b4b8071b7fd963199f0",
+    "base_git_sha": "e9ab294cd61c8ed244b15eb1647a5a3663293fce"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+    "bytes": 44868,
+    "sha256": "138f1add9690835cd923c8fe74f10a20ebc4433e878936064127e809dd3c9a37",
+    "git_sha": "10062eb54dd98946988afc93813a89e277a2f43e",
+    "base_git_sha": "da8ad880e59e7d7ce41850fcc30c0237e78f29e1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceCodec.kt",
+    "bytes": 7062,
+    "sha256": "0598dac01af8065ab469e6b69d99e7336eb4f9ec31a0b708a426b029573ae9d0",
+    "git_sha": "d9baf36d4c58002eef83234298d4848746dcdd93",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceProtocol.kt",
+    "bytes": 26837,
+    "sha256": "a6afc0a6432b7e3fac0019ce459321c5b9a70ddd2adeedc30f52eb952f7995c5",
+    "git_sha": "9416eb90b7f59c9665754810636ac07f89249ff2",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceSchema.kt",
+    "bytes": 4562,
+    "sha256": "9764f438979a25cda2722d98a60e994f48a88d5b5c866ab75e2be614558cee7b",
+    "git_sha": "0b8c195356f0e79523825f16a81c29a1e32f9d7a",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/SaveRecordCodec.kt",
+    "bytes": 22233,
+    "sha256": "3a2ca0ed261d05051e6717eb0dcc4ebd8384d5b71eb02aa266e7b3805b224d82",
+    "git_sha": "f6bd6e588bf317b4503c9d4a941738150c869c25",
+    "base_git_sha": "3dd05b18000ea413cebf4f83883030c46134f8fa"
+  },
+  {
+    "path": "app/src/main/res/values-zh-rCN/save_normalization.xml",
+    "bytes": 218,
+    "sha256": "095af5fa5304e6b6633d25a858d7b77f27f787201d8a3b167aeae77ca92768da",
+    "git_sha": "08ada75348e68b4747f7fd458753ee17bcc748a2",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/res/values/save_normalization.xml",
+    "bytes": 235,
+    "sha256": "29b9f89902db9591df1b10d8d5a84fd64fc93e1d5d89fc97cd570d696870d644",
+    "git_sha": "5af444b5cc15f100cbfde57df68681c2a74c1804",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/DirectNormalizationCodecTest.kt",
+    "bytes": 11527,
+    "sha256": "6167d740aed824f46e0c871b1d9c9042407ac856e7001030b9e8a72e48407390",
+    "git_sha": "d6bce902898fe30e250ee72845ae69c8fdcab555",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceProtocolTest.kt",
+    "bytes": 23790,
+    "sha256": "8e2bf88e61ed27ab1c6f7562b8d2c4344dfb9b6eef530c1e71e5c4851b03506b",
+    "git_sha": "62de0b82198590d441eb4ac15ad832b7b181a309",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/SaveRecordCodecTest.kt",
+    "bytes": 30668,
+    "sha256": "60a7bd3deff16a4110459c18e8f2eb3c9d2d0bb176651f63d29fb32ed617618c",
+    "git_sha": "80fbb786d113a78c1f1bca61736c46b9b5278825",
+    "base_git_sha": "4735e452429aee42a827921858f7c8a09fc8ebcf"
+  },
+  {
+    "path": "docs/ui/implementation/BASIC_NORMALIZATION_20261014.md",
+    "bytes": 6208,
+    "sha256": "149ddfd3ba1b672d759863ab987ac25ec36e022f0e6cc99392d6ef39c1d59704",
+    "git_sha": "bd9fb1c3471c9dff7dbbcc071fc102c10b95b5be",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/BASIC_NORMALIZATION_DESIGN_20261014.md",
+    "bytes": 49053,
+    "sha256": "d7a849c42b8e6665f1e1556d66effa46970ecbd9e21c55f929cdc8a3f614dd34",
+    "git_sha": "068b51ab4317647211e51759a25e3cd573b3f2b7",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/MOV_CLOCK_AND_CANONICAL_CONTRACT_20261014.md",
+    "bytes": 28899,
+    "sha256": "d1136715c4ac63868e24d0492eb59b5c8d7e5a4526fabe61129753a3cf28493b",
+    "git_sha": "251b7dbf8fb81fca403bd3a1d8be7a9b0a3c2047",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/ORIGINAL_REQUIREMENTS_REMAINING_QUEUE_20261014.md",
+    "bytes": 16522,
+    "sha256": "4d44cdb194468ad58619a975a0dfbadc297f45c4ee8c556e794e9ec787caa5da",
+    "git_sha": "debdb0586557e26c133ef8360aeafbf1ce7b9e8f",
+    "base_git_sha": "01e804aeb5822f82da9f092143ce7c4268c9de54"
+  },
+  {
+    "path": "docs/ui/implementation/PR25_BROWSER_PRIVACY_DESIGN_20261014.md",
+    "bytes": 24568,
+    "sha256": "51d555b8f3d12ae1f0b70670c30c1f812025901b46e366727eb623e67afe92e7",
+    "git_sha": "0ef00b039963d3af80ae7e9162c2c0302f1401df",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-layer1-20261014/BOUNDARIES.json",
+    "bytes": 421,
+    "sha256": "bcfeb662c64e6d4d0b6bd34913f501a6de3da0ba95912f99026a3f2ff76199a2",
+    "git_sha": "242e4bb8fc1638ccef9fcc262c1769ac1540e97c",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-layer1-20261014/LINT_SUMMARY.json",
+    "bytes": 107,
+    "sha256": "b69e6ef1f12ad676440b9f8619df2d8d45a12824a616e2a4525f1b6ed36073e5",
+    "git_sha": "9dddb5f8295892779c398e9d50505ad381521671",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-layer1-20261014/SQLITE_SUMMARY.json",
+    "bytes": 2814,
+    "sha256": "5266ae7cab419e025888c8f025139452324c31d6f09491180df66c01fb552b9e",
+    "git_sha": "cb245568ca7284a3e3cac5963e4925c61c45fc7a",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-layer1-20261014/TASK_STATUS.json",
+    "bytes": 9291,
+    "sha256": "a8299f1733a66bf88a85ff6b76056a26af07a7cd956553c0801c457f91f3192b",
+    "git_sha": "e14e0d834c982ff552672da888cadcb1960821bf",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-layer1-20261014/TEST_SUMMARY.json",
+    "bytes": 1403,
+    "sha256": "6c0696ca36ce88060d97a09c6481491c5db46c37a6f8b4c890237633504f2b2d",
+    "git_sha": "8328299a7571442a2840a2dc124a81c474b1e505",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/DirectLocalProcessingGate.kt",
+    "bytes": 2831,
+    "sha256": "35d3f47a003cb739775170fb18a9524e48df4f2178df21d81a42ec47e3208e43",
+    "git_sha": "9159a9e8c09ba185ac76e465f5c13cc12679e293",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/DirectNormalizationContracts.kt",
+    "bytes": 8237,
+    "sha256": "bafbf283f80fccefecfb5aaf985f671175b421054a7032b7f0aa30820b2cfc19",
+    "git_sha": "cfe423eb743b51254b1876504ed5d08b25e707fa",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/DirectRemuxConservation.kt",
+    "bytes": 6669,
+    "sha256": "1b48b91adb19c9b83a9244755e8e2327bc8142d1869696140fd60134dad2cdbb",
+    "git_sha": "6790988ce752752de3bfda27a276ccac2a0c62fc",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveModels.kt",
+    "bytes": 17911,
+    "sha256": "787797a1b1384f5313846ed6f8a7e92dd24509bb2acf2d77a5b7188c1797e8c1",
+    "git_sha": "fc0246eb411b0bea242bca40aaa84ea794b549ac",
+    "base_git_sha": "c4578e648f6f474ef9f7a7139172b679482f8fd6"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SavePorts.kt",
+    "bytes": 7645,
+    "sha256": "a4fc3150d4a02c056e23bdf66d5829ca60618a1259cb4289f1ccfc6817457875",
+    "git_sha": "dac5e7c2be96312d7a72742e5c1698dbe47b5b54",
+    "base_git_sha": "01539d8bf25b0cf01777bb8ed104f54bd7e2da9b"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SerialArtifactVerifier.kt",
+    "bytes": 3977,
+    "sha256": "70883647d165773d48a39e470162ad261069bc63d2adb5f6fe195c6f2de67c84",
+    "git_sha": "4205d88ab1b8c2d6160bd9e94d649c7579cf75ab",
+    "base_git_sha": "54596450800837dd18a08b24ad39189cadf300a3"
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/DirectLocalProcessingGateTest.kt",
+    "bytes": 7072,
+    "sha256": "743c083ff040c9954e0681a0925b3958126f0fb1e7b1f4e8720b15e4aef69c9e",
+    "git_sha": "f9d2e9de060489f8f3dba4a39d11fb3c0604d9d7",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/DirectNormalizationContractsTest.kt",
+    "bytes": 13470,
+    "sha256": "5387d6248edd0c76c0e3181a30958f74ec1d674f2474185bbaffbc766ac61211",
+    "git_sha": "f99ec123311bc5f6618b6f81aa64bd9b357b42d3",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/SerialArtifactVerifierTest.kt",
+    "bytes": 21017,
+    "sha256": "333bc5caf55543eb04b8b5b401f1f977321ef3b4a604eb08e18ee481172fe101",
+    "git_sha": "bdea656de548fc3b9972344e730ba26346acf884",
+    "base_git_sha": "dd5af8b048b6c7f2d459ebc84517c340d17af9da"
+  },
+  {
+    "path": "scripts/verify-current-storage-sqlite.py",
+    "bytes": 39866,
+    "sha256": "0a381778fc740cfaae55a942a657924df686a9aaf5804bb66941253439f08de6",
+    "git_sha": "f6e5b0cc15419044ead038585640ca91ba107027",
+    "base_git_sha": "39b8844d1e0bb3425ae222c7b80a4dc1ce1b5ea9"
+  }
+]

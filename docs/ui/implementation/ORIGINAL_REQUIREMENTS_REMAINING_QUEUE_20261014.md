@@ -94,20 +94,29 @@ unblocked row after recording the preceding row's actual result.
    confirmed controls. Shared controller operation ownership survives view exit;
    both old and central entry points use the same prompt adapter. These are not
    a stored keyword-input list. See `SETTINGS_DISCOVERY_PRIVACY_20261014.md`.
-8. PR-25 Incognito and per-site permissions (DESIGN NEXT): reconcile existing
+8. PR-25 Incognito and per-site permissions (DESIGN RECONCILED / DEPENDENCY DECISION): see
+   `PR25_BROWSER_PRIVACY_DESIGN_20261014.md`. Reconcile existing
    context/session/history/authentication boundaries against real WebView storage
    isolation and platform permission APIs. Do not equate omitted history with
    isolated Incognito, or current fail-closed permission prompts with a complete
    site-permission manager. Identify exact dependency/permission/native gates
    before implementing this larger original requirement.
 
-9. Free basic output normalization (SELECTED NEXT DESIGN): original product section
+9. Free basic output normalization (LAYER 1 SOURCE COMPLETE / SILENT ADAPTER NEXT): see
+   `BASIC_NORMALIZATION_DESIGN_20261014.md` for the initial bounded free MOV remux
+   profile, separate source/output evidence and exact-owned recovery protocol.
+   Contracts/storage layer passed 4,073 tests plus two existing skips; see
+   `BASIC_NORMALIZATION_20261014.md`. Runtime MOV admission and native acceptance
+   remain open. Original product section
    7.1 and technical sections 5.1/5.3 require feasible MOV/WebM to playable MP4 as
    basic output, independent of paid advanced editing. Current Direct does not
    normalize containers/codecs. First design the narrow admitted-format/evidence,
    device codec capability, independent raw/output staging, cancellation, budgets,
    native exclusion and final verification contract. Reuse only admitted components;
-   unknown formats/protection never become a conversion bypass.
+   unknown formats/protection never become a conversion bypass. First adapter
+   admission is silent-only with exact clocks; audio rejects the whole file.
+   Complete AAC AU/PCM-frame/timestamp verification is the next original-scope
+   extension, not silently dropped audio or a claim of general MOV support.
 
 For each row: record file/test evidence, independent findings, actual regression
 result, private development-branch commit and next row. A failed build is repaired
@@ -123,6 +132,12 @@ frozen APKs/evidence immutable and never advance main as part of this queue.
   while retaining current SDK36/Kotlin2.2.10/API31. Review does not authorize public
   thumbnail fetching or runtime use before acceptance. No bespoke network image
   stack is substituted to evade the gate.
+- True Incognito: authorize exact official AndroidX WebKit candidate admission
+  review (recommended initial candidate 1.17.1), including AAR compatibility,
+  transitive artifacts and licenses. This is review permission only; runtime
+  integration and site camera/microphone/location grants are separate. Without
+  new dependencies, a dedicated platform WebView process/data suffix is possible
+  but has a larger cross-process Save and cleanup design. See the PR-25 design.
 - Real Discovery source: choose an already supported source and explicit production
   configuration/contact or owned verification fixture. Recommended least change:
   use existing Commons path with approved contact and appropriate usage/rights

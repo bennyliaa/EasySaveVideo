@@ -3,6 +3,7 @@ package com.easysavevideo.app.save
 import com.easysavevideo.core.model.TaskMethod
 import com.easysavevideo.core.model.TaskState
 import com.easysavevideo.save.SaveRecord
+import com.easysavevideo.save.selectedOutputDescriptor
 import com.easysavevideo.app.discovery.DiscoveryOriginHistoryOutcome
 import com.easysavevideo.app.discovery.DiscoveryOriginSaveOutcome
 
@@ -13,11 +14,11 @@ internal fun mediaTaskHasCommittedSave(taskId: String, record: SaveRecord?): Boo
     val receipt = record.receipt ?: return false
     val verification = record.verification ?: return false
     val artifact = record.artifact ?: return false
-    val transfer = record.transfer ?: return false
+    val output = record.selectedOutputDescriptor() ?: return false
     return receipt.commitId == record.commitId && artifact.commitId == record.commitId &&
         receipt.artifactId == artifact.artifactId && receipt.artifactId == verification.artifactId &&
         receipt.sizeBytes == verification.sizeBytes && receipt.sha256 == verification.sha256 &&
-        verification.isValidFor(artifact, transfer, record.request.networkResource?.expectedAudio ?: false)
+        verification.isValidFor(artifact, output, record.request.networkResource?.expectedAudio ?: false)
 }
 
 /** This label never replaces the coordinator's media status or requests another media execution. */

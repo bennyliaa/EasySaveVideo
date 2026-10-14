@@ -315,6 +315,8 @@ internal fun taskLabel(record: SaveRecord): String = when (record.task.state) {
     TaskState.RUNNING -> when (record.phase) {
         SavePhase.PREPARING -> "准备中"
         SavePhase.EXECUTING -> saveExecutionLabel(record.request.method)
+        SavePhase.NORMALIZING -> "本地格式规范化中"
+        SavePhase.ADOPTING -> "准备验证规范化输出"
         SavePhase.VERIFYING -> "本地验证中"
         SavePhase.COMMITTING -> "提交中"
         SavePhase.CLEANUP -> "收尾中"

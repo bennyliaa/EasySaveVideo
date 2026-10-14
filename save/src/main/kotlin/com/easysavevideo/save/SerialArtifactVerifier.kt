@@ -30,7 +30,15 @@ class SerialArtifactVerifier(
         artifact: StagingArtifact,
         transfer: TransferResult,
         context: OperationContext,
-    ): VerificationEvidence {
+    ): VerificationEvidence = verifyOwned(context) { delegate.verify(artifact, transfer, context) }
+
+    override fun verify(
+        artifact: StagingArtifact,
+        output: ArtifactOutputDescriptor,
+        context: OperationContext,
+    ): VerificationEvidence = verifyOwned(context) { delegate.verify(artifact, output, context) }
+
+    private fun verifyOwned(context: OperationContext, verify: () -> VerificationEvidence): VerificationEvidence {
         while (true) {
             checkActive(context)
             val remaining = (context.deadlineEpochMillis - clock.nowMillis()).coerceAtLeast(1)
@@ -46,7 +54,7 @@ class SerialArtifactVerifier(
         val evidence = try {
             // Nothing while waiting renews the original context, token, deadline or native gate.
             checkActive(context)
-            val result = delegate.verify(artifact, transfer, context)
+            val result = verify()
             checkActive(context)
             result
         } finally {

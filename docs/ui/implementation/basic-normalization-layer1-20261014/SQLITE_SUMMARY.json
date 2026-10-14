@@ -1,0 +1,37 @@
+{
+  "kind": "CURRENT_V9_HOST_SQLITE_CONTRACT",
+  "sqlite_version": "3.53.1",
+  "tests": 20,
+  "failures": 0,
+  "errors": 0,
+  "rollback_fault_boundaries": 411,
+  "baseline_provenance": {
+    "1": "frozen LEGACY literal",
+    "2": "synthetic frozen-v3 pre-export prefix",
+    "3": "frozen V3_DDL literal",
+    "4": "synthetic v3 plus current edit-job/library DDL and frozen v4 source table",
+    "5": "frozen a3a028d v5 DDL",
+    "6": "synthetic v5 plus production v6 DDL",
+    "7": "synthetic v6 plus production v7 DDL",
+    "8": "synthetic v7 plus production v8 batch DDL"
+  },
+  "v1_published_media_backfill": "NOT_EXECUTED_REAL_CODEC_MEDIA_REQUIRED",
+  "kotlin_codec": "SEPARATE_JVM_GATE",
+  "android_sqlite_runtime": "NOT_RUN",
+  "input_sha256": {
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt": "138f1add9690835cd923c8fe74f10a20ebc4433e878936064127e809dd3c9a37",
+    "app/src/main/kotlin/com/easysavevideo/app/library/storage/LibrarySchema.kt": "898b7b9b04f57bf3fb9f0e7594b682b938e876cca9ead67fd3c3b83d285c971f",
+    "app/src/main/kotlin/com/easysavevideo/app/editor/storage/EditSchema.kt": "8f5a6b738913f1913210fa75e153ad013ea2780cfa9c23663926de707a5ea96d",
+    "app/src/main/kotlin/com/easysavevideo/app/library/export/ExportSchema.kt": "c35a5fb4ab5fb203ebad839919b162473190735dfe5823bc28a0243695b20941",
+    "app/src/main/kotlin/com/easysavevideo/app/recording/segments/RecordedSegmentSchema.kt": "6122d11def6407662256ecb532392f450544605c149c4f77cd01764ba8750d53",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationSchema.kt": "dc289eba5299c89efe27f687fb06887c6ced475544b0439616e8e5a960506103",
+    "app/src/main/kotlin/com/easysavevideo/app/library/destination/FolderDestinationSchema.kt": "77971f7d3ff43435c31c2f19b941b0d3c5f562b38313a0de059cf7190319093f",
+    "app/src/main/kotlin/com/easysavevideo/app/library/export/DirectoryBatchSchema.kt": "36ba17ef69bd431083b64bf7227b4aa909075160f0424acc2c3e7bfb5abc9f27",
+    "app/src/main/kotlin/com/easysavevideo/app/library/export/AndroidDirectoryBatchJournal.kt": "b6037dcf969b28973537ba163fff7cfa1fdbd7f5279d262dc73bb719c3cae734",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceSchema.kt": "9764f438979a25cda2722d98a60e994f48a88d5b5c866ab75e2be614558cee7b",
+    "scripts/verify-library-sqlite.py": "50f318c6309c8e3c5013059541e9dfd4b0528c76205e0721d78adbec2e40eab1",
+    "scripts/verify-editor-sqlite.py": "fde730a59fd482c01d77d3991b6818d7cc087e272001ade2f57b2d70b949f72a",
+    "app/src/test/resources/destination/frozen-v5-schema.sql": "a216f8fc311c9cbd736d0c93f56a7067c856f870a82a748128e5fc59bf197eae",
+    "app/src/test/resources/recorded-segments/frozen-v4-edit-source.sql": "c762a1ef96b6f1b835bbc17f1a7ac05a07be2dc88f8a58630f88aa8602aa3f7b"
+  }
+}
