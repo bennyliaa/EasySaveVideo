@@ -23,7 +23,7 @@ import com.easysavevideo.app.licenses.ThirdPartyNotices
 import com.easysavevideo.app.ui.responsivePaneLayout
 
 @Composable
-fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}, discoveryEditable: Boolean = true, persistenceWarning: Boolean = false, loadWarning: Boolean = false, privacy: @Composable () -> Unit = {}, entitlements: @Composable () -> Unit = {}, saveDestination: @Composable () -> Unit = {}, browserEditable: Boolean = false) {
+fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}, discoveryEditable: Boolean = true, persistenceWarning: Boolean = false, loadWarning: Boolean = false, privacy: @Composable () -> Unit = {}, entitlements: @Composable () -> Unit = {}, saveDestination: @Composable () -> Unit = {}, browserEditable: Boolean = false, saveConcurrencyEditable: Boolean = false) {
     var categoryKey by rememberSaveable { mutableStateOf<String?>(null) }
     var notices by rememberSaveable { mutableStateOf(false) }
     val noticesListState = rememberLazyListState()
@@ -48,7 +48,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
                         SettingsCategories(presentation.active){categoryKey=it.key}
                     }
                     Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
-                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,browserEditable,privacy,entitlements,saveDestination){notices=true}
+                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,browserEditable,saveConcurrencyEditable,privacy,entitlements,saveDestination){notices=true}
                     }
                 }
             }
@@ -58,7 +58,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
                 verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
                 SettingsHeading(onBack={goBack()}, persistenceWarning=persistenceWarning,loadWarning=loadWarning)
                 if(presentation.categories)SettingsCategories(null){categoryKey=it.key}
-                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,browserEditable,privacy,entitlements,saveDestination){notices=true}
+                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,browserEditable,saveConcurrencyEditable,privacy,entitlements,saveDestination){notices=true}
             }
         }
     }
@@ -95,7 +95,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
     }
 }
 @Composable private fun SettingsDetail(category:SettingsCategory,settings:AppSettings,onChange:(SettingsEdit)->Unit,
-    onSources:()->Unit,diagnostics: @Composable () -> Unit,discoveryEditable:Boolean,browserEditable:Boolean,privacy: @Composable () -> Unit,entitlements: @Composable () -> Unit,saveDestination: @Composable () -> Unit,onNotices:()->Unit) {
+    onSources:()->Unit,diagnostics: @Composable () -> Unit,discoveryEditable:Boolean,browserEditable:Boolean,saveConcurrencyEditable:Boolean,privacy: @Composable () -> Unit,entitlements: @Composable () -> Unit,saveDestination: @Composable () -> Unit,onNotices:()->Unit) {
     val v=LocalEsvVisuals.current
     EsvText(categoryLabel(category),style=v.sectionTextStyle)
     when(category) {
@@ -129,6 +129,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
                 Switch(checked=settings.save.wifiOnly,onCheckedChange=null)
             }
             EsvText(stringResource(R.string.ui_save_wifi_description),style=v.captionTextStyle)
+            SaveConcurrencySettingsControl(settings.save.maxConcurrentDirectTasks,saveConcurrencyEditable,onChange)
             saveDestination()
         }
         SettingsCategory.EDITOR -> {
@@ -154,4 +155,27 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
             EsvText(stringResource(R.string.ui_store_unavailable),style=v.captionTextStyle)
         }
     }
+}
+
+@Composable private fun SaveConcurrencySettingsControl(count: Int, editable: Boolean,
+    onEdit: (SettingsEdit.DirectConcurrency) -> Unit) {
+    val v=LocalEsvVisuals.current
+    val enabledNow by rememberUpdatedState(editable)
+    val editNow by rememberUpdatedState(onEdit)
+    val actions=remember { SaveConcurrencySettingsActions({enabledNow}) { editNow(it) } }
+    DisposableEffect(actions) { onDispose { actions.close() } }
+    EsvText(stringResource(R.string.save_concurrency_title),style=v.sectionTextStyle)
+    if (!editable) EsvText(stringResource(R.string.save_concurrency_waiting),style=v.captionTextStyle)
+    Column(Modifier.selectableGroup()) {
+        for (option in 1..2) {
+            Row(Modifier.fillMaxWidth().heightIn(min=48.dp).selectable(selected=count==option,
+                enabled=editable,role=Role.RadioButton,onClick={actions.edit(SettingsEdit.DirectConcurrency(option))}),
+                verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
+                RadioButton(selected=count==option,onClick=null,enabled=editable)
+                EsvText(stringResource(if(option==1)R.string.save_concurrency_one else R.string.save_concurrency_two))
+            }
+        }
+    }
+    EsvText(stringResource(R.string.save_concurrency_scope),style=v.captionTextStyle)
+    EsvText(stringResource(R.string.save_concurrency_lowering),style=v.captionTextStyle)
 }

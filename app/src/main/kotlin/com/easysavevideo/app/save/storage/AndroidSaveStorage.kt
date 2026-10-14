@@ -201,6 +201,8 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
     fun stagingFile(artifact: StagingArtifact): File = fileCall { protocol.stagingFile(artifact) }
     /** Read-only validator input, also allowing a previously promoted, still provisional commit on recovery. */
     fun verificationFile(artifact: StagingArtifact): File = fileCall { ensureActiveCommit(artifact.commitId); ensureNoWriter(artifact); protocol.verificationFile(artifact) }
+    /** Control-worker admission snapshot, including the existing journal reserve; creates no staging file. */
+    fun availableBytesForSaveAdmission(): Long = fileCall { protocol.availableBytes() }
     fun availableBytes(artifact: StagingArtifact): Long = fileCall {
         protocol.stagingFile(artifact); protocol.availableBytes()
     }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_concurrency_title">同时进行的 Direct 下载</string>
+    <string name="save_concurrency_waiting">设置加载成功且此页面处于前台后可调整。</string>
+    <string name="save_concurrency_one">1 个下载</string>
+    <string name="save_concurrency_two">2 个下载</string>
+    <string name="save_concurrency_scope">仅适用于 Direct 下载。流媒体处理、录制和编辑仍为独占操作；媒体校验逐个进行。</string>
+    <string name="save_concurrency_lowering">降低数量不会停止已经接纳的下载任务。</string>
+</resources>

@@ -20,24 +20,27 @@ class SaveResumeCommandSourceContractTest {
         }
     }
 
-    @Test fun realResumeClaimsProductionGateBeforeCredentialsAndControlQueue() {
+    @Test fun realResumeClaimsProductionGateBeforeWorkerDiskAdmissionAndCredentials() {
         val resume = section("fun resume(taskId:", "private fun finishTaskCommand(")
         ordered(resume, "requireMain()", "records.singleOrNull", "record.task.state != TaskState.WAITING_USER",
             "taskCommands.tryResume(record.task) ?: return", "pendingCommands = taskCommands.pendingTaskIds()",
+            "command(mediaWork = true", "executionAdmission.tryAcquireDirect()",
             "leaseFor(it.url, browser)", "command(mediaWork = true")
         assertTrue(runtime.contains("private val taskCommands = SaveTaskCommandGate()"))
         assertFalse(resume.contains("pendingCommands = pendingCommands +"))
     }
 
-    @Test fun controlLaneChecksCurrentWaitingSnapshotAndReservesExistingSingleLaneBeforeResume() {
+    @Test fun controlLaneReservesExactDirectOrExclusiveClaimBeforeResume() {
         val resume = section("fun resume(taskId:", "private fun finishTaskCommand(")
-        ordered(resume, "val current = coordinator.record(taskId)",
-            "taskCommands.canResume(attempt, current.task)", "canResumeFinalized(current)", "!resourcesDraining()",
-            "reserveExecution()", "val execution = SaveResumeExecutionReservation { setExecuting(false) }",
-            ".copy(cancelToken = attempt.cancelToken)", "coordinator.resume(taskId, operation, lease)",
-            "attempt.ownsResumed(resumed, operation)", "launchResumedExecution(requireNotNull(resumed), operation, attempt, lease, execution)")
-        assertTrue(runtime.contains("private fun reserveExecution(): Boolean = executing.compareAndSet(false, true)"))
-        assertTrue(runtime.contains("private val worker = executor(\"esv-save-transfer\", 1)"))
+        ordered(resume, "executionAdmission.tryAcquireDirect()", "reserveExecution()",
+            "leaseFor(it.url, browser)", "val execution = SaveResumeExecutionReservation { releaseExecution(claim) }",
+            "val current = coordinator.record(taskId)", "taskCommands.canResume(attempt, current.task)",
+            "canResumeFinalized(current)", "executionAdmission.owns(claim)", "!executionReleaseUnconfirmed()",
+            ".copy(cancelToken = attempt.cancelToken)", "coordinator.resume(taskId, operation, claim, lease)",
+            "attempt.ownsResumed(resumed, operation)", "launchResumedExecution(requireNotNull(resumed), operation, attempt, lease, execution, claim)")
+        assertTrue(runtime.contains("val claim = executionAdmission.tryAcquireExclusive() ?: return false"))
+        assertTrue(runtime.contains("ThreadPoolExecutor(2, 2"))
+        assertTrue(resume.contains("generation == executionForegroundGeneration"))
         assertFalse(resume.contains("resumed?.task?.state == TaskState.RUNNING"))
     }
 
@@ -57,9 +60,9 @@ class SaveResumeCommandSourceContractTest {
 
     @Test fun everyResumeFailureReleasesItsOwnPendingAndLeaseAndReservation() {
         val resume = section("fun resume(taskId:", "private fun finishTaskCommand(")
-        assertTrue(resume.contains("catch (_: Exception) {\n            finishTaskCommand(attempt)"))
-        assertTrue(resume.contains("onRejected = { finishTaskCommand(attempt); lease?.let(leases::revoke) }"))
-        assertTrue(resume.contains("if (!launched) { reservation?.release(); lease?.let(leases::revoke) }"))
+        assertTrue(resume.contains("catch (_: Exception) {\n            releaseExecution(claim); finishTaskCommand(attempt)"))
+        assertTrue(resume.contains("execution.release(); finishTaskCommand(attempt); lease?.let(leases::revoke)"))
+        assertTrue(resume.contains("if (!launched) { execution.release(); lease?.let(leases::revoke) }"))
         assertTrue(resume.contains("main.post { finishTaskCommand(attempt) }"))
         val finish = section("private fun finishTaskCommand(", "private fun launchExecution(")
         assertTrue(finish.contains("requireMain()"))
@@ -69,11 +72,12 @@ class SaveResumeCommandSourceContractTest {
 
     @Test fun launchReleaseCapabilityCoversAllExistingReleaseSitesAndWorkerFinally() {
         val launch = section("private fun launchExecution(", "/** Scheduling deferral")
-        assertTrue(launch.contains("releaseExecution: () -> Unit = { setExecuting(false) }"))
-        assertEquals(1, Regex("setExecuting\\(false\\)").findAll(launch).count())
-        assertEquals(4, Regex("releaseExecution\\(\\)").findAll(launch).count())
+        assertTrue(launch.contains("claim: SaveExecutionAdmission.Claim"))
+        assertFalse(launch.contains("setExecuting(false)"))
+        assertTrue(launch.contains("runSaveExecution(taskId, lease, claim) { releaseExecution(claim) }"))
+        assertTrue(launch.contains("SaveWorkerHandoff().launch({ worker.execute(it) })"))
         assertTrue(launch.contains("finally { releaseExecution(); command { publishRecords() } }"))
-        assertTrue(launch.contains("releaseExecution(); lease?.let(leases::revoke); deferUnstartedExecution(taskId)"))
+        assertTrue(launch.contains("execution.release(); lease?.let(leases::revoke)"))
         val gate = source("SaveTaskCommandGate.kt")
         assertTrue(gate.contains("released.compareAndSet(false, true)"))
         assertTrue(gate.contains("owners[attempt.taskId] !== attempt"))

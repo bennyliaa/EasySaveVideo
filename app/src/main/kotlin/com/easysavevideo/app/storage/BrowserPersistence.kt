@@ -23,7 +23,7 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
     private val preserveSession = AtomicBoolean(false)
     private val sessionResetRequested = AtomicBoolean(false)
     val sessionWritesPaused: Boolean get() = preserveSession.get()
-    private data class PendingSettings(val value: AppSettings, val includeNetwork: Boolean)
+    private data class PendingSettings(val value: AppSettings, val includeNetwork: Boolean, val includeConcurrency: Boolean)
     private val settingsPending = AtomicReference<PendingSettings?>(null)
     private val networkPreferenceConfirmed = AtomicBoolean(false)
     var settingsLoaded: Boolean = false; private set
@@ -86,7 +86,7 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
     fun saveSettings(settings: AppSettings, confirmNetworkPreference: Boolean = false) {
         if (closed.get()) return
         if (confirmNetworkPreference) networkPreferenceConfirmed.set(true)
-        settingsPending.set(PendingSettings(settings, settingsLoaded || networkPreferenceConfirmed.get()))
+        settingsPending.set(PendingSettings(settings, settingsLoaded || networkPreferenceConfirmed.get(), settingsLoaded))
         if (!settings.browser.restoreTabs) {
             // The settings toggle explicitly explains that disabling clears saved addresses.
             sessionResetRequested.set(true); preserveSession.set(false); sessionPending.set(empty)
@@ -96,7 +96,7 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
     private fun scheduleWrite() {
         if (writing.compareAndSet(false, true)) io.execute {
             do {
-                settingsPending.getAndSet(null)?.let { value -> runCatching { settingsStore.save(value.value, value.includeNetwork) }.onFailure { writeFailure(ErrorCode.SETTINGS_UNAVAILABLE) } }
+                settingsPending.getAndSet(null)?.let { value -> runCatching { settingsStore.save(value.value, value.includeNetwork, value.includeConcurrency) }.onFailure { writeFailure(ErrorCode.SETTINGS_UNAVAILABLE) } }
                 sessionPending.getAndSet(null)?.takeUnless { preserveSession.get() }?.let { value -> runCatching { sessionStore.save(value) }.onFailure { writeFailure(ErrorCode.RECOVERY_FAILED) } }
                 writing.set(false)
             } while ((settingsPending.get() != null || sessionPending.get() != null) && writing.compareAndSet(false, true))

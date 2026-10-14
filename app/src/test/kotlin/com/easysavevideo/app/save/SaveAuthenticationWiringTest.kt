@@ -16,11 +16,11 @@ class SaveAuthenticationWiringTest {
         assertTrue(bridge.contains("command.accept(current, authenticationNavigationGeneration, authenticationBrowserAvailable())"))
         for (forbidden in listOf("sourceForTask(", "navigate(", "resume(", "cancel(", "submit(", "dismissSelection(", "leaseFor(", "showFailureBrowserReminder"))
             assertFalse(forbidden, bridge.contains(forbidden))
-        assertTrue(runtime.contains("if (foreground != value) authenticationNavigationGeneration++"))
+        assertTrue(runtime.contains("if (foreground != value) { authenticationNavigationGeneration++; executionForegroundGeneration++ }"))
     }
     @Test fun runtimeCurrentAvailabilityCoversActualPendingAndNativeOwners() {
         val gate = source("save/AndroidSaveRuntime.kt").substringAfter("internal fun authenticationBrowserAvailable()").substringBefore("/** Navigation authority")
-        for (required in listOf("ready && foreground && allowed()", "!executing.get()", "!resourcesDraining()",
+        for (required in listOf("ready && foreground && allowed()", "!executionBusy()", "!resourcesDraining()",
             "pendingCommands.isEmpty()", "pendingMediaCommands.get() == 0", "!expiryActivity.active", "!initializationActivity.active",
             "!scanning", "selection == null", "currentRecordingId == null", "pendingRecording == null", "recordingService == null",
             "!preparingStream", "hlsPreparation == null", "destinations?.asking != true", "destinations?.notice == null",

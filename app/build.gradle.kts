@@ -85,7 +85,7 @@ dependencies {
 val contractResourceInputs = fileTree("src/main/res") {
     for (locale in listOf("values", "values-zh-rCN")) {
         for (resource in listOf(
-            "editor_back.xml", "settings_discovery.xml", "settings_privacy.xml", "settings_entitlements.xml", "settings_destination.xml", "settings_browser.xml",
+            "editor_back.xml", "settings_discovery.xml", "settings_privacy.xml", "settings_entitlements.xml", "settings_destination.xml", "settings_browser.xml", "save_concurrency.xml",
             "recording_notification.xml", "save_authentication_origin.xml", "save_runtime_notice.xml", "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "discovery_recovery.xml", "input_clear.xml",
             "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "bookmark_panel.xml", "history_panel.xml", "browser_permission_notice.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
             "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
@@ -95,6 +95,10 @@ val contractResourceInputs = fileTree("src/main/res") {
     }
 }
 val contractSourceInputs = files(
+    "src/main/kotlin/com/easysavevideo/app/save/SaveSettingsOwner.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/SaveWorkerHandoff.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/SaveExecutionRetirement.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/SettingsNavigation.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/BrowserSettingsDetail.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/BrowserSettingsActions.kt",

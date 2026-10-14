@@ -81,6 +81,10 @@ sealed interface SettingsEdit {
     data class EditorCompression(val mode: EditorCompressionMode) : SettingsEdit {
         override fun applyTo(current: AppSettings) = settingsWithEditorCompression(current, mode)
     }
+    data class DirectConcurrency(val count: Int) : SettingsEdit {
+        init { require(count in 1..2) }
+        override fun applyTo(current: AppSettings) = current.copy(save = current.save.copy(maxConcurrentDirectTasks = count))
+    }
     data class WifiOnly(val enabled: Boolean) : SettingsEdit {
         override fun applyTo(current: AppSettings) = settingsWithWifiOnly(current, enabled)
     }
@@ -98,3 +102,18 @@ internal fun applyDiscoverySettingsEdit(current: AppSettings, edit: SettingsEdit
 internal fun mergeLoadedDiscoverySettings(current: AppSettings, loaded: AppSettings,
     discoveryEdited: Boolean, loadSucceeded: Boolean): AppSettings =
     if (loadSucceeded && !discoveryEdited) current.copy(discovery = loaded.discovery) else current
+
+/** No captured settings snapshot; this disposable view authority ends when its control is retired. */
+internal class SaveConcurrencySettingsActions(private val canAct: () -> Boolean,
+    private val dispatch: (SettingsEdit.DirectConcurrency) -> Unit) {
+    private var closed = false
+    fun edit(edit: SettingsEdit.DirectConcurrency) { if (!closed && canAct()) dispatch(edit) }
+    fun close() { closed = true }
+}
+
+/** A successful local load is required even if the application owner survived Activity recreation. */
+internal fun applyDirectConcurrencySettingsEdit(current: AppSettings, edit: SettingsEdit.DirectConcurrency,
+    ready: Boolean, foreground: Boolean, alive: Boolean, route: EsvDestination): AppSettings? {
+    if (!ready || !foreground || !alive || route != EsvDestination.SETTINGS) return null
+    return edit.applyTo(current)
+}

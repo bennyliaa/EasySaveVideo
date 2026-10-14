@@ -12,16 +12,17 @@ class SaveRuntimeNoticeWiringTest {
     @Test fun everyEmissionUsesOneOfTheFourTypedFamiliesAndAllFiveClearsRemain() {
         val text = runtime
         assertTrue(text.contains("internal var notice by mutableStateOf<SaveRuntimeNotice?>(null); private set"))
-        assertEquals(49, Regex("\\bnotice = ").findAll(text).count())
+        assertEquals(51, Regex("\\bnotice = ").findAll(text).count())
         assertEquals(5, Regex("\\bnotice = null").findAll(text).count())
-        assertEquals(37, Regex("notice = SaveRuntimeNotice.Fixed\\(").findAll(text).count())
+        assertEquals(39, Regex("notice = SaveRuntimeNotice.Fixed\\(").findAll(text).count())
         assertEquals(1, Regex("notice = SaveRuntimeNotice.TaskCapacityReached\\(").findAll(text).count())
         assertEquals(1, Regex("notice = SaveRuntimeNotice.DetectionUnavailable\\(").findAll(text).count())
         assertEquals(5, Regex("notice = saveRuntimeFailureNotice\\(").findAll(text).count())
         SaveRuntimeFixedNotice.entries.forEach { kind ->
             val count = Regex("SaveRuntimeFixedNotice\\.${kind.name}\\b").findAll(text).count()
             assertEquals(kind.name, if (kind in setOf(SaveRuntimeFixedNotice.MEDIA_RESOURCES_EXITING,
-                SaveRuntimeFixedNotice.RECORDING_PAUSE_RESUME_ENTITLEMENT_REQUIRED)) 2 else 1, count)
+                SaveRuntimeFixedNotice.RECORDING_PAUSE_RESUME_ENTITLEMENT_REQUIRED)) 2
+                else if (kind == SaveRuntimeFixedNotice.SAVE_OPERATION_BUSY) 3 else 1, count)
         }
         assertTrue(text.contains("notice = SaveRuntimeNotice.TaskCapacityReached(limits.maxJournalEntries)"))
         assertFalse(text.contains("saveErrorText("))
@@ -41,7 +42,7 @@ class SaveRuntimeNoticeWiringTest {
         assertTrue(text.contains("main.post { notice = saveRuntimeFailureNotice(result.error) }"))
         assertTrue(text.contains("if (token == preparationGeneration)"))
         // Catch classification is kept at the immediate HLS-selection boundary, not moved into rendering.
-        assertTrue(text.contains("setExecuting(false); dismissSelection(); notice = saveRuntimeFailureNotice(SaveErrors.classify(failure))"))
+        assertTrue(text.contains("dismissSelection(); releaseExecution(execution); notice = saveRuntimeFailureNotice(SaveErrors.classify(failure))"))
         assertFalse(source("save/SaveRuntimeNoticeResources.kt").contains("SaveErrors.classify"))
     }
     @Test fun threeActualDisplayEntrypointsResolveCurrentCompositionWithoutChangingRecordingDisclosure() {

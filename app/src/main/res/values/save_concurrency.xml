@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_concurrency_title">Simultaneous Direct downloads</string>
+    <string name="save_concurrency_waiting">Available after settings load while this screen is active.</string>
+    <string name="save_concurrency_one">1 download</string>
+    <string name="save_concurrency_two">2 downloads</string>
+    <string name="save_concurrency_scope">Only Direct downloads use this limit. Stream processing, recording and editing remain exclusive. Media verification runs one at a time.</string>
+    <string name="save_concurrency_lowering">Lowering this limit does not stop downloads already admitted.</string>
+</resources>

@@ -21,15 +21,15 @@ class SaveResumeRecoverySourceContractTest {
 
     @Test fun actualResumeUsesProductionHandoffAndExactPreflightWithSharedWorker() {
         val resume = runtime.substringAfter("fun resume(taskId:").substringBefore("private fun finishTaskCommand")
-        ordered(resume, "coordinator.resume(taskId, operation, lease)", "attempt.ownsResumed(resumed, operation)",
-            "launchResumedExecution(requireNotNull(resumed), operation, attempt, lease, execution)")
+        ordered(resume, "coordinator.resume(taskId, operation, claim, lease)", "attempt.ownsResumed(resumed, operation)",
+            "launchResumedExecution(requireNotNull(resumed), operation, attempt, lease, execution, claim)")
         val handoff = runtime.substringAfter("private fun launchResumedExecution").substringBefore("private fun runSaveExecution")
         assertTrue(handoff.contains("resumeHandoff.launch(record, operation, attempt"))
         assertTrue(handoff.contains("submit = { job -> worker.execute(job) }"))
-        assertTrue(handoff.contains("work = { runSaveExecution(record.task.taskId, lease, execution::release) }"))
+        assertTrue(handoff.contains("work = { runSaveExecution(record.task.taskId, lease, claim, execution::release) }"))
         assertTrue(handoff.contains("execution.release(); lease?.let(leases::revoke)"))
         ordered(helper, "val deferral = try", "coordinator.record(ticket.taskId)?.needsNetworkTransfer()", "submit(Runnable {", "admitted(ticket)", "work()", "admitted(ticket)")
-        assertEquals(1, Regex("coordinator.execute\\(taskId\\)").findAll(
+        assertEquals(1, Regex("coordinator.execute\\(taskId, claim\\)").findAll(
             runtime.substringAfter("private fun runSaveExecution").substringBefore("/** Scheduling deferral")).count())
     }
 

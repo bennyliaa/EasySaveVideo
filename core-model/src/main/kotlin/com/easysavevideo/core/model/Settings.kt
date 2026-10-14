@@ -57,5 +57,7 @@ enum class EditorCompressionMode(val key: String) {
 }
 data class EditorSettings(val defaultCompression: EditorCompressionMode = EditorCompressionMode.ORIGINAL_QUALITY)
 
-/** Download-only preference; recording and local media work never depend on it. */
-data class SaveSettings(val wifiOnly: Boolean = false)
+/** Download preferences. The concurrency limit applies only to Direct transfers. */
+data class SaveSettings(val wifiOnly: Boolean = false, val maxConcurrentDirectTasks: Int = 1) {
+    init { require(maxConcurrentDirectTasks in 1..2) }
+}

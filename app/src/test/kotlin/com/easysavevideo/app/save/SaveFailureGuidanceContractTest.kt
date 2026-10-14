@@ -53,7 +53,7 @@ class SaveFailureGuidanceContractTest {
         for (forbidden in listOf(".submit(", ".cancel(", ".resume(", "inspectFromUserClick(", "prepareRecording(", "sourceForTask(",
             "leaseFor(", ".resource", "storage.", "worker.execute", "coordinator.record(")) assertFalse(forbidden, block.contains(forbidden))
         for (required in listOf("FailedTaskIdentity::from", "command.accept", "ready && foreground", "!resourcesDraining()",
-            "pendingCommands.isEmpty()", "!executing.get()", "pendingRecording == null", "hlsPreparation == null", "dismissSelection()"))
+            "pendingCommands.isEmpty()", "!executionBusy()", "pendingRecording == null", "hlsPreparation == null", "dismissSelection()"))
             assertTrue(required, block.contains(required))
         assertTrue(block.indexOf("FailureNavigationResult.ACCEPTED") < block.indexOf("dismissSelection()"))
         val activity = source("MainActivity.kt")

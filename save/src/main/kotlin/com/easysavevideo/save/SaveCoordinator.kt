@@ -5,8 +5,9 @@ import com.easysavevideo.core.model.*
 import com.easysavevideo.recording.RecordingSnapshot
 
 /**
- * One serialized task owner per journal. execute is synchronous and MUST run on a background worker.
- * No network/native/hash work runs under the monitor; only the final journal/index publish CAS is fenced with cancel.
+ * Bounded identity-owned task executions per journal. execute is synchronous and MUST run on a background worker.
+ * No transfer or native verification runs under the monitor; final journal/index publish CAS is fenced with cancel.
+ * Admission and pool binding monitors never enclose this monitor or storage work.
  * Background suspension waits for the active port to release resources before publishing WAITING_USER.
  */
 class SaveCoordinator(
@@ -20,13 +21,16 @@ class SaveCoordinator(
     private val stream: StreamSavePort = UnsupportedStreamSave,
     private val recording: RecordSavePort = UnsupportedRecordSave,
     private val networkGate: SaveNetworkGate = SaveNetworkGate {},
+    private val admission: SaveExecutionAdmission = SaveExecutionAdmission(maxArtifactBytes = limits.maxArtifactBytes,
+        resourcesUnreleased = { transfer.requiresProcessRecovery() || stream.requiresProcessRecovery() ||
+            recording.requiresProcessRecovery() || verifier.requiresProcessRecovery() }),
 ) : TaskController {
     private fun portFor(method: TaskMethod): DirectTransferPort? = when (method) {
         TaskMethod.DIRECT -> transfer
         TaskMethod.STREAM -> stream.takeIf { it.availability().available }
         else -> null
     }
-    private fun resourcesUnreleased() = transfer.requiresProcessRecovery() || stream.requiresProcessRecovery() || recording.requiresProcessRecovery() || verifier.requiresProcessRecovery()
+    private fun resourcesUnreleased() = admission.recoveryRequired || transfer.requiresProcessRecovery() || stream.requiresProcessRecovery() || recording.requiresProcessRecovery() || verifier.requiresProcessRecovery()
 
     private val lock = Any()
     private class Runtime(val original: OperationContext, val method: TaskMethod, @Volatile var resource: SelectedMediaResource?, val sourceExpiresAt: Long, val resumeOperation: OperationContext? = null) {
@@ -36,6 +40,8 @@ class SaveCoordinator(
         @Volatile var executing = false
         @Volatile var lastRecord: SaveRecord? = null
         var reservedBytes = 0L
+        var claim: SaveExecutionAdmission.Claim? = null
+        var directOwner: DirectTransferPort? = null
         var context = original.copy(cancelToken = object : CancellationToken {
             override val isCancelled: Boolean get() = cancel.isCancelled || original.cancelToken.isCancelled
         })
@@ -43,7 +49,35 @@ class SaveCoordinator(
     private val runtimes = java.util.concurrent.ConcurrentHashMap<String, Runtime>()
     private val observers = mutableMapOf<String, MutableSet<TaskObserver>>()
     private val cachedSnapshots = java.util.concurrent.ConcurrentHashMap<String, TaskSnapshot>()
-    private var activeTaskId: String? = null
+    private val activeExecutions = java.util.Collections.newSetFromMap(java.util.IdentityHashMap<Runtime, Boolean>())
+    private val pendingLegacyRetirements = java.util.concurrent.ConcurrentHashMap<SaveExecutionAdmission.Claim, Runtime>()
+
+    /** External reservations remain owned by the outer worker, including accepted-before-entry. */
+    fun submit(request: SaveRequest, context: OperationContext, claim: SaveExecutionAdmission.Claim,
+        preparationBytes: Long = 0): SaveSubmission = admission.prepare(claim, request.method,
+            request.requestId, context.operationId) {
+        synchronized(lock) {
+            val result = submit(request, context, preparationBytes)
+            val runtime = if (result is SaveSubmission.Accepted && !result.existing)
+                runtimes[request.requestId]?.takeIf { it.original.operationId == context.operationId } else null
+            runtime?.claim = claim
+            result to runtime
+        }
+    } ?: SaveSubmission.Rejected(SaveError.BUSY)
+
+    fun resume(taskId: String, operation: OperationContext, claim: SaveExecutionAdmission.Claim,
+        requestContextRef: RequestContextRef? = null, resource: SelectedMediaResource? = null): SaveRecord? {
+        val method = record(taskId)?.request?.method ?: return null
+        return admission.prepare(claim, method, taskId, operation.operationId) {
+            synchronized(lock) {
+                val result = resume(taskId, operation, requestContextRef, resource)
+                val runtime = runtimes[taskId]?.takeIf { it.resumeOperation === operation &&
+                    it.claim == null && result?.task?.state == TaskState.RUNNING && result.operationId == operation.operationId }
+                runtime?.claim = claim
+                result to runtime
+            }
+        } ?: record(taskId)
+    }
 
     fun submit(request: SaveRequest, context: OperationContext, preparationBytes: Long = 0): SaveSubmission = synchronized(lock) {
         try {
@@ -178,21 +212,82 @@ class SaveCoordinator(
         true
     }
 
+    /** Backward-compatible entry point: only this path acquires and releases its own claim. */
     fun execute(taskId: String): SaveRecord? {
-        val runtime = synchronized(lock) {
-            val record = journal.read(taskId) ?: return null
-            if (record.task.state.isTerminal || record.task.state == TaskState.WAITING_USER || record.task.state == TaskState.INTERRUPTED) return record
-            val value = runtimes[taskId] ?: return record
-            if (activeTaskId != null || value.executing) return record
-            if (resourcesUnreleased()) {
-                val running = if (record.task.state == TaskState.QUEUED) save(record, changeState(record, TaskState.RUNNING)) else record
-                return waitForUser(running, SaveWaitReason.RECOVERY, SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+        // A legacy caller has no outer Runtime retirement poll. Retry only its completed claims
+        // at the next explicit execution, and only after the original resource gates confirm release.
+        pendingLegacyRetirements.forEach { (claim, priorRuntime) ->
+            if (admission.release(claim)) {
+                clearLegacyClaim(priorRuntime, claim)
+                pendingLegacyRetirements.remove(claim, priorRuntime)
             }
-            activeTaskId = taskId; value.executing = true
-            try {
-                if (record.task.state == TaskState.QUEUED) save(record, changeState(record, TaskState.RUNNING).copy(phase = SavePhase.PREPARING))
-            } catch (error: Exception) { activeTaskId = null; value.executing = false; throw error }
+        }
+        val runtime = synchronized(lock) {
+            val current = journal.read(taskId) ?: return null
+            if (current.task.state.isTerminal || current.task.state in setOf(TaskState.WAITING_USER, TaskState.INTERRUPTED)) return current
+            val value = runtimes[taskId] ?: return current
+            if (value.executing || value.claim != null) return current
             value
+        }
+        val claim = if (runtime.method == TaskMethod.DIRECT) admission.tryAcquireDirect() else admission.tryAcquireExclusive()
+        if (claim == null) {
+            // Keep legacy resource-recovery behavior; admission BUSY alone never changes a row.
+            return synchronized(lock) {
+                val current = journal.read(taskId) ?: return@synchronized null
+                if (!runtime.executing && runtimes[taskId] === runtime && resourcesUnreleased() &&
+                    current.task.state in setOf(TaskState.QUEUED, TaskState.RUNNING)) {
+                    val running = if (current.task.state == TaskState.QUEUED) save(current, changeState(current, TaskState.RUNNING)) else current
+                    waitForUser(running, SaveWaitReason.RECOVERY, SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+                } else current
+            }
+        }
+        try { return executeOwned(taskId, runtime, claim, legacy = true) }
+        finally {
+            if (admission.release(claim)) clearLegacyClaim(runtime, claim)
+            else pendingLegacyRetirements[claim] = runtime
+        }
+    }
+
+    private fun clearLegacyClaim(runtime: Runtime, claim: SaveExecutionAdmission.Claim) = synchronized(lock) {
+        if (!runtime.executing && runtime.claim === claim) {
+            runtime.claim = null
+            runtime.directOwner = null
+        }
+    }
+
+    /** Duplicate/stale entry never releases an externally-owned claim. */
+    fun execute(taskId: String, claim: SaveExecutionAdmission.Claim): SaveRecord? {
+        val runtime = runtimes[taskId] ?: return record(taskId)
+        return executeOwned(taskId, runtime, claim, legacy = false)
+    }
+
+    private fun executeOwned(taskId: String, runtime: Runtime, claim: SaveExecutionAdmission.Claim, legacy: Boolean): SaveRecord? {
+        val started = admission.enter(claim, taskId, runtime.original.operationId, runtime, legacyAttach = legacy) {
+            synchronized(lock) {
+                val record = journal.read(taskId) ?: return@synchronized false
+                if (runtimes[taskId] !== runtime || runtime.executing ||
+                    (if (legacy) runtime.claim != null else runtime.claim !== claim) ||
+                    record.task.state !in setOf(TaskState.QUEUED, TaskState.RUNNING)) return@synchronized false
+                if (resourcesUnreleased()) {
+                    val running = if (record.task.state == TaskState.QUEUED) save(record, changeState(record, TaskState.RUNNING)) else record
+                    waitForUser(running, SaveWaitReason.RECOVERY, SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+                    return@synchronized false
+                }
+                runtime.claim = claim
+                activeExecutions.add(runtime); runtime.executing = true
+                try {
+                    if (record.task.state == TaskState.QUEUED) save(record, changeState(record, TaskState.RUNNING).copy(phase = SavePhase.PREPARING))
+                } catch (error: Exception) {
+                    activeExecutions.remove(runtime); runtime.executing = false
+                    if (legacy) runtime.claim = null
+                    throw error
+                }
+                true
+            }
+        }
+        if (started != true) {
+            if (started == false) admission.exit(claim, runtime)
+            return record(taskId)
         }
         try {
             while (true) {
@@ -226,7 +321,8 @@ class SaveCoordinator(
                     } catch (retryError: Exception) {
                         synchronized(lock) {
                             journal.read(taskId)?.takeUnless { it.task.state.isTerminal }?.let {
-                                if (runtime.pause && !runtime.userCancel && !runtime.original.cancelToken.isCancelled) waitForUser(it, SaveWaitReason.BACKGROUND, null)
+                                if (resourcesUnreleased()) waitForUser(it, SaveWaitReason.RECOVERY, SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+                                else if (runtime.pause && !runtime.userCancel && !runtime.original.cancelToken.isCancelled) waitForUser(it, SaveWaitReason.BACKGROUND, null)
                                 else finishFailure(it, stopError(runtime.context) ?: SaveErrors.classify(retryError))
                             }
                         }
@@ -235,10 +331,17 @@ class SaveCoordinator(
                 }
             }
         } finally {
-            synchronized(lock) {
-                runtime.executing = false
-                if (activeTaskId == taskId) activeTaskId = null
-                journal.read(taskId)?.takeIf { it.task.state.isTerminal }?.let { runtimes.remove(taskId, runtime) }
+            try {
+                synchronized(lock) {
+                    runtime.executing = false
+                    activeExecutions.remove(runtime)
+                    journal.read(taskId)?.takeIf { it.task.state.isTerminal }?.let { runtimes.remove(taskId, runtime) }
+                }
+            } finally {
+                // Never take admission while holding the Coordinator monitor. Pool binding only,
+                // no transfer/native call, survives every retry and ends once per whole execution.
+                try { (transfer as? FixedDirectTransferPool)?.release(runtime) }
+                finally { admission.exit(claim, runtime) }
             }
         }
         return journal.read(taskId)
@@ -246,6 +349,7 @@ class SaveCoordinator(
 
     private fun runAttempt(taskId: String, runtime: Runtime) {
         checkActive(taskId, runtime)
+        if (resourcesUnreleased()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
         var record = journal.read(taskId) ?: throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
         if (record.needsNetworkTransfer()) networkGate.check()
         var artifact = record.artifact
@@ -271,7 +375,13 @@ class SaveCoordinator(
                 recording.record(taskId, requireNotNull(record.request.captureDescriptor), ownedArtifact, runtime.context, limits)
             } else {
                 val source = sourceForTask(taskId) ?: throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
-                val executor = portFor(record.request.method) ?: throw SaveFailure(SaveError.METHOD_UNSUPPORTED)
+                val executor = if (record.request.method == TaskMethod.DIRECT) {
+                    runtime.directOwner ?: (if (transfer is FixedDirectTransferPool) transfer.acquire(runtime) else transfer)
+                        ?.also { runtime.directOwner = it } ?: throw SaveFailure(SaveError.BUSY)
+                } else portFor(record.request.method) ?: throw SaveFailure(SaveError.METHOD_UNSUPPORTED)
+                // A retry retains its transport owner, but must not bypass a newly observed
+                // global poison merely because it no longer needs to acquire a pool binding.
+                if (resourcesUnreleased()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
                 executor.transfer(source, ownedArtifact,
                     record.checkpoint, runtime.context, limits, object : TransferProgress {
                         override fun onBytes(delta: Long) = synchronized(lock) {
@@ -492,7 +602,9 @@ class SaveCoordinator(
         val recovered = mutableListOf<SaveRecord>()
         for (original in journal.listUnfinished(limits.maxRecoveryEntries)) {
             if (context.stopReason(clock.nowMillis()) != null) break
-            if (runtimes[original.task.taskId]?.executing == true) continue
+            val liveRuntime = runtimes[original.task.taskId]
+            if (liveRuntime?.executing == true || (liveRuntime?.claim?.released == false &&
+                    original.task.state in setOf(TaskState.QUEUED, TaskState.RUNNING))) continue
             var record = original
             if (record.task.state.isTerminal) continue
             if (record.schemaVersion != 1) {
@@ -511,7 +623,7 @@ class SaveCoordinator(
     }
 
     private fun checkActive(taskId: String, runtime: Runtime) = synchronized(lock) {
-        if (runtimes[taskId] !== runtime) throw SaveFailure(SaveError.CANCELLED)
+        if (runtimes[taskId] !== runtime || !runtime.executing || !activeExecutions.contains(runtime)) throw SaveFailure(SaveError.CANCELLED)
         stopError(runtime.context)?.let { throw SaveFailure(it) }
         val state = journal.read(taskId)?.task?.state
         if (state != TaskState.RUNNING) throw SaveFailure(SaveError.CANCELLED)

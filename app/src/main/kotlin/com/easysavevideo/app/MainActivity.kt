@@ -143,7 +143,6 @@ class MainActivity : ComponentActivity() {
     private var choosing: SystemBrowserHost.FileChoice? = null
     private var settingsChanged = false
     private var settingsReady by mutableStateOf(false)
-    private var saveSettingsChanged = false
     private val picker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val choice = choosing ?: return@registerForActivityResult
         choosing = null
@@ -595,10 +594,17 @@ class MainActivity : ComponentActivity() {
                             else if (edit is SettingsEdit.BrowserEdit)
                                 applyBrowserSettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded, isForeground, !isDestroyed && !isFinishing,
                                     activeDestination, EsvDestination.SETTINGS)
+                            else if (edit is SettingsEdit.DirectConcurrency)
+                                applyDirectConcurrencySettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded,
+                                    isForeground, !isDestroyed && !isFinishing, activeDestination)?.let { allowed ->
+                                    saves.updateDirectConcurrency(allowed.save.maxConcurrentDirectTasks)?.let { accepted ->
+                                        allowed.copy(save = accepted)
+                                    }
+                                }
                             else edit.applyTo(settings)
                         if (value != null) {
                             val changedNetwork = edit is SettingsEdit.WifiOnly
-                            if (changedNetwork) { saveSettingsChanged = true; saves.updateSaveSettings(value.save) }
+                            if (changedNetwork) saves.updateSaveSettings(value.save)
                             settingsChanged = true; settings = value
                             if (edit is SettingsEdit.Language) saves.updateRecordingNotificationLanguage(settings.appearance.language)
                             if (edit is SettingsEdit.BrowserEdit) browser.applySettings(value.browser)
@@ -609,6 +615,8 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     },
+                    saveConcurrencyEditable = settingsReady && persistence.settingsLoaded && isForeground &&
+                        activeDestination == EsvDestination.SETTINGS && !isDestroyed && !isFinishing,
                     browserEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.SETTINGS,
                     discoveryEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.SETTINGS,
                     persistenceWarning = settingsWriteFailed, loadWarning = settingsReadFailed,
@@ -694,8 +702,8 @@ class MainActivity : ComponentActivity() {
             browser.applySettings(settings.browser)
             // Appearance or language changes during startup must not discard loaded discovery preferences.
             settings = mergeLoadedDiscoverySettings(settings, loaded, discoverySettingsChanged, persistence.settingsLoaded)
-            // Other early preference edits must not replace a loaded Wi-Fi restriction.
-            if (!saveSettingsChanged && persistence.settingsLoaded) {
+            // Merge each save field with the application owner, including after early Wi-Fi edits or recreation.
+            if (persistence.settingsLoaded) {
                 settings = settings.copy(save = saves.initializeSaveSettings(loaded.save))
             }
             if (settingsChanged && persistence.settingsLoaded) persistence.saveSettings(settings)
