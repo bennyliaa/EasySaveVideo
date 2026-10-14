@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_browser_title">Browser</string>
+    <string name="settings_browser_waiting">Browser preferences are unavailable until settings load successfully and this page is active.</string>
+    <string name="settings_browser_javascript">JavaScript</string>
+</resources>

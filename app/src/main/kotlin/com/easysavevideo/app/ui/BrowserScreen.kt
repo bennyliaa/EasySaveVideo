@@ -1,5 +1,7 @@
 package com.easysavevideo.app.ui
 
+import com.easysavevideo.app.ui.shell.BrowserSettingsDetail
+import com.easysavevideo.app.ui.shell.SettingsEdit
 import com.easysavevideo.app.library.destination.AndroidOrdinaryDestinationRuntime
 import com.easysavevideo.app.library.destination.OrdinaryDestinationSettings
 
@@ -58,7 +60,7 @@ import com.easysavevideo.core.model.*
 fun BrowserScreen(
     browser: SystemBrowserHost,
     settings: AppSettings,
-    onSettings: (AppSettings) -> Unit,
+    onSettings: (SettingsEdit.BrowserEdit) -> Unit,
     filePrompt: SystemBrowserHost.FileChoice?,
     onFileCancel: () -> Unit,
     onFileConfirm: (SystemBrowserHost.FileChoice) -> Unit,
@@ -80,6 +82,7 @@ fun BrowserScreen(
     onRecording: (() -> Unit)? = null,
     newTabInputGeneration: Long = 0,
     canSubmitNewTabInput: (Long) -> Boolean = { false },
+    settingsEditable: Boolean = false,
 ) {
     val visuals = LocalEsvVisuals.current
     val addressDescription = stringResource(R.string.flow_address_description)
@@ -387,7 +390,7 @@ fun BrowserScreen(
                     }
                     if (settingsOpen && wide) Box(Modifier.width(360.dp).fillMaxHeight().background(visuals.colors.surface)) {
                         SettingsPanel(settings, onSettings, browser, onClose = { settingsOpen = false }, clearCookies = { confirmCookies = true },
-                            onManageProviders = { settingsOpen = false; onManageProviders() }, destinations = destinations)
+                            onManageProviders = { settingsOpen = false; onManageProviders() }, destinations = destinations, editable = settingsEditable)
                     }
                 }
             }
@@ -404,7 +407,7 @@ fun BrowserScreen(
             }
             if (settingsOpen && !wide) EsvDialog(onDismiss = { settingsOpen = false }) {
                 SettingsPanel(settings, onSettings, browser, onClose = { settingsOpen = false }, clearCookies = { confirmCookies = true },
-                            onManageProviders = { settingsOpen = false; onManageProviders() }, destinations = destinations)
+                            onManageProviders = { settingsOpen = false; onManageProviders() }, destinations = destinations, editable = settingsEditable)
             }
             if (inspector.modal) saveRuntime?.let { runtime ->
                 if (runtime.preparingStream || runtime.hlsPreparation != null) SaveSelectionDialog(runtime, browser)
@@ -448,8 +451,8 @@ fun BrowserScreen(
         Box(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.elevated, RoundedCornerShape(v.sheetCorner)).padding(v.spacingLarge)) { content() }
     }
 }
-@Composable private fun SettingsPanel(settings: AppSettings, update: (AppSettings) -> Unit, browser: SystemBrowserHost,
-    onClose: () -> Unit, clearCookies: () -> Unit, onManageProviders: () -> Unit, destinations: AndroidOrdinaryDestinationRuntime?) {
+@Composable private fun SettingsPanel(settings: AppSettings, update: (SettingsEdit.BrowserEdit) -> Unit, browser: SystemBrowserHost,
+    onClose: () -> Unit, clearCookies: () -> Unit, onManageProviders: () -> Unit, destinations: AndroidOrdinaryDestinationRuntime?, editable: Boolean) {
     val v = LocalEsvVisuals.current
     var noticesOpen by remember { mutableStateOf(false) }
     if (noticesOpen) {
@@ -460,18 +463,7 @@ fun BrowserScreen(
         verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
         EsvText(stringResource(R.string.flow_browserscreen_32), style = v.titleTextStyle)
         EsvButton(stringResource(R.string.flow_browserscreen_33), onClick = onClose)
-        Toggle("JavaScript", settings.browser.javaScriptEnabled) { update(settings.copy(browser = settings.browser.copy(javaScriptEnabled = it))) }
-        EsvText(stringResource(R.string.flow_browserscreen_34), style = v.captionTextStyle)
-        Toggle(stringResource(R.string.browser_copy_third_party_cookies), settings.browser.acceptThirdPartyCookies) { update(settings.copy(browser = settings.browser.copy(acceptThirdPartyCookies = it))) }
-        EsvText(stringResource(R.string.flow_browserscreen_35), style = v.captionTextStyle)
-        Toggle(stringResource(R.string.browser_copy_restore_tabs), settings.browser.restoreTabs) { update(settings.copy(browser = settings.browser.copy(restoreTabs = it))) }
-        EsvText(stringResource(R.string.flow_browserscreen_36), style = v.captionTextStyle)
-        EsvText(stringResource(R.string.browser_copy_active_limit, settings.browser.maxActiveWebViews))
-        Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-            EsvButton(stringResource(R.string.flow_browserscreen_38), onClick = { update(settings.copy(browser = settings.browser.copy(maxActiveWebViews = settings.browser.maxActiveWebViews - 1))) }, enabled = settings.browser.maxActiveWebViews > 1)
-            EsvButton(stringResource(R.string.flow_browserscreen_39), onClick = { update(settings.copy(browser = settings.browser.copy(maxActiveWebViews = settings.browser.maxActiveWebViews + 1))) }, enabled = settings.browser.maxActiveWebViews < 4)
-        }
-        EsvText(stringResource(R.string.flow_browserscreen_40), style = v.captionTextStyle)
+        BrowserSettingsDetail(settings.browser, editable, update)
         EsvButton(stringResource(R.string.flow_browserscreen_41), onClick = clearCookies)
         EsvButton(stringResource(R.string.flow_browserscreen_42), onClick = browser::clearCache)
         EsvText(stringResource(R.string.flow_browserscreen_43), style = v.captionTextStyle)

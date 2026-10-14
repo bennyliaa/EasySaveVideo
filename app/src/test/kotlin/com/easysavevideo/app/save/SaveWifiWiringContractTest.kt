@@ -27,7 +27,7 @@ class SaveWifiWiringContractTest {
         assertTrue(activity.contains("val value = if (edit is SettingsEdit.DiscoveryEdit)"))
         assertTrue(activity.contains("else edit.applyTo(settings)"))
         assertTrue(activity.contains("if (value != null) {"))
-        assertTrue(activity.contains("settings = settingsWithBrowser(settings, it)"))
+        assertTrue(activity.contains("applyBrowserSettingsEdit(settings, edit"))
     }
     @Test fun settingsCopyAndNavigationRetainEditorAndOtherSiblings() {
         val old = AppSettings(editor = EditorSettings(EditorCompressionMode.SAVE_SPACE))
@@ -41,12 +41,12 @@ class SaveWifiWiringContractTest {
     }
     @Test fun staleUnrelatedUiIntentCannotOverwriteNewlyLoadedRestriction() {
         val placeholder = AppSettings()
-        val capturedBrowser = placeholder.copy(browser = placeholder.browser.copy(javaScriptEnabled = false))
+        val browserIntent = SettingsEdit.BrowserJavaScript(false)
         val themeIntent = SettingsEdit.Theme(ThemeMode.DARK)
         val editorIntent = SettingsEdit.EditorCompression(EditorCompressionMode.SAVE_SPACE)
         val loaded = placeholder.copy(save = SaveSettings(true), appearance = AppearanceSettings(language = AppLanguage.ENGLISH))
-        assertTrue(settingsWithBrowser(loaded, capturedBrowser).save.wifiOnly)
-        assertEquals(AppLanguage.ENGLISH, settingsWithBrowser(loaded, capturedBrowser).appearance.language)
+        assertTrue(browserIntent.applyTo(loaded).save.wifiOnly)
+        assertEquals(AppLanguage.ENGLISH, browserIntent.applyTo(loaded).appearance.language)
         assertTrue(themeIntent.applyTo(loaded).save.wifiOnly)
         assertTrue(editorIntent.applyTo(loaded).save.wifiOnly)
         assertTrue(SettingsEdit.Language(AppLanguage.CHINESE).applyTo(loaded).save.wifiOnly)

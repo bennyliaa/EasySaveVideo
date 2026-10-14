@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_browser_title">浏览器</string>
+    <string name="settings_browser_waiting">设置成功读取且当前页面处于前台后，才可修改浏览器偏好。</string>
+    <string name="settings_browser_javascript">JavaScript</string>
+</resources>

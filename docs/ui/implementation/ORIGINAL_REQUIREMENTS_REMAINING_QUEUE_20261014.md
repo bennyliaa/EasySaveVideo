@@ -43,7 +43,7 @@ unblocked row after recording the preceding row's actual result.
 | PR-20 discovery settings | Preferences already persisted and used by Discovery's filter panel; central Settings category absent in baseline | SOURCE IMPLEMENTED in this slice: central discovery category/detail with shared owner, four controls/defaults; see `SETTINGS_DISCOVERY_20261014.md` |
 | PR-20 save settings | Wi-Fi preference real; destination control already in Browser settings | PARTIAL SOURCE IMPLEMENTED. Central destination entry reuses existing picker/admission; see `SETTINGS_DESTINATION_20261014.md`. Native SAF/storage acceptance TO TEST. Concurrent-task control is missing original scope but requires independent bounded execution scheduling, not exposing a number over the existing single lane |
 | PR-20 privacy settings | Existing browser cache/Cookie/session controls and separate browser/discovery history/progress controls | PARTIAL SOURCE IMPLEMENTED: central ordinary-history and webpage-cache actions with separate confirmation/status; `SETTINGS_PRIVACY_20261014.md`. Cookie/session and Discovery cleanup remain separate existing controls; native acceptance TO TEST |
-| PR-20 browser settings | Existing Browser SettingsPanel has JavaScript/cookies/restore-tabs/active-view limit | DEVELOPABLE: central browser category or explicit entry to existing panel; preserve security/user-confirmation semantics and existing settings owner |
+| PR-20 browser settings | Existing Browser SettingsPanel has JavaScript/cookies/restore-tabs/active-view limit | SOURCE IMPLEMENTED: central Browser category and old panel share four real preferences and field-level live owner; `SETTINGS_BROWSER_20261014.md`. Native acceptance TO TEST; no new permission grants, incognito or UA switch |
 | PR-21 diagnostic privacy | Bounded enum-only error storage, explicit export UI | SOURCE IMPLEMENTED; native destination/limits and Release leak acceptance TO TEST; no automatic uploads |
 | PR-22 reliability | Extensive bounded failure/recovery implementation and JVM checks | PARTIAL acceptance; fault matrix on admitted real media/device TO TEST. Do not claim every production ANR resolved from unit tests |
 | PR-23 source/license gates | Exact approved runtime inventory, license bytes and core boundaries | Ongoing gate; new dependency never implicitly admitted by this queue |
@@ -71,13 +71,18 @@ unblocked row after recording the preceding row's actual result.
 4. Central saving destination access (SOURCE IMPLEMENTED; native acceptance open):
    shared four-preference runtime/picker, live guarded adapter, actual storage
    acknowledgement and existing result dialog; see `SETTINGS_DESTINATION_20261014.md`.
-   Next: central browser settings, reusing existing ports rather than another state
-   owner. Include navigation/back behavior and source-backed notices.
+   Central browser preferences (SOURCE IMPLEMENTED; native acceptance open) reuse
+   one detail and field-level owner, preserve startup-loaded browser values and
+   existing impact notices; see `SETTINGS_BROWSER_20261014.md`.
    Do not enable site permissions or select a real user directory during development.
 5. Original save concurrency requirement: first design a bounded queue/lane policy
    compatible with cancellation, recording/native-resource exclusion and recovery;
    then implement and test the real coordinator/runtime. Current single execution
    lane is intentional protection, not a configurable concurrency implementation.
+   Selected next slice: Direct-only bounded 1/2 execution, default1; other media
+   and native verification stay exclusive. This is a conservative implementation
+   bound, not a numeric limit stated in the original specification. Independent
+   design review precedes changes to coordinator/runtime/transport ownership.
 6. Reconcile the remaining PR-12 fallback contract against current capabilities;
    implement only supported, entitlement-checked transitions, with fresh resource
    admission and explicit Record confirmation. No fake success or untrusted reuse.
@@ -111,9 +116,10 @@ frozen APKs/evidence immutable and never advance main as part of this queue.
 ## Immediate continuation rule
 
 Discovery, bounded history/cache privacy, read-only entitlement explanation and
-central ordinary saving destination now have source implementations. After the
-destination slice's final test/review/private backup, continue the browser half
-of row 4. Report a concrete blocker only for the blocked action and continue
+central ordinary saving destination and browser preferences now have source
+implementations. After the
+browser slice's final test/review/private backup, continue original bounded save
+concurrency design/implementation or supported PR-12 fallback reconciliation. Report a concrete blocker only for the blocked action and continue
 another unblocked original requirement.
 If every remaining row really needs a decision or native acceptance, list those
 specific gates and request the smallest choice. Do not report the entire ESV

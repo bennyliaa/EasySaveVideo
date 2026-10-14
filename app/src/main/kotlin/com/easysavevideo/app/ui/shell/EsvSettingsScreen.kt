@@ -23,7 +23,7 @@ import com.easysavevideo.app.licenses.ThirdPartyNotices
 import com.easysavevideo.app.ui.responsivePaneLayout
 
 @Composable
-fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}, discoveryEditable: Boolean = true, persistenceWarning: Boolean = false, loadWarning: Boolean = false, privacy: @Composable () -> Unit = {}, entitlements: @Composable () -> Unit = {}, saveDestination: @Composable () -> Unit = {}) {
+fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}, discoveryEditable: Boolean = true, persistenceWarning: Boolean = false, loadWarning: Boolean = false, privacy: @Composable () -> Unit = {}, entitlements: @Composable () -> Unit = {}, saveDestination: @Composable () -> Unit = {}, browserEditable: Boolean = false) {
     var categoryKey by rememberSaveable { mutableStateOf<String?>(null) }
     var notices by rememberSaveable { mutableStateOf(false) }
     val noticesListState = rememberLazyListState()
@@ -48,7 +48,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
                         SettingsCategories(presentation.active){categoryKey=it.key}
                     }
                     Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
-                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,privacy,entitlements,saveDestination){notices=true}
+                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,browserEditable,privacy,entitlements,saveDestination){notices=true}
                     }
                 }
             }
@@ -58,7 +58,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
                 verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
                 SettingsHeading(onBack={goBack()}, persistenceWarning=persistenceWarning,loadWarning=loadWarning)
                 if(presentation.categories)SettingsCategories(null){categoryKey=it.key}
-                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,privacy,entitlements,saveDestination){notices=true}
+                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,browserEditable,privacy,entitlements,saveDestination){notices=true}
             }
         }
     }
@@ -74,6 +74,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
     SettingsCategory.APPEARANCE -> R.string.ui_appearance
     SettingsCategory.LANGUAGE -> R.string.ui_language
     SettingsCategory.SOURCES -> R.string.ui_sources
+    SettingsCategory.BROWSER -> R.string.settings_browser_title
     SettingsCategory.DISCOVERY -> R.string.ui_settings_discovery
     SettingsCategory.SAVE -> R.string.ui_settings_save
     SettingsCategory.EDITOR -> R.string.ui_settings_editor
@@ -94,7 +95,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
     }
 }
 @Composable private fun SettingsDetail(category:SettingsCategory,settings:AppSettings,onChange:(SettingsEdit)->Unit,
-    onSources:()->Unit,diagnostics: @Composable () -> Unit,discoveryEditable:Boolean,privacy: @Composable () -> Unit,entitlements: @Composable () -> Unit,saveDestination: @Composable () -> Unit,onNotices:()->Unit) {
+    onSources:()->Unit,diagnostics: @Composable () -> Unit,discoveryEditable:Boolean,browserEditable:Boolean,privacy: @Composable () -> Unit,entitlements: @Composable () -> Unit,saveDestination: @Composable () -> Unit,onNotices:()->Unit) {
     val v=LocalEsvVisuals.current
     EsvText(categoryLabel(category),style=v.sectionTextStyle)
     when(category) {
@@ -119,6 +120,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
             EsvText(stringResource(R.string.ui_settings_sources_description),style=v.captionTextStyle)
             EsvButton(stringResource(R.string.ui_sources),onSources)
         }
+        SettingsCategory.BROWSER -> BrowserSettingsDetail(settings.browser,browserEditable,onChange)
         SettingsCategory.DISCOVERY -> DiscoverySettingsDetail(settings.discovery,discoveryEditable,onChange)
         SettingsCategory.SAVE -> {
             Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=settings.save.wifiOnly,role=Role.Switch,

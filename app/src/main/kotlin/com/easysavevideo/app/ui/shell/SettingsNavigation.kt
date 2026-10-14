@@ -4,7 +4,7 @@ import com.easysavevideo.core.model.*
 
 /** Local auxiliary-page selection only; stable keys, no second navigation or preference owner. */
 internal enum class SettingsCategory(val key:String) {
-    APPEARANCE("appearance"), LANGUAGE("language"), SOURCES("sources"), DISCOVERY("discovery"), SAVE("save"), EDITOR("editor"), PRIVACY("privacy"), ENTITLEMENTS("entitlements"), DIAGNOSTICS("diagnostics"), ABOUT("about");
+    APPEARANCE("appearance"), LANGUAGE("language"), SOURCES("sources"), BROWSER("browser"), DISCOVERY("discovery"), SAVE("save"), EDITOR("editor"), PRIVACY("privacy"), ENTITLEMENTS("entitlements"), DIAGNOSTICS("diagnostics"), ABOUT("about");
     companion object { fun fromKey(key:String?)=entries.firstOrNull{it.key==key} }
 }
 internal data class SettingsPresentation(val active:SettingsCategory?,val categories:Boolean,val detail:Boolean,val backToCategories:Boolean)
@@ -28,6 +28,21 @@ internal fun settingsWithWifiOnly(settings:AppSettings,wifiOnly:Boolean)=setting
 /** Intent values do not carry a stale composable's unrelated preferences. */
 sealed interface SettingsEdit {
     fun applyTo(current: AppSettings): AppSettings
+    sealed interface BrowserEdit : SettingsEdit
+    data class BrowserJavaScript(val enabled: Boolean) : BrowserEdit {
+        override fun applyTo(current: AppSettings) = current.copy(browser=current.browser.copy(javaScriptEnabled=enabled))
+    }
+    data class BrowserThirdPartyCookies(val enabled: Boolean) : BrowserEdit {
+        override fun applyTo(current: AppSettings) = current.copy(browser=current.browser.copy(acceptThirdPartyCookies=enabled))
+    }
+    data class BrowserRestoreTabs(val enabled: Boolean) : BrowserEdit {
+        override fun applyTo(current: AppSettings) = current.copy(browser=current.browser.copy(restoreTabs=enabled))
+    }
+    data class BrowserActiveViews(val delta: Int) : BrowserEdit {
+        init { require(delta == -1 || delta == 1) }
+        override fun applyTo(current: AppSettings) = current.copy(browser=current.browser.copy(
+            maxActiveWebViews=(current.browser.maxActiveWebViews+delta).coerceIn(1,4)))
+    }
     sealed interface DiscoveryEdit : SettingsEdit
     data class DiscoveryColumns(val delta: Int) : DiscoveryEdit {
         init { require(delta == -1 || delta == 1) }
@@ -70,7 +85,7 @@ sealed interface SettingsEdit {
         override fun applyTo(current: AppSettings) = settingsWithWifiOnly(current, enabled)
     }
 }
-internal fun settingsWithBrowser(current: AppSettings, captured: AppSettings) = current.copy(browser = captured.browser)
+
 
 /** Both discovery-preference surfaces dispatch against the live owner, after route/lifecycle admission. */
 internal fun applyDiscoverySettingsEdit(current: AppSettings, edit: SettingsEdit.DiscoveryEdit,

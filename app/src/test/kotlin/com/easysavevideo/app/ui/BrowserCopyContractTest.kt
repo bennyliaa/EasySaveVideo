@@ -64,15 +64,16 @@ class BrowserCopyContractTest {
         assertEquals(6, ErrorCode.entries.map(::browserErrorResource).distinct().size)
     }
     @Test fun screenConsumesResourcesWithoutChangingRawWebContentOrSettingsBounds() {
-        val screen = File(root, "kotlin/com/easysavevideo/app/ui/BrowserScreen.kt").readText()
+        val screen = File(root, "kotlin/com/easysavevideo/app/ui/BrowserScreen.kt").readText() +
+            File(root, "kotlin/com/easysavevideo/app/ui/shell/BrowserSettingsDetail.kt").readText()
         listOf("stringResource(browserErrorResource(selected.error!!.code))",
             "stringResource(R.string.browser_copy_origin, choice.origin)",
-            "Toggle(stringResource(R.string.browser_copy_third_party_cookies), settings.browser.acceptThirdPartyCookies)",
-            "Toggle(stringResource(R.string.browser_copy_restore_tabs), settings.browser.restoreTabs)",
-            "stringResource(R.string.browser_copy_active_limit, settings.browser.maxActiveWebViews)",
+            "BrowserPreferenceSwitch(stringResource(R.string.browser_copy_third_party_cookies),settings.acceptThirdPartyCookies,editable)",
+            "BrowserPreferenceSwitch(stringResource(R.string.browser_copy_restore_tabs),settings.restoreTabs,editable)",
+            "stringResource(R.string.browser_copy_active_limit,settings.maxActiveWebViews)",
             "stringResource(R.string.browser_copy_toggle, label,",
             "stringResource(if (enabled) R.string.browser_copy_on else R.string.browser_copy_off)",
-            "onChange(!enabled)", "maxActiveWebViews > 1", "maxActiveWebViews < 4",
+            "onChange(!enabled)", "maxActiveWebViews>1", "maxActiveWebViews<4",
             "tab.title?.take(28) ?: tab.address?.value?.take(28)",
             "AndroidView(factory =", "verticalScroll(rememberScrollState())",
             "if (settingsOpen && wide)", "if (settingsOpen && !wide)",

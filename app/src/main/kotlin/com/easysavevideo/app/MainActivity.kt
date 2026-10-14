@@ -592,12 +592,16 @@ class MainActivity : ComponentActivity() {
                         val value = if (edit is SettingsEdit.DiscoveryEdit)
                             applyDiscoverySettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded, isForeground, !isDestroyed && !isFinishing,
                                 activeDestination, EsvDestination.SETTINGS)
+                            else if (edit is SettingsEdit.BrowserEdit)
+                                applyBrowserSettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded, isForeground, !isDestroyed && !isFinishing,
+                                    activeDestination, EsvDestination.SETTINGS)
                             else edit.applyTo(settings)
                         if (value != null) {
                             val changedNetwork = edit is SettingsEdit.WifiOnly
                             if (changedNetwork) { saveSettingsChanged = true; saves.updateSaveSettings(value.save) }
                             settingsChanged = true; settings = value
                             if (edit is SettingsEdit.Language) saves.updateRecordingNotificationLanguage(settings.appearance.language)
+                            if (edit is SettingsEdit.BrowserEdit) browser.applySettings(value.browser)
                             persistence.saveSettings(value, confirmNetworkPreference = changedNetwork)
                             if (edit is SettingsEdit.DiscoveryEdit) {
                                 discoverySettingsChanged = true
@@ -605,6 +609,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     },
+                    browserEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.SETTINGS,
                     discoveryEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.SETTINGS,
                     persistenceWarning = settingsWriteFailed, loadWarning = settingsReadFailed,
                     saveDestination = {
@@ -636,10 +641,14 @@ class MainActivity : ComponentActivity() {
                     onSources = ::openProviderManagement, onBack = { backTo() },
                     diagnostics = { DiagnosticSettings(diagnosticState, diagnostics.controller::begin, diagnostics.controller::cancel) })
                 else if (route == EsvDestination.EDITOR) LibraryUnavailableScreen(onBack = { backTo(EsvDestination.LIBRARY) })
-                else BrowserScreen(browser, settings, onSettings = {
-                    settingsChanged = true; settings = settingsWithBrowser(settings, it)
-                    browser.applySettings(settings.browser); persistence.saveSettings(settings)
-                }, filePrompt = filePrompt,
+                else BrowserScreen(browser, settings, onSettings = { edit ->
+                    applyBrowserSettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded, isForeground, !isDestroyed && !isFinishing,
+                        activeDestination, EsvDestination.BROWSER)?.let { value ->
+                        settingsChanged = true; settings = value
+                        browser.applySettings(value.browser); persistence.saveSettings(value)
+                    }
+                }, settingsEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.BROWSER,
+                    filePrompt = filePrompt,
                     onFileCancel = { filePrompt = null; browser.cancelFiles() },
                     onFileConfirm = { choice -> filePrompt = null; chooseFile(choice) },
                     openExternal = ::openSystemBrowser,
@@ -679,8 +688,10 @@ class MainActivity : ComponentActivity() {
             }
         }
         persistence.start { loaded, checkpoint, failed ->
-            if (!settingsChanged) { settings = loaded; browser.applySettings(loaded.browser) }
+            if (!settingsChanged) { settings = loaded }
             settingsReadFailed = !persistence.settingsLoaded
+            settings = mergeLoadedBrowserSettings(settings, loaded, persistence.settingsLoaded)
+            browser.applySettings(settings.browser)
             // Appearance or language changes during startup must not discard loaded discovery preferences.
             settings = mergeLoadedDiscoverySettings(settings, loaded, discoverySettingsChanged, persistence.settingsLoaded)
             // Other early preference edits must not replace a loaded Wi-Fi restriction.

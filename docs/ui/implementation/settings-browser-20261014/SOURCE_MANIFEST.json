@@ -1,0 +1,149 @@
+[
+  {
+    "path": "app/build.gradle.kts",
+    "bytes": 16246,
+    "sha256": "93f256e8905f8619b0962a5805f3b79e6f6bea49b4376c36593df997c51cbb4c",
+    "git_sha": "daf591d9919956ac9a8404e1f6319a13850cb257",
+    "base_git_sha": "4c3a517991951d9a1c4f3f81956bdffa153d92a9"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+    "bytes": 58775,
+    "sha256": "b410ad902729cd0c827fa916310ce3641f92a0c17d4cb0d47471b5d18761bc19",
+    "git_sha": "5def5f8fa63613417abcff084bb5702d0bbd9d01",
+    "base_git_sha": "7f475727b4908444b5c87f51d6b76f12a2b0ff6f"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt",
+    "bytes": 35927,
+    "sha256": "a1fdb87a630d02e01896c1f29185b764f8a96f33d1b1fc6b4431f9533009e13d",
+    "git_sha": "e50523ca6280a563dab244fc22f3cb1fc3c83125",
+    "base_git_sha": "87a9b9db0a279977d8c534fc65bf6719548abf66"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/BrowserSettingsActions.kt",
+    "bytes": 1216,
+    "sha256": "2c8926abae38aabc7e99aa30c807362132b6f731732cd3bc6a088e59fe3b1a77",
+    "git_sha": "a905744b46e06332f79c6dacc319a334545dd1cd",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/BrowserSettingsDetail.kt",
+    "bytes": 3165,
+    "sha256": "094655c7032308cd811f7c2195038a27b3ff26fdb10c6106d77ed42a6ce00265",
+    "git_sha": "7fa56f0393d3005f983fe1b44504eee71ae77811",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/EsvSettingsScreen.kt",
+    "bytes": 10633,
+    "sha256": "86122a67e8bf08862c0d75cc6574d87bab26def225a2705856147694e00b9e26",
+    "git_sha": "6611ce21d6df3f0952de4d33a281da69f835852a",
+    "base_git_sha": "1d51c551622720fa0fadebd69ad7a043ce2191c1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/SettingsNavigation.kt",
+    "bytes": 6242,
+    "sha256": "6fab293eb25493f983f27ea5781b598cccc719a49d6c0e0af906e99f4596bd59",
+    "git_sha": "4fe406b53e35ad87b2f9a0295931e1dff5f44ea4",
+    "base_git_sha": "47313ba4a3e79f11116548290ab531717333fa0d"
+  },
+  {
+    "path": "app/src/main/res/values-zh-rCN/settings_browser.xml",
+    "bytes": 327,
+    "sha256": "6ade2d0b5509ed74c3e7e548c9cd12100ca62637dd7f957842a271205f4d3ffa",
+    "git_sha": "16a394a28f32ace89d506174dcd14c9e7723c97e",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/res/values/settings_browser.xml",
+    "bytes": 337,
+    "sha256": "789bad37790061b6a3ecaec924ad25436c3189e2699c39f63052fff57435dfb1",
+    "git_sha": "45eea843dfaa9ce7692c362176bf17281de623ce",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/recording/RecordingNotificationWiringTest.kt",
+    "bytes": 11328,
+    "sha256": "f194c95a2bcf628c5105a5b7a27a6a76294ca1b28ead3d0921d32057121d916d",
+    "git_sha": "2c7466ef1af63e351071398009cd1f74b21be78a",
+    "base_git_sha": "cf5cfc458bfef7c6f99cbf78dafd429e3556e4d3"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/SaveWifiWiringContractTest.kt",
+    "bytes": 6006,
+    "sha256": "8ab9c892e8437a1fd4b5d8983be770eb146d369e1bc728ba89417d751d1a1ba3",
+    "git_sha": "5672d4bd13d3ae8b3c5cd9328909db55ddb7f296",
+    "base_git_sha": "b4b7aa3da2d6358f3c4643257416ed0de2b92c95"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/BrowserCopyContractTest.kt",
+    "bytes": 5924,
+    "sha256": "1e63550d07ad194243ef7558b5ead4f53aeb058abc9eec300365e292961b4754",
+    "git_sha": "2ccb917dc7e43babaef59805e08269c92866a5a8",
+    "base_git_sha": "d70d5b2f58dbf4c287373df5bb0775c13ff8ae61"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/shell/BrowserSettingsActionsTest.kt",
+    "bytes": 5688,
+    "sha256": "99ac0255b985c7a58ec8b8f780f4e451067724778cd489637dc7a2b061e8e33e",
+    "git_sha": "3a23b1f64164456e5ed30f26f1fc114b497454be",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/shell/BrowserSettingsContractTest.kt",
+    "bytes": 5672,
+    "sha256": "ec844e801d3a1a9a136e77005edebc7ed463f17e3c694357be1fcda346a31e51",
+    "git_sha": "350591a44b941b9f0c9924e981a9dd561a4aaf9f",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/shell/SettingsNavigationTest.kt",
+    "bytes": 4772,
+    "sha256": "1bcebdd9767e6be161b5bc332ef5b95d3b1bb0b40c6842f1f1c89717bf9b8720",
+    "git_sha": "987aecd834f4ea8a86ad2f0996203d945637f361",
+    "base_git_sha": "aeecff1ce901ad7db36554c588b1e71f444dee4a"
+  },
+  {
+    "path": "docs/ui/implementation/ORIGINAL_REQUIREMENTS_REMAINING_QUEUE_20261014.md",
+    "bytes": 12919,
+    "sha256": "e92b50640d4c59a953b503f87f1bbef6f6cbd4d6bec5f3d3a932d6e03a67c3cb",
+    "git_sha": "fdef3900c6576b5beda22b06cea12c04ac700f08",
+    "base_git_sha": "b6bfc97ce573096ae28279d9b21bd711f9624439"
+  },
+  {
+    "path": "docs/ui/implementation/SETTINGS_BROWSER_20261014.md",
+    "bytes": 5640,
+    "sha256": "900ba4338c5324824f3d7b7fda0df5c5e39655a6753d970fd0e9d3f6f2c53518",
+    "git_sha": "5159aa03d35893f5c0f6bf968e7b7a27853563a0",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/settings-browser-20261014/BOUNDARIES.json",
+    "bytes": 421,
+    "sha256": "bcfeb662c64e6d4d0b6bd34913f501a6de3da0ba95912f99026a3f2ff76199a2",
+    "git_sha": "242e4bb8fc1638ccef9fcc262c1769ac1540e97c",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/settings-browser-20261014/LINT_SUMMARY.json",
+    "bytes": 107,
+    "sha256": "b69e6ef1f12ad676440b9f8619df2d8d45a12824a616e2a4525f1b6ed36073e5",
+    "git_sha": "9dddb5f8295892779c398e9d50505ad381521671",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/settings-browser-20261014/TASK_STATUS.json",
+    "bytes": 9279,
+    "sha256": "a454cff38a630590f1e24884b13a91a45b323dc1bb249df2a69b4c88ef9e3a89",
+    "git_sha": "2b00ece948b1166f14170633c756c8f20ea54a74",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/settings-browser-20261014/TEST_SUMMARY.json",
+    "bytes": 1403,
+    "sha256": "bcc02085221bbfcf6d6ba3845a482a6253af8917d5d94d5584063d80e4eb2b32",
+    "git_sha": "6387636b402b9d8c90c536af3bcf43143596db82",
+    "base_git_sha": null
+  }
+]
