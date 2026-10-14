@@ -23,6 +23,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import com.easysavevideo.app.browser.bookmarks.*
+import com.easysavevideo.app.browser.history.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
@@ -72,6 +73,7 @@ fun BrowserScreen(
     onDismissSaveNotice: () -> Unit,
     destinations: AndroidOrdinaryDestinationRuntime? = null,
     bookmarks: AndroidBookmarkRuntime? = null,
+    ordinaryHistory: AndroidHistoryRuntime? = null,
     saveRuntime: AndroidSaveRuntime? = null,
     interactiveJsDialogs: Boolean = true,
     onVideoSearchDraft: ((String) -> Unit)? = null,
@@ -88,10 +90,26 @@ fun BrowserScreen(
     var settingsOpen by remember { mutableStateOf(false) }
     var bookmarksOpen by rememberSaveable { mutableStateOf(false) }
     val bookmarkListState = rememberLazyListState()
+    var confirmCookies by remember { mutableStateOf(false) }
+    var historyOpen by rememberSaveable { mutableStateOf(false) }
+    val historyListState = rememberLazyListState()
+    val historyOwner = remember(ordinaryHistory, newTabInputGeneration, selected?.context, selected?.epoch) { HistoryPanelActionOwner() }
+    val historyClaim = historyOwner.token
+    DisposableEffect(historyOwner) { onDispose { historyOwner.retire() } }
+    fun closeHistory() { historyOwner.invalidate(); historyOpen = false }
+    fun historyCanAct(): Boolean = historyOwner.current(historyClaim) && historyOpen &&
+        interactiveJsDialogs && canSubmitNewTabInput(newTabInputGeneration) &&
+        selected != null && selected.context == browser.state.selectedTab?.context &&
+        selected.epoch == browser.state.selectedTab?.epoch && browser.state.selectedTab?.incognito == false &&
+        !settingsOpen && !bookmarksOpen && !confirmCookies && filePrompt == null &&
+        !saveScanning && saveRuntime?.scanning != true && saveRuntime?.selection == null &&
+        saveRuntime?.preparingStream != true && saveRuntime?.hlsPreparation == null &&
+        destinations?.asking != true && destinations?.notice == null && browser.jsDialog == null &&
+        browser.fullScreenView == null && !browser.pickerInFlight && !browser.hasPendingFileChoice
+
     // Read this observable revision even when a same-document navigation leaves tab state unchanged.
     val bookmarkRevision = browser.bookmarkNavigationRevision
     val bookmarkPage = remember(state, bookmarkRevision, browser.viewRevision) { browser.bookmarkPage() }
-    var confirmCookies by remember { mutableStateOf(false) }
     var address by remember(selected?.context?.tabId) { mutableStateOf(selected?.address?.value.orEmpty()) }
     var editing by remember(selected?.context?.tabId) { mutableStateOf(false) }
     val videoSubmission = remember(selected?.context, selected?.epoch, newTabInputGeneration) { NewTabSubmissionGate() }
@@ -112,7 +130,7 @@ fun BrowserScreen(
     }
     val currentClearEnvironment by rememberUpdatedState {
         interactiveJsDialogs && canSubmitNewTabInput(newTabInputGeneration) &&
-            !settingsOpen && !bookmarksOpen && !confirmCookies && filePrompt == null && !saveScanning && saveRuntime?.scanning != true &&
+            !settingsOpen && !bookmarksOpen && !historyOpen && !confirmCookies && filePrompt == null && !saveScanning && saveRuntime?.scanning != true &&
             saveRuntime?.selection == null && saveRuntime?.preparingStream != true && saveRuntime?.hlsPreparation == null &&
             destinations?.asking != true && destinations?.notice == null &&
             browser.jsDialog == null && browser.fullScreenView == null && !browser.pickerInFlight && !browser.hasPendingFileChoice
@@ -137,12 +155,12 @@ fun BrowserScreen(
         onDispose { browser.setJsDialogUiVisible(false) }
     }
     SideEffect {
-        browser.setJsDialogUiBlocked(settingsOpen || bookmarksOpen || confirmCookies || filePrompt != null ||
+        browser.setJsDialogUiBlocked(settingsOpen || bookmarksOpen || historyOpen || confirmCookies || filePrompt != null ||
             saveRuntime?.selection != null || saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null)
     }
     DisposableEffect(browser) { onDispose { browser.setVideoPresenceUiVisible(false) } }
     SideEffect {
-        browser.setVideoPresenceUiVisible(interactiveJsDialogs && !settingsOpen && !bookmarksOpen &&
+        browser.setVideoPresenceUiVisible(interactiveJsDialogs && !settingsOpen && !bookmarksOpen && !historyOpen &&
             !confirmCookies && filePrompt == null && !saveScanning && saveRuntime?.selection == null &&
             saveRuntime?.preparingStream != true && saveRuntime?.hlsPreparation == null)
     }
@@ -150,7 +168,7 @@ fun BrowserScreen(
     fun submitVideoInput() {
         // A queued IME/click from a closed or replaced tab cannot hand off a different tab.
         if (!NewTabInputPolicy.canSubmit(selected, browser.state.selectedTab, canSubmitNewTabInput(newTabInputGeneration)) || onVideoSearchDraft == null ||
-            settingsOpen || bookmarksOpen || confirmCookies || filePrompt != null ||
+            settingsOpen || bookmarksOpen || historyOpen || confirmCookies || filePrompt != null ||
             saveRuntime?.selection != null || saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null) return
         val input = NewTabInputPolicy.interpret(videoInput, videoMode)
         if (input == NewTabInput.Invalid) { videoInputError = true; return }
@@ -170,9 +188,19 @@ fun BrowserScreen(
         }
     }
     fun go() { editing = false; focus.clearFocus(); browser.navigate(address) }
-    BackHandler(enabled = saveRuntime?.selection != null || bookmarksOpen || settingsOpen || browser.fullScreenView != null || browser.selectedView()?.canGoBack() == true) {
+    BackHandler(enabled = saveRuntime?.selection != null || historyOpen || bookmarksOpen || settingsOpen || browser.fullScreenView != null || browser.selectedView()?.canGoBack() == true) {
         if (saveRuntime?.selection != null) saveRuntime.dismissSelection()
+        else if (historyOpen) { closeHistory(); focus.clearFocus() }
         else if (bookmarksOpen) { bookmarksOpen = false; focus.clearFocus() } else if (settingsOpen) settingsOpen = false else browser.back()
+    }
+    fun openHistory(token: HistoryRowToken) {
+        ordinaryHistory?.let { runtime ->
+            openHistoryRow(token, ::historyCanAct, runtime::addressForOpen, browser::openOrdinaryHistory,
+                stillOwnsPanel = { historyOwner.current(historyClaim) && historyOpen &&
+                    canSubmitNewTabInput(newTabInputGeneration) }) {
+                closeHistory(); editing = false; focus.clearFocus()
+            }
+        }
     }
     val inspectorContent: @Composable (Modifier, SaveSelectionPresentation) -> Unit = { modifier, presentation ->
         saveRuntime?.let { SaveSelectionPanel(it, browser, modifier, presentation) }
@@ -184,13 +212,13 @@ fun BrowserScreen(
             val pane = responsivePaneLayout(maxWidth.value, maxHeight.value, LocalDensity.current.fontScale, visuals.spacingMedium.value)
             val wide = pane.split
             val inspector = browserInspectorLayout(pane, saveRuntime?.selection != null,
-                saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null, settingsOpen || bookmarksOpen)
+                saveRuntime?.preparingStream == true || saveRuntime?.hlsPreparation != null, settingsOpen || bookmarksOpen || historyOpen)
             Column(Modifier.fillMaxSize()) {
                 Column(Modifier.fillMaxWidth().padding(horizontal = visuals.spacingMedium), verticalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
                     EsvText(stringResource(R.string.ui_browser), style = visuals.titleTextStyle)
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
                         EsvButton(stringResource(R.string.flow_browserscreen_1), onClick = onDiscovery)
-                        EsvButton(stringResource(R.string.flow_browserscreen_2), onClick = { bookmarksOpen = false; settingsOpen = !settingsOpen; focus.clearFocus() })
+                        EsvButton(stringResource(R.string.flow_browserscreen_2), onClick = { closeHistory(); bookmarksOpen = false; settingsOpen = !settingsOpen; focus.clearFocus() })
                     }
                 }
                 LazyRow(Modifier.fillMaxWidth(), contentPadding = PaddingValues(horizontal = visuals.spacingMedium),
@@ -253,7 +281,17 @@ fun BrowserScreen(
                             val page = browser.acceptBookmarkPage(bookmarkPage)
                             if (page == null) runtime.stalePage() else runtime.add(page)
                         }, enabled = runtime.state.ready && !runtime.state.busy && bookmarkPage != null)
-                        EsvButton(stringResource(R.string.flow_browserscreen_10), onClick = { editing = false; focus.clearFocus(); settingsOpen = false; bookmarksOpen = !bookmarksOpen })
+                        EsvButton(stringResource(R.string.flow_browserscreen_10), onClick = { editing = false; focus.clearFocus(); closeHistory(); settingsOpen = false; bookmarksOpen = !bookmarksOpen })
+                    }
+                    ordinaryHistory?.let { runtime ->
+                        EsvButton(stringResource(R.string.history_open_panel), onClick = {
+                            if (canSubmitNewTabInput(newTabInputGeneration) && browser.state.selectedTab?.incognito == false) {
+                                historyOwner.invalidate()
+                                editing = false; focus.clearFocus(); settingsOpen = false; bookmarksOpen = false
+                                historyOpen = !historyOpen
+                                if (historyOpen) runtime.load()
+                            }
+                        }, enabled = selected?.incognito == false)
                     }
                     EsvButton(stringResource(R.string.flow_browserscreen_11), onClick = { browser.back() }, enabled = selected?.canGoBack == true && browser.selectedView() != null)
                     EsvButton(stringResource(R.string.flow_browserscreen_12), onClick = browser::forward, enabled = selected?.canGoForward == true && browser.selectedView() != null)
@@ -343,6 +381,10 @@ fun BrowserScreen(
                             }
                         }, onClose = { bookmarksOpen = false; focus.clearFocus() })
                     }
+                    if (historyOpen && wide && ordinaryHistory != null) Box(Modifier.width(360.dp).fillMaxHeight().background(visuals.colors.surface)) {
+                        HistoryPanel(ordinaryHistory, historyListState, onOpen = ::openHistory,
+                            onClose = { closeHistory(); focus.clearFocus() }, canAct = ::historyCanAct)
+                    }
                     if (settingsOpen && wide) Box(Modifier.width(360.dp).fillMaxHeight().background(visuals.colors.surface)) {
                         SettingsPanel(settings, onSettings, browser, onClose = { settingsOpen = false }, clearCookies = { confirmCookies = true },
                             onManageProviders = { settingsOpen = false; onManageProviders() }, destinations = destinations)
@@ -355,6 +397,10 @@ fun BrowserScreen(
                         bookmarksOpen = false; editing = false; focus.clearFocus(); browser.navigate(target)
                     }
                 }, onClose = { bookmarksOpen = false; focus.clearFocus() })
+            }
+            if (historyOpen && !wide && ordinaryHistory != null) EsvDialog(onDismiss = { closeHistory(); focus.clearFocus() }) {
+                HistoryPanel(ordinaryHistory, historyListState, onOpen = ::openHistory,
+                    onClose = { closeHistory(); focus.clearFocus() }, canAct = ::historyCanAct)
             }
             if (settingsOpen && !wide) EsvDialog(onDismiss = { settingsOpen = false }) {
                 SettingsPanel(settings, onSettings, browser, onClose = { settingsOpen = false }, clearCookies = { confirmCookies = true },

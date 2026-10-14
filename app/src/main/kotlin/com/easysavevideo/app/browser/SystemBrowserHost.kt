@@ -28,6 +28,8 @@ import com.easysavevideo.app.save.AuthenticationOriginDocuments
 import com.easysavevideo.app.save.authenticationOriginInteractionCurrent
 import com.easysavevideo.app.browser.bookmarks.BookmarkPageToken
 import com.easysavevideo.app.browser.bookmarks.BookmarkPolicy
+import com.easysavevideo.app.browser.history.AndroidHistoryRuntime
+import com.easysavevideo.app.browser.history.HistoryRecordingAdapter
 import com.easysavevideo.discovery.PageSnapshot
 import com.easysavevideo.discovery.VideoSearchResult
 import java.util.UUID
@@ -41,6 +43,7 @@ class SystemBrowserHost(
     private val browserSurfaceAllowed: () -> Boolean,
     private val onChooseFiles: (FileChoice) -> Unit,
     private val onDiscoverySaveCompleted: DiscoverySaveOriginCompletion,
+    private val ordinaryHistory: AndroidHistoryRuntime? = null,
 ) : BrowserAdapter, AutoCloseable {
     private val controller = BrowserSessionController(maxTabs = 12)
     var state by mutableStateOf(controller.state); private set
@@ -50,7 +53,7 @@ class SystemBrowserHost(
     var viewRevision by mutableStateOf(0); private set
     var platformAvailable by mutableStateOf(true); private set
     var bookmarkNavigationRevision by mutableStateOf(0L); private set
-    private data class Entry(val context: BrowserContextRef, val view: WebView, var request: BrowserRequest? = null, var suppressed: Boolean = false, var admission: NavigationAdmission? = null, var bookmarkAddress: String? = null, val inspectionDocument: BrowserInspectionDocument = BrowserInspectionDocument(), var jsDocument: Long = 0, var presenceBudget: BrowserVideoPresenceBudget = BrowserVideoPresenceBudget(), var presenceNavigationRevision: Long = 0, var jsDialogCount: Int = 0, var jsDialogsBlocked: Boolean = false)
+    private data class Entry(val context: BrowserContextRef, val view: WebView, val historyRecorder: HistoryRecordingAdapter? = null, var request: BrowserRequest? = null, var suppressed: Boolean = false, var admission: NavigationAdmission? = null, var bookmarkAddress: String? = null, val inspectionDocument: BrowserInspectionDocument = BrowserInspectionDocument(), var jsDocument: Long = 0, var presenceBudget: BrowserVideoPresenceBudget = BrowserVideoPresenceBudget(), var presenceNavigationRevision: Long = 0, var jsDialogCount: Int = 0, var jsDialogsBlocked: Boolean = false)
     private val entries = LinkedHashMap<String, Entry>(4, 0.75f, true)
     private val history = mutableMapOf<String, Bundle>()
     private val authenticationDocuments = AuthenticationOriginDocuments(android.os.SystemClock::elapsedRealtime)
@@ -274,6 +277,17 @@ class SystemBrowserHost(
         val request = controller.beginNavigation(tab.context.tabId, address, operation())
         load(request)
     }
+    /** A history row opens only in the selected ordinary session, without changing its mode. */
+    fun openOrdinaryHistory(address: String): Boolean {
+        requireMain()
+        if (closed || !foreground || !browserCommandAllowed() || !browserSurfaceAllowed() || state.selectedTab?.incognito != false ||
+            BrowserInputPolicy.address(address)?.value != address) return false
+        navigate(address)
+        val tab = state.selectedTab ?: return false
+        val entry = entries[tab.context.tabId] ?: return false
+        return !closed && !tab.incognito && tab.loadState == BrowserLoadState.LOADING &&
+            tab.address?.value == address && entry.context == tab.context && !entry.suppressed && current(entry) != null
+    }
     /** Snapshot identity is revalidated synchronously on the explicit add click. No storage or load. */
     fun bookmarkPage(): BookmarkPageToken? {
         requireMain()
@@ -324,6 +338,7 @@ class SystemBrowserHost(
         entry.view.stopLoading()
         entry.request = request; entry.suppressed = false; entry.admission = NavigationAdmission(request.address?.value)
         val address = request.address ?: return
+        entry.historyRecorder?.controlledNavigationRequested()
         entry.view.loadUrl(address.value)
         publish()
     }
@@ -338,6 +353,7 @@ class SystemBrowserHost(
         val request = controller.beginHistoryNavigation(tab.context.tabId, operation())
         val entry = recreateEntry(tab.context) ?: return false
         entry.request = request; entry.admission = NavigationAdmission(target)
+        entry.historyRecorder?.controlledNavigationRequested()
         entry.view.goBack(); publish(); return true
     }
     fun forward() {
@@ -350,6 +366,7 @@ class SystemBrowserHost(
         val request = controller.beginHistoryNavigation(tab.context.tabId, operation())
         val entry = recreateEntry(tab.context) ?: return
         entry.request = request; entry.admission = NavigationAdmission(target)
+        entry.historyRecorder?.controlledNavigationRequested()
         entry.view.goForward(); publish()
     }
     fun reload() {
@@ -364,6 +381,7 @@ class SystemBrowserHost(
     }
     override fun stop(context: BrowserContextRef) {
         requireMain(); discoveryOrigins.invalidate(context); entries[context.tabId]?.takeIf { it.context == context }?.let {
+            it.historyRecorder?.cancel()
             jsDialogs.cancel(it.view); it.request = null; it.suppressed = true; it.admission?.cancel(); it.view.stopLoading()
         }
     }
@@ -403,13 +421,14 @@ class SystemBrowserHost(
     fun showNotice(text: String) { notice = BrowserNotice.Text(text) }
     fun resume() {
         requireMain(); foreground = true
+        ordinaryHistory?.load()
         entries.values.firstOrNull()?.view?.resumeTimers()
         state.selectedTabId?.let { entries[it]?.view?.onResume() }
         syncVideoPresence()
     }
     fun pause() {
         requireMain(); authenticationDocuments.clear(); foreground = false; jsDialogs.cancel(); videoPresenceController.update(null); if (!pickerInFlight) cancelFiles(); hideFullscreen()
-        entries.values.forEach { it.view.onPause() }
+        entries.values.forEach { it.historyRecorder?.cancel(); it.view.onPause() }
         entries.values.firstOrNull()?.view?.pauseTimers()
         CookieManager.getInstance().flush()
     }
@@ -440,7 +459,9 @@ class SystemBrowserHost(
         val pending = fileChoice; fileChoice = null; pending?.callback?.onReceiveValue(null)
     }
     private fun leaveCurrentTab() {
-        jsDialogs.cancel(); cancelFiles(); hideFullscreen(); state.selectedTabId?.let { entries[it]?.view?.onPause() }
+        jsDialogs.cancel(); cancelFiles(); hideFullscreen(); state.selectedTabId?.let {
+            entries[it]?.let { entry -> entry.historyRecorder?.cancel(); entry.view.onPause() }
+        }
     }
     private fun touched() { interactionRevision++; invalidateDiscoveryOrigin() }
     private fun operation() = OperationContext(UUID.randomUUID().toString(), System.currentTimeMillis() + 60_000, CancellationSource())
@@ -484,7 +505,7 @@ class SystemBrowserHost(
         } finally { parcel.recycle() }
     }
     private fun recreateEntry(ref: BrowserContextRef): Entry? {
-        entries.remove(ref.tabId)?.let { old -> saveHistory(old); releaseView(old.view) }
+        entries.remove(ref.tabId)?.let { old -> old.historyRecorder?.cancel(); saveHistory(old); releaseView(old.view) }
         return ensureEntry(ref)
     }
     @SuppressLint("SetJavaScriptEnabled")
@@ -493,7 +514,7 @@ class SystemBrowserHost(
         return try {
             WebView.setWebContentsDebuggingEnabled(false)
             val view = WebView(context)
-            val entry = Entry(ref, view)
+            val entry = Entry(ref, view, ordinaryHistory?.recorder(ref, view))
             entries[ref.tabId] = entry
             applyPreferences(view)
             history.remove(ref.tabId)?.let { view.restoreState(it) }
@@ -515,6 +536,7 @@ class SystemBrowserHost(
         while (entries.size > settings.maxActiveWebViews) {
             val id = entries.keys.firstOrNull { it != except } ?: break
             val entry = entries.remove(id) ?: break
+            entry.historyRecorder?.cancel()
             authenticationDocuments.invalidate(entry)
             saveHistory(entry)
             controller.cancelNavigation(id)
@@ -524,7 +546,7 @@ class SystemBrowserHost(
     }
     override fun destroy(context: BrowserContextRef) {
         requireMain(); discoveryOrigins.invalidate(context); history.remove(context.tabId)
-        entries.remove(context.tabId)?.let { authenticationDocuments.invalidate(it); releaseView(it.view) }
+        entries.remove(context.tabId)?.let { it.historyRecorder?.cancel(); authenticationDocuments.invalidate(it); releaseView(it.view) }
         viewRevision++
     }
     private fun releaseView(view: WebView, rendererDead: Boolean = false) {
@@ -549,7 +571,7 @@ class SystemBrowserHost(
         val error = ErrorEnvelope(code, ErrorModule.BROWSER, code != ErrorCode.TLS_REJECTED,
             UserAction.RETRY, SafeContext(httpStatus = status))
         if (controller.acceptPageFailed(request, error, System.currentTimeMillis())) {
-            entries[request.context.tabId]?.let { jsDialogs.cancel(it.view) }
+            entries[request.context.tabId]?.let { it.historyRecorder?.cancel(); jsDialogs.cancel(it.view) }
             discoveryOrigins.invalidate(request.context)
             errors.report(error); publish()
         }
@@ -574,7 +596,7 @@ class SystemBrowserHost(
             publish(); return true
         }
         override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
-            if (entries[entry.context.tabId] !== entry || closed || entry.suppressed) return
+            if (entries[entry.context.tabId] !== entry || view !== entry.view || closed || entry.suppressed) return
             val address = BrowserInputPolicy.address(url ?: return) ?: return
             entry.inspectionDocument.started()
             entry.jsDocument++; entry.presenceBudget = BrowserVideoPresenceBudget()
@@ -592,13 +614,26 @@ class SystemBrowserHost(
                 entry.admission = NavigationAdmission(address.value)
             }
             if (entry.admission?.onStarted(address.value) != true) return
-            controller.acceptPageStarted(request, address, System.currentTimeMillis()); cancelFiles(); publish()
+            val acceptedStart = controller.acceptPageStarted(request, address, System.currentTimeMillis())
+            entry.historyRecorder?.started(request,
+                controller.state.tabs.firstOrNull { it.context == entry.context }, controller.state.selectedTab?.context,
+                view, address.value, entry.admission, currentEntry = current(entry) === request && !entry.suppressed,
+                acceptedStart = acceptedStart, active = !closed && foreground && browserSurfaceAllowed())
+            cancelFiles(); publish()
         }
         override fun onPageFinished(view: WebView, url: String?) {
+            if (view !== entry.view || entry.suppressed) return
             val request = current(entry) ?: return
             val address = verifiedMainAddress(entry, url) ?: return
             if (entry.admission?.accepts(address.value) != true) return
-            if (controller.acceptPageFinished(request, address, view.canGoBack(), view.canGoForward(), System.currentTimeMillis())) {
+            val nowMillis = System.currentTimeMillis()
+            val acceptedFinish = controller.acceptPageFinished(request, address, view.canGoBack(), view.canGoForward(), nowMillis)
+            if (acceptedFinish) {
+                entry.historyRecorder?.finished(request,
+                    controller.state.tabs.firstOrNull { it.context == entry.context }, controller.state.selectedTab?.context,
+                    view, view.url, address.value, entry.admission, view.title,
+                    currentEntry = current(entry) === request && !entry.suppressed, acceptedFinish = acceptedFinish,
+                    active = !closed && foreground && browserSurfaceAllowed(), nowMillis = nowMillis)
                 entry.inspectionDocument.finished(address.value, view.url)
                 entry.bookmarkAddress = address.value
                 entry.presenceNavigationRevision++
@@ -654,6 +689,7 @@ class SystemBrowserHost(
             discoveryOrigins.invalidate(entry.context)
             // Android dispatches this callback to every affected WebView, including
             // views sharing a renderer. Handle each exact instance, preserving healthy tabs.
+            entry.historyRecorder?.cancel()
             entries.remove(entry.context.tabId)
             controller.rendererGone(setOf(entry.context.tabId))
             history.remove(entry.context.tabId); releaseView(view, rendererDead = true)
@@ -714,6 +750,7 @@ class SystemBrowserHost(
         authenticationDocuments.clear()
         closed = true; jsDialogs.cancel(); videoPresenceController.close(); handler.removeCallbacks(timeout); cancelFiles(); hideFullscreen()
         discoveryOrigins.close(); discoveryOrigin = null; discoveryNavigation = null
-        val views = entries.values.toList(); entries.clear(); views.forEach { releaseView(it.view) }; history.clear()
+        val views = entries.values.toList(); entries.clear()
+        views.forEach { it.historyRecorder?.cancel(); releaseView(it.view) }; history.clear()
     }
 }

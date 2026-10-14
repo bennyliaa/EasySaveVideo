@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_open_panel">浏览历史</string>
+    <string name="history_heading">浏览历史（%1$d/%2$d）</string>
+    <string name="history_done">完成</string>
+    <string name="history_privacy">仅在本机保存普通浏览历史，无痕标签不会记录。最多保留最近 %1$d 个地址；应用使用历史记录时，会清理已满 %2$d 天的记录。点击“打开”后才访问网页。删除或清空历史不会影响收藏、Cookie 或已保存的媒体。</string>
+    <string name="history_loading">正在读取或保存历史…</string>
+    <string name="history_unavailable">历史读取或保存结果尚未确认。请检查存储空间后重新读取，也可明确选择清空历史存储。</string>
+    <string name="history_retry">重新读取</string>
+    <string name="history_empty">暂无浏览历史。普通标签中已完成加载的网页访问会显示在这里。</string>
+    <string name="history_open">打开</string>
+    <string name="history_remove">删除</string>
+    <string name="history_open_description">打开历史记录：%1$s</string>
+    <string name="history_remove_description">删除历史记录：%1$s</string>
+    <string name="history_visited">访问时间：%1$s</string>
+    <string name="history_dismiss">收起提示</string>
+    <string name="history_cleared">已清空浏览历史。</string>
+    <string name="history_removed">已删除这条历史记录。</string>
+    <string name="history_slow">历史存储响应较慢，正在等待本次操作完成。</string>
+    <string name="history_stale_list">历史记录已变化，请查看当前列表后重试。</string>
+    <string name="history_clear">清空全部历史</string>
+    <string name="history_clear_title">清空全部浏览历史？</string>
+    <string name="history_clear_message">这会删除本机全部普通浏览历史，包括无法读取的记录。收藏、Cookie 和已保存的媒体不受影响。此操作无法撤销。</string>
+    <string name="history_remove_title">删除这条历史记录？</string>
+    <string name="history_remove_message">仅删除这条普通浏览历史。收藏、Cookie 和已保存的媒体不受影响。此操作无法撤销。</string>
+    <string name="history_cancel">取消</string>
+</resources>

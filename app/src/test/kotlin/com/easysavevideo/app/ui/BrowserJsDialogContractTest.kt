@@ -52,7 +52,7 @@ class BrowserJsDialogContractTest {
         assertTrue(source("MainActivity.kt").contains("interactiveJsDialogs = false"))
         val screen = source("ui/BrowserScreen.kt")
         assertTrue(screen.contains("onDispose { browser.setJsDialogUiVisible(false) }"))
-        assertTrue(screen.contains("setJsDialogUiBlocked(settingsOpen || bookmarksOpen || confirmCookies"))
+        assertTrue(screen.contains("setJsDialogUiBlocked(settingsOpen || bookmarksOpen || historyOpen || confirmCookies"))
         assertTrue(screen.contains("BrowserJsDialog(request, browser::finishJsDialog)"))
     }
     @Test fun hostCompletesThreeKindsAndRefusesBeforeUnload() {

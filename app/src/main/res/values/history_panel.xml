@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_open_panel">Browsing history</string>
+    <string name="history_heading">Browsing history (%1$d/%2$d)</string>
+    <string name="history_done">Done</string>
+    <string name="history_privacy">Only ordinary browsing history is saved on this device; private tabs are not recorded. The limit is the most recent %1$d addresses. Records at least %2$d days old are cleaned up when the app uses history. Opening an entry visits the page. Removing or clearing history does not affect bookmarks, cookies, or saved media.</string>
+    <string name="history_loading">Reading or saving history…</string>
+    <string name="history_unavailable">Reading or saving history is not confirmed. Check available storage, then read again. You can also explicitly clear the history store.</string>
+    <string name="history_retry">Read again</string>
+    <string name="history_empty">No browsing history. Completed page visits in ordinary tabs appear here.</string>
+    <string name="history_open">Open</string>
+    <string name="history_remove">Remove</string>
+    <string name="history_open_description">Open history entry: %1$s</string>
+    <string name="history_remove_description">Remove history entry: %1$s</string>
+    <string name="history_visited">Visited %1$s</string>
+    <string name="history_dismiss">Dismiss</string>
+    <string name="history_cleared">Browsing history cleared.</string>
+    <string name="history_removed">History entry removed.</string>
+    <string name="history_slow">History storage is responding slowly. Waiting for this operation to finish.</string>
+    <string name="history_stale_list">History has changed. Review the current list before trying again.</string>
+    <string name="history_clear">Clear all history</string>
+    <string name="history_clear_title">Clear all browsing history?</string>
+    <string name="history_clear_message">This deletes all ordinary browsing history from this device, including entries that could not be read. Bookmarks, cookies, and saved media are unchanged. This cannot be undone.</string>
+    <string name="history_remove_title">Remove this history entry?</string>
+    <string name="history_remove_message">Only this ordinary browsing history entry will be deleted. Bookmarks, cookies, and saved media are unchanged. This cannot be undone.</string>
+    <string name="history_cancel">Cancel</string>
+</resources>

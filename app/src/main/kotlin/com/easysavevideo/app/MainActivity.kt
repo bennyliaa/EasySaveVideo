@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.easysavevideo.app.browser.SystemBrowserHost
 import com.easysavevideo.app.browser.bookmarks.AndroidBookmarkRuntime
+import com.easysavevideo.app.browser.history.AndroidHistoryRuntime
 import com.easysavevideo.app.storage.*
 import com.easysavevideo.app.diagnostics.*
 import com.easysavevideo.app.theme.EsvThemeHost
@@ -109,6 +110,7 @@ class MainActivity : ComponentActivity() {
     }
     private lateinit var browser: SystemBrowserHost
     private lateinit var bookmarks: AndroidBookmarkRuntime
+    private lateinit var ordinaryHistory: AndroidHistoryRuntime
     private lateinit var persistence: BrowserPersistence
     private lateinit var diagnostics: AndroidDiagnosticExportRuntime
     private var diagnosticState by mutableStateOf(DiagnosticExportState())
@@ -167,6 +169,7 @@ class MainActivity : ComponentActivity() {
         errorSink = AndroidErrorSink(applicationContext)
         diagnostics = AndroidDiagnosticExportRuntime(this) { diagnosticState = it }
         bookmarks = AndroidBookmarkRuntime.get(applicationContext)
+        ordinaryHistory = AndroidHistoryRuntime.get(applicationContext)
         discovery = AndroidDiscoveryController(applicationContext, errorSink)
         val managementMain = Handler(Looper.getMainLooper())
         providerManagement = ProviderManagementController(CommonsSourceRegistration.managementBackend(applicationContext),
@@ -193,7 +196,7 @@ class MainActivity : ComponentActivity() {
             browserSurfaceAllowed = { activeDestination == EsvDestination.BROWSER && saves.segmentRecording?.previewActive != true },
             onCheckpoint = { checkpoint -> if (::browser.isInitialized && browser.hasUserInteracted) persistence.checkpoint(checkpoint, settings.browser.restoreTabs) },
             onChooseFiles = { choice -> filePrompt = choice },
-            onDiscoverySaveCompleted = discovery::completeOriginSave)
+            onDiscoverySaveCompleted = discovery::completeOriginSave, ordinaryHistory = ordinaryHistory)
         setContent {
             EsvLocaleHost(settings.appearance.language) {
             EsvThemeHost(darkTheme = settings.appearance.themeMode.useDark(isSystemInDarkTheme())) {
@@ -611,7 +614,7 @@ class MainActivity : ComponentActivity() {
                     onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) },
                     saveScanning = saves.scanning,
                     saveNotice = saves.notice?.let { saveRuntimeNoticeText(it) },
-                    onDismissSaveNotice = saves::dismissNotice, destinations = saves.destinations, bookmarks = bookmarks, saveRuntime = saves)
+                    onDismissSaveNotice = saves::dismissNotice, destinations = saves.destinations, bookmarks = bookmarks, ordinaryHistory = ordinaryHistory, saveRuntime = saves)
                 }
                 BackHandler(enabled = previewHost) {
                     recordingConsent.cancel(); previewRuntime?.cancelPreview(); navigate(EsvDestination.RECORD)
