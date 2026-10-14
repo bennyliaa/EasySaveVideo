@@ -1,0 +1,142 @@
+[
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/normalization/MovAvcProfile.kt",
+    "bytes": 11076,
+    "sha256": "724b196bd2465aae2cd93c4b3dc498eb94093a5fc98ffd3344d6157644071da7",
+    "git_sha": "4288cbccc91fee35f89a0f1be9dff82b3993805e",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/normalization/MovProfileProbe.kt",
+    "bytes": 25764,
+    "sha256": "56a62a6320a38f5bafc3b3170e52fbc264b765648fb1c26ed21d888705cd56f7",
+    "git_sha": "98108ae53f8ba98af3b1cda670bf7903d8e959c1",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/normalization/MovRemuxEngine.kt",
+    "bytes": 19674,
+    "sha256": "4bcfe73d0f28b07099ec99a977eb87e1858dba9c5d5caf0f6a7a4a02e2e64cf0",
+    "git_sha": "8c345e267386f3ac050d93c0108101105d713f7d",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/normalization/MovRemuxFiles.kt",
+    "bytes": 1269,
+    "sha256": "6e6eb7a9ce66cd1c89ef1ddda4a706ec03ec86b0afaecfde6cd37db558145e7b",
+    "git_sha": "65f6b9de853af3f9c07684e4521121df59df5b69",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/normalization/MovProfileProbeTest.kt",
+    "bytes": 15488,
+    "sha256": "4102b0dbf53a1f13c4f5f6a80efe35c2f2f05330ff68921e77acc715dafc9c6e",
+    "git_sha": "9e741160d342867a5175ec21a04ad08d8755a563",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/normalization/OriginalMovFixtures.kt",
+    "bytes": 12113,
+    "sha256": "942aabc3614920e8ebdf21f1489d92bc05c745528cfbccfba394985d0c9fc3c0",
+    "git_sha": "ab7ecc773ed4cf1d21ae7d175fb89bfe794f2150",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/testSupport/mov-remux-host/run.sh",
+    "bytes": 3312,
+    "sha256": "16dbe509312e67d8146e78b54f98d40858c387626bda06f9aba57ccd6b473f0f",
+    "git_sha": "7dd33f24cb7485f0608a19312f0b5cfbae4bff6b",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/testSupport/mov-remux-host/src/test/kotlin/com/easysavevideo/app/save/normalization/PinnedMovRemuxTest.kt",
+    "bytes": 21103,
+    "sha256": "21e37682455d46686927b48155339e00f836f28deb6eed8e07a53a05675bb1b0",
+    "git_sha": "8e66208a08b84a0f9d9a7bb4bfc7112fd363ff78",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/BASIC_NORMALIZATION_ADAPTER_20261014.md",
+    "bytes": 7647,
+    "sha256": "ac41da933957c69bedf56e7ab18150e10abd2310e7db9af4c1483212fb226cd8",
+    "git_sha": "3ae7f16d9844bc93d318131633bb5ccdb68f3f0b",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/ORIGINAL_REQUIREMENTS_REMAINING_QUEUE_20261014.md",
+    "bytes": 17036,
+    "sha256": "96f738a129aa64782f02d4356f3de75ed41506f873a8b2f17cd2bbce18bbf5dc",
+    "git_sha": "a466818c5a50960414c4d8bc4dab5c8f4ebfb4a8",
+    "base_git_sha": "debdb0586557e26c133ef8360aeafbf1ce7b9e8f"
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-adapter-20261014/BOUNDARIES.json",
+    "bytes": 421,
+    "sha256": "bcfeb662c64e6d4d0b6bd34913f501a6de3da0ba95912f99026a3f2ff76199a2",
+    "git_sha": "242e4bb8fc1638ccef9fcc262c1769ac1540e97c",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-adapter-20261014/HOST_SUMMARY.json",
+    "bytes": 565,
+    "sha256": "ef9fda177c4e6d9621f602a09a782f842486b7834c4b67b4d9a5c6f53bfd502e",
+    "git_sha": "48be25a85059ee1e8cd277dde22064605d69dbf9",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-adapter-20261014/LINT_SUMMARY.json",
+    "bytes": 107,
+    "sha256": "b69e6ef1f12ad676440b9f8619df2d8d45a12824a616e2a4525f1b6ed36073e5",
+    "git_sha": "9dddb5f8295892779c398e9d50505ad381521671",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-adapter-20261014/STORAGE_AND_RUNTIME_SUMMARY.json",
+    "bytes": 384,
+    "sha256": "98d557992e228039dbdefdd831970143dfdf095b52829ba6c6b1de6d63ba201f",
+    "git_sha": "0a825c4020c8ce6ebc5bf3d7e8c7c95bafdf2dfe",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-adapter-20261014/TASK_STATUS.json",
+    "bytes": 9244,
+    "sha256": "fd47c5f13c0de056b877ea0b774b180d9af0ef5c5ee600436919e7fd1580ae76",
+    "git_sha": "bd2ae14dbb29903158e7395f6e7795466861dfbe",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/basic-normalization-adapter-20261014/TEST_SUMMARY.json",
+    "bytes": 1403,
+    "sha256": "506710ccc1a4271653febc95c91fe1e34abf69a9712cda0687cf24288e97a706",
+    "git_sha": "6cca14e5558fb4aa520b0b59cb462ad8097d8fb1",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/DirectMovCanonical.kt",
+    "bytes": 16431,
+    "sha256": "e5048cd67ccdd3f7defb655ad34fe41f37d39d2af1547b9a2775544a1dac7ac9",
+    "git_sha": "99fe179bc93c535db354d5cb8155c01ef8bf5f8a",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/DirectMovClock.kt",
+    "bytes": 7348,
+    "sha256": "1dc06a51346d4915472e37c4615ea8eb176af612fc63ac518252293a4a0fc5f6",
+    "git_sha": "9703346569124a013ecc24cbf842cd571a378670",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/DirectMovCanonicalTest.kt",
+    "bytes": 20316,
+    "sha256": "38cf06b8844c40a7f71013d41af5161b83e556b9e18c87ac6bc5e5834938e051",
+    "git_sha": "7cd2749eeca8e1b10035ef1d07c46599498caf9a",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/DirectMovClockTest.kt",
+    "bytes": 9503,
+    "sha256": "8f1cdfde7ededece77528c309d77584e637f2bc7387514c3a690f082361b52f5",
+    "git_sha": "e6e2e32399878dd763bcfaa7e195730926079852",
+    "base_git_sha": null
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "registered_junit_tests": 25,
+  "failures": 0,
+  "process_exit_code": 0,
+  "rate_layout_cases": 138,
+  "bytecode": "admitted Media3 extractor/muxer 1.11.1",
+  "android_shims": true,
+  "original_owned_fixtures": true,
+  "real_android_decoder": false,
+  "persistent_android_files": false,
+  "production_mov_enabled": false,
+  "runner_log_sha256": "3efac217a4e77644447c3e6530aeabc9c9611dbec8b60df50abf79789666e1d1",
+  "engine_sha256": "4bcfe73d0f28b07099ec99a977eb87e1858dba9c5d5caf0f6a7a4a02e2e64cf0",
+  "independent_review": "PASS_SCOPED: host transport only"
+}
