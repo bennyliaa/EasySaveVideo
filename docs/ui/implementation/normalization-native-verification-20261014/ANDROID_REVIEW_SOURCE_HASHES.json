@@ -1,0 +1,30 @@
+[
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt",
+    "sha256": "0f472fcbac4ff06625b26d90c1a1c744881dc5e99c9a8fff493382472501fefa"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/DirectAndroidOutputInspection.kt",
+    "sha256": "6fac9e3f877d6422fb55bc9d9a5b28c907536fb9638d97fd9c3aebd421edc290"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/DirectNormalizedAndroidVerifier.kt",
+    "sha256": "ec8a4b85233d104ca13d729bbc60849c3d26efedec2fcafb6f4bf58ec17fc802"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/DirectAndroidOutputInspectionTest.kt",
+    "sha256": "fbfca0e3823c885e236932d05c524d48f208cd4814548fc9f1043a152a8a442a"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/FixedDirectOutputInputTest.kt",
+    "sha256": "70724f811816261fc281a66d31caf02b58b7ac85fbde08b999d929e5da64f682"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/DirectNormalizedVerifierSourceContractTest.kt",
+    "sha256": "fbbd2ef272c1e235b34c55c6c55ddbe3072df186ee6452d1d5998443d5281a26"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/DirectNormalizedOwnershipCleanupTest.kt",
+    "sha256": "0ae97363a9c6b3422da7dae3d2f533444966b4e6168d118b2a9b465467569900"
+  }
+]

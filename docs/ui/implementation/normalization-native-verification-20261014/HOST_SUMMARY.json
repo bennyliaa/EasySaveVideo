@@ -1,0 +1,24 @@
+{
+  "core_pure_tail_helper_tests": 32,
+  "new_app_tests": 43,
+  "new_app_breakdown": {
+    "native_observation_policy": 22,
+    "real_host_random_access_file": 10,
+    "injected_cleanup_actions": 8,
+    "static_source_wiring_contracts": 3
+  },
+  "focused_app_total_with_existing_regressions": 141,
+  "focused_failures": 0,
+  "focused_errors": 0,
+  "focused_skips": 0,
+  "focused_terminal_exit_codes": [
+    0,
+    0
+  ],
+  "independent_code_review": "passed within inactive source layer",
+  "review_manifest_sha256": "dfbb2964da8344ac408972202e6a419d189645ef1133aba1c20b6e3fe83be311",
+  "actual_android_native_execution": false,
+  "real_storage_owner_implemented": false,
+  "runtime_mov_admitted": false,
+  "pinned_remux_host_rerun_in_this_layer": false
+}

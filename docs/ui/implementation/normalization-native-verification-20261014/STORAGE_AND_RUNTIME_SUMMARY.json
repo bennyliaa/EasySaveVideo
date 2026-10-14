@@ -1,0 +1,16 @@
+{
+  "host_sqlite_tests": 20,
+  "sql_failures": 0,
+  "rollback_injection_boundaries": 411,
+  "supported_database_versions": "new v9 and v1-v8 to v9",
+  "android_sqlite_runtime": false,
+  "exact_runtime_artifacts": 90,
+  "runtime_variants": [
+    "debug",
+    "release"
+  ],
+  "original_license_payloads": 99,
+  "abi_getters": 7,
+  "apk_assembly": false,
+  "device_operations": false
+}

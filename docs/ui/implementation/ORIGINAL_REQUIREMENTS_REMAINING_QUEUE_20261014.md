@@ -113,7 +113,11 @@ unblocked row after recording the preceding row's actual result.
    `MOV_PERSISTENT_FILES_20261014.md` for final validation status and the blocking
    temporary-IO/close limitation. Production activation requires memory-only
    cancellation/release responsiveness, real retirement and UI nonblocking tests.
-   Typed final Android verification is the next executable development layer. Runtime MOV admission and native acceptance
+   Typed final Android verification is now in implementation. The exact tail/helper
+   layer passed 32 official-wrapper JVM tests and independent source review;
+   Android adapter, ownership port, native observations and real release acceptance
+   remain distinct gates (MOV_TYPED_NATIVE_VERIFICATION_DESIGN_20261014.md and
+   MOV_NORMALIZED_OWNERSHIP_PORT_20261014.md). Runtime MOV admission and native acceptance
    remain open. Original product section
    7.1 and technical sections 5.1/5.3 require feasible MOV/WebM to playable MP4 as
    basic output, independent of paid advanced editing. Current Direct does not

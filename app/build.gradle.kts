@@ -95,6 +95,9 @@ val contractResourceInputs = fileTree("src/main/res") {
     }
 }
 val contractSourceInputs = files(
+    "src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/DirectNormalizedAndroidVerifier.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/DirectAndroidOutputInspection.kt",
     "src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceSchema.kt",
     "src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceProtocol.kt",
     "src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceCodec.kt",

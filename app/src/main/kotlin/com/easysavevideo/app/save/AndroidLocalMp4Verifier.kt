@@ -31,18 +31,39 @@ import kotlin.math.abs
 class AndroidLocalMp4Verifier(
     private val stagingFile: (StagingArtifact) -> File,
     private val timeoutMillis: Long,
+    private val normalizedOutputOwner: DirectNormalizedOutputOwner? = null,
 ) : ArtifactVerifier {
-    override fun requiresProcessRecovery(): Boolean = isDraining
-    override fun verify(artifact: StagingArtifact, transfer: TransferResult, context: OperationContext): VerificationEvidence {
-        if (isDraining) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+    override fun requiresProcessRecovery(): Boolean = isDraining || normalizedOutputOwner?.requiresProcessRecovery() == true
+
+    override fun verify(artifact: StagingArtifact, transfer: TransferResult, context: OperationContext): VerificationEvidence =
+        verify(artifact, ArtifactOutputDescriptor.Transferred(transfer), context)
+
+    override fun verify(artifact: StagingArtifact, output: ArtifactOutputDescriptor,
+        context: OperationContext): VerificationEvidence {
+        if (requiresProcessRecovery()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
         checkActive(context)
+        if (output is ArtifactOutputDescriptor.NormalizedDirect) {
+            DirectNormalizedPreflight.check(artifact, output, context)
+            // The legacy pathname callback cannot assert adopted-generation ownership.
+            if (normalizedOutputOwner == null) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        }
         val deadlineNanos = System.nanoTime() + minOf(timeoutMillis,
             (context.deadlineEpochMillis - System.currentTimeMillis()).coerceAtLeast(1)) * 1_000_000
         val lease = NativeVerificationLease({ draining.incrementAndGet() }, { draining.decrementAndGet() })
         val future: Future<VerificationEvidence> = try {
             nativeLane.submit<VerificationEvidence> {
                 if (!lease.start()) throw SaveFailure(SaveError.CANCELLED)
-                try { inspect(artifact, transfer, context, deadlineNanos) }
+                try {
+                    when (output) {
+                        is ArtifactOutputDescriptor.Transferred -> inspect(artifact, output.transfer, context, deadlineNanos)
+                        is ArtifactOutputDescriptor.NormalizedDirect -> DirectNormalizedAndroidVerifier(
+                            requireNotNull(normalizedOutputOwner), { releaseUnconfirmed.set(true) }
+                        ).inspect(artifact, output, context) {
+                            checkActive(context)
+                            if (System.nanoTime() >= deadlineNanos) throw SaveFailure(SaveError.DEADLINE_EXCEEDED)
+                        }
+                    }
+                }
                 finally { lease.released() }
             }
         } catch (_: java.util.concurrent.RejectedExecutionException) { throw SaveFailure(SaveError.VERIFICATION_UNAVAILABLE) }
@@ -55,6 +76,8 @@ class AndroidLocalMp4Verifier(
                     val result = future.get(minOf(remaining, 50_000_000), TimeUnit.NANOSECONDS)
                     checkActive(context)
                     if (System.nanoTime() >= deadlineNanos) throw SaveFailure(SaveError.DEADLINE_EXCEEDED)
+                    if (output is ArtifactOutputDescriptor.NormalizedDirect && requiresProcessRecovery())
+                        throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
                     return result
                 } catch (_: TimeoutException) { /* Keep the UI cancellation latency bounded. */ }
             }
