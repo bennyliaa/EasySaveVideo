@@ -1,0 +1,19 @@
+{
+  "runner": "app/src/testSupport/mov-owned-files-host/run.sh",
+  "tests": 6,
+  "failures": 0,
+  "ignored": 0,
+  "terminal_exit_code": 0,
+  "scope": "Actual pinned Media3 1.11.1 muxer/extractor and production owned file/session/protocol, deterministic fake descriptor/SQL ports and Android host shims. Not Android/device acceptance.",
+  "actual_short_io_asserted": true,
+  "cases": [
+    "OUTPUT_READY then proof-bound ADOPTING/adoption preserves raw",
+    "Cancellation followed by explicit terminal cleanup",
+    "Audio rejects whole input before writer open",
+    "Same-size output mutation rejects finish",
+    "Unconfirmed sink close suppresses proof and retains owner",
+    "Restarted OUTPUT_READY without Save proof never remuxes"
+  ],
+  "log_sha256": "abc1673c3f0b26ef0ba55f8ce69d3e7e6e0f132013e0fb1d58e435d444001ba7",
+  "review_source_manifest_sha256": "d1d686f9eeec82e1cddf45ff01062d97f78137259d7d1cae7c2152de1ea52485"
+}

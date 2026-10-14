@@ -36,6 +36,7 @@ import com.easysavevideo.library.MediaReadRef
 import com.easysavevideo.core.model.OperationContext
 import com.easysavevideo.core.model.TaskState
 import com.easysavevideo.save.*
+import com.easysavevideo.app.save.normalization.MovRemuxEvidence
 import com.easysavevideo.app.storage.OwnedFileInputStream
 import com.easysavevideo.app.storage.OwnedFileOutputStream
 import java.io.File
@@ -87,6 +88,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
     private val openWriters = mutableSetOf<String>()
     private val nativeWriters = mutableSetOf<String>()
     private var openReaders = 0
+    @Volatile private var normalizationFilesOwner: NormalizationAttemptOwner? = null
     // Sole monitor for Save, Library and Editor. Never nest this under an instance monitor.
     private val fileLock = Any()
     private val ownerLease: PrivateDirectoryLease
@@ -173,14 +175,17 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         }
     }
     override fun prepare(taskId: String, commitId: String, context: OperationContext): StagingArtifact = fileCall {
+        ensureLegacyNormalizationCommit(commitId, taskId)
         protocol.prepare(taskId, commitId, context)
     }
     override fun commit(artifact: VerifiedArtifact, context: OperationContext): MediaCommitReceipt = fileCall {
+        ensureLegacyNormalizationArtifact(artifact.artifact)
         ensureActiveCommit(artifact.artifact.commitId)
         ensureNoWriter(artifact.artifact)
         protocol.commit(artifact.artifact, artifact.evidence, context)
     }
     override fun inspectCommitted(commitId: String, context: OperationContext): CommitInspection? = fileCall {
+        ensureLegacyNormalizationCommit(commitId)
         // A terminal Save is historic provenance. Never promote/reindex an obsolete staging file
         // after a logical lifecycle change, even if that old path happens to exist again.
         if (queryRecord("commit_id=?", arrayOf(commitId))?.task?.state?.isTerminal == true) return@fileCall null
@@ -188,25 +193,28 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         protocol.inspectCommitted(commitId, context)
     }
     override fun cleanup(artifact: StagingArtifact, committed: Boolean) = fileCall {
+        ensureLegacyNormalizationArtifact(artifact)
         ensureNoWriter(artifact)
         protocol.cleanupStream(artifact)
         protocol.cleanup(artifact, committed)
     }
-    fun streamDirectory(artifact: StagingArtifact): File = fileCall { ensureNoWriter(artifact); protocol.streamDirectory(artifact) }
-    fun cleanupStream(artifact: StagingArtifact) = fileCall { ensureNoWriter(artifact); protocol.cleanupStream(artifact) }
+    fun streamDirectory(artifact: StagingArtifact): File = fileCall { ensureLegacyNormalizationArtifact(artifact); ensureNoWriter(artifact); protocol.streamDirectory(artifact) }
+    fun cleanupStream(artifact: StagingArtifact) = fileCall { ensureLegacyNormalizationArtifact(artifact); ensureNoWriter(artifact); protocol.cleanupStream(artifact) }
     fun adoptStreamOutput(artifact: StagingArtifact, output: File, context: OperationContext) = fileCall {
-        ensureNoWriter(artifact); protocol.adoptStreamOutput(artifact, output, context)
+        ensureLegacyNormalizationArtifact(artifact); ensureNoWriter(artifact); protocol.adoptStreamOutput(artifact, output, context)
     }
     /** Writable staging only. The path is generated locally and must match the durable ownership row. */
-    fun stagingFile(artifact: StagingArtifact): File = fileCall { protocol.stagingFile(artifact) }
+    fun stagingFile(artifact: StagingArtifact): File = fileCall { ensureLegacyNormalizationArtifact(artifact); protocol.stagingFile(artifact) }
     /** Read-only validator input, also allowing a previously promoted, still provisional commit on recovery. */
-    fun verificationFile(artifact: StagingArtifact): File = fileCall { ensureActiveCommit(artifact.commitId); ensureNoWriter(artifact); protocol.verificationFile(artifact) }
+    fun verificationFile(artifact: StagingArtifact): File = fileCall { ensureLegacyNormalizationArtifact(artifact); ensureActiveCommit(artifact.commitId); ensureNoWriter(artifact); protocol.verificationFile(artifact) }
     /** Control-worker admission snapshot, including the existing journal reserve; creates no staging file. */
     fun availableBytesForSaveAdmission(): Long = fileCall { protocol.availableBytes() }
     fun availableBytes(artifact: StagingArtifact): Long = fileCall {
+        ensureLegacyNormalizationArtifact(artifact)
         protocol.stagingFile(artifact); protocol.availableBytes()
     }
     fun openStaging(artifact: StagingArtifact, append: Boolean): FileOutputStream = fileCall {
+        ensureLegacyNormalizationArtifact(artifact)
         ensureNoWriter(artifact)
         val file = if (append) protocol.stagingFile(artifact) else protocol.restartStaging(artifact)
         if (protocol.availableBytes() <= 0) throw SaveFailure(SaveError.STORAGE_FULL)
@@ -222,6 +230,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
      * successful native release; a throwing/hung release deliberately blocks until process restart.
      */
     fun retainNativeWriter(artifact: StagingArtifact): AutoCloseable = fileCall {
+        ensureLegacyNormalizationArtifact(artifact)
         protocol.stagingFile(artifact)
         if (artifact.artifactId !in openWriters || !nativeWriters.add(artifact.artifactId))
             throw SaveFailure(SaveError.BUSY)
@@ -267,17 +276,19 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
     }
     /** Drop only an uncheckpointed tail after transport has validated the resumed response identity. */
     fun truncateStaging(artifact: StagingArtifact, length: Long) = fileCall {
+        ensureLegacyNormalizationArtifact(artifact)
         ensureNoWriter(artifact)
         val file = protocol.stagingFile(artifact)
         if (length <= 0 || length > file.length()) throw SaveFailure(SaveError.INVALID_RANGE)
         RandomAccessFile(file, "rw").use { it.setLength(length); it.fd.sync() }
     }
-    fun syncStaging(artifact: StagingArtifact) = fileCall { protocol.syncStaging(artifact) }
+    fun syncStaging(artifact: StagingArtifact) = fileCall { ensureLegacyNormalizationArtifact(artifact); protocol.syncStaging(artifact) }
     override fun close() = synchronized(fileLock) {
         synchronized(failedOwnerLock) {
             if (failedStorageOwner?.second === ownerLease) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
         }
-        if (openWriters.isNotEmpty() || nativeWriters.isNotEmpty() || openReaders != 0 || libraryStorage.hasActiveReaders() || editorStorage?.hasActiveOwners() == true || segmentStorage?.hasActiveOwners() == true) throw SaveFailure(SaveError.BUSY)
+        if (normalizationFilesOwner?.releaseUnconfirmed() == true) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+        if (normalizationFilesOwner?.hasAnyLeases() == true || openWriters.isNotEmpty() || nativeWriters.isNotEmpty() || openReaders != 0 || libraryStorage.hasActiveReaders() || editorStorage?.hasActiveOwners() == true || segmentStorage?.hasActiveOwners() == true) throw SaveFailure(SaveError.BUSY)
         if (!closed) {
             closed = true
             releaseStorageOwner(helper)
@@ -290,12 +301,43 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             synchronized(failedOwnerLock) { failedStorageOwner = unconfirmedDatabase to unconfirmedOwner }
         }
     }
+    /** Durable fence, deliberately independent of any active descriptor/session registry. */
+    private fun ensureLegacyNormalizationArtifact(artifact: StagingArtifact) {
+        NormalizationLegacyFence.requireAbsent {
+            val owned = catalog.findOwned(artifact.commitId)
+            if (owned != null) {
+                if (owned.artifact != artifact) NormalizationLookup.Unreadable
+                else normalizationLedger.lookup(NormalizationOwner(owned.taskId, artifact.artifactId, artifact.commitId))
+            } else {
+                // A damaged/missing parent must not turn a surviving child ledger into absence.
+                helper.readableDatabase.rawQuery("SELECT 1 FROM save_normalization_workspace WHERE artifact_id=? OR commit_id=? LIMIT 1",
+                    arrayOf(artifact.artifactId, artifact.commitId)).use {
+                    if (it.moveToFirst()) NormalizationLookup.Unreadable else NormalizationLookup.Absent
+                }
+            }
+        }
+    }
+    private fun ensureLegacyNormalizationCommit(commitId: String, taskId: String? = null) {
+        NormalizationLegacyFence.requireAbsent {
+            val owned = catalog.findOwned(commitId)
+            if (owned != null) {
+                if (taskId != null && taskId != owned.taskId) NormalizationLookup.Unreadable
+                else normalizationLedger.lookup(NormalizationOwner(owned.taskId, owned.artifact.artifactId, commitId))
+            } else {
+                helper.readableDatabase.rawQuery("SELECT 1 FROM save_normalization_workspace WHERE commit_id=? OR task_id=? LIMIT 1",
+                    arrayOf(commitId, taskId ?: "")).use {
+                    if (it.moveToFirst()) NormalizationLookup.Unreadable else NormalizationLookup.Absent
+                }
+            }
+        }
+    }
     private fun ensureActiveCommit(commitId: String) {
         if (queryRecord("commit_id=?", arrayOf(commitId))?.task?.state?.isTerminal == true)
             throw SaveFailure(SaveError.INVALID_REQUEST)
     }
     private fun ensureNoWriter(artifact: StagingArtifact) {
-        if (artifact.artifactId in openWriters || artifact.artifactId in nativeWriters) throw SaveFailure(SaveError.BUSY)
+        if (artifact.artifactId in openWriters || artifact.artifactId in nativeWriters || normalizationFilesOwner?.hasActiveSession(artifact.artifactId) == true)
+            throw SaveFailure(SaveError.BUSY)
     }
     private fun queryRecord(selection: String, args: Array<String>): SaveRecord? {
         val rowId = helper.readableDatabase.query("save_tasks", arrayOf("rowid", "length(record)"),
@@ -437,6 +479,52 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
                 "commit_id=? AND artifact_id=? AND state='STAGING'", arrayOf(row.artifact.commitId, row.artifact.artifactId))
         }
     }
+    /** Typed inactive API failures; no enclosing lock around long-lived descriptor operations. */
+    private inline fun <T> normalizationCall(block: () -> T): T = try { block() }
+        catch (failure: SaveFailure) { throw failure }
+        catch (_: NormalizationRecovery) { throw SaveFailure(SaveError.RECOVERY_REQUIRED) }
+        catch (_: IOException) { throw SaveFailure(SaveError.STORAGE_FAILURE) }
+        catch (failure: android.system.ErrnoException) { throw SaveFailure(if (failure.errno == OsConstants.ENOSPC) SaveError.STORAGE_FULL else SaveError.STORAGE_FAILURE) }
+        catch (_: SQLiteException) { throw SaveFailure(SaveError.RECOVERY_REQUIRED) }
+        catch (_: IllegalArgumentException) { throw SaveFailure(SaveError.RECOVERY_REQUIRED) }
+        catch (_: SecurityException) { throw SaveFailure(SaveError.STORAGE_FAILURE) }
+
+    /** Inactive internal capability: no runtime or detector calls this layer. Worker thread only. */
+    private fun normalizationOwner(): NormalizationAttemptOwner = synchronized(fileLock) {
+        if (closed) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+        normalizationFilesOwner ?: NormalizationAttemptOwner(
+            ledger = normalizationLedger,
+            files = AndroidNormalizationFiles(directory, AndroidFileOps, fileLock, protocol::availableBytes, { closed }),
+            authority = ::normalizationAuthority,
+            readSave = { queryRecord("task_id=?", arrayOf(it)) },
+            ownerLock = fileLock,
+            closed = { closed },
+            ensureNoExistingHandles = { owner -> ensureNoWriter(StagingArtifact(owner.artifactId, owner.commitId)) },
+            checkOperation = { context ->
+                if (Thread.currentThread().isInterrupted) throw SaveFailure(SaveError.CANCELLED)
+                val error = when (context.stopReason(System.currentTimeMillis())) {
+                    com.easysavevideo.core.model.OperationStopReason.CANCELLED -> SaveError.CANCELLED
+                    com.easysavevideo.core.model.OperationStopReason.DEADLINE_EXCEEDED -> SaveError.DEADLINE_EXCEEDED
+                    com.easysavevideo.core.model.OperationStopReason.RETRY_EXHAUSTED -> SaveError.RETRY_EXHAUSTED
+                    null -> null
+                }
+                if (error != null) throw SaveFailure(error)
+            },
+        ).also { normalizationFilesOwner = it }
+    }
+    internal fun prepareMovRemux(owner: NormalizationOwner, context: OperationContext, limits: SaveLimits): OwnedMovRemuxAttempt =
+        normalizationCall { normalizationOwner().prepare(owner, context, limits) }
+    internal fun finishMovRemux(attempt: OwnedMovRemuxAttempt, evidence: MovRemuxEvidence, context: OperationContext): DirectNormalizationProof =
+        normalizationCall { normalizationOwner().finish(attempt, evidence, context) }
+    internal fun inspectNormalization(owner: NormalizationOwner): NormalizationInspection =
+        try { normalizationOwner().inspect(owner) } catch (_: Exception) { NormalizationInspection.Unreadable }
+    internal fun recordNormalizationAdoptionIntent(key: NormalizationKey, proof: DirectNormalizationProof, context: OperationContext): NormalizationWorkspace =
+        normalizationCall { normalizationOwner().recordAdoptionIntent(key, proof, context) }
+    internal fun adoptNormalization(key: NormalizationKey, context: OperationContext): NormalizationWorkspace = normalizationCall { normalizationOwner().adopt(key, context) }
+    internal fun cleanupNormalization(key: NormalizationKey, expectedRevision: Long): NormalizationWorkspace = normalizationCall { normalizationOwner().cleanup(key, expectedRevision) }
+    /** Memory-only: safe for a future admission hook, without touching storage/fileLock. */
+    internal fun normalizationReleaseUnconfirmed(): Boolean = normalizationFilesOwner?.releaseUnconfirmed() == true
+
     /** Independent file-lifecycle journal; terminal Save rows are deliberately not filtered out. */
     internal val normalizationLedger: NormalizationLedger by lazy { NormalizationJournal() }
     internal fun normalizationAuthority(owner: NormalizationOwner): NormalizationAuthority = dbCall {
