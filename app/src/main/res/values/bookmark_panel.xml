@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bookmark_heading">Bookmarks (%1$d/%2$d)</string>
+    <string name="bookmark_done">Done</string>
+    <string name="bookmark_privacy">Bookmarks stay in ordinary local browsing storage. A page is visited only after you tap Open. Clearing cookies or disabling tab restore does not remove bookmarks.</string>
+    <string name="bookmark_loading">Reading or saving…</string>
+    <string name="bookmark_unavailable">Reading or saving bookmarks is not confirmed. Check available storage, then read again.</string>
+    <string name="bookmark_retry">Read again</string>
+    <string name="bookmark_empty">No bookmarks yet. Open a webpage, then choose Bookmark this page.</string>
+    <string name="bookmark_open">Open</string>
+    <string name="bookmark_remove">Remove</string>
+    <string name="bookmark_open_description">Open bookmark: %1$s</string>
+    <string name="bookmark_remove_description">Remove bookmark: %1$s</string>
+    <string name="bookmark_dismiss">Dismiss</string>
+    <string name="bookmark_added">Page bookmarked.</string>
+    <string name="bookmark_duplicate">This address is already bookmarked.</string>
+    <string name="bookmark_removed">Bookmark removed.</string>
+    <string name="bookmark_full">The limit of %1$d bookmarks has been reached. Remove a bookmark you no longer need first.</string>
+    <string name="bookmark_slow">Bookmark storage is responding slowly. Waiting for this operation to finish.</string>
+    <string name="bookmark_stale_page">The page changed or has not finished loading. Choose Bookmark this page again on the current page.</string>
+</resources>

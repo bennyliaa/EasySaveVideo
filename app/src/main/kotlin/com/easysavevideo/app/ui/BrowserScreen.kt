@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -86,6 +87,7 @@ fun BrowserScreen(
     val selected = state.selectedTab
     var settingsOpen by remember { mutableStateOf(false) }
     var bookmarksOpen by rememberSaveable { mutableStateOf(false) }
+    val bookmarkListState = rememberLazyListState()
     // Read this observable revision even when a same-document navigation leaves tab state unchanged.
     val bookmarkRevision = browser.bookmarkNavigationRevision
     val bookmarkPage = remember(state, bookmarkRevision, browser.viewRevision) { browser.bookmarkPage() }
@@ -260,12 +262,9 @@ fun BrowserScreen(
                     EsvText(if (selected?.loadState == BrowserLoadState.LOADING) "${selected.progressPercent}%" else stringResource(R.string.flow_ordinary_tab),
                         style = visuals.captionTextStyle, modifier = Modifier.align(Alignment.CenterVertically))
                 }
-                bookmarks?.state?.notice?.let { message ->
-                    Row(Modifier.fillMaxWidth().background(visuals.colors.surface).padding(visuals.spacingMedium),
-                        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
-                        EsvText(bookmarkNoticeText(message), modifier = Modifier.weight(1f), style = visuals.captionTextStyle)
-                        EsvButton(stringResource(R.string.flow_browserscreen_15), onClick = bookmarks::dismissNotice)
-                    }
+                if (!bookmarksOpen) bookmarks?.state?.notice?.let { message ->
+                    BookmarkNoticeRow(message, bookmarks::dismissNotice,
+                        Modifier.background(visuals.colors.surface).padding(visuals.spacingMedium))
                 }
                 saveRuntime?.let { com.easysavevideo.app.save.SaveFailureBrowserReminder(it) }
                 saveNotice?.let { message ->
@@ -338,7 +337,7 @@ fun BrowserScreen(
                     }
                     if (inspector.sidePane) inspectorPanel(Modifier.width(pane.sideWidthDp.dp).fillMaxHeight(), SaveSelectionPresentation.INLINE)
                     if (bookmarksOpen && wide && bookmarks != null) Box(Modifier.width(360.dp).fillMaxHeight().background(visuals.colors.surface)) {
-                        BookmarkPanel(bookmarks, onOpen = { item ->
+                        BookmarkPanel(bookmarks, bookmarkListState, onOpen = { item ->
                             bookmarks.addressForOpen(item)?.let { target ->
                                 bookmarksOpen = false; editing = false; focus.clearFocus(); browser.navigate(target)
                             }
@@ -351,7 +350,7 @@ fun BrowserScreen(
                 }
             }
             if (bookmarksOpen && !wide && bookmarks != null) EsvDialog(onDismiss = { bookmarksOpen = false; focus.clearFocus() }) {
-                BookmarkPanel(bookmarks, onOpen = { item ->
+                BookmarkPanel(bookmarks, bookmarkListState, onOpen = { item ->
                     bookmarks.addressForOpen(item)?.let { target ->
                         bookmarksOpen = false; editing = false; focus.clearFocus(); browser.navigate(target)
                     }

@@ -87,7 +87,7 @@ val contractResourceInputs = fileTree("src/main/res") {
         for (resource in listOf(
             "editor_back.xml",
             "recording_notification.xml", "save_authentication_origin.xml", "save_runtime_notice.xml", "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "discovery_recovery.xml", "input_clear.xml",
-            "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "browser_permission_notice.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
+            "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "bookmark_panel.xml", "browser_permission_notice.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
             "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
             "library_batch_export.xml", "export_recovery.xml", "save_recovery.xml", "library_multi.xml", "library_display.xml", "provider_copy.xml",
             "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "final_*.xml"
@@ -157,6 +157,8 @@ val contractSourceInputs = files(
     "src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
     "src/main/kotlin/com/easysavevideo/app/browser/SystemBrowserHost.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPanel.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPanelPresentation.kt",
     "src/main/kotlin/com/easysavevideo/app/browser/BrowserInspectionDocument.kt",
     "src/main/kotlin/com/easysavevideo/app/browser/BrowserVideoPresenceScript.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt",

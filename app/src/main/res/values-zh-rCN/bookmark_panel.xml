@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bookmark_heading">收藏（%1$d/%2$d）</string>
+    <string name="bookmark_done">完成</string>
+    <string name="bookmark_privacy">收藏只保存在本机普通浏览空间。点击“打开”后才访问网页；清除 Cookie 或关闭标签恢复不会删除收藏。</string>
+    <string name="bookmark_loading">正在读取或保存…</string>
+    <string name="bookmark_unavailable">收藏读取或保存未完成，尚未确认结果。请检查存储空间后重新读取。</string>
+    <string name="bookmark_retry">重新读取</string>
+    <string name="bookmark_empty">还没有收藏。打开网页后，点“收藏此页”。</string>
+    <string name="bookmark_open">打开</string>
+    <string name="bookmark_remove">删除</string>
+    <string name="bookmark_open_description">打开收藏：%1$s</string>
+    <string name="bookmark_remove_description">删除收藏：%1$s</string>
+    <string name="bookmark_dismiss">收起提示</string>
+    <string name="bookmark_added">已收藏此网页。</string>
+    <string name="bookmark_duplicate">此地址已在收藏中。</string>
+    <string name="bookmark_removed">已删除这条收藏。</string>
+    <string name="bookmark_full">已达到 %1$d 条收藏上限。请先删除不再需要的收藏。</string>
+    <string name="bookmark_slow">收藏存储响应较慢，正在等待本次操作完成。</string>
+    <string name="bookmark_stale_page">网页已变化或尚未加载完成，请在当前网页重新点“收藏此页”。</string>
+</resources>
