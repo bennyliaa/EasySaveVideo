@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="discovery_privacy_title">发现历史与来源进度</string>
+<string name="discovery_privacy_scope">各项操作分别影响Seen事件记录或来源续页进度。一个资料由关键词、筛选和语言共同确定。Seen指展示、打开、播放和保存事件，不是输入过的关键词列表。这里不会发起来源请求或搜索。</string>
+<string name="discovery_privacy_demo">当前使用隔离的演示数据，各项操作仅影响演示数据存储。</string>
+<string name="discovery_privacy_unavailable">尚无可用的发现资料。请先前往发现页明确发起搜索；这里不会创建资料。</string>
+<string name="discovery_privacy_read_failed">无法读取本地统计或进度，不能据此认为数据为空或来源已结束。</string>
+<string name="discovery_privacy_current">当前资料</string>
+<string name="discovery_privacy_all">全部资料</string>
+<string name="discovery_privacy_counts">%1$s：%2$d个资料 · %3$d个Seen身份 · %4$d条Seen别名 · %5$d条进度记录</string>
+<string name="discovery_privacy_refresh">读取本地统计</string>
+<string name="discovery_privacy_working">本地操作处理中。离开本页不会取消已接受的操作。</string>
+<string name="discovery_privacy_clear_current">清除当前资料的Seen事件</string>
+<string name="discovery_privacy_clear_all">清除全部资料的Seen事件</string>
+<string name="discovery_privacy_reset_provider">重置当前资料中%1$s的进度</string>
+<string name="discovery_privacy_provider">来源%1$s · 已保存续页：%2$s。这是本地进度信息，不代表来源正在运行或已结束。</string>
+<string name="discovery_privacy_yes">是</string>
+<string name="discovery_privacy_no">否</string>
+<string name="discovery_privacy_current_confirm">仅清除打开此确认时，当前关键词、筛选和语言资料的Seen事件，之后可能再次看到旧结果。来源进度、现有页面、浏览历史、Cookie、缓存、收藏、视频和Vault保留。此操作不可撤销。</string>
+<string name="discovery_privacy_all_confirm">清除当前存储中全部关键词、筛选和语言资料的Seen事件，之后可能再次看到旧结果。全部来源进度、现有页面、浏览历史、Cookie、缓存、收藏、视频和Vault保留。此操作不可撤销。</string>
+<string name="discovery_privacy_progress_confirm">仅重置打开此确认时，当前资料中来源%1$s的续页和结束记录。之后明确发起请求时可能从头检查，现在不会请求来源。Seen事件、其他来源及其他资料的进度、现有页面、浏览数据、视频和Vault保留。此操作不可撤销。</string>
+<string name="discovery_privacy_current_done">已清除当前资料的Seen事件，来源进度和媒体保留。</string>
+<string name="discovery_privacy_all_done">已清除当前存储中全部资料的Seen事件，来源进度和媒体保留。</string>
+<string name="discovery_privacy_progress_done">已重置确认时所选资料与来源的进度，Seen事件和其他来源进度保留，没有发起来源请求。</string>
+<string name="discovery_privacy_failed">无法确认本地操作成功，请检查本地数据状态后再试。</string>
+<string name="discovery_privacy_stale">确认目标已变化，或另一本地操作仍在处理中。请核对当前资料后重新打开确认。</string>
+<string name="discovery_privacy_dismiss">关闭结果提示</string>
+<string name="discovery_privacy_cancel">取消</string>
+<string name="discovery_privacy_confirm">确认此项操作</string>
+</resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_privacy_title">隐私</string>
-    <string name="settings_privacy_scope">每项操作单独确认。这里不会清除Cookie、发现历史、来源进度、收藏或已保存的视频。</string>
+    <string name="settings_privacy_scope">各项浏览器操作单独确认。普通浏览历史和网页缓存操作不会清除Cookie、发现历史、来源进度、收藏或已保存的视频。下方发现数据操作另有独立范围。</string>
     <string name="settings_privacy_history">普通浏览历史</string>
     <string name="settings_privacy_history_scope">清除此设备的普通网页访问记录。现有标签和网站登录会话保持不变。此操作不可撤销。</string>
     <string name="settings_privacy_history_count">当前历史记录：%1$d条</string>

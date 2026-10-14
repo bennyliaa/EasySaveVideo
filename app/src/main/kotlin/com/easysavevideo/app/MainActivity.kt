@@ -638,13 +638,14 @@ class MainActivity : ComponentActivity() {
                     },
                     privacy = {
                         val generation = newTabInputGeneration
-                        PrivacySettingsDetail(ordinaryHistory, generation,
-                            canAct = { generation == newTabInputGeneration && isForeground &&
-                                activeDestination == EsvDestination.SETTINGS && !isDestroyed && !isFinishing &&
-                                !saves.scanning && saves.selection == null && !saves.preparingStream && saves.hlsPreparation == null &&
-                                saves.destinations?.asking != true && browser.jsDialog == null && browser.fullScreenView == null &&
-                                !browser.pickerInFlight && !browser.hasPendingFileChoice },
+                        val canUsePrivacy = { generation == newTabInputGeneration && isForeground &&
+                            activeDestination == EsvDestination.SETTINGS && !isDestroyed && !isFinishing &&
+                            !saves.scanning && saves.selection == null && !saves.preparingStream && saves.hlsPreparation == null &&
+                            saves.destinations?.asking != true && browser.jsDialog == null && browser.fullScreenView == null &&
+                            !browser.pickerInFlight && !browser.hasPendingFileChoice }
+                        PrivacySettingsDetail(ordinaryHistory, generation, canAct = canUsePrivacy,
                             clearCache = browser::clearCacheWithResult)
+                        DiscoveryPrivacySettingsDetail(discovery, generation, canAct = canUsePrivacy)
                     },
                     onSources = ::openProviderManagement, onBack = { backTo() },
                     diagnostics = { DiagnosticSettings(diagnosticState, diagnostics.controller::begin, diagnostics.controller::cancel) })

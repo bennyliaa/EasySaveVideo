@@ -1,0 +1,156 @@
+[
+  {
+    "path": "app/build.gradle.kts",
+    "bytes": 17200,
+    "sha256": "f93b56c18b6e9eda0bbc2879940c4cf698e8b8af13244cf6597e8fa9480ed5b5",
+    "git_sha": "0120785320b6503f46289e5fdcb4ac20ad7ab574",
+    "base_git_sha": "05ae9dc3f1e840fe328ec3fb916e32a7c45c24d6"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+    "bytes": 59615,
+    "sha256": "633257c52217b3862c6e110b345881b0e102305b0234d9ec042d44368047a97a",
+    "git_sha": "1d8b3d8d7c899b914e65ce61eccd4661e088cd49",
+    "base_git_sha": "3bb409a407ea1d055f80f1f13df829590debb337"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
+    "bytes": 43054,
+    "sha256": "06616ff0c3beec32e203968b487e4e3430449714674e89caf6cee45ad499c488",
+    "git_sha": "bdfe9c2a0791d6d005f175e981faa416f5887b98",
+    "base_git_sha": "7524be5b6f4377efef2149b9246ae44771cd9d32"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryLocalControlOwner.kt",
+    "bytes": 4752,
+    "sha256": "e108a384455a04e1f7f3911c78894d4710de7573f3c6d5672fe872c125fc5f83",
+    "git_sha": "4c2c829e209a0416f66dea989098ca91c728fd0f",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
+    "bytes": 43852,
+    "sha256": "80d4187d40674e49dc1222d0df2b332739e5e56dc2616be286bc2e8c9f325810",
+    "git_sha": "2d569f960faafcbee3bce5b6e6d8c154d6e9f587",
+    "base_git_sha": "9684ed93540de2a03593b5f6d706aba40b391e38"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/DiscoveryPrivacyActions.kt",
+    "bytes": 5188,
+    "sha256": "818fffdba3826341f44da4812de2e10ebe2a0703ea3b1b5de14abf5a98a57760",
+    "git_sha": "505a0b91b0201e8efbe5a36b35a8fbaf281ad6a5",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/DiscoveryPrivacySettingsDetail.kt",
+    "bytes": 7901,
+    "sha256": "f9260bed21ae2d0936fd3f3766ce8e3753534438baef44c551515ca9ddd39185",
+    "git_sha": "1b75e96823367f5ab8ecbb040aa0e38a9e0902a2",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/res/values-zh-rCN/discovery_privacy.xml",
+    "bytes": 3670,
+    "sha256": "8a47612075f448d30d3e62336c2e03097723c07860bd1c90d1ea0b903905f6f6",
+    "git_sha": "80e22b7c689f925c624bd236c321d5377d4b5367",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/res/values-zh-rCN/settings_privacy.xml",
+    "bytes": 1629,
+    "sha256": "0e2ee1e6e3d7e15d768a70bf4e500f87ac06d4e7b3c6387f713742d6ea3c760f",
+    "git_sha": "078fb8d5baad0535a3a6fd6c8a5dead5d76f038e",
+    "base_git_sha": "939c10cf68754163dacc90ccab17daa976300abb"
+  },
+  {
+    "path": "app/src/main/res/values/discovery_privacy.xml",
+    "bytes": 3944,
+    "sha256": "723c92bdb0349dd2c24b55f9e84fd3356d565b791379e99d6900c0b0b3de3438",
+    "git_sha": "de572412b520d10e319d1077ddb518e4241b3f9b",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/res/values/settings_privacy.xml",
+    "bytes": 1758,
+    "sha256": "4872a57aa984ac20e4e59a638aa615ba4d1c467877c713a1e604bc59892f2bb6",
+    "git_sha": "52198bf8a536de20db2fee2d8ac1b839ab693b44",
+    "base_git_sha": "05e7e78fb1ac3a94f5488e4323118fa981c970ef"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/DiscoveryLocalControlControllerSourceContractTest.kt",
+    "bytes": 3754,
+    "sha256": "ff302dc532f71295d39f3853a1922863898367c8a741f5416bfc91292e9c4d9c",
+    "git_sha": "37a71bff93afb993f61c5ded8574a770d180a26c",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/DiscoveryLocalControlOwnerTest.kt",
+    "bytes": 13713,
+    "sha256": "045828c297c1eb1d0788336d7ce6fc9cb91ba642c83931775e9bf8e3b3e9e6b6",
+    "git_sha": "2171c7cc89c51d9aaf90bde2c6eba2c4be2ee65f",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/shell/DiscoveryPrivacyActionsTest.kt",
+    "bytes": 19575,
+    "sha256": "f1f0d230e3854eb6b3c9912546db921d2a7ce855f8fe29548536a94fdef9174e",
+    "git_sha": "e6b6e23cde58dc8db69a87a2f0e630a0405b0bc3",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/shell/DiscoveryPrivacySettingsContractTest.kt",
+    "bytes": 7178,
+    "sha256": "9d83dde6d68addaa77f602fa38aaf9c6b9ca617c0ddf8429588f5453a3226139",
+    "git_sha": "e00808f77e0791aac059a19f35841a8fd4337e6d",
+    "base_git_sha": null
+  },
+  {
+    "path": "discovery/src/test/kotlin/com/easysavevideo/discovery/DiscoveryHiddenLocalControlsTest.kt",
+    "bytes": 4104,
+    "sha256": "8e32cbb7634db593f064fff222cd70f2c299075e7abd18eb4c5ab2c474046a06",
+    "git_sha": "ab04b09b952112c34b8070f8186a12946b432f99",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/ORIGINAL_REQUIREMENTS_REMAINING_QUEUE_20261014.md",
+    "bytes": 15360,
+    "sha256": "dca50465021e362a591b928f12e7737713e254d653a038794b9bc907db7a9464",
+    "git_sha": "01e804aeb5822f82da9f092143ce7c4268c9de54",
+    "base_git_sha": "2827cf8909f09c148b2c341ca460dac7f4e115ce"
+  },
+  {
+    "path": "docs/ui/implementation/SETTINGS_DISCOVERY_PRIVACY_20261014.md",
+    "bytes": 6890,
+    "sha256": "4050f4d0adce6139b8f3b2874936114a744cc1b0ec186076b002cbf40601c8eb",
+    "git_sha": "7ab112811d6325586a87009ccadeafe68e3dd036",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/discovery-privacy-20261014/BOUNDARIES.json",
+    "bytes": 421,
+    "sha256": "bcfeb662c64e6d4d0b6bd34913f501a6de3da0ba95912f99026a3f2ff76199a2",
+    "git_sha": "242e4bb8fc1638ccef9fcc262c1769ac1540e97c",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/discovery-privacy-20261014/LINT_SUMMARY.json",
+    "bytes": 107,
+    "sha256": "b69e6ef1f12ad676440b9f8619df2d8d45a12824a616e2a4525f1b6ed36073e5",
+    "git_sha": "9dddb5f8295892779c398e9d50505ad381521671",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/discovery-privacy-20261014/TASK_STATUS.json",
+    "bytes": 9279,
+    "sha256": "5dacc9d6ddd3908520c0fefd3409a379aa98945420a12f83a75e92549071457c",
+    "git_sha": "a7948a72f91dfb438fe460c01586eb165cb20d06",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/discovery-privacy-20261014/TEST_SUMMARY.json",
+    "bytes": 1403,
+    "sha256": "0fd32ac26ff126c670008af22b97462fd0fddb8748b84b859533213aa010fe80",
+    "git_sha": "9b5bd50b54735b31863dbeaa8779b9dfcb643101",
+    "base_git_sha": null
+  }
+]

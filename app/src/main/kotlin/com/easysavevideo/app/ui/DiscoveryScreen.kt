@@ -28,7 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.easysavevideo.app.ui.shell.SettingsEdit
+import com.easysavevideo.app.ui.shell.*
 import com.easysavevideo.app.discovery.DiscoveryCardOpenRequest
 import com.easysavevideo.app.discovery.discoveryCardOpenRequest
 import com.easysavevideo.app.discovery.AndroidDiscoveryController
@@ -80,7 +80,18 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
     BackHandler(enabled = options) { options = false }
     var showPending by remember { mutableStateOf(false) }
     var cardOpenRejected by remember { mutableStateOf(false) }
-    var localControlConfirm by remember { mutableStateOf<DiscoveryControlRequest?>(null) }
+    val localControlActive by rememberUpdatedState(active)
+    var localControlState by remember(controller) { mutableStateOf(DiscoveryPrivacyState()) }
+    val localControlActions = remember(controller) {
+        DiscoveryPrivacyActions({ localControlActive }, {
+            val current = controller.state
+            DiscoveryPrivacyAvailability(current.ready, current.storageUnavailable, current.controlTarget,
+                current.status?.providers?.map { it.providerId }?.toSet().orEmpty(), controller.localControlState.busy)
+        }, controller::confirmLocalControl, controller::refreshHistoryStatistics) { localControlState = it }
+    }
+    DisposableEffect(localControlActions) { onDispose { localControlActions.close() } }
+    val localControlPrompt = localControlState.prompt
+    val localControlConfirm = localControlPrompt?.request
     var safeDisableConfirm by remember { mutableStateOf<DiscoveryFilterClaim?>(null) }
     var rightsDetails by remember { mutableStateOf<VideoSearchResult?>(null) }
     val pendingBrowserQuery = controller.pendingBrowserQuery
@@ -110,8 +121,8 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
     LaunchedEffect(options, state.controlTarget) {
         if (options && state.controlTarget != null) controller.refreshHistoryStatistics(state.controlTarget)
     }
-    LaunchedEffect(state.controlTarget, state.storageUnavailable) {
-        if (localControlConfirm?.target != state.controlTarget || state.storageUnavailable) localControlConfirm = null
+    LaunchedEffect(state.controlTarget, state.storageUnavailable, state.status, controller.localControlState.busy, active) {
+        localControlActions.reconcile()
     }
     fun currentClaimValid(claim: DiscoveryFilterClaim): Boolean {
         val current = controller.state
@@ -260,6 +271,11 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
             EsvText(stringResource(R.string.discovery_copy_42), style = v.captionTextStyle)
             EsvText(stringResource(R.string.discovery_copy_43), style = v.captionTextStyle)
             if (state.demo) EsvText(stringResource(R.string.discovery_copy_44), style = v.captionTextStyle, color = v.colors.error)
+            DiscoveryPrivacyOperationStatus(controller) { localControlActive }
+            if (localControlState.stale) {
+                EsvText(stringResource(R.string.discovery_privacy_stale), style = v.captionTextStyle, color = v.colors.error)
+                EsvButton(stringResource(R.string.discovery_privacy_dismiss), onClick = localControlActions::dismissStale, enabled = active)
+            }
             val statistics = state.historyStatistics
             if (statistics != null) {
                 EsvText(DiscoveryPresentationPolicy.statisticsText(stringResource(R.string.discovery_copy_45), statistics.currentProfile), style = v.captionTextStyle)
@@ -267,19 +283,19 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
             } else EsvText(if (state.historyStatisticsUnavailable || state.storageUnavailable) stringResource(R.string.discovery_copy_47)
                 else stringResource(R.string.discovery_copy_48), style = v.captionTextStyle)
             EsvButton(stringResource(R.string.flow_discoveryscreen_53), onClick = { controller.refreshHistoryStatistics(state.controlTarget) },
-                enabled = state.controlTarget != null && !state.storageUnavailable)
+                enabled = active && state.controlTarget != null && !state.storageUnavailable && !controller.localControlState.busy && localControlPrompt == null)
             EsvText(DiscoveryPresentationPolicy.retentionNotice(), style = v.captionTextStyle)
             EsvButton(stringResource(R.string.discovery_copy_49), onClick = {
-                state.controlTarget?.let { localControlConfirm = DiscoveryControlRequest(it, DiscoveryLocalAction.CLEAR_CURRENT_HISTORY) }
-            }, enabled = state.controlTarget != null && !state.storageUnavailable)
+                localControlActions.begin(DiscoveryLocalAction.CLEAR_CURRENT_HISTORY)
+            }, enabled = active && state.controlTarget != null && !state.storageUnavailable && !controller.localControlState.busy && localControlPrompt == null)
             EsvButton(stringResource(R.string.discovery_copy_50), onClick = {
-                state.controlTarget?.let { localControlConfirm = DiscoveryControlRequest(it, DiscoveryLocalAction.CLEAR_ALL_HISTORY) }
-            }, enabled = state.controlTarget != null && !state.storageUnavailable)
+                localControlActions.begin(DiscoveryLocalAction.CLEAR_ALL_HISTORY)
+            }, enabled = active && state.controlTarget != null && !state.storageUnavailable && !controller.localControlState.busy && localControlPrompt == null)
             state.status?.providers?.forEach { progress ->
                 EsvText(DiscoveryPresentationPolicy.providerProgressText(progress), style = v.captionTextStyle)
                 EsvButton(stringResource(R.string.discovery_copy_51, progress.providerId), onClick = {
-                    state.controlTarget?.let { localControlConfirm = DiscoveryControlRequest(it, DiscoveryLocalAction.RESET_PROVIDER_PROGRESS, progress.providerId) }
-                }, enabled = state.controlTarget != null && !state.storageUnavailable)
+                    localControlActions.begin(DiscoveryLocalAction.RESET_PROVIDER_PROGRESS, progress.providerId)
+                }, enabled = active && state.controlTarget != null && !state.storageUnavailable && !controller.localControlState.busy && localControlPrompt == null)
             }
             EsvText(stringResource(R.string.discovery_copy_52), style = v.captionTextStyle)
             if (BuildDiscovery.supportsDemo) EsvButton(if (state.demo) stringResource(R.string.discovery_copy_53) else stringResource(R.string.discovery_copy_54), onClick = { controller.enableDemo(!state.demo); options = false })
@@ -475,19 +491,18 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
             }
         }
     } }
-    localControlConfirm?.let { request -> Dialog(onDismissRequest = { localControlConfirm = null }) {
-        val current = state.controlTarget
-        val valid = !state.storageUnavailable && DiscoveryPresentationPolicy.validControl(request, current,
-            state.status?.providers?.map { it.providerId }?.toSet().orEmpty())
+    localControlPrompt?.let { prompt -> Dialog(onDismissRequest = { localControlActions.cancel(prompt) }) {
+        val request = prompt.request
+        val valid = localControlActions.canConfirm(prompt)
         Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.elevated, RoundedCornerShape(v.sheetCorner))
             .padding(v.spacingLarge).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
-            EsvText(DiscoveryPresentationPolicy.controlTitle(request), style = v.titleTextStyle)
+            EsvText(discoveryPrivacyControlTitle(request), style = v.titleTextStyle)
             if (state.demo) EsvText(stringResource(R.string.discovery_copy_69), style = v.captionTextStyle)
-            EsvText(DiscoveryPresentationPolicy.controlConsequence(request), style = v.captionTextStyle)
+            EsvText(discoveryPrivacyControlConsequence(request), style = v.captionTextStyle)
             if (!valid) EsvText(stringResource(R.string.discovery_copy_70), style = v.captionTextStyle, color = v.colors.error)
             EsvButton(if (request.action == DiscoveryLocalAction.RESET_PROVIDER_PROGRESS) stringResource(R.string.discovery_copy_71) else stringResource(R.string.discovery_copy_72),
-                onClick = { localControlConfirm = null; controller.confirmLocalControl(request) }, enabled = valid)
-            EsvButton(stringResource(R.string.discovery_copy_73), onClick = { localControlConfirm = null })
+                onClick = { localControlActions.confirm(prompt) }, enabled = valid)
+            EsvButton(stringResource(R.string.discovery_copy_73), onClick = { localControlActions.cancel(prompt) })
         }
     } }
 

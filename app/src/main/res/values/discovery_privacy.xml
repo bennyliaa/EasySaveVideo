@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="discovery_privacy_title">Discovery history and source progress</string>
+<string name="discovery_privacy_scope">These separate controls affect Seen event records or source continuation progress. A profile combines search keywords, filters and language. Seen records are display, open, play and save events, not a list of typed keywords. No source request or search starts here.</string>
+<string name="discovery_privacy_demo">Isolated demo data is active. These actions affect only the demo store.</string>
+<string name="discovery_privacy_unavailable">No usable Discovery profile is loaded. Open Discovery and explicitly search first; this page will not create a profile.</string>
+<string name="discovery_privacy_read_failed">Local counts or progress could not be read. Do not infer that data is empty or that a source is finished.</string>
+<string name="discovery_privacy_current">Current profile</string>
+<string name="discovery_privacy_all">All profiles</string>
+<string name="discovery_privacy_counts">%1$s · Profiles: %2$d · Seen identities: %3$d · Seen aliases: %4$d · Progress records: %5$d</string>
+<string name="discovery_privacy_refresh">Read local counts</string>
+<string name="discovery_privacy_working">Local operation pending. Leaving this page will not cancel accepted work.</string>
+<string name="discovery_privacy_clear_current">Clear current-profile Seen events</string>
+<string name="discovery_privacy_clear_all">Clear all-profile Seen events</string>
+<string name="discovery_privacy_reset_provider">Reset current-profile progress for %1$s</string>
+<string name="discovery_privacy_provider">Source %1$s · saved continuation: %2$s. This describes local progress, not whether the source is running or complete.</string>
+<string name="discovery_privacy_yes">yes</string>
+<string name="discovery_privacy_no">no</string>
+<string name="discovery_privacy_current_confirm">Clear only the Seen events for the keyword/filter/language profile captured when this confirmation opened. Old results may appear again. Source progress, existing pages, browser history, cookies, cache, bookmarks, videos and Vault are preserved. This cannot be undone.</string>
+<string name="discovery_privacy_all_confirm">Clear Seen events across all local keyword/filter/language profiles in the active store. Old results may appear again. All source progress, existing pages, browser history, cookies, cache, bookmarks, videos and Vault are preserved. This cannot be undone.</string>
+<string name="discovery_privacy_progress_confirm">Reset continuation and end records only for source %1$s in the profile captured when this confirmation opened. A later explicit request may start from the beginning; no request starts now. Seen events, other sources and profiles, existing pages, browser data, videos and Vault are preserved. This cannot be undone.</string>
+<string name="discovery_privacy_current_done">Current-profile Seen events cleared. Source progress and media were preserved.</string>
+<string name="discovery_privacy_all_done">All-profile Seen events cleared in the active store. Source progress and media were preserved.</string>
+<string name="discovery_privacy_progress_done">The selected source progress was reset in the captured profile. Seen events and other source progress were preserved. No source request was started.</string>
+<string name="discovery_privacy_failed">The local operation could not be confirmed as successful. Check the local data status before trying again.</string>
+<string name="discovery_privacy_stale">This confirmation is no longer current or another local operation is pending. Open a new confirmation after checking the current profile.</string>
+<string name="discovery_privacy_dismiss">Dismiss result</string>
+<string name="discovery_privacy_cancel">Cancel</string>
+<string name="discovery_privacy_confirm">Confirm this action</string>
+</resources>

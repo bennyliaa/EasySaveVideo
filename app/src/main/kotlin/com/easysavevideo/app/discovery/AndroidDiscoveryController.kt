@@ -58,6 +58,8 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     private var commonsEnabled: Boolean? = null
     private val io = Executors.newSingleThreadScheduledExecutor { runnable -> Thread(runnable, "esv-discovery-ui").apply { isDaemon = true } }
     private val main = Handler(Looper.getMainLooper())
+    // Independent handler: close() removes ordinary snapshot callbacks, never control receipts.
+    private val localControlMain = Handler(Looper.getMainLooper())
     private val closed = AtomicBoolean(false)
     @Volatile private var coordinator: VideoDiscoveryCoordinator? = null
     private var timer: JvmDiscoveryTimer? = null
@@ -125,6 +127,9 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     private var historyStatisticsUnavailable = false
     var state by mutableStateOf(DiscoveryUiState())
         private set
+    var localControlState by mutableStateOf(DiscoveryLocalControlState())
+        private set
+    private val localControlOwner = DiscoveryLocalControlOwner { localControlState = it }
     // Main-thread UI draft only; persisted applied search remains the sole source-query authority.
     var filterDraft by mutableStateOf<DiscoveryFilterDraft?>(null)
         private set
@@ -491,22 +496,50 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         refresh(readOnly = true)
     }
 
-    /** The complete target is captured when the dialog opens, then checked on the serialized executor. */
-    fun confirmLocalControl(request: DiscoveryControlRequest) = submit {
-        val c = coordinator ?: return@submit
-        val target = if (managementRevision == CommonsSourceRegistration.managementRevision) currentControlTarget(c) else null
-        val outcome = DiscoveryPresentationPolicy.executeControl(request, target,
-            c.status().providers.map { it.providerId }.toSet(), c::clearHistory) { profileId, providerId ->
-            c.resetProgress(profileId, providerId)
-        }
-        if (outcome != DiscoveryControlOutcome.STALE) {
-            // A later status tick must not turn cleared history or reset progress into new demand.
-            pageDemandPending = false
-            nextPageDemand.cancel()
-            updateHistoryStatistics(c)
-        }
-        notice = DiscoveryPresentationPolicy.controlOutcomeText(request.action, outcome)
-        refresh(readOnly = true)
+    /** One controller-wide claim; the exact dialog target is rechecked on the existing IO lane. */
+    fun confirmLocalControl(request: DiscoveryControlRequest): Boolean {
+        check(Looper.myLooper() == Looper.getMainLooper())
+        return localControlOwner.submit(request,
+            dispatch = { action -> io.execute(action); true },
+            work = { captured ->
+                if (closed.get()) DiscoveryControlOutcome.STALE else {
+                    var outcome = DiscoveryControlOutcome.FAILED
+                    guarded {
+                        val c = coordinator
+                        if (closed.get() || c == null) { outcome = DiscoveryControlOutcome.STALE; return@guarded }
+                        osSignals.revalidate()
+                        val target = if (!closed.get() && managementRevision == CommonsSourceRegistration.managementRevision) currentControlTarget(c) else null
+                        outcome = DiscoveryPresentationPolicy.executeControl(captured, target,
+                            c.status().providers.map { it.providerId }.toSet(), c::clearHistory) { profileId, providerId ->
+                            c.resetProgress(profileId, providerId)
+                        }
+                    }
+                    outcome
+                }
+            },
+            deliver = { completion ->
+                if (Looper.myLooper() == Looper.getMainLooper()) completion()
+                else localControlMain.post(completion)
+            },
+            afterWork = { result ->
+                if (!closed.get()) {
+                    notice = DiscoveryPresentationPolicy.controlOutcomeText(result.operation.request.action, result.outcome)
+                    guarded {
+                        if (result.outcome != DiscoveryControlOutcome.STALE) {
+                            // A later status tick must not turn a local control into new demand.
+                            pageDemandPending = false
+                            nextPageDemand.cancel()
+                            coordinator?.let(::updateHistoryStatistics)
+                        }
+                        refresh(readOnly = true)
+                    }
+                }
+            })
+    }
+
+    fun dismissLocalControlResult(expectedReceipt: DiscoveryLocalControlResult) {
+        check(Looper.myLooper() == Looper.getMainLooper())
+        localControlOwner.dismiss(expectedReceipt)
     }
 
     private fun currentControlTarget(c: VideoDiscoveryCoordinator): DiscoveryControlTarget? =
@@ -650,6 +683,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     }
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
+        localControlOwner.close()
         pendingBrowserQuery = null
         verificationSubscription?.close(); verificationSubscription = null
         sourceSubscription?.close(); sourceSubscription = null

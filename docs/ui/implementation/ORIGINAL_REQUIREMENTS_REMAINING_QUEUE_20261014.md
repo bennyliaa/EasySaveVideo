@@ -33,7 +33,7 @@ unblocked row after recording the preceding row's actual result.
 | PR-05/06 discovery policy | Scheduler, lifecycle cancellation, progress/history, four policies, finite pagination, recovery exits and stable reading | SOURCE IMPLEMENTED; sources/network/power/native lifecycle TO TEST; no further generic race-hardening slice assumed |
 | PR-07/08 source management | Admission/runtime interfaces, local enablement, maintenance/repository/rollback groundwork and UI | PARTIAL. Production signed declarative interpreter remains disabled pending its gate; configuration/update/rollback native acceptance TO TEST |
 | PR-09 detection | Existing user-triggered detector, candidate/revision/quality selector | SOURCE IMPLEMENTED; owned actual media and native WebView inspection TO TEST |
-| PR-10/11 save | Direct/HLS runtime, verified publication, output/recovery ports | SOURCE IMPLEMENTED for admitted supported formats; real output/MP4/playback/device interruption TO TEST. No all-site/all-format guarantee |
+| PR-10/11 save | Direct/HLS runtime, verified publication, output/recovery ports | PARTIAL SOURCE IMPLEMENTED for admitted MP4/HLS. Product section 7.1 basic free MOV/WebM-compatible MP4 normalization remains DEVELOPABLE/DESIGN NEXT; current Direct sends output straight to MP4 verification, no normalization stage. Real output/playback/interruption TO TEST; no all-site/all-format guarantee |
 | PR-12/16 task flow | Save state mapping, cancellation, authentication/source reinspection, task detail/recovery; Save failure guidance report | PARTIAL. Supported explicit Direct→Stream reassessment/Coordinator confirmation is source implemented in `METHOD_ALTERNATIVE_20261014.md` for the documented suitable-error allowlist. Trusted webpage→Record handoff remains UNKNOWN/GATE; this is not automatic fallback or completion of all PR-12. Native closed loop TO TEST |
 | PR-13/14 recording | Existing consent/basic/segment/region runtimes and UI | SOURCE IMPLEMENTED for existing capabilities; actual capture/audio/output/segment/native lifecycle TO TEST; no fabricated consent or audio |
 | PR-15 editor | Existing crop/merge/compression engine, non-destructive publication, responsive preview and defaults | SOURCE IMPLEMENTED; encoder/output/playback/Tools-gated native acceptance TO TEST |
@@ -42,7 +42,7 @@ unblocked row after recording the preceding row's actual result.
 | PR-19 entitlements | FeatureGate/Store boundaries plus Debug-only fake; Release isolation checks | SOURCE IMPLEMENTED abstraction; read-only product/free-capability explanation page SOURCE IMPLEMENTED in `SETTINGS_ENTITLEMENTS_20261014.md` (PPT24); real billing DECISION/GATE (store/channel/package/product/validation); no new price or payment action |
 | PR-20 discovery settings | Preferences already persisted and used by Discovery's filter panel; central Settings category absent in baseline | SOURCE IMPLEMENTED in this slice: central discovery category/detail with shared owner, four controls/defaults; see `SETTINGS_DISCOVERY_20261014.md` |
 | PR-20 save settings | Wi-Fi preference real; destination control already in Browser settings | PARTIAL SOURCE IMPLEMENTED. Central destination entry reuses existing picker/admission; see `SETTINGS_DESTINATION_20261014.md`. Native SAF/storage acceptance TO TEST. Direct-only 1/2 concurrency source is implemented with real shared admission, two fixed transfers and serial native verification; see `DIRECT_CONCURRENCY_20261014.md`. Other methods remain exclusive; real concurrent-network/native acceptance TO TEST |
-| PR-20 privacy settings | Existing browser cache/Cookie/session controls and separate browser/discovery history/progress controls | PARTIAL SOURCE IMPLEMENTED: central ordinary-history and webpage-cache actions with separate confirmation/status; `SETTINGS_PRIVACY_20261014.md`. Cookie/session and Discovery cleanup remain separate existing controls; native acceptance TO TEST |
+| PR-20 privacy settings | Existing browser cache/Cookie/session controls and separate browser/discovery history/progress controls | PARTIAL SOURCE IMPLEMENTED: central ordinary-history and webpage-cache actions with separate confirmation/status; `SETTINGS_PRIVACY_20261014.md`. Central Discovery Seen/progress actions are source implemented separately in `SETTINGS_DISCOVERY_PRIVACY_20261014.md`; Cookie/session controls remain in the existing browser panel. Native acceptance TO TEST |
 | PR-20 browser settings | Existing Browser SettingsPanel has JavaScript/cookies/restore-tabs/active-view limit | SOURCE IMPLEMENTED: central Browser category and old panel share four real preferences and field-level live owner; `SETTINGS_BROWSER_20261014.md`. Native acceptance TO TEST; no new permission grants, incognito or UA switch |
 | PR-21 diagnostic privacy | Bounded enum-only error storage, explicit export UI | SOURCE IMPLEMENTED; native destination/limits and Release leak acceptance TO TEST; no automatic uploads |
 | PR-22 reliability | Extensive bounded failure/recovery implementation and JVM checks | PARTIAL acceptance; fault matrix on admitted real media/device TO TEST. Do not claim every production ANR resolved from unit tests |
@@ -88,15 +88,26 @@ unblocked row after recording the preceding row's actual result.
    Stream-to-Record remains UNKNOWN until trusted current capture capability and
    explicit fresh consent/entitlement/destination are available; do not infer it
    from HTTP errors, DOM flags or presence of the platform capture service.
-7. Central Discovery privacy controls (DEVELOPABLE): original UI framework section
-   Settings explicitly separates keyword history, all Discovery history, source
-   progress and cache. Ordinary history/webpage cache are central already; reuse
-   existing Discovery owners for three separate remaining controls: current
-   keyword/filter/language profile Seen events, all profile Seen events, and one
-   source's continuation progress in the captured current profile. These are not
-   a stored keyword-input list. Do not add a combined clear-all or silently mutate
-   real user data.
+7. Central Discovery privacy controls (SOURCE IMPLEMENTED; native acceptance open):
+   current keyword/filter/language profile Seen events, all-profile Seen events,
+   and one source's continuation progress in the captured profile are separate
+   confirmed controls. Shared controller operation ownership survives view exit;
+   both old and central entry points use the same prompt adapter. These are not
+   a stored keyword-input list. See `SETTINGS_DISCOVERY_PRIVACY_20261014.md`.
+8. PR-25 Incognito and per-site permissions (DESIGN NEXT): reconcile existing
+   context/session/history/authentication boundaries against real WebView storage
+   isolation and platform permission APIs. Do not equate omitted history with
+   isolated Incognito, or current fail-closed permission prompts with a complete
+   site-permission manager. Identify exact dependency/permission/native gates
+   before implementing this larger original requirement.
 
+9. Free basic output normalization (SELECTED NEXT DESIGN): original product section
+   7.1 and technical sections 5.1/5.3 require feasible MOV/WebM to playable MP4 as
+   basic output, independent of paid advanced editing. Current Direct does not
+   normalize containers/codecs. First design the narrow admitted-format/evidence,
+   device codec capability, independent raw/output staging, cancellation, budgets,
+   native exclusion and final verification contract. Reuse only admitted components;
+   unknown formats/protection never become a conversion bypass.
 
 For each row: record file/test evidence, independent findings, actual regression
 result, private development-branch commit and next row. A failed build is repaired
@@ -130,8 +141,10 @@ Discovery, bounded history/cache privacy, read-only entitlement explanation and
 central ordinary saving destination and browser preferences now have source
 implementations. Bounded Direct concurrency now has its source implementation.
 Supported PR-12 Direct-to-Stream now also has its source implementation. After
-its final test/review/private backup, continue central Discovery privacy controls
-through existing owners. Report a concrete blocker only for the blocked action and continue
+its final test/review/private backup, central Discovery privacy controls were
+implemented through existing owners. After that checkpoint, continue PR-25
+architecture reconciliation while prioritizing the original free basic-output
+normalization design. No arbitrary extra feature replaces a blocked gate. Report a concrete blocker only for the blocked action and continue
 another unblocked original requirement.
 If every remaining row really needs a decision or native acceptance, list those
 specific gates and request the smallest choice. Do not report the entire ESV
