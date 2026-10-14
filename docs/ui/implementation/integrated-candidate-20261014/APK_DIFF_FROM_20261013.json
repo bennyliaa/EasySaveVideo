@@ -1,0 +1,103 @@
+{
+  "old_sha256": "fd8af644ae532f8241ea830a869995360139732089aee9c918a1da5e6c05480e",
+  "new_sha256": "16449658d017a64456ebf921aca0c138e85e9b7dc43ed20dda0b4aa05d2f29d8",
+  "old_bytes": 47803784,
+  "new_bytes": 49303976,
+  "byte_delta": 1500192,
+  "added": [],
+  "removed": [],
+  "changed": [
+    {
+      "path": "classes12.dex",
+      "old": {
+        "bytes": 94360,
+        "compressed_bytes": 94360,
+        "sha256": "38311c9df54318136833fc8f4dbc09ede9bb7aa69f79680f5310e98dccc58648"
+      },
+      "new": {
+        "bytes": 96512,
+        "compressed_bytes": 96512,
+        "sha256": "fed356e49ba052b458ca16c056cce450eeaff67a30cbdedce994f883b819ffad"
+      }
+    },
+    {
+      "path": "classes14.dex",
+      "old": {
+        "bytes": 634040,
+        "compressed_bytes": 634040,
+        "sha256": "2f9c3c9c372df990a2cc9bb41c7b6acb4cdd5f41f96171e87f379fb432f9d62c"
+      },
+      "new": {
+        "bytes": 650916,
+        "compressed_bytes": 650916,
+        "sha256": "e95896517f66ff4d43ec4b37ede9113276307a2c6312b0871f78a7cb3d9228fd"
+      }
+    },
+    {
+      "path": "classes15.dex",
+      "old": {
+        "bytes": 1351376,
+        "compressed_bytes": 1351376,
+        "sha256": "540032cc0c39df5cb63122dafe01b87b33cc463c42c5605a299c27a64ffbb4c3"
+      },
+      "new": {
+        "bytes": 1389260,
+        "compressed_bytes": 1389260,
+        "sha256": "cf5ba9eabc41c60f7b4a2ea21349a462347d70abfaca27e19a95a966908bd908"
+      }
+    },
+    {
+      "path": "classes19.dex",
+      "old": {
+        "bytes": 539416,
+        "compressed_bytes": 539416,
+        "sha256": "594b1deadfa0651039c11d72c4d7ba57a016cc4efe7767869b927d7bb90d13da"
+      },
+      "new": {
+        "bytes": 544532,
+        "compressed_bytes": 544532,
+        "sha256": "d2e01c706b30a8443b9505356ef47cf7feea99872a2ceb53aba960e341cb3cda"
+      }
+    },
+    {
+      "path": "classes21.dex",
+      "old": {
+        "bytes": 321812,
+        "compressed_bytes": 321812,
+        "sha256": "e5f9f6ab483f492f41b2e4be2436e91384f756ccf30158515d6142a3c18d1be1"
+      },
+      "new": {
+        "bytes": 325696,
+        "compressed_bytes": 325696,
+        "sha256": "b2cb49e7d7a1e7fc553cb194eba0ea661e9496a289d6c9627d0c8c7cf612471f"
+      }
+    },
+    {
+      "path": "classes25.dex",
+      "old": {
+        "bytes": 698408,
+        "compressed_bytes": 698408,
+        "sha256": "cfcd82b9d52d2b1c066f755cf3ed2d6d3f0d719568db16b7921bfaea8211aeff"
+      },
+      "new": {
+        "bytes": 781960,
+        "compressed_bytes": 781960,
+        "sha256": "c2b3ee903160e8e399ef3901a6ad22b114f1c0aae9b652b5c0c98512f4910f9e"
+      }
+    },
+    {
+      "path": "resources.arsc",
+      "old": {
+        "bytes": 1116932,
+        "compressed_bytes": 1116932,
+        "sha256": "3d56aa5ad5f2bb177dcbf758b9066bcecf3c6c80d04711c938e2e3c8322c2aa6"
+      },
+      "new": {
+        "bytes": 1144268,
+        "compressed_bytes": 1144268,
+        "sha256": "0df33307682bd13f37ccdc34c7607149f33514181df3d2474034ee57dbbaa16b"
+      }
+    }
+  ],
+  "unchanged_count": 198
+}

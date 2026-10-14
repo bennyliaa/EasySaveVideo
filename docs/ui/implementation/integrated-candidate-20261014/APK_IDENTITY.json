@@ -1,0 +1,15 @@
+{
+  "filename": "EasySaveVideo-debug-code8-20261014-0a5dd621168b.apk",
+  "sha256": "16449658d017a64456ebf921aca0c138e85e9b7dc43ed20dda0b4aa05d2f29d8",
+  "bytes": 49303976,
+  "source_inputs_manifest_sha256": "0a5dd621168bfffd760b1c299ee13421859179aa7daefb9e133c9f968ba07135",
+  "source_inputs": 1481,
+  "signature_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+  "package": "com.easysavevideo.app",
+  "versionCode": 8,
+  "versionName": "0.8.0-ui-dev",
+  "minSdk": 31,
+  "targetSdk": 36,
+  "zipalign": "PASS_4byte_and_16KiB_native_page",
+  "apk_status": "LOCAL_DEBUG_CANDIDATE_NOT_INSTALLED_NOT_UPLOADED_NOT_RELEASE"
+}
