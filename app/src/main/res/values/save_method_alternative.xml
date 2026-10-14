@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_alternative_fresh_source">This Direct failure can be reassessed for ② Stream. Inspect again and explicitly choose a fresh supported Stream source. The failed task stays unchanged; no Stream or recording capability is assumed.</string>
+    <string name="save_alternative_ready">② New Stream attempt after Direct failure. Choose a variant and destination to confirm. The failed task stays unchanged. Preparation does not guarantee a playable saved video.</string>
+    <string name="save_alternative_unavailable">This Stream reassessment is no longer available. No alternative task was started. Inspect again for a new explicit selection.</string>
+    <string name="save_alternative_unknown">The new Stream task creation result could not be confirmed. Do not submit it again. Reopen the app and check task recovery; saving will not start automatically. Dismissing this message does not remove a task that may have been created.</string>
+    <string name="save_alternative_dismiss">Dismiss message</string>
+</resources>

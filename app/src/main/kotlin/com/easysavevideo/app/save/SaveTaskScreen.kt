@@ -82,6 +82,7 @@ fun SaveTaskScreen(
                 EsvText(saveRuntimeNoticeText(text), color = v.colors.error)
                 EsvButton(stringResource(R.string.flow_savetaskscreen_10), onClick = runtime::dismissNotice)
             }
+            SaveMethodAlternativeFeedback(runtime)
             // Independent of records/counts: a failed journal snapshot must not hide local repair.
             runtime.pendingSaveRecoveries.forEach { ticket ->
                 EsvText(stringResource(R.string.save_recovery_failed, ticket.taskId.take(8)), color = v.colors.error)
@@ -267,6 +268,7 @@ private fun HlsSelectionDialog(runtime: AndroidSaveRuntime) {
             EsvText(stringResource(R.string.flow_savetaskscreen_27), style = v.captionTextStyle)
             if (prepared == null) EsvText(stringResource(R.string.flow_savetaskscreen_28))
             else {
+                if (runtime.alternativePrepared) EsvText(stringResource(R.string.save_alternative_ready), style = v.captionTextStyle)
                 EsvText(stringResource(R.string.save_display_hls_budget, saveSizeText(prepared.bytesTransferred)), style = v.captionTextStyle)
                 if (prepared.directMedia) EsvButton(stringResource(R.string.flow_savetaskscreen_30), onClick = { runtime.chooseHlsVariant(null) },
                     enabled = runtime.canSave(TaskMethod.STREAM))

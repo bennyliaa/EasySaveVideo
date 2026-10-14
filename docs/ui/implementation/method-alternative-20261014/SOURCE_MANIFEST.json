@@ -1,0 +1,149 @@
+[
+  {
+    "path": "app/build.gradle.kts",
+    "bytes": 16841,
+    "sha256": "5c27bdd3e3790bc0dbf4f3cc5ab7e3ed234a16e3028e74eb742a1d1f8128bf2d",
+    "git_sha": "05ae9dc3f1e840fe328ec3fb916e32a7c45c24d6",
+    "base_git_sha": "44e9eb0251f358c319699697a17b233212be5ba8"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
+    "bytes": 82786,
+    "sha256": "9c42c1e1f75b41c51383a25695c40a0088e6f09d8f3f02194117595db5b193b5",
+    "git_sha": "d4ea68edc4dd98a8942788d683045bbf48e655fd",
+    "base_git_sha": "9269e72a4f9aaef7c487ac409675f5cea460b850"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveAlternativeSelection.kt",
+    "bytes": 3808,
+    "sha256": "ec172285f770aa626b99e44214aee53f6a1c02512067243c4eaec4d928084228",
+    "git_sha": "ff871b670d4cff1fe5c383f705697ac89853bbf4",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveFailureGuidanceUi.kt",
+    "bytes": 4487,
+    "sha256": "a3c413b02afead2b6159ba26d195aaf4409a9af083a4cc74c82ba717e74ee51f",
+    "git_sha": "495a5a5fe1f60ab99d47c647cec76341f299731e",
+    "base_git_sha": "77efee40eed4d2b2b9851f0dfeb24f0a2a07b6cc"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveMethodAlternativeUi.kt",
+    "bytes": 1039,
+    "sha256": "c07837f0732c719a7796b83ef1023e060bfc7aff45454bfb7bb8999e80e5bf23",
+    "git_sha": "42dbf7a37539937536cb957ad1b77e586a8a5d26",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveTaskScreen.kt",
+    "bytes": 22345,
+    "sha256": "268ab440a90265f04e5d1d983cc27ca5cb413ae676c91810323b0f95391dc504",
+    "git_sha": "37ee0e9c22ac67a7b403dbad16931b53909d348f",
+    "base_git_sha": "8439d24aabfa88ce3790d8ca524f45e08e582e69"
+  },
+  {
+    "path": "app/src/main/res/values-zh-rCN/save_method_alternative.xml",
+    "bytes": 998,
+    "sha256": "9cd715fc191d40fc95ee0a2f8c9147a3da9f7a67907e7b27115a5478454969bb",
+    "git_sha": "5b761ec13800275b8a5cb982e4402e4086c3ae40",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/res/values/save_method_alternative.xml",
+    "bytes": 1094,
+    "sha256": "7687e92ef97610a6fc45960d51346b86f76cc93e81af445b2f1ca234d5b0aed1",
+    "git_sha": "69651a2e01ae18ed8cac4ccc83fac58025477b89",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/SaveAlternativeSelectionTest.kt",
+    "bytes": 14757,
+    "sha256": "c2fc63452b0ffb99fc7657f044b83accd2ef50b2ca546871b739ccd541e759fb",
+    "git_sha": "b7eb00d4c41d0c83319371a1079078a117eb0384",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/SaveMethodAlternativeContractTest.kt",
+    "bytes": 8047,
+    "sha256": "a7991e4c21ef6662d0758320628599d15f9c2924be4d43632328ec8f39ea4d8f",
+    "git_sha": "d5284bb2aba719fc4a69d59044a379f95b5f9a4f",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/METHOD_ALTERNATIVE_20261014.md",
+    "bytes": 6698,
+    "sha256": "13ac66283a53b0d43bb246f4736c619b5c7a28509decad923a58d802e38fa381",
+    "git_sha": "2d1fa8eb51ca9838a20adb3c3cd1c1ed04487651",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/METHOD_ALTERNATIVE_DESIGN_20261014.md",
+    "bytes": 8658,
+    "sha256": "b5bd3f6be41ecc852d91d2d503aa35b1a675e82ea20a79b2c430f132f8e65862",
+    "git_sha": "5aac26d9a8c8f6e7844c6c7257545006bfadaad9",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/ORIGINAL_REQUIREMENTS_REMAINING_QUEUE_20261014.md",
+    "bytes": 13969,
+    "sha256": "56b6c644c2c8574009fd82fb7f31f52a5cff6aabc039b3473fb4a6648b77fdc7",
+    "git_sha": "2827cf8909f09c148b2c341ca460dac7f4e115ce",
+    "base_git_sha": "c379ddd4f2a4a3fd2b0ebc4f2e1b37fb49d68fe9"
+  },
+  {
+    "path": "docs/ui/implementation/method-alternative-20261014/BOUNDARIES.json",
+    "bytes": 421,
+    "sha256": "bcfeb662c64e6d4d0b6bd34913f501a6de3da0ba95912f99026a3f2ff76199a2",
+    "git_sha": "242e4bb8fc1638ccef9fcc262c1769ac1540e97c",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/method-alternative-20261014/LINT_SUMMARY.json",
+    "bytes": 107,
+    "sha256": "b69e6ef1f12ad676440b9f8619df2d8d45a12824a616e2a4525f1b6ed36073e5",
+    "git_sha": "9dddb5f8295892779c398e9d50505ad381521671",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/method-alternative-20261014/TASK_STATUS.json",
+    "bytes": 9281,
+    "sha256": "911b3cf994b68d429c008cad31df734b227ef0e5da9027de57ddd8d17fd6f524",
+    "git_sha": "2d1eb8b5f33bda5af7546e491f8c9e3edfb1d6ec",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/method-alternative-20261014/TEST_SUMMARY.json",
+    "bytes": 1403,
+    "sha256": "b82e506c58c7c6700416eba79a14f816fd815b9c99d8270ea4a4118042a1f324",
+    "git_sha": "a6b101cc1453be66604c6d068cd6a79b8e757735",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveCoordinator.kt",
+    "bytes": 54071,
+    "sha256": "d985ec15a52e54a637331f0121778236b12b1c271beb808661d052552cc978cb",
+    "git_sha": "f2b7bfa357b53e04bce462af5c736c8958b4839e",
+    "base_git_sha": "95966913c04d044bcc404aa3709339ac9d9eb5e0"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveMethodAlternatives.kt",
+    "bytes": 3630,
+    "sha256": "311dc4a3f4a69af7633ca29bc24db0e4e5734aa7c24d233e91a586c500ad9677",
+    "git_sha": "265976d4c4400b65a55716a5ba393ee374f00fc0",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/SaveMethodAlternativesTest.kt",
+    "bytes": 1511,
+    "sha256": "9bff8ff3fe1476f1dbd4e63b7d474b61e0c7fb8b6a00c267fe29fb764931153d",
+    "git_sha": "dd0b2ae01dd3f3f165437e09ae0d6678ca3bbaa6",
+    "base_git_sha": null
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/StreamAlternativeCoordinatorTest.kt",
+    "bytes": 26749,
+    "sha256": "d9e19afc3e72e3f98d488ec13ff2362cc6e2010cf76639afc09a335b4f20b275",
+    "git_sha": "4b6249a88f42b07d9b4bdb532015841e47408f52",
+    "base_git_sha": null
+  }
+]

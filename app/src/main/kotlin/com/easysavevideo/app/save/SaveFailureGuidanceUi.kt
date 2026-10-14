@@ -34,10 +34,12 @@ internal fun SaveFailureGuidance(record: SaveRecord, runtime: AndroidSaveRuntime
 
 @Composable
 internal fun SaveFailureBrowserReminder(runtime: AndroidSaveRuntime) {
+    SaveMethodAlternativeFeedback(runtime)
     if (!runtime.showFailureBrowserReminder) return
     val v = LocalEsvVisuals.current
     Column(Modifier.fillMaxWidth().padding(horizontal = v.spacingMedium), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-        EsvText(stringResource(R.string.save_failure_browser_hint), style = v.captionTextStyle)
+        EsvText(stringResource(if (runtime.alternativeNeedsSource) R.string.save_alternative_fresh_source
+            else R.string.save_failure_browser_hint), style = v.captionTextStyle)
         EsvButton(stringResource(R.string.save_failure_dismiss), onClick = runtime::dismissFailureBrowserReminder)
     }
 }

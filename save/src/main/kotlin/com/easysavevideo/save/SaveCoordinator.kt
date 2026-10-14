@@ -33,6 +33,7 @@ class SaveCoordinator(
     private fun resourcesUnreleased() = admission.recoveryRequired || transfer.requiresProcessRecovery() || stream.requiresProcessRecovery() || recording.requiresProcessRecovery() || verifier.requiresProcessRecovery()
 
     private val lock = Any()
+    private val alternativeOwner = Any()
     private class Runtime(val original: OperationContext, val method: TaskMethod, @Volatile var resource: SelectedMediaResource?, val sourceExpiresAt: Long, val resumeOperation: OperationContext? = null) {
         val cancel = CancellationSource()
         @Volatile var pause = false
@@ -57,7 +58,7 @@ class SaveCoordinator(
         preparationBytes: Long = 0): SaveSubmission = admission.prepare(claim, request.method,
             request.requestId, context.operationId) {
         synchronized(lock) {
-            val result = submit(request, context, preparationBytes)
+            val result = submitLocked(request, context, preparationBytes)
             val runtime = if (result is SaveSubmission.Accepted && !result.existing)
                 runtimes[request.requestId]?.takeIf { it.original.operationId == context.operationId } else null
             runtime?.claim = claim
@@ -80,36 +81,152 @@ class SaveCoordinator(
     }
 
     fun submit(request: SaveRequest, context: OperationContext, preparationBytes: Long = 0): SaveSubmission = synchronized(lock) {
-        try {
-            if (request.networkResource?.durableReference == true) return@synchronized SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
-            if (request.origin != CommandOrigin.USER) return@synchronized SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
-            if (if (request.method == TaskMethod.RECORD) !recording.availability().available else portFor(request.method) == null) return@synchronized SaveSubmission.Rejected(SaveError.METHOD_UNSUPPORTED)
+        submitLocked(request, context, preparationBytes)
+    }
+
+    /** The only insertion path; callers must hold the Coordinator monitor. */
+    private fun submitLocked(request: SaveRequest, context: OperationContext, preparationBytes: Long): SaveSubmission {
+        return try {
+            if (request.networkResource?.durableReference == true) return SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+            if (request.origin != CommandOrigin.USER) return SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+            if (if (request.method == TaskMethod.RECORD) !recording.availability().available else portFor(request.method) == null) return SaveSubmission.Rejected(SaveError.METHOD_UNSUPPORTED)
             if (preparationBytes < 0 || (request.method != TaskMethod.STREAM && preparationBytes != 0L))
-                return@synchronized SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+                return SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
             if (preparationBytes > minOf(limits.maxTotalTransferBytes, context.resourceBudget.maxBytes ?: 0))
-                return@synchronized SaveSubmission.Rejected(SaveError.BYTE_LIMIT_EXCEEDED)
+                return SaveSubmission.Rejected(SaveError.BYTE_LIMIT_EXCEEDED)
             val durableRequest = request.asDurableReference()
             journal.findByIdempotencyKey(request.idempotencyKey)?.let {
-                return@synchronized if (it.request == durableRequest.withTaskId(it.request.requestId)) { publish(it); SaveSubmission.Accepted(it, true) }
+                return if (it.request == durableRequest.withTaskId(it.request.requestId)) { publish(it); SaveSubmission.Accepted(it, true) }
                 else SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
             }
-            if (resourcesUnreleased()) return@synchronized SaveSubmission.Rejected(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
-            stopError(context)?.let { return@synchronized SaveSubmission.Rejected(it) }
+            if (resourcesUnreleased()) return SaveSubmission.Rejected(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+            stopError(context)?.let { return SaveSubmission.Rejected(it) }
             if (context.resourceBudget.maxBytes == null || context.resourceBudget.maxConcurrentWork != 1)
-                return@synchronized SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+                return SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
             if (request.networkResource?.expiresAtEpochMillis?.let { clock.nowMillis() >= it } == true)
-                return@synchronized SaveSubmission.Rejected(SaveError.EXPIRED_RESOURCE)
+                return SaveSubmission.Rejected(SaveError.EXPIRED_RESOURCE)
             val record = SaveRecord(durableRequest, TaskSnapshot(request.requestId, 0, TaskState.QUEUED, request.method),
                 commitId = request.requestId, operationId = context.operationId,
                 deadlineEpochMillis = context.deadlineEpochMillis, retryBudget = if (request.method == TaskMethod.RECORD) 0 else context.retryBudget,
                 attempt = if (request.method == TaskMethod.RECORD) 0 else context.attempt, bytesTransferred = preparationBytes)
             val inserted = journal.insert(record, limits.maxJournalEntries)
-            if (inserted.request != durableRequest.withTaskId(inserted.request.requestId)) return@synchronized SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
+            if (inserted.request != durableRequest.withTaskId(inserted.request.requestId)) return SaveSubmission.Rejected(SaveError.INVALID_REQUEST)
             if (inserted == record) runtimes.putIfAbsent(request.requestId, Runtime(if (request.method == TaskMethod.RECORD) context.copy(retryBudget = 0, attempt = 0) else context,
                 request.method, request.networkResource, sourceExpiry(context, request.networkResource)))
             publish(inserted)
             SaveSubmission.Accepted(inserted, inserted != record)
         } catch (_: Exception) { SaveSubmission.Rejected(SaveError.JOURNAL_UNAVAILABLE) }
+    }
+
+    /**
+     * Call on the existing worker only after actual successful HLS preparation. The adapter supplies
+     * its current inspection generation and actual prepared source/operation, never a DOM capability.
+     * This reads the journal but does not mutate either task or acquire a resource claim.
+     */
+    fun prepareStreamAlternative(
+        failed: SaveFailedIdentity,
+        inspectionGeneration: Long,
+        preparedSource: SelectedMediaResource,
+        context: OperationContext,
+        expiresAtEpochMillis: Long,
+    ): SaveAlternativePreparation = synchronized(lock) {
+        try {
+            if (SaveMethodAlternatives.review(failed) != SaveAlternativeReview.NEEDS_FRESH_STREAM_SOURCE ||
+                inspectionGeneration < 0 || preparedSource.durableReference)
+                return@synchronized SaveAlternativePreparation.Rejected(SaveError.INVALID_REQUEST)
+            val old = journal.read(failed.taskId)
+            if (old == null || old.request.method != TaskMethod.DIRECT || old.task.method != old.request.method ||
+                SaveFailedIdentity.from(old) != failed || context.operationId == old.operationId)
+                return@synchronized SaveAlternativePreparation.Rejected(SaveError.INVALID_REQUEST)
+            if (!stream.availability().available)
+                return@synchronized SaveAlternativePreparation.Rejected(SaveError.METHOD_UNSUPPORTED)
+            if (resourcesUnreleased())
+                return@synchronized SaveAlternativePreparation.Rejected(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+            stopError(context)?.let { return@synchronized SaveAlternativePreparation.Rejected(it) }
+            if (context.resourceBudget.maxBytes == null || context.resourceBudget.maxConcurrentWork != 1)
+                return@synchronized SaveAlternativePreparation.Rejected(SaveError.INVALID_REQUEST)
+            val expiry = minOf(expiresAtEpochMillis, context.deadlineEpochMillis,
+                preparedSource.expiresAtEpochMillis ?: Long.MAX_VALUE,
+                saturatedAdd(clock.nowMillis(), limits.sourceContextLifetimeMillis))
+            if (clock.nowMillis() >= expiry)
+                return@synchronized SaveAlternativePreparation.Rejected(SaveError.EXPIRED_RESOURCE)
+            SaveAlternativePreparation.Ready(StreamAlternativeProposal(alternativeOwner, failed,
+                old.request.idempotencyKey, inspectionGeneration, preparedSource.candidateId,
+                preparedSource.sourceIdentity, preparedSource.requestContextRef,
+                preparedSource.expiresAtEpochMillis, preparedSource.expectedAudio, context, expiry))
+        } catch (_: Exception) { SaveAlternativePreparation.Rejected(SaveError.JOURNAL_UNAVAILABLE) }
+    }
+
+    /**
+     * One explicit confirmation fixes the complete immutable final request (including variant).
+     * Consume before admission, so rejection/uncertainty cannot be retried with another request.
+     * Admission's prepare fence is always entered OUTSIDE the Coordinator monitor. No execute,
+     * credential acquisition, automatic retry or recovery writer is introduced here.
+     */
+    fun confirmStreamAlternative(
+        proposal: StreamAlternativeProposal,
+        inspectionGeneration: Long,
+        request: SaveRequest,
+        context: OperationContext,
+        claim: SaveExecutionAdmission.Claim,
+        preparationBytes: Long = 0,
+    ): SaveAlternativeConfirmation {
+        proposal.consume(alternativeOwner)?.let { return SaveAlternativeConfirmation.Rejected(it) }
+        return admission.prepare(claim, TaskMethod.STREAM, request.requestId, context.operationId) {
+            synchronized(lock) {
+                val result = confirmStreamAlternativeLocked(proposal, inspectionGeneration, request, context, preparationBytes)
+                val runtime = if (result is SaveAlternativeConfirmation.Accepted)
+                    runtimes[request.requestId]?.takeIf { it.original == context } else null
+                runtime?.claim = claim
+                result to runtime
+            }
+        } ?: SaveAlternativeConfirmation.Rejected(SaveAlternativeRejection.ADMISSION_REJECTED, SaveError.BUSY)
+    }
+
+    private fun confirmStreamAlternativeLocked(
+        proposal: StreamAlternativeProposal,
+        inspectionGeneration: Long,
+        request: SaveRequest,
+        context: OperationContext,
+        preparationBytes: Long,
+    ): SaveAlternativeConfirmation {
+        fun reject(reason: SaveAlternativeRejection, error: SaveError? = null) =
+            SaveAlternativeConfirmation.Rejected(reason, error)
+        try {
+            if (proposal.isRevoked) return reject(SaveAlternativeRejection.REVOKED)
+            if (clock.nowMillis() >= proposal.expiresAtEpochMillis)
+                return reject(SaveAlternativeRejection.EXPIRED, SaveError.EXPIRED_RESOURCE)
+            val source = request.networkResource
+            if (inspectionGeneration != proposal.inspectionGeneration || context != proposal.operation ||
+                request.method != TaskMethod.STREAM || request.origin != CommandOrigin.USER || source == null ||
+                source.durableReference || source.candidateId != proposal.candidateId ||
+                source.sourceIdentity != proposal.sourceIdentity || source.requestContextRef != proposal.requestContextRef ||
+                source.expiresAtEpochMillis != proposal.sourceExpiresAtEpochMillis ||
+                (proposal.expectedAudio && !source.expectedAudio) ||
+                request.requestId in setOf(proposal.failed.taskId, proposal.oldIdempotencyKey) ||
+                request.idempotencyKey in setOf(proposal.failed.taskId, proposal.oldIdempotencyKey))
+                return reject(SaveAlternativeRejection.MISMATCH, SaveError.INVALID_REQUEST)
+            val old = journal.read(proposal.failed.taskId)
+            if (old == null || old.request.method != TaskMethod.DIRECT || old.task.method != old.request.method ||
+                SaveFailedIdentity.from(old) != proposal.failed || old.request.idempotencyKey != proposal.oldIdempotencyKey)
+                return reject(SaveAlternativeRejection.STALE_FAILURE, SaveError.INVALID_REQUEST)
+            // This is a new user attempt, never idempotency replay of an unrelated existing task.
+            if (journal.read(request.requestId) != null || journal.findByIdempotencyKey(request.idempotencyKey) != null)
+                return reject(SaveAlternativeRejection.MISMATCH, SaveError.INVALID_REQUEST)
+            if (proposal.isRevoked) return reject(SaveAlternativeRejection.REVOKED)
+            return when (val submission = submitLocked(request, context, preparationBytes)) {
+                is SaveSubmission.Accepted -> if (!submission.existing && submission.record.request == request.asDurableReference())
+                    SaveAlternativeConfirmation.Accepted(submission.record)
+                    else reject(SaveAlternativeRejection.MISMATCH, SaveError.INVALID_REQUEST)
+                is SaveSubmission.Rejected -> if (submission.error == SaveError.JOURNAL_UNAVAILABLE)
+                    SaveAlternativeConfirmation.OutcomeUnknown(request.requestId)
+                    else reject(SaveAlternativeRejection.SUBMISSION_REJECTED, submission.error)
+            }
+        } catch (_: Exception) {
+            // A journal adapter may write and then throw. The token stays consumed and the fixed
+            // task identity is retained for result inspection; existing startup recovery owns repair.
+            return SaveAlternativeConfirmation.OutcomeUnknown(request.requestId)
+        }
     }
 
     /** A new explicit user command, not an internal retry. It does not silently reacquire credentials. */

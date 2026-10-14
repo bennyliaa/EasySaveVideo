@@ -142,6 +142,16 @@ class AndroidSaveRuntime private constructor(context: Context) {
     var scanning by mutableStateOf(false); private set
     var selection by mutableStateOf<PageSaveSelection?>(null); private set
     var showFailureBrowserReminder by mutableStateOf(false); private set
+    private val alternativeSelection = SaveAlternativeSelection()
+    private var streamAlternative: StreamAlternativeProposal? = null
+    private var streamAlternativeGeneration: Long? = null
+    private var streamAlternativeRequired = false
+    private var selectionAlternativeExpected = false
+    internal var alternativeNeedsSource by mutableStateOf(false); private set
+    internal var alternativePrepared by mutableStateOf(false); private set
+    internal var alternativeFeedback by mutableStateOf<SaveAlternativeFeedback?>(null); private set
+    // Result verification identity only; never execution, cancellation or replay authority.
+    internal var unknownAlternativeTaskId: String? = null; private set
     internal var authenticationNavigationGeneration by mutableLongStateOf(0L); private set
     var records by mutableStateOf<List<SaveRecord>>(emptyList()); private set
     var activeTaskCount by mutableStateOf(0); private set
@@ -245,6 +255,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         foreground = value; segmentRecording?.setForeground(value); main.removeCallbacks(poll)
         if (value) { main.post(poll) }
         else {
+            clearAlternativeSelection()
             taskCommands.retireResumesForBackground()
             authenticationOrigins.clear(); streamAuthenticationOrigin = null
             destinations?.cancelSelection()
@@ -321,17 +332,40 @@ class AndroidSaveRuntime private constructor(context: Context) {
         if (result == FailureNavigationResult.ACCEPTED) {
             // Only retire UI inspection. Never invoke cancel/resume/submit on the failed or active task.
             dismissSelection()
+            current?.let { failed ->
+                val identity = SaveFailedIdentity(failed.taskId, failed.revision, failed.state, failed.method, failed.error)
+                if (SaveMethodAlternatives.review(identity) == SaveAlternativeReview.NEEDS_FRESH_STREAM_SOURCE) {
+                    alternativeSelection.arm(identity, clock.nowMillis() + 60_000)
+                    alternativeNeedsSource = true
+                }
+            }
             showFailureBrowserReminder = true
         }
         return result
     }
-    fun dismissFailureBrowserReminder() { showFailureBrowserReminder = false }
+    fun dismissFailureBrowserReminder() {
+        showFailureBrowserReminder = false
+        if (hlsPreparation != null || preparingStream) dismissSelection() else clearAlternativeSelection()
+    }
+    internal fun dismissAlternativeFeedback() { alternativeFeedback = null }
+    private fun clearAlternativeSelection() {
+        alternativeSelection.clear(); selectionAlternativeExpected = false
+        streamAlternative?.revoke(); streamAlternative = null; streamAlternativeGeneration = null
+        alternativeNeedsSource = false; alternativePrepared = false
+    }
     private fun inspectionPage(browser: SystemBrowserHost): SaveInspectionPage? = browser.saveInspectionPage()
     fun inspectFromUserClick(browser: SystemBrowserHost) {
         requireMain()
         showFailureBrowserReminder = false
         if (!ready || !foreground || !allowed()) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SAVE_UNAVAILABLE); return }
         if (scanning) return
+        streamAlternative?.revoke(); streamAlternative = null; streamAlternativeGeneration = null
+        val expectedAlternativeInspection = alternativeNeedsSource
+        alternativePrepared = false; alternativeNeedsSource = false; selectionAlternativeExpected = false
+        val alternativeInspection = alternativeSelection.beginInspection(clock.nowMillis())
+        if (expectedAlternativeInspection && alternativeInspection == null) {
+            alternativeFeedback = SaveAlternativeFeedback.UNAVAILABLE; return
+        }
         val captured = inspectionPage(browser)
         val view = browser.selectedView()
         if (captured == null || !captured.isUsable() || view == null) {
@@ -343,13 +377,29 @@ class AndroidSaveRuntime private constructor(context: Context) {
         detector.inspectFromUserClick(view, captured.context, captured.epoch, pageUrl, ::isCurrent) { result ->
             scanning = false
             when (result) {
-                is PageSaveDetection.Found -> selection = result.selection
+                is PageSaveDetection.Found -> {
+                    when (resolveAlternativeInspection(alternativeSelection, alternativeInspection,
+                        result.selection, clock.nowMillis(), result.selection.isCurrent())) {
+                        SaveAlternativeInspectionDelivery.REJECTED -> {
+                            // A carried but stale intent cannot silently become an ordinary save.
+                            // Leave any newer selection/owner untouched by this late delivery.
+                            alternativeFeedback = SaveAlternativeFeedback.UNAVAILABLE
+                        }
+                        SaveAlternativeInspectionDelivery.ALTERNATIVE -> {
+                            selectionAlternativeExpected = true; selection = result.selection
+                        }
+                        SaveAlternativeInspectionDelivery.ORDINARY -> {
+                            selectionAlternativeExpected = false; selection = result.selection
+                        }
+                    }
+                }
                 is PageSaveDetection.Unavailable -> notice = SaveRuntimeNotice.DetectionUnavailable(result.reason)
             }
         }
     }
     fun dismissSelection() {
         requireMain()
+        clearAlternativeSelection()
         val ownedPreparation = hlsPreparation
         val ownedCancellation = preparationCancellation
         discoverySaveLinks.discard(streamDiscoveryOrigin); streamDiscoveryOrigin = null
@@ -398,6 +448,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         if (candidate.protected || !candidate.supported) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.CANDIDATE_PROTECTED_OR_UNSUPPORTED); return }
         if (!canSave(candidate.method)) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_ENTITLEMENT_REQUIRED); return }
         if (candidate.method == TaskMethod.STREAM) { prepareStream(candidate, captured, browser); return }
+        clearAlternativeSelection()
         destinations?.select(isCurrent = { foreground && selection === captured && captured.isCurrent() },
             accepted = { admission -> chooseDirect(candidate, captured, browser, admission) })
     }
@@ -470,10 +521,15 @@ class AndroidSaveRuntime private constructor(context: Context) {
     }
     private fun prepareStream(candidate: PageSaveCandidate, captured: PageSaveSelection, browser: SystemBrowserHost) {
         if (!networkSaveAllowed()) return
+        val alternative = alternativeSelection.association(captured, clock.nowMillis(), captured.isCurrent())
+        if (selectionAlternativeExpected && alternative == null) {
+            dismissSelection(); alternativeFeedback = SaveAlternativeFeedback.UNAVAILABLE; return
+        }
         if (!foreground || !ready || !canSave(TaskMethod.STREAM) || resourcesDraining() || !reserveExecution()) {
             notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_UNAVAILABLE); return
         }
         val execution = requireNotNull(exclusiveExecution)
+        streamAlternativeRequired = alternative != null
         preparationExecution = execution
         val lease = try { leaseFor(candidate.url, browser) } catch (_: Exception) {
             preparationExecution = null; releaseExecution(execution); notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_REQUEST_SESSION_UNAVAILABLE); return
@@ -492,14 +548,28 @@ class AndroidSaveRuntime private constructor(context: Context) {
         selection = null; hlsPreparation = null; preparingStream = true; streamSelectionContext = captured
         preparationWorker = execution
         try { worker.execute {
+            var proposed: StreamAlternativeProposal? = null
             try {
                 if (!foreground || !canSave(TaskMethod.STREAM)) throw SaveFailure(SaveError.INVALID_REQUEST)
                 networkPolicy.checkAdmission()
                 val prepared = stream.prepare(source, operation)
+                if (alternative != null) {
+                    when (val result = coordinator.prepareStreamAlternative(alternative.failed, alternative.generation,
+                        source, stream.operation(prepared), minOf(alternative.expiresAt, captured.expiresAtMillis, prepared.expiresAtMillis))) {
+                        is SaveAlternativePreparation.Ready -> proposed = result.proposal
+                        is SaveAlternativePreparation.Rejected -> { stream.discard(prepared); throw SaveFailure(result.error) }
+                    }
+                }
+                val preparedProposal = proposed
                 main.post {
-                    if (token == preparationGeneration && foreground && captured.isCurrent() && canSave(TaskMethod.STREAM) && networkSaveAllowed()) {
+                    val alternativeCurrent = alternative == null || alternativeSelection.association(captured,
+                        clock.nowMillis(), captured.isCurrent())?.generation == alternative.generation
+                    if (token == preparationGeneration && foreground && captured.isCurrent() && canSave(TaskMethod.STREAM) && networkSaveAllowed() && alternativeCurrent) {
                         hlsPreparation = prepared
+                        streamAlternative = preparedProposal; streamAlternativeGeneration = alternative?.generation
+                        alternativePrepared = preparedProposal != null
                     } else {
+                        preparedProposal?.revoke()
                         stream.discard(prepared); discoverySaveLinks.discard(saveOrigin)
                         authenticationOrigins.discard(authenticationOrigin)
                         if (streamAuthenticationOrigin === authenticationOrigin) streamAuthenticationOrigin = null
@@ -507,12 +577,16 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     }
                 }
             } catch (failure: Exception) {
+                proposed?.revoke()
                 discoverySaveLinks.discard(saveOrigin)
                 authenticationOrigins.discard(authenticationOrigin)
                 main.post {
                     if (streamAuthenticationOrigin === authenticationOrigin) streamAuthenticationOrigin = null
                     if (streamDiscoveryOrigin === saveOrigin) streamDiscoveryOrigin = null
-                    if (token == preparationGeneration) notice = saveRuntimeFailureNotice(SaveErrors.classify(failure))
+                    if (token == preparationGeneration) {
+                        if (alternative != null) alternativeFeedback = SaveAlternativeFeedback.UNAVAILABLE
+                        notice = saveRuntimeFailureNotice(SaveErrors.classify(failure))
+                    }
                 }
                 leases.revoke(lease)
             } finally {
@@ -553,6 +627,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
         if (!foreground || hlsPreparation !== prepared || streamSelectionContext !== captured || !captured.isCurrent() ||
             !canSave(TaskMethod.STREAM) || resourcesDraining()) { dismissSelection(); return }
         if (!networkSaveAllowed()) return
+        if (streamAlternativeRequired && streamAlternative == null) {
+            dismissSelection(); alternativeFeedback = SaveAlternativeFeedback.UNAVAILABLE; return
+        }
         val execution = preparationExecution?.takeIf(executionAdmission::owns)
         if (execution == null || preparingStream) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SAVE_OPERATION_BUSY); return }
         val resource = try { stream.select(prepared, identity) } catch (failure: Exception) {
@@ -562,6 +639,13 @@ class AndroidSaveRuntime private constructor(context: Context) {
         val operation = stream.operation(prepared)
         val id = admission.creationId
         val request = SaveRequest(id, id, resource, TaskMethod.STREAM)
+        val alternative = streamAlternative
+        val alternativeGeneration = streamAlternativeGeneration
+        // The chosen variant and destination creationId are fixed; the transferred proposal
+        // cannot be revoked by a later dialog close belonging to another selection.
+        streamAlternative = null; streamAlternativeGeneration = null; alternativePrepared = false
+        streamAlternativeRequired = false; selectionAlternativeExpected = false
+        alternativeSelection.clear()
         val saveOrigin = streamDiscoveryOrigin
         streamDiscoveryOrigin = null
         val authenticationOrigin = streamAuthenticationOrigin
@@ -571,6 +655,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         hlsPreparation = null; streamSelectionContext = null; preparationCancellation = null
         preparingStream = false; preparationGeneration++
         command(mediaWork = true, onRejected = {
+            alternative?.revoke()
             discoverySaveLinks.discard(saveOrigin)
             authenticationOrigins.discard(authenticationOrigin)
             try { stream.discard(prepared); resource.requestContextRef?.let(leases::revoke) } finally { releaseExecution(execution) }
@@ -581,7 +666,24 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 if (!foreground || generation != executionForegroundGeneration || !canSave(TaskMethod.STREAM)) {
                     stream.discard(prepared); resource.requestContextRef?.let(leases::revoke); return@command
                 }
-                when (val result = coordinator.submit(request, operation, execution, prepared.bytesTransferred)) {
+                val submission = if (alternative == null) coordinator.submit(request, operation, execution, prepared.bytesTransferred)
+                else when (val confirmed = coordinator.confirmStreamAlternative(alternative,
+                    requireNotNull(alternativeGeneration), request, operation, execution, prepared.bytesTransferred)) {
+                    is SaveAlternativeConfirmation.Accepted -> SaveSubmission.Accepted(confirmed.record, false)
+                    is SaveAlternativeConfirmation.Rejected -> {
+                        main.post { alternativeFeedback = SaveAlternativeFeedback.UNAVAILABLE }
+                        return@command
+                    }
+                    is SaveAlternativeConfirmation.OutcomeUnknown -> {
+                        // Never dispatch/re-submit/cancel a possibly persisted row. This worker has
+                        // not been handed off, so only its untransferred preparation can be retired.
+                        // Existing startup recovery will surface that exact fixed ID if it exists.
+                        main.post { unknownAlternativeTaskId = confirmed.taskId; alternativeFeedback = SaveAlternativeFeedback.OUTCOME_UNKNOWN }
+                        try { publishRecords() } catch (_: Exception) { /* Result remains unknown. */ }
+                        return@command
+                    }
+                }
+                when (val result = submission) {
                     is SaveSubmission.Accepted -> {
                         if (result.existing) return@command
                         acceptedTaskId = result.record.task.taskId
@@ -602,6 +704,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     discoverySaveLinks.discard(saveOrigin)
                     acceptedTaskId?.let(authenticationOrigins::cancel)
                     authenticationOrigins.discard(authenticationOrigin)
+                    alternative?.revoke()
+                    // No worker handoff occurred, including OUTCOME_UNKNOWN. Resource retirement
+                    // does not imply the durable new task was absent or rejected.
                     // Discard while the execution reservation still owns task priority.
                     try { stream.discard(prepared); resource.requestContextRef?.let(leases::revoke) }
                     finally { releaseExecution(execution) }

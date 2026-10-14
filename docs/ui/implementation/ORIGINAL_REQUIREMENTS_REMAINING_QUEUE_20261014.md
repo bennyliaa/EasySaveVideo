@@ -34,7 +34,7 @@ unblocked row after recording the preceding row's actual result.
 | PR-07/08 source management | Admission/runtime interfaces, local enablement, maintenance/repository/rollback groundwork and UI | PARTIAL. Production signed declarative interpreter remains disabled pending its gate; configuration/update/rollback native acceptance TO TEST |
 | PR-09 detection | Existing user-triggered detector, candidate/revision/quality selector | SOURCE IMPLEMENTED; owned actual media and native WebView inspection TO TEST |
 | PR-10/11 save | Direct/HLS runtime, verified publication, output/recovery ports | SOURCE IMPLEMENTED for admitted supported formats; real output/MP4/playback/device interruption TO TEST. No all-site/all-format guarantee |
-| PR-12/16 task flow | Save state mapping, cancellation, authentication/source reinspection, task detail/recovery; Save failure guidance report | PARTIAL. Full supported Direct→Stream fallback and trusted webpage→Record handoff must be reconciled independently; current guidance is not automatic fallback completion. Native closed loop TO TEST |
+| PR-12/16 task flow | Save state mapping, cancellation, authentication/source reinspection, task detail/recovery; Save failure guidance report | PARTIAL. Supported explicit Direct→Stream reassessment/Coordinator confirmation is source implemented in `METHOD_ALTERNATIVE_20261014.md` for the documented suitable-error allowlist. Trusted webpage→Record handoff remains UNKNOWN/GATE; this is not automatic fallback or completion of all PR-12. Native closed loop TO TEST |
 | PR-13/14 recording | Existing consent/basic/segment/region runtimes and UI | SOURCE IMPLEMENTED for existing capabilities; actual capture/audio/output/segment/native lifecycle TO TEST; no fabricated consent or audio |
 | PR-15 editor | Existing crop/merge/compression engine, non-destructive publication, responsive preview and defaults | SOURCE IMPLEMENTED; encoder/output/playback/Tools-gated native acceptance TO TEST |
 | PR-17 library | Stable IDs/folders/rename/move/delete/preview/share/gallery/batch Files; display/search controls report | SOURCE IMPLEMENTED for existing paths; actual SAF/MediaStore/receiver permissions and recovery TO TEST. No local import is added |
@@ -81,9 +81,22 @@ unblocked row after recording the preceding row's actual result.
    evidence-driven resource retirement. Other media and native verification remain
    exclusive. See `DIRECT_CONCURRENCY_20261014.md` and its reviewed design. This bound
    is an engineering choice, not a number stated in the original specification.
-6. Reconcile the remaining PR-12 fallback contract against current capabilities;
-   implement only supported, entitlement-checked transitions, with fresh resource
-   admission and explicit Record confirmation. No fake success or untrusted reuse.
+6. PR-12 supported Direct-to-Stream method contract (SOURCE IMPLEMENTED; native
+   acceptance open): exact failed identity, fresh real HLS preparation, opaque
+   single-use proposal, existing variant/destination confirmation, unknown-write
+   outcome and original startup recovery. See `METHOD_ALTERNATIVE_20261014.md`.
+   Stream-to-Record remains UNKNOWN until trusted current capture capability and
+   explicit fresh consent/entitlement/destination are available; do not infer it
+   from HTTP errors, DOM flags or presence of the platform capture service.
+7. Central Discovery privacy controls (DEVELOPABLE): original UI framework section
+   Settings explicitly separates keyword history, all Discovery history, source
+   progress and cache. Ordinary history/webpage cache are central already; reuse
+   existing Discovery owners for three separate remaining controls: current
+   keyword/filter/language profile Seen events, all profile Seen events, and one
+   source's continuation progress in the captured current profile. These are not
+   a stored keyword-input list. Do not add a combined clear-all or silently mutate
+   real user data.
+
 
 For each row: record file/test evidence, independent findings, actual regression
 result, private development-branch commit and next row. A failed build is repaired
@@ -116,8 +129,9 @@ frozen APKs/evidence immutable and never advance main as part of this queue.
 Discovery, bounded history/cache privacy, read-only entitlement explanation and
 central ordinary saving destination and browser preferences now have source
 implementations. Bounded Direct concurrency now has its source implementation.
-After its final test/review/private backup, continue supported PR-12 Coordinator
-suggestion/confirmation reconciliation and implementation. Report a concrete blocker only for the blocked action and continue
+Supported PR-12 Direct-to-Stream now also has its source implementation. After
+its final test/review/private backup, continue central Discovery privacy controls
+through existing owners. Report a concrete blocker only for the blocked action and continue
 another unblocked original requirement.
 If every remaining row really needs a decision or native acceptance, list those
 specific gates and request the smallest choice. Do not report the entire ESV

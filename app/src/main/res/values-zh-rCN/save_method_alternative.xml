@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_alternative_fresh_source">这次①失败可重新评估②流媒体保存。请重新识别并明确选择新的受支持流来源。失败任务保持不变；此时尚未确认流媒体或录制能力。</string>
+    <string name="save_alternative_ready">①失败后的新②流媒体尝试。选择清晰度和目的地后确认。原失败任务保持不变，准备成功不代表最终一定能保存为可播放视频。</string>
+    <string name="save_alternative_unavailable">这次流媒体重新评估已不可用，没有启动替代任务。请重新识别后明确选择。</string>
+    <string name="save_alternative_unknown">无法确认新②任务是否已创建，请勿重复提交。重新打开应用后查看任务恢复状态；不会自动开始保存。关闭此提示不会移除可能已创建的任务。</string>
+    <string name="save_alternative_dismiss">关闭提示</string>
+</resources>
