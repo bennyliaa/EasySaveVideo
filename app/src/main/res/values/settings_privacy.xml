@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_privacy_title">Privacy</string>
+    <string name="settings_privacy_scope">Each action asks separately. These controls do not clear cookies, Discovery history, provider progress, bookmarks, or saved videos.</string>
+    <string name="settings_privacy_history">Ordinary browsing history</string>
+    <string name="settings_privacy_history_scope">Clears the ordinary webpage visit list on this device. Existing tabs and website login sessions stay open. This cannot be undone.</string>
+    <string name="settings_privacy_history_count">Current history entries: %1$d</string>
+    <string name="settings_privacy_cache">Webpage cache</string>
+    <string name="settings_privacy_cache_scope">Requests removal of the shared WebView memory and disk cache. Webpages may load more slowly next time. This does not clear site storage or login cookies.</string>
+    <string name="settings_privacy_cache_clear">Clear webpage cache</string>
+    <string name="settings_privacy_cache_confirm_title">Clear webpage cache?</string>
+    <string name="settings_privacy_cache_confirm_message">Request clearing the WebView cache shared by this app’s browser tabs. The system provides no completion or freed-space report. Cookies, history, bookmarks, and saved videos are not included.</string>
+    <string name="settings_privacy_cache_requested">Cache clearing requested. The system does not report completion or the amount of space freed.</string>
+    <string name="settings_privacy_cache_failed">The cache clear request failed. No successful cleanup is confirmed; you can try again.</string>
+</resources>

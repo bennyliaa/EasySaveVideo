@@ -404,17 +404,22 @@ class SystemBrowserHost(
             onComplete(changed)
         }
     }
-    fun clearCache() {
+    fun clearCache() { clearCacheWithResult() }
+    internal fun clearCacheWithResult(): BrowserCacheClearResult {
         requireMain()
-        try {
+        val result = requestBrowserCacheClear {
             val existing = entries.values.firstOrNull()?.view
             if (existing != null) existing.clearCache(true) else {
                 // An empty, detached platform View clears the shared disk cache without loading a page.
                 val temporary = WebView(context)
                 try { temporary.clearCache(true) } finally { releaseView(temporary) }
             }
-            notice = BrowserNotice.Text("网页缓存清理已请求。Cookie 需单独清除。")
-        } catch (_: RuntimeException) { notice = BrowserNotice.Text("系统 WebView 未能清除缓存，请稍后重试。") }
+        }
+        notice = BrowserNotice.Text(when (result) {
+            BrowserCacheClearResult.REQUESTED -> "网页缓存清理已请求。Cookie 需单独清除。"
+            BrowserCacheClearResult.FAILED -> "系统 WebView 未能清除缓存，请稍后重试。"
+        })
+        return result
     }
     fun persistCurrentSession() { requireMain(); onCheckpoint(controller.persistableSession()) }
     fun dismissNotice() { notice = null }

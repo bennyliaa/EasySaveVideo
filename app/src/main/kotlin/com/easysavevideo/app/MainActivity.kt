@@ -607,6 +607,16 @@ class MainActivity : ComponentActivity() {
                     },
                     discoveryEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.SETTINGS,
                     persistenceWarning = settingsWriteFailed, loadWarning = settingsReadFailed,
+                    privacy = {
+                        val generation = newTabInputGeneration
+                        PrivacySettingsDetail(ordinaryHistory, generation,
+                            canAct = { generation == newTabInputGeneration && isForeground &&
+                                activeDestination == EsvDestination.SETTINGS && !isDestroyed && !isFinishing &&
+                                !saves.scanning && saves.selection == null && !saves.preparingStream && saves.hlsPreparation == null &&
+                                saves.destinations?.asking != true && browser.jsDialog == null && browser.fullScreenView == null &&
+                                !browser.pickerInFlight && !browser.hasPendingFileChoice },
+                            clearCache = browser::clearCacheWithResult)
+                    },
                     onSources = ::openProviderManagement, onBack = { backTo() },
                     diagnostics = { DiagnosticSettings(diagnosticState, diagnostics.controller::begin, diagnostics.controller::cancel) })
                 else if (route == EsvDestination.EDITOR) LibraryUnavailableScreen(onBack = { backTo(EsvDestination.LIBRARY) })

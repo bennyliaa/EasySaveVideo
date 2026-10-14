@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_privacy_title">隐私</string>
+    <string name="settings_privacy_scope">每项操作单独确认。这里不会清除Cookie、发现历史、来源进度、收藏或已保存的视频。</string>
+    <string name="settings_privacy_history">普通浏览历史</string>
+    <string name="settings_privacy_history_scope">清除此设备的普通网页访问记录。现有标签和网站登录会话保持不变。此操作不可撤销。</string>
+    <string name="settings_privacy_history_count">当前历史记录：%1$d条</string>
+    <string name="settings_privacy_cache">网页缓存</string>
+    <string name="settings_privacy_cache_scope">请求清理WebView共享的内存和磁盘缓存。下次加载网页可能变慢；不会清除站点存储或登录Cookie。</string>
+    <string name="settings_privacy_cache_clear">清理网页缓存</string>
+    <string name="settings_privacy_cache_confirm_title">清理网页缓存？</string>
+    <string name="settings_privacy_cache_confirm_message">请求清理本应用浏览标签共享的WebView缓存。系统不提供完成确认或释放空间报告。不包含Cookie、历史、收藏和已保存的视频。</string>
+    <string name="settings_privacy_cache_requested">已请求清理缓存。系统不会报告是否完成或已释放多少空间。</string>
+    <string name="settings_privacy_cache_failed">缓存清理请求失败，未确认清理成功；你可以重试。</string>
+</resources>

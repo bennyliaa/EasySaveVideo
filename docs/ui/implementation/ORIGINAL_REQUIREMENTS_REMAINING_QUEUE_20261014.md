@@ -39,10 +39,10 @@ unblocked row after recording the preceding row's actual result.
 | PR-15 editor | Existing crop/merge/compression engine, non-destructive publication, responsive preview and defaults | SOURCE IMPLEMENTED; encoder/output/playback/Tools-gated native acceptance TO TEST |
 | PR-17 library | Stable IDs/folders/rename/move/delete/preview/share/gallery/batch Files; display/search controls report | SOURCE IMPLEMENTED for existing paths; actual SAF/MediaStore/receiver permissions and recovery TO TEST. No local import is added |
 | PR-18 Vault | Exact crypto dependency admission only; Vault disabled | DECISION/GATE: security design and implementation admission, not a switch. Do not enable an unfinished Vault or claim encryption |
-| PR-19 entitlements | FeatureGate/Store boundaries plus Debug-only fake; Release isolation checks | SOURCE IMPLEMENTED abstraction; real billing DECISION/GATE (store/channel/package/product/validation); no new price or payment action |
+| PR-19 entitlements | FeatureGate/Store boundaries plus Debug-only fake; Release isolation checks | SOURCE IMPLEMENTED abstraction; read-only product/free-capability explanation page is DEVELOPABLE (PPT24); real billing DECISION/GATE (store/channel/package/product/validation); no new price or payment action |
 | PR-20 discovery settings | Preferences already persisted and used by Discovery's filter panel; central Settings category absent in baseline | SOURCE IMPLEMENTED in this slice: central discovery category/detail with shared owner, four controls/defaults; see `SETTINGS_DISCOVERY_20261014.md` |
 | PR-20 save settings | Wi-Fi preference real; destination control already in Browser settings | PARTIAL. Central destination entry is DEVELOPABLE using existing picker/admission. Concurrent-task control is missing original scope but requires independent bounded execution scheduling, not exposing a number over the existing single lane |
-| PR-20 privacy settings | Existing browser cache/Cookie/session controls and separate browser/discovery history/progress controls | DEVELOPABLE: central privacy category with explicit, correctly scoped existing actions and confirmation. Never clear automatically; history/progress/cache/media remain distinct |
+| PR-20 privacy settings | Existing browser cache/Cookie/session controls and separate browser/discovery history/progress controls | PARTIAL SOURCE IMPLEMENTED: central ordinary-history and webpage-cache actions with separate confirmation/status; `SETTINGS_PRIVACY_20261014.md`. Cookie/session and Discovery cleanup remain separate existing controls; native acceptance TO TEST |
 | PR-20 browser settings | Existing Browser SettingsPanel has JavaScript/cookies/restore-tabs/active-view limit | DEVELOPABLE: central browser category or explicit entry to existing panel; preserve security/user-confirmation semantics and existing settings owner |
 | PR-21 diagnostic privacy | Bounded enum-only error storage, explicit export UI | SOURCE IMPLEMENTED; native destination/limits and Release leak acceptance TO TEST; no automatic uploads |
 | PR-22 reliability | Extensive bounded failure/recovery implementation and JVM checks | PARTIAL acceptance; fault matrix on admitted real media/device TO TEST. Do not claim every production ANR resolved from unit tests |
@@ -55,20 +55,27 @@ unblocked row after recording the preceding row's actual result.
    persistence, legal bounds, explicit restore-defaults, matching EN/ZH labels,
    no new search/source/history side effect. Both entry paths and inactive/background coordinator behavior are model-tested;
    3,698 aggregate PASS, two existing corpus SKIP. See the slice report.
-2. Central privacy access: inspect existing cleanup commands and confirmations;
-   expose a category/detail that names the exact data affected and routes explicit
-   user actions only. Reuse the existing selected-keyword target, all-discovery
-   history distinction, and cache/Cookie separation. If a given operation lacks
-   confirmed semantics, keep that individual action unavailable while implementing
-   the other established actions.
-3. Central browser settings / destination access: reuse existing ports rather than
+2. Central privacy access (bounded history/cache SOURCE IMPLEMENTED): explicit
+   confirmed ordinary-history clear uses the existing async controller; cache
+   reports REQUESTED/FAILED without pretending verified completion. Cancel,
+   duplicate callback, UI retirement, late delivery and storage failure have
+   production-controller tests. Cookie/session and Discovery history/progress
+   remain separate existing controls; they are not invoked by these two actions.
+   Actual Android/native acceptance remains open.
+3. Read-only entitlement explanation (NEXT): original UI framework section4.7 /
+   PPT24 requires free capabilities and the three planned modules. Read the current
+   entitlement snapshot without issuing purchase/restore/refresh or changing grants.
+   Preserve UNKNOWN and unavailable-store states; Debug simulated grants must be
+   visibly distinguished from purchases. Use planned product labels only, with no
+   price, final SKU, purchase promise or claim that disabled Vault is operational.
+4. Central browser settings / destination access: reuse existing ports rather than
    another state owner. Include navigation/back behavior and source-backed notices.
    Do not enable site permissions or select a real user directory during development.
-4. Original save concurrency requirement: first design a bounded queue/lane policy
+5. Original save concurrency requirement: first design a bounded queue/lane policy
    compatible with cancellation, recording/native-resource exclusion and recovery;
    then implement and test the real coordinator/runtime. Current single execution
    lane is intentional protection, not a configurable concurrency implementation.
-5. Reconcile the remaining PR-12 fallback contract against current capabilities;
+6. Reconcile the remaining PR-12 fallback contract against current capabilities;
    implement only supported, entitlement-checked transitions, with fresh resource
    admission and explicit Record confirmation. No fake success or untrusted reuse.
 
@@ -91,7 +98,7 @@ frozen APKs/evidence immutable and never advance main as part of this queue.
   use existing Commons path with approved contact and appropriate usage/rights
   review; no account, endpoint, provider enablement or personal contact is invented.
 - Vault/dynamic interpreter/billing: retain disabled status. These require their own
-  scoped security/product gates and are not prerequisites for rows 1–5 above.
+  scoped security/product gates and are not prerequisites for rows 1–6 above.
 - Device acceptance: installing/operating devices is deferred in the current task.
   When resumed, only the authorized emulator with preserved data, compatible signer
   and increasing versionCode; the handed-back phone is excluded. Native results,
@@ -100,8 +107,9 @@ frozen APKs/evidence immutable and never advance main as part of this queue.
 
 ## Immediate continuation rule
 
-After the discovery-settings slice's test/review/backup, continue with row 2 if
-its existing commands permit a bounded implementation. Report a concrete blocker
+The discovery-settings slice and bounded history/cache privacy slice now have
+source implementations. After the privacy slice's final test/review/backup,
+continue row 3 (read-only entitlement explanation), then browser/destination access. Report a concrete blocker
 only for the blocked action and continue another unblocked original requirement.
 If every remaining row really needs a decision or native acceptance, list those
 specific gates and request the smallest choice. Do not report the entire ESV
