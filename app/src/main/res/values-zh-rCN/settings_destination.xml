@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_destination_loading">正在读取已保存的媒体位置偏好…</string>
+    <string name="settings_destination_saving">正在保存位置偏好；存储确认后才会更新选中值。</string>
+    <string name="settings_destination_unavailable">保存位置控制尚未就绪，未作任何位置变更。</string>
+</resources>

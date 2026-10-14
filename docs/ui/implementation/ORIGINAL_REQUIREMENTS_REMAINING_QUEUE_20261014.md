@@ -27,7 +27,7 @@ unblocked row after recording the preceding row's actual result.
 | Original reference | Source/evidence now | Remaining state and next requirement |
 |---|---|---|
 | PR-01/02, UI-R01/02 | API31/Kotlin/Compose, platform-neutral core, selected SkinKit bindings; boundary/runtime checks | SOURCE IMPLEMENTED; iOS explicitly later. Phone/tablet installation/render acceptance TO TEST |
-| PR-03/25 browser basics | SystemBrowserHost: URL, navigation, tabs, WebView fullscreen, session controls, site-permission denials | SOURCE IMPLEMENTED; native callback/fullscreen/session/permission behavior TO TEST. Do not invent permission grants |
+| PR-03/25 browser basics | SystemBrowserHost: URL, navigation, tabs, WebView fullscreen, session controls, site-permission denials | PARTIAL: ordinary browser implemented; native callback/fullscreen/session behavior TO TEST. Current camera/microphone/location permission handling is fail-closed, not a complete site-permission manager. Original incognito and per-site permission management remain to reconcile/design; do not invent permission grants |
 | PR-25 history/bookmarks | Ordinary history bounded 200 entries/30 days; bookmark repository/read feedback/shared reader; integrated candidate report | SOURCE IMPLEMENTED; real AtomicFile/WebView/restart/privacy acceptance TO TEST |
 | PR-04 discovery cards | Real coordinator, finite results, provider framework; current cards still render an icon thumbnail placeholder | Thumbnail reader production integration DECISION/GATE (dependency review below); real-source endpoint/contact DECISION. Card interaction native acceptance TO TEST |
 | PR-05/06 discovery policy | Scheduler, lifecycle cancellation, progress/history, four policies, finite pagination, recovery exits and stable reading | SOURCE IMPLEMENTED; sources/network/power/native lifecycle TO TEST; no further generic race-hardening slice assumed |
@@ -41,7 +41,7 @@ unblocked row after recording the preceding row's actual result.
 | PR-18 Vault | Exact crypto dependency admission only; Vault disabled | DECISION/GATE: security design and implementation admission, not a switch. Do not enable an unfinished Vault or claim encryption |
 | PR-19 entitlements | FeatureGate/Store boundaries plus Debug-only fake; Release isolation checks | SOURCE IMPLEMENTED abstraction; read-only product/free-capability explanation page SOURCE IMPLEMENTED in `SETTINGS_ENTITLEMENTS_20261014.md` (PPT24); real billing DECISION/GATE (store/channel/package/product/validation); no new price or payment action |
 | PR-20 discovery settings | Preferences already persisted and used by Discovery's filter panel; central Settings category absent in baseline | SOURCE IMPLEMENTED in this slice: central discovery category/detail with shared owner, four controls/defaults; see `SETTINGS_DISCOVERY_20261014.md` |
-| PR-20 save settings | Wi-Fi preference real; destination control already in Browser settings | PARTIAL. Central destination entry is DEVELOPABLE using existing picker/admission. Concurrent-task control is missing original scope but requires independent bounded execution scheduling, not exposing a number over the existing single lane |
+| PR-20 save settings | Wi-Fi preference real; destination control already in Browser settings | PARTIAL SOURCE IMPLEMENTED. Central destination entry reuses existing picker/admission; see `SETTINGS_DESTINATION_20261014.md`. Native SAF/storage acceptance TO TEST. Concurrent-task control is missing original scope but requires independent bounded execution scheduling, not exposing a number over the existing single lane |
 | PR-20 privacy settings | Existing browser cache/Cookie/session controls and separate browser/discovery history/progress controls | PARTIAL SOURCE IMPLEMENTED: central ordinary-history and webpage-cache actions with separate confirmation/status; `SETTINGS_PRIVACY_20261014.md`. Cookie/session and Discovery cleanup remain separate existing controls; native acceptance TO TEST |
 | PR-20 browser settings | Existing Browser SettingsPanel has JavaScript/cookies/restore-tabs/active-view limit | DEVELOPABLE: central browser category or explicit entry to existing panel; preserve security/user-confirmation semantics and existing settings owner |
 | PR-21 diagnostic privacy | Bounded enum-only error storage, explicit export UI | SOURCE IMPLEMENTED; native destination/limits and Release leak acceptance TO TEST; no automatic uploads |
@@ -68,8 +68,11 @@ unblocked row after recording the preceding row's actual result.
    Preserve UNKNOWN and unavailable-store states; Debug simulated grants must be
    visibly distinguished from purchases. Use planned product labels only, with no
    price, final SKU, purchase promise or claim that disabled Vault is operational.
-4. Central browser settings / destination access: reuse existing ports rather than
-   another state owner. Include navigation/back behavior and source-backed notices.
+4. Central saving destination access (SOURCE IMPLEMENTED; native acceptance open):
+   shared four-preference runtime/picker, live guarded adapter, actual storage
+   acknowledgement and existing result dialog; see `SETTINGS_DESTINATION_20261014.md`.
+   Next: central browser settings, reusing existing ports rather than another state
+   owner. Include navigation/back behavior and source-backed notices.
    Do not enable site permissions or select a real user directory during development.
 5. Original save concurrency requirement: first design a bounded queue/lane policy
    compatible with cancellation, recording/native-resource exclusion and recovery;
@@ -107,11 +110,11 @@ frozen APKs/evidence immutable and never advance main as part of this queue.
 
 ## Immediate continuation rule
 
-The discovery-settings slice and bounded history/cache privacy slice now have
-source implementations. After the privacy slice's final test/review/backup,
-continue row 4 (central saving destination / browser settings access) after the
-read-only entitlement explanation slice has its final test/review/backup. Report a concrete blocker
-only for the blocked action and continue another unblocked original requirement.
+Discovery, bounded history/cache privacy, read-only entitlement explanation and
+central ordinary saving destination now have source implementations. After the
+destination slice's final test/review/private backup, continue the browser half
+of row 4. Report a concrete blocker only for the blocked action and continue
+another unblocked original requirement.
 If every remaining row really needs a decision or native acceptance, list those
 specific gates and request the smallest choice. Do not report the entire ESV
 project finished merely because one slice is packaged or synchronized.

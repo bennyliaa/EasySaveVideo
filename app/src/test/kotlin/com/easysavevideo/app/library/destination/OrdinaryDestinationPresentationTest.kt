@@ -256,8 +256,14 @@ class OrdinaryDestinationPresentationTest {
         assertTrue(ui.contains("val display = ordinaryCopyDisplay(status)"))
         assertTrue(ui.contains("stringResource(ordinaryCopyStateResource(display.state),"))
         assertTrue(ui.contains("stringResource(ordinaryCopyKindResource(display.kind))"))
-        listOf("ordinaryCopyStatus(", "ordinaryDestinationLabel(", "Locale.getDefault", "remember {", "remember(", "LaunchedEffect", "DisposableEffect")
+        listOf("ordinaryCopyStatus(", "ordinaryDestinationLabel(", "Locale.getDefault", "remember {", "LaunchedEffect")
             .forEach { assertFalse(it, (runtime + policy + mapper + ui).contains(it)) }
+        // The central entry remembers only callback authority, never localized display text.
+        assertEquals(1, Regex("remember\\(").findAll(ui).count())
+        val remembered = ui.substringAfter("remember(runtime, actionScopeKey) {").substringBefore("DisposableEffect")
+        assertTrue(remembered.contains("DestinationSettingsActions("))
+        assertFalse(remembered.contains("stringResource"))
+        assertTrue(ui.contains("onDispose { actions.close() }"))
         listOf("android.", "androidx.", "R.string", "Context", "Locale", "creationId", "String", "URI", "Uri")
             .forEach { assertFalse(it, policy.contains(it)) }
         assertTrue(ui.contains("runtime.statuses.filter { it.internalSaved }.take(8).forEach { status ->"))

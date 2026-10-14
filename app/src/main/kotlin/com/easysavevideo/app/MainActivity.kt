@@ -607,6 +607,15 @@ class MainActivity : ComponentActivity() {
                     },
                     discoveryEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.SETTINGS,
                     persistenceWarning = settingsWriteFailed, loadWarning = settingsReadFailed,
+                    saveDestination = {
+                        val generation = newTabInputGeneration
+                        CentralSaveDestinationSettings(saves.destinations, generation,
+                            canAct = { generation == newTabInputGeneration && isForeground &&
+                                activeDestination == EsvDestination.SETTINGS && !isDestroyed && !isFinishing &&
+                                !saves.scanning && saves.selection == null && !saves.preparingStream && saves.hlsPreparation == null &&
+                                browser.jsDialog == null && browser.fullScreenView == null &&
+                                !browser.pickerInFlight && !browser.hasPendingFileChoice })
+                    },
                     entitlements = {
                         val generation = newTabInputGeneration
                         EntitlementSettingsDetail(generation, BuildConfig.DEBUG,

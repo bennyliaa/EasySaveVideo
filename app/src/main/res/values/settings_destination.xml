@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_destination_loading">Reading the saved media-location preference…</string>
+    <string name="settings_destination_saving">Saving the location preference. The selected value changes only after storage confirms it.</string>
+    <string name="settings_destination_unavailable">Save-location controls are not ready. No location change has been made.</string>
+</resources>
