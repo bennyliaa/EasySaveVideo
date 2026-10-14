@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_settings_discovery">Discovery</string>
+    <string name="settings_discovery_scope">Uses the same preferences as the Discovery filters. Columns adapt to available space. Changing page size or repeat policy keeps the current materialized page and revises subsequent pages; this does not submit a new keyword search.</string>
+    <string name="settings_discovery_wait">Wait for settings to load before editing discovery preferences.</string>
+    <string name="settings_discovery_columns">Preferred columns: %1$d (1–6)</string>
+    <string name="settings_discovery_columns_less">One fewer column</string>
+    <string name="settings_discovery_columns_more">One more column</string>
+    <string name="settings_discovery_pagesize">Results per page: %1$d (1–100)</string>
+    <string name="settings_discovery_pagesize_less">One fewer result per page</string>
+    <string name="settings_discovery_pagesize_more">One more result per page</string>
+    <string name="settings_discovery_repeat">Repeat policy</string>
+    <string name="settings_discovery_intensity">Search intensity</string>
+    <string name="settings_discovery_intensity_scope">The existing power and source limits still apply. Discovery stays stopped while this settings page is open or the app is in the background.</string>
+    <string name="settings_discovery_defaults">Restore discovery defaults</string>
+    <string name="settings_discovery_defaults_scope">Restores 2 columns, 20 results per page, Prefer new, and Balanced. Keeps history, provider progress, source configuration, and all other settings.</string>
+    <string name="settings_persistence_warning">Settings or tab addresses could not be saved. Changes may revert after restart. Check available storage; this warning does not confirm that a later write succeeded.</string>
+    <string name="settings_load_warning">Saved settings could not be read. Discovery preference editing is unavailable to protect the saved values. Reopen the app to retry loading.</string>
+</resources>

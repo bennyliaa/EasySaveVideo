@@ -1,0 +1,135 @@
+[
+  {
+    "path": "app/build.gradle.kts",
+    "bytes": 15233,
+    "sha256": "8611730728d2da7098bab9d9077c99cb6098e4ee19ccddb5ac63273f9a8a5d76",
+    "git_sha": "dea953dea34bccdba36f829cae9983d30c53442d",
+    "base_git_sha": "a57b25a32ab3552f8a6eb9c2bbbc054cb0c8f40b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+    "bytes": 55669,
+    "sha256": "85a12f1ea7aedd1f5382dc495c8f81d1465e3617ad02658f21701a14952a6513",
+    "git_sha": "77684c16749e54fa7b0f518eb6de59c730cd5f14",
+    "base_git_sha": "5bfbc3aad7b292b30e6385f44660a90e471af996"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
+    "bytes": 42746,
+    "sha256": "6c180a30bf4d74f6ce97af8abcc4f1ebc507840106e6f779cbe9a99c266b4251",
+    "git_sha": "9684ed93540de2a03593b5f6d706aba40b391e38",
+    "base_git_sha": "71a351eba736f9397dfa1deee7f0564c720f9bfd"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/DiscoverySettingsDetail.kt",
+    "bytes": 4393,
+    "sha256": "3c1e93384cfb48c947804004d07839e4a44f923444f16846ef482b74a860a154",
+    "git_sha": "2fbd8d85f5c282ed46493cacae13c70d0305b04a",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/EsvSettingsScreen.kt",
+    "bytes": 9807,
+    "sha256": "774822e0166810523139d4c1b4f7b64921ba1fce3025b4edcbb4f2283c95acc5",
+    "git_sha": "7be637329fbb95f8e2628a5fd0e1b5ab68452baa",
+    "base_git_sha": "ee1f13a8e5eac9ca120cf23b18680dd2c0a2f6ca"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/shell/SettingsNavigation.kt",
+    "bytes": 5328,
+    "sha256": "7f58909623beebdd0f0651921d0e7a1203b8476440cab0f1ed3a967c3fb8dfd4",
+    "git_sha": "8c12e23d609b319d0d886242343ff10d47a3e4e0",
+    "base_git_sha": "fc85121564a1e7f8be021d70a813410acd62b22a"
+  },
+  {
+    "path": "app/src/main/res/values-zh-rCN/settings_discovery.xml",
+    "bytes": 1919,
+    "sha256": "59e5bf8ea4b781e684b0853d037fa820ecc229c339beb2ddaffbadf5b6e01920",
+    "git_sha": "620b22be56499473e6f36fd36b798eadaa3db99e",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/main/res/values/settings_discovery.xml",
+    "bytes": 2075,
+    "sha256": "f1624aa948c203da9f39e13aad7f536dc5da2535588ca27b63bc52516c757be0",
+    "git_sha": "64a391d102267a7ec7bb810d9c2d730c6263e81a",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/recording/RecordingNotificationWiringTest.kt",
+    "bytes": 11056,
+    "sha256": "85c7195c827760432970689536b7067f6637913295e78ac9441290f0c039f10b",
+    "git_sha": "cf5cfc458bfef7c6f99cbf78dafd429e3556e4d3",
+    "base_git_sha": "d56f8ee0e1d6785369dca816fbd2e5d9be9a6af2"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/SaveWifiWiringContractTest.kt",
+    "bytes": 6085,
+    "sha256": "dd4ec528ff10318886ac0d3b7dd372eb74967aa1fd46ad61e579157fe6a6a5a6",
+    "git_sha": "b4b7aa3da2d6358f3c4643257416ed0de2b92c95",
+    "base_git_sha": "315ddc2012d2fe731a98309bf230ce4b6e349472"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/shell/DiscoverySettingsTest.kt",
+    "bytes": 11524,
+    "sha256": "8dc7b1b9b3864334b08465a6170ebba668adfb6e13597199543b0a283271adb1",
+    "git_sha": "8ca97a20f9522f2810c0f58bfb47d183f0598f7d",
+    "base_git_sha": null
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/shell/SettingsNavigationTest.kt",
+    "bytes": 4736,
+    "sha256": "499248df657fa59d30fdfb179ceea12b4785f0c1773ea6d081c96e0d21097f99",
+    "git_sha": "31ef9f8fb879543c840a68b26c90d97720da3615",
+    "base_git_sha": "1c49e32047a7bb644a5b7d05896d7fa2eb076c7b"
+  },
+  {
+    "path": "discovery/src/test/kotlin/com/easysavevideo/discovery/DiscoveryCoordinatorTest.kt",
+    "bytes": 23780,
+    "sha256": "eff516064eec350f11060f745efbe81762bf0e4084cae788b57ad0957a2462f8",
+    "git_sha": "4903fae8459e796a877b03290acebd76cf801726",
+    "base_git_sha": "652c4211ecbc1f7af34c4bb971225e90ea37fcdc"
+  },
+  {
+    "path": "docs/ui/implementation/ORIGINAL_REQUIREMENTS_REMAINING_QUEUE_20261014.md",
+    "bytes": 10928,
+    "sha256": "02dd96cfaf659534755a9ddb391e7ffc917aba180e66dbd274bb187b09b4a610",
+    "git_sha": "7859d064d13f94a82858b37ba92462ecf6ecc7ec",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/SETTINGS_DISCOVERY_20261014.md",
+    "bytes": 6148,
+    "sha256": "f904d7e158b286f2775e5296561a80ab55b286af1922a6e1bf0e43cca687ef30",
+    "git_sha": "b9a988ee2130ffb9f7bab4dc4ee695c4031f6717",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/settings-discovery-20261014/BOUNDARIES.json",
+    "bytes": 421,
+    "sha256": "bcfeb662c64e6d4d0b6bd34913f501a6de3da0ba95912f99026a3f2ff76199a2",
+    "git_sha": "242e4bb8fc1638ccef9fcc262c1769ac1540e97c",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/settings-discovery-20261014/LINT_SUMMARY.json",
+    "bytes": 107,
+    "sha256": "b69e6ef1f12ad676440b9f8619df2d8d45a12824a616e2a4525f1b6ed36073e5",
+    "git_sha": "9dddb5f8295892779c398e9d50505ad381521671",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/settings-discovery-20261014/TASK_STATUS.json",
+    "bytes": 9283,
+    "sha256": "ed9b210be39775f00db3b8281d16cbf7c7acd01e3ac45976c187738d59a41cb0",
+    "git_sha": "b9c5e3889607eb9769b04cdd904762c7e535df84",
+    "base_git_sha": null
+  },
+  {
+    "path": "docs/ui/implementation/settings-discovery-20261014/TEST_SUMMARY.json",
+    "bytes": 1403,
+    "sha256": "c2ecb7cfa2de5540d2e3e2f305a65116e3fc600f42219d184576cae15ddf0245",
+    "git_sha": "832153c9d9e5d90b9f7f80d8ec5e3f1e3aa44294",
+    "base_git_sha": null
+  }
+]

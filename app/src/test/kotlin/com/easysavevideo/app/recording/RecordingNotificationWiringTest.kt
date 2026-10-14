@@ -104,7 +104,7 @@ class RecordingNotificationWiringTest {
     @Test fun languageMirrorUsesOnlyAcceptedEditAndFinalMergedStartupValue() {
         val main = source("MainActivity.kt")
         assertEquals(2, Regex("saves\\.updateRecordingNotificationLanguage\\(").findAll(main).count())
-        assertTrue(main.contains("settingsChanged = true; settings = value\n                        if (edit is SettingsEdit.Language) saves.updateRecordingNotificationLanguage(settings.appearance.language)"))
+        assertTrue(main.contains("settingsChanged = true; settings = value\n                            if (edit is SettingsEdit.Language) saves.updateRecordingNotificationLanguage(settings.appearance.language)"))
         val loaded = main.substringAfter("persistence.start { loaded, checkpoint, failed ->").substringBefore("@Suppress(\"DEPRECATION\")")
         assertTrue(loaded.contains("if (!settingsChanged) { settings = loaded; browser.applySettings(loaded.browser) }"))
         assertTrue(loaded.indexOf("settings.copy(save = saves.initializeSaveSettings") < loaded.indexOf("saves.updateRecordingNotificationLanguage"))

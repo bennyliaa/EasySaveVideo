@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.easysavevideo.app.ui.shell.SettingsEdit
 import com.easysavevideo.app.discovery.DiscoveryCardOpenRequest
 import com.easysavevideo.app.discovery.discoveryCardOpenRequest
 import com.easysavevideo.app.discovery.AndroidDiscoveryController
@@ -62,9 +63,9 @@ import androidx.compose.material3.Text
 @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoverySettings, active: Boolean,
-    onSettings: (DiscoverySettings) -> Unit, onBrowser: () -> Unit, onOpen: (DiscoveryCardOpenRequest) -> Boolean,
+    onSettings: (SettingsEdit.DiscoveryEdit) -> Unit, onBrowser: () -> Unit, onOpen: (DiscoveryCardOpenRequest) -> Boolean,
     onLink: (String) -> Unit, onLibrary: () -> Unit, onManageProviders: () -> Unit,
-    canClearQuery: () -> Boolean = { false }) {
+    canClearQuery: () -> Boolean = { false }, settingsEditable: Boolean = true) {
     val v = LocalEsvVisuals.current
     BoxWithConstraints(Modifier.fillMaxSize().imePadding()) {
     val paneLayout = responsivePaneLayout(maxWidth.value - 2 * v.spacingMedium.value,
@@ -180,19 +181,19 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
             }
             EsvText(stringResource(R.string.discovery_copy_17), style = v.captionTextStyle)
             EsvText(stringResource(R.string.flow_discoveryscreen_25), style = v.captionTextStyle)
-            RepeatPolicy.entries.forEach { policy -> EsvButton((if (settings.repeatPolicy == policy) "✓ " else "") + policyText(policy), onClick = { onSettings(settings.copy(repeatPolicy = policy)) }) }
+            RepeatPolicy.entries.forEach { policy -> EsvButton((if (settings.repeatPolicy == policy) "✓ " else "") + policyText(policy), onClick = { onSettings(SettingsEdit.DiscoveryRepeat(policy)) }, enabled = settingsEditable) }
             EsvText(stringResource(R.string.discovery_copy_18, settings.pageSize, settings.columns), style = v.captionTextStyle)
             Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvButton(stringResource(R.string.flow_discoveryscreen_27), onClick = { onSettings(settings.copy(pageSize = (settings.pageSize - 10).coerceAtLeast(10))) }, enabled = settings.pageSize > 10)
-                EsvButton(stringResource(R.string.flow_discoveryscreen_28), onClick = { onSettings(settings.copy(pageSize = (settings.pageSize + 10).coerceAtMost(100))) }, enabled = settings.pageSize < 100)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_27), onClick = { onSettings(SettingsEdit.DiscoveryPagePresetStep(-10)) }, enabled = settingsEditable && settings.pageSize > 10)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_28), onClick = { onSettings(SettingsEdit.DiscoveryPagePresetStep(10)) }, enabled = settingsEditable && settings.pageSize < 100)
             }
             Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvButton(stringResource(R.string.flow_discoveryscreen_29), onClick = { onSettings(settings.copy(columns = settings.columns - 1)) }, enabled = settings.columns > 1)
-                EsvButton(stringResource(R.string.flow_discoveryscreen_30), onClick = { onSettings(settings.copy(columns = settings.columns + 1)) }, enabled = settings.columns < 6)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_29), onClick = { onSettings(SettingsEdit.DiscoveryColumns(-1)) }, enabled = settingsEditable && settings.columns > 1)
+                EsvButton(stringResource(R.string.flow_discoveryscreen_30), onClick = { onSettings(SettingsEdit.DiscoveryColumns(1)) }, enabled = settingsEditable && settings.columns < 6)
             }
             DiscoveryMode.entries.forEach { mode -> EsvButton((if (settings.mode == mode) "✓ " else "") + when(mode) {
                 DiscoveryMode.POWER_SAVING -> stringResource(R.string.discovery_copy_19); DiscoveryMode.BALANCED -> stringResource(R.string.discovery_copy_20); DiscoveryMode.AGGRESSIVE -> stringResource(R.string.discovery_copy_21)
-            }, onClick = { onSettings(settings.copy(mode = mode)) }) }
+            }, onClick = { onSettings(SettingsEdit.DiscoveryIntensity(mode)) }, enabled = settingsEditable) }
             DiscoveryPowerControls(state, controller)
             EsvText(stringResource(R.string.flow_discoveryscreen_31), style = v.titleTextStyle)
             if (appliedReadable) {

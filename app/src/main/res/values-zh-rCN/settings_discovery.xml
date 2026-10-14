@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_settings_discovery">发现</string>
+    <string name="settings_discovery_scope">与发现筛选面板使用同一组设置。列数会按可用空间适配。修改每页数量或重复策略会保留当前已物化页面，并修订后续页面；不会提交新的关键词搜索。</string>
+    <string name="settings_discovery_wait">请等待设置读取完成，再修改发现偏好。</string>
+    <string name="settings_discovery_columns">偏好列数：%1$d（1–6）</string>
+    <string name="settings_discovery_columns_less">减少一列</string>
+    <string name="settings_discovery_columns_more">增加一列</string>
+    <string name="settings_discovery_pagesize">每页结果：%1$d（1–100）</string>
+    <string name="settings_discovery_pagesize_less">每页减少一条</string>
+    <string name="settings_discovery_pagesize_more">每页增加一条</string>
+    <string name="settings_discovery_repeat">重复策略</string>
+    <string name="settings_discovery_intensity">搜索强度</string>
+    <string name="settings_discovery_intensity_scope">现有省电与来源限制仍然生效。打开此设置页或应用处于后台时，发现仍保持停止。</string>
+    <string name="settings_discovery_defaults">恢复发现默认设置</string>
+    <string name="settings_discovery_defaults_scope">恢复为2列、每页20条、优先显示新视频、平衡。保留历史、来源进度、来源配置及其他设置。</string>
+    <string name="settings_persistence_warning">设置或标签地址未能保存，重启后可能恢复旧值。请检查可用存储空间；此提示不代表后续写入已经成功。</string>
+    <string name="settings_load_warning">未能读取已保存的设置。为保护原有值，暂不能修改发现偏好。请重新打开应用以重试读取。</string>
+</resources>

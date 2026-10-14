@@ -154,6 +154,9 @@ class MainActivity : ComponentActivity() {
         }.distinct() else null
         browser.finishFiles(choice, uris)
     }
+    private var discoverySettingsChanged = false
+    private var settingsReadFailed by mutableStateOf(false)
+    private var settingsWriteFailed by mutableStateOf(false)
     private val libraryDocumentPicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val exports = if (::saves.isInitialized) saves.libraryExports else null
         if (exports == null) pendingLibraryDocumentResult = result.resultCode to result.data
@@ -186,6 +189,7 @@ class MainActivity : ComponentActivity() {
         recordingConsent = RecordingConsentController(this, saves::receiveProjectionGrant, saves::abandonRecordingRequest,
             saves::isRecordingRequestAllowed, saves::recordingAudioPermissionDenied, saves::requiresDefaultDisplayRecording)
         persistence = BrowserPersistence(applicationContext, errorSink) {
+            settingsWriteFailed = true
             if (::browser.isInitialized) browser.showNotice("设置或标签地址保存未完成，下次启动可能仍为旧状态。请检查存储空间。")
         }
         val entitlements = EntitlementManager(BuildEntitlements.source)
@@ -553,15 +557,20 @@ class MainActivity : ComponentActivity() {
                     onRejectCandidate = providerManagement::rejectCandidate, onRollback = providerManagement::rollback,
                     onBack = { providerManagement.setActive(false); backTo(EsvDestination.SETTINGS) })
                 else if (route == EsvDestination.DISCOVER) DiscoveryScreen(discovery, settings.discovery, isForeground,
+                    settingsEditable = settingsReady && persistence.settingsLoaded && isForeground,
                     canClearQuery = {
                         isForeground && activeDestination == EsvDestination.DISCOVER &&
                             !saves.scanning && saves.selection == null && !saves.preparingStream && saves.hlsPreparation == null &&
                             saves.destinations?.asking != true && saves.destinations?.notice == null &&
                             saves.segmentRecording?.previewActive != true && previewReceipt == null && libraryPreviewReference == null
                     },
-                    onSettings = { value ->
-                        settingsChanged = true; settings = settings.copy(discovery = value)
-                        persistence.saveSettings(settings); discovery.updateSettings(value)
+                    onSettings = { edit ->
+                        applyDiscoverySettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded, isForeground, !isDestroyed && !isFinishing,
+                            activeDestination, EsvDestination.DISCOVER)?.let { value ->
+                            discoverySettingsChanged = true
+                            settingsChanged = true; settings = value
+                            persistence.saveSettings(value); discovery.updateSettings(value.discovery)
+                        }
                     }, onManageProviders = ::openProviderManagement,
                     onBrowser = { navigate(EsvDestination.BROWSER); discovery.setVisibility(isForeground, false) },
                     onOpen = { request ->
@@ -580,13 +589,24 @@ class MainActivity : ComponentActivity() {
                     })
                 else if (route == EsvDestination.SETTINGS) EsvSettingsScreen(settings,
                     onChange = { edit ->
-                        val value = edit.applyTo(settings)
-                        val changedNetwork = edit is SettingsEdit.WifiOnly
-                        if (changedNetwork) { saveSettingsChanged = true; saves.updateSaveSettings(value.save) }
-                        settingsChanged = true; settings = value
-                        if (edit is SettingsEdit.Language) saves.updateRecordingNotificationLanguage(settings.appearance.language)
-                        persistence.saveSettings(value, confirmNetworkPreference = changedNetwork)
+                        val value = if (edit is SettingsEdit.DiscoveryEdit)
+                            applyDiscoverySettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded, isForeground, !isDestroyed && !isFinishing,
+                                activeDestination, EsvDestination.SETTINGS)
+                            else edit.applyTo(settings)
+                        if (value != null) {
+                            val changedNetwork = edit is SettingsEdit.WifiOnly
+                            if (changedNetwork) { saveSettingsChanged = true; saves.updateSaveSettings(value.save) }
+                            settingsChanged = true; settings = value
+                            if (edit is SettingsEdit.Language) saves.updateRecordingNotificationLanguage(settings.appearance.language)
+                            persistence.saveSettings(value, confirmNetworkPreference = changedNetwork)
+                            if (edit is SettingsEdit.DiscoveryEdit) {
+                                discoverySettingsChanged = true
+                                discovery.updateSettings(value.discovery)
+                            }
+                        }
                     },
+                    discoveryEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.SETTINGS,
+                    persistenceWarning = settingsWriteFailed, loadWarning = settingsReadFailed,
                     onSources = ::openProviderManagement, onBack = { backTo() },
                     diagnostics = { DiagnosticSettings(diagnosticState, diagnostics.controller::begin, diagnostics.controller::cancel) })
                 else if (route == EsvDestination.EDITOR) LibraryUnavailableScreen(onBack = { backTo(EsvDestination.LIBRARY) })
@@ -634,10 +654,14 @@ class MainActivity : ComponentActivity() {
         }
         persistence.start { loaded, checkpoint, failed ->
             if (!settingsChanged) { settings = loaded; browser.applySettings(loaded.browser) }
+            settingsReadFailed = !persistence.settingsLoaded
+            // Appearance or language changes during startup must not discard loaded discovery preferences.
+            settings = mergeLoadedDiscoverySettings(settings, loaded, discoverySettingsChanged, persistence.settingsLoaded)
             // Other early preference edits must not replace a loaded Wi-Fi restriction.
             if (!saveSettingsChanged && persistence.settingsLoaded) {
                 settings = settings.copy(save = saves.initializeSaveSettings(loaded.save))
             }
+            if (settingsChanged && persistence.settingsLoaded) persistence.saveSettings(settings)
             saves.updateRecordingNotificationLanguage(settings.appearance.language)
             settingsReady = true
             discovery.updateSettings(settings.discovery)

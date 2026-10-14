@@ -14,6 +14,47 @@ class DiscoveryCoordinatorTest {
         val profile = SearchProfile("profile", "query")
         fun start(incognito: Boolean = false) { coordinator.setVisibility(true, true); coordinator.start("session", profile, incognito) }
     }
+    @Test fun settingsPageChangesKeepDiscoveryStoppedAndRetainHistoryProgressAndCurrentPage() {
+        val f = Fixture(); f.start(); f.runtime.complete(0, 1, 2, nextCursor = "next", exhausted = false)
+        val first = f.coordinator.page(0)!!
+        assertTrue(f.coordinator.recordSeen(first, first.orderedResultIds.first(), SeenEvent.SHOWN))
+        f.coordinator.setVisibility(true, false)
+        val requests = f.runtime.calls.size
+        val checkpoint = f.coordinator.currentCheckpoint()!!
+        val history = f.coordinator.historyStatistics()
+        val progress = f.store.transaction { progress("profile", "p1", f.profile.queryKey) }
+        for (mode in DiscoveryMode.entries) {
+            f.coordinator.setMode(mode)
+            assertEquals(requests, f.runtime.calls.size)
+        }
+        assertTrue(f.coordinator.reviseView(RepeatPolicy.HIDE_SHOWN, pageSize = 1))
+        assertEquals(requests, f.runtime.calls.size)
+        assertEquals(DiscoveryState.SUSPENDED, f.coordinator.status().state)
+        val revised = f.coordinator.currentCheckpoint()!!
+        assertEquals(checkpoint.stamp, revised.stamp)
+        assertEquals(checkpoint.profile.query, revised.profile.query)
+        assertEquals(checkpoint.profile.queryKey, revised.profile.queryKey)
+        assertEquals(first.orderedResultIds, f.coordinator.page(0)!!.orderedResultIds)
+        assertEquals(history, f.coordinator.historyStatistics())
+        assertEquals(progress, f.store.transaction { progress("profile", "p1", f.profile.queryKey) })
+        f.coordinator.setVisibility(true, true)
+        assertEquals(first.orderedResultIds, f.coordinator.page(0)!!.orderedResultIds)
+    }
+    @Test fun restoringDiscoveryDefaultsWhileBackgroundedDoesNotLaunchOrClear() {
+        val f = Fixture(); f.start(); f.runtime.complete(0, 1, nextCursor = "next", exhausted = false)
+        val page = f.coordinator.page(0)!!
+        f.coordinator.setVisibility(false, false)
+        val requests = f.runtime.calls.size
+        f.coordinator.setMode(DiscoveryMode.AGGRESSIVE)
+        f.coordinator.reviseView(RepeatPolicy.SHOW_ALL, pageSize = 100)
+        f.coordinator.setMode(DiscoveryMode.BALANCED)
+        assertTrue(f.coordinator.reviseView(RepeatPolicy.PREFER_NEW, pageSize = 20))
+        assertEquals(requests, f.runtime.calls.size)
+        assertEquals(DiscoveryState.SUSPENDED, f.coordinator.status().state)
+        assertEquals(page.stamp, f.coordinator.currentCheckpoint()!!.stamp)
+        assertEquals(page.orderedResultIds, f.coordinator.page(0)!!.orderedResultIds)
+        f.store.transaction { assertEquals("next", progress("profile", "p1", f.profile.queryKey)!!.cursor) }
+    }
     @Test fun zeroProvidersHasExplicitNoSourcesAndMakesNoRequests() {
         val f = Fixture(0); f.start()
         assertEquals(DiscoveryState.NO_SOURCES, f.coordinator.status().state); assertTrue(f.runtime.calls.isEmpty()); assertNull(f.coordinator.page(0))

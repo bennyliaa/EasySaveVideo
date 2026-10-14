@@ -24,7 +24,9 @@ class SaveWifiWiringContractTest {
         assertTrue(activity.contains("saves.initializeSaveSettings(loaded.save)"))
         assertTrue(activity.contains("confirmNetworkPreference = changedNetwork"))
         assertTrue(activity.contains("val changedNetwork = edit is SettingsEdit.WifiOnly"))
-        assertTrue(activity.contains("val value = edit.applyTo(settings)"))
+        assertTrue(activity.contains("val value = if (edit is SettingsEdit.DiscoveryEdit)"))
+        assertTrue(activity.contains("else edit.applyTo(settings)"))
+        assertTrue(activity.contains("if (value != null) {"))
         assertTrue(activity.contains("settings = settingsWithBrowser(settings, it)"))
     }
     @Test fun settingsCopyAndNavigationRetainEditorAndOtherSiblings() {

@@ -7,8 +7,8 @@ import org.junit.Test
 
 class SettingsNavigationTest {
     @Test fun categoryKeysAreUniqueStableAndInvalidRestoresHaveControlledFallback() {
-        assertEquals(listOf("appearance","language","sources","save","editor","diagnostics","about"),SettingsCategory.entries.map{it.key})
-        assertEquals(7,SettingsCategory.entries.map{it.key}.toSet().size)
+        assertEquals(listOf("appearance","language","sources","discovery","save","editor","diagnostics","about"),SettingsCategory.entries.map{it.key})
+        assertEquals(8,SettingsCategory.entries.map{it.key}.toSet().size)
         for(key in listOf(null,"", "1","unknown")) {
             assertNull(SettingsCategory.fromKey(key));assertTrue(settingsPresentation(key,false).categories)
             assertFalse(settingsPresentation(key,false).detail);assertEquals(SettingsCategory.APPEARANCE,settingsPresentation(key,true).active)

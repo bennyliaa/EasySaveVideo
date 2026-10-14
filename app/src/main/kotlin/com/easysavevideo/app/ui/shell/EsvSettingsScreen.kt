@@ -23,7 +23,7 @@ import com.easysavevideo.app.licenses.ThirdPartyNotices
 import com.easysavevideo.app.ui.responsivePaneLayout
 
 @Composable
-fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}) {
+fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}, discoveryEditable: Boolean = true, persistenceWarning: Boolean = false, loadWarning: Boolean = false) {
     var categoryKey by rememberSaveable { mutableStateOf<String?>(null) }
     var notices by rememberSaveable { mutableStateOf(false) }
     val noticesListState = rememberLazyListState()
@@ -42,13 +42,13 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
         if(notices) ThirdPartyNotices(onClose={notices=false}, listState=noticesListState)
         else if(pane.split) {
             Column(Modifier.fillMaxSize().padding(v.spacingMedium),verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
-                SettingsHeading(onBack={goBack()})
+                SettingsHeading(onBack={goBack()}, persistenceWarning=persistenceWarning,loadWarning=loadWarning)
                 Row(Modifier.weight(1f).fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(v.spacingMedium)) {
                     Column(Modifier.width(pane.sideWidthDp.dp).fillMaxHeight().verticalScroll(rememberScrollState())) {
                         SettingsCategories(presentation.active){categoryKey=it.key}
                     }
                     Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
-                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics){notices=true}
+                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable){notices=true}
                     }
                 }
             }
@@ -56,22 +56,25 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
             // One bounded scroll owns the whole compact page, including its heading at low height.
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(v.spacingMedium),
                 verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
-                SettingsHeading(onBack={goBack()})
+                SettingsHeading(onBack={goBack()}, persistenceWarning=persistenceWarning,loadWarning=loadWarning)
                 if(presentation.categories)SettingsCategories(null){categoryKey=it.key}
-                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics){notices=true}
+                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable){notices=true}
             }
         }
     }
 }
-@Composable private fun SettingsHeading(onBack:()->Unit) {
+@Composable private fun SettingsHeading(onBack:()->Unit,persistenceWarning:Boolean,loadWarning:Boolean) {
     val v=LocalEsvVisuals.current
     EsvText(stringResource(R.string.ui_settings),style=v.titleTextStyle)
     TextButton(onClick=onBack){EsvText(stringResource(R.string.ui_back))}
+    if(loadWarning) EsvText(stringResource(R.string.settings_load_warning),style=v.captionTextStyle,color=v.colors.error)
+    if(persistenceWarning) EsvText(stringResource(R.string.settings_persistence_warning),style=v.captionTextStyle,color=v.colors.error)
 }
 @Composable private fun categoryLabel(category:SettingsCategory):String=stringResource(when(category) {
     SettingsCategory.APPEARANCE -> R.string.ui_appearance
     SettingsCategory.LANGUAGE -> R.string.ui_language
     SettingsCategory.SOURCES -> R.string.ui_sources
+    SettingsCategory.DISCOVERY -> R.string.ui_settings_discovery
     SettingsCategory.SAVE -> R.string.ui_settings_save
     SettingsCategory.EDITOR -> R.string.ui_settings_editor
     SettingsCategory.DIAGNOSTICS -> R.string.diagnostics_title
@@ -89,7 +92,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
     }
 }
 @Composable private fun SettingsDetail(category:SettingsCategory,settings:AppSettings,onChange:(SettingsEdit)->Unit,
-    onSources:()->Unit,diagnostics: @Composable () -> Unit,onNotices:()->Unit) {
+    onSources:()->Unit,diagnostics: @Composable () -> Unit,discoveryEditable:Boolean,onNotices:()->Unit) {
     val v=LocalEsvVisuals.current
     EsvText(categoryLabel(category),style=v.sectionTextStyle)
     when(category) {
@@ -114,6 +117,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
             EsvText(stringResource(R.string.ui_settings_sources_description),style=v.captionTextStyle)
             EsvButton(stringResource(R.string.ui_sources),onSources)
         }
+        SettingsCategory.DISCOVERY -> DiscoverySettingsDetail(settings.discovery,discoveryEditable,onChange)
         SettingsCategory.SAVE -> {
             Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=settings.save.wifiOnly,role=Role.Switch,
                 onValueChange={onChange(SettingsEdit.WifiOnly(it))}), verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {

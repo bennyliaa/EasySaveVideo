@@ -85,7 +85,7 @@ dependencies {
 val contractResourceInputs = fileTree("src/main/res") {
     for (locale in listOf("values", "values-zh-rCN")) {
         for (resource in listOf(
-            "editor_back.xml",
+            "editor_back.xml", "settings_discovery.xml",
             "recording_notification.xml", "save_authentication_origin.xml", "save_runtime_notice.xml", "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "discovery_recovery.xml", "input_clear.xml",
             "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "bookmark_panel.xml", "history_panel.xml", "browser_permission_notice.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
             "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
@@ -176,6 +176,7 @@ val contractSourceInputs = files(
     "src/main/kotlin/com/easysavevideo/app/save/SaveFailureGuidanceUi.kt",
     "src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/EsvSettingsScreen.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/shell/DiscoverySettingsDetail.kt",
     "src/main/kotlin/com/easysavevideo/app/library/LibraryScreen.kt",
     "src/main/kotlin/com/easysavevideo/app/library/LibraryBatchExportDialog.kt",
     "src/main/kotlin/com/easysavevideo/app/licenses/ThirdPartyNotices.kt",
