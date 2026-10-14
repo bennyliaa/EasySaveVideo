@@ -172,6 +172,13 @@ class AndroidLibraryRuntime internal constructor(
         ui.later(task, 250)
     }
 
+    /** Only the rendered snapshot owns this explicit clear, including same-query new lifecycles. */
+    fun clearSearch(expectedState: LibraryViewState) {
+        ui.requireCurrentThread()
+        if (!available() || state.busy || state.move != null || state !== expectedState || expectedState.query.text.isEmpty()) return
+        search("")
+    }
+
     fun sort(sort: LibrarySort) {
         ui.requireCurrentThread()
         if (!available() || state.busy || state.move != null) return

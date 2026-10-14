@@ -1,5 +1,6 @@
 package com.easysavevideo.app.library
 
+import com.easysavevideo.app.ui.InputClearButton
 import com.easysavevideo.app.BuildConfig
 import com.easysavevideo.app.diagnostics.InitializationDiagnostic
 import com.easysavevideo.app.diagnostics.initializationDiagnosticText
@@ -166,21 +167,12 @@ fun LibraryScreen(
                             exports?.let { LibraryExportStatus(it, state.foreground) { exportRecoveryIsCurrent(it) } }
                             if (state.move == null) {
                                 LibraryField(state.query.text, runtime::search, stringResource(R.string.flow_library_search), enabled = state.foreground && !state.busy)
-                                Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                    EsvButton(stringResource(R.string.flow_sort_name) + if (state.query.sort == LibrarySort.NAME) " ✓" else "",
-                                        { runtime.sort(LibrarySort.NAME) }, enabled = interactive, modifier = Modifier.weight(1f))
-                                    EsvButton(stringResource(R.string.flow_sort_date) + if (state.query.sort == LibrarySort.DATE) " ✓" else "",
-                                        { runtime.sort(LibrarySort.DATE) }, enabled = interactive, modifier = Modifier.weight(1f))
-                                }
-                                Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                    EsvButton(sortLabel(LibrarySort.DURATION, state.query.sort), { runtime.sort(LibrarySort.DURATION) }, enabled = interactive, modifier = Modifier.weight(1f))
-                                    EsvButton(sortLabel(LibrarySort.SIZE, state.query.sort), { runtime.sort(LibrarySort.SIZE) }, enabled = interactive, modifier = Modifier.weight(1f))
-                                }
-                                Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                                    EsvButton(if (state.query.direction == SortDirection.DESCENDING) "降序 ↓" else "升序 ↑", runtime::reverseSort, enabled = interactive)
-                                    EsvButton(stringResource(if (grid) R.string.flow_list else R.string.flow_grid), { grid = !grid })
-                                    EsvButton(stringResource(R.string.flow_libraryscreen_8), runtime::createFolder, enabled = interactive)
-                                }
+                                if (state.query.text.isNotEmpty()) InputClearButton(R.string.library_clear_search,
+                                    enabled = state.foreground && !state.busy,
+                                    onClear = { runtime.clearSearch(state) })
+                                LibraryDisplayControls(state.query.sort, state.query.direction, grid, interactive,
+                                    onSort = runtime::sort, onReverse = runtime::reverseSort,
+                                    onToggleView = { grid = !grid }, onCreateFolder = runtime::createFolder)
                             }
                             EsvText(if (state.query.folderId == null) "位置：媒体库根目录" else "位置：${state.folder?.displayName ?: "正在读取文件夹…"}", style = v.titleTextStyle)
                             if (state.query.folderId != null) Row(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -429,16 +421,6 @@ private fun LibraryField(value: String, onValueChange: (String) -> Unit, label: 
     }
 }
 
-@Composable
-private fun sortLabel(sort: LibrarySort, selected: LibrarySort): String {
-    val label=stringResource(when(sort) {
-        LibrarySort.NAME -> R.string.finite_sort_name
-        LibrarySort.DATE -> R.string.finite_sort_date
-        LibrarySort.DURATION -> R.string.finite_sort_duration
-        LibrarySort.SIZE -> R.string.finite_sort_size
-    })
-    return if(sort==selected)stringResource(R.string.finite_selected,label) else label
-}
 @Composable private fun durationLabel(millis:Long?)=libraryDuration(millis,stringResource(R.string.finite_duration_unknown))
 @Composable private fun resolutionLabel(media:MediaItem)=libraryResolution(media,stringResource(R.string.finite_resolution_unknown))
 @Composable private fun dateLabel(media:MediaItem):String = stringResource(

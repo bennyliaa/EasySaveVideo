@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_order_ascending">Ascending</string>
+    <string name="library_order_descending">Descending</string>
+    <string name="library_order_ascend_action">Sort ascending ↑</string>
+    <string name="library_order_descend_action">Sort descending ↓</string>
+    <string name="library_view_list">List view</string>
+    <string name="library_view_grid">Grid view</string>
+    <string name="library_view_list_action">Switch to list</string>
+    <string name="library_view_grid_action">Switch to grid</string>
+    <string name="library_display_summary">Sort: %1$s · %2$s · %3$s</string>
+    <string name="library_clear_search">Clear library search and show this folder</string>
+</resources>

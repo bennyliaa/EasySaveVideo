@@ -15,6 +15,137 @@ import java.util.ArrayDeque
 
 /** Repository/scheduling fakes only: no Android filesystem, player, device, or real media. */
 class LibraryRuntimeTest {
+    @Test fun clearSearchRejectsOldSnapshotAfterSameValueQueryRoundTrip() {
+        val h = Harness(); h.start(); h.runtime.search("same"); h.ui.runTimers(); h.drain()
+        val old = h.runtime.state
+        h.runtime.search("different"); h.ui.runTimers(); h.drain()
+        h.runtime.search("same"); h.ui.runTimers(); h.drain()
+        val current = h.runtime.state
+        assertEquals(old.query, current.query); assertNotSame(old, current)
+        val reads = h.repo.queries.toList()
+        h.runtime.clearSearch(old); h.ui.runTimers(); h.drain()
+        assertSame(current, h.runtime.state); assertEquals(reads, h.repo.queries)
+        h.runtime.clearSearch(current); h.ui.runTimers(); h.drain()
+        assertEquals("", h.runtime.state.query.text)
+        h.runtime.close()
+    }
+
+    @Test fun clearSearchRejectsOldSnapshotAfterForegroundOwnerChanges() {
+        val h = Harness(); h.start(); h.runtime.search("same"); h.ui.runTimers(); h.drain()
+        val old = h.runtime.state
+        h.runtime.setForeground(false); h.runtime.setForeground(true); h.drain()
+        val current = h.runtime.state
+        assertEquals(old.query, current.query); assertNotSame(old, current)
+        val reads = h.repo.queries.toList()
+        h.runtime.clearSearch(old); h.ui.runTimers(); h.drain()
+        assertSame(current, h.runtime.state); assertEquals(reads, h.repo.queries)
+        h.runtime.clearSearch(current); h.ui.runTimers(); h.drain()
+        assertEquals("", h.runtime.state.query.text)
+        h.runtime.close()
+    }
+
+    @Test fun clearNoMatchesReturnsToSameFolderWithSortAndDirectionIntact() {
+        val h = Harness()
+        h.repo.folderRecords["folder"] = LibraryFolder("folder", 1, null, "Folder")
+        h.repo.media["inside"] = media("inside").copy(folderId = "folder")
+        h.repo.media["outside"] = media("outside")
+        h.start(); h.runtime.enterFolder("folder"); h.drain()
+        h.runtime.sort(LibrarySort.DURATION); h.drain(); h.runtime.reverseSort(); h.drain()
+        h.runtime.search("no-match"); h.ui.runTimers(); h.drain()
+        assertTrue(h.runtime.state.ready); assertTrue(h.runtime.state.items.isEmpty())
+        val searched = h.runtime.state
+        h.runtime.clearSearch(searched)
+        assertEquals(searched.query.copy(text = "", cursor = null), h.runtime.state.query)
+        assertTrue(h.runtime.state.loading)
+        h.ui.runTimers(); h.drain()
+        assertEquals(listOf("inside"), h.runtime.state.items.map { it.itemId })
+        assertEquals(0, h.repo.createCalls + h.repo.renameCalls + h.repo.moveCalls + h.repo.deleteCalls)
+        h.runtime.close()
+    }
+
+    @Test fun clearSearchReplacesPendingDebounceAndRejectsRepeatedOrNewerQueryClicks() {
+        val h = Harness(); h.repo.media["one"] = media("one"); h.start()
+        h.runtime.search("one")
+        val old = h.runtime.state
+        h.runtime.clearSearch(old)
+        assertEquals(1, h.ui.timers.size)
+        val cleared = h.runtime.state
+        h.runtime.clearSearch(old); h.runtime.clearSearch(cleared)
+        assertEquals(cleared, h.runtime.state); assertEquals(1, h.ui.timers.size)
+        h.runtime.search("newer")
+        val newer = h.runtime.state
+        h.runtime.clearSearch(old)
+        assertEquals(newer, h.runtime.state)
+        h.ui.runTimers(); h.drain()
+        assertEquals(listOf("", "newer"), h.repo.queries.map { it.text })
+        h.runtime.close()
+    }
+
+    @Test fun lateSearchCompletionCannotRestoreClearedFilterOrOverwriteFolderContents() {
+        val h = Harness(); h.repo.media["one"] = media("one"); h.repo.media["two"] = media("two"); h.start()
+        h.runtime.search("one"); h.ui.runTimers(); h.work.runNext()
+        val late = h.ui.posts.removeFirst()
+        h.runtime.clearSearch(h.runtime.state); h.ui.runTimers(); h.drain()
+        assertEquals(listOf("one", "two"), h.runtime.state.items.map { it.itemId })
+        val cleared = h.runtime.state
+        late(); h.drain()
+        assertEquals(cleared, h.runtime.state)
+        h.runtime.close()
+    }
+
+    @Test fun clearSearchCannotIssueReadsInBackgroundDuringMutationOrAfterClose() {
+        val h = Harness(); h.start(); h.runtime.search("query"); h.ui.runTimers(); h.drain()
+        val query = h.runtime.state
+        h.runtime.createFolder(); h.runtime.editName("new folder"); h.runtime.submitName()
+        assertTrue(h.runtime.state.busy)
+        val busy = h.runtime.state; h.runtime.clearSearch(query); assertEquals(busy, h.runtime.state)
+        h.drain()
+        h.runtime.setForeground(false)
+        val background = h.runtime.state
+        h.runtime.clearSearch(query); h.drain(); assertEquals(background, h.runtime.state)
+        h.runtime.close(); h.runtime.clearSearch(query); assertEquals(background, h.runtime.state)
+    }
+
+    @Test fun displaySortingActionsUseRealQueryLaneAndResetOnlyPageCursor() {
+        val h = readingPageHarness()
+        h.runtime.search("Entry"); h.ui.runTimers(); h.drain()
+        for (sort in LibrarySort.entries) {
+            h.runtime.nextPage(); h.drain()
+            val before = h.runtime.state.query
+            assertNotNull(before.cursor)
+            h.runtime.sort(sort)
+            assertTrue(h.runtime.state.loading)
+            assertEquals(before.copy(sort = sort, cursor = null), h.runtime.state.query)
+            h.drain()
+            assertEquals(h.runtime.state.query, h.repo.queries.last())
+            val initial = h.runtime.state.query
+            repeat(2) {
+                val previous = h.runtime.state.query
+                h.runtime.reverseSort(); h.drain()
+                assertEquals(previous.copy(direction = if (previous.direction == SortDirection.ASCENDING)
+                    SortDirection.DESCENDING else SortDirection.ASCENDING, cursor = null), h.runtime.state.query)
+                assertEquals(h.runtime.state.query, h.repo.queries.last())
+            }
+            assertEquals(initial, h.runtime.state.query)
+        }
+        assertEquals(0, h.repo.createCalls + h.repo.renameCalls + h.repo.moveCalls + h.repo.deleteCalls)
+        h.runtime.close()
+    }
+
+    @Test fun displaySortingCommandsCannotReadOrWriteAfterBackgroundOrClose() {
+        val h = readingPageHarness()
+        h.runtime.setForeground(false)
+        val before = h.runtime.state
+        val queries = h.repo.queries.toList()
+        for (sort in LibrarySort.entries) { h.runtime.sort(sort); h.runtime.reverseSort() }
+        h.drain()
+        assertEquals(before, h.runtime.state); assertEquals(queries, h.repo.queries)
+        h.runtime.close()
+        for (sort in LibrarySort.entries) { h.runtime.sort(sort); h.runtime.reverseSort() }
+        h.drain()
+        assertEquals(before, h.runtime.state); assertEquals(queries, h.repo.queries)
+    }
+
     @Test fun ordinaryForegroundReturnPreservesCompleteSecondPageQueryAcrossRepeatedPauses() {
         for (folderId in listOf(null, "folder")) {
             val h = readingPageHarness()
