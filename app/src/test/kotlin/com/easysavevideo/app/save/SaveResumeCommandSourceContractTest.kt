@@ -33,10 +33,10 @@ class SaveResumeCommandSourceContractTest {
     @Test fun controlLaneReservesExactDirectOrExclusiveClaimBeforeResume() {
         val resume = section("fun resume(taskId:", "private fun finishTaskCommand(")
         ordered(resume, "executionAdmission.tryAcquireDirect()", "reserveExecution()",
-            "leaseFor(it.url, browser)", "val execution = SaveResumeExecutionReservation { releaseExecution(claim) }",
+            ".copy(cancelToken = attempt.cancelToken)", "leaseFor(it.url, browser)", "val execution = SaveResumeExecutionReservation { releaseExecution(claim) }",
             "val current = coordinator.record(taskId)", "taskCommands.canResume(attempt, current.task)",
             "canResumeFinalized(current)", "executionAdmission.owns(claim)", "!executionReleaseUnconfirmed()",
-            ".copy(cancelToken = attempt.cancelToken)", "coordinator.resume(taskId, operation, claim, lease)",
+            "val operation = resumedOperation", "coordinator.resume(taskId, operation, claim, lease)",
             "attempt.ownsResumed(resumed, operation)", "launchResumedExecution(requireNotNull(resumed), operation, attempt, lease, execution, claim)")
         assertTrue(runtime.contains("val claim = executionAdmission.tryAcquireExclusive() ?: return false"))
         assertTrue(runtime.contains("ThreadPoolExecutor(2, 2"))
@@ -46,8 +46,8 @@ class SaveResumeCommandSourceContractTest {
 
     @Test fun explicitCancelSupersedesResumeAndSignalsBeforeQueueWithoutPendingUiGate() {
         val cancel = section("fun cancel(taskId:", "fun resume(taskId:")
-        ordered(cancel, "requireMain()", "taskCommands.tryCancel(taskId) ?: return",
-            "coordinator.signalUserCancel(taskId)", "command(mediaWork = true", "coordinator.cancel(taskId)")
+        ordered(cancel, "requireMain()", "coordinator.signalUserCancel(taskId)",
+            "taskCommands.tryCancel(taskId) ?: return", "command(mediaWork = true", "coordinator.cancel(taskId)")
         assertFalse(cancel.contains("in pendingCommands"))
         assertTrue(cancel.contains("onRejected = { finishTaskCommand(attempt) }"))
         assertTrue(cancel.contains("finally { main.post { finishTaskCommand(attempt) } }"))

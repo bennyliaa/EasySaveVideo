@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_cookie_clear_rejected">未开始清除 Cookie。请返回普通浏览后重新确认。</string>
+    <string name="browser_cookie_clear_not_started">无法开始清除 Cookie。如需重试，请在浏览器选项中重新选择“清除所有 Cookie”。</string>
+    <string name="browser_cookie_clear_removed">普通浏览的 Cookie 清除已完成，网站登录状态可能失效；已打开的网页仍可新建 Cookie。</string>
+    <string name="browser_cookie_clear_none_removed">Cookie 清除已完成，WebView 报告没有移除 Cookie。</string>
+    <string name="browser_cookie_clear_unconfirmed">无法确认 Cookie 清除结果，部分 Cookie 可能已被移除。如需重试，请在浏览器选项中重新选择“清除所有 Cookie”。</string>
+</resources>

@@ -5,11 +5,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.easysavevideo.app.R
+import com.easysavevideo.app.ui.LocalPrivateInputAdmission
 import com.easysavevideo.app.theme.*
 import com.easysavevideo.save.SaveRecord
 
 @Composable
 internal fun SaveFailureGuidance(record: SaveRecord, runtime: AndroidSaveRuntime, onBrowser: (() -> Unit)?) {
+    val admission = LocalPrivateInputAdmission.current
     val advice = saveFailureAdvice(record.task.state, record.request.method, record.error) ?: return
     val v = LocalEsvVisuals.current
     val identity = FailedTaskIdentity.from(record)
@@ -21,6 +23,7 @@ internal fun SaveFailureGuidance(record: SaveRecord, runtime: AndroidSaveRuntime
         if (advice.canReturnToBrowser) {
             EsvText(stringResource(R.string.save_failure_fresh_boundary), style = v.captionTextStyle, color = v.colors.muted)
             if (onBrowser != null) EsvButton(stringResource(R.string.save_failure_open_browser), onClick = {
+                if (!admission()) return@EsvButton
                 result = runtime.returnToBrowserAfterFailure(command)
                 if (result == FailureNavigationResult.ACCEPTED) onBrowser()
             }, enabled = result != FailureNavigationResult.ACCEPTED && result != FailureNavigationResult.ALREADY_USED)

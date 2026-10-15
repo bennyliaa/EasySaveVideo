@@ -120,14 +120,55 @@ class DirectVideoTailVerificationTest {
         assertThrows(IllegalArgumentException::class.java) { DirectMovClock.video(1, 1_801) }
     }
 
-    @Test fun audioContractCannotEnableThisSilentTailPlan() {
-        val f = fixture()
-        val audioClock = DirectMovClock.audio(48_000, 3)
-        val last = DirectSampleIdentity(2, audioClock.presentationTimeUs(2), 10, hash, 1)
-        val audio = DirectTrackConservation(DirectSampleKind.AAC_LC, hash, 3, 30, hash, hash, hash,
-            0, last, audioClock.endpoint)
-        failure(SaveError.UNSUPPORTED_MEDIA) { DirectVideoTailPlan(f.clock,
-            f.conservation.copy(audio = audio, audioSampleRate = 48_000, audioChannelCount = 2), f.samples) }
+    private fun withAudio(f: Fixture, count: Long): Fixture {
+        val clock = DirectMovClock.audio(48_000, count)
+        val last = DirectSampleIdentity(count - 1, clock.presentationTimeUs(count - 1), 10, hash, 1)
+        val audio = DirectTrackConservation(DirectSampleKind.AAC_LC, hash, count, count * 10,
+            hash, hash, hash, 0, last, clock.endpoint)
+        return f.copy(conservation = f.conservation.copy(audio = audio, audioSampleRate = 48_000, audioChannelCount = 2))
+    }
+
+    @Test fun identicalVideoHasIdenticalTailWithNoShorterOrLongerAudioAndRetainsWholeConservation() {
+        val silent = fixture()
+        var expected: DirectVideoTailProof? = null
+        for (f in listOf(silent, withAudio(silent, 2), withAudio(silent, 8))) {
+            val plan = f.plan()
+            assertSame(f.conservation, plan.conservation)
+            assertEquals(silent.samples, plan.samples)
+            assertEquals(silent.plan().totalInputBytes, plan.totalInputBytes)
+            val state = f.queued()
+            f.samples.forEach { state.output(it.identity.presentationTimeUs, 1, false, false) }
+            state.output(-1, 0, false, true)
+            val proof = state.finish()
+            if (expected == null) expected = proof else assertEquals(expected, proof)
+            assertTrue(proof.matches(f.conservation))
+        }
+    }
+
+    @Test fun audioCannotRescueInvalidVideoManifestOrCausalDecode() {
+        for (f in listOf(withAudio(fixture(), 2), withAudio(fixture(), 8))) {
+            failure { DirectVideoTailPlan(DirectMovClock.video(24, 3), f.conservation, f.samples) }
+            failure { DirectVideoTailPlan(DirectMovClock.video(30, 4), f.conservation, f.samples) }
+            failure { DirectVideoTailPlan(f.clock, f.conservation, f.samples.reversed()) }
+            failure { DirectVideoTailPlan(f.clock, f.conservation, f.samples.dropLast(1)) }
+            for (index in f.samples.indices) {
+                val sample = f.samples[index]
+                for (identity in listOf(sample.identity.copy(presentationTimeUs = sample.identity.presentationTimeUs + 1),
+                    sample.identity.copy(flags = 1 - sample.identity.flags))) {
+                    failure { DirectVideoTailPlan(f.clock, f.conservation, f.samples.toMutableList().also {
+                        it[index] = sample.copy(identity = identity)
+                    }) }
+                }
+            }
+            failure { f.state().output(0, 1, false, false) }
+            failure { f.queued().output(0, 0, false, true) }
+            failure { f.queued().finish() }
+            failure { DirectVideoTailPlan(f.clock, f.conservation.copy(video = f.conservation.video.copy(
+                endpoint = DirectTrackEndpoint(100_001, 100_001))), f.samples) }
+        }
+        failure(SaveError.VERIFICATION_UNAVAILABLE) {
+            withAudio(fixture(17, inputBytes = DirectNormalizationLimits.MAX_SAMPLE_BYTES, canonicalBytes = 1), 2).plan()
+        }
     }
 
     @Test fun maximumSampleAndTailBytesAreExactForNativeAndCanonicalLengths() {

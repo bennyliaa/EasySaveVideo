@@ -34,7 +34,7 @@ class AuthenticationOriginWiringTest {
         assertTrue(lookup.contains("entries.entries.firstOrNull"));assertFalse(lookup.contains("entries["))
         val document = host.substringAfter("private fun authenticationDocument(").substringBefore("internal fun captureAuthenticationOrigin(")
         for (required in listOf("state.tabs.singleOrNull", "authenticationEntry(context)", "entry.inspectionDocument.address",
-            "!foreground", "entry.suppressed", "!controller.isCurrent(request)", "entry.admission?.hasStarted()", "address != entry.view.url",
+            "!foreground", "entry.suppressed", "!entry.owner.isCurrent(request)", "entry.admission?.hasStarted()", "address != entry.view.url",
             "entry, entry.view", "entry.inspectionDocument.revision", "tab.epoch", "tab.incognito", "BrowserLoadState.READY")) assertTrue(required, document.contains(required))
     }
     @Test fun selectingLiveEntryCannotCreateViewRestoreHistoryOrLoadUrl() {
@@ -44,13 +44,14 @@ class AuthenticationOriginWiringTest {
         assertTrue(selector.contains("requireMain()"));assertTrue(selector.contains("authenticationEntry(context) ?: return false"))
         assertEquals(2, Regex("canSelectAuthenticationOrigin\\(token\\)").findAll(selector).count())
         assertTrue(selector.contains("authenticationEntry(context) !== entry"))
-        assertTrue(selector.contains("controller.selectTab(context.tabId)"));assertTrue(selector.contains("entry.view.onResume()"))
+        assertTrue(selector.contains("entry.owner !== controller")); assertTrue(selector.contains("entry.owner.selectTab(context.tabId)"));assertTrue(selector.contains("entry.view.onResume()"))
         for (forbidden in listOf("ensureEntry", "history", "navigate(", "load(", "restore(", "newTab(", "Cookie", "sourceForTask", "resume(task"))
             assertFalse(forbidden, selector.contains(forbidden))
     }
     @Test fun hostSelectionChecksCapabilityForegroundAndNativeBlockers() {
         val gate = host.substringAfter("internal fun canSelectAuthenticationOrigin(").substringBefore("/** Explicit selection")
-        for (required in listOf("closed", "!foreground", "!platformAvailable", "!browserCommandAllowed()", "pickerInFlight",
+        assertTrue(host.contains("private fun canAct(): Boolean = !closed && !closing"))
+        for (required in listOf("!canAct()", "!foreground", "!platformAvailable", "!browserCommandAllowed()", "pickerInFlight",
             "fileChoice != null", "jsDialog != null", "fullScreenView != null", "authenticationDocuments.context(token)",
             "authenticationDocuments.resolve(token, document)")) assertTrue(required, gate.contains(required))
     }
@@ -59,7 +60,7 @@ class AuthenticationOriginWiringTest {
         assertTrue(pause.contains("authenticationDocuments.clear()"))
         assertTrue(host.substringAfter("override fun close()").contains("authenticationDocuments.clear()"))
         assertTrue(host.substringAfter("private fun trimViews(").substringBefore("override fun destroy(").contains("authenticationDocuments.invalidate(entry)"))
-        assertTrue(host.substringAfter("override fun destroy(").substringBefore("private fun releaseView(").contains("authenticationDocuments.invalidate(it)"))
+        assertTrue(host.substringAfter("override fun destroy(").substringBefore("private fun releaseView(").contains("authenticationDocuments.invalidate(entry)"))
         assertTrue(runtime.substringAfter("fun setForeground(").substringBefore("internal fun authenticationBrowserAvailable")
             .contains("authenticationOrigins.clear(); streamAuthenticationOrigin = null"))
         assertTrue(runtime.substringAfter("fun cancel(taskId:").substringBefore("fun resume(").contains("authenticationOrigins.cancel(taskId)"))

@@ -5,21 +5,8 @@ import com.easysavevideo.library.edit.EditFailure
 import com.easysavevideo.library.edit.EditLimits
 import kotlin.math.abs
 
-/** One process lane. A timed-out owner remains strongly reachable until process exit. */
-internal class EditorReleaseFence {
-    private var held: Any? = null
-    @Volatile var requiresRestart = false; private set
-    @Synchronized fun claim(owner: Any): Boolean {
-        if (requiresRestart || held != null) return false
-        held = owner; return true
-    }
-    @Synchronized fun release(owner: Any) {
-        if (requiresRestart) return
-        check(held === owner); held = null
-    }
-    @Synchronized fun unconfirmed() { requiresRestart = true }
-    val occupied: Boolean @Synchronized get() = held != null
-}
+/** Preserve the Editor name while both callers use the same shared fence implementation. */
+internal typealias EditorReleaseFence = com.easysavevideo.app.media.transform.TransformerReleaseFence
 
 internal object EditorEnginePolicy {
     const val MAX_OPEN_INPUTS = 4
@@ -29,7 +16,7 @@ internal object EditorEnginePolicy {
     const val POLL_MILLIS = 50L
     const val OUTPUT_RESERVE = 8L * 1024 * 1024
     fun outputRangeAllowed(position: Long, bytes: Long, limit: Long): Boolean =
-        position >= 0 && bytes >= 0 && limit > 0 && position <= limit && bytes <= limit - position
+        com.easysavevideo.app.media.transform.TransformerMechanismPolicy.outputRangeAllowed(position, bytes, limit)
 
     /** Observes every PTS (sorted for decoding-order B frames), not a rounded metadata claim. */
     fun observedFrameRate(timesUs: LongArray, count: Int, durationUs: Long): Int {
@@ -56,52 +43,25 @@ internal object EditorEnginePolicy {
         return floatArrayOf(2f * left / width - 1f, 2f * right / width - 1f,
             1f - 2f * bottom / height, 1f - 2f * top / height)
     }
-    fun timestampAllowed(ptsUs: Long, previousUs: Long?, video: Boolean, durationUs: Long, toleranceUs: Long, audioPrimingUs: Long): Boolean {
-        val lower = if (video) 0L else -audioPrimingUs
-        return ptsUs >= lower && ptsUs <= durationUs + toleranceUs + (if (video) 0 else audioPrimingUs) &&
-            (previousUs == null || ptsUs > previousUs)
-    }
+    fun timestampAllowed(ptsUs: Long, previousUs: Long?, video: Boolean, durationUs: Long, toleranceUs: Long, audioPrimingUs: Long): Boolean =
+        com.easysavevideo.app.media.transform.TransformerMechanismPolicy.timestampAllowed(ptsUs, previousUs, video, durationUs, toleranceUs, audioPrimingUs)
     fun codecCreationProvenAbsent(ownPolicyRejection: Boolean, formatUnsupported: Boolean, hasCodecInfo: Boolean, hasCodecName: Boolean): Boolean =
-        ownPolicyRejection || (formatUnsupported && hasCodecInfo && !hasCodecName)
+        com.easysavevideo.app.media.transform.TransformerMechanismPolicy.codecCreationProvenAbsent(ownPolicyRejection, formatUnsupported, hasCodecInfo, hasCodecName)
     private fun reject(): Nothing = throw EditFailure(EditError.UNSUPPORTED_PROFILE)
 }
 
-/** Cancellation fences publication, but cannot prevent bounded MP4 final tables/FD cleanup. */
-internal class EditorOutputIoPolicy(private val limit: Long) {
-    private var finalizing = false
-    private var closed = false
-    @Synchronized fun beginFinalization() { if (!closed) finalizing = true }
-    @Synchronized fun activeCheckpoint(checkpoint: () -> Unit) {
-        if (closed) throw EditFailure(EditError.INVALID_STATE)
-        if (!finalizing) checkpoint()
+/** Existing policy names forward to the mechanism exercised by both callers. */
+internal class EditorOutputIoPolicy(limit: Long) {
+    private val shared = com.easysavevideo.app.media.transform.TransformerOutputIoPolicy(limit)
+    fun beginFinalization() = shared.beginFinalization()
+    fun activeCheckpoint(checkpoint: () -> Unit) = mapped { shared.activeCheckpoint(checkpoint) }
+    fun range(position: Long, bytes: Long) = mapped { shared.range(position, bytes) }
+    fun confirmedClosed() = shared.confirmedClosed()
+    private inline fun mapped(block: () -> Unit) {
+        try { block() } catch (failure: com.easysavevideo.app.media.transform.TransformerFailure) { throw editorTransformerFailure(failure) }
     }
-    @Synchronized fun range(position: Long, bytes: Long) {
-        if (closed || !EditorEnginePolicy.outputRangeAllowed(position, bytes, limit)) throw EditFailure(EditError.SOURCE_LIMIT)
-    }
-    @Synchronized fun confirmedClosed() { closed = true }
 }
-
-/** Prevent decoder/encoder release while terminal GL teardown can still own codec buffers. */
-internal class EditorNativeReleaseOrder {
-    private var glOwners = 0
-    private var glReleased = 0
-    private var glReleaseStarted = false
-    private var poisoned = false
-    @Synchronized fun registerGl() { check(!glReleaseStarted); glOwners++ }
-    @Synchronized fun beginGlRelease() { glReleaseStarted = true }
-    @Synchronized fun confirmGlReleased() { check(glReleased < glOwners); glReleased++ }
-    @Synchronized fun glFailed() { poisoned = true }
-    @Synchronized fun allowsCodecRelease(): Boolean = !poisoned && (!glReleaseStarted || glReleased == glOwners)
-    @Synchronized fun isPoisoned(): Boolean = poisoned
-}
-
-/** submit() hides Errors inside FutureTask; afterExecute must inspect completed futures too. */
+internal typealias EditorNativeReleaseOrder = com.easysavevideo.app.media.transform.TransformerNativeReleaseOrder
 internal object EditorTaskFailureProbe {
-    fun failed(task: Runnable, uncaught: Throwable?): Boolean {
-        if (uncaught != null) return true
-        if (task !is java.util.concurrent.Future<*> || !task.isDone) return false
-        return try { task.get(); false }
-        catch (_: InterruptedException) { Thread.currentThread().interrupt(); true }
-        catch (_: Throwable) { true }
-    }
+    fun failed(task: Runnable, uncaught: Throwable?): Boolean = com.easysavevideo.app.media.transform.TransformerTaskFailureProbe.failed(task, uncaught)
 }

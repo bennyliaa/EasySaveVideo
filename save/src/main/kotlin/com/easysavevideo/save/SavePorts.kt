@@ -57,6 +57,7 @@ fun interface ArtifactVerifier {
         when (output) {
             is ArtifactOutputDescriptor.Transferred -> verify(artifact, output.transfer, context)
             is ArtifactOutputDescriptor.NormalizedDirect -> throw SaveFailure(SaveError.METHOD_UNSUPPORTED)
+            is ArtifactOutputDescriptor.ConvertedDirect -> throw SaveFailure(SaveError.METHOD_UNSUPPORTED)
         }
 }
 

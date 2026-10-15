@@ -77,7 +77,7 @@ class BrowserCopyContractTest {
             "tab.title?.take(28) ?: tab.address?.value?.take(28)",
             "AndroidView(factory =", "verticalScroll(rememberScrollState())",
             "if (settingsOpen && wide)", "if (settingsOpen && !wide)",
-            "filePrompt?.let { choice -> EsvDialog(onDismiss = onFileCancel)",
+            "EsvDialog(choice, { isFilePromptCurrent(choice) && modalOwnerCurrent() }, onDismiss = { onFileCancel(choice) })",
             "onFileConfirm(choice)").forEach { assertTrue(it, screen.contains(it)) }
         expectedKeys.forEach { assertTrue(it, screen.contains("R.string.$it")) }
         assertFalse(Regex("[\\u4e00-\\u9fff]").containsMatchIn(screen))

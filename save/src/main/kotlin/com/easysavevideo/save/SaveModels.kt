@@ -30,24 +30,35 @@ data class SelectedMediaResource(
     val candidateId: String,
     val variantId: String,
     val url: SourceUrl,
-    val expectedAudio: Boolean = false,
+    override val expectedAudio: Boolean = false,
     val requestContextRef: RequestContextRef? = null,
     val expiresAtEpochMillis: Long? = null,
-    val sourceIdentity: String = url.identity(),
+    override val sourceIdentity: String = url.identity(),
     val durableReference: Boolean = false,
-) {
+    val privateSource: PrivateNetworkSource? = null,
+) : NetworkSourceMetadata {
     init {
         requireSaveId(candidateId); requireSaveId(variantId); require(expiresAtEpochMillis == null || expiresAtEpochMillis >= 0)
         require(sourceIdentity.matches(Regex("[a-f0-9]{64}")))
-        require(if (durableReference) url == url.originOnly() && requestContextRef == null else sourceIdentity == url.identity())
+        require(if (privateSource != null) !durableReference && sourceIdentity == privateSource.sourceIdentity.encoded
+            else if (durableReference) url == url.originOnly() && requestContextRef == null else sourceIdentity == url.identity())
     }
     /** Persist only origin and source hash; signed URLs and bearer query parameters remain memory-only. */
-    fun asDurableReference() = copy(url = url.originOnly(), requestContextRef = null, durableReference = true)
+    fun asDurableReference(): SelectedMediaResource {
+        require(privateSource == null)
+        return copy(url = url.originOnly(), requestContextRef = null, durableReference = true)
+    }
+    internal fun toDurableInput(taskId: String): SaveInput {
+        val source = privateSource ?: return SaveInput.Network(asDurableReference())
+        require(source is PrivateNetworkSourceBinding && source.taskId == taskId && source.isLive())
+        return SaveInput.PrivateNetwork(source.durable(expectedAudio))
+    }
     override fun toString() = "SelectedMediaResource([redacted])"
 }
 /** Typed source identity. Capture descriptors contain no source URL or reusable authorization. */
 sealed interface SaveInput {
     data class Network(val resource: SelectedMediaResource) : SaveInput
+    data class PrivateNetwork(val source: PrivateDurableSource) : SaveInput
     data class Capture(val descriptor: CaptureDescriptor) : SaveInput
 }
 /** A request is created only after the user's explicit selection. No Discovery or Provider dependency. */
@@ -62,16 +73,24 @@ data class SaveRequest(
         requireSaveId(requestId); requireSaveId(idempotencyKey)
         require((method == TaskMethod.RECORD) == (input is SaveInput.Capture))
         require(input !is SaveInput.Capture || input.descriptor.sessionId == requestId)
+        require(input !is SaveInput.PrivateNetwork || method in setOf(TaskMethod.DIRECT, TaskMethod.STREAM))
     }
     constructor(requestId: String, idempotencyKey: String, resource: SelectedMediaResource,
         method: TaskMethod = TaskMethod.DIRECT, origin: CommandOrigin = CommandOrigin.USER) :
         this(requestId, idempotencyKey, SaveInput.Network(resource), method, origin)
     /** Compatibility accessor for explicitly network-only callers; never invents a capture URL. */
-    val resource: SelectedMediaResource get() = requireNotNull(networkResource) { "Capture has no network resource" }
+    val resource: SelectedMediaResource get() = requireNotNull(networkResource) { "Input has no live network resource" }
     val networkResource: SelectedMediaResource? get() = (input as? SaveInput.Network)?.resource
+    val networkSourceMetadata: NetworkSourceMetadata? get() = when (val value = input) {
+        is SaveInput.Network -> value.resource
+        is SaveInput.PrivateNetwork -> value.source
+        is SaveInput.Capture -> null
+    }
+    val isPrivateNetwork: Boolean get() = input is SaveInput.PrivateNetwork || networkResource?.privateSource != null
     val captureDescriptor: CaptureDescriptor? get() = (input as? SaveInput.Capture)?.descriptor
     fun asDurableReference(): SaveRequest = when (val value = input) {
-        is SaveInput.Network -> copy(input = SaveInput.Network(value.resource.asDurableReference()))
+        is SaveInput.Network -> copy(input = value.resource.toDurableInput(requestId))
+        is SaveInput.PrivateNetwork -> this
         is SaveInput.Capture -> this
     }
     /** Preserves named resource-copy callers while the generated copy uses typed input. */
@@ -190,6 +209,7 @@ data class VerificationEvidence(
     val streamTailProof: StreamTailProof? = null,
     val recordingProof: RecordingVerificationProof? = null,
     val directNormalizationProof: DirectNormalizationVerificationProof? = null,
+    val directConversionProof: DirectConversionVerificationProof? = null,
 ) {
     /** Compatibility for existing ordinary MP4, Stream and Record callers only. */
     fun isValidFor(artifact: StagingArtifact, transfer: TransferResult, expectedAudio: Boolean): Boolean =
@@ -205,7 +225,7 @@ data class VerificationEvidence(
             is ArtifactOutputDescriptor.Transferred -> {
                 val transfer = output.transfer
                 (transfer.expectedTotalBytes == null || sizeBytes == transfer.expectedTotalBytes) &&
-                    directNormalizationProof == null &&
+                    directNormalizationProof == null && directConversionProof == null &&
                     ((recordingProof != null) == (transfer.recordingExpectation != null)) &&
                     (transfer.streamExpectation != null || (streamConservation == null && streamTailProof == null)) &&
                     (transfer.streamExpectation?.matches(this) ?: true) &&
@@ -215,12 +235,25 @@ data class VerificationEvidence(
                 val proof = output.normalizationProof
                 proof.artifactId == artifact.artifactId && proof.commitId == artifact.commitId &&
                     proof.matchesTransfer(output.sourceTransfer) && sha256 == proof.outputSha256 &&
-                    streamConservation == null && streamTailProof == null && recordingProof == null &&
+                    streamConservation == null && streamTailProof == null && recordingProof == null && directConversionProof == null &&
                     directNormalizationProof?.matches(proof) == true && videoTrackCount == 1 &&
                     audioTrackCount == (if (proof.conservation.audio == null) 0 else 1) &&
                     width == proof.conservation.width && height == proof.conservation.height &&
                     durationMillis <= DirectNormalizationLimits.MAX_DURATION_US / 1000 &&
                     proof.conservation.endpoint.contains(durationMillis * 1000, 1000)
+            }
+            is ArtifactOutputDescriptor.ConvertedDirect -> {
+                val proof = output.conversionProof
+                val video = proof.expectation.video
+                val verified = directConversionProof
+                proof.artifactId == artifact.artifactId && proof.commitId == artifact.commitId &&
+                    proof.matchesTransfer(output.sourceTransfer) && sha256 == proof.outputSha256 &&
+                    streamConservation == null && streamTailProof == null && recordingProof == null && directNormalizationProof == null &&
+                    verified?.matches(proof) == true && videoTrackCount == 1 &&
+                    audioTrackCount == (if (proof.expectation.audio == null) 0 else 1) &&
+                    width == video.width && height == video.height &&
+                    durationMillis <= DirectConversionLimits.MAX_DURATION_US / 1000 &&
+                    kotlin.math.abs(durationMillis * 1000 - verified.videoDurationUs) <= 1000
             }
         }
     }
@@ -265,10 +298,16 @@ data class SaveRecord(
     val error: SaveError? = null,
     val schemaVersion: Int = 1,
     val directNormalization: DirectNormalizationProof? = null,
+    val directConversion: DirectConversionProof? = null,
 ) {
     init {
-        require(request.networkResource?.let { it.requestContextRef == null && it.durableReference } != false) {
+        require(request.networkResource?.let { it.requestContextRef == null && it.durableReference && it.privateSource == null } != false) {
             "Durable records require a safe source reference"
+        }
+        if (request.isPrivateNetwork) {
+            require(request.input is SaveInput.PrivateNetwork && checkpoint == null)
+            require(transfer == null || transfer.responseMimeType in setOf(
+                "video/mp4", "application/mp4", "application/octet-stream", "video/quicktime", "video/webm"))
         }
         require(request.method != TaskMethod.RECORD || (bytesTransferred == 0L && checkpoint == null && retryBudget == 0 && attempt == 0))
         requireSaveId(commitId); require(task.taskId == request.requestId && task.method == request.method)
@@ -278,8 +317,13 @@ data class SaveRecord(
             "Stored transfer method and media constraints disagree"
         }
         require(directNormalization == null || (request.method == TaskMethod.DIRECT && artifact != null &&
-            transfer != null && checkpoint == null && request.networkResource?.let {
+            transfer != null && checkpoint == null && request.networkSourceMetadata?.let {
                 directNormalization.matchesSource(task.taskId, it.sourceIdentity, artifact, transfer)
+            } == true))
+        require(directNormalization == null || directConversion == null)
+        require(directConversion == null || (request.method == TaskMethod.DIRECT && artifact != null &&
+            transfer != null && checkpoint == null && request.networkSourceMetadata?.let {
+                directConversion.matchesSource(task.taskId, it.sourceIdentity, artifact, transfer)
             } == true))
         val selectedOutput = selectedOutputDescriptor()
         // Legacy Stream/Record journals are readable, but missing policy evidence cannot become a new proof.
@@ -289,12 +333,12 @@ data class SaveRecord(
                 transfer.recordingExpectation?.matchesLegacyEvidence(verification) == true &&
                     verification.copy(recordingProof = null).isValidFor(artifact,
                         ArtifactOutputDescriptor.Transferred(transfer.copy(recordingExpectation = null)),
-                        request.networkResource?.expectedAudio ?: false)
+                        request.networkSourceMetadata?.expectedAudio ?: false)
             request.method == TaskMethod.STREAM && transfer.streamExpectation?.conservation == null ->
                 verification.isValidFor(artifact, ArtifactOutputDescriptor.Transferred(transfer.copy(streamExpectation = null)),
-                    request.networkResource?.expectedAudio ?: false)
+                    request.networkSourceMetadata?.expectedAudio ?: false)
             else -> verification.isValidFor(artifact, requireNotNull(selectedOutput),
-                request.networkResource?.expectedAudio ?: false)
+                request.networkSourceMetadata?.expectedAudio ?: false)
         }))
         require(receipt == null || (artifact != null && verification != null && receipt.matches(VerifiedArtifact(artifact, verification))))
         require(deadlineEpochMillis >= 0 && retryBudget in 0..2 && attempt in 0..retryBudget && bytesTransferred >= 0)

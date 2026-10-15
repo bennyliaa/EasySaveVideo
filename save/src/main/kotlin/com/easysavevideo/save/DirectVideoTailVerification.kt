@@ -10,7 +10,9 @@ data class DirectNativeSample(val identity: DirectSampleIdentity, val inputBytes
 /**
  * The independently scanned final GOP, [precedingVideoSync.index, video.sampleCount). This is an
  * ephemeral bounded manifest, never a journal/evidence encoding. The caller must first compare the
- * complete Android-derived conservation with the fresh raw scan and the normalization proof.
+ * Android-derived video conservation with the fresh raw scan and the normalization proof. Full
+ * conservation is retained unchanged; optional audio requires its own complete independent check.
+ * A completed tail is video evidence only, never proof that audio was decoded.
  */
 class DirectVideoTailPlan(
     val clock: DirectMovClock,
@@ -96,8 +98,6 @@ private class DirectTailManifestBounds(
         private set
 
     init {
-        if (conservation.audio != null || conservation.audioSampleRate != null ||
-            conservation.audioChannelCount != null) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
         if (clock.kind != DirectSampleKind.AVC_BASELINE || clock.timescale != DirectMovClock.VIDEO_TIMESCALE ||
             clock.frameRate != conservation.frameRate || clock.sampleCount != conservation.video.sampleCount ||
             clock.endpoint != conservation.video.endpoint ||

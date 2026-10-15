@@ -14,6 +14,23 @@ data class DiscoveryControlTarget(
 enum class DiscoveryLocalAction { CLEAR_CURRENT_HISTORY, CLEAR_ALL_HISTORY, RESET_PROVIDER_PROGRESS }
 enum class DiscoveryControlOutcome { COMMITTED, FAILED, STALE }
 
+/** Finite, payload-free presentation result; display language is resolved only when rendered. */
+enum class DiscoveryNotice {
+    SOURCE_CONFIGURATION_CHECKING,
+    VERIFICATION_NOT_STARTED,
+    VIEW_SETTINGS_CHANGED,
+    INVALID_QUERY,
+    SORT_CHANGED,
+    STORAGE_RETRY_UNAVAILABLE,
+    STORAGE_RECOVERY_UNAVAILABLE,
+    CONTROL_STALE,
+    CONTROL_FAILED,
+    CONTROL_CURRENT_HISTORY_CLEARED,
+    CONTROL_ALL_HISTORY_CLEARED,
+    CONTROL_PROVIDER_PROGRESS_RESET,
+}
+
+
 data class DiscoveryControlRequest(
     val target: DiscoveryControlTarget,
     val action: DiscoveryLocalAction,
@@ -72,24 +89,47 @@ object DiscoveryPresentationPolicy {
             "仅重置打开此确认时，当前资料中来源 ${request.providerId} 的续页和结束记录。下次主动请求将从头检查，旧结果可能再次出现。Seen 历史、其他来源与其他资料的进度、现有页面、媒体文件和 Vault 保留。现在不会请求来源。此操作无法撤销。"
     }
 
-    fun controlOutcomeText(action: DiscoveryLocalAction, outcome: DiscoveryControlOutcome): String = when (outcome) {
-        DiscoveryControlOutcome.STALE -> "查询或本地视图已变化，未执行操作。请重新打开确认。"
-        DiscoveryControlOutcome.FAILED -> "本地操作未成功，未确认任何清除或重置。请检查本地存储状态后重试。"
+    fun controlOutcomeNotice(action: DiscoveryLocalAction, outcome: DiscoveryControlOutcome): DiscoveryNotice = when (outcome) {
+        DiscoveryControlOutcome.STALE -> DiscoveryNotice.CONTROL_STALE
+        DiscoveryControlOutcome.FAILED -> DiscoveryNotice.CONTROL_FAILED
         DiscoveryControlOutcome.COMMITTED -> when (action) {
-            DiscoveryLocalAction.CLEAR_CURRENT_HISTORY -> "已清除当前资料的 Seen 历史，来源进度和媒体文件保留。"
-            DiscoveryLocalAction.CLEAR_ALL_HISTORY -> "已清除全部资料的 Seen 历史，来源进度和媒体文件保留。"
-            DiscoveryLocalAction.RESET_PROVIDER_PROGRESS -> "已重置所选来源在当前资料的进度，Seen 历史和其他来源进度保留。"
+            DiscoveryLocalAction.CLEAR_CURRENT_HISTORY -> DiscoveryNotice.CONTROL_CURRENT_HISTORY_CLEARED
+            DiscoveryLocalAction.CLEAR_ALL_HISTORY -> DiscoveryNotice.CONTROL_ALL_HISTORY_CLEARED
+            DiscoveryLocalAction.RESET_PROVIDER_PROGRESS -> DiscoveryNotice.CONTROL_PROVIDER_PROGRESS_RESET
         }
     }
 
-    fun retentionNotice(policy: DiscoveryRetentionPolicy = DiscoveryRetentionPolicy()): String =
-        "本地容量上限：${policy.maxProfiles} 个资料、${policy.maxSeenAliases} 条 Seen 别名、${policy.maxProgress} 条来源进度、${policy.maxCheckpoints} 个会话检查点。" +
-            "按容量保留，不按天数过期；优先清理最久未在本地变更且未受保护的记录，当前已生成页面的数据受保护。" +
-            "记录被清理后，旧结果可能再次出现。Seen 历史与来源进度独立保存，不会因此补记展示、打开、播放或保存事件，也不会删除媒体文件或 Vault。"
+    fun noticeText(notice: DiscoveryNotice, copy: DiscoveryPresentationCopy): String = when (notice) {
+        DiscoveryNotice.SOURCE_CONFIGURATION_CHECKING -> copy.noticeSourceConfigurationChecking
+        DiscoveryNotice.VERIFICATION_NOT_STARTED -> copy.noticeVerificationNotStarted
+        DiscoveryNotice.VIEW_SETTINGS_CHANGED -> copy.noticeViewSettingsChanged
+        DiscoveryNotice.INVALID_QUERY -> copy.noticeInvalidQuery
+        DiscoveryNotice.SORT_CHANGED -> copy.noticeSortChanged
+        DiscoveryNotice.STORAGE_RETRY_UNAVAILABLE -> copy.noticeStorageRetryUnavailable
+        DiscoveryNotice.STORAGE_RECOVERY_UNAVAILABLE -> copy.noticeStorageRecoveryUnavailable
+        DiscoveryNotice.CONTROL_STALE -> copy.noticeControlStale
+        DiscoveryNotice.CONTROL_FAILED -> copy.noticeControlFailed
+        DiscoveryNotice.CONTROL_CURRENT_HISTORY_CLEARED -> copy.noticeControlCurrentHistoryCleared
+        DiscoveryNotice.CONTROL_ALL_HISTORY_CLEARED -> copy.noticeControlAllHistoryCleared
+        DiscoveryNotice.CONTROL_PROVIDER_PROGRESS_RESET -> copy.noticeControlProviderProgressReset
+    }
 
-    fun statisticsText(label: String, statistics: HistoryStatistics): String =
-        "$label：${statistics.profileCount} 个资料 · ${statistics.checkpointCount} 个会话检查点 · " +
-            "${statistics.seenIdentityCount} 个 Seen 身份 · ${statistics.seenAliasCount} 条 Seen 别名 · ${statistics.progressCount} 条来源进度"
+    /** Compatibility for existing non-UI callers; controller state retains only the typed notice. */
+    fun controlOutcomeText(action: DiscoveryLocalAction, outcome: DiscoveryControlOutcome): String =
+        noticeText(controlOutcomeNotice(action, outcome), DiscoveryPresentationCopy())
+
+    fun durationText(durationMs: Long, copy: DiscoveryPresentationCopy): String =
+        copy.format(copy.duration, durationMs / 60_000, durationMs / 1_000 % 60)
+
+    fun retentionNotice(policy: DiscoveryRetentionPolicy = DiscoveryRetentionPolicy(),
+        copy: DiscoveryPresentationCopy = DiscoveryPresentationCopy()): String =
+        copy.format(copy.retention, copy.count(policy.maxProfiles), copy.count(policy.maxSeenAliases),
+            copy.count(policy.maxProgress), copy.count(policy.maxCheckpoints))
+
+    fun statisticsText(label: String, statistics: HistoryStatistics,
+        copy: DiscoveryPresentationCopy = DiscoveryPresentationCopy()): String =
+        copy.format(copy.statistics, label, copy.count(statistics.profileCount), copy.count(statistics.checkpointCount),
+            copy.count(statistics.seenIdentityCount), copy.count(statistics.seenAliasCount), copy.count(statistics.progressCount))
 
     fun boundedQuery(value: String): String = value.take(512).dropLastWhile { it.isHighSurrogate() }
     fun validQuery(value: String): Boolean {
@@ -114,33 +154,35 @@ object DiscoveryPresentationPolicy {
         val visibleHeight = (minOf(top.toLong() + height, viewportBottom.toLong()) - maxOf(top, viewportTop)).coerceAtLeast(0)
         return (visibleWidth.toDouble() * visibleHeight / (width.toDouble() * height)).coerceIn(0.0, 1.0)
     }
-    fun sortLabel(sort: ResultSort): String = when (sort) {
-        ResultSort.RELEVANCE -> "来源顺序"
-        ResultSort.NEWEST -> "发布日期：新到旧"
-        ResultSort.DURATION_SHORTEST -> "时长：短到长"
-        ResultSort.DURATION_LONGEST -> "时长：长到短"
+    fun sortLabel(sort: ResultSort): String = sortLabel(sort, DiscoveryPresentationCopy())
+    fun sortLabel(sort: ResultSort, copy: DiscoveryPresentationCopy): String = when (sort) {
+        ResultSort.RELEVANCE -> copy.sortRelevance
+        ResultSort.NEWEST -> copy.sortNewest
+        ResultSort.DURATION_SHORTEST -> copy.sortShortest
+        ResultSort.DURATION_LONGEST -> copy.sortLongest
     }
-    fun providerProgressText(progress: ProviderDiscoveryProgress): String {
+    fun providerProgressText(progress: ProviderDiscoveryProgress,
+        copy: DiscoveryPresentationCopy = DiscoveryPresentationCopy()): String {
         val state = when (progress.state) {
-            ProviderDiscoveryState.NOT_STARTED -> "尚未查询"
-            ProviderDiscoveryState.REQUESTING -> "正在请求"
-            ProviderDiscoveryState.RETRY_WAIT -> "等待本次重试"
-            ProviderDiscoveryState.COOLDOWN -> "来源冷却，稍后可重试"
+            ProviderDiscoveryState.NOT_STARTED -> copy.providerNotStarted
+            ProviderDiscoveryState.REQUESTING -> copy.providerRequesting
+            ProviderDiscoveryState.RETRY_WAIT -> copy.providerRetryWait
+            ProviderDiscoveryState.COOLDOWN -> copy.providerCooldown
             ProviderDiscoveryState.BLOCKED -> when (progress.lastError) {
-                DiscoveryError.UNSUPPORTED_FILTER -> "不支持当前筛选"
-                DiscoveryError.INVALID_QUERY -> "关键词不受支持"
-                else -> "来源配置不可用"
+                DiscoveryError.UNSUPPORTED_FILTER -> copy.providerUnsupportedFilter
+                DiscoveryError.INVALID_QUERY -> copy.providerInvalidQuery
+                else -> copy.providerUnavailable
             }
-            ProviderDiscoveryState.READY -> "可按需继续"
-            ProviderDiscoveryState.EXHAUSTED -> "当前查询已无后续页"
-            ProviderDiscoveryState.CURSOR_EXPIRED -> "续页已过期，下次从头检查"
-            ProviderDiscoveryState.CURSOR_INCOMPATIBLE -> "续页版本不兼容，下次从头检查"
-            ProviderDiscoveryState.SUSPENDED -> "已暂停"
-            ProviderDiscoveryState.STORAGE_UNAVAILABLE -> "本地进度不可读"
+            ProviderDiscoveryState.READY -> copy.providerReady
+            ProviderDiscoveryState.EXHAUSTED -> copy.providerExhausted
+            ProviderDiscoveryState.CURSOR_EXPIRED -> copy.providerCursorExpired
+            ProviderDiscoveryState.CURSOR_INCOMPATIBLE -> copy.providerCursorIncompatible
+            ProviderDiscoveryState.SUSPENDED -> copy.providerSuspended
+            ProviderDiscoveryState.STORAGE_UNAVAILABLE -> copy.providerStorageUnavailable
         }
-        return "来源 ${progress.providerId}：$state" +
-            (if (progress.lastSuccessAtEpochMillis != null) " · 有已提交结果页" else "") +
-            (if (progress.hasContinuation) " · 续页已保存" else "")
+        return copy.format(copy.providerProgress, progress.providerId, state,
+            if (progress.lastSuccessAtEpochMillis != null) copy.committedPage else "",
+            if (progress.hasContinuation) copy.savedContinuation else "")
     }
 
 }

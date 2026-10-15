@@ -42,6 +42,120 @@ class SystemHttpsHlsFetcherTest {
                       context: OperationContext = context(), limits: SaveLimits = limits(), progress: Progress = Progress()): HlsSegmentResponse =
         SystemHttpsHlsFetcher(connections = Factory(response)).fetchSegment(resource(), segment, sink, context, limits, maxBytes, progress)
 
+    private fun privateResource(ref: RequestContextRef?, seed: PrivateNetworkSourceSeed = PrivateNetworkSourceSeed.create()) =
+        resource(ref).copy(sourceIdentity = seed.sourceIdentity.encoded, privateSource = seed)
+
+    @Test fun anonymousPrivateSegmentRequiresActualAppAuthorityBeforeAnyNetwork() {
+        val store = RequestContextLeaseStore()
+        val factory = Factory(ts())
+        val fetcher = SystemHttpsHlsFetcher(requestContexts = store, connections = factory)
+        for (ref in listOf(null, store.put(url))) {
+            fails(SaveError.SOURCE_RESELECTION_REQUIRED) {
+                fetcher.fetchSegment(privateResource(ref), segment, Sink(), context(), limits(), 1024, Progress())
+            }
+        }
+        assertTrue(factory.requests.isEmpty())
+        assertFalse(fetcher.isTransferActive)
+    }
+
+    @Test fun admittedPrivateHlsRetainsAuthorityPastHeaderExpiryAndAcceptsExactSeedBinding() {
+        val now = AtomicLong(1)
+        val store = RequestContextLeaseStore(EpochClock(now::get))
+        val ref = store.put(url, cookie = "synthetic=secret", ttlMillis = 10,
+            liveAuthority = RequestContextLiveAuthority { true })
+        val seed = PrivateNetworkSourceSeed.create()
+        val source = privateResource(ref, seed)
+        val initial = playlist()
+        val part = ts()
+        val factory = Factory(initial, part)
+        val fetcher = SystemHttpsHlsFetcher(requestContexts = store, clock = EpochClock(now::get), connections = factory)
+        val context = context().copy(deadlineEpochMillis = 30_000)
+        fetcher.fetchManifest(source, url, context, limits(), 1024, Progress())
+        now.set(11)
+        store.put(url) // Expired credentials are evicted, but captured session authority remains live.
+        val bound = source.copy(privateSource = seed.bindTask("private-task"))
+        assertEquals(188L, fetcher.fetchSegment(bound, segment, Sink(), context, limits(), 1024, Progress()).bytes)
+        assertEquals("synthetic=secret", initial.requestHeaders["Cookie"])
+        assertNull(part.requestHeaders["Cookie"])
+        store.revoke(ref)
+        fails(SaveError.SOURCE_RESELECTION_REQUIRED) {
+            fetcher.fetchSegment(bound, segment, Sink(), context, limits(), 1024, Progress())
+        }
+        assertEquals(2, factory.requests.size)
+    }
+
+    @Test fun revokedPrivateHlsCannotBeRevivedWithAReplacementContextLease() {
+        val store = RequestContextLeaseStore()
+        val ref = store.put(url, liveAuthority = RequestContextLiveAuthority { true })
+        val source = privateResource(ref)
+        val factory = Factory(playlist(), ts())
+        val fetcher = SystemHttpsHlsFetcher(requestContexts = store, connections = factory)
+        val context = context()
+        fetcher.fetchManifest(source, url, context, limits(), 1024, Progress())
+        store.revoke(ref)
+        val replacement = source.copy(requestContextRef = store.put(url, liveAuthority = RequestContextLiveAuthority { true }))
+        fails(SaveError.INVALID_REQUEST) {
+            fetcher.fetchSegment(replacement, segment, Sink(), context, limits(), 1024, Progress())
+        }
+        assertEquals(1, factory.requests.size)
+    }
+
+    @Test fun privateAnonymousRedirectRevokeStopsNextHopEvenWithoutCookieAccess() {
+        val store = RequestContextLeaseStore()
+        val ref = store.put(url, liveAuthority = RequestContextLiveAuthority { true })
+        val first = Response(302, headers = mapOf("Location" to "https://cdn.example.invalid/other.ts"))
+            .also { it.onDisconnect = { store.revoke(ref) } }
+        val factory = Factory(first, ts())
+        val fetcher = SystemHttpsHlsFetcher(requestContexts = store, connections = factory)
+        fails(SaveError.SOURCE_RESELECTION_REQUIRED) {
+            fetcher.fetchSegment(privateResource(ref), segment, Sink(), context(), limits(), 1024, Progress())
+        }
+        assertEquals(1, factory.requests.size)
+        assertTrue(first.disconnected)
+        assertTrue(first.requestHeaders.keys.none { it == "Cookie" || it == "Authorization" })
+    }
+
+    @Test fun privateRevocationDisconnectsAnonymousBodyAndWaitsForActualCleanup() {
+        val store = RequestContextLeaseStore()
+        val ref = store.put(url, liveAuthority = RequestContextLiveAuthority { true })
+        val input = BlockingInput()
+        val disconnectEntered = CountDownLatch(1)
+        val disconnectRelease = CountDownLatch(1)
+        val response = ts(body = input).also { it.onDisconnect = {
+            disconnectEntered.countDown(); awaitUninterruptibly(disconnectRelease); input.release.countDown()
+        } }
+        val fetcher = SystemHttpsHlsFetcher(requestContexts = store, connections = Factory(response))
+        val sink = Sink()
+        val run = async { fetcher.fetchSegment(privateResource(ref), segment, sink, context(), limits(), 1024, Progress()) }
+        try {
+            assertTrue(input.entered.await(2, TimeUnit.SECONDS))
+            store.clear()
+            assertTrue(disconnectEntered.await(2, TimeUnit.SECONDS))
+            assertTrue(fetcher.isTransferActive)
+            assertFalse(run.finished.await(100, TimeUnit.MILLISECONDS))
+        } finally { disconnectRelease.countDown(); input.release.countDown() }
+        assertEquals(SaveError.SOURCE_RESELECTION_REQUIRED, run.awaitFailure())
+        assertTrue(input.closed && response.disconnected && sink.closed)
+        assertFalse(fetcher.isTransferActive)
+    }
+
+    @Test fun privateRevokeDuringReadChargesBytesButDoesNotWriteOrReadAgain() {
+        val store = RequestContextLeaseStore()
+        val ref = store.put(url, liveAuthority = RequestContextLiveAuthority { true })
+        val input = GeneratedInput(188).also { it.afterRead = { store.revoke(ref) } }
+        val response = ts(body = input)
+        val fetcher = SystemHttpsHlsFetcher(requestContexts = store, connections = Factory(response))
+        val progress = Progress()
+        val sink = Sink()
+        fails(SaveError.SOURCE_RESELECTION_REQUIRED) {
+            fetcher.fetchSegment(privateResource(ref), segment, sink, context(), limits(), 1024, progress)
+        }
+        assertEquals(188L, progress.bytes)
+        assertEquals(188L, fetcher.bytesTransferred())
+        assertEquals(0L, sink.size)
+        assertTrue(input.closed && sink.closed && response.disconnected)
+    }
+
     @Test fun manifestRemainsMemoryOnlyAndDoesNotEmitCheckpointOrRestart() {
         val response = playlist()
         val progress = Progress()

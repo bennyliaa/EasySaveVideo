@@ -1,0 +1,33 @@
+{
+  "checkpoint": "thumbnail-loading-20261015",
+  "original_source_archive_sha256": "5c7b53017faef71ecaeb71790d97b1e93f767932204bf1bcd5ac004b672db2a2",
+  "original_source_archive_bytes": 28184525,
+  "original_source_files": 2621,
+  "original_source_bytes": 52191074,
+  "original_evidence_archive_sha256": "804e921a3eb9771fa4887e0b68931c84277221ce673906a147541f1b728a373d",
+  "original_evidence_archive_not_included": true,
+  "source_manifest": "LOCAL_SOURCE_MANIFEST.json",
+  "tests": {
+    "tests": 5692,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "suites": 515,
+    "passed": 5690,
+    "build_exit": 0,
+    "lint": {
+      "debug": {
+        "warning": 77,
+        "note": 10
+      },
+      "release": {
+        "warning": 78,
+        "note": 10
+      }
+    }
+  },
+  "final_evidence_archive": "evidence/final-junit-lint-log.sanitized.zip",
+  "redaction": "Only the separate checkpoint-evidence copies replace absolute source/workspace/home/temp prefixes with stable non-personal labels. All frozen source paths, including original reports, dependency artifacts and full license/notice texts, retain their verified bytes and fixed-hash references. Generic cloud build paths are not user personal paths. Source manifest hashes describe the original verified checkpoint; new checkpoint copies have separate staged hashes.",
+  "acceptance": "JVM regression and Android lint only. No new device acceptance, APK, public-provider configuration, API contact identity, release or deployment is included.",
+  "remote_sync": "PROPOSED_NOT_EXECUTED"
+}

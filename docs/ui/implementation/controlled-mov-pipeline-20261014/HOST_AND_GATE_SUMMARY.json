@@ -1,0 +1,26 @@
+{
+  "pinned_current_owned_media3": {
+    "tests": 6,
+    "failures": 0,
+    "kind": "real pinned Media3; host Android shims"
+  },
+  "typed_commit_sqlite": {
+    "tests": 10,
+    "failures": 0,
+    "kind": "host SQLite actual schema/queries; synthetic blobs; no Kotlin Android runtime"
+  },
+  "actual_adapter_composition": {
+    "tests": 10,
+    "failures": 0,
+    "kind": "actual external claim/core/bridge/owners/commit/retirement; fake remux/native/OS/SQL"
+  },
+  "android_device_acceptance": "NOT_RUN",
+  "production_mov_admission": false,
+  "audio_mov": "UNSUPPORTED_WHOLE_FILE",
+  "remote_verified_head": "06d3f50884ea88d1de647d212264c6488d3a658d",
+  "remote_current_checkpoint": "PENDING_CONNECTOR_UNRESPONSIVE",
+  "lint_new_foundation_warnings": {
+    "RequiresFeature": 14,
+    "explanation": "AndroidPrivateProfileBackend central feature checks require call-site lint review in next browser integration slice"
+  }
+}

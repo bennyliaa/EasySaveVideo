@@ -41,9 +41,14 @@ data class DirectNormalizationProof(
         requireNormalizationId(normalizationId); requireSaveId(taskId); requireSaveId(artifactId); requireSaveId(commitId)
         requireDirectHash(sourceIdentity); requireDirectHash(rawSha256); requireDirectHash(sourceTransferSha256); requireDirectHash(outputSha256)
         require(rawSizeBytes in 1..DirectNormalizationLimits.MAX_BYTES && outputSizeBytes in 1..DirectNormalizationLimits.MAX_BYTES)
-        require(schemaVersion == 1 && engineRevision == 1 && policyRevision == 1 && noEncoding)
+        require(schemaVersion == 1 && engineRevision == 1 && noEncoding)
+        // Durable shape recognition preserves historical audio1 without admitting it to new work.
+        require(policyRevision == 1 || (policyRevision == 2 && conservation.audio != null))
         require(conservation.video.canonicalBytes + (conservation.audio?.canonicalBytes ?: 0) <= outputSizeBytes)
     }
+    /** Active eligibility only, never evidence that native decoding or owned completion happened. */
+    fun isCurrentPolicy(): Boolean = if (conservation.audio == null) policyRevision == 1 else policyRevision == 2
+
     fun matchesSource(taskId: String, sourceIdentity: String, artifact: StagingArtifact, transfer: TransferResult): Boolean =
         this.taskId == taskId && this.sourceIdentity == sourceIdentity && artifactId == artifact.artifactId &&
             commitId == artifact.commitId && matchesTransfer(transfer)
@@ -108,14 +113,30 @@ sealed interface ArtifactOutputDescriptor {
         override val sha256: String get() = normalizationProof.outputSha256
         override val mimeType: String get() = "video/mp4"
     }
+    data class ConvertedDirect(
+        override val sourceTransfer: TransferResult,
+        val conversionProof: DirectConversionProof,
+    ) : ArtifactOutputDescriptor {
+        init { require(conversionProof.matchesTransfer(sourceTransfer)) }
+        override val sizeBytes: Long get() = conversionProof.outputSizeBytes
+        override val sha256: String get() = conversionProof.outputSha256
+        override val mimeType: String get() = "video/mp4"
+    }
 }
 
 /** All durable consumers must use this selection, including historical-read validation. */
 fun SaveRecord.selectedOutputDescriptor(): ArtifactOutputDescriptor? {
     val completed = transfer ?: return null
-    val proof = directNormalization ?: return ArtifactOutputDescriptor.Transferred(completed)
-    require(request.method == TaskMethod.DIRECT && artifact != null && request.networkResource != null)
-    require(proof.matchesSource(task.taskId, request.networkResource!!.sourceIdentity, artifact, completed))
+    require(directNormalization == null || directConversion == null)
+    if (!hasDirectOutputProof()) return ArtifactOutputDescriptor.Transferred(completed)
+    require(request.method == TaskMethod.DIRECT && artifact != null && request.networkSourceMetadata != null)
+    val sourceIdentity = request.networkSourceMetadata!!.sourceIdentity
+    directConversion?.let { proof ->
+        require(proof.matchesSource(task.taskId, sourceIdentity, artifact, completed))
+        return ArtifactOutputDescriptor.ConvertedDirect(completed, proof)
+    }
+    val proof = requireNotNull(directNormalization)
+    require(proof.matchesSource(task.taskId, sourceIdentity, artifact, completed))
     return ArtifactOutputDescriptor.NormalizedDirect(completed, proof)
 }
 

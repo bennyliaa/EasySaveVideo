@@ -21,6 +21,7 @@ class HlsPreparation internal constructor(
     val variants: List<HlsVariant> get() = (playlist as? HlsMasterPlaylist)?.variants.orEmpty()
     val directMedia: Boolean get() = playlist is HlsMediaPlaylist
     val bytesTransferred: Long get() = fetcher.bytesTransferred()
+    internal val privateSelection = source.privateSource?.let { PrivateHlsSelectionBinding(source, operation) }
     internal var selected: HlsSelection? = null
     internal var plan: HlsDurablePlan? = null
     internal val segmentIdentities = mutableMapOf<Int, String>()
@@ -48,6 +49,8 @@ class AndroidHlsStreamPort(context: Context, private val storage: AndroidSaveSto
     /** Call only after the UI AND command entitlement checks and an explicit source click. */
     fun prepare(source: SelectedMediaResource, operation: OperationContext): HlsPreparation {
         if (isDraining) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+        if (source.privateSource != null && source.privateSource !is PrivateNetworkSourceSeed)
+            throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
         if (!active.compareAndSet(false, true)) throw SaveFailure(SaveError.BUSY)
         try {
             session?.let(::discard)
@@ -74,9 +77,12 @@ class AndroidHlsStreamPort(context: Context, private val storage: AndroidSaveSto
     }
 
     /** Returns a live resource for the exact chosen variant, never an automatic adaptive choice. */
-    fun select(value: HlsPreparation, variantIdentity: String?): SelectedMediaResource {
+    fun select(value: HlsPreparation, variantIdentity: String?, binding: PrivateNetworkSourceBinding? = null): SelectedMediaResource {
         if (session !== value || clock.nowMillis() >= value.expiresAtMillis || value.operation.stopReason(clock.nowMillis()) != null)
             throw SaveFailure(SaveError.EXPIRED_RESOURCE)
+        val seed = value.source.privateSource
+        if (seed != null && (seed !is PrivateNetworkSourceSeed || binding == null || !binding.isFrom(seed) || !binding.isLive()) ||
+            seed == null && binding != null) throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
         val selected = when (val playlist = value.playlist) {
             is HlsMasterPlaylist -> playlist.selectVariant(variantIdentity ?: throw SaveFailure(SaveError.INVALID_REQUEST))
             is HlsMediaPlaylist -> {
@@ -85,16 +91,19 @@ class AndroidHlsStreamPort(context: Context, private val storage: AndroidSaveSto
             }
         }
         if (value.selected != null) throw SaveFailure(SaveError.INVALID_REQUEST)
-        value.selected = selected
-        return value.source.copy(variantId = selected.identity,
+        val resource = value.source.copy(variantId = selected.identity, privateSource = binding,
             expectedAudio = value.source.expectedAudio || selected.variantMetadata?.codecs?.declaresAacLc == true)
+        value.privateSelection?.attach(resource)
+        value.selected = selected
+        return resource
     }
     fun operation(value: HlsPreparation): OperationContext {
         if (session !== value) throw SaveFailure(SaveError.EXPIRED_RESOURCE)
         return value.operation
     }
     fun canContinue(resource: SelectedMediaResource): Boolean = session?.let {
-        it.source.sourceIdentity == resource.sourceIdentity && it.selected?.identity == resource.variantId &&
+        (it.privateSelection?.matches(resource) ?: (resource.privateSource == null &&
+            it.source.sourceIdentity == resource.sourceIdentity && it.selected?.identity == resource.variantId)) &&
             it.operation.stopReason(clock.nowMillis()) == null
     } == true
     /** Cancels immediately. Keep the occupied session until the worker has actually released it. */
@@ -102,6 +111,16 @@ class AndroidHlsStreamPort(context: Context, private val storage: AndroidSaveSto
     fun discard(value: HlsPreparation) {
         value.cancel.cancel(); value.source.requestContextRef?.let(leases::revoke)
         if (!active.get() && !isDraining) sessions.clear(value)
+    }
+    /**
+     * Drop this exact already-released session only after the Core positive source-detach event or
+     * actual execution-claim retirement. Idle/draining flags are additional checks, never proof.
+     * This is deliberately not discard(): it never cancels the output OperationContext or does IO.
+     */
+    internal fun detachReleased(value: HlsPreparation): Boolean {
+        if (active.get() || isDraining || value.fetcher.isTransferActive || value.fetcher.requiresProcessRecovery()) return false
+        sessions.clear(value)
+        return session !== value
     }
     fun cancelPreparation() {
         val current = session
@@ -126,6 +145,8 @@ class AndroidHlsStreamPort(context: Context, private val storage: AndroidSaveSto
         try {
             val value = session ?: throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
             val selection = value.selected ?: throw SaveFailure(SaveError.INVALID_REQUEST)
+            if (value.privateSelection != null) value.privateSelection.requireTransfer(resource, artifact, context, clock.nowMillis())
+            else if (resource.privateSource != null) throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
             if (resource.sourceIdentity != value.source.sourceIdentity || resource.variantId != selection.identity ||
                 context.operationId != value.operation.operationId || context.deadlineEpochMillis != value.operation.deadlineEpochMillis ||
                 checkpoint != null) throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
@@ -218,4 +239,51 @@ internal class HlsSessionSlot<T : Any> {
     fun get(): T? = value.get()
     fun set(next: T?) { value.set(next) }
     fun clear(expected: T): Boolean = value.compareAndSet(expected, null)
+}
+
+/** One immutable final selection attached to the original private preparation, never a copied identity. */
+internal class PrivateHlsSelectionBinding(
+    private val preparedSource: SelectedMediaResource,
+    private val preparationOperation: OperationContext,
+) {
+    private val seed = preparedSource.privateSource as? PrivateNetworkSourceSeed
+        ?: throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
+    private class Attached(val resource: SelectedMediaResource, val binding: PrivateNetworkSourceBinding)
+    private val attached = java.util.concurrent.atomic.AtomicReference<Attached?>(null)
+
+    fun attach(resource: SelectedMediaResource) {
+        val binding = resource.privateSource as? PrivateNetworkSourceBinding
+            ?: throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
+        if (!binding.isFrom(seed) || !binding.isLive() || resource.url != preparedSource.url ||
+            resource.candidateId != preparedSource.candidateId || resource.sourceIdentity != preparedSource.sourceIdentity ||
+            resource.requestContextRef != preparedSource.requestContextRef || resource.expiresAtEpochMillis != preparedSource.expiresAtEpochMillis ||
+            resource.durableReference || preparedSource.expectedAudio && !resource.expectedAudio ||
+            !attached.compareAndSet(null, Attached(resource, binding)))
+            throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
+    }
+
+    fun matches(resource: SelectedMediaResource): Boolean {
+        val selected = attached.get() ?: return false
+        return selected.resource === resource && selected.binding === resource.privateSource &&
+            selected.binding.isFrom(seed) && selected.binding.isLive() &&
+            resource.url == preparedSource.url && resource.candidateId == preparedSource.candidateId &&
+            resource.sourceIdentity == preparedSource.sourceIdentity &&
+            resource.variantId == selected.resource.variantId && resource.expectedAudio == selected.resource.expectedAudio &&
+            resource.requestContextRef == preparedSource.requestContextRef && resource.expiresAtEpochMillis == preparedSource.expiresAtEpochMillis
+    }
+
+    fun requireTransfer(resource: SelectedMediaResource, artifact: StagingArtifact,
+        context: OperationContext, nowMillis: Long) {
+        val selected = attached.get() ?: throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
+        // Core issues commitId == taskId. Its private cancellation wrapper is expected; do not
+        // require context/token object equality or reject the existing bounded retry progression.
+        if (!matches(resource) || selected.binding.taskId != artifact.commitId ||
+            preparationOperation.stopReason(nowMillis) != null || context.stopReason(nowMillis) != null ||
+            context.operationId != preparationOperation.operationId ||
+            context.deadlineEpochMillis != preparationOperation.deadlineEpochMillis ||
+            context.retryBudget != preparationOperation.retryBudget || context.resourceBudget != preparationOperation.resourceBudget ||
+            context.attempt !in preparationOperation.attempt..preparationOperation.retryBudget)
+            throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
+    }
+    override fun toString() = "PrivateHlsSelectionBinding([redacted])"
 }

@@ -1,0 +1,19 @@
+{
+  "tests": 5692,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 2,
+  "suites": 515,
+  "passed": 5690,
+  "build_exit": 0,
+  "lint": {
+    "debug": {
+      "warning": 77,
+      "note": 10
+    },
+    "release": {
+      "warning": 78,
+      "note": 10
+    }
+  }
+}

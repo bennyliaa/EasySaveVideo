@@ -1,6 +1,7 @@
 package com.easysavevideo.discovery.thumbnail
 
 import com.easysavevideo.discovery.SessionStamp
+import com.easysavevideo.discovery.DiscoveryCancellation
 import com.easysavevideo.discovery.VideoSearchResult
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -35,11 +36,14 @@ class DiscoveryThumbnailSession(
     onFrame: (DiscoveryThumbnailBinding, DiscoveryThumbnailFrame) -> Unit,
 ) : AutoCloseable {
     private class Job(val capability: DiscoveryThumbnailCapability) {
-        val cancelled = AtomicBoolean()
+        val cancellation = DiscoveryCancellation()
         val started = AtomicBoolean()
         var completed = false
         var timer: Runnable? = null
     }
+    private var changed: (() -> Unit)? = null
+    fun observeStatus(onChanged: () -> Unit) { dispatcher.requireCurrentThread(); changed = onChanged }
+    private fun notifyChanged() { try { changed?.invoke() } catch (_: Exception) { } }
     private var consumer: ((DiscoveryThumbnailBinding, DiscoveryThumbnailFrame) -> Unit)? = onFrame
     private var page = emptyMap<String, DiscoveryThumbnailBinding>()
     private var visible = emptySet<String>()
@@ -65,6 +69,7 @@ class DiscoveryThumbnailSession(
         this.foreground = foreground
         // New page/session/background transitions require a fresh viewport report.
         visible = emptySet()
+        notifyChanged()
     }
 
     fun setVisible(resultIds: Set<String>) {
@@ -74,9 +79,10 @@ class DiscoveryThumbnailSession(
         val next = if (foreground) resultIds.toSet() else emptySet()
         val removed = visible - next
         queue.removeAll { it.capability.binding.resultId in removed }
-        active?.takeIf { it.capability.binding.resultId in removed }?.cancelled?.set(true)
+        active?.takeIf { it.capability.binding.resultId in removed }?.cancellation?.cancel()
         removed.forEach(states::remove)
         visible = next
+        notifyChanged()
     }
 
     fun status(binding: DiscoveryThumbnailBinding): DiscoveryThumbnailStatus {
@@ -93,11 +99,22 @@ class DiscoveryThumbnailSession(
         if (!current(binding) || capability.isRevoked || binding.resultId in states) return
         if (queue.size >= budget.maxQueued) {
             states[binding.resultId] = DiscoveryThumbnailStatus.QUEUE_FULL
+            notifyChanged()
             return
         }
         states[binding.resultId] = DiscoveryThumbnailStatus.WAITING
         queue.addLast(Job(capability))
         pump()
+        notifyChanged()
+    }
+
+    /** Only a confirmed lane release can retry a still-current admission that was BUSY. */
+    fun retryReleasedLane(capability: DiscoveryThumbnailCapability) {
+        dispatcher.requireCurrentThread()
+        if (current(capability.binding) && states[capability.binding.resultId] == DiscoveryThumbnailStatus.BUSY) {
+            states.remove(capability.binding.resultId)
+            request(capability)
+        }
     }
 
     private fun current(binding: DiscoveryThumbnailBinding): Boolean =
@@ -116,7 +133,7 @@ class DiscoveryThumbnailSession(
         val accepted = try { lane.submit(Runnable {
             // Defensive against a broken executor executing the same task twice.
             if (!job.started.compareAndSet(false, true)) return@Runnable
-            val result = try { job.capability.read { job.cancelled.get() } }
+            val result = try { job.capability.read(job.cancellation) }
             catch (_: Exception) { DiscoveryThumbnailRead.ReleaseUnconfirmed }
             val deliveryClaimed = AtomicBoolean()
             try { dispatcher.post(Runnable {
@@ -126,7 +143,7 @@ class DiscoveryThumbnailSession(
                 // UI dispatch is unavailable. Release the frame here; retain active ownership and
                 // its watchdog rather than asserting that UI/native lifecycle has completed.
                 if (deliveryClaimed.compareAndSet(false, true)) {
-                    job.cancelled.set(true)
+                    job.cancellation.cancel()
                     try { (result as? DiscoveryThumbnailRead.Released)?.frame?.close() } catch (_: Exception) { }
                 }
             }
@@ -140,6 +157,7 @@ class DiscoveryThumbnailSession(
             active = null
             job.completed = true
             states[job.capability.binding.resultId] = DiscoveryThumbnailStatus.BUSY
+            notifyChanged()
             pump()
         }
     }
@@ -153,13 +171,13 @@ class DiscoveryThumbnailSession(
         val frame = (result as? DiscoveryThumbnailRead.Released)?.frame
         val binding = job.capability.binding
         try {
-            if (active === job && current(binding) && !job.cancelled.get() && !job.capability.isRevoked) {
+            if (active === job && current(binding) && !job.cancellation.isCancelled && !job.capability.isRevoked) {
                 if (frame != null && valid(frame)) {
                     states[binding.resultId] = DiscoveryThumbnailStatus.DELIVERED
                     try { consumer?.invoke(binding, frame) }
                     catch (_: Exception) { if (current(binding)) states[binding.resultId] = DiscoveryThumbnailStatus.UNAVAILABLE }
                 } else states[binding.resultId] = DiscoveryThumbnailStatus.UNAVAILABLE
-            } else if (current(binding) && job.capability.isRevoked && !job.cancelled.get()) {
+            } else if (current(binding) && job.capability.isRevoked && !job.cancellation.isCancelled) {
                 states[binding.resultId] = DiscoveryThumbnailStatus.UNAVAILABLE
             }
         } catch (_: Exception) {
@@ -167,6 +185,7 @@ class DiscoveryThumbnailSession(
         } finally {
             try { frame?.close() } catch (_: Exception) { fence() }
             if (active === job) active = null
+            notifyChanged()
             pump()
         }
     }
@@ -177,13 +196,14 @@ class DiscoveryThumbnailSession(
     private fun fence() {
         if (fenced) return
         fenced = true
-        active?.cancelled?.set(true)
+        active?.cancellation?.cancel()
         queue.clear(); states.clear()
         try { onStalled() } catch (_: Exception) { /* Notification cannot undo the fence. */ }
+        notifyChanged()
     }
 
     private fun cancelAll() {
-        active?.cancelled?.set(true)
+        active?.cancellation?.cancel()
         queue.clear(); states.clear()
     }
 
@@ -192,6 +212,7 @@ class DiscoveryThumbnailSession(
         if (closed) return
         closed = true; foreground = false
         cancelAll(); page = emptyMap(); visible = emptySet(); consumer = null
+        notifyChanged(); changed = null
         // Keep the watchdog while a cancelled native owner may still be alive.
     }
 }

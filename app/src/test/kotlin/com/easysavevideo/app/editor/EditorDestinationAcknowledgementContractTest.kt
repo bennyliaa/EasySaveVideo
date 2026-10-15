@@ -35,8 +35,15 @@ class EditorDestinationAcknowledgementContractTest {
 
     @Test fun dialogDismissAndCancelShareTerminalPathAndOwnerSpecificCancelIsFenced() {
         val ui = source("library/destination/OrdinaryDestinationUi.kt")
-        assertTrue(ui.contains("Dialog(onDismissRequest = runtime::cancelSelection)"))
-        assertTrue(ui.contains("onClick = runtime::cancelSelection"))
+        assertTrue(ui.contains("val request = runtime.currentSelectionIdentity ?: return"))
+        assertTrue(ui.contains("EsvAppDialog(request, { runtime.currentSelectionIdentity === request },"))
+        assertTrue(ui.contains("onDismissRequest = { runtime.cancelSelection(request) }"))
+        assertTrue(ui.contains("val admission = LocalPrivateInputAdmission.current"))
+        assertTrue(ui.contains("onClick = { if (admission()) runtime.cancelSelection(request) }"))
+        val capturedCancel = section(destination, "internal fun cancelSelection(expectedIdentity: Any)", "internal fun clearNotice")
+        assertTrue(capturedCancel.contains("requireMain()"))
+        assertTrue(capturedCancel.contains("if (currentSelectionIdentity !== expectedIdentity) return"))
+        assertTrue(capturedCancel.contains("cancelSelection()"))
         val cancel = section(destination, "fun cancelSelection()", "private fun selectionCurrent")
         assertTrue(cancel.contains("pending?.let { completeSelection(it, OrdinaryDestinationSelectionResult.Cancelled) }"))
         assertTrue(cancel.contains("internal fun cancelSelection(receipt: OrdinaryDestinationReceipt)"))

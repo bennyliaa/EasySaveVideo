@@ -1,0 +1,757 @@
+[
+  {
+    "path": "AGENTS.md",
+    "bytes": 5022,
+    "sha256": "07d421e770ebda2819b8497632fbae36823588b343f7cb622c5ad35753ece6e3"
+  },
+  {
+    "path": "app/build.gradle.kts",
+    "bytes": 25955,
+    "sha256": "82e5051182391d33546c000b809eeedff164a9d3a02d9821cf97d1af8445e494"
+  },
+  {
+    "path": "app/gradle.lockfile",
+    "bytes": 48600,
+    "sha256": "580bfb58f717e3c758c3d3e36e938b07ed9553fdd008ecdfbb67891b072d984a"
+  },
+  {
+    "path": "app/src/main/assets/third-party-notices.txt",
+    "bytes": 619318,
+    "sha256": "c124394e222d0e4a317f60ba3d97b60666fd6cfe17188a6773316bfcc307f2d5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
+    "bytes": 47816,
+    "sha256": "5af9fa30eadd157fa170268cb7698fce4530e3e1712f756b38afd154d0b35160"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/CommonsSourceRegistration.kt",
+    "bytes": 5867,
+    "sha256": "8f99cae93b8093216e95a4b00c3893271f0fbeef497127f719668de23488b645"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/thumbnail/AndroidDiscoveryThumbnails.kt",
+    "bytes": 10519,
+    "sha256": "ffe9f18ea6d120ae5746d3b23076fe12f6d57ca653afb1a4ee75de14547ba9d4"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailReader.kt",
+    "bytes": 8537,
+    "sha256": "9c1326cb55a860b4781d22beedc7198ffbcd99ad44bce809cf1c2581df258fe3"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
+    "bytes": 52010,
+    "sha256": "ef504fc063b4c50f3548b104a8f0f002de55db028547be4170fcdad86e6181cd"
+  },
+  {
+    "path": "app/src/main/res/values-zh-rCN/discovery_copy.xml",
+    "bytes": 10130,
+    "sha256": "633b3e837e97c2f3a849c4b4f92f46d023a820a47cf85d24ddafb1febf39f5d4"
+  },
+  {
+    "path": "app/src/main/res/values/discovery_copy.xml",
+    "bytes": 10436,
+    "sha256": "370726d71ef4484979f225c38b08226f5c6160d133584fa7befa67cd15b7d324"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/browser/NewTabSearchContractTest.kt",
+    "bytes": 7021,
+    "sha256": "659ef65ed6f3ae09509b552be2a653de8817323c17d1d9a02804d14d2b2fcf01"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsAnonymousImageClientTest.kt",
+    "bytes": 2543,
+    "sha256": "a4659f0c9bad3f8bccf0c9c63ca700ee43200599e91e0e89ae0056e54a32a623"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailGenerationTest.kt",
+    "bytes": 12287,
+    "sha256": "f8dbea91668f8daa995355bdcfc888ac43f9938090d442388652d4ca62335e95"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailLaneTest.kt",
+    "bytes": 8309,
+    "sha256": "1d97445270d8208bb63aed053b52d22fccfe5fe47482c7a9e8498ec2c37a00d0"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailPolicyTest.kt",
+    "bytes": 8512,
+    "sha256": "65d1e00658402e7bfec23c7ff055f2661075600556f2da198916f839501d6c94"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailProductWiringTest.kt",
+    "bytes": 11279,
+    "sha256": "2f01b8b70a9921d9ea412e3b532f993a63d00bb6c65768f1df0ee0e2e03f5a76"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailWiringContractTest.kt",
+    "bytes": 6655,
+    "sha256": "a8008da206c459ac65cf086a91e3b8d5634ddd9d2c4adb708581bcd73f4cdbed"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/SourceProviderDialogResourcesTest.kt",
+    "bytes": 6371,
+    "sha256": "d2a357c155ae91905951d0b467fdb797394e35a5d4e9c8ef8bcd0dc4dec9df67"
+  },
+  {
+    "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailCapability.kt",
+    "bytes": 9181,
+    "sha256": "efa5b19a065d0054faba451867d41a5816363cf72fc4e4b3f8556516215738b6"
+  },
+  {
+    "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailSession.kt",
+    "bytes": 10286,
+    "sha256": "fbc7a14b6b83a5331145e9ff36e77c7d23a80876175c171bb6510150b93c9410"
+  },
+  {
+    "path": "discovery/src/test/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailCancellationIntegrationTest.kt",
+    "bytes": 14466,
+    "sha256": "829d7cce3426732076f4c0ba6daf652033528b6211bbf22e9df58b268f9291ad"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/ADMISSION_SCOPE_20261015.md",
+    "bytes": 4505,
+    "sha256": "a02b9cd7bb6cc89880ba814e6908ee4240679dc27af349e679de98905b3bdd37"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/03-metadata-compile.exit",
+    "bytes": 2,
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/03-metadata-compile.log",
+    "bytes": 19634,
+    "sha256": "f157551fb217ad5d8f8ba1ddd34bee7f0b067a3f876761e86493d5f41ad632c6"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/03-resolve.exit",
+    "bytes": 2,
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/03-resolve.log",
+    "bytes": 1701,
+    "sha256": "a2dd45330591a9900c46a7ff251d04f1172478281c6628771377ed342cc5ad20"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/04-full-regression.exit",
+    "bytes": 2,
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/04-full-regression.log",
+    "bytes": 12864,
+    "sha256": "c99eb56c0752d495a4cbdd0812fc6b9092c27be45435e6567a85e5f2ab91f705"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/ALL_AAR_METADATA.json",
+    "bytes": 67081,
+    "sha256": "ab4cc5bc287f8051b8a65c656f4f25d84333b115ea668273437df281096129aa"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/CURRENT_GRAPH_COMPARISON.json",
+    "bytes": 251088,
+    "sha256": "0547657aea986846e9b85d2a58b3eb44766dbfaa711c67fe0fca459cd74a4904"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/CURRENT_GRAPH_SUMMARY.json",
+    "bytes": 1420,
+    "sha256": "b1a6ad1d78a374644242d6b739e50f1e8feafce6e7a67bda6d0d006faeb9f6d3"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/EXACT_LINT_DIAGNOSTIC_DELTA.json",
+    "bytes": 8391,
+    "sha256": "9d69e0458561ade97901152136a65fa06bd0c5208703593586dd2ead031c9796"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/FINAL_LOCK_CONFIGURATION_DELTA.json",
+    "bytes": 15432,
+    "sha256": "a2b4c139eaa59ad9f5ba6573346674f94ba0c14a8960494ac5b11d833bdc128b"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/FINAL_MODULE_TOTALS.json",
+    "bytes": 1448,
+    "sha256": "ea0d4cd453a0a8a6c176e1d0cf635ed6cf9ef09e463259390cce53a242acceb5"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/FINAL_STRICT_VERIFICATION_AUDIT.json",
+    "bytes": 203,
+    "sha256": "0aba2e362cc39aeb258130d7a9bd948d766c4c46d6943e2345d2af6883b23af7"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/FINAL_TOTALS.json",
+    "bytes": 258,
+    "sha256": "54427476905968e109eea1f07ed7aceb8a1834c9f73e6cae207145ce24fe3fa6"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/NOTICE_OVERLAY_VALIDATION.json",
+    "bytes": 1041,
+    "sha256": "fd86e7646d3b16d568f2d280ac81664ee9260fd7591ee37cbf8b493eab0a5714"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/debugCompileClasspath.tsv",
+    "bytes": 23824,
+    "sha256": "ea48ce242de79e9fd29a77bf12ec2a15f81256142e02d08b85f630d5dcd515dd"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/debugRuntimeClasspath.tsv",
+    "bytes": 30947,
+    "sha256": "4dfd0284e825e8331c50fd73fd45cb4059156c580f04dff8fec1af5e9e0762e7"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/full-final-lint/lint-results-debug.sarif",
+    "bytes": 264874,
+    "sha256": "a9dbe2b7446bf8a2c57e9216b91cb0460863dd06ab220aac194b6e4e03d51ca1"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/full-final-lint/lint-results-debug.txt",
+    "bytes": 41340,
+    "sha256": "d07e4ba58f7949e85771081317b453fdfdd5eab58a9457f5d518b1821ce1775a"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/full-final-lint/lint-results-debug.xml",
+    "bytes": 100567,
+    "sha256": "cf16766ef775b2f9394fd1207a2fcb58f709cbe682786a09183b5db7e6868ee0"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/full-final-lint/lint-results-release.sarif",
+    "bytes": 264874,
+    "sha256": "a9dbe2b7446bf8a2c57e9216b91cb0460863dd06ab220aac194b6e4e03d51ca1"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/full-final-lint/lint-results-release.txt",
+    "bytes": 41340,
+    "sha256": "d07e4ba58f7949e85771081317b453fdfdd5eab58a9457f5d518b1821ce1775a"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/full-final-lint/lint-results-release.xml",
+    "bytes": 100567,
+    "sha256": "cf16766ef775b2f9394fd1207a2fcb58f709cbe682786a09183b5db7e6868ee0"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/releaseCompileClasspath.tsv",
+    "bytes": 23824,
+    "sha256": "ea48ce242de79e9fd29a77bf12ec2a15f81256142e02d08b85f630d5dcd515dd"
+  },
+  {
+    "path": "docs/coil-core-3.3.0/evidence/releaseRuntimeClasspath.tsv",
+    "bytes": 30947,
+    "sha256": "4dfd0284e825e8331c50fd73fd45cb4059156c580f04dff8fec1af5e9e0762e7"
+  },
+  {
+    "path": "gradle/verification-metadata.xml",
+    "bytes": 191343,
+    "sha256": "29b76573f3b03e4dab2257092454eb203c32d9517688991e8ae858cbcfd3b5d2"
+  },
+  {
+    "path": "recording/gradle.lockfile",
+    "bytes": 2410,
+    "sha256": "42279a851dfcaf1074c34330b2ad8a2febbcc409fc7316df3b759d7e8f3b66bd"
+  },
+  {
+    "path": "searxng-provider/gradle.lockfile",
+    "bytes": 2417,
+    "sha256": "45ee8f928b13c81781f5d1f95e00b71f4993058d79ee7e4da7292984b50b5818"
+  },
+  {
+    "path": "settings.gradle.kts",
+    "bytes": 5718,
+    "sha256": "0ae6b5077a602f1abaaff9c6d9108f71b97e65daac3118165845b579db1dddc1"
+  },
+  {
+    "path": "third_party/README.md",
+    "bytes": 2582,
+    "sha256": "00e92fd73b700e3b2520d84ed684051883a1a3b7564e41a537ec723a020b5976"
+  },
+  {
+    "path": "third_party/admitted-runtime.tsv",
+    "bytes": 12994,
+    "sha256": "46be81f4d0245f30ef111836b213b92de0c3c29ed16f27bdb5a00aacefa63e9d"
+  },
+  {
+    "path": "third_party/coil-3.3.0/CANDIDATE_NOTICES_SUPPLEMENT.txt",
+    "bytes": 37802,
+    "sha256": "b5f107bc23a2486fbe828a6d78720125d1e45109af88e1c03db0cf1064a1db7f"
+  },
+  {
+    "path": "third_party/coil-3.3.0/FULL_GRAPH_REVIEW.json",
+    "bytes": 318039,
+    "sha256": "8285b8906cf2f5ec3cc4631820679f102b52fb085b94f41afe2a34a90091ede6"
+  },
+  {
+    "path": "third_party/coil-3.3.0/FULL_INPUT_PINS.json",
+    "bytes": 66731,
+    "sha256": "e75039a68e7a5f095d12ef240cc23b4f8c319086dbec71cf7f14d51a2da68846"
+  },
+  {
+    "path": "third_party/coil-3.3.0/NOTICE_SOURCE_MANIFEST.json",
+    "bytes": 14794,
+    "sha256": "590cdd5ad459de8aaf3c45bd172e1f92a64a92c56c3f5b82c5645379679c4d38"
+  },
+  {
+    "path": "third_party/coil-3.3.0/OFFLINE_VENDOR_PROJECTION.json",
+    "bytes": 41871,
+    "sha256": "7ce4dfda2838b2fea4f4d7ac36748bb71f33f77c4aa115235d47bb7927bcdc14"
+  },
+  {
+    "path": "third_party/coil-3.3.0/PRODUCTION_INPUT_PRESERVATION.json",
+    "bytes": 3102,
+    "sha256": "bf211c38c2734cee15424d1844e05638513a7302d376f4977beaa5b2e36c990a"
+  },
+  {
+    "path": "third_party/coil-3.3.0/REPORT.md",
+    "bytes": 11433,
+    "sha256": "79925e26b8444bb3da551057fee2cd649274169c3957429aae801a3d17aef5a0"
+  },
+  {
+    "path": "third_party/coil-3.3.0/RUNTIME_NOTICES_SUPPLEMENT.txt",
+    "bytes": 37167,
+    "sha256": "8e78cf9ae48749a40afdd1c898f70ba9d91daf2d36ce23f7f8af49ab6b9dc563"
+  },
+  {
+    "path": "third_party/coil-3.3.0/additional-coroutines-guava-review.json",
+    "bytes": 2672,
+    "sha256": "27f136c42eaa56d1e4f0789598966871ae2e7ce8c151092457356bddf2be92c6"
+  },
+  {
+    "path": "third_party/coil-3.3.0/full-runtime-difference.tsv",
+    "bytes": 41938,
+    "sha256": "ce1d860bcddab81f34f722d07ea89042bf49ca3260d988ad10366935d1728ad0"
+  },
+  {
+    "path": "third_party/coil-3.3.0/licenses/Apache-2.0-AOSP.txt",
+    "bytes": 10175,
+    "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+  },
+  {
+    "path": "third_party/coil-3.3.0/licenses/Coil-3.3.0-LICENSE.txt",
+    "bytes": 11347,
+    "sha256": "5ade6484903351f6661e791504c50ad1a24cab3a75950c1b2a7be3eb336b6ba9"
+  },
+  {
+    "path": "third_party/coil-3.3.0/licenses/Kotlinx-Coroutines-1.10.2-LICENSE.txt",
+    "bytes": 11398,
+    "sha256": "b1febe6399dffb10d19d35e7663ab16300c93cb0476a94115df1cc0097a8ffd8"
+  },
+  {
+    "path": "third_party/coil-3.3.0/licenses/Kotlinx-Coroutines-1.10.2-license-NOTICE.txt",
+    "bytes": 452,
+    "sha256": "1ab6de67ef738bffae63f9aa6a8798a35e87341c83ea28d09c8dc8ca6993232a"
+  },
+  {
+    "path": "third_party/coil-3.3.0/licenses/androidx.core__core-ktx__1.15.0__core-ktx-1.15.0.aar_META-INF_androidx_core_core-ktx_LICENSE.txt",
+    "bytes": 10175,
+    "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+  },
+  {
+    "path": "third_party/coil-3.3.0/licenses/androidx.core__core__1.15.0__core-1.15.0.aar_META-INF_androidx_core_core_LICENSE.txt",
+    "bytes": 10175,
+    "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+  },
+  {
+    "path": "third_party/coil-3.3.0/licenses/androidx.exifinterface__exifinterface__1.4.1__exifinterface-1.4.1.aar_META-INF_androidx_exifinterface_exifinterface_LICENSE.txt",
+    "bytes": 10175,
+    "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+  },
+  {
+    "path": "third_party/coil-3.3.0/licenses/androidx.profileinstaller__profileinstaller__1.4.1__profileinstaller-1.4.1.aar_META-INF_androidx_profileinstaller_profileinstaller_LICENSE.txt",
+    "bytes": 10175,
+    "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+  },
+  {
+    "path": "third_party/coil-3.3.0/manifest-component-comparison.json",
+    "bytes": 1502,
+    "sha256": "d171cd248772e8c90140781f06f725843796639826a929f040f9e2081fde2819"
+  },
+  {
+    "path": "third_party/coil-3.3.0/metadata/coil-core-3.3.0.module",
+    "bytes": 19148,
+    "sha256": "73628d48360685d402adac571f306d5ed4f28c4c203daf912240931edd60d2a4"
+  },
+  {
+    "path": "third_party/coil-3.3.0/metadata/coil-core-android-3.3.0.module",
+    "bytes": 9768,
+    "sha256": "6c0e4b79037245dfb370b68817a613718eb15ca2c66d373cd1ba2ad1db8d73cd"
+  },
+  {
+    "path": "third_party/coil-3.3.0/metadata/org.jetbrains.kotlinx__kotlinx-coroutines-bom__1.10.2.pom",
+    "bytes": 4279,
+    "sha256": "faf0c6538e53ddc0499a63664d8e763c216580b2e18e722ccbdf1b431a6afe26"
+  },
+  {
+    "path": "third_party/coil-3.3.0/metadata/org.jetbrains.kotlinx__kotlinx-coroutines-guava__1.10.2.pom",
+    "bytes": 2368,
+    "sha256": "126d860e3963148b36c180a04220401867b15703e71df201d4c89b3081456e3c"
+  },
+  {
+    "path": "third_party/coil-3.3.0/official-coroutines-1.10.2/FETCH.json",
+    "bytes": 551,
+    "sha256": "ddaada8466114b3611dfb5275ebcb5645662ea202a673939469ffbd4685133bc"
+  },
+  {
+    "path": "third_party/coil-3.3.0/official-coroutines-1.10.2/LICENSE.txt",
+    "bytes": 11398,
+    "sha256": "b1febe6399dffb10d19d35e7663ab16300c93cb0476a94115df1cc0097a8ffd8"
+  },
+  {
+    "path": "third_party/coil-3.3.0/official-coroutines-1.10.2/NOTICE_FETCH.json",
+    "bytes": 214,
+    "sha256": "215d9d52f05a8651022df62b2ae615f036e82cb1e9f6e484b40199c2fb14760b"
+  },
+  {
+    "path": "third_party/coil-3.3.0/official-coroutines-1.10.2/license-NOTICE.txt",
+    "bytes": 452,
+    "sha256": "1ab6de67ef738bffae63f9aa6a8798a35e87341c83ea28d09c8dc8ca6993232a"
+  },
+  {
+    "path": "third_party/coil-3.3.0/official-extra/kotlinx-coroutines-guava-1.10.2.jar",
+    "bytes": 17969,
+    "sha256": "d54c4c9f9f2d3612afa5801daf70a7b68687f78d8936360341f1a89b535abfee"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/androidx.appcompat__appcompat-resources__1.7.1__appcompat-resources-1.7.1.pom",
+    "bytes": 2993,
+    "sha256": "2faf922e8c3d706f29d862b3fbb3aa1347705c21c6eae18586d2bb1f7366ea01"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/androidx.core__core-ktx__1.15.0__core-ktx-1.15.0.pom",
+    "bytes": 2450,
+    "sha256": "417c6aa0279ec78db02fe395d401a09bcaaa9d82d935148a3e2de90fdf38d94c"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/androidx.core__core__1.15.0__core-1.15.0.pom",
+    "bytes": 3853,
+    "sha256": "e168ae56064b8e5a40bce415ef95ffd5a813abb5456d2775f0fef426ed49e35a"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/androidx.exifinterface__exifinterface__1.4.1__exifinterface-1.4.1.pom",
+    "bytes": 2004,
+    "sha256": "944e867584e20748613cc7610bd5fa10a968cc98cb59fdfdb863e9f0201df289"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/androidx.profileinstaller__profileinstaller__1.4.1__profileinstaller-1.4.1.pom",
+    "bytes": 2477,
+    "sha256": "6dde43827b40535e4053d1c52d4b227a411556c289e65400c9a1cc61e2b41ce3"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/androidx.tracing__tracing__1.2.0__tracing-1.2.0.pom",
+    "bytes": 1968,
+    "sha256": "f34bec4eb58871d31002901377108aaa1ebfe77fa6d882b8b86200b158e26ea1"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/androidx.vectordrawable__vectordrawable-animated__1.1.0__vectordrawable-animated-1.1.0.pom",
+    "bytes": 1798,
+    "sha256": "276a20116b705fb75b9003ee9496c56f6fd3b32375fb232472811eba60a040bd"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/androidx.vectordrawable__vectordrawable__1.1.0__vectordrawable-1.1.0.pom",
+    "bytes": 1726,
+    "sha256": "5b0e2d5b2179e54804785cbc21ce5f473b5e1ddd55a57da482e94dcd39492bb2"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/com.squareup.okio__okio-jvm__3.15.0__okio-jvm-3.15.0.pom",
+    "bytes": 1699,
+    "sha256": "078e42f68ca4613ff2597fbc5541c5ce578cdcc48839da89da7ca760518bfb79"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/io.coil-kt.coil3__coil-core-android__3.3.0__coil-core-android-3.3.0.pom",
+    "bytes": 6640,
+    "sha256": "cd627afd3e4d4a60f04c7a782168d57fee470c6ae7aa87408f1a644f4172516f"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/org.jetbrains.kotlinx__kotlinx-coroutines-android__1.10.2__kotlinx-coroutines-android-1.10.2.pom",
+    "bytes": 2193,
+    "sha256": "b92d3672e7f9e8f4c4e2ab187c3e31fecc506496396f4a5f27ee1c957a42b319"
+  },
+  {
+    "path": "third_party/coil-3.3.0/poms/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.10.2__kotlinx-coroutines-core-jvm-1.10.2.pom",
+    "bytes": 2167,
+    "sha256": "658f576b96c832e7382406adb197d64d8e2e97de10e96dfa3700decfa2a60def"
+  },
+  {
+    "path": "third_party/coil-3.3.0/runtime-95.tsv",
+    "bytes": 12910,
+    "sha256": "0822a9d8791ff65597891073197aa6fb2999fb516003c4c7898fa920ab52e6e5"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/androidx.appcompat__appcompat-resources__1.7.1__androidx.appcompat__appcompat-resources__1.7.1-sources.jar",
+    "bytes": 40127,
+    "sha256": "cacf441fbbec0ebf12b4308bbeeb9a7389387c35a66f13bd2551dc328cf33ead"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/androidx.core__core-ktx__1.15.0__androidx.core__core-ktx__1.15.0-sources.jar",
+    "bytes": 74218,
+    "sha256": "5bedb726f4388be868bb5e35d5f726e1c5745d3ea285fd5138288571182860c1"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/androidx.core__core__1.15.0__androidx.core__core__1.15.0-sources.jar",
+    "bytes": 945720,
+    "sha256": "f56a83aa404e6bba2065b7bacfb18b38f070c8861068fed656dd04570644a0e3"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/androidx.exifinterface__exifinterface__1.4.1__androidx.exifinterface__exifinterface__1.4.1-sources.jar",
+    "bytes": 73275,
+    "sha256": "6451ce7b1d935c8d295bc704ae4cc9c1c1ef890ccf61dca65dccd17980990997"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/androidx.profileinstaller__profileinstaller__1.4.1__androidx.profileinstaller__profileinstaller__1.4.1-sources.jar",
+    "bytes": 44465,
+    "sha256": "a20b963dad2bf9de25c5d043d4dc50d01353e3ee1580e1813ebdfe8587acf899"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/androidx.tracing__tracing__1.2.0__androidx.tracing__tracing__1.2.0-sources.jar",
+    "bytes": 6669,
+    "sha256": "3daf3a210e213f1675e6ea9ae2a9c0b9c837b42805835b65d999eca58fbddc90"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/androidx.vectordrawable__vectordrawable-animated__1.1.0__androidx.vectordrawable__vectordrawable-animated__1.1.0-sources.jar",
+    "bytes": 24016,
+    "sha256": "a3880c595965c55fd1bdee0554b99c66e9c28d3311b7ce6242189fc1f554fcf1"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/androidx.vectordrawable__vectordrawable__1.1.0__androidx.vectordrawable__vectordrawable__1.1.0-sources.jar",
+    "bytes": 19475,
+    "sha256": "a1ae4fccc4ab76a734c10f79adf39262517658a79084bad467c4c6f41c478187"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/com.squareup.okio__okio-jvm__3.15.0__com.squareup.okio__okio-jvm__3.15.0-sources.jar",
+    "bytes": 189053,
+    "sha256": "eca487c49a4905a89556ce413ea198f40f20bb2dc6249d916b3917913bd6dbab"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/io.coil-kt.coil3__coil-core-android__3.3.0__io.coil-kt.coil3__coil-core-android__3.3.0-sources.jar",
+    "bytes": 134847,
+    "sha256": "58bf55460e62be9608819ec72ced3138cedba6d05216e0136048e05a970cd23d"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/kotlinx-coroutines-guava-1.10.2-sources.jar",
+    "bytes": 7526,
+    "sha256": "988ad4424350cfc88e92e06dd9a5ec0420c6f663872fe7bf455bcd8169e3ebd6"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/org.jetbrains.kotlinx__kotlinx-coroutines-android__1.10.2__org.jetbrains.kotlinx__kotlinx-coroutines-android__1.10.2-sources.jar",
+    "bytes": 7783,
+    "sha256": "e903e0f46b8c5337816f2492ac3f9f543cb21ebf6b80fd0dbfe8cf38d1f3ebcf"
+  },
+  {
+    "path": "third_party/coil-3.3.0/sources/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.10.2__org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.10.2-sources.jar",
+    "bytes": 409492,
+    "sha256": "cd86e9635cc7ac1b7d9854ed589e3041fb11cc67d2273e7d312278ba5628e2c8"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.aar",
+    "bytes": 63997,
+    "sha256": "8e2db31224ca53b108c784da2b361959062716d416b210cfef3d5a3828306df0"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.module",
+    "bytes": 6219,
+    "sha256": "163cc5e0f249433ddb0016fbd011ab8de07cf23e07e618c74644688e26cd18e8"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.pom",
+    "bytes": 2993,
+    "sha256": "2faf922e8c3d706f29d862b3fbb3aa1347705c21c6eae18586d2bb1f7366ea01"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.aar",
+    "bytes": 175963,
+    "sha256": "c72c97ff4a32308bcaf3061eea5ddf33455ce413cee4aa1d5c82440c5759d4bc"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.module",
+    "bytes": 4653,
+    "sha256": "bee9b44664ff37e2e222ebcde4b30e38294a3f927451edc611fec7f454ffa442"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.pom",
+    "bytes": 2450,
+    "sha256": "417c6aa0279ec78db02fe395d401a09bcaaa9d82d935148a3e2de90fdf38d94c"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/core/core/1.15.0/core-1.15.0.aar",
+    "bytes": 1336135,
+    "sha256": "432b85a1974076e14b487ece4a28c59a84f1b9efc3fc8be72cd7f05d32055e51"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/core/core/1.15.0/core-1.15.0.module",
+    "bytes": 6704,
+    "sha256": "e8a6c386e1765d870012fed2221173d4a2e8d2fd5aec732c51afb4a9f4684519"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/core/core/1.15.0/core-1.15.0.pom",
+    "bytes": 3853,
+    "sha256": "e168ae56064b8e5a40bce415ef95ffd5a813abb5456d2775f0fef426ed49e35a"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.aar",
+    "bytes": 75523,
+    "sha256": "17e17a6b86bb54074d3a7ecfa695ab920eaff4cf667a8371ed82e377580cfcf6"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.module",
+    "bytes": 4032,
+    "sha256": "daa541df49e2f7978078cfa3a0f9f16272417aa91f3e2e003b5bda11e585a83f"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.pom",
+    "bytes": 2004,
+    "sha256": "944e867584e20748613cc7610bd5fa10a968cc98cb59fdfdb863e9f0201df289"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.aar",
+    "bytes": 54044,
+    "sha256": "b519f9317ded1e2c1c2993038c0692e30da326ca99097d9331ff2d3a5861a428"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.module",
+    "bytes": 4555,
+    "sha256": "6f11cf65e4bf8444995cc73e5aa3f81b082d66e720c0592bc5fc80d3f73850f7"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.pom",
+    "bytes": 2477,
+    "sha256": "6dde43827b40535e4053d1c52d4b227a411556c289e65400c9a1cc61e2b41ce3"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/tracing/tracing/1.2.0/tracing-1.2.0.aar",
+    "bytes": 6060,
+    "sha256": "6faa90390d1fdbf0adb9a99bf99de67b94c6c6f35aea9510593a9d17973736a2"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/tracing/tracing/1.2.0/tracing-1.2.0.module",
+    "bytes": 3429,
+    "sha256": "d0d8d486b6bd33206dbf3f1a6d167e9b43c268ea63c3321c886b1543ad05ece3"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/tracing/tracing/1.2.0/tracing-1.2.0.pom",
+    "bytes": 1968,
+    "sha256": "f34bec4eb58871d31002901377108aaa1ebfe77fa6d882b8b86200b158e26ea1"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.aar",
+    "bytes": 34496,
+    "sha256": "76da2c502371d9c38054df5e2b248d00da87809ed058f3363eae87ce5e2403f8"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.pom",
+    "bytes": 1798,
+    "sha256": "276a20116b705fb75b9003ee9496c56f6fd3b32375fb232472811eba60a040bd"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.aar",
+    "bytes": 33236,
+    "sha256": "46fd633ac01b49b7fcabc263bf098c5a8b9e9a69774d234edcca04fb02df8e26"
+  },
+  {
+    "path": "vendor/coil-maven/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.pom",
+    "bytes": 1726,
+    "sha256": "5b0e2d5b2179e54804785cbc21ce5f473b5e1ddd55a57da482e94dcd39492bb2"
+  },
+  {
+    "path": "vendor/coil-maven/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.jar",
+    "bytes": 376949,
+    "sha256": "483dc383b1049d220892322a0d6a4308425f09bb05b48c43d4eaa9ff82b1cd16"
+  },
+  {
+    "path": "vendor/coil-maven/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.module",
+    "bytes": 3347,
+    "sha256": "989454a94aefbc297032888f135acda14a9ffb46960e7d84603925d269241ee7"
+  },
+  {
+    "path": "vendor/coil-maven/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.pom",
+    "bytes": 1699,
+    "sha256": "078e42f68ca4613ff2597fbc5541c5ce578cdcc48839da89da7ca760518bfb79"
+  },
+  {
+    "path": "vendor/coil-maven/com/squareup/okio/okio/3.15.0/okio-3.15.0.module",
+    "bytes": 37606,
+    "sha256": "116826066ceb4d3336a74e7172a33751617ec344bc50a34f99b0d24959a4a39d"
+  },
+  {
+    "path": "vendor/coil-maven/com/squareup/okio/okio/3.15.0/okio-3.15.0.pom",
+    "bytes": 1687,
+    "sha256": "2d73785411404eeac32f0473a2e07ab1516b9850a9280cc61a08b479790cccf8"
+  },
+  {
+    "path": "vendor/coil-maven/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.aar",
+    "bytes": 471284,
+    "sha256": "b57fcf001178db5ff84683e7d11818bcda6c115d9d530443d382b3a8b3f6806b"
+  },
+  {
+    "path": "vendor/coil-maven/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.module",
+    "bytes": 9768,
+    "sha256": "6c0e4b79037245dfb370b68817a613718eb15ca2c66d373cd1ba2ad1db8d73cd"
+  },
+  {
+    "path": "vendor/coil-maven/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.pom",
+    "bytes": 6640,
+    "sha256": "cd627afd3e4d4a60f04c7a782168d57fee470c6ae7aa87408f1a644f4172516f"
+  },
+  {
+    "path": "vendor/coil-maven/io/coil-kt/coil3/coil-core/3.3.0/coil-core-3.3.0.module",
+    "bytes": 19148,
+    "sha256": "73628d48360685d402adac571f306d5ed4f28c4c203daf912240931edd60d2a4"
+  },
+  {
+    "path": "vendor/coil-maven/io/coil-kt/coil3/coil-core/3.3.0/coil-core-3.3.0.pom",
+    "bytes": 2520,
+    "sha256": "d0be864de842d35ce4239b42fb3bec0fe58e44043c478d47318b9bd276884131"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.jar",
+    "bytes": 17826,
+    "sha256": "e713f1f874244115a07571065cffa0f24f5e78300e9720fea16de3af1d75fd41"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.module",
+    "bytes": 4383,
+    "sha256": "092fe38103eec62e94540ca0cd61039ef8f7d8e46694ec033be1f63f0ea2013d"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.pom",
+    "bytes": 2193,
+    "sha256": "b92d3672e7f9e8f4c4e2ab187c3e31fecc506496396f4a5f27ee1c957a42b319"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-bom/1.10.2/kotlinx-coroutines-bom-1.10.2.pom",
+    "bytes": 4279,
+    "sha256": "faf0c6538e53ddc0499a63664d8e763c216580b2e18e722ccbdf1b431a6afe26"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.jar",
+    "bytes": 1479317,
+    "sha256": "5ca175b38df331fd64155b35cd8cae1251fa9ee369709b36d42e0a288ccce3fd"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.module",
+    "bytes": 4450,
+    "sha256": "e9e4a74b4dbfe0f5ebeed88d49f3546c3ec3089419b20e5250403135c2c64c53"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.pom",
+    "bytes": 2167,
+    "sha256": "658f576b96c832e7382406adb197d64d8e2e97de10e96dfa3700decfa2a60def"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.10.2/kotlinx-coroutines-core-1.10.2.module",
+    "bytes": 47149,
+    "sha256": "8fe254177e711a7cd18a3c06d8242fce945f41c2cca13dc19b33ae42a5435016"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.10.2/kotlinx-coroutines-core-1.10.2.pom",
+    "bytes": 2030,
+    "sha256": "519da5400096f3462a4dae80783ad050413d4bc81ec7ae53fae76aef0ccbed4c"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.jar",
+    "bytes": 17969,
+    "sha256": "d54c4c9f9f2d3612afa5801daf70a7b68687f78d8936360341f1a89b535abfee"
+  },
+  {
+    "path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.pom",
+    "bytes": 2368,
+    "sha256": "126d860e3963148b36c180a04220401867b15703e71df201d4c89b3081456e3c"
+  }
+]

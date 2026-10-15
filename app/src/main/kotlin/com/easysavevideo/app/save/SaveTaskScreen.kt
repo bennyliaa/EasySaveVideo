@@ -22,7 +22,10 @@ import com.easysavevideo.app.ui.responsivePaneLayout
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.window.Dialog
+import com.easysavevideo.app.ui.EsvAppDialog
+import com.easysavevideo.app.ui.LocalPrivateInputAdmission
+import com.easysavevideo.app.ui.LocalPrivatePresentation
+import com.easysavevideo.app.ui.CapturedPrivateActions
 import com.easysavevideo.app.browser.SystemBrowserHost
 import com.easysavevideo.app.theme.*
 import androidx.compose.ui.res.stringResource
@@ -46,8 +49,16 @@ fun SaveTaskScreen(
     onBack: () -> Unit,
     canOpenBrowserForAuthentication: () -> Boolean = { false },
     recoveryIsCurrent: (AndroidSaveRuntime) -> Boolean = { false },
+    canAct: () -> Boolean,
 ) {
     val v = LocalEsvVisuals.current
+    val inputAdmission = LocalPrivateInputAdmission.current
+    val privateMode = LocalPrivatePresentation.current
+    val actions = remember(runtime, browser, privateMode, inputAdmission, canAct) {
+        CapturedPrivateActions(privateMode, inputAdmission, canAct)
+    }
+    DisposableEffect(actions) { onDispose { actions.close() } }
+    val taskAdmission = remember(actions) { actions::isCurrent }
     val currentRecoveryAdmission by rememberUpdatedState(recoveryIsCurrent)
     val recoveryAction = remember(runtime) { runtime.recoveryRetryAction { currentRecoveryAdmission(runtime) } }
     DisposableEffect(recoveryAction) { onDispose { recoveryAction.close() } }
@@ -57,18 +68,19 @@ fun SaveTaskScreen(
     val headerScroll = rememberScrollState()
     val detailScroll = remember(selectedTaskId) { androidx.compose.foundation.ScrollState(0) }
     val detail = selectedTaskDetail(runtime.records, selectedTaskId)
-    BackHandler(onBack = onBack)
+    CompositionLocalProvider(LocalPrivateInputAdmission provides taskAdmission) {
+    BackHandler(onBack = { actions.run(onBack) })
     val header: @Composable () -> Unit = {
         Column(verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvText(stringResource(R.string.flow_savetaskscreen_0), style = v.titleTextStyle)
-                EsvButton(stringResource(R.string.flow_savetaskscreen_1), onClick = onBack)
+                EsvButton(stringResource(R.string.flow_savetaskscreen_1), onClick = { actions.run(onBack) })
             }
-            onLibrary?.let { open -> EsvButton(stringResource(R.string.flow_savetaskscreen_2), onClick = open, modifier = Modifier.fillMaxWidth()) }
-            onRecord?.let { open -> EsvButton(stringResource(R.string.flow_savetaskscreen_3), onClick = open, modifier = Modifier.fillMaxWidth()) }
+            onLibrary?.let { open -> EsvButton(stringResource(R.string.flow_savetaskscreen_2), onClick = { actions.run(open) }, modifier = Modifier.fillMaxWidth()) }
+            onRecord?.let { open -> EsvButton(stringResource(R.string.flow_savetaskscreen_3), onClick = { actions.run(open) }, modifier = Modifier.fillMaxWidth()) }
             EsvText(stringResource(R.string.flow_savetaskscreen_4), style = v.captionTextStyle)
             EsvButton(stringResource(if (showLimits) R.string.flow_limits_hide else R.string.flow_limits_show),
-                onClick = { showLimits = !showLimits })
+                onClick = { actions.run { showLimits = !showLimits } })
             if (showLimits) {
             EsvText(stringResource(R.string.flow_savetaskscreen_5), style = v.captionTextStyle, color = v.colors.muted)
             EsvText(stringResource(R.string.flow_savetaskscreen_6), style = v.captionTextStyle, color = v.colors.muted)
@@ -80,20 +92,20 @@ fun SaveTaskScreen(
                 else stringResource(R.string.final_copy_47), color = v.colors.error)
             runtime.notice?.let { text ->
                 EsvText(saveRuntimeNoticeText(text), color = v.colors.error)
-                EsvButton(stringResource(R.string.flow_savetaskscreen_10), onClick = runtime::dismissNotice)
+                EsvButton(stringResource(R.string.flow_savetaskscreen_10), onClick = { actions.run(runtime::dismissNotice) })
             }
             SaveMethodAlternativeFeedback(runtime)
             // Independent of records/counts: a failed journal snapshot must not hide local repair.
             runtime.pendingSaveRecoveries.forEach { ticket ->
                 EsvText(stringResource(R.string.save_recovery_failed, ticket.taskId.take(8)), color = v.colors.error)
-                EsvButton(stringResource(R.string.save_recovery_retry), onClick = { recoveryAction.invoke(ticket) },
+                EsvButton(stringResource(R.string.save_recovery_retry), onClick = { actions.run { recoveryAction.invoke(ticket) } },
                     enabled = ticket.taskId !in runtime.pendingCommands)
-                EsvButton(stringResource(R.string.flow_savetaskscreen_21), onClick = { recoveryAction.cancel(ticket.taskId, runtime::cancel) },
+                EsvButton(stringResource(R.string.flow_savetaskscreen_21), onClick = { actions.run { recoveryAction.cancel(ticket.taskId, runtime::cancel) } },
                     enabled = ticket.taskId !in runtime.pendingCommands)
             }
             runtime.recoveryCancelTaskIds.forEach { taskId ->
                 EsvText(stringResource(R.string.save_recovery_cancel_pending, taskId.take(8)), color = v.colors.error)
-                EsvButton(stringResource(R.string.flow_savetaskscreen_21), onClick = { recoveryAction.cancel(taskId, runtime::cancel) },
+                EsvButton(stringResource(R.string.flow_savetaskscreen_21), onClick = { actions.run { recoveryAction.cancel(taskId, runtime::cancel) } },
                     enabled = taskId !in runtime.pendingCommands)
             }
             runtime.destinations?.let { OrdinaryDestinationHistory(it) }
@@ -116,7 +128,7 @@ fun SaveTaskScreen(
                     EsvText(stringResource(R.string.flow_task_id, record.task.taskId.take(8)), style = v.captionTextStyle, color = v.colors.muted)
                   } else SaveTaskDetail(record, runtime, browser, onRecord, onPreview, onBrowser, canOpenBrowserForAuthentication)
                   EsvButton(stringResource(if (record.task.taskId == selectedTaskId) R.string.task_detail_selected else R.string.task_detail_select),
-                    onClick = { selectedTaskId = record.task.taskId }, modifier = Modifier.fillMaxWidth().semantics { selected = record.task.taskId == selectedTaskId })
+                    onClick = { actions.run { selectedTaskId = record.task.taskId } }, modifier = Modifier.fillMaxWidth().semantics { selected = record.task.taskId == selectedTaskId })
                 }
               }
             }
@@ -124,11 +136,12 @@ fun SaveTaskScreen(
               EsvText(stringResource(R.string.task_detail_heading), style = v.sectionTextStyle)
               if (detail != null) SaveTaskDetail(detail, runtime, browser, onRecord, onPreview, onBrowser, canOpenBrowserForAuthentication)
               else EsvText(stringResource(if (selectedTaskId == null) R.string.task_detail_empty else R.string.task_detail_unavailable))
-              if (selectedTaskId != null) EsvButton(stringResource(R.string.task_detail_clear), onClick = { selectedTaskId = null })
+              if (selectedTaskId != null) EsvButton(stringResource(R.string.task_detail_clear), onClick = { actions.run { selectedTaskId = null } })
             }
           }
         }
       }
+    }
     }
 }
 
@@ -136,6 +149,7 @@ fun SaveTaskScreen(
 private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, browser: SystemBrowserHost,
     onRecord: (() -> Unit)?, onPreview: ((SaveRecord) -> Unit)?, onBrowser: (() -> Unit)?,
     canOpenBrowserForAuthentication: () -> Boolean) {
+    val admission = LocalPrivateInputAdmission.current
     val v = LocalEsvVisuals.current
     Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.cardCorner)).padding(v.spacingMedium),
         verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -156,7 +170,7 @@ private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, brow
             if (evidence != null) EsvText(stringResource(R.string.save_display_verified,
                 saveSizeText(evidence.sizeBytes), saveResolutionText(evidence.width, evidence.height),
                 saveSecondsText(evidence.durationMillis / 1000), saveAudioTracksText(evidence.audioTrackCount)), style = v.captionTextStyle)
-            onPreview?.let { preview -> EsvButton(stringResource(R.string.flow_savetaskscreen_16), onClick = { preview(record) }, enabled = disposition == MediaLifecycle.READY && runtime.currentRecordingId == null && !runtime.draining) }
+            onPreview?.let { preview -> EsvButton(stringResource(R.string.flow_savetaskscreen_16), onClick = { if (admission()) preview(record) }, enabled = disposition == MediaLifecycle.READY && runtime.currentRecordingId == null && !runtime.draining) }
             EsvText(stringResource(R.string.flow_savetaskscreen_17), style = v.captionTextStyle, color = v.colors.muted)
         } else if (record.task.state in setOf(TaskState.RUNNING, TaskState.WAITING_USER, TaskState.QUEUED)) {
             val checkpoint = record.checkpoint
@@ -176,7 +190,7 @@ private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, brow
             EsvText(stringResource(recordingStopReasonResource(recording.stopReason)), style = v.captionTextStyle)
         }
         if (record.request.method == TaskMethod.RECORD && !record.task.state.isTerminal) onRecord?.let { open ->
-            EsvButton(stringResource(R.string.flow_savetaskscreen_19), onClick = open)
+            EsvButton(stringResource(R.string.flow_savetaskscreen_19), onClick = { if (admission()) open() })
         }
         record.error?.let { EsvText(stringResource(saveFailureTextResource(it)), color = v.colors.error, style = v.captionTextStyle) }
         SaveFailureGuidance(record, runtime, onBrowser)
@@ -196,9 +210,9 @@ private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, brow
         if (record.task.taskId in runtime.pendingCommands) EsvText(stringResource(R.string.flow_savetaskscreen_20), style = v.captionTextStyle)
         Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
             if (record.task.state == TaskState.WAITING_USER &&
-                (record.request.method != TaskMethod.RECORD || record.transfer != null)) EsvButton(stringResource(if (record.request.method == TaskMethod.RECORD) R.string.flow_reverify else R.string.flow_resume), onClick = { runtime.resume(record.task.taskId, browser) },
+                (record.request.method != TaskMethod.RECORD || record.transfer != null)) EsvButton(stringResource(if (record.request.method == TaskMethod.RECORD) R.string.flow_reverify else R.string.flow_resume), onClick = { if (admission()) runtime.resume(record.task.taskId, browser) },
                 enabled = !runtime.draining && record.task.taskId !in runtime.pendingCommands)
-            if (!record.task.state.isTerminal) EsvButton(stringResource(R.string.flow_savetaskscreen_21), onClick = { runtime.cancel(record.task.taskId) },
+            if (!record.task.state.isTerminal) EsvButton(stringResource(R.string.flow_savetaskscreen_21), onClick = { if (admission()) runtime.cancel(record.task.taskId) },
                 enabled = record.task.taskId !in runtime.pendingCommands)
         }
     }
@@ -206,12 +220,13 @@ private fun SaveTaskDetail(record: SaveRecord, runtime: AndroidSaveRuntime, brow
 
 @Composable
 fun SaveSelectionDialog(runtime: AndroidSaveRuntime, browser: SystemBrowserHost) {
+    val request = runtime.currentSelectionPresentationIdentity ?: return
     if (runtime.preparingStream || runtime.hlsPreparation != null) {
-        HlsSelectionDialog(runtime)
+        HlsSelectionDialog(runtime, request)
         return
     }
     if (runtime.selection == null) return
-    Dialog(onDismissRequest = runtime::dismissSelection) {
+    EsvAppDialog(request, { runtime.currentSelectionPresentationIdentity === request }, runtime::dismissSelection) {
         SaveSelectionPanel(runtime, browser, Modifier.heightIn(max = 680.dp), SaveSelectionPresentation.FLOATING)
     }
 
@@ -228,6 +243,9 @@ fun SaveSelectionPanel(runtime: AndroidSaveRuntime, browser: SystemBrowserHost, 
     presentation: SaveSelectionPresentation = SaveSelectionPresentation.INLINE) {
     val v = LocalEsvVisuals.current
     val selection = runtime.selection ?: return
+    val admission = LocalPrivateInputAdmission.current
+    fun ownsSelection() = admission() && runtime.selection === selection &&
+        runtime.currentSelectionPresentationIdentity === selection
     val panel = saveSelectionVisuals(v, presentation)
     Column(modifier.fillMaxWidth().background(panel.background, RoundedCornerShape(panel.corner))
         .verticalScroll(rememberScrollState()).padding(panel.padding), verticalArrangement = Arrangement.spacedBy(v.spacingCompact)) {
@@ -250,18 +268,21 @@ fun SaveSelectionPanel(runtime: AndroidSaveRuntime, browser: SystemBrowserHost, 
                     candidate.method == TaskMethod.STREAM -> stringResource(R.string.final_copy_60)
                     else -> stringResource(R.string.final_copy_61)
                 },
-                    onClick = { runtime.choose(candidate, browser) },
-                    enabled = candidate.supported && !candidate.protected && runtime.canSave(candidate.method) && selection.isCurrent())
+                    onClick = { if (ownsSelection() && selection.isCurrent()) runtime.choose(candidate, browser) },
+                    enabled = candidate.supported && !candidate.protected && runtime.canSave(candidate.method) && ownsSelection() && selection.isCurrent())
             }
         }
-        EsvButton(stringResource(R.string.flow_savetaskscreen_32), onClick = runtime::dismissSelection)
+        EsvButton(stringResource(R.string.flow_savetaskscreen_32), onClick = { if (ownsSelection()) runtime.dismissSelection() })
     }
 }
 @Composable
-private fun HlsSelectionDialog(runtime: AndroidSaveRuntime) {
+private fun HlsSelectionDialog(runtime: AndroidSaveRuntime, request: Any) {
     val v = LocalEsvVisuals.current
     val prepared = runtime.hlsPreparation
-    Dialog(onDismissRequest = runtime::dismissSelection) {
+    EsvAppDialog(request, { runtime.currentSelectionPresentationIdentity === request }, runtime::dismissSelection) {
+        val admission = LocalPrivateInputAdmission.current
+        fun ownsPreparation() = admission() && runtime.currentSelectionPresentationIdentity === request &&
+            runtime.hlsPreparation === prepared
         Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.elevated, RoundedCornerShape(v.sheetCorner))
             .verticalScroll(rememberScrollState()).padding(v.spacingLarge), verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
             EsvText(stringResource(R.string.flow_savetaskscreen_26), style = v.titleTextStyle)
@@ -270,8 +291,8 @@ private fun HlsSelectionDialog(runtime: AndroidSaveRuntime) {
             else {
                 if (runtime.alternativePrepared) EsvText(stringResource(R.string.save_alternative_ready), style = v.captionTextStyle)
                 EsvText(stringResource(R.string.save_display_hls_budget, saveSizeText(prepared.bytesTransferred)), style = v.captionTextStyle)
-                if (prepared.directMedia) EsvButton(stringResource(R.string.flow_savetaskscreen_30), onClick = { runtime.chooseHlsVariant(null) },
-                    enabled = runtime.canSave(TaskMethod.STREAM))
+                if (prepared.directMedia) EsvButton(stringResource(R.string.flow_savetaskscreen_30), onClick = { if (ownsPreparation()) runtime.chooseHlsVariant(null) },
+                    enabled = ownsPreparation() && runtime.canSave(TaskMethod.STREAM))
                 prepared.variants.forEach { variant ->
                     val metadata = variant.metadata
                     val width = metadata.width
@@ -280,11 +301,11 @@ private fun HlsSelectionDialog(runtime: AndroidSaveRuntime) {
                         else stringResource(R.string.save_display_resolution_undeclared)
                     EsvButton(stringResource(R.string.save_display_hls_variant,
                         saveIntegerText(variant.index.toLong() + 1), size, saveIntegerText(metadata.bandwidth / 1000)),
-                        onClick = { runtime.chooseHlsVariant(variant.identity) },
-                        enabled = runtime.canSave(TaskMethod.STREAM))
+                        onClick = { if (ownsPreparation()) runtime.chooseHlsVariant(variant.identity) },
+                        enabled = ownsPreparation() && runtime.canSave(TaskMethod.STREAM))
                 }
             }
-            EsvButton(stringResource(R.string.flow_savetaskscreen_32), onClick = runtime::dismissSelection)
+            EsvButton(stringResource(R.string.flow_savetaskscreen_32), onClick = { if (ownsPreparation()) runtime.dismissSelection() })
         }
     }
 }

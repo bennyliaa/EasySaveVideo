@@ -34,27 +34,38 @@ class HistoryRuntimeWiringContractTest {
     @Test fun hostStartsAndFinishesRecordingOnlyAtRealAcceptedCallbackBoundary() {
         val host = source("browser/SystemBrowserHost.kt")
         assertTrue(host.contains("private val ordinaryHistory: AndroidHistoryRuntime? = null"))
+        assertTrue(host.contains("private fun entryLive(entry: Entry): Boolean = !closed && !closing"))
+        assertTrue(host.contains("private fun isSelected(entry: Entry): Boolean = !privacyBlocked && entry.owner === controller"))
         val start = host.substringAfter("override fun onPageStarted").substringBefore("override fun onPageFinished")
         for (required in listOf("view !== entry.view", "entry.admission?.onStarted(address.value) != true",
-            "val acceptedStart = controller.acceptPageStarted", "entry.historyRecorder?.started(request",
+            "val acceptedStart = owner.acceptPageStarted", "entry.historyRecorder?.started(request",
             "acceptedStart = acceptedStart", "currentEntry = current(entry) === request && !entry.suppressed",
-            "active = !closed && foreground && browserSurfaceAllowed()")) assertTrue(required, start.contains(required))
+            "active = entryLive(entry) && isSelected(entry) && foreground && browserSurfaceAllowed()")) assertTrue(required, start.contains(required))
         val finish = host.substringAfter("override fun onPageFinished").substringBefore("override fun doUpdateVisitedHistory")
         for (required in listOf("view !== entry.view", "verifiedMainAddress(entry, url)",
-            "entry.admission?.accepts(address.value) != true", "val acceptedFinish = controller.acceptPageFinished",
+            "entry.admission?.accepts(address.value) != true", "val acceptedFinish = owner.acceptPageFinished",
             "if (acceptedFinish)", "entry.historyRecorder?.finished(request", "view, view.url, address.value",
-            "currentEntry = current(entry) === request && !entry.suppressed", "acceptedFinish = acceptedFinish",
-            "active = !closed && foreground && browserSurfaceAllowed()")) assertTrue(required, finish.contains(required))
-        assertTrue(finish.indexOf("controller.acceptPageFinished") < finish.indexOf("entry.historyRecorder?.finished"))
+            "currentEntry = current(entry) === request && !entry.suppressed", "acceptedFinish = true",
+            "active = entryLive(entry) && isSelected(entry) && foreground && browserSurfaceAllowed()")) assertTrue(required, finish.contains(required))
+        assertTrue(finish.indexOf("owner.acceptPageFinished") < finish.indexOf("entry.historyRecorder?.finished"))
     }
     @Test fun restoredStateAndHistoryApiCannotArmOrProduceVisits() {
         val host = source("browser/SystemBrowserHost.kt")
         val ensure = host.substringAfter("private fun ensureEntry").substringBefore("private fun trimViews")
         assertTrue(ensure.contains("ordinaryHistory?.recorder(ref, view)")); assertTrue(ensure.contains("view.restoreState(it)"))
         assertFalse(ensure.contains("controlledNavigationRequested"))
+        assertTrue(ensure.contains("if (session != null) null else ordinaryHistory?.recorder(ref, view)"))
+        assertTrue(ensure.contains("if (session == null) history.remove(ref.tabId)?.let { view.restoreState(it) }"))
+        // Shared moveHistory replaces separate back/forward arming sites; reload routes via loadOwned.
+        val move = host.substringAfter("private fun moveHistory(").substringBefore("fun reload()")
+        assertTrue(move.contains("if (delta < 0) entry.view.goBack() else entry.view.goForward()"))
+        assertTrue(move.contains("entry.historyRecorder?.controlledNavigationRequested()"))
+        assertTrue(move.indexOf("historyRecorder?.controlledNavigationRequested()") < move.indexOf("entry.view.goBack()"))
+        assertTrue(host.substringAfter("fun reload()").substringBefore("fun stopSelected()").contains("loadOwned(request,"))
+        assertTrue(host.contains("private fun canAct(): Boolean = !closed && !closing"))
         val history = host.substringAfter("override fun doUpdateVisitedHistory").substringBefore("override fun onReceivedError")
         assertFalse(history.contains("historyRecorder"))
-        assertEquals(3, Regex("historyRecorder\\?\\.controlledNavigationRequested\\(\\)").findAll(host).count())
+        assertEquals(2, Regex("historyRecorder\\?\\.controlledNavigationRequested\\(\\)").findAll(host).count())
     }
     @Test fun hostDetachPauseAndStopInvalidatePendingEntryPermitButNotProcessOwner() {
         val host = source("browser/SystemBrowserHost.kt")
@@ -70,7 +81,7 @@ class HistoryRuntimeWiringContractTest {
     @Test fun historyOpenRequiresOrdinaryForegroundCommandAndActualAcceptedNativeEntry() {
         val host = source("browser/SystemBrowserHost.kt")
         val open = host.substringAfter("fun openOrdinaryHistory(").substringBefore("fun bookmarkPage()")
-        for (required in listOf("requireMain()", "closed || !foreground || !browserCommandAllowed()", "!browserSurfaceAllowed()",
+        for (required in listOf("requireMain()", "!canAct() || privateMode || !foreground || !browserCommandAllowed()", "!browserSurfaceAllowed()",
             "state.selectedTab?.incognito != false", "BrowserInputPolicy.address(address)?.value != address",
             "navigate(address)", "BrowserLoadState.LOADING", "current(entry) != null")) assertTrue(required, open.contains(required))
         assertFalse(open.contains("openTab(")); assertFalse(open.contains("selectTab("))

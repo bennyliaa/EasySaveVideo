@@ -45,8 +45,10 @@ class AdoptedStorageWiringContractTest {
         assertTrue(storage.contains("ensureNoCanonicalReaders = { ensureNoCanonicalReader(it.artifactId) }"))
         val text = File("src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationAttemptOwner.kt").readText()
         assertTrue(text.contains("ensureNoCanonicalReaders(owner); checkOperation(context)"))
-        assertTrue(text.contains("available(); ensureNoCanonicalReaders(key.owner)"))
-        assertTrue(text.contains("else { ensureNoCanonicalReaders(owner); ensureNoExistingHandles(owner)"))
+        assertTrue(text.contains("available(); ensureNoCanonicalReaders(owner)"))
+        val reservation = text.substringAfter("private fun <T> reserved(").substringBefore("fun inspect(")
+        assertTrue(reservation.indexOf("noSession(owner)") < reservation.indexOf("reservations.reserve("))
+        assertTrue(text.contains("reserved(owner, key, NormalizationIoReservations.Stage.INSPECT"))
     }
     @Test fun activeReadReservationGuardsBothArtifactIdentitiesBeforePublicationAndRevokesAfterWrite() {
         val cas = storage.substringAfter("override fun compareAndSet(expectedRevision: Long, next: SaveRecord)")

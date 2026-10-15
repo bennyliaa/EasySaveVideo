@@ -36,6 +36,122 @@ class SystemHttpsDirectTransferTest {
                          progress: Progress = Progress(), context: OperationContext = operation()): TransferResult =
         SystemHttpsDirectTransfer(storage, connections = ScriptedFactory(response)).transfer(resource(), artifact, checkpoint, context, limits, progress)
 
+    private fun privateResource(ref: RequestContextRef?) = PrivateNetworkSourceSeed.create().bindTask("private-task").let {
+        resource(ref).copy(sourceIdentity = it.sourceIdentity.encoded, privateSource = it)
+    }
+
+    @Test fun privateSourceWithoutAppAuthorityNeverAcquiresNetwork() {
+        val factory = ScriptedFactory(ScriptedResponse())
+        val store = RequestContextLeaseStore()
+        val port = SystemHttpsDirectTransfer(CountingStaging(), requestContexts = store, connections = factory)
+        for (ref in listOf(null, store.put(url))) {
+            fails(SaveError.SOURCE_RESELECTION_REQUIRED) {
+                port.transfer(privateResource(ref), artifact, null, operation(), limits(), Progress())
+            }
+        }
+        assertTrue(factory.requests.isEmpty())
+        assertFalse(port.isTransferActive)
+    }
+
+    @Test fun privateRedirectRetainsAuthorityAndNeverForwardsCredentials() {
+        val store = RequestContextLeaseStore()
+        val ref = store.put(url, cookie = "synthetic=secret", authorization = "Bearer secret",
+            liveAuthority = RequestContextLiveAuthority { true })
+        val first = ScriptedResponse(302, headers = mapOf("Location" to "https://cdn.example.invalid/file.mp4"))
+        val second = ScriptedResponse(body = GeneratedInput(1), headers = headers(1))
+        val factory = ScriptedFactory(first, second)
+        val port = SystemHttpsDirectTransfer(CountingStaging(), requestContexts = store, connections = factory)
+        assertEquals(1L, port.transfer(privateResource(ref), artifact, null, operation(), limits(), Progress()).bytesOnDisk)
+        assertEquals("synthetic=secret", first.requestHeaders["Cookie"])
+        assertNull(second.requestHeaders["Cookie"])
+        assertNull(second.requestHeaders["Authorization"])
+        assertTrue(first.closed && second.closed)
+    }
+
+    @Test fun privateRevocationDuringRedirectCleanupPreventsAnonymousNextHopAndRetry() {
+        val store = RequestContextLeaseStore()
+        val ref = store.put(url, liveAuthority = RequestContextLiveAuthority { true })
+        val first = ScriptedResponse(302, headers = mapOf("Location" to "https://cdn.example.invalid/file.mp4"))
+            .also { it.onDisconnect = { store.revoke(ref) } }
+        val factory = ScriptedFactory(first, ScriptedResponse(body = GeneratedInput(1), headers = headers(1)))
+        val port = SystemHttpsDirectTransfer(CountingStaging(), requestContexts = store, connections = factory)
+        val source = privateResource(ref)
+        repeat(2) {
+            fails(SaveError.SOURCE_RESELECTION_REQUIRED) {
+                port.transfer(source, artifact, null, operation(), limits(), Progress())
+            }
+        }
+        assertEquals(1, factory.requests.size)
+        assertTrue(first.closed)
+        assertFalse(port.isTransferActive)
+        assertFalse(port.requiresProcessRecovery())
+    }
+
+    @Test fun privateRevocationActivelyDisconnectsBodyAndDoesNotPretendBlockedCleanupReleased() {
+        val store = RequestContextLeaseStore()
+        val live = java.util.concurrent.atomic.AtomicBoolean(true)
+        val ref = store.put(url, liveAuthority = RequestContextLiveAuthority(live::get))
+        val input = BlockingInput()
+        val disconnectEntered = CountDownLatch(1)
+        val disconnectRelease = CountDownLatch(1)
+        val response = ScriptedResponse(body = input, headers = headers(10)).also { it.onDisconnect = {
+            disconnectEntered.countDown(); awaitUninterruptibly(disconnectRelease); input.release.countDown()
+        } }
+        val staging = CountingStaging()
+        val port = SystemHttpsDirectTransfer(staging, requestContexts = store, connections = ScriptedFactory(response))
+        val run = async { port.transfer(privateResource(ref), artifact, null, operation(), limits(), Progress()) }
+        try {
+            assertTrue(input.entered.await(2, TimeUnit.SECONDS))
+            live.set(false)
+            assertTrue(disconnectEntered.await(2, TimeUnit.SECONDS))
+            assertFalse(run.finished.await(100, TimeUnit.MILLISECONDS))
+            assertTrue(port.isTransferActive)
+            store.clear() // Forgetting all map entries is still not resource-release evidence.
+            assertTrue(port.isTransferActive)
+        } finally { disconnectRelease.countDown(); input.release.countDown() }
+        assertEquals(SaveError.SOURCE_RESELECTION_REQUIRED, run.awaitFailure())
+        assertTrue(input.closed && response.closed && staging.closed)
+        assertFalse(port.isTransferActive)
+    }
+
+    @Test fun privateRevocationDuringRestartCannotAcquireResponseBody() {
+        val store = RequestContextLeaseStore()
+        val ref = store.put(url, liveAuthority = RequestContextLiveAuthority { true })
+        val response = ScriptedResponse(body = GeneratedInput(1), headers = headers(1))
+        val port = SystemHttpsDirectTransfer(CountingStaging(), requestContexts = store, connections = ScriptedFactory(response))
+        fails(SaveError.SOURCE_RESELECTION_REQUIRED) {
+            port.transfer(privateResource(ref), artifact, null, operation(), limits(), object : TransferProgress {
+                override fun onBytes(delta: Long) { fail("Revoked private source returned bytes") }
+                override fun onRestart() { store.revoke(ref) }
+                override fun onCheckpoint(checkpoint: DownloadCheckpoint) { fail("Unexpected checkpoint") }
+            })
+        }
+        assertEquals(0, response.inputRequests)
+        assertTrue(response.closed)
+    }
+
+    @Test fun quickTimeMimeRequiresExplicitCompositionCapabilityAndDoesNotValidateMedia() {
+        val rejected = ScriptedResponse(body = GeneratedInput(17), headers = headers(17, "Content-Type" to "video/quicktime"))
+        assertEquals(SaveError.UNSUPPORTED_MEDIA, assertThrows(SaveFailure::class.java) { transfer(rejected) }.code)
+        val response = ScriptedResponse(body = GeneratedInput(17), headers = headers(17, "Content-Type" to "video/quicktime"))
+        val storage = CountingStaging()
+        val result = SystemHttpsDirectTransfer(storage, connections = ScriptedFactory(response), movAdmissionEnabled = true)
+            .transfer(resource(), artifact, null, operation(), limits(), Progress())
+        assertEquals(17L, result.bytesOnDisk)
+        assertEquals("video/quicktime", result.responseMimeType)
+        assertTrue(storage.closed)
+    }
+    @Test fun quickTimeCapabilityNeverBroadensVideoWildcardOrUnknownAliases() {
+        for (mime in listOf("video/webm", "video/x-quicktime", "video/unknown")) {
+            val response = ScriptedResponse(body = GeneratedInput(17), headers = headers(17, "Content-Type" to mime))
+            val error = assertThrows(SaveFailure::class.java) {
+                SystemHttpsDirectTransfer(CountingStaging(), connections = ScriptedFactory(response), movAdmissionEnabled = true)
+                    .transfer(resource(), artifact, null, operation(), limits(), Progress())
+            }
+            assertEquals(SaveError.UNSUPPORTED_MEDIA, error.code)
+        }
+    }
+
     @Test fun complete200IsOnlyTransferEvidenceAndResourcesClose() {
         val response = ScriptedResponse(body = GeneratedInput(17), headers = headers(17))
         val storage = CountingStaging(99)
@@ -385,7 +501,7 @@ class SystemHttpsDirectTransferTest {
         override fun close() { closed = true }
     }
     private class ScriptedResponse(private val status: Int = 200, val body: InputStream = ByteArrayInputStream(byteArrayOf(1)), headers: Map<String, String> = emptyMap()) : HttpURLConnection(URL("https://script.invalid/")) {
-        var closed = false; var onDisconnect: (() -> Unit)? = null
+        var closed = false; var inputRequests = 0; var onDisconnect: (() -> Unit)? = null
         val requestHeaders = linkedMapOf<String, String>()
         val responseHeaders = headers.mapValues { listOf(it.value) }.toMutableMap()
         override fun connect() { }
@@ -393,7 +509,7 @@ class SystemHttpsDirectTransferTest {
         override fun usingProxy() = false
         override fun getResponseCode() = status
         override fun getHeaderFields(): Map<String, List<String>> = responseHeaders
-        override fun getInputStream() = body
+        override fun getInputStream(): InputStream { inputRequests++; return body }
         override fun setRequestProperty(key: String, value: String) { requestHeaders[key] = value }
     }
     private class ScriptedFactory(vararg responses: ScriptedResponse) : DirectConnectionFactory {

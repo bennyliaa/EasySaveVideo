@@ -1,6 +1,7 @@
 package com.easysavevideo.app.save.storage
 
 import com.easysavevideo.save.DirectNormalizationProof
+import com.easysavevideo.save.DirectConversionProof
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -66,7 +67,8 @@ internal sealed interface NormalizationInspection {
 internal class NormalizationRecovery : IllegalStateException("NORMALIZATION_RECOVERY_REQUIRED")
 
 /**
- * Not wired to production MOV admission. Explicit callers own the local execution claim/lane.
+ * Explicit callers own the local execution claim/lane and shared identity reservation.
+ * Filesystem calls never run under ownerLock; only exact reads/CAS hold it.
  * The owner lock must be the same lock used by private commit when an Android file adapter is installed.
  * Reads are passive; no resume, network, publication or generic recursive cleanup is hidden here.
  */
@@ -77,15 +79,20 @@ internal class NormalizationWorkspaceProtocol(
     private val ownerLock: Any,
     private val checkOperation: () -> Unit = {},
 ) {
-    fun inspect(owner: NormalizationOwner): NormalizationInspection = synchronized(ownerLock) {
-        try {
-            when (val lookup = ledger.lookup(owner)) {
+    fun inspect(owner: NormalizationOwner): NormalizationInspection {
+        return try {
+            when (val lookup = synchronized(ownerLock) { ledger.lookup(owner) }) {
                 NormalizationLookup.Absent -> NormalizationInspection.Absent
                 NormalizationLookup.Unreadable -> NormalizationInspection.Unreadable
                 is NormalizationLookup.Present -> {
                     val row = lookup.row; val auth = boundAuthority(row)
                     files.requireReleased(row.key)
-                    NormalizationInspection.Present(row, layout(row, files.snapshot(row.key), auth), discard(row, auth))
+                    val snapshot = files.snapshot(row.key)
+                    synchronized(ownerLock) {
+                        checkOperation()
+                        if (current(row.key) != row || boundAuthority(row) != auth) fail()
+                        NormalizationInspection.Present(row, layout(row, snapshot, auth), discard(row, auth))
+                    }
                 }
             }
         } catch (_: Exception) { NormalizationInspection.Unreadable }
@@ -96,25 +103,30 @@ internal class NormalizationWorkspaceProtocol(
      * Existing WRITING returns status only: a nonempty candidate is preserved, never opened or
      * truncated. This slice offers terminal cleanup/new task, not a remux-restart authorization.
      */
-    fun begin(key: NormalizationKey, raw: NormalizationFingerprint, sourceTransferSha256: String): NormalizationWorkspace = synchronized(ownerLock) {
+    fun begin(key: NormalizationKey, raw: NormalizationFingerprint, sourceTransferSha256: String): NormalizationWorkspace = run {
         checkOperation(); files.requireReleased(key)
         val requested = NormalizationWorkspace(key, 1, NormalizationLifecycle.RAW_COMPLETE, NormalizationDisposition.CONTINUE, raw, sourceTransferSha256)
-        var row = when (val found = ledger.lookup(key.owner)) {
+        var row = when (val found = synchronized(ownerLock) { ledger.lookup(key.owner) }) {
             NormalizationLookup.Unreadable -> fail()
             is NormalizationLookup.Present -> found.row.also { if (it.key != key || it.raw != raw || it.sourceTransferSha256 != sourceTransferSha256) fail() }
             NormalizationLookup.Absent -> {
-                continuing(requested)
+                continuing(requested, mustExist = false)
                 val snapshot = files.snapshot(key)
                 if (snapshot.primary != raw || snapshot.workspaceExists || snapshot.generationExists || snapshot.raw != null || snapshot.output != null) fail()
                 admission()
-                try { if (!ledger.insert(requested)) fail() } catch (_: Exception) { if (current(key) != requested) fail() }
+                synchronized(ownerLock) {
+                    continuing(requested, mustExist = false)
+                    if (ledger.lookup(key.owner) != NormalizationLookup.Absent) fail()
+                    try { if (!ledger.insert(requested)) fail() } catch (_: Exception) { if (current(key) != requested) fail() }
+                    checkOperation()
+                }
                 current(key).also { if (it != requested) fail() }
             }
         }
         continuing(row)
         if (row.lifecycle == NormalizationLifecycle.WRITING) {
             if (layout(row, files.snapshot(key), boundAuthority(row)) != NormalizationLayout.WRITING) fail()
-            return@synchronized row
+            return@run row
         }
         if (row.lifecycle != NormalizationLifecycle.RAW_COMPLETE) fail()
         val snapshot = files.snapshot(key)
@@ -136,7 +148,7 @@ internal class NormalizationWorkspaceProtocol(
     }
 
     /** Caller closed/released the candidate. Fresh hashes and fsync precede OUTPUT_READY. */
-    fun finishOutput(key: NormalizationKey, proof: DirectNormalizationProof): NormalizationWorkspace = synchronized(ownerLock) {
+    fun finishOutput(key: NormalizationKey, proof: DirectNormalizationProof): NormalizationWorkspace = run {
         var row = current(key); continuing(row); files.requireReleased(key); requireProof(row, proof)
         if (row.lifecycle != NormalizationLifecycle.WRITING) fail()
         files.syncOutput(key); files.syncDirectory(key, NormalizationDirectory.GENERATION)
@@ -148,21 +160,50 @@ internal class NormalizationWorkspaceProtocol(
         row
     }
 
+    /** Same physical finish protocol, with a separate conversion producer meaning. */
+    fun finishOutput(key: NormalizationKey, proof: DirectConversionProof): NormalizationWorkspace {
+        val row = current(key); continuing(row); files.requireReleased(key); requireProof(row, proof)
+        if (row.lifecycle != NormalizationLifecycle.WRITING || row.revision == Long.MAX_VALUE ||
+            row.cleanup != null || row.failure != null || row.output != null || row.proofSha256 != null) fail()
+        files.syncOutput(key); files.syncDirectory(key, NormalizationDirectory.GENERATION)
+        val snapshot = files.snapshot(key)
+        val expected = NormalizationFingerprint(proof.outputSizeBytes, proof.outputSha256)
+        if (!snapshot.workspaceExists || !snapshot.generationExists || snapshot.primary != row.raw ||
+            snapshot.raw != null || snapshot.output != expected) fail()
+        continuing(row)
+        return persist(row, row.copy(revision = row.revision + 1, lifecycle = NormalizationLifecycle.OUTPUT_READY,
+            output = expected, proofSha256 = proof.digest()))
+    }
+
     /** Save proof CAS must already be acknowledged. This method alone authorizes neither rename nor publication. */
-    fun recordAdoptionIntent(key: NormalizationKey, proof: DirectNormalizationProof): NormalizationWorkspace = synchronized(ownerLock) {
+    fun recordAdoptionIntent(key: NormalizationKey, proof: DirectNormalizationProof): NormalizationWorkspace = run {
         val row = current(key); continuing(row); files.requireReleased(key); requireProof(row, proof)
         if (row.output != NormalizationFingerprint(proof.outputSizeBytes, proof.outputSha256) || row.proofSha256 != proof.digest()) fail()
         val auth = boundAuthority(row)
         if (auth.proofSha256 != row.proofSha256) fail()
-        if (row.lifecycle == NormalizationLifecycle.ADOPT_INTENT) return@synchronized row
+        if (row.lifecycle == NormalizationLifecycle.ADOPT_INTENT) return@run row
         if (row.lifecycle != NormalizationLifecycle.OUTPUT_READY || layout(row, files.snapshot(key), auth) != NormalizationLayout.READY) fail()
         persist(row, row.copy(revision = row.revision + 1, lifecycle = NormalizationLifecycle.ADOPT_INTENT))
     }
 
+    /** Separate current-policy conversion meaning; the exact producer Save CAS must already be durable. */
+    fun recordAdoptionIntent(key: NormalizationKey, proof: DirectConversionProof): NormalizationWorkspace {
+        val row = current(key); continuing(row); files.requireReleased(key); requireProof(row, proof)
+        if (row.output != NormalizationFingerprint(proof.outputSizeBytes, proof.outputSha256) ||
+            row.proofSha256 != proof.digest() || row.cleanup != null || row.failure != null) fail()
+        val auth = boundAuthority(row)
+        if (auth.proofSha256 != row.proofSha256) fail()
+        if (row.lifecycle == NormalizationLifecycle.ADOPT_INTENT) return row
+        if (row.revision == Long.MAX_VALUE || row.lifecycle != NormalizationLifecycle.OUTPUT_READY ||
+            layout(row, files.snapshot(key), auth) != NormalizationLayout.READY) fail()
+        return persist(row, row.copy(revision = row.revision + 1, lifecycle = NormalizationLifecycle.ADOPT_INTENT))
+    }
+
     /** Two separately durable no-replace moves. Exceptions are never treated as a failed/absent move. */
-    fun adopt(key: NormalizationKey): NormalizationWorkspace = synchronized(ownerLock) {
+    fun adopt(key: NormalizationKey): NormalizationWorkspace = run {
         var row = current(key); continuing(row); files.requireReleased(key)
-        if (row.lifecycle !in setOf(NormalizationLifecycle.ADOPT_INTENT, NormalizationLifecycle.ADOPTED)) fail()
+        if (row.lifecycle !in setOf(NormalizationLifecycle.ADOPT_INTENT, NormalizationLifecycle.ADOPTED) ||
+            (row.lifecycle == NormalizationLifecycle.ADOPT_INTENT && row.revision == Long.MAX_VALUE)) fail()
         var state = layout(row, files.snapshot(key), boundAuthority(row))
         if (state == NormalizationLayout.READY) {
             continuing(row)
@@ -185,13 +226,15 @@ internal class NormalizationWorkspaceProtocol(
     }
 
     /** Exact temporary roles only; terminal Save/visible receipt authority is reread at every mutation. */
-    fun cleanup(key: NormalizationKey, expectedRevision: Long): NormalizationWorkspace = synchronized(ownerLock) {
+    fun cleanup(key: NormalizationKey, expectedRevision: Long): NormalizationWorkspace = run {
         var row = current(key)
+        // Only the typed commit protocol understands an authorized final-file role.
+        if (row.cleanup?.commitOutput != null || row.cleanup?.identities != null) fail()
         if (row.revision != expectedRevision) fail()
         files.requireReleased(key)
         if (row.lifecycle == NormalizationLifecycle.CLEANED) {
             layout(row, files.snapshot(key), boundAuthority(row))
-            return@synchronized row
+            return@run row
         }
         var auth = boundAuthority(row)
         requireTerminal(auth)
@@ -218,13 +261,14 @@ internal class NormalizationWorkspaceProtocol(
                 if (observed != null) fail()
             } else if (observed != null) {
                 if (observed != expected) fail()
+                terminalExact(row)
                 files.deleteExact(key, role, expected)
                 files.syncDirectory(key, if (role == NormalizationRole.PRIMARY) NormalizationDirectory.STAGING else NormalizationDirectory.GENERATION)
             }
         }
         val snapshot = files.snapshot(key)
-        if (snapshot.generationExists) { files.removeEmptyDirectory(key, NormalizationDirectory.GENERATION); files.syncDirectory(key, NormalizationDirectory.WORKSPACE) }
-        if (snapshot.workspaceExists) { files.removeEmptyDirectory(key, NormalizationDirectory.WORKSPACE); files.syncDirectory(key, NormalizationDirectory.STAGING) }
+        if (snapshot.generationExists) { terminalExact(row); files.removeEmptyDirectory(key, NormalizationDirectory.GENERATION); files.syncDirectory(key, NormalizationDirectory.WORKSPACE) }
+        if (snapshot.workspaceExists) { terminalExact(row); files.removeEmptyDirectory(key, NormalizationDirectory.WORKSPACE); files.syncDirectory(key, NormalizationDirectory.STAGING) }
         // An unlink/rmdir may have completed before throwing, including P-only creation intent.
         // Always restore the parent-directory durability barrier before acknowledging CLEANED.
         files.syncDirectory(key, NormalizationDirectory.STAGING)
@@ -235,6 +279,7 @@ internal class NormalizationWorkspaceProtocol(
     }
 
     private fun layout(row: NormalizationWorkspace, s: NormalizationFilesSnapshot, auth: NormalizationAuthority): NormalizationLayout {
+        if (row.cleanup?.commitOutput != null || row.cleanup?.identities != null) fail()
         if (row.lifecycle == NormalizationLifecycle.CLEANED) {
             if (s.workspaceExists || s.generationExists || s.primary != null || s.raw != null || s.output != null) fail()
             return NormalizationLayout.CLEANED
@@ -252,7 +297,8 @@ internal class NormalizationWorkspaceProtocol(
             if (row.lifecycle in setOf(NormalizationLifecycle.ADOPT_INTENT, NormalizationLifecycle.ADOPTED) && auth.proofSha256 == row.proofSha256) {
                 if (s.primary == null && s.raw == row.raw && s.output == row.output && row.lifecycle == NormalizationLifecycle.ADOPT_INTENT) return NormalizationLayout.RAW_MOVED
                 if (s.primary == row.output && s.raw == row.raw && s.output == null) return NormalizationLayout.ADOPTED
-                if (s.primary == null && s.raw == row.raw && s.output == null && auth.parentState in setOf(NormalizationParentState.COMMIT_PENDING, NormalizationParentState.PUBLISHED)) return NormalizationLayout.COMMIT_OWNED
+                // A missing P is not evidence for a final file. Only the typed commit inspector
+                // can attest COMMIT_OWNED after hashing the exact catalog-owned final role.
             }
         }
         // Existing generic failure cleanup can remove P and mark the exact parent DISCARDED.
@@ -264,24 +310,46 @@ internal class NormalizationWorkspaceProtocol(
         with(row.key) { if (proof.normalizationId != normalizationId || proof.taskId != owner.taskId || proof.artifactId != owner.artifactId || proof.commitId != owner.commitId) fail() }
         if (proof.rawSizeBytes != row.raw.size || proof.rawSha256 != row.raw.sha256 || proof.sourceTransferSha256 != row.sourceTransferSha256) fail()
     }
-    private fun boundAuthority(row: NormalizationWorkspace): NormalizationAuthority = authority(row.key.owner).also {
+    private fun requireProof(row: NormalizationWorkspace, proof: DirectConversionProof) {
+        with(row.key) { if (proof.normalizationId != normalizationId || proof.taskId != owner.taskId ||
+            proof.artifactId != owner.artifactId || proof.commitId != owner.commitId) fail() }
+        if (!proof.isCurrentPolicy() || proof.rawSizeBytes != row.raw.size || proof.rawSha256 != row.raw.sha256 ||
+            proof.sourceTransferSha256 != row.sourceTransferSha256) fail()
+    }
+    private fun boundAuthority(row: NormalizationWorkspace): NormalizationAuthority = synchronized(ownerLock) { authority(row.key.owner).also {
         if (it.owner != row.key.owner || it.sourceTransferSha256 != row.sourceTransferSha256) fail()
         if ((row.lifecycle in setOf(NormalizationLifecycle.ADOPT_INTENT, NormalizationLifecycle.ADOPTED) ||
             (it.taskState == NormalizationTaskState.SUCCEEDED && row.output != null)) && it.proofSha256 != row.proofSha256) fail()
     }
+    }
     private fun discard(row: NormalizationWorkspace, auth: NormalizationAuthority) = row.disposition == NormalizationDisposition.DISCARD_ONLY || auth.taskState in setOf(NormalizationTaskState.FAILED, NormalizationTaskState.CANCELLED)
-    private fun continuing(row: NormalizationWorkspace) {
+    private fun continuing(row: NormalizationWorkspace, mustExist: Boolean = true) = synchronized(ownerLock) {
         checkOperation()
+        if (mustExist && current(row.key) != row) fail()
         val auth = boundAuthority(row)
         if (discard(row, auth) || auth.taskState != NormalizationTaskState.ACTIVE || auth.parentState != NormalizationParentState.STAGING) fail()
     }
+    private fun terminalExact(row: NormalizationWorkspace) = synchronized(ownerLock) {
+        checkOperation(); if (current(row.key) != row) fail(); requireTerminal(boundAuthority(row))
+    }
     private fun requireTerminal(auth: NormalizationAuthority) { if (auth.taskState == NormalizationTaskState.ACTIVE) fail() }
     private fun admission() { if (files.availableBytes() < NORMALIZATION_MAX_BYTES) fail() }
-    private fun current(key: NormalizationKey): NormalizationWorkspace = (ledger.lookup(key.owner) as? NormalizationLookup.Present)?.row?.takeIf { it.key == key } ?: fail()
-    private fun persist(prior: NormalizationWorkspace, next: NormalizationWorkspace): NormalizationWorkspace {
+    private fun current(key: NormalizationKey): NormalizationWorkspace = synchronized(ownerLock) {
+        (ledger.lookup(key.owner) as? NormalizationLookup.Present)?.row?.takeIf { it.key == key } ?: fail()
+    }
+    private fun persist(prior: NormalizationWorkspace, next: NormalizationWorkspace): NormalizationWorkspace = synchronized(ownerLock) {
+        checkOperation()
+        if (current(prior.key) != prior) fail()
+        // Revalidate the transition's actual authority in the SAME short section as the CAS.
+        // A successful earlier filesystem check cannot carry ACTIVE/terminal status across it.
+        when (next.lifecycle) {
+            NormalizationLifecycle.CLEANUP_PENDING, NormalizationLifecycle.CLEANED -> terminalExact(prior)
+            else -> continuing(prior)
+        }
         prior.requireSuccessor(next)
         try { if (!ledger.compareAndSet(prior, next)) fail() } catch (_: Exception) { if (current(prior.key) != next) fail() }
-        return current(prior.key).also { if (it != next) fail() }
+        checkOperation()
+        current(prior.key).also { if (it != next) fail() }
     }
     private fun fail(): Nothing = throw NormalizationRecovery()
 }

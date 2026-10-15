@@ -22,7 +22,7 @@ import com.easysavevideo.app.theme.*
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BookmarkPanel(runtime: AndroidBookmarkRuntime, listState: LazyListState,
-    onOpen: (BrowserBookmark) -> Unit, onClose: () -> Unit) {
+    onOpen: (BrowserBookmark) -> Unit, onClose: () -> Unit, canAct: () -> Boolean = { true }) {
     val v = LocalEsvVisuals.current
     val state = runtime.state
     val status = bookmarkPanelStatus(state)
@@ -35,11 +35,11 @@ fun BookmarkPanel(runtime: AndroidBookmarkRuntime, listState: LazyListState,
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 EsvText(stringResource(R.string.bookmark_heading, state.items.size, BookmarkPolicy.MAX_ITEMS),
                     style = v.titleTextStyle, modifier = Modifier.weight(1f))
-                EsvButton(stringResource(R.string.bookmark_done), onClick = onClose)
+                EsvButton(stringResource(R.string.bookmark_done), onClick = { if (canAct()) onClose() })
             }
-            state.notice?.let { notice -> BookmarkNoticeRow(notice, runtime::dismissNotice) }
+            state.notice?.let { notice -> BookmarkNoticeRow(notice, runtime::dismissNotice, canAct = canAct) }
             status.message?.let { message -> EsvText(stringResource(message), style = v.captionTextStyle) }
-            if (status.retry) EsvButton(stringResource(R.string.bookmark_retry), onClick = runtime::load)
+            if (status.retry) EsvButton(stringResource(R.string.bookmark_retry), onClick = { if (canAct()) runtime.load() })
             EsvText(stringResource(R.string.bookmark_privacy), style = v.captionTextStyle)
         }
         LazyColumn(Modifier.weight(1f).fillMaxWidth(), state = listState,
@@ -53,9 +53,9 @@ fun BookmarkPanel(runtime: AndroidBookmarkRuntime, listState: LazyListState,
                 val removeDescription = stringResource(R.string.bookmark_remove_description, item.title)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall),
                     verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                    EsvButton(stringResource(R.string.bookmark_open), onClick = { onOpen(item) }, enabled = status.rowsEnabled,
+                    EsvButton(stringResource(R.string.bookmark_open), onClick = { if (canAct()) onOpen(item) }, enabled = status.rowsEnabled,
                         modifier = Modifier.semantics { contentDescription = openDescription })
-                    EsvButton(stringResource(R.string.bookmark_remove), onClick = { runtime.remove(item) }, enabled = status.rowsEnabled,
+                    EsvButton(stringResource(R.string.bookmark_remove), onClick = { if (canAct()) runtime.remove(item) }, enabled = status.rowsEnabled,
                         modifier = Modifier.semantics { contentDescription = removeDescription })
                 }
             }
@@ -66,12 +66,13 @@ fun BookmarkPanel(runtime: AndroidBookmarkRuntime, listState: LazyListState,
 }
 
 @Composable
-internal fun BookmarkNoticeRow(notice: BookmarkNotice, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+internal fun BookmarkNoticeRow(notice: BookmarkNotice, onDismiss: () -> Unit, modifier: Modifier = Modifier,
+    canAct: () -> Boolean = { true }) {
     val v = LocalEsvVisuals.current
     Row(modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
         EsvText(bookmarkNoticeText(notice), modifier = Modifier.weight(1f), style = v.captionTextStyle)
-        EsvButton(stringResource(R.string.bookmark_dismiss), onClick = onDismiss)
+        EsvButton(stringResource(R.string.bookmark_dismiss), onClick = { if (canAct()) onDismiss() })
     }
 }
 

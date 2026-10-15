@@ -1,0 +1,74 @@
+[
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/library/thumbnail/OrdinaryMediaNativeResources.kt",
+    "sha256": "78f7f95f432919229e4c97a15198ae4e31cd79038ac717dc1a206048359ab910"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidDirectExecutionBridge.kt",
+    "sha256": "e1fa783f378ca84b02225a2f4ae9a78794ce476ccb0583c03ed1312cd1378184"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt",
+    "sha256": "2c4e563e38e6b6925e101f585df5395483b84b1bd02fc24d814eb2d08433d1f1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
+    "sha256": "a0285a3c568abd3e0c198d8fa46896ec86d6a16001281fdf140e6a732a5cd72e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/DirectCreationNetworkFence.kt",
+    "sha256": "f5661ddeb70b3f55dcfc964f6c69315b6e74fe81ae04e8f40d7cd99257c8b7c3"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveExecutionRetirement.kt",
+    "sha256": "c6f3bfa1a0967f2c62ca52bf04a993722766f58ce3bb8297fcf1910be7731d72"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedVerificationBindings.kt",
+    "sha256": "5e82f7a4b64360575df9bb8801336371b197ccb9dc18580d947b429dedd42f4d"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/DirectCreationNetworkFenceTest.kt",
+    "sha256": "fa649d4284e5f16818636d823d95eb951d2d4df1f020f49efb1c545e553ef10c"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/SaveExecutionRetirementTest.kt",
+    "sha256": "aebd7611d77f159105b57a917e9d924b8c796cd1f688d3e042b2ab59f07d5574"
+  },
+  {
+    "path": "library/src/main/kotlin/com/easysavevideo/library/thumbnail/ThumbnailNativeResourceGate.kt",
+    "sha256": "ed5ffa2ccf5933e543f84d30ef3933672ad460384756f83c405a8a89160e4a86"
+  },
+  {
+    "path": "library/src/test/kotlin/com/easysavevideo/library/thumbnail/ThumbnailNativeOwnershipTest.kt",
+    "sha256": "fe670795653bd2d9df6d1184b8246487f8359b78efbbd0c0da3cee06e73369c7"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/AcceptedDirectAttempt.kt",
+    "sha256": "600800946ce4652d4ad8f36de2cdd06fe32bb75a0e21b8ea6d7e6132d53e9d37"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/ControlledDirectPipeline.kt",
+    "sha256": "5fc712dc6bfba296aa716dc1a187003ff60e3f892e3a8968d939e9a9e0885023"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveCoordinator.kt",
+    "sha256": "8df5ef9884fd4de8a1e6b559ff1caebad4a74b6968f85c98ed6a06134fab0c16"
+  },
+  {
+    "path": "save/src/main/kotlin/com/easysavevideo/save/SaveExecutionAdmission.kt",
+    "sha256": "0cfc8908e0d3d95c0fadc858ad6e192b4e18f6454cbb5bfbbda9fb136213c667"
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/ControlledDirectAdmissionTest.kt",
+    "sha256": "3174e1744df804522ae4d7c79d3ba6872254bebfba87c4622d13c45d22115b29"
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/ControlledDirectCleanupSweepTest.kt",
+    "sha256": "06be67384634a209f1e73acfd5da804e1d3325b3b6c9bc4b72684ce4bb8754dd"
+  },
+  {
+    "path": "save/src/test/kotlin/com/easysavevideo/save/ControlledDirectPipelineTest.kt",
+    "sha256": "f6ce3c3b4da60d3ec71b2ece5fe4289f7f9934773c8f6df7f81612c94a3d86f0"
+  }
+]

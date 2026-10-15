@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_pending_notice_candidates">Candidates reported by search sources; see each verification result below.</string>
+    <string name="discovery_pending_notice_scope">Webpages and thumbnails are not fetched automatically. Duration, playability and usage rights are unknown. Only bounded candidates from this query are kept.</string>
+    <string name="discovery_pending_badge">Awaiting verification · Source report</string>
+    <string name="discovery_pending_site_unknown">Unknown website</string>
+    <string name="discovery_pending_sources">Sources: %1$s</string>
+    <string name="discovery_pending_unverified_metadata">Video, duration and rights: not verified</string>
+    <string name="discovery_pending_admission_notice">Local verification requires explicit source admission; missing or mismatched configuration is rejected. Page evidence does not establish playability, download or saving.</string>
+    <string name="discovery_pending_verify_active">Verifying</string>
+    <string name="discovery_pending_verify_attempted">Verification attempted this round</string>
+    <string name="discovery_pending_verify_action">Verify with a limited budget</string>
+    <string name="discovery_pending_open">Open candidate webpage</string>
+    <string name="discovery_admission_unconfigured">Not configured</string>
+    <string name="discovery_admission_ready">Configured</string>
+    <string name="discovery_admission_unsupported">Source address unsupported</string>
+    <string name="discovery_admission_denied">Source not admitted</string>
+    <string name="discovery_verification_outcome_page_evidence">Page evidence found</string>
+    <string name="discovery_verification_outcome_unknown">Result unknown</string>
+    <string name="discovery_verification_outcome_unavailable">Verification unavailable</string>
+    <string name="discovery_verification_outcome_denied">Verification denied</string>
+    <string name="discovery_verification_outcome_rate_limited">Verification rate-limited</string>
+    <string name="discovery_verification_outcome_timeout">Verification timed out</string>
+    <string name="discovery_verification_outcome_cancelled">Verification cancelled</string>
+    <string name="discovery_verification_outcome_error">Verification error</string>
+    <string name="discovery_verification_evidence_none">No page evidence</string>
+    <string name="discovery_verification_evidence_html_video">HTML video evidence</string>
+    <string name="discovery_verification_evidence_dynamic_video">Dynamic-page video evidence</string>
+</resources>

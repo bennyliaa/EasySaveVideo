@@ -29,7 +29,7 @@ class BrowserVideoPresenceContractTest {
         assertEquals(2, Regex("target == videoPresenceTarget\\(\\)").findAll(evaluate).count())
         assertTrue(evaluate.contains("evaluateJavascript(BrowserVideoPresenceScript.SCRIPT)"))
         val gate = host.substringAfter("private fun videoPresenceTarget()").substringBefore("private fun syncVideoPresence")
-        listOf("closed", "!foreground", "!videoPresenceUiVisible", "!browserSurfaceAllowed()", "!settings.javaScriptEnabled", "BrowserLoadState.READY",
+        listOf("!canAct()", "!foreground", "!videoPresenceUiVisible", "!browserSurfaceAllowed()", "!settings.javaScriptEnabled", "BrowserLoadState.READY",
             "entry.suppressed", "current(entry) == null", "entry.bookmarkAddress != entry.view.url", "tab.epoch",
             "interactionRevision", "entry.presenceNavigationRevision").forEach { assertTrue(it, gate.contains(it)) }
     }
@@ -37,7 +37,10 @@ class BrowserVideoPresenceContractTest {
         val main = source("MainActivity.kt")
         assertEquals(2, Regex("setVideoPresenceUiVisible\\(false\\)").findAll(main).count())
         assertTrue(main.contains("interactiveJsDialogs = false"))
-        assertTrue(main.contains("browserSurfaceAllowed = { activeDestination == EsvDestination.BROWSER && saves.segmentRecording?.previewActive != true }"))
+        assertTrue(main.contains("browserSurfaceAllowed = ::actualBrowserPresentation"))
+        val actual = main.substringAfter("private fun actualBrowserPresentation()").substringBefore("private fun captureSourcesDrained")
+        listOf("activeDestination == EsvDestination.BROWSER", "previewReceipt == null",
+            "libraryPreviewReference == null", "saves.segmentRecording?.previewActive != true").forEach { assertTrue(it, actual.contains(it)) }
         val screen = source("ui/BrowserScreen.kt")
         assertTrue(screen.contains("onDispose { browser.setVideoPresenceUiVisible(false) }"))
         assertTrue(screen.contains("setVideoPresenceUiVisible(interactiveJsDialogs && !settingsOpen && !bookmarksOpen"))
@@ -45,8 +48,17 @@ class BrowserVideoPresenceContractTest {
     }
     @Test fun pauseCloseDocumentHistoryAndSettingsAreWired() {
         val host = source("browser/SystemBrowserHost.kt")
-        assertTrue(host.contains("foreground = false; jsDialogs.cancel(); videoPresenceController.update(null)"))
-        assertTrue(host.contains("closed = true; jsDialogs.cancel(); videoPresenceController.close()"))
+        val pause = host.substringAfter("fun pause()").substringBefore("fun hideFullscreen")
+        assertTrue(pause.contains("foreground = false"))
+        assertTrue(pause.contains("jsDialogs.cancel()"))
+        assertTrue(pause.contains("videoPresenceController.update(null)"))
+        assertTrue(host.contains("private fun canAct(): Boolean = !closed && !closing"))
+        val close = host.substringAfter("override fun close()")
+        assertTrue(close.contains("closing = true"))
+        assertTrue(close.contains("completeClose()"))
+        assertTrue(close.contains("closed = true"))
+        assertTrue(close.contains("jsDialogs.cancel()"))
+        assertTrue(close.contains("videoPresenceController.close()"))
         assertTrue(host.contains("entry.jsDocument++; entry.presenceBudget = BrowserVideoPresenceBudget()"))
         assertTrue(host.substringAfter("override fun doUpdateVisitedHistory").substringBefore("override fun onReceivedError").contains("syncVideoPresence()"))
         assertTrue(host.substringAfter("fun applySettings").substringBefore("fun clearCookies").contains("syncVideoPresence()"))
@@ -55,11 +67,19 @@ class BrowserVideoPresenceContractTest {
     @Test fun manualFallbackNeverDependsOnPresenceAndRecordingOnlyNavigates() {
         val screen = source("ui/BrowserScreen.kt")
         val manual = screen.substringAfter("if (moreControls) Row").substringBefore("bookmarks?.let")
-        assertTrue(manual.contains("R.string.video_presence_manual")); assertTrue(manual.contains("onClick = onSave"))
+        assertTrue(manual.contains("R.string.video_presence_manual"))
+        assertTrue(manual.contains("onClick = { if (rootActionAllowed()) onSave() }"))
+        val admission = screen.substringAfter("fun rootActionAllowed(): Boolean =").substringBefore("fun privateModeActionAllowed")
+        assertTrue(admission.contains("inputAllowed() && modalOwnerCurrent() &&"))
+        assertTrue(admission.contains("canSubmitNewTabInput(newTabInputGeneration)"))
+        assertFalse(admission.contains("BrowserVideoPresence"))
         assertFalse(manual.contains("BrowserVideoPresence.PRESENT"))
         assertTrue(screen.contains("browser.videoPresence == BrowserVideoPresence.PRESENT && onRecording != null"))
         val main = source("MainActivity.kt")
-        assertTrue(main.contains("onRecording = { navigate(EsvDestination.RECORD) }"))
+        val recording = main.substringAfter("onRecording = {").substringBefore("}, privateRecording = recordingUi")
+        assertTrue(recording.contains("if (browser.isPrivateMode) privateRecording.configure() else navigate(EsvDestination.RECORD)"))
+        assertFalse(recording.contains("inspectFromUserClick"))
+        assertFalse(recording.contains("startPrivateRecording"))
         assertTrue(main.contains("onSave = { saves.inspectFromUserClick(browser) }"))
     }
     @Test fun backgroundNavigationCannotRetireForegroundEvidence() {

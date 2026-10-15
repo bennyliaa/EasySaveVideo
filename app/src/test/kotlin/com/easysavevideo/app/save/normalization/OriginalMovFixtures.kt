@@ -6,7 +6,8 @@ import java.io.DataOutputStream
 /**
  * Original deterministic owned bytes, generated here without media, copied encoder output, the
  * production scanner, clock or digest helpers. I_PCM IDR and P-skip syntax is constructed explicitly;
- * these host fixtures are NOT evidence of Android decoder output or broad MOV codec support.
+ * audio bytes are deliberately opaque transport fixtures, NOT valid-AAC or decoder fixtures.
+ * These host fixtures are NOT evidence of Android decoder output or broad MOV codec support.
  */
 internal object OriginalMovFixtures {
     data class Options(
@@ -24,6 +25,12 @@ internal object OriginalMovFixtures {
         val sdr: Boolean = true,
         val pocType: Int = 0,
         val audio: Boolean = false,
+        val audioSampleRate: Int = 48_000,
+        val audioChannelCount: Int = 2,
+        val audioCount: Int = 3,
+        val audioFirst: Boolean = false,
+        val audioSyncCount: Int? = null,
+        val extraAudio: Boolean = false,
         val extraVideo: Boolean = false,
         val missingSync: Boolean = false,
         val allIdr: Boolean = false,
@@ -66,16 +73,17 @@ internal object OriginalMovFixtures {
             writeTag(if (options.quickTime) "qt  " else "isom"); writeInt(0)
             writeTag(if (options.quickTime) "qt  " else "isom")
         })
-        val payload = concat(*samples.toTypedArray())
-        val chunkSizes = samples.chunked(options.samplesPerChunk).map { chunk -> chunk.sumOf { it.size } }
-        fun offsets(start: Int): LongArray {
+        val audioSamples = if (options.audio) audioSamples(options) else emptyList()
+        val payload = concat(*(samples + audioSamples).toTypedArray())
+        fun offsets(samples: List<ByteArray>, start: Int): LongArray {
+            val sizes = samples.chunked(options.samplesPerChunk).map { chunk -> chunk.sumOf { it.size } }
             var next = start.toLong()
-            return LongArray(chunkSizes.size) { index -> next.also { next += chunkSizes[index] } }
+            return LongArray(sizes.size) { index -> next.also { next += sizes[index] } }
         }
-        val emptyOffsets = LongArray(chunkSizes.size)
-        val prototype = movie(options, samples, sps, pps, emptyOffsets)
+        val prototype = movie(options, samples, sps, pps, offsets(samples, 0), audioSamples, offsets(audioSamples, 0))
         val mediaStart = ftyp.size + if (options.moovFirst) prototype.size + 8 else 8
-        val moov = movie(options, samples, sps, pps, offsets(mediaStart))
+        val moov = movie(options, samples, sps, pps, offsets(samples, mediaStart),
+            audioSamples, offsets(audioSamples, mediaStart + samples.sumOf { it.size }))
         check(prototype.size == moov.size)
         val mdat = box("mdat", payload)
         return if (options.moovFirst) concat(ftyp, moov, mdat) else concat(ftyp, mdat, moov)
@@ -140,26 +148,59 @@ internal object OriginalMovFixtures {
         writeShort(sps.size); write(sps); writeByte(1); writeShort(pps.size); write(pps)
     }
 
-    private fun movie(o: Options, samples: List<ByteArray>, sps: ByteArray, pps: ByteArray, offsets: LongArray): ByteArray {
-        val delta = 90_000 / o.frameRate
-        val ticks = o.count.toLong() * delta
-        val halfUs = (ticks * 1_000_000L / 90_000) + if ((ticks * 1_000_000L % 90_000) * 2 >= 90_000) 1 else 0
-        val header = (halfUs * 10_000L + 500_000L) / 1_000_000L
+    /** Arbitrary nonempty packets for byte conservation, never claimed to decode as AAC. */
+    fun audioSamples(o: Options): List<ByteArray> = (0 until o.audioCount).map { index ->
+        ByteArray(5 + index % 7) { byte -> ((index * 19 + byte * 7 + 1) and 255).toByte() }
+    }
+
+    fun audioAsc(o: Options): ByteArray {
+        val value = when (o.audioSampleRate to o.audioChannelCount) {
+            32_000 to 1 -> 0x1288; 32_000 to 2 -> 0x1290
+            44_100 to 1 -> 0x1208; 44_100 to 2 -> 0x1210
+            48_000 to 1 -> 0x1188; 48_000 to 2 -> 0x1190
+            else -> error("Unsupported owned fixture config")
+        }
+        return byteArrayOf((value ushr 8).toByte(), value.toByte())
+    }
+
+    private fun movie(o: Options, samples: List<ByteArray>, sps: ByteArray, pps: ByteArray,
+        offsets: LongArray, audioSamples: List<ByteArray>, audioOffsets: LongArray): ByteArray {
+        fun roundedUs(ticks: Long, scale: Int): Long = (ticks * 1_000_000L + scale / 2) / scale
+        fun header(ticks: Long, scale: Int): Long = (roundedUs(ticks, scale) + 50) / 100
+        val videoTicks = o.count.toLong() * (90_000 / o.frameRate)
+        val audioTicks = if (o.audio) o.audioCount.toLong() * 1024 else 0L
+        val movieHeader = (maxOf(roundedUs(videoTicks, 90_000), roundedUs(audioTicks, o.audioSampleRate)) + 50) / 100
         val mvhd = box("mvhd", bytes {
-            writeInt(0); writeLong(0); writeInt(10_000); writeInt(header.toInt())
+            writeInt(0); writeLong(0); writeInt(10_000); writeInt(movieHeader.toInt())
             writeInt(0x10000); writeShort(256); writeShort(0); writeLong(0); matrix()
-            repeat(6) { writeInt(0) }; writeInt(4)
+            repeat(6) { writeInt(0) }; writeInt(5)
         })
-        fun track(handler: String, id: Int): ByteArray {
+        fun track(audio: Boolean, id: Int): ByteArray {
+            val trackSamples = if (audio) audioSamples else samples
+            val trackOffsets = if (audio) audioOffsets else offsets
+            val scale = if (audio) o.audioSampleRate else 90_000
+            val delta = if (audio) 1024 else 90_000 / o.frameRate
+            val ticks = trackSamples.size.toLong() * delta
             val tkhd = box("tkhd", bytes {
-                writeInt(7); writeLong(0); writeInt(id); writeInt(0); writeInt(header.toInt())
-                writeLong(0); writeLong(0); matrix(); writeInt(o.width shl 16); writeInt(o.height shl 16)
+                writeInt(7); writeLong(0); writeInt(id); writeInt(0); writeInt(header(ticks, scale).toInt())
+                writeLong(0); writeInt(0); writeShort(if (audio) 256 else 0); writeShort(0)
+                matrix(); writeInt(if (audio) 0 else o.width shl 16); writeInt(if (audio) 0 else o.height shl 16)
             })
-            val mdhd = box("mdhd", bytes { writeInt(0); writeLong(0); writeInt(90_000); writeInt(ticks.toInt()); writeInt(0) })
-            val hdlr = box("hdlr", bytes { writeLong(0); writeTag(handler); repeat(3) { writeInt(0) }; writeByte(0) })
-            val vmhd = box("vmhd", bytes { writeInt(1); writeLong(0) })
+            val mdhd = box("mdhd", bytes { writeInt(0); writeLong(0); writeInt(scale); writeInt(ticks.toInt()); writeInt(0) })
+            val hdlr = box("hdlr", bytes { writeLong(0); writeTag(if (audio) "soun" else "vide"); repeat(3) { writeInt(0) }; writeByte(0) })
+            val mhd = if (audio) box("smhd", bytes { writeLong(0) }) else box("vmhd", bytes { writeInt(1); writeLong(0) })
             val dinf = box("dinf", box("dref", concat(bytes { writeInt(0); writeInt(1) }, box("url ", bytes { writeInt(1) }))))
-            val entry = box("avc1", concat(bytes {
+            val entry = if (audio) box("mp4a", concat(bytes {
+                writeInt(0); writeShort(0); writeShort(1); writeLong(0)
+                writeShort(o.audioChannelCount); writeShort(16); writeInt(0); writeInt(o.audioSampleRate shl 16)
+            }, box("esds", bytes {
+                writeInt(0)
+                writeByte(3); writeByte(25); writeShort(id); writeByte(0)
+                writeByte(4); writeByte(17); writeByte(0x40); writeByte(0x15)
+                writeByte(0); writeByte(3); writeByte(0); writeInt(0); writeInt(0)
+                writeByte(5); writeByte(2); write(audioAsc(o))
+                writeByte(6); writeByte(1); writeByte(2)
+            }))) else box("avc1", concat(bytes {
                 writeInt(0); writeShort(0); writeShort(1); repeat(4) { writeInt(0) }
                 writeShort(o.width); writeShort(o.height); writeInt(0x480000); writeInt(0x480000); writeInt(0)
                 writeShort(1); repeat(32) { writeByte(0) }; writeShort(24); writeShort(-1)
@@ -167,31 +208,36 @@ internal object OriginalMovFixtures {
                 box("colr", bytes { writeTag("nclx"); writeShort(1); writeShort(1); writeShort(1); writeByte(0) })))
             val stsd = box("stsd", concat(bytes { writeInt(0); writeInt(1) }, entry))
             val stts = box("stts", bytes {
-                writeInt(0); writeInt(if (o.splitTiming) o.count else 1)
-                if (o.splitTiming) repeat(o.count) { writeInt(1); writeInt(delta) } else { writeInt(o.count); writeInt(delta) }
+                writeInt(0); writeInt(if (o.splitTiming) trackSamples.size else 1)
+                if (o.splitTiming) repeat(trackSamples.size) { writeInt(1); writeInt(delta) }
+                else { writeInt(trackSamples.size); writeInt(delta) }
             })
-            val stsz = box("stsz", bytes { writeInt(0); writeInt(0); writeInt(samples.size); samples.forEach { writeInt(it.size) } })
-            val lastCount = samples.size % o.samplesPerChunk
-            val splitLast = lastCount != 0 && samples.size > o.samplesPerChunk
+            val stsz = box("stsz", bytes { writeInt(0); writeInt(0); writeInt(trackSamples.size); trackSamples.forEach { writeInt(it.size) } })
+            val lastCount = trackSamples.size % o.samplesPerChunk
+            val splitLast = lastCount != 0 && trackSamples.size > o.samplesPerChunk
             val stsc = box("stsc", bytes {
                 writeInt(0); writeInt(if (splitLast) 2 else 1)
-                writeInt(1); writeInt(minOf(o.samplesPerChunk, samples.size)); writeInt(1)
-                if (splitLast) { writeInt(offsets.size); writeInt(lastCount); writeInt(1) }
+                writeInt(1); writeInt(minOf(o.samplesPerChunk, trackSamples.size)); writeInt(1)
+                if (splitLast) { writeInt(trackOffsets.size); writeInt(lastCount); writeInt(1) }
             })
             val stco = box(if (o.co64) "co64" else "stco", bytes {
-                writeInt(0); writeInt(offsets.size)
-                offsets.forEach { if (o.co64) writeLong(it) else writeInt(it.toInt()) }
+                writeInt(0); writeInt(trackOffsets.size)
+                trackOffsets.forEach { if (o.co64) writeLong(it) else writeInt(it.toInt()) }
             })
-            val stss = if (o.missingSync) byteArrayOf() else box("stss", bytes {
+            val stss = if (audio && o.audioSyncCount != null) box("stss", bytes {
+                writeInt(0); writeInt(o.audioSyncCount); repeat(o.audioSyncCount) { writeInt(it + 1) }
+            }) else if (audio || o.missingSync) byteArrayOf() else box("stss", bytes {
                 writeInt(0); writeInt(if (o.allIdr) o.count else 1)
                 if (o.allIdr) repeat(o.count) { writeInt(it + 1) } else writeInt(1)
             })
             return box("trak", concat(tkhd, box("mdia", concat(mdhd, hdlr,
-                box("minf", concat(vmhd, dinf, box("stbl", concat(stsd, stts, stsz, stsc, stco, stss))))))))
+                box("minf", concat(mhd, dinf, box("stbl", concat(stsd, stts, stsz, stsc, stco, stss))))))))
         }
-        return box("moov", concat(mvhd, track("vide", 1),
-            if (o.audio) track("soun", 2) else byteArrayOf(),
-            if (o.extraVideo) track("vide", 3) else byteArrayOf()))
+        val video = track(false, 1)
+        val audio = if (o.audio) track(true, 2) else byteArrayOf()
+        return box("moov", concat(mvhd, if (o.audioFirst) audio else video, if (o.audioFirst) video else audio,
+            if (o.extraVideo) track(false, 3) else byteArrayOf(),
+            if (o.extraAudio) track(true, 4) else byteArrayOf()))
     }
 
     fun box(type: String, payload: ByteArray): ByteArray = bytes { writeInt(payload.size + 8); writeTag(type); write(payload) }

@@ -45,14 +45,31 @@ class RecordingNotificationWiringTest {
         assertEquals(1, Regex("startForegroundService\\(").findAll(service).count())
         assertTrue(start.contains("runtime.recordingStartRejected(id)\n            finishSession(id)"))
     }
-    @Test fun stopActionProtocolAndScreenOffSafetyRemainSessionBound() {
-        for (required in listOf("if (requestId == id) runtime.stopRecording(id)", "return START_NOT_STICKY",
+    @Test fun stopAndDiscardRemainSessionBoundWhileScreenOffDefersToRealSystemRevocation() {
+        for (required in listOf("if (intent.action == ACTION_STOP || intent.action == ACTION_DISCARD)",
+            "if (requestId == id) {",
+            "if (intent.action == ACTION_DISCARD) runtime.cancel(id) else runtime.stopRecording(id)", "return START_NOT_STICKY",
             "stop.identifier = id", "PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT",
-            "Intent.ACTION_SCREEN_OFF", "runtime.safetyStopRecording(it, RecordingStopReason.SYSTEM_STOPPED)",
+            "Intent.ACTION_SCREEN_OFF", "runtime.onRecordingScreenOff(it)",
             "RECEIVER_NOT_EXPORTED", "private const val CHANNEL = \"esv_recording\"", "private const val NOTIFICATION_ID = 4301",
             "private const val ACTION_START = \"com.easysavevideo.app.recording.START\"",
             "private const val ACTION_STOP = \"com.easysavevideo.app.recording.STOP\"", "private const val REQUEST_ID = \"request_id\""))
             assertTrue(required, service.contains(required))
+        val actions = service.substringAfter("if (intent.action == ACTION_STOP || intent.action == ACTION_DISCARD)")
+            .substringBefore("if (intent.action != ACTION_START")
+        val exact = actions.indexOf("if (requestId == id)")
+        val cancel = actions.indexOf("runtime.cancel(id)")
+        assertTrue(exact >= 0); assertTrue(cancel > exact)
+        assertTrue(service.contains(".putExtra(REQUEST_ID, id).apply { identifier = id }"))
+        assertTrue(service.contains("recording_notification_discard"))
+        val runtime = source("save/AndroidSaveRuntime.kt")
+        val screenOff = runtime.substringAfter("internal fun onRecordingScreenOff(id: String)")
+            .substringBefore("fun safetyStopRecording(")
+        val ignored = screenOff.indexOf("continuousRecordingOwner?.ignoresScreenOff(id) == true")
+        val fallback = screenOff.indexOf("safetyStopRecording(id, RecordingStopReason.SYSTEM_STOPPED)")
+        assertTrue(ignored >= 0); assertTrue(fallback > ignored)
+        val native = source("recording/AndroidRecordingSession.kt")
+        assertTrue(native.contains("override fun onStop() { if (!ended) stop(RecordingStopReason.SYSTEM_STOPPED) }"))
         assertTrue(service.contains("setOngoing(true).setOnlyAlertOnce(true).setCategory(Notification.CATEGORY_SERVICE)"))
     }
     @Test fun finishAndDestroyRetireBeforeCallbacksAndLateStatusCannotReviveDisplay() {

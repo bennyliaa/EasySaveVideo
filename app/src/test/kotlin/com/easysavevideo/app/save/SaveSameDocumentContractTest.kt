@@ -22,15 +22,23 @@ class SaveSameDocumentContractTest {
     @Test fun hostAcceptanceAndSnapshotKeepLifecycleAndRevisionGates() {
         val host = source("browser/SystemBrowserHost.kt")
         val capture = host.substringAfter("internal fun saveInspectionPage()").substringBefore("private val timeout")
-        for (required in listOf("requireMain()", "state.selectedTab", "closed || !foreground", "entry.context != tab.context",
+        for (required in listOf("requireMain()", "state.selectedTab", "!canAct() || !foreground", "entry.context != tab.context",
             "entry.suppressed", "current(entry) == null", "entry.admission?.hasStarted() != true", "BrowserLoadState.READY",
             "entry.inspectionDocument.address", "entry.view.url", "saveInspectionRevision", "entry.inspectionDocument.revision")) assertTrue(required, capture.contains(required))
         val started = host.substringAfter("override fun onPageStarted").substringBefore("override fun onPageFinished")
-        assertTrue(started.contains("entry.inspectionDocument.started()"))
+        assertTrue(started.contains("invalidateDocumentAuthority(entry)"))
+        val invalidation = host.substringAfter("private fun invalidateDocumentAuthority(entry: Entry)").substringBefore("internal fun captureSaveRequestContext")
+        assertTrue(invalidation.contains("entry.inspectionDocument.started()"))
         val finished = host.substringAfter("override fun onPageFinished").substringBefore("override fun doUpdateVisitedHistory")
-        assertTrue(finished.indexOf("controller.acceptPageFinished") < finished.indexOf("entry.inspectionDocument.finished"))
+        assertTrue(finished.contains("val owner = entry.owner"))
+        assertTrue(finished.indexOf("owner.acceptPageFinished") >= 0)
+        assertTrue(finished.indexOf("owner.acceptPageFinished") < finished.indexOf("entry.inspectionDocument.finished"))
         val history = host.substringAfter("override fun doUpdateVisitedHistory").substringBefore("override fun onReceivedError")
-        assertTrue(history.contains("entries[entry.context.tabId] !== entry")); assertTrue(history.contains("entry.inspectionDocument.history(url, view.url, isReload"))
+        assertTrue(history.contains("!entryLive(entry)"));
+        val live = host.substringAfter("private fun entryLive(entry: Entry)").substringBefore("private fun isSelected")
+        assertTrue(live.contains("it.key == entry.context.tabId && it.value === entry"))
+        assertTrue(live.contains("!closed && !closing"))
+        assertTrue(host.substringAfter("private fun canAct()").substringBefore("\n").contains("!closed && !closing")); assertTrue(history.contains("entry.inspectionDocument.history(url, view.url, isReload"))
         assertTrue(history.contains("current(entry) != null && !entry.suppressed && entry.admission?.hasStarted() == true"))
         assertTrue(history.contains("tab?.loadState == BrowserLoadState.READY"))
     }

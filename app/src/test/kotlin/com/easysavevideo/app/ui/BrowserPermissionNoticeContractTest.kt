@@ -106,8 +106,9 @@ class BrowserPermissionNoticeContractTest {
             "override fun onPermissionRequest(request: PermissionRequest) {").substringBefore("\n        }").trimIndent()
         assertEquals("""
             request.deny()
-            notice = BrowserNotice.PermissionDenied(BrowserPermissionKind.CAMERA_OR_MICROPHONE,
-                BrowserInputPolicy.origin(request.origin.toString()))
+            if (foreground && browserSurfaceAllowed() && isSelected(entry) && current(entry) != null)
+                notice = BrowserNotice.PermissionDenied(BrowserPermissionKind.CAMERA_OR_MICROPHONE,
+                    if (entry.session == null) BrowserInputPolicy.origin(request.origin.toString()) else null)
         """.trimIndent(), callback)
     }
     @Test fun locationCallbackStillDeniesExactlyOnceWithoutRememberingTheDecision() {
@@ -116,7 +117,9 @@ class BrowserPermissionNoticeContractTest {
             .substringBefore("\n        }").trimIndent()
         assertEquals("""
             callback.invoke(origin, false, false)
-            notice = BrowserNotice.PermissionDenied(BrowserPermissionKind.LOCATION, BrowserInputPolicy.origin(origin))
+            if (foreground && browserSurfaceAllowed() && isSelected(entry) && current(entry) != null)
+                notice = BrowserNotice.PermissionDenied(BrowserPermissionKind.LOCATION,
+                    if (entry.session == null) BrowserInputPolicy.origin(origin) else null)
         """.trimIndent(), callback)
     }
     @Test fun oneNoticeStateAndExistingDismissalRemainSharedByAllKinds() {
@@ -131,7 +134,7 @@ class BrowserPermissionNoticeContractTest {
         val screen = source("ui/BrowserScreen.kt")
         assertEquals(1, Regex("browserNoticeText\\(message\\)").findAll(screen).count())
         assertTrue(screen.contains("browser.notice?.let { message ->"))
-        assertTrue(screen.contains("onClick = browser::dismissNotice"))
+        assertTrue(screen.contains("onClick = { if (rootActionAllowed()) browser.dismissNotice() }"))
         val display = source("ui/BrowserNoticeResources.kt")
         assertTrue(display.contains("@Composable"))
         assertTrue(display.contains("stringResource(browserPermissionDeniedResource(notice.kind),"))

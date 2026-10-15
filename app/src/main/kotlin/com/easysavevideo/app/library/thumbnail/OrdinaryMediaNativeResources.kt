@@ -12,6 +12,7 @@ object OrdinaryMediaNativeResources {
     val requiresRestart: Boolean get() = gate.requiresRestart
     val isOccupied: Boolean get() = gate.isOccupied
     fun claim(candidate: Any): Boolean = gate.claim(candidate)
+    fun ownership(candidate: Any): ThumbnailNativeResourceGate.Ownership? = gate.ownership(candidate)
     fun released(candidate: Any) = gate.released(candidate)
     fun unconfirmed() = gate.unconfirmed()
 }

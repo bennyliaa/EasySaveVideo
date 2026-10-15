@@ -18,6 +18,7 @@ class SaveExecutionAdmission(
     private val resourcesUnreleased: () -> Boolean = { false },
     private val onFirstDirect: () -> Boolean = { true },
     private val onLastDirectReleased: () -> Unit = {},
+    private val movCapable: Boolean = false,
 ) {
     class Claim internal constructor(internal val direct: Boolean) {
         internal var taskId: String? = null
@@ -26,6 +27,42 @@ class SaveExecutionAdmission(
         @Volatile internal var released = false
         internal var preparing = false
         internal var executing = false
+        @Volatile internal var entered: EnteredClaim? = null
+    }
+    /** A private-enter-issued memory projection, never an independent claim or authorization. */
+    internal class EnteredClaim private constructor(
+        private val admission: SaveExecutionAdmission,
+        private val claim: Claim,
+        private val runtime: Any,
+        val taskId: String,
+        val operationId: String,
+    ) {
+        private val live = java.util.concurrent.atomic.AtomicBoolean(true)
+        fun requireLive() {
+            if (!live.get() || claim.entered !== this || claim.released)
+                throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        }
+        /** Identity only, for already-recorded historical facts; never execution authorization. */
+        fun assertIssuer(expected: SaveExecutionAdmission) {
+            if (admission !== expected) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        }
+        fun assertAdmission(expected: SaveExecutionAdmission) {
+            assertIssuer(expected); requireLive()
+        }
+        fun assertRuntime(expected: Any) {
+            if (runtime !== expected) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+            requireLive()
+        }
+        fun revoke() { live.set(false) }
+        companion object {
+            fun issue(admission: SaveExecutionAdmission, claim: Claim, runtime: Any,
+                taskId: String, operationId: String) = EnteredClaim(admission, claim, runtime, taskId, operationId)
+        }
+    }
+    /** Must be called outside Coordinator/storage monitors, after enter's action accepted work. */
+    internal fun captureEntered(claim: Claim, runtime: Any): EnteredClaim? = synchronized(lock) {
+        if (!claims.containsKey(claim) || !claim.executing || claim.runtime !== runtime) null
+        else claim.entered?.also { it.assertRuntime(runtime) }
     }
     data class Snapshot(val maxDirectTasks: Int, val directCount: Int, val exclusive: Boolean, val recoveryRequired: Boolean) {
         val totalCount: Int get() = directCount + if (exclusive) 1 else 0
@@ -56,20 +93,22 @@ class SaveExecutionAdmission(
     fun isDirect(claim: Claim): Boolean = claim.direct
 
     fun tryAcquireDirect(): Claim? {
-        val observedVersion = synchronized(lock) {
-            if (unreleased() || claims.keys.any { !it.direct } || directCount() >= maximum) return null
-            if (directCount() == 0) return acquireFirstDirect()
-            version
+        val observed = synchronized(lock) {
+            val count = directCount()
+            if (unreleased() || claims.keys.any { !it.direct } || count >= maximum) return null
+            if (count == 0 && !movCapable) return acquireFirstDirect()
+            version to count
         }
-        // At least two complete artifact allowances, without subtracting existing written bytes.
-        // Failure/unknown/negative/overflow is a refusal. The storage adapter keeps its reserve.
-        if (maxArtifactBytes > Long.MAX_VALUE / 2) return null
+        // MOV has simultaneous raw + canonical extents for every live Direct claim. This is a
+        // conservative free-space threshold, not a filesystem quota or a subtraction of media.
+        val multiplier = if (movCapable) 2L * (observed.second + 1L) else 2L
+        if (maxArtifactBytes > Long.MAX_VALUE / multiplier) return null
         val free = try { availableBytes() } catch (_: Exception) { null }
-        if (free == null || free < 0 || free < maxArtifactBytes * 2) return null
+        if (free == null || free < 0 || free < maxArtifactBytes * multiplier) return null
         return synchronized(lock) {
-            if (version != observedVersion || unreleased() || claims.keys.any { !it.direct } ||
-                directCount() != 1 || directCount() >= maximum) return@synchronized null
-            addClaim(true)
+            if (version != observed.first || unreleased() || claims.keys.any { !it.direct } ||
+                directCount() != observed.second || directCount() >= maximum) return@synchronized null
+            if (observed.second == 0) acquireFirstDirect() else addClaim(true)
         }
     }
     fun tryAcquireExclusive(): Claim? = synchronized(lock) {
@@ -126,15 +165,18 @@ class SaveExecutionAdmission(
             }
             if (claim.runtime !== runtime || claim.taskId != taskId || claim.operationId != operationId) return null
             claim.executing = true
+            claim.entered = EnteredClaim.issue(this, claim, runtime, taskId, operationId)
         }
         try { return action() }
         catch (error: Throwable) {
-            synchronized(lock) { claim.executing = false }
+            synchronized(lock) { claim.entered?.revoke(); claim.entered = null; claim.executing = false }
             throw error
         }
     }
     internal fun exit(claim: Claim, runtime: Any) = synchronized(lock) {
-        if (claims.containsKey(claim) && claim.runtime === runtime) claim.executing = false
+        if (claims.containsKey(claim) && claim.runtime === runtime) {
+            claim.entered?.revoke(); claim.entered = null; claim.executing = false
+        }
     }
     private fun directCount() = claims.keys.count { it.direct }
     private fun addClaim(direct: Boolean): Claim = Claim(direct).also { claims[it] = Unit; version++ }

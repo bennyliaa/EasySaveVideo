@@ -12,6 +12,38 @@ import kotlin.concurrent.thread
 
 /** Real production Coordinator/admission calls with bounded journal and transfer actors. */
 class StreamAlternativeCoordinatorTest {
+    @Test fun privatePreparationSeedKeepsProposalIdentityThroughOnceBoundDestinationAndActualStreamExecution() {
+        val h = Harness(); val seed = PrivateNetworkSourceSeed.create()
+        val prepared = h.source.copy(sourceIdentity = seed.sourceIdentity.encoded, privateSource = seed)
+        val proposal = (h.prepare(source = prepared) as SaveAlternativePreparation.Ready).proposal
+        val binding = seed.bindTask(h.request.requestId)
+        val request = h.request.copy(resource = prepared.copy(variantId = "selected-variant", privateSource = binding))
+        val claim = h.claim()
+        try {
+            val confirmed = h.confirm(proposal, claim, request)
+            assertTrue(confirmed is SaveAlternativeConfirmation.Accepted)
+            val result = h.coordinator.execute(request.requestId, claim)!!
+            assertEquals(TaskState.SUCCEEDED, result.task.state)
+            assertEquals(seed.sourceIdentity.encoded, result.request.networkSourceMetadata!!.sourceIdentity)
+            assertTrue(result.request.input is SaveInput.PrivateNetwork)
+            assertNull(result.request.networkResource); assertNull(result.checkpoint)
+            assertEquals(1, h.streamCalls); h.assertOldUntouched()
+        } finally { h.admission.release(claim) }
+    }
+
+    @Test fun revokedPrivateAlternativeSeedCannotConfirmOrBeReplacedWithAnotherTaskBinding() {
+        val h = Harness(); val seed = PrivateNetworkSourceSeed.create()
+        val prepared = h.source.copy(sourceIdentity = seed.sourceIdentity.encoded, privateSource = seed)
+        val proposal = (h.prepare(source = prepared) as SaveAlternativePreparation.Ready).proposal
+        val binding = seed.bindTask(h.request.requestId); seed.revoke()
+        val request = h.request.copy(resource = prepared.copy(variantId = "selected-variant", privateSource = binding))
+        val claim = h.claim()
+        try {
+            assertTrue(h.confirm(proposal, claim, request) is SaveAlternativeConfirmation.Rejected)
+            assertEquals(0, h.streamCalls); assertNull(h.journal.read(request.requestId)); h.assertOldUntouched()
+        } finally { h.admission.release(claim) }
+    }
+
     private enum class InsertFault { NONE, THROW_BEFORE_WRITE, WRITE_THEN_THROW }
     private class FaultJournal(val memory: MemorySaveJournal = MemorySaveJournal()) : SaveJournal by memory {
         var fault = InsertFault.NONE

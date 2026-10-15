@@ -164,6 +164,18 @@ class RecordingConsentController(
         } else launchProjection(pending.requestId, pending.defaultDisplayOnly)
     }
 
+    /** Correlation only; a pending system request does not identify why an Activity paused. */
+    internal fun pendingForExactRequest(requestId: String): PendingRecordingConsent? {
+        if (closed || !EphemeralRecordingResults.attachedTo(activity)) return null
+        return RecordingConsentMemory.pending?.takeIf { it.requestId == requestId && !it.cancelled }
+    }
+    /** Caller must first match its exact Runtime binding; stale owners cannot cancel a new request. */
+    internal fun cancelExactRequest(requestId: String): Boolean {
+        if (pendingForExactRequest(requestId) == null) return false
+        cancel()
+        return true
+    }
+
     val requestInFlight: Boolean get() = RecordingConsentMemory.pending != null
     val audioPermissionDenied: Boolean get() = RecordingConsentMemory.audioPermissionDenied
     val notice: String? get() = RecordingConsentMemory.notice
@@ -203,9 +215,9 @@ class RecordingConsentController(
         try {
             val manager = activity.getSystemService(MediaProjectionManager::class.java)
                 ?: throw IllegalStateException()
-            // Advanced geometry is selected against the default display. This requests that
-            // consent scope explicitly; OEM override remains possible, so the capture adapter
-            // separately checks actual captured geometry. No private result extras are inspected.
+            // Only Region/authorized-preview uses default-display geometry. Ordinary and private
+            // BASIC retain Android's user-choice consent, including app sharing on API34+.
+            // Geometry callbacks do not attest the choice. No private result extras are inspected.
             val intent = if (defaultDisplayOnly && Build.VERSION.SDK_INT >= 34)
                 manager.createScreenCaptureIntent(MediaProjectionConfig.createConfigForDefaultDisplay())
             else manager.createScreenCaptureIntent()

@@ -1,0 +1,47 @@
+{
+  "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.10.2",
+  "change": "UPGRADE",
+  "baseline": {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.9.0",
+    "filename": "kotlinx-coroutines-guava-1.9.0.jar",
+    "sha256": "ca68323328a85a2df3c03429d5e7b124bc784f07fbace958399a5bba4118d7a0"
+  },
+  "binary": {
+    "path": "/workspace/shared/esv-coil-current-admission-20261015/official-guava-1.10.2/kotlinx-coroutines-guava-1.10.2.jar",
+    "name": "kotlinx-coroutines-guava-1.10.2.jar",
+    "sha256": "d54c4c9f9f2d3612afa5801daf70a7b68687f78d8936360341f1a89b535abfee",
+    "bytes": 17969,
+    "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.jar",
+    "verification_evidence": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.jar.sha256"
+  },
+  "pom": {
+    "path": "/workspace/shared/esv-coil-current-license-review-20261015/metadata/org.jetbrains.kotlinx__kotlinx-coroutines-guava__1.10.2.pom",
+    "bytes": 2368,
+    "sha256": "126d860e3963148b36c180a04220401867b15703e71df201d4c89b3081456e3c",
+    "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.pom"
+  },
+  "sources": {
+    "path": "/workspace/shared/esv-coil-current-admission-20261015/official-guava-1.10.2/kotlinx-coroutines-guava-1.10.2-sources.jar",
+    "name": "kotlinx-coroutines-guava-1.10.2-sources.jar",
+    "sha256": "988ad4424350cfc88e92e06dd9a5ec0420c6f663872fe7bf455bcd8169e3ebd6",
+    "bytes": 7526,
+    "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2-sources.jar",
+    "verification_evidence": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2-sources.jar.sha256"
+  },
+  "source_entries": [
+    "module-info.java",
+    "ListenableFuture.kt"
+  ],
+  "source_license_header_matches": [],
+  "license": "Apache-2.0",
+  "upstream_license": "licenses/Kotlinx-Coroutines-1.10.2-LICENSE.txt",
+  "upstream_notice": "licenses/Kotlinx-Coroutines-1.10.2-license-NOTICE.txt",
+  "note": "No copyright/license header in the two published source entries; exact project LICENSE and supplied NOTICE preserved. Not a missing-license conclusion.",
+  "binary_archive_audit": {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.10.2",
+    "class_count": 8,
+    "max_runtime_class_major": 52,
+    "native_entries": [],
+    "notice_entries": []
+  }
+}

@@ -61,5 +61,45 @@ class NormalizationStorageWiringContractTest {
             assertTrue(body.contains("normalizationCall")); assertFalse(body.contains("= fileCall"))
         }
     }
+    @Test fun sqlActiveGateUsesCurrentPolicyWhileHistoricalBindingAndTerminalStayStructural() {
+        // Source wiring only. Host protocol tests execute the ownership path with a fake journal.
+        val sql = File("src/main/kotlin/com/easysavevideo/app/save/storage/AndroidNormalizedCommitJournal.kt").readText()
+        val active = sql.substringAfter("private fun active(").substringBefore("private fun binding(")
+        val historical = sql.substringAfter("private fun binding(")
+        assertTrue(active.contains("!proof.isCurrentPolicy()"))
+        assertTrue(active.contains("expectedAudio == true && proof.conservation.audio == null"))
+        assertTrue(active.contains("evidence.isValidFor"))
+        assertFalse(historical.contains("isCurrentPolicy"))
+        assertFalse(historical.contains("policyRevision"))
+        val runtime = File("src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt").readText()
+        assertTrue(runtime.contains("movAdmissionEnabled = false"))
+    }
+    @Test fun convertedHistoricalCleanupExemptsOnlyTerminalAuthorityAndKeepsActiveFences() {
+        val authority = source.substringAfter("internal fun normalizationAuthority(").substringBefore("private inner class NormalizationJournal")
+        assertTrue(authority.contains("val terminal = task.task.state.isTerminal"))
+        assertTrue(authority.contains("(!terminal && !conversion.isCurrentPolicy())"))
+        assertTrue(authority.contains("row.proofSha256 != conversion.digest()"))
+        assertTrue(authority.contains("row.sourceTransferSha256 != sourceTransferFingerprint(transfer)"))
+        val journalAuthority = source.substringAfter("private fun requireNormalizationAuthority(").substringBefore("private fun normalizationSequences(")
+        assertTrue(journalAuthority.contains("(!task.task.state.isTerminal && !proof.isCurrentPolicy())"))
+        assertTrue(journalAuthority.contains("expectedAudio == true && proof.expectation.audio == null"))
+        val sql = File("src/main/kotlin/com/easysavevideo/app/save/storage/AndroidNormalizedCommitJournal.kt").readText()
+        val terminal = sql.substringAfter("private fun conversionTerminal(").substringBefore("private fun conversionPlan(")
+        assertFalse(terminal.contains("isCurrentPolicy"))
+        assertTrue(terminal.contains("TaskState.SUCCEEDED, TaskState.FAILED, TaskState.CANCELLED"))
+        assertTrue(terminal.contains("proof.digest() != row.proofSha256"))
+        assertTrue(terminal.contains("source.expectedAudio"))
+        val active = sql.substringAfter("private fun active(").substringBefore("private fun binding(")
+        assertTrue(active.contains("!output.conversionProof.isCurrentPolicy()"))
+        val workspace = File("src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceProtocol.kt").readText()
+        val proof = workspace.substringAfter("private fun requireProof(row: NormalizationWorkspace, proof: DirectConversionProof)")
+            .substringBefore("private fun boundAuthority(")
+        assertTrue(proof.contains("!proof.isCurrentPolicy()"))
+        val controlled = File("src/main/kotlin/com/easysavevideo/app/save/storage/AndroidControlledDirectStorage.kt").readText()
+        val cleanup = controlled.substringAfter("override fun cleanupTerminal(").substringBefore("private fun history(")
+        assertTrue(cleanup.contains("committer.cleanup(")); assertFalse(cleanup.contains("conversionProofMatches("))
+        val runtime = File("src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt").readText()
+        assertTrue(runtime.contains("conversionExecutionEnabled = false"))
+    }
 
 }

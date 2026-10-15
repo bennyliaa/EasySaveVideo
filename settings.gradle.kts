@@ -1,7 +1,34 @@
 pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories { maven { url = uri("vendor/maven") }; maven {
+    repositories {
+        // Exact official Coil core-only graph byte projection; bounded reviewed versions only.
+        maven {
+            url = uri("vendor/coil-maven")
+            content {
+                includeVersion("androidx.appcompat", "appcompat-resources", "1.7.1")
+                includeVersion("androidx.core", "core-ktx", "1.15.0")
+                includeVersion("androidx.core", "core", "1.15.0")
+                includeVersion("androidx.exifinterface", "exifinterface", "1.4.1")
+                includeVersion("androidx.profileinstaller", "profileinstaller", "1.4.1")
+                includeVersion("androidx.tracing", "tracing", "1.2.0")
+                includeVersion("androidx.vectordrawable", "vectordrawable-animated", "1.1.0")
+                includeVersion("androidx.vectordrawable", "vectordrawable", "1.1.0")
+                includeVersion("com.squareup.okio", "okio-jvm", "3.15.0")
+                includeVersion("com.squareup.okio", "okio", "3.15.0")
+                includeVersion("io.coil-kt.coil3", "coil-core-android", "3.3.0")
+                includeVersion("io.coil-kt.coil3", "coil-core", "3.3.0")
+                includeVersion("org.jetbrains.kotlinx", "kotlinx-coroutines-android", "1.10.2")
+                includeVersion("org.jetbrains.kotlinx", "kotlinx-coroutines-bom", "1.10.2")
+                includeVersion("org.jetbrains.kotlinx", "kotlinx-coroutines-core-jvm", "1.10.2")
+                includeVersion("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.10.2")
+                includeVersion("org.jetbrains.kotlinx", "kotlinx-coroutines-guava", "1.10.2")
+            }
+        }
+        maven { url = uri("vendor/maven") }; maven {
+            url = uri("vendor/webkit-maven")
+            content { includeVersion("androidx.webkit", "webkit", "1.17.1") }
+        }; maven {
             url = uri("vendor/tink-maven")
             content {
                 includeVersion("com.google.crypto.tink", "tink-android", "1.23.0")

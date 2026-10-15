@@ -67,7 +67,6 @@ internal class MovRemuxEngine(private val clock: EpochClock) {
             if (outputMaximum < 32) throw SaveFailure(SaveError.BYTE_LIMIT_EXCEEDED)
             val rawHash = hash(source, ::check)
             val profile = MovProfileProbe.probeQuickTime(source, ::check)
-            if (profile.conservation.audio != null) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
             if (files.availableBytes() < limits.maxArtifactBytes) throw SaveFailure(SaveError.STORAGE_FULL)
             check()
             sink = files.openEmptyOutput()
@@ -77,7 +76,7 @@ internal class MovRemuxEngine(private val clock: EpochClock) {
                 .setLastSampleDurationBehavior(Mp4Muxer.LAST_SAMPLE_DURATION_BEHAVIOR_SET_FROM_END_OF_STREAM_BUFFER_OR_DUPLICATE_PREVIOUS)
                 .build()
             extractor = Mp4Extractor(SubtitleParser.Factory.UNSUPPORTED, 0)
-            val callback = OneVideoOutput(source, profile, muxer, ::check)
+            val callback = AdmittedTracksOutput(source, profile, muxer, ::check)
             extract(extractor, source, profile, callback, ::check)
             callback.finish()
             extractor.release(); extractor = null
@@ -95,7 +94,7 @@ internal class MovRemuxEngine(private val clock: EpochClock) {
             if (observed.conservation != profile.conservation) throw SaveFailure(SaveError.INVALID_MEDIA)
             // Independently compare finalized raw tables/payload with real extractor callbacks too.
             extractor = Mp4Extractor(SubtitleParser.Factory.UNSUPPORTED, 0)
-            val outputCallback = OneVideoOutput(output, observed, null, ::check)
+            val outputCallback = AdmittedTracksOutput(output, observed, null, ::check)
             extract(extractor, output, observed, outputCallback, ::check)
             outputCallback.finish()
             extractor.release(); extractor = null
@@ -134,7 +133,7 @@ internal class MovRemuxEngine(private val clock: EpochClock) {
     }
 
     private fun extract(extractor: Mp4Extractor, source: MovProbeInput, profile: MovProfile,
-        callback: OneVideoOutput, checkpoint: () -> Unit) {
+        callback: AdmittedTracksOutput, checkpoint: () -> Unit) {
         val reader = Reader(source, checkpoint)
         if (!extractor.sniff(DefaultExtractorInput(reader, 0, source.length))) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
         reader.position = 0
@@ -144,7 +143,7 @@ internal class MovRemuxEngine(private val clock: EpochClock) {
         var steps = 0L
         while (true) {
             checkpoint()
-            if (++steps > profile.samples.size.toLong() * 64 + 65_536) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
+            if (++steps > (profile.samples.size.toLong() + (profile.audio?.samples?.size ?: 0)) * 64 + 65_536) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
             when (extractor.read(input, seek)) {
                 Extractor.RESULT_CONTINUE -> Unit
                 Extractor.RESULT_SEEK -> {
@@ -209,6 +208,123 @@ internal class MovRemuxEngine(private val clock: EpochClock) {
         }
     }
 
+    /** Exact one-video/optional-one-audio dispatch; every callback track must be accounted for. */
+    internal class AdmittedTracksOutput(
+        source: MovProbeInput, profile: MovProfile, muxer: Mp4Muxer?,
+        private val checkpoint: () -> Unit,
+    ) : ExtractorOutput {
+        private val video = OneVideoOutput(source, profile, muxer, checkpoint)
+        private val audio = profile.audio?.let { OneAudioOutput(source, profile, muxer, checkpoint) }
+        private var videoId: Int? = null
+        private var audioId: Int? = null
+        private var ended = false
+        override fun track(id: Int, type: Int): TrackOutput {
+            checkpoint()
+            if (ended) throw SaveFailure(SaveError.INVALID_MEDIA)
+            return when (type) {
+                C.TRACK_TYPE_VIDEO -> {
+                    if (id == audioId || (videoId != null && videoId != id)) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
+                    videoId = id; video.track(id, type)
+                }
+                C.TRACK_TYPE_AUDIO -> {
+                    if (audio == null || id == videoId || (audioId != null && audioId != id)) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
+                    audioId = id; audio
+                }
+                else -> throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
+            }
+        }
+        override fun endTracks() {
+            checkpoint()
+            if (ended || videoId == null || (audio != null) != (audioId != null)) throw SaveFailure(SaveError.INVALID_MEDIA)
+            video.endTracks(); ended = true
+        }
+        override fun seekMap(seekMap: SeekMap) { checkpoint() }
+        fun finish() {
+            checkpoint()
+            if (!ended) throw SaveFailure(SaveError.INCOMPLETE_TRANSFER)
+            video.finish()
+            audio?.finish()
+        }
+    }
+
+    /** Raw AAC assembly/transport only; actual decoding occurs in the separate adopted verifier. */
+    internal class OneAudioOutput(
+        private val source: MovProbeInput, private val profile: MovProfile,
+        private val muxer: Mp4Muxer?, private val checkpoint: () -> Unit,
+    ) : TrackOutput {
+        private val audio = requireNotNull(profile.audio)
+        private var muxTrack: Int? = null
+        private var pending = ByteArray(64 * 1024)
+        private var pendingSize = 0
+        private var sampleIndex = 0
+        private val proof = DirectMovSampleAccumulator(audio.clock, audio.configuration.sha256, checkpoint)
+        private val sequence = DirectMovWriteSequence(audio.clock)
+        override fun format(format: Format) {
+            checkpoint()
+            if (format.drmInitData != null || format.cryptoType != C.CRYPTO_TYPE_NONE) throw SaveFailure(SaveError.PROTECTED_MEDIA)
+            if (muxTrack != null || format.sampleMimeType != MimeTypes.AUDIO_AAC ||
+                format.sampleRate != audio.configuration.sampleRate || format.channelCount != audio.configuration.channelCount ||
+                format.encoderDelay != 0 || format.encoderPadding != 0 ||
+                (format.codecs != null && format.codecs != "mp4a.40.2")) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
+            val config = DirectMovCanonical.aacConfigurationFromInitializationData(format.initializationData, checkpoint)
+            if (config.sha256 != audio.configuration.sha256) throw SaveFailure(SaveError.INVALID_MEDIA)
+            val approved = Format.Builder().setSampleMimeType(MimeTypes.AUDIO_AAC)
+                .setSampleRate(audio.configuration.sampleRate).setChannelCount(audio.configuration.channelCount)
+                .setCodecs("mp4a.40.2").setEncoderDelay(0).setEncoderPadding(0)
+                .setInitializationData(listOf(audio.configuration.asc)).build()
+            muxTrack = muxer?.addTrack(approved) ?: 0
+        }
+        override fun sampleData(input: DataReader, length: Int, allowEndOfInput: Boolean, sampleDataPart: Int): Int {
+            checkpoint(); part(sampleDataPart)
+            if (length <= 0) throw SaveFailure(SaveError.INVALID_MEDIA)
+            val wanted = minOf(length, 64 * 1024); reserve(wanted)
+            val count = input.read(pending, pendingSize, wanted)
+            if (count < 0) {
+                if (!allowEndOfInput) throw SaveFailure(SaveError.INCOMPLETE_TRANSFER)
+                return -1
+            }
+            if (count !in 1..wanted) throw SaveFailure(SaveError.INCOMPLETE_TRANSFER)
+            pendingSize += count; return count
+        }
+        override fun sampleData(data: ParsableByteArray, length: Int, sampleDataPart: Int) {
+            checkpoint(); part(sampleDataPart)
+            if (length <= 0 || length > data.bytesLeft()) throw SaveFailure(SaveError.INVALID_MEDIA)
+            reserve(length); data.readBytes(pending, pendingSize, length); pendingSize += length
+        }
+        override fun sampleMetadata(timeUs: Long, flags: Int, size: Int, offset: Int, cryptoData: TrackOutput.CryptoData?) {
+            checkpoint()
+            if (cryptoData != null) throw SaveFailure(SaveError.PROTECTED_MEDIA)
+            if (muxTrack == null || sampleIndex >= audio.samples.size || size !in 1..DirectNormalizationLimits.MAX_SAMPLE_BYTES ||
+                offset !in 0..DirectNormalizationLimits.MAX_SAMPLE_BYTES || pendingSize.toLong() - offset - size != 0L)
+                throw SaveFailure(SaveError.INVALID_MEDIA)
+            val sample = audio.samples[sampleIndex]
+            val sync = DirectMovCallbackFlags.sync(flags, sampleIndex.toLong(), audio.clock, if (sample.sync) 1 else 0)
+            audio.clock.requirePresentationTime(sampleIndex.toLong(), timeUs)
+            val raw = pending.copyOfRange(0, size)
+            if (!raw.contentEquals(MovProfileProbe.readAudioSample(source, profile, sampleIndex, checkpoint)))
+                throw SaveFailure(SaveError.INVALID_MEDIA)
+            proof.append(raw, timeUs, sync)
+            sequence.media(timeUs, size, sync)
+            muxer?.writeSampleData(requireNotNull(muxTrack), ByteBuffer.wrap(raw), BufferInfo(timeUs, size, sync))
+            pending.copyInto(pending, 0, size, pendingSize); pendingSize = offset; sampleIndex++
+        }
+        fun finish() {
+            checkpoint()
+            if (muxTrack == null || pendingSize != 0 || sampleIndex != audio.samples.size) throw SaveFailure(SaveError.INCOMPLETE_TRANSFER)
+            if (proof.finish().track != profile.conservation.audio) throw SaveFailure(SaveError.INVALID_MEDIA)
+            val endpoint = audio.clock.endpoint.minimumUs
+            sequence.endOfStream(endpoint)
+            muxer?.writeSampleData(requireNotNull(muxTrack), ByteBuffer.allocate(0), BufferInfo(endpoint, 0, C.BUFFER_FLAG_END_OF_STREAM))
+            sequence.finish()
+        }
+        private fun reserve(extra: Int) {
+            if (extra < 0 || extra > 2 * DirectNormalizationLimits.MAX_SAMPLE_BYTES - pendingSize) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
+            if (pending.size < pendingSize + extra) pending = pending.copyOf(minOf(2 * DirectNormalizationLimits.MAX_SAMPLE_BYTES,
+                maxOf(pending.size * 2, pendingSize + extra)))
+        }
+        private fun part(part: Int) { if (part != TrackOutput.SAMPLE_DATA_PART_MAIN) throw SaveFailure(SaveError.PROTECTED_MEDIA) }
+    }
+
     internal class OneVideoOutput(
         private val source: MovProbeInput, private val profile: MovProfile,
         private val muxer: Mp4Muxer?, private val checkpoint: () -> Unit,
@@ -231,6 +347,7 @@ internal class MovRemuxEngine(private val clock: EpochClock) {
         override fun format(format: Format) {
             checkpoint()
             val color = format.colorInfo
+            if (format.drmInitData != null || format.cryptoType != C.CRYPTO_TYPE_NONE) throw SaveFailure(SaveError.PROTECTED_MEDIA)
             if (muxTrack != null || format.sampleMimeType != MimeTypes.VIDEO_H264 || format.width != profile.width ||
                 format.height != profile.height || format.rotationDegrees != 0 || format.pixelWidthHeightRatio != 1f ||
                 format.drmInitData != null || color == null || color.colorSpace != C.COLOR_SPACE_BT709 ||

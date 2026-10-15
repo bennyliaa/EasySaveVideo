@@ -88,7 +88,7 @@ class DiscoveryCardNavigationTest {
     }
     @Test fun innocuousStatusRefreshKeepsSameCurrentPageOpenable() {
         val effects = Effects()
-        assertTrue(dispatch(request, state.copy(notice = "Updated status"), 5, true, effects::open, effects::record))
+        assertTrue(dispatch(request, state.copy(notice = DiscoveryNotice.VIEW_SETTINGS_CHANGED), 5, true, effects::open, effects::record))
     }
     @Test fun acceptedNavigationRetiresLifecycleBeforeRepeatedClick() {
         var lifecycle = 5L; val effects = Effects()

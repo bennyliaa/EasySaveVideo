@@ -5,12 +5,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import com.easysavevideo.app.R
+import com.easysavevideo.app.ui.LocalPrivateInputAdmission
 import com.easysavevideo.app.theme.*
 import com.easysavevideo.save.SaveRecord
 
 @Composable
 internal fun SaveAuthenticationGuidance(record: SaveRecord, runtime: AndroidSaveRuntime,
     onBrowser: (() -> Unit)?, canOpenBrowser: () -> Boolean) {
+    // Freeze the owning Tasks publication ahead of the latest business availability callbacks.
+    val admission = LocalPrivateInputAdmission.current
     val identity = AuthenticationTaskIdentity.from(record)
     if (!canReturnForAuthentication(identity)) return
     val generation = runtime.authenticationNavigationGeneration
@@ -24,6 +27,7 @@ internal fun SaveAuthenticationGuidance(record: SaveRecord, runtime: AndroidSave
     Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
         EsvText(stringResource(R.string.save_auth_browser_boundary), style = v.captionTextStyle, color = v.colors.muted)
         if (currentOpen != null) EsvButton(stringResource(R.string.save_auth_browser_open), onClick = {
+            if (!admission()) return@EsvButton
             val open = currentOpen
             result = if (open == null || !currentCanOpen()) AuthenticationNavigationResult.UNAVAILABLE
                 else runtime.returnToBrowserForAuthentication(command)

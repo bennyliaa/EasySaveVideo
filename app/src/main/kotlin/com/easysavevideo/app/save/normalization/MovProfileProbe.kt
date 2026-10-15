@@ -1,5 +1,6 @@
 package com.easysavevideo.app.save.normalization
 
+import com.easysavevideo.save.DirectMovAacConfiguration
 import com.easysavevideo.save.DirectMovAvcConfiguration
 import com.easysavevideo.save.DirectMovCanonical
 import com.easysavevideo.save.DirectMovClock
@@ -29,6 +30,15 @@ internal data class MovSampleReference(
     val sync: Boolean,
 )
 
+/** Exact bounded audio transport. Elementary AAC syntax remains inside the trusted decoder. */
+internal class MovAudioProfile internal constructor(
+    val clock: DirectMovClock,
+    val configuration: DirectMovAacConfiguration,
+    samples: List<MovSampleReference>,
+) {
+    val samples: List<MovSampleReference> = Collections.unmodifiableList(ArrayList(samples))
+}
+
 /** Syntax and transport evidence only. Neither this type nor a successful scan is decode proof. */
 internal class MovProfile internal constructor(
     val inputLength: Long,
@@ -38,7 +48,9 @@ internal class MovProfile internal constructor(
     val configuration: DirectMovAvcConfiguration,
     samples: List<MovSampleReference>,
     val conservation: DirectRemuxConservation,
+    val audio: MovAudioProfile? = null,
 ) {
+    val durationUs: Long = maxOf(clock.roundedDurationUs, audio?.clock?.roundedDurationUs ?: 0L)
     val frameRate: Int = requireNotNull(clock.frameRate)
     val samples: List<MovSampleReference> = Collections.unmodifiableList(ArrayList(samples))
 }
@@ -53,10 +65,11 @@ internal fun requireMov(ok: Boolean, failure: MovProfileFailure = MovProfileFail
  * Original strict raw-table scanner, separate from Mp4ContainerProbe and Android decoding.
  *
  * Structural allowlist: ftyp/moov/mdat plus explicitly inert free/skip/wide top-level padding;
- * moov(mvhd,trak); trak(tkhd,mdia); mdia(mdhd,hdlr,minf); minf(vmhd,dinf,stbl);
+ * moov(mvhd,trak); trak(tkhd,mdia); mdia(mdhd,hdlr,minf); minf(vmhd|smhd,dinf,stbl);
  * dinf(dref(url-self-contained)); stbl(stsd,stts,stsz,stsc,stco|co64,optional stss);
- * avc1(avcC,optional pasp/colr). Unknown boxes at every structural level fail closed. No metadata,
- * audio/other tracks, edits, composition offsets, fragments, protection or description switches.
+ * avc1(avcC,optional pasp/colr), mp4a(esds with one exact two-byte ASC). Unknown boxes at every
+ * structural level fail closed. Exactly one video and zero/one audio; no metadata/other tracks,
+ * edits, composition offsets, fragments, protection or description switches.
  * Header version 0 and avc1 version 0 only. A separate, named MP4 entry point uses the same sample
  * interpretation but NEVER admits QuickTime brands, and cannot broaden ordinary MP4 admission.
  */
@@ -83,6 +96,17 @@ internal object MovProfileProbe {
         val bytes = readBounded(input, profile.inputLength, sample.offset, sample.size,
             DirectNormalizationLimits.MAX_SAMPLE_BYTES, checkpoint)
         return DirectMovCanonical.avcSample(bytes, DirectMovNalFraming.AVCC4, checkpoint)
+    }
+
+    /** Raw AAC bytes are returned unchanged. No AU syntax, decoding, trim or repair is implied. */
+    fun readAudioSample(input: MovProbeInput, profile: MovProfile, index: Int,
+        checkpoint: () -> Unit = {}): ByteArray {
+        checkpoint()
+        val audio = profile.audio
+        requireMov(input.length == profile.inputLength && audio != null && index in audio.samples.indices)
+        val sample = requireNotNull(audio).samples[index]
+        return readBounded(input, profile.inputLength, sample.offset, sample.size,
+            DirectNormalizationLimits.MAX_SAMPLE_BYTES, checkpoint)
     }
 
     private data class Extent(val start: Long, val end: Long)
@@ -148,39 +172,42 @@ internal object MovProfileProbe {
             requireMov(ftyp && foundMoov && media.isNotEmpty() && at == extent)
             val movie = children(0, moov.size, 1, setOf("mvhd", "trak"))
             val tracks = movie.filter { it.type == "trak" }
-            // Examine handlers before the track-count gate: any audio rejects the entire source.
-            for (track in tracks) {
-                val trackChildren = children(track.start, track.end, 2, setOf("tkhd", "mdia"))
-                val mdia = only(trackChildren, "mdia")
-                val mdiaChildren = children(mdia.start, mdia.end, 3, setOf("mdhd", "hdlr", "minf"))
-                val handler = handler(only(mdiaChildren, "hdlr"))
-                requireMov(handler != "soun", MovProfileFailure.AUDIO_NOT_ADMITTED)
-                requireMov(handler == "vide")
-            }
-            requireMov(tracks.size == 1)
+            requireMov(tracks.size in 1..2)
             val movieHeader = movieHeader(only(movie, "mvhd"))
-            val track = children(tracks.single().start, tracks.single().end, 2, setOf("tkhd", "mdia"))
-            val trackHeader = trackHeader(only(track, "tkhd"))
-            requireMov(movieHeader.trackId > trackHeader.trackId)
-            val mdia = only(track, "mdia")
-            val mdiaChildren = children(mdia.start, mdia.end, 3, setOf("mdhd", "hdlr", "minf"))
-            val mediaHeader = mediaHeader(only(mdiaChildren, "mdhd"))
-            val minf = only(mdiaChildren, "minf")
-            val minfChildren = children(minf.start, minf.end, 4, setOf("vmhd", "dinf", "stbl"))
-            videoHeader(only(minfChildren, "vmhd"))
-            dataReferences(only(minfChildren, "dinf"))
-            val stbl = only(minfChildren, "stbl")
-            val tables = children(stbl.start, stbl.end, 5,
-                setOf("stsd", "stts", "stsz", "stsc", "stco", "co64", "stss"))
+            val facts = tracks.map { track -> trackFacts(track) }
+            requireMov(facts.map { it.header.trackId }.toSet().size == facts.size &&
+                facts.all { movieHeader.trackId > it.header.trackId })
+            val videos = facts.filter { it.handler == "vide" }
+            val audios = facts.filter { it.handler == "soun" }
+            requireMov(videos.size == 1 && audios.size <= 1)
+            val video = videos.single()
+            val trackHeader = video.header
+            val tables = video.tables
             val config = sampleDescription(only(tables, "stsd"), trackHeader.width, trackHeader.height)
             val sizes = sampleSizes(only(tables, "stsz"))
-            val clock = sampleClock(only(tables, "stts"), sizes.size, mediaHeader)
-            requireMov(movieHeader.duration == clock.headerDurationTicks && trackHeader.duration == clock.headerDurationTicks)
+            val clock = sampleClock(only(tables, "stts"), sizes.size, video.media, audio = false)
+            requireMov(trackHeader.duration == clock.headerDurationTicks)
             val chunks = chunkOffsets(tables)
             val runs = sampleChunks(only(tables, "stsc"), chunks.size, sizes.size)
             val sync = syncSamples(optional(tables, "stss"), sizes.size)
             requireMov(sync[0])
             val samples = sampleReferences(chunks, runs, sizes, sync, clock)
+            val audio = audios.singleOrNull()?.let { track ->
+                val audioConfig = audioDescription(only(track.tables, "stsd"))
+                requireMov(track.media.timescale == audioConfig.sampleRate)
+                val audioSizes = sampleSizes(only(track.tables, "stsz"))
+                val audioClock = sampleClock(only(track.tables, "stts"), audioSizes.size, track.media, audio = true)
+                requireMov(track.header.duration == audioClock.headerDurationTicks)
+                val audioChunks = chunkOffsets(track.tables)
+                val audioRuns = sampleChunks(only(track.tables, "stsc"), audioChunks.size, audioSizes.size)
+                val audioSync = syncSamples(optional(track.tables, "stss"), audioSizes.size)
+                requireMov(audioSync.all { it })
+                MovAudioProfile(audioClock, audioConfig,
+                    sampleReferences(audioChunks, audioRuns, audioSizes, audioSync, audioClock))
+            }
+            requireMov(movieHeader.duration == DirectMovClock.movieHeaderDurationTicks(clock, audio?.clock))
+            // Prove global disjointness, including aliases between otherwise valid track tables.
+            requireDisjoint(samples + (audio?.samples ?: emptyList()))
             val avc = MovAvcProfile(config, trackHeader.width, trackHeader.height,
                 requireNotNull(clock.frameRate), checkpoint)
             val accumulation = DirectMovSampleAccumulator(clock, config.sha256, checkpoint)
@@ -195,10 +222,45 @@ internal object MovProfileProbe {
             }
             val result = accumulation.finish()
             requireMov(input.length == extent)
+            val audioResult = audio?.let { track ->
+                val accumulator = DirectMovSampleAccumulator(track.clock, track.configuration.sha256, checkpoint)
+                for (sample in track.samples) {
+                    checkpoint()
+                    val raw = readBounded(input, extent, sample.offset, sample.size,
+                        DirectNormalizationLimits.MAX_SAMPLE_BYTES, checkpoint)
+                    accumulator.append(raw, sample.presentationTimeUs, 1)
+                }
+                accumulator.finish().track
+            }
+            requireMov(input.length == extent)
             val proof = DirectRemuxConservation(trackHeader.width, trackHeader.height,
-                requireNotNull(clock.frameRate), result.track, null, null, null,
+                requireNotNull(clock.frameRate), result.track, audioResult,
+                audio?.configuration?.sampleRate, audio?.configuration?.channelCount,
                 requireNotNull(result.precedingVideoSync))
-            return MovProfile(extent, trackHeader.width, trackHeader.height, clock, config, samples, proof)
+            return MovProfile(extent, trackHeader.width, trackHeader.height, clock, config, samples, proof, audio)
+        }
+
+        private data class MediaHeader(val timescale: Int, val duration: Long)
+        private data class TrackFacts(val handler: String, val header: Header,
+            val media: MediaHeader, val tables: List<Box>)
+
+        private fun trackFacts(box: Box): TrackFacts {
+            val track = children(box.start, box.end, 2, setOf("tkhd", "mdia"))
+            val mdia = only(track, "mdia")
+            val mdiaChildren = children(mdia.start, mdia.end, 3, setOf("mdhd", "hdlr", "minf"))
+            val handler = handler(only(mdiaChildren, "hdlr"))
+            requireMov(handler == "vide" || handler == "soun")
+            val audio = handler == "soun"
+            val header = trackHeader(only(track, "tkhd"), audio)
+            val media = mediaHeader(only(mdiaChildren, "mdhd"))
+            val minf = only(mdiaChildren, "minf")
+            val mediaType = if (audio) "smhd" else "vmhd"
+            val minfChildren = children(minf.start, minf.end, 4, setOf(mediaType, "dinf", "stbl"))
+            if (audio) audioHeader(only(minfChildren, mediaType)) else videoHeader(only(minfChildren, mediaType))
+            dataReferences(only(minfChildren, "dinf"))
+            val stbl = only(minfChildren, "stbl")
+            return TrackFacts(handler, header, media, children(stbl.start, stbl.end, 5,
+                setOf("stsd", "stts", "stsz", "stsc", "stco", "co64", "stss")))
         }
 
         private fun checkBrands(bytes: ByteArray) {
@@ -263,22 +325,25 @@ internal object MovProfileProbe {
             requireMov(nextId > 0)
             return Header(u32(moov, b + 16), trackId = nextId)
         }
-        private fun trackHeader(box: Box): Header {
+        private fun trackHeader(box: Box, audio: Boolean): Header {
             full(box, setOf(3L, 7L)); requireMov(box.size == 84)
             val b = box.start
             val id = u32(moov, b + 12)
-            requireMov(id in 1..Int.MAX_VALUE.toLong()); zero(b + 16, 4); zero(b + 24, 16); matrix(b + 40)
+            requireMov(id in 1..Int.MAX_VALUE.toLong()); zero(b + 16, 4); zero(b + 24, 12)
+            requireMov(u16(moov, b + 36) == if (audio) 256 else 0); zero(b + 38, 2); matrix(b + 40)
             val width = u32(moov, b + 76)
             val height = u32(moov, b + 80)
             requireMov(width and 0xffffL == 0L && height and 0xffffL == 0L)
             val w = (width ushr 16).toInt(); val h = (height ushr 16).toInt()
-            requireMov(w in 2..1920 && h in 2..1920 && w % 2 == 0 && h % 2 == 0 && w.toLong() * h <= 1920L * 1080)
+            requireMov(if (audio) w == 0 && h == 0 else
+                w in 2..1920 && h in 2..1920 && w % 2 == 0 && h % 2 == 0 && w.toLong() * h <= 1920L * 1080)
             return Header(u32(moov, b + 20), id, w, h)
         }
-        private fun mediaHeader(box: Box): Long {
+        private fun mediaHeader(box: Box): MediaHeader {
             full(box); requireMov(box.size == 24)
-            requireMov(u32(moov, box.start + 12) == 90_000L && u16(moov, box.start + 22) == 0)
-            return u32(moov, box.start + 16)
+            val scale = u32(moov, box.start + 12)
+            requireMov(scale in 1..Int.MAX_VALUE.toLong() && u16(moov, box.start + 22) == 0)
+            return MediaHeader(scale.toInt(), u32(moov, box.start + 16))
         }
         private fun handler(box: Box): String {
             full(box); requireMov(box.size in 24..280)
@@ -289,6 +354,9 @@ internal object MovProfileProbe {
         }
         private fun videoHeader(box: Box) {
             full(box, setOf(0L, 1L)); requireMov(box.size == 12); zero(box.start + 4, 8)
+        }
+        private fun audioHeader(box: Box) {
+            full(box); requireMov(box.size == 8); zero(box.start + 4, 4)
         }
         private fun dataReferences(box: Box) {
             val dref = only(children(box.start, box.end, 5, setOf("dref")), "dref")
@@ -322,6 +390,55 @@ internal object MovProfileProbe {
             requireMov(avcc.size in 1..DirectNormalizationLimits.MAX_CONFIGURATION_BYTES, MovProfileFailure.LIMIT)
             return DirectMovCanonical.avcConfigurationFromAvcc(moov.copyOfRange(avcc.start, avcc.end), checkpoint)
         }
+        private fun audioDescription(box: Box): DirectMovAacConfiguration {
+            full(box); requireMov(box.size >= 8 && u32(moov, box.start + 4) == 1L)
+            val entry = only(children(box.start + 8, box.end, 6, setOf("mp4a")), "mp4a")
+            requireMov(entry.size >= 28)
+            val b = entry.start
+            zero(b, 6); requireMov(u16(moov, b + 6) == 1)
+            zero(b + 8, 8) // Version zero, revision/vendor/reserved; no QT v1/v2 or wave fallback.
+            val channels = u16(moov, b + 16)
+            requireMov(channels in 1..2 && u16(moov, b + 18) == 16)
+            zero(b + 20, 4)
+            val rate = u32(moov, b + 24)
+            requireMov(rate and 0xffffL == 0L && (rate ushr 16).toInt() in DirectMovClock.AUDIO_SAMPLE_RATES)
+            val esds = only(children(b + 28, entry.end, 7, setOf("esds")), "esds")
+            full(esds); requireMov(esds.size in 4..128, MovProfileFailure.LIMIT)
+            val es = descriptor(esds.start + 4, esds.end, 3)
+            requireMov(es.end == esds.end && es.size >= 3)
+            requireMov((moov[es.start + 2].toInt() and 255) == 0) // No dependency, URL, OCR, priority.
+            val decoder = descriptor(es.start + 3, es.end, 4)
+            requireMov(decoder.size >= 13 && (moov[decoder.start].toInt() and 255) == 0x40 &&
+                (moov[decoder.start + 1].toInt() and 255) == 0x15) // MPEG-4 audio, downstream, reserved=1.
+            // Buffer and bitrate fields are bounded numeric hints, never configuration authority.
+            val specific = descriptor(decoder.start + 13, decoder.end, 5)
+            requireMov(specific.size == 2 && specific.end == decoder.end)
+            val sl = descriptor(decoder.end, es.end, 6)
+            requireMov(sl.size == 1 && sl.end == es.end && moov[sl.start] == 2.toByte())
+            val config = DirectMovCanonical.aacConfiguration(moov.copyOfRange(specific.start, specific.end), checkpoint)
+            requireMov(config.sampleRate == (rate ushr 16).toInt() && config.channelCount == channels)
+            return config
+        }
+
+        /** One bounded descriptor, with its own parent-relative extent; no tolerated trailing tags. */
+        private fun descriptor(start: Int, parentEnd: Int, expectedTag: Int): Box {
+            requireMov(start >= 0 && start < parentEnd && parentEnd <= moov.size)
+            requireMov((moov[start].toInt() and 255) == expectedTag)
+            var at = start + 1
+            var length = 0
+            var terminated = false
+            repeat(4) {
+                if (!terminated) {
+                    requireMov(at < parentEnd)
+                    val value = moov[at++].toInt() and 255
+                    length = (length shl 7) or (value and 127)
+                    terminated = value and 128 == 0
+                }
+            }
+            requireMov(terminated && length <= parentEnd - at)
+            return Box("descriptor", at, at + length)
+        }
+
         private fun table(box: Box, width: Int, minimum: Int = 1): Int {
             full(box); requireMov(box.size >= 8)
             val count = u32(moov, box.start + 4)
@@ -343,7 +460,7 @@ internal object MovProfileProbe {
                 size.toInt()
             }
         }
-        private fun sampleClock(box: Box, sampleCount: Int, duration: Long): DirectMovClock {
+        private fun sampleClock(box: Box, sampleCount: Int, media: MediaHeader, audio: Boolean): DirectMovClock {
             val count = table(box, 8)
             var total = 0L
             var delta = -1L
@@ -356,7 +473,8 @@ internal object MovProfileProbe {
                 total += run; delta = d
             }
             requireMov(total == sampleCount.toLong())
-            return DirectMovClock.videoFromTable(90_000, delta, total, duration)
+            return if (audio) DirectMovClock.audioFromTable(media.timescale, delta, total, media.duration)
+                else DirectMovClock.videoFromTable(media.timescale, delta, total, media.duration)
         }
         private fun chunkOffsets(tables: List<Box>): LongArray {
             val stco = optional(tables, "stco"); val co64 = optional(tables, "co64")
@@ -423,9 +541,13 @@ internal object MovProfileProbe {
                 }
             }
             requireMov(result.size == sizes.size)
+            requireDisjoint(result)
+            return result
+        }
+        private fun requireDisjoint(samples: List<MovSampleReference>) {
             var previousEnd = -1L
             var comparisons = 0
-            val byOffset = result.sortedWith { left, right ->
+            val byOffset = samples.sortedWith { left, right ->
                 if (++comparisons and 1023 == 0) checkpoint()
                 left.offset.compareTo(right.offset)
             }
@@ -434,7 +556,6 @@ internal object MovProfileProbe {
                 requireMov(sample.offset >= previousEnd) // No aliases, overlaps, backwards overflow or duplicate chunk extents.
                 previousEnd = sample.offset + sample.size
             }
-            return result
         }
         private fun inMedia(start: Long, end: Long): Boolean {
             // Top-level extents are already ordered and disjoint. Binary search keeps adversarial

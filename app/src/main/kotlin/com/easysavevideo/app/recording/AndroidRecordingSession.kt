@@ -24,6 +24,7 @@ import android.os.PowerManager
 import android.view.Display
 import android.view.Surface
 import android.view.WindowManager
+import com.easysavevideo.app.browser.privacy.PrivateCaptureDisposition
 import com.easysavevideo.recording.*
 import com.easysavevideo.app.recording.nativeregion.*
 import java.io.FileOutputStream
@@ -44,7 +45,7 @@ import kotlin.math.abs
  * run's owner. The caller must bound waiting separately: a native call can ignore thread interruption.
  * The application-lifetime lease remains occupied until cleanup actually confirms release.
  */
-class AndroidRecordingSession(
+class AndroidRecordingSession internal constructor(
     context: Context,
     private val projection: MediaProjection,
     descriptor: CaptureDescriptor,
@@ -56,6 +57,8 @@ class AndroidRecordingSession(
     private val onProgress: (RecordingCaptureProgress) -> Unit = {},
     private val segmentOutputs: NativeRecordingSegmentOutputs? = null,
     private val previewPort: NativeRegionPreviewPort? = null,
+    private val privateCapture: PrivateRecordingNativeBinding? = null,
+    private val onStopRequested: (RecordingStopReason) -> Unit = {},
 ) {
     private val context = context.applicationContext
     @Volatile private var descriptor = descriptor
@@ -67,9 +70,12 @@ class AndroidRecordingSession(
     private val used = AtomicBoolean()
     private val cancelled = AtomicBoolean()
     private val stopReason = AtomicReference<RecordingStopReason?>()
+    private val reportedStop = AtomicReference<RecordingStopReason?>()
     private val controlFailure = AtomicReference<RecordingError?>()
     private val controls = RecordingControlMailbox()
     private val capturedSize = AtomicReference<Pair<Int, Int>?>()
+    private val basicGeometry = if (descriptor.regionCaptureRecipe == null) BasicCaptureGeometry() else null
+    @Volatile private var captureDensityDpi = this.context.resources.configuration.densityDpi
     private val sourceConfirmedAtNs = AtomicLong(0)
     private var regionObservation: CaptureGeometryObservation? = null
     private var observedDisplayGeometry: CaptureDisplayGeometry? = null
@@ -155,12 +161,23 @@ class AndroidRecordingSession(
     private val projectionCallback = object : MediaProjection.Callback() {
         override fun onStop() { if (!ended) stop(RecordingStopReason.SYSTEM_STOPPED) }
         override fun onCapturedContentVisibilityChanged(isVisible: Boolean) {
+            if (ended) return
             capturedContentVisible.set(isVisible)
             if (!ended && previewPort != null && !previewAdmissionComplete && !isVisible)
                 stop(RecordingStopReason.SYSTEM_STOPPED)
         }
         override fun onCapturedContentResize(width: Int, height: Int) {
             if (ended) return
+            basicGeometry?.let { geometry ->
+                // API34+ chooses the actual app/full-screen bounds. Callbacks publish metadata;
+                // only the native owner resizes the same display, keeping the codec canvas fixed.
+                if (!geometry.observe(width, height, captureDensityDpi)) {
+                    controlFailure.compareAndSet(null, RecordingError.PROFILE_UNSUPPORTED)
+                    stop(RecordingStopReason.ENCODER_FAILED)
+                }
+                return
+            }
+            // Region/preview retain their frozen source and unscaled crop/transform admission.
             if (width <= 0 || height <= 0) { stop(RecordingStopReason.SIZE_CHANGED); return }
             val next = width to height
             descriptor.regionCaptureRecipe?.let { recipe ->
@@ -170,8 +187,6 @@ class AndroidRecordingSession(
                 }
                 sourceConfirmedAtNs.compareAndSet(0, System.nanoTime())
             }
-            // API 34's first callback initializes the system-selected app/full-screen bounds. Its
-            // fixed SDR canvas may be letterboxed by the system. Later changes always stop safely.
             val prior = capturedSize.getAndSet(next)
             if (prior != null && prior != next) stop(RecordingStopReason.SIZE_CHANGED)
         }
@@ -191,15 +206,51 @@ class AndroidRecordingSession(
     }
     fun stop(reason: RecordingStopReason = RecordingStopReason.USER_STOP) {
         if (!ended) {
-            stopReason.compareAndSet(null, reason)
+            basicGeometry?.retire()
+            privateCapture?.requestStop(PrivateCaptureDisposition.KEEP_VALID_OUTPUT)
+            if (stopReason.compareAndSet(null, reason)) notifyStopRequested(stopReason.get() ?: reason)
             revokePendingPreview(reason)
         }
     }
     fun cancel() {
         if (!ended) {
-            cancelled.set(true)
+            basicGeometry?.retire()
+            privateCapture?.requestStop(PrivateCaptureDisposition.DISCARD_UNPUBLISHED_OUTPUT)
+            val firstCancellation = cancelled.compareAndSet(false, true)
             stopReason.set(RecordingStopReason.USER_CANCELLED)
+            if (firstCancellation) notifyStopRequested(RecordingStopReason.USER_CANCELLED)
             revokePendingPreview(RecordingStopReason.USER_CANCELLED)
+        }
+    }
+
+    /**
+     * Metadata-only terminal observation, after all binding/geometry state operations returned.
+     * The runtime can revoke window exposure immediately, before a blocked finalizer or release.
+     * This is neither progress from native counters nor evidence of actual native drain.
+     */
+    private fun notifyStopRequested(reason: RecordingStopReason) {
+        while (true) {
+            val prior = reportedStop.get()
+            if (prior == RecordingStopReason.USER_CANCELLED ||
+                (prior != null && reason != RecordingStopReason.USER_CANCELLED)) return
+            if (reportedStop.compareAndSet(prior, reason)) break
+        }
+        try { onStopRequested(reason) }
+        catch (_: Throwable) { /* An observer must never interrupt Stop or actual native cleanup. */ }
+    }
+
+    /** Existing reason wins; error notification never changes the original failure or outcome. */
+    private fun terminalStopReason(error: RecordingError?): RecordingStopReason {
+        stopReason.get()?.let { return it }
+        if (cancelled.get()) return RecordingStopReason.USER_CANCELLED
+        return when (error) {
+            RecordingError.CANCELLED -> RecordingStopReason.USER_CANCELLED
+            RecordingError.DEADLINE_EXCEEDED -> RecordingStopReason.DEADLINE_EXCEEDED
+            RecordingError.BYTE_LIMIT -> RecordingStopReason.BYTE_LIMIT
+            RecordingError.STORAGE_LOW -> RecordingStopReason.STORAGE_LOW
+            RecordingError.AUDIO_FAILED, RecordingError.AUDIO_PERMISSION_DENIED -> RecordingStopReason.AUDIO_LOST
+            RecordingError.FORMAT_CHANGED -> RecordingStopReason.SIZE_CHANGED
+            else -> RecordingStopReason.ENCODER_FAILED
         }
     }
 
@@ -219,6 +270,7 @@ class AndroidRecordingSession(
     fun run(): RecordingOutcome {
         check(used.compareAndSet(false, true))
         if (!lease.started()) {
+            notifyStopRequested(terminalStopReason(RecordingError.CANCELLED))
             val released = try { projection.stop(); true } catch (_: RuntimeException) { false }
             if (!released) lease.keepAlive(this)
             if (lease.occupied) lease.released(released)
@@ -229,6 +281,8 @@ class AndroidRecordingSession(
         var failure: RecordingError? = null
         var finalized = false
         try {
+            basicGeometry?.bindOwner()
+            privateCapture?.requireStartAllowed(descriptor)
             projection.registerCallback(projectionCallback, Handler(Looper.getMainLooper()))
             callbackRegistered = true
             progress(RecordingState.PREPARING)
@@ -248,6 +302,9 @@ class AndroidRecordingSession(
         } catch (_: RuntimeException) {
             failure = if (finalizing) RecordingError.FINALIZATION_FAILED else RecordingError.ENCODER_FAILED
         } finally {
+            // Revoke runtime pixel authorization on real failure before a native release can block.
+            // Stop/Discard already notified; the monotonic observer makes this fallback a no-op.
+            notifyStopRequested(terminalStopReason(failure))
             // An interrupted Java waiter does not skip native cleanup and never closes its FD early.
             Thread.interrupted()
             try { previewPort?.invalidate(failure ?: RecordingError.CANCELLED) }
@@ -287,6 +344,7 @@ class AndroidRecordingSession(
     private fun prepare() {
         var deadline = nowUs() + limits.prepareTimeoutUs
         fun checkpoint() {
+            privateCapture?.requireStartAllowed(descriptor)
             checkCancellation()
             if (stopReason.get() != null) fail(RecordingError.CAPTURE_EMPTY)
             if (nowUs() >= deadline) fail(RecordingError.DEADLINE_EXCEEDED)
@@ -308,6 +366,11 @@ class AndroidRecordingSession(
         if (descriptor.requestedProfile.frameRate !in 15..60) fail(RecordingError.PROFILE_UNSUPPORTED)
         val density = visualContext.resources.configuration.densityDpi
         if (density <= 0) fail(RecordingError.CAPTURE_UNAVAILABLE)
+        captureDensityDpi = density
+        // API31–33 grant the full display. API34+ must await the selected-content callback;
+        // default-display dimensions cannot overwrite a selected app's source dimensions.
+        if (Build.VERSION.SDK_INT < 34 && basicGeometry?.observe(initialWidth, initialHeight, density) == false)
+            fail(RecordingError.PROFILE_UNSUPPORTED)
         if (previewPort != null) {
             if (recipe == null || segmentOutputs == null) fail(RecordingError.INVALID_REQUEST)
             regionGl = RegionGlCapture(recipe, descriptor.requestedProfile.frameRate)
@@ -345,6 +408,7 @@ class AndroidRecordingSession(
         // A slow confirmed journal must not carry an expired setup budget into file/audio start.
         checkpoint()
         prepareSegmentOutput(::checkpoint)
+        privateCapture?.requireStartAllowed(descriptor) // Slow output/codec preparation may return after revoke.
         captureStartedUs = segmentStartedUs
         if (previewPort != null) {
             requireNotNull(regionGl).setEncoderSurface(requireNotNull(surface))
@@ -365,9 +429,13 @@ class AndroidRecordingSession(
     private fun createCaptureDisplay(width: Int, height: Int, density: Int, target: Surface) {
         check(virtualDisplay == null)
         // Sole display per grant. Preview and every later crop share this exact OES producer.
+        privateCapture?.requireStartAllowed(descriptor)
         virtualDisplay = projection.createVirtualDisplay("EasySaveVideo capture", width, height,
             density, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, target, null, null)
             ?: fail(RecordingError.CAPTURE_UNAVAILABLE)
+        privateCapture?.nativeCaptureAcquired()
+        basicGeometry?.displayCreated(width, height, density)
+        applyBasicGeometry() // Also consumes a callback that arrived during display creation.
     }
 
     /** No file/output provider, codec or audio allocation is reachable inside this phase. */
@@ -503,6 +571,8 @@ class AndroidRecordingSession(
             .addMatchingUsage(AudioAttributes.USAGE_GAME)
             .addMatchingUsage(AudioAttributes.USAGE_UNKNOWN)
             .build()
+        // Recheck after configuration/native preparation and before AudioRecord creation.
+        privateCapture?.requireStartAllowed(descriptor)
         audioRecord = AudioRecord.Builder().setAudioFormat(AudioFormat.Builder()
             .setEncoding(AudioFormat.ENCODING_PCM_16BIT).setSampleRate(profile.sampleRate)
             .setChannelMask(channelMask).build()).setBufferSizeInBytes(bytes)
@@ -516,8 +586,10 @@ class AndroidRecordingSession(
         requireNotNull(audioCodec).start(); audioCodecStarted = true
         checkpoint()
         pcm = ShortArray(1024 * profile.channels)
+        privateCapture?.requireStartAllowed(descriptor)
         requireNotNull(audioRecord).startRecording()
         audioRecordStarted = true
+        privateCapture?.nativeCaptureAcquired()
         checkpoint()
         if (requireNotNull(audioRecord).recordingState != AudioRecord.RECORDSTATE_RECORDING) fail(RecordingError.AUDIO_FAILED)
         audioTimestampMissingSinceUs = nowUs()
@@ -536,6 +608,8 @@ class AndroidRecordingSession(
             pausedAtUs?.let { if (now - it >= limits.maxPausedDurationUs) stop(RecordingStopReason.PAUSE_LIMIT) }
             checkEnvironment(now)
             if (stopReason.get() != null) break
+            applyBasicGeometry()
+            if (stopReason.get() != null || cancelled.get()) break
             var worked = regionGl?.pump(!pausedBetweenSegments && regionSourceReady(),
                 maxOf(segmentStartedUs * 1000, sourceConfirmedAtNs.get(), firstRecordingFrameUs * 1000), ::confirmRegionFrame) ?: false
             if (pausedBetweenSegments) {
@@ -653,13 +727,22 @@ class AndroidRecordingSession(
     private fun checkEnvironment(now: Long) {
         if (now - lastEnvironmentCheckUs < 250_000) return
         lastEnvironmentCheckUs = now
-        if (!context.getSystemService(PowerManager::class.java).isInteractive ||
-            context.getSystemService(KeyguardManager::class.java).isKeyguardLocked) stop(RecordingStopReason.SYSTEM_STOPPED)
-        if (sourceDisplay?.rotation != initialRotation) stop(RecordingStopReason.SIZE_CHANGED)
-        if (descriptor.regionCaptureRecipe != null) regionSourceReady()
-        if (Build.VERSION.SDK_INT < 34) {
-            val bounds = requireNotNull(windowContext).getSystemService(WindowManager::class.java).maximumWindowMetrics.bounds
-            if (bounds.width() != initialWidth || bounds.height() != initialHeight) stop(RecordingStopReason.SIZE_CHANGED)
+        // BASIC follows real MediaProjection.onStop; screen state alone is not revocation.
+        // Preserve the separate Region/preview/segment admission policy.
+        if (basicGeometry == null || previewPort != null || segmentOutputs != null) {
+            if (!context.getSystemService(PowerManager::class.java).isInteractive ||
+                context.getSystemService(KeyguardManager::class.java).isKeyguardLocked)
+                stop(RecordingStopReason.SYSTEM_STOPPED)
+        }
+        if (basicGeometry != null) {
+            observeBasicGeometry()
+        } else {
+            if (sourceDisplay?.rotation != initialRotation) stop(RecordingStopReason.SIZE_CHANGED)
+            if (descriptor.regionCaptureRecipe != null) regionSourceReady()
+            if (Build.VERSION.SDK_INT < 34) {
+                val bounds = requireNotNull(windowContext).getSystemService(WindowManager::class.java).maximumWindowMetrics.bounds
+                if (bounds.width() != initialWidth || bounds.height() != initialHeight) stop(RecordingStopReason.SIZE_CHANGED)
+            }
         }
         if (freeBytes() < limits.minFreeBytes) stop(RecordingStopReason.STORAGE_LOW)
         val reserve = minOf(16L * 1024 * 1024, limits.maxFileBytes / 8)
@@ -667,6 +750,43 @@ class AndroidRecordingSession(
             payloadBytes + pendingBytes + measuredAudioTail.retainedBytes + measuredVideoTail.retainedBytes
         if (cumulativeBytes + activePayload >= limits.maxFileBytes - reserve ||
             cumulativeBytes + (writer?.channel?.size() ?: 0) >= limits.maxFileBytes - reserve) stop(RecordingStopReason.BYTE_LIMIT)
+    }
+
+    /** Existing display/window context is reused; no Activity or replacement grant is retained. */
+    private fun observeBasicGeometry() {
+        val geometry = requireNotNull(basicGeometry)
+        if (stopReason.get() != null || cancelled.get()) return
+        if (sourceDisplay?.isValid != true) { stop(RecordingStopReason.SYSTEM_STOPPED); return }
+        val visual = requireNotNull(windowContext)
+        val density = visual.resources.configuration.densityDpi
+        captureDensityDpi = density
+        val accepted = if (Build.VERSION.SDK_INT < 34) {
+            val bounds = visual.getSystemService(WindowManager::class.java).maximumWindowMetrics.bounds
+            geometry.observe(bounds.width(), bounds.height(), density)
+        } else {
+            // A density change must preserve the latest selected-app callback dimensions.
+            geometry.observeDensity(density)
+        }
+        if (!accepted) fail(RecordingError.PROFILE_UNSUPPORTED)
+    }
+
+    private fun applyBasicGeometry() {
+        val geometry = basicGeometry ?: return
+        geometry.applyLatest(ownerIsLive = {
+            !ended && !finalizing && !cancelled.get() && stopReason.get() == null &&
+                !Thread.currentThread().isInterrupted && lease.occupied && !lease.releaseUnconfirmed &&
+                privateCapture?.isStopRequested != true
+        }) { next ->
+            // The one display and codec input Surface are unchanged. API32+ documents centered,
+            // aspect-preserving system fitting. Actual pixels, especially API31, need device QA.
+            try {
+                requireNotNull(virtualDisplay).resize(next.width, next.height, next.densityDpi)
+            } catch (_: OutOfMemoryError) {
+                fail(RecordingError.BUFFER_LIMIT)
+            } catch (_: RuntimeException) {
+                fail(RecordingError.CAPTURE_UNAVAILABLE)
+            }
+        }
     }
 
     /** Reads exactly one bounded AAC-LC packet without blocking; the same recorder runs while paused. */
@@ -885,6 +1005,7 @@ class AndroidRecordingSession(
     }
 
     private fun finalizeCapture(segmentPause: Boolean = false) {
+        basicGeometry?.retire()
         finalizing = true
         finalizeDeadlineUs = nowUs() + limits.finalizationTimeoutUs
         if (!segmentPause) progress(RecordingState.STOPPING)
@@ -941,6 +1062,7 @@ class AndroidRecordingSession(
 
     /** Descriptor ownership is released only after native muxer release, even if stop failed. */
     private fun releaseResources(finalized: Boolean): Boolean {
+        basicGeometry?.retire()
         var confirmed = true
         fun release(action: () -> Unit) { try { action() } catch (_: Exception) { confirmed = false } }
         if (callbackRegistered) release { projection.unregisterCallback(projectionCallback); callbackRegistered = false }
@@ -1064,6 +1186,11 @@ class AndroidRecordingSession(
         catch (_: RuntimeException) { /* A UI observer cannot take native ownership or break cleanup. */ }
     }
     private fun checkCancellation() {
+        // KEEP stops acquisition/loop but leaves the existing valid output finalizer intact.
+        privateCapture?.let { binding ->
+            if (binding.discardRequested) cancel()
+            else if (binding.isStopRequested) stop(RecordingStopReason.USER_STOP)
+        }
         if (cancelled.get() || Thread.currentThread().isInterrupted || lease.releaseUnconfirmed) {
             cancelled.set(true)
             fail(RecordingError.CANCELLED)

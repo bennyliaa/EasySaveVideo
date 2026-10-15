@@ -1,0 +1,19 @@
+{
+  "utc": "2026-10-15T05:22:10.633865+00:00",
+  "results": [
+    {
+      "url": "https://raw.githubusercontent.com/Kotlin/kotlinx.coroutines/1.10.2/LICENSE.txt",
+      "status": 200,
+      "bytes": 11398,
+      "sha256": "b1febe6399dffb10d19d35e7663ab16300c93cb0476a94115df1cc0097a8ffd8"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Kotlin/kotlinx.coroutines/1.10.2/NOTICE.txt",
+      "status": 404
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Kotlin/kotlinx.coroutines/1.10.2/NOTICE",
+      "status": 404
+    }
+  ]
+}

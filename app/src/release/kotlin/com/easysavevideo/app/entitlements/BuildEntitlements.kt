@@ -8,4 +8,4 @@ object BuildEntitlements {
     val store: StorePurchaseBoundary = distribution.store
     val source: EntitlementSource = store
 }
-@Composable fun DevelopmentEntitlementPanel() = Unit
+@Composable fun DevelopmentEntitlementPanel(canAct: () -> Boolean = { true }) = Unit

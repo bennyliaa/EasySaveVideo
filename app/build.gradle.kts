@@ -14,8 +14,8 @@ android {
         applicationId = "com.easysavevideo.app"
         minSdk = 31
         targetSdk = 36
-        versionCode = 8
-        versionName = "0.8.0-ui-dev"
+        versionCode = 9
+        versionName = "0.9.0-ui-dev"
         testInstrumentationRunner = "com.easysavevideo.app.validation.OwnedVerificationInstrumentation"
         // Explicit build identity only. A channel does not select billing or authorize release.
         val distributionChannel = providers.gradleProperty("esv.distribution.channel").orElse("unconfigured").get()
@@ -39,8 +39,12 @@ android {
     lint { abortOnError = true; checkReleaseBuilds = true }
 }
 dependencies {
-    debugImplementation("com.squareup.okhttp3:okhttp:4.12.0") {
-        // Already reviewed runtime bytes; only Debug adapter compilation needs direct visibility.
+    // Exact reviewed Coil core-only graph; network fetching remains the original ESV adapter.
+    implementation("io.coil-kt.coil3:coil-core:3.3.0")
+    // Exact official WebKit 1.17.1 admission; runtime privacy still feature-gated.
+    implementation("androidx.webkit:webkit:1.17.1")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0") {
+        // Already reviewed runtime bytes; the main anonymous-image adapter also requires compile visibility.
         exclude(group = "org.jetbrains.kotlin")
     }
     implementation(project(":core-model"))
@@ -85,20 +89,88 @@ dependencies {
 val contractResourceInputs = fileTree("src/main/res") {
     for (locale in listOf("values", "values-zh-rCN")) {
         for (resource in listOf(
-            "editor_back.xml", "settings_discovery.xml", "settings_privacy.xml", "settings_entitlements.xml", "settings_destination.xml", "settings_browser.xml", "save_concurrency.xml", "save_normalization.xml",
-            "recording_notification.xml", "save_authentication_origin.xml", "save_runtime_notice.xml", "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "discovery_recovery.xml", "input_clear.xml",
-            "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "bookmark_panel.xml", "history_panel.xml", "browser_permission_notice.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
-            "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
+            "private_recording.xml", "editor_back.xml", "settings_discovery.xml", "settings_privacy.xml", "settings_entitlements.xml", "settings_destination.xml", "settings_browser.xml", "save_concurrency.xml", "save_normalization.xml",
+            "recording_notification.xml", "save_authentication_origin.xml", "save_runtime_notice.xml", "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "discovery_recovery.xml", "discovery_address.xml", "discovery_pending.xml", "input_clear.xml",
+            "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "bookmark_panel.xml", "history_panel.xml", "browser_permission_notice.xml", "browser_cookie_clear.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
+            "discovery_presentation.xml", "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
             "library_batch_export.xml", "export_recovery.xml", "save_recovery.xml", "library_multi.xml", "library_display.xml", "provider_copy.xml",
             "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "final_*.xml"
         )) include("$locale/$resource")
     }
 }
 val contractSourceInputs = files(
+    "src/main/kotlin/com/easysavevideo/app/discovery/CommonsSourceRegistration.kt",
+    "src/main/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailReader.kt",
+    "src/main/kotlin/com/easysavevideo/app/discovery/thumbnail/AndroidDiscoveryThumbnails.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/DiscoveryVerificationResources.kt",
+    "src/main/res/values/flow_states.xml",
+    "src/main/res/values-zh-rCN/flow_states.xml",
+    "src/main/kotlin/com/easysavevideo/app/ui/DiscoveryAddressInput.kt",
+    "src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryPresentationCopy.kt",
+    "src/main/kotlin/com/easysavevideo/app/discovery/DiscoverySourceUiFence.kt",
+    "src/main/kotlin/com/easysavevideo/app/storage/DiscoveryCheckpointCodec.kt",
+    "src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryPresentationPolicy.kt",
+    "src/main/kotlin/com/easysavevideo/app/discovery/RightsPresentationPolicy.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/DiscoveryPresentationResources.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/storage/OwnedDirectTechnicalDiagnostics.kt",
+    "src/androidTest/kotlin/com/easysavevideo/app/validation/OwnedVerificationInstrumentation.kt",
+    "src/androidTest/kotlin/com/easysavevideo/app/validation/OpusTechnicalValidation.kt",
+    "../save/src/main/kotlin/com/easysavevideo/save/ControlledDirectPipeline.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/DirectConvertedAndroidVerifier.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedCanonicalOutputOwner.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/storage/AdoptedVerificationBindings.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/storage/AndroidNormalizedCommitJournal.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/storage/DirectRawSelectionPolicy.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationDurableMutationPolicy.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/storage/NormalizedCommitProtocol.kt",
+    "src/main/kotlin/com/easysavevideo/app/editor/verification/AndroidEditOutputVerifier.kt",
+    "src/main/kotlin/com/easysavevideo/app/editor/verification/EditVerificationPolicy.kt",
+    "src/main/kotlin/com/easysavevideo/app/editor/verification/EditMp4Probe.kt",
+    "src/main/kotlin/com/easysavevideo/app/editor/verification/EditAacConfigPolicy.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/verification/AndroidAvcAacOutputInspection.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/verification/AvcAacMp4Probe.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/verification/AvcAacOutputExpectation.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/verification/AvcAacVerificationPolicy.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/verification/BorrowedAvcAacInspection.kt",
+    "src/main/kotlin/com/easysavevideo/app/editor/engine/Media3EditorEngine.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/transform/SharedTransformerRuntime.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/transform/TransformerSessionRunner.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/transform/TransformerSessionExecution.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/transform/TransformerRunSpec.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/transform/TransformerEngine.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/transform/TransformerDataSource.kt",
+    "src/main/kotlin/com/easysavevideo/app/media/transform/TransformerNativeFactories.kt",
+    "src/debug/kotlin/com/easysavevideo/app/entitlements/BuildEntitlements.kt",
+    "src/release/kotlin/com/easysavevideo/app/entitlements/BuildEntitlements.kt",
+
+    "src/main/java/com/easysavevideo/app/browser/privacy/PrivatePlatformTextInputMethodRequest.java",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateEditorInfo.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/CapturedPrivateActions.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateChildCompositionScheduler.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/OwnedPrivateRecordingPresentationPort.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateCaptureWindowState.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/PendingPrivateRecordingPresentationPort.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateMainPresentationOwner.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateEditorInfoApi34.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateEditorInfoApi35.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateEditorInfoApi36.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateInputDelegateLease.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateInputLifetime.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/RevocableInputConnection.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/RevocableInputConnectionApi33.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/RevocableInputConnectionApi34.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/RevocableInputConnectionState.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/PrivateAppDialog.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/PrivateDialogTeardown.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateBrowsingPresentation.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateBrowsingRuntime.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/AndroidPrivateProfileBackend.kt",
+
     "src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationAttemptOwner.kt",
     "src/main/kotlin/com/easysavevideo/app/save/AndroidLocalMp4Verifier.kt",
     "src/main/kotlin/com/easysavevideo/app/save/DirectNormalizedAndroidVerifier.kt",
     "src/main/kotlin/com/easysavevideo/app/save/DirectAndroidOutputInspection.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/DirectAndroidAudioInspection.kt",
     "src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceSchema.kt",
     "src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceProtocol.kt",
     "src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceCodec.kt",
@@ -108,7 +180,26 @@ val contractSourceInputs = files(
     "src/main/kotlin/com/easysavevideo/app/save/SaveSettingsOwner.kt",
     "src/main/kotlin/com/easysavevideo/app/save/SaveWorkerHandoff.kt",
     "src/main/kotlin/com/easysavevideo/app/save/SaveExecutionRetirement.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/PrivateNetworkRuntimeSources.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/AndroidRecordSavePort.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/AndroidRecordingSession.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/PrivateRecordingNativeBinding.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/PrivateRecordingBridge.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/PrivateRecordingContinuation.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/RecordingConsentController.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/PrivateRecordingPresentationUi.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/RecordingSessionControls.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/ContinuousRecordingOwner.kt",
+    "src/main/kotlin/com/easysavevideo/app/recording/BasicCaptureGeometry.kt",
+
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateContentRoot.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateRootProtectionState.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateWindowGuard.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/PrivateNetworkSourceOwner.kt",
     "src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/storage/AndroidControlledDirectStorage.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/storage/OwnedDirectTranscodeAttempt.kt",
+    "../save/src/main/kotlin/com/easysavevideo/save/SaveCoordinator.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/SettingsNavigation.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/BrowserSettingsDetail.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/BrowserSettingsActions.kt",
@@ -182,6 +273,8 @@ val contractSourceInputs = files(
     "src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPanel.kt",
     "src/main/kotlin/com/easysavevideo/app/browser/bookmarks/BookmarkPanelPresentation.kt",
     "src/main/kotlin/com/easysavevideo/app/browser/BrowserInspectionDocument.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/BrowserSameDocumentUpdate.kt",
+    "../core-domain/src/main/kotlin/com/easysavevideo/core/domain/BrowserSessionController.kt",
     "src/main/kotlin/com/easysavevideo/app/browser/BrowserVideoPresenceScript.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/BrowserNoticeResources.kt",
@@ -211,6 +304,8 @@ val contractSourceInputs = files(
     "src/main/kotlin/com/easysavevideo/app/entitlements/EntitlementExplanation.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/PrivacySettingsActions.kt",
     "src/main/kotlin/com/easysavevideo/app/browser/BrowserCacheClear.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/BrowserCookieClear.kt",
+    "src/main/kotlin/com/easysavevideo/app/browser/BrowserNotice.kt",
     "src/main/kotlin/com/easysavevideo/app/library/LibraryScreen.kt",
     "src/main/kotlin/com/easysavevideo/app/library/LibraryBatchExportDialog.kt",
     "src/main/kotlin/com/easysavevideo/app/licenses/ThirdPartyNotices.kt",

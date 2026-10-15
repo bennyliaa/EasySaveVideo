@@ -18,7 +18,7 @@ internal fun mediaTaskHasCommittedSave(taskId: String, record: SaveRecord?): Boo
     return receipt.commitId == record.commitId && artifact.commitId == record.commitId &&
         receipt.artifactId == artifact.artifactId && receipt.artifactId == verification.artifactId &&
         receipt.sizeBytes == verification.sizeBytes && receipt.sha256 == verification.sha256 &&
-        verification.isValidFor(artifact, output, record.request.networkResource?.expectedAudio ?: false)
+        verification.isValidFor(artifact, output, record.request.networkSourceMetadata?.expectedAudio ?: false)
 }
 
 /** This label never replaces the coordinator's media status or requests another media execution. */

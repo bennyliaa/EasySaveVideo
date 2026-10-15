@@ -1,0 +1,22 @@
+{
+  "captured_utc": "2026-10-15T00:30:50.611892+00:00",
+  "files": {
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidControlledDirectStorage.kt": "4012325f3a1fd440df5228fdd8e0f6b02e703d9085d5b9f38a1663a7a47496d7",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt": "5223b058bfba1a6016c025b81de731af75c793073c1ccb916f77ce5493b79f08",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationAttemptOwner.kt": "13bc9d7ad6f28bdffe92b22db1d41ad201c34ca1f3f11917c3ca57da48d73ce0",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationIoReservations.kt": "7965c799bdd28d1b763eca0fa52c8f96d601f19941dd5c51b65bf2438e64b4ab",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceProtocol.kt": "fb72952d797706366f224feb10a3665e5ea2f69068806804e973e8e601e62e43",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/OwnedDirectTranscodeAttempt.kt": "f31992c4c874d5c4539f3fd7b9915ca24a27871fcc39b4bbb06a9753985119f3",
+    "app/src/test/kotlin/com/easysavevideo/app/save/storage/ConversionProducerFinishProtocolTest.kt": "9cc655fe714b804f7d15253bcd25b2015e24885fdd080c6f700f1225c67335a9",
+    "app/src/test/kotlin/com/easysavevideo/app/save/storage/ConversionProducerWiringContractTest.kt": "9b65183614f16efaa7d642e658699f7104e0ace9076ecfaacce5608a8ec71763",
+    "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationIoReservationsTest.kt": "16eb3868f426f26e2b57b8fe8008104f5e02b08e77c60fc6f78824b27d18a82c",
+    "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceProtocolTest.kt": "09f13f953597ad3de674f00b8c86f37cd76e5f8cc40b2c4ffdbd0ab23e34d1d8",
+    "save/src/main/kotlin/com/easysavevideo/save/ControlledDirectPipeline.kt": "c339525b006aca00bfe8fdf9b2f4a5c015c9239f1c469d52923646faf6868367",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidNormalizedCommitJournal.kt": "7918bdc454438ccf26e78a4523ef8be3e316f38d67aef6635622d8441ea246c4",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizedCommitProtocol.kt": "3bbafc67b317b5604618368434b9995e06ed92a9e04e5f4c8c73e9752017af04",
+    "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizedCommitProtocolTest.kt": "d864a0e68d06000c775abfe7b0973e3a998a8253561bbaed97ad016d393fc8b6",
+    "app/build.gradle.kts": "65dde19e36f31828a6022c4a9e47d947134d3afff6f18b335cb3533f318ab20d"
+  },
+  "count": 15,
+  "source_verified": true
+}

@@ -92,6 +92,34 @@ class BrowserSessionController(private val maxTabs: Int = 32) {
             canGoBack = canGoBack, canGoForward = canGoForward, error = null)
     }
 
+    /** Adapter-verified ordinary same-document observation; the completed load is not restarted. */
+    fun acceptSameDocument(
+        request: BrowserRequest,
+        address: PageAddress,
+        canGoBack: Boolean,
+        canGoForward: Boolean,
+    ): Boolean {
+        if (!isCurrent(request)) return false
+        val current = tab(request.context.tabId) ?: return false
+        if (current.incognito || current.loadState != BrowserLoadState.READY) return false
+        update(current.copy(address = address, canGoBack = canGoBack, canGoForward = canGoForward))
+        return true
+    }
+
+    /** Adapter-verified private observation; history flags come from the private RAM owner. */
+    fun acceptPrivateSameDocument(
+        request: BrowserRequest,
+        address: PageAddress,
+        canGoBack: Boolean,
+        canGoForward: Boolean,
+    ): Boolean {
+        if (!isCurrent(request)) return false
+        val current = tab(request.context.tabId) ?: return false
+        if (!current.incognito || current.loadState != BrowserLoadState.READY) return false
+        update(current.copy(address = address, canGoBack = canGoBack, canGoForward = canGoForward))
+        return true
+    }
+
     fun acceptPageFailed(request: BrowserRequest, error: ErrorEnvelope, nowMillis: Long): Boolean =
         updateLoading(request, nowMillis) { it.copy(loadState = BrowserLoadState.FAILED, error = error) }
 

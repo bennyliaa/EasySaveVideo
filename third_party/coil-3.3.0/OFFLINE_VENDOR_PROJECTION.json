@@ -1,0 +1,608 @@
+[
+  {
+    "coordinate": "androidx.appcompat:appcompat-resources:1.7.1",
+    "name": "appcompat-resources-1.7.1.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.appcompat/appcompat-resources/1.7.1/cdd29d028a8ee64cbd9f9ca9cf0f83a5516e1dca/appcompat-resources-1.7.1.module",
+    "candidate_path": "candidate-maven/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.module",
+    "bytes": 6219,
+    "sha256": "163cc5e0f249433ddb0016fbd011ab8de07cf23e07e618c74644688e26cd18e8",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.module"
+  },
+  {
+    "coordinate": "androidx.appcompat:appcompat-resources:1.7.1",
+    "name": "appcompat-resources-1.7.1.aar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.appcompat/appcompat-resources/1.7.1/a0696fa573503263c7d5570ecd5e6032d397a287/appcompat-resources-1.7.1.aar",
+    "candidate_path": "candidate-maven/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.aar",
+    "bytes": 63997,
+    "sha256": "8e2db31224ca53b108c784da2b361959062716d416b210cfef3d5a3828306df0",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.aar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.aar"
+  },
+  {
+    "coordinate": "androidx.appcompat:appcompat-resources:1.7.1",
+    "name": "appcompat-resources-1.7.1.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.appcompat/appcompat-resources/1.7.1/31130db4e028b10fed8dd2c38eb0a3785348b730/appcompat-resources-1.7.1.pom",
+    "candidate_path": "candidate-maven/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.pom",
+    "bytes": 2993,
+    "sha256": "2faf922e8c3d706f29d862b3fbb3aa1347705c21c6eae18586d2bb1f7366ea01",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/androidx.appcompat__appcompat-resources__1.7.1.pom",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.pom"
+    },
+    "project_path": "vendor/coil-maven/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.pom"
+  },
+  {
+    "coordinate": "androidx.core:core-ktx:1.15.0",
+    "name": "core-ktx-1.15.0.aar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.core/core-ktx/1.15.0/b45c3596eb3875fcb756552706aed117caf90208/core-ktx-1.15.0.aar",
+    "candidate_path": "candidate-maven/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.aar",
+    "bytes": 175963,
+    "sha256": "c72c97ff4a32308bcaf3061eea5ddf33455ce413cee4aa1d5c82440c5759d4bc",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.aar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.aar"
+  },
+  {
+    "coordinate": "androidx.core:core-ktx:1.15.0",
+    "name": "core-ktx-1.15.0.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.core/core-ktx/1.15.0/871a72521837c9905aa1e55105cc9cb48312c37c/core-ktx-1.15.0.pom",
+    "candidate_path": "candidate-maven/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.pom",
+    "bytes": 2450,
+    "sha256": "417c6aa0279ec78db02fe395d401a09bcaaa9d82d935148a3e2de90fdf38d94c",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/androidx.core__core-ktx__1.15.0.pom",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.pom"
+    },
+    "project_path": "vendor/coil-maven/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.pom"
+  },
+  {
+    "coordinate": "androidx.core:core-ktx:1.15.0",
+    "name": "core-ktx-1.15.0.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.core/core-ktx/1.15.0/3c5dcc3c860377f47c4729a0e539205c2a65f33d/core-ktx-1.15.0.module",
+    "candidate_path": "candidate-maven/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.module",
+    "bytes": 4653,
+    "sha256": "bee9b44664ff37e2e222ebcde4b30e38294a3f927451edc611fec7f454ffa442",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.module"
+  },
+  {
+    "coordinate": "androidx.core:core:1.15.0",
+    "name": "core-1.15.0.aar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.core/core/1.15.0/e8d4c7eeed12403fdd2d5ef29a00ebe946d530d6/core-1.15.0.aar",
+    "candidate_path": "candidate-maven/androidx/core/core/1.15.0/core-1.15.0.aar",
+    "bytes": 1336135,
+    "sha256": "432b85a1974076e14b487ece4a28c59a84f1b9efc3fc8be72cd7f05d32055e51",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/core/core/1.15.0/core-1.15.0.aar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/androidx/core/core/1.15.0/core-1.15.0.aar"
+  },
+  {
+    "coordinate": "androidx.core:core:1.15.0",
+    "name": "core-1.15.0.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.core/core/1.15.0/ea9cba949137b8d7374e42ed104a3558aa931d1b/core-1.15.0.module",
+    "candidate_path": "candidate-maven/androidx/core/core/1.15.0/core-1.15.0.module",
+    "bytes": 6704,
+    "sha256": "e8a6c386e1765d870012fed2221173d4a2e8d2fd5aec732c51afb4a9f4684519",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/androidx/core/core/1.15.0/core-1.15.0.module"
+  },
+  {
+    "coordinate": "androidx.core:core:1.15.0",
+    "name": "core-1.15.0.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.core/core/1.15.0/858e7b6a16c6ff2a5271c0c41190d028d8d62389/core-1.15.0.pom",
+    "candidate_path": "candidate-maven/androidx/core/core/1.15.0/core-1.15.0.pom",
+    "bytes": 3853,
+    "sha256": "e168ae56064b8e5a40bce415ef95ffd5a813abb5456d2775f0fef426ed49e35a",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/androidx.core__core__1.15.0.pom",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/core/core/1.15.0/core-1.15.0.pom"
+    },
+    "project_path": "vendor/coil-maven/androidx/core/core/1.15.0/core-1.15.0.pom"
+  },
+  {
+    "coordinate": "androidx.exifinterface:exifinterface:1.4.1",
+    "name": "exifinterface-1.4.1.aar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.exifinterface/exifinterface/1.4.1/d8336b7d7dfd354f334dd21372db9e9e2da2fd81/exifinterface-1.4.1.aar",
+    "candidate_path": "candidate-maven/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.aar",
+    "bytes": 75523,
+    "sha256": "17e17a6b86bb54074d3a7ecfa695ab920eaff4cf667a8371ed82e377580cfcf6",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.aar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.aar"
+  },
+  {
+    "coordinate": "androidx.exifinterface:exifinterface:1.4.1",
+    "name": "exifinterface-1.4.1.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.exifinterface/exifinterface/1.4.1/ccabb6389548b7eecdbd335401390b9e6d864267/exifinterface-1.4.1.module",
+    "candidate_path": "candidate-maven/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.module",
+    "bytes": 4032,
+    "sha256": "daa541df49e2f7978078cfa3a0f9f16272417aa91f3e2e003b5bda11e585a83f",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.module"
+  },
+  {
+    "coordinate": "androidx.exifinterface:exifinterface:1.4.1",
+    "name": "exifinterface-1.4.1.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.exifinterface/exifinterface/1.4.1/9874b61bf0ab9e87d4ecac7404b1901777b65de5/exifinterface-1.4.1.pom",
+    "candidate_path": "candidate-maven/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.pom",
+    "bytes": 2004,
+    "sha256": "944e867584e20748613cc7610bd5fa10a968cc98cb59fdfdb863e9f0201df289",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/androidx.exifinterface__exifinterface__1.4.1.pom",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.pom"
+    },
+    "project_path": "vendor/coil-maven/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.pom"
+  },
+  {
+    "coordinate": "androidx.profileinstaller:profileinstaller:1.4.1",
+    "name": "profileinstaller-1.4.1.aar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.profileinstaller/profileinstaller/1.4.1/be24aadea661ee537836169df5026fb8f370af9f/profileinstaller-1.4.1.aar",
+    "candidate_path": "candidate-maven/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.aar",
+    "bytes": 54044,
+    "sha256": "b519f9317ded1e2c1c2993038c0692e30da326ca99097d9331ff2d3a5861a428",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.aar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.aar"
+  },
+  {
+    "coordinate": "androidx.profileinstaller:profileinstaller:1.4.1",
+    "name": "profileinstaller-1.4.1.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.profileinstaller/profileinstaller/1.4.1/49cf58f20deef001a6072cbeb87adc30a7991272/profileinstaller-1.4.1.module",
+    "candidate_path": "candidate-maven/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.module",
+    "bytes": 4555,
+    "sha256": "6f11cf65e4bf8444995cc73e5aa3f81b082d66e720c0592bc5fc80d3f73850f7",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.module"
+  },
+  {
+    "coordinate": "androidx.profileinstaller:profileinstaller:1.4.1",
+    "name": "profileinstaller-1.4.1.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.profileinstaller/profileinstaller/1.4.1/9958cf0e27167a18bcfe4f2c208c3fcaef78a10a/profileinstaller-1.4.1.pom",
+    "candidate_path": "candidate-maven/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.pom",
+    "bytes": 2477,
+    "sha256": "6dde43827b40535e4053d1c52d4b227a411556c289e65400c9a1cc61e2b41ce3",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/androidx.profileinstaller__profileinstaller__1.4.1.pom",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.pom"
+    },
+    "project_path": "vendor/coil-maven/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.pom"
+  },
+  {
+    "coordinate": "androidx.tracing:tracing:1.2.0",
+    "name": "tracing-1.2.0.aar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.tracing/tracing/1.2.0/a6ac2cc501278fdc99c56b428548e0cd1e9300f7/tracing-1.2.0.aar",
+    "candidate_path": "candidate-maven/androidx/tracing/tracing/1.2.0/tracing-1.2.0.aar",
+    "bytes": 6060,
+    "sha256": "6faa90390d1fdbf0adb9a99bf99de67b94c6c6f35aea9510593a9d17973736a2",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.2.0/tracing-1.2.0.aar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/androidx/tracing/tracing/1.2.0/tracing-1.2.0.aar"
+  },
+  {
+    "coordinate": "androidx.tracing:tracing:1.2.0",
+    "name": "tracing-1.2.0.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.tracing/tracing/1.2.0/141eea2b77be286c2f1821af2c5b4992aaef964a/tracing-1.2.0.pom",
+    "candidate_path": "candidate-maven/androidx/tracing/tracing/1.2.0/tracing-1.2.0.pom",
+    "bytes": 1968,
+    "sha256": "f34bec4eb58871d31002901377108aaa1ebfe77fa6d882b8b86200b158e26ea1",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/androidx.tracing__tracing__1.2.0.pom",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.2.0/tracing-1.2.0.pom"
+    },
+    "project_path": "vendor/coil-maven/androidx/tracing/tracing/1.2.0/tracing-1.2.0.pom"
+  },
+  {
+    "coordinate": "androidx.tracing:tracing:1.2.0",
+    "name": "tracing-1.2.0.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.tracing/tracing/1.2.0/61a605b3ae4e5a3b696d079f479a5ada5663e92/tracing-1.2.0.module",
+    "candidate_path": "candidate-maven/androidx/tracing/tracing/1.2.0/tracing-1.2.0.module",
+    "bytes": 3429,
+    "sha256": "d0d8d486b6bd33206dbf3f1a6d167e9b43c268ea63c3321c886b1543ad05ece3",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/androidx/tracing/tracing/1.2.0/tracing-1.2.0.module"
+  },
+  {
+    "coordinate": "androidx.vectordrawable:vectordrawable-animated:1.1.0",
+    "name": "vectordrawable-animated-1.1.0.aar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.vectordrawable/vectordrawable-animated/1.1.0/fcda1161354501471c30a4e077af6b5c4d4eddc6/vectordrawable-animated-1.1.0.aar",
+    "candidate_path": "candidate-maven/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.aar",
+    "bytes": 34496,
+    "sha256": "76da2c502371d9c38054df5e2b248d00da87809ed058f3363eae87ce5e2403f8",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.aar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.aar"
+  },
+  {
+    "coordinate": "androidx.vectordrawable:vectordrawable-animated:1.1.0",
+    "name": "vectordrawable-animated-1.1.0.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.vectordrawable/vectordrawable-animated/1.1.0/2c40e16427f4e94ea471526868ba5ac4bd13de6d/vectordrawable-animated-1.1.0.pom",
+    "candidate_path": "candidate-maven/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.pom",
+    "bytes": 1798,
+    "sha256": "276a20116b705fb75b9003ee9496c56f6fd3b32375fb232472811eba60a040bd",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/androidx.vectordrawable__vectordrawable-animated__1.1.0.pom",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.pom"
+    },
+    "project_path": "vendor/coil-maven/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.pom"
+  },
+  {
+    "coordinate": "androidx.vectordrawable:vectordrawable:1.1.0",
+    "name": "vectordrawable-1.1.0.aar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.vectordrawable/vectordrawable/1.1.0/eac7a364fff534035a2a6cb17770a1288315f69f/vectordrawable-1.1.0.aar",
+    "candidate_path": "candidate-maven/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.aar",
+    "bytes": 33236,
+    "sha256": "46fd633ac01b49b7fcabc263bf098c5a8b9e9a69774d234edcca04fb02df8e26",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.aar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.aar"
+  },
+  {
+    "coordinate": "androidx.vectordrawable:vectordrawable:1.1.0",
+    "name": "vectordrawable-1.1.0.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/androidx.vectordrawable/vectordrawable/1.1.0/8b15e03d94f7d9a07cbea653ad7f524315d1d507/vectordrawable-1.1.0.pom",
+    "candidate_path": "candidate-maven/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.pom",
+    "bytes": 1726,
+    "sha256": "5b0e2d5b2179e54804785cbc21ce5f473b5e1ddd55a57da482e94dcd39492bb2",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/androidx.vectordrawable__vectordrawable__1.1.0.pom",
+      "official_url": "https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.pom"
+    },
+    "project_path": "vendor/coil-maven/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.pom"
+  },
+  {
+    "coordinate": "com.squareup.okio:okio-jvm:3.15.0",
+    "name": "okio-jvm-3.15.0.jar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/com.squareup.okio/okio-jvm/3.15.0/cb3c285187640f543150fcac1ae012bdd778c0e1/okio-jvm-3.15.0.jar",
+    "candidate_path": "candidate-maven/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.jar",
+    "bytes": 376949,
+    "sha256": "483dc383b1049d220892322a0d6a4308425f09bb05b48c43d4eaa9ff82b1cd16",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://repo.maven.apache.org/maven2/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.jar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.jar"
+  },
+  {
+    "coordinate": "com.squareup.okio:okio-jvm:3.15.0",
+    "name": "okio-jvm-3.15.0.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/com.squareup.okio/okio-jvm/3.15.0/e0d8e140efffc20bdbd1507a6cab6cc7b2f46546/okio-jvm-3.15.0.module",
+    "candidate_path": "candidate-maven/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.module",
+    "bytes": 3347,
+    "sha256": "989454a94aefbc297032888f135acda14a9ffb46960e7d84603925d269241ee7",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.module"
+  },
+  {
+    "coordinate": "com.squareup.okio:okio-jvm:3.15.0",
+    "name": "okio-jvm-3.15.0.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/com.squareup.okio/okio-jvm/3.15.0/6e27f20dd997136bf5c2dcfb4b39e3e6c5844d6c/okio-jvm-3.15.0.pom",
+    "candidate_path": "candidate-maven/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.pom",
+    "bytes": 1699,
+    "sha256": "078e42f68ca4613ff2597fbc5541c5ce578cdcc48839da89da7ca760518bfb79",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/com.squareup.okio__okio-jvm__3.15.0.pom",
+      "official_url": "https://repo.maven.apache.org/maven2/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.pom"
+    },
+    "project_path": "vendor/coil-maven/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.pom"
+  },
+  {
+    "coordinate": "com.squareup.okio:okio:3.15.0",
+    "name": "okio-3.15.0.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/com.squareup.okio/okio/3.15.0/ec26c19588e97f9e5402e2060d8502f6ac72a473/okio-3.15.0.module",
+    "candidate_path": "candidate-maven/com/squareup/okio/okio/3.15.0/okio-3.15.0.module",
+    "bytes": 37606,
+    "sha256": "116826066ceb4d3336a74e7172a33751617ec344bc50a34f99b0d24959a4a39d",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/com/squareup/okio/okio/3.15.0/okio-3.15.0.module"
+  },
+  {
+    "coordinate": "com.squareup.okio:okio:3.15.0",
+    "name": "okio-3.15.0.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/com.squareup.okio/okio/3.15.0/5062550de0f3885b7996c699626b11875e06badb/okio-3.15.0.pom",
+    "candidate_path": "candidate-maven/com/squareup/okio/okio/3.15.0/okio-3.15.0.pom",
+    "bytes": 1687,
+    "sha256": "2d73785411404eeac32f0473a2e07ab1516b9850a9280cc61a08b479790cccf8",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/com/squareup/okio/okio/3.15.0/okio-3.15.0.pom"
+  },
+  {
+    "coordinate": "io.coil-kt.coil3:coil-core-android:3.3.0",
+    "name": "coil-core-android-3.3.0.aar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-core-android/3.3.0/2027c0dd7c11acc40477c815673bdbad8f6146e1/coil-core-release.aar",
+    "candidate_path": "candidate-maven/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.aar",
+    "bytes": 471284,
+    "sha256": "b57fcf001178db5ff84683e7d11818bcda6c115d9d530443d382b3a8b3f6806b",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.aar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.aar"
+  },
+  {
+    "coordinate": "io.coil-kt.coil3:coil-core-android:3.3.0",
+    "name": "coil-core-android-3.3.0.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-core-android/3.3.0/2f86ba44a40dda4466d7ee74757134b5b0e28708/coil-core-android-3.3.0.module",
+    "candidate_path": "candidate-maven/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.module",
+    "bytes": 9768,
+    "sha256": "6c0e4b79037245dfb370b68817a613718eb15ca2c66d373cd1ba2ad1db8d73cd",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/coil-core-android-3.3.0.module",
+      "official_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.module"
+    },
+    "project_path": "vendor/coil-maven/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.module"
+  },
+  {
+    "coordinate": "io.coil-kt.coil3:coil-core-android:3.3.0",
+    "name": "coil-core-android-3.3.0.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-core-android/3.3.0/5659e1a74e355ac7edf43d9cc76ce223f86ff3b2/coil-core-android-3.3.0.pom",
+    "candidate_path": "candidate-maven/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.pom",
+    "bytes": 6640,
+    "sha256": "cd627afd3e4d4a60f04c7a782168d57fee470c6ae7aa87408f1a644f4172516f",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/coil-core-android-3.3.0.pom",
+      "official_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.pom"
+    },
+    "project_path": "vendor/coil-maven/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.pom"
+  },
+  {
+    "coordinate": "io.coil-kt.coil3:coil-core:3.3.0",
+    "name": "coil-core-3.3.0.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-core/3.3.0/b94da52e3dd89e8046ee5ff9fe234a66ff23a807/coil-core-3.3.0.pom",
+    "candidate_path": "candidate-maven/io/coil-kt/coil3/coil-core/3.3.0/coil-core-3.3.0.pom",
+    "bytes": 2520,
+    "sha256": "d0be864de842d35ce4239b42fb3bec0fe58e44043c478d47318b9bd276884131",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/coil-core-3.3.0.pom",
+      "official_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core/3.3.0/coil-core-3.3.0.pom"
+    },
+    "project_path": "vendor/coil-maven/io/coil-kt/coil3/coil-core/3.3.0/coil-core-3.3.0.pom"
+  },
+  {
+    "coordinate": "io.coil-kt.coil3:coil-core:3.3.0",
+    "name": "coil-core-3.3.0.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-core/3.3.0/2d6f639f4b22b28f90701c2db6bcec895d57e00e/coil-core-3.3.0.module",
+    "candidate_path": "candidate-maven/io/coil-kt/coil3/coil-core/3.3.0/coil-core-3.3.0.module",
+    "bytes": 19148,
+    "sha256": "73628d48360685d402adac571f306d5ed4f28c4c203daf912240931edd60d2a4",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/coil-core-3.3.0.module",
+      "official_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core/3.3.0/coil-core-3.3.0.module"
+    },
+    "project_path": "vendor/coil-maven/io/coil-kt/coil3/coil-core/3.3.0/coil-core-3.3.0.module"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2",
+    "name": "kotlinx-coroutines-android-1.10.2.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-android/1.10.2/f301310c3e7e01e8ef5c86bcb98efe349da80288/kotlinx-coroutines-android-1.10.2.pom",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.pom",
+    "bytes": 2193,
+    "sha256": "b92d3672e7f9e8f4c4e2ab187c3e31fecc506496396f4a5f27ee1c957a42b319",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/org.jetbrains.kotlinx__kotlinx-coroutines-android__1.10.2.pom",
+      "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.pom"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.pom"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2",
+    "name": "kotlinx-coroutines-android-1.10.2.jar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-android/1.10.2/c8705d275d81f19e8afaf3ff9b5bf7a4b6b6c19b/kotlinx-coroutines-android-1.10.2.jar",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.jar",
+    "bytes": 17826,
+    "sha256": "e713f1f874244115a07571065cffa0f24f5e78300e9720fea16de3af1d75fd41",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.jar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.jar"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2",
+    "name": "kotlinx-coroutines-android-1.10.2.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-android/1.10.2/78e8190a31340434efbe437783de310da17fd02b/kotlinx-coroutines-android-1.10.2.module",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.module",
+    "bytes": 4383,
+    "sha256": "092fe38103eec62e94540ca0cd61039ef8f7d8e46694ec033be1f63f0ea2013d",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.module"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.10.2",
+    "name": "kotlinx-coroutines-bom-1.10.2.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-bom/1.10.2/bc3b109335d4fa0106a1e17b7863e388ef93c553/kotlinx-coroutines-bom-1.10.2.pom",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-bom/1.10.2/kotlinx-coroutines-bom-1.10.2.pom",
+    "bytes": 4279,
+    "sha256": "faf0c6538e53ddc0499a63664d8e763c216580b2e18e722ccbdf1b431a6afe26",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/org.jetbrains.kotlinx__kotlinx-coroutines-bom__1.10.2.pom",
+      "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-bom/1.10.2/kotlinx-coroutines-bom-1.10.2.pom"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-bom/1.10.2/kotlinx-coroutines-bom-1.10.2.pom"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2",
+    "name": "kotlinx-coroutines-core-jvm-1.10.2.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.10.2/4287c0f64d2ae79ae0645440c8e787be1e4c9305/kotlinx-coroutines-core-jvm-1.10.2.module",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.module",
+    "bytes": 4450,
+    "sha256": "e9e4a74b4dbfe0f5ebeed88d49f3546c3ec3089419b20e5250403135c2c64c53",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.module"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2",
+    "name": "kotlinx-coroutines-core-jvm-1.10.2.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.10.2/bbb9139f1d9ee60ca991bfb4979b13ddd9ef1c8e/kotlinx-coroutines-core-jvm-1.10.2.pom",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.pom",
+    "bytes": 2167,
+    "sha256": "658f576b96c832e7382406adb197d64d8e2e97de10e96dfa3700decfa2a60def",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/org.jetbrains.kotlinx__kotlinx-coroutines-core-jvm__1.10.2.pom",
+      "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.pom"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.pom"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2",
+    "name": "kotlinx-coroutines-core-jvm-1.10.2.jar",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.10.2/4a9f78ef49483748e2c129f3d124b8fa249dafbf/kotlinx-coroutines-core-jvm-1.10.2.jar",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.jar",
+    "bytes": 1479317,
+    "sha256": "5ca175b38df331fd64155b35cd8cae1251fa9ee369709b36d42e0a288ccce3fd",
+    "proof": {
+      "kind": "official_binary_independent_readback",
+      "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.jar",
+      "frozen_audit": "isolated-3.3.0/review/binary-audit.json"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.jar"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2",
+    "name": "kotlinx-coroutines-core-1.10.2.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.10.2/828afd085f442cafb6d5d9b6556c2227142a4d03/kotlinx-coroutines-core-1.10.2.pom",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.10.2/kotlinx-coroutines-core-1.10.2.pom",
+    "bytes": 2030,
+    "sha256": "519da5400096f3462a4dae80783ad050413d4bc81ec7ae53fae76aef0ccbed4c",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.10.2/kotlinx-coroutines-core-1.10.2.pom"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2",
+    "name": "kotlinx-coroutines-core-1.10.2.module",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/isolated-3.3.0/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.10.2/a0cc1becd04734f56c7d596c0f915bbf75a133ff/kotlinx-coroutines-core-1.10.2.module",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.10.2/kotlinx-coroutines-core-1.10.2.module",
+    "bytes": 47149,
+    "sha256": "8fe254177e711a7cd18a3c06d8242fce945f41c2cca13dc19b33ae42a5435016",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.10.2/kotlinx-coroutines-core-1.10.2.module"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.10.2",
+    "name": "kotlinx-coroutines-guava-1.10.2.pom",
+    "source": "/workspace/shared/esv-thumbnail-loader-evaluation-20261013/evidence/transitive-poms/org.jetbrains.kotlinx__kotlinx-coroutines-guava__1.10.2.pom",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.pom",
+    "bytes": 2368,
+    "sha256": "126d860e3963148b36c180a04220401867b15703e71df201d4c89b3081456e3c",
+    "proof": {
+      "kind": "prior_official_gradle_metadata_cache_sha1_and_current_sha256",
+      "source_resolver_settings": "isolated-3.3.0/project/settings.gradle.kts",
+      "frozen_evidence": "evidence/transitive-poms/org.jetbrains.kotlinx__kotlinx-coroutines-guava__1.10.2.pom",
+      "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.pom"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.pom"
+  },
+  {
+    "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.10.2",
+    "name": "kotlinx-coroutines-guava-1.10.2.jar",
+    "source": "/workspace/shared/esv-coil-current-admission-20261015/official-guava-1.10.2/kotlinx-coroutines-guava-1.10.2.jar",
+    "candidate_path": "candidate-maven/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.jar",
+    "bytes": 17969,
+    "sha256": "d54c4c9f9f2d3612afa5801daf70a7b68687f78d8936360341f1a89b535abfee",
+    "proof": {
+      "kind": "central_official_retrieval_with_supplied_verification_evidence",
+      "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.jar",
+      "verification_evidence": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.jar.sha256"
+    },
+    "project_path": "vendor/coil-maven/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.jar"
+  }
+]

@@ -103,4 +103,53 @@ class DirectNormalizedOwnershipCleanupTest {
         assertTrue(descriptorClosed); assertTrue(retained)
         assertEquals(SaveError.RESOURCE_RELEASE_UNCONFIRMED, failure.code)
     }
+
+    @Test fun audioOutputIndexReturnsEvenWhenFirstCheckpointOrFormatReadFails() {
+        for (code in listOf(SaveError.CANCELLED, SaveError.DEADLINE_EXCEEDED, SaveError.VERIFICATION_UNAVAILABLE)) {
+            val events = mutableListOf<String>()
+            val failure = assertThrows(SaveFailure::class.java) {
+                withDirectReturnedOutputBuffer({ events += "output-return" }) {
+                    events += "observation"
+                    throw SaveFailure(code)
+                }
+            }
+            assertEquals(code, failure.code)
+            assertEquals(listOf("observation", "output-return"), events)
+        }
+    }
+
+    @Test fun audioOutputReturnFailureStillAttemptsCodecStopReleaseUnselectAndOuterRelease() {
+        val events = mutableListOf<String>()
+        var primary: Throwable? = null
+        val failure = assertThrows(SaveFailure::class.java) {
+            try {
+                withDirectReturnedOutputBuffer({ events += "output-return"; throw IOException() }) {
+                    events += "output-observed"
+                }
+            } catch (failure: Throwable) { primary = failure; throw failure }
+            finally {
+                try {
+                    finishDirectCleanup(primary, {}, stop = { events += "stop" },
+                        releases = listOf({ events += "codec-release" }), after = { events += "unselect" })
+                } finally {
+                    finishDirectCleanup(primary, {}, releases = listOf({ events += "extractor-release" },
+                        { events += "retriever-release" }), after = { events += "lease-close" })
+                }
+            }
+        }
+        assertEquals(SaveError.VERIFICATION_UNAVAILABLE, failure.code)
+        assertEquals(listOf("output-observed", "output-return", "stop", "codec-release", "unselect",
+            "extractor-release", "retriever-release", "lease-close"), events)
+    }
+
+    @Test fun audioUnselectFailurePreventsSuccessWithoutSkippingConfirmedCodecRelease() {
+        val events = mutableListOf<String>(); var latched = false
+        val failure = assertThrows(SaveFailure::class.java) {
+            finishDirectCleanup(null, { latched = true }, stop = { events += "stop" },
+                releases = listOf({ events += "codec-release" }), after = { events += "unselect"; throw IOException() })
+        }
+        assertEquals(SaveError.VERIFICATION_UNAVAILABLE, failure.code)
+        assertEquals(listOf("stop", "codec-release", "unselect"), events); assertFalse(latched)
+    }
+
 }

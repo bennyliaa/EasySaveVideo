@@ -35,7 +35,7 @@ object BuildEntitlements {
     val store: StorePurchaseBoundary = distribution.store
     val source = FakeEntitlementSource()
 }
-@Composable fun DevelopmentEntitlementPanel() {
+@Composable fun DevelopmentEntitlementPanel(canAct: () -> Boolean = { true }) {
     val visuals = LocalEsvVisuals.current
     var selected by remember { mutableStateOf("来源未知") }
     val snapshot = remember(selected) { BuildEntitlements.source.snapshot() }
@@ -43,7 +43,7 @@ object BuildEntitlements {
         EsvText("开发权益测试", style = visuals.titleTextStyle)
         EsvText("仅 Debug 有此面板。模拟权益不启动保存、录制或支付。", style = visuals.captionTextStyle)
         listOf("免费", "部分权益", "全部权益", "已撤销", "已过期", "来源未知").forEach { preset ->
-            EsvButton(if (selected == preset) "✓ $preset" else preset, onClick = { BuildEntitlements.source.select(preset); selected = preset })
+            EsvButton(if (selected == preset) "✓ $preset" else preset, onClick = { if (canAct()) { BuildEntitlements.source.select(preset); selected = preset } })
         }
         val gate = FeatureGate()
         val actual = PlatformCapabilities(setOf(Feature.BROWSER, Feature.DIRECT_SAVE, Feature.STREAM_SAVE, Feature.RECORD_SAVE, Feature.SEGMENT_RECORDING))

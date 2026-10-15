@@ -73,12 +73,117 @@ class MovProfileProbeTest {
         assertThrows(IOException::class.java) { MovProfileProbe.scanCanonicalMp4(OriginalMovFixtures.input(mixed)) }
     }
 
-    @Test fun anyAudioAndEveryExtraOrUnknownTrackRejectEntireFile() {
-        val failure = assertThrows(MovProfileException::class.java) { scan(fixture(OriginalMovFixtures.Options(audio = true))) }
-        assertEquals(MovProfileFailure.AUDIO_NOT_ADMITTED, failure.failure)
+    @Test fun everyExtraOrUnknownTrackRejectsEntireFile() {
+        reject(fixture(OriginalMovFixtures.Options(audio = true, extraAudio = true)))
+        reject(fixture(OriginalMovFixtures.Options(audio = true, extraVideo = true)))
         reject(fixture(OriginalMovFixtures.Options(extraVideo = true)))
         reject(patch(fixture(), "hdlr", 8) { b, at -> writeTag(b, at, "tmcd") })
         reject(patch(fixture(), "tkhd", 0) { b, at -> put32(b, at, 0) })
+    }
+
+    @Test fun allSixExactAudioConfigsConserveIndependentClockAndImmutableRawBytes() {
+        for (rate in listOf(32_000, 44_100, 48_000)) for (channels in 1..2) for (count in listOf(2, 3, 7)) {
+            val options = OriginalMovFixtures.Options(audio = true, audioSampleRate = rate,
+                audioChannelCount = channels, audioCount = count)
+            val baseline = scan(fixture(options))
+            for (first in listOf(false, true)) for (wide in listOf(false, true)) {
+                val bytes = fixture(options.copy(moovFirst = first, audioFirst = first, co64 = wide,
+                    samplesPerChunk = 2, splitTiming = true))
+                val profile = scan(bytes)
+                assertEquals(baseline.conservation, profile.conservation)
+                val audio = requireNotNull(profile.audio)
+                assertEquals(rate, audio.configuration.sampleRate); assertEquals(channels, audio.configuration.channelCount)
+                assertArrayEquals(OriginalMovFixtures.audioAsc(options), audio.configuration.asc)
+                assertEquals(count.toLong(), profile.conservation.audio!!.sampleCount)
+                assertEquals(count * 1024L, audio.clock.endpointTicks)
+                assertEquals((0 until count).map { it * 1024L * 1_000_000 / rate }, audio.samples.map { it.presentationTimeUs })
+                assertTrue(audio.samples.all { it.sync })
+                assertEquals(maxOf(profile.clock.roundedDurationUs, audio.clock.roundedDurationUs), profile.durationUs)
+                assertNotEquals(profile.clock.endpoint, audio.clock.endpoint)
+                OriginalMovFixtures.audioSamples(options).forEachIndexed { index, raw ->
+                    assertArrayEquals(raw, MovProfileProbe.readAudioSample(OriginalMovFixtures.input(bytes), profile, index))
+                }
+                val asc = audio.configuration.asc; asc[0] = 0
+                assertArrayEquals(OriginalMovFixtures.audioAsc(options), audio.configuration.asc)
+                assertThrows(UnsupportedOperationException::class.java) { (audio.samples as MutableList<MovSampleReference>).clear() }
+            }
+        }
+    }
+
+    @Test fun audioProfileDefensivelyCopiesCallerListAndReadUsesFixedExtentAndCheckpoint() {
+        val bytes = fixture(OriginalMovFixtures.Options(audio = true))
+        val profile = scan(bytes); val audio = requireNotNull(profile.audio)
+        val original = audio.samples.toMutableList()
+        val copy = MovAudioProfile(audio.clock, audio.configuration, original)
+        original.clear(); assertEquals(audio.samples, copy.samples)
+        assertThrows(IOException::class.java) {
+            MovProfileProbe.readAudioSample(OriginalMovFixtures.input(bytes + byteArrayOf(0)), profile, 0)
+        }
+        assertThrows(IOException::class.java) { MovProfileProbe.readAudioSample(OriginalMovFixtures.input(bytes), profile, -1) }
+        assertThrows(IOException::class.java) { MovProfileProbe.readAudioSample(OriginalMovFixtures.input(bytes), profile, audio.samples.size) }
+        assertThrows(IOException::class.java) { MovProfileProbe.readAudioSample(OriginalMovFixtures.input(fixture()), scan(fixture()), 0) }
+        val stop = IllegalStateException("AUDIO_CANCEL")
+        assertSame(stop, assertThrows(IllegalStateException::class.java) {
+            MovProfileProbe.readAudioSample(OriginalMovFixtures.input(bytes), profile, 0) { throw stop }
+        })
+    }
+
+    @Test fun audioSourceFieldsMustAgreeBeforeExtractorCanOverrideThem() {
+        val bytes = fixture(OriginalMovFixtures.Options(audio = true))
+        reject(patch(bytes, "mp4a", 16) { b, at -> b[at + 1] = 1 })
+        reject(patch(bytes, "mp4a", 24) { b, at -> put32(b, at, 44_100 shl 16) })
+        reject(patch(bytes, "mp4a", 24) { b, at -> b[at + 3] = 1 })
+        listOf(0, 3, 6, 255).forEach { channels -> reject(patch(bytes, "mp4a", 16) { b, at -> b[at + 1] = channels.toByte() }) }
+        for (field in listOf(0, 6, 8, 10, 12, 18, 20, 22)) {
+            reject(patch(bytes, "mp4a", field) { b, at -> b[at] = 1 })
+        }
+        for ((field, value) in listOf(0 to 1, 4 to 4, 5 to 24, 8 to 0x80, 8 to 0x40, 8 to 0x20,
+            9 to 5, 10 to 16, 11 to 0x66, 12 to 0x14, 12 to 0x17, 24 to 6, 25 to 3,
+            26 to 0x2b, 27 to 0x94, 28 to 5, 29 to 2, 30 to 1)) {
+            reject(patch(bytes, "esds", field) { b, at -> b[at] = value.toByte() })
+        }
+        reject(rename(bytes, "esds", "wave"))
+        reject(rename(bytes, "mp4a", "alac"))
+        val protected = assertThrows(MovProfileException::class.java) { scan(rename(bytes, "mp4a", "enca")) }
+        assertEquals(MovProfileFailure.PROTECTED_MEDIA, protected.failure)
+    }
+
+    @Test fun audioTablesOwnTheirDurationExtentFlagsAndNoTrimSemantics() {
+        val bytes = fixture(OriginalMovFixtures.Options(audio = true))
+        for (delta in listOf(960, 1023, 1025, 2048)) {
+            reject(patchNth(bytes, "stts", 1, 12) { b, at -> put32(b, at, delta) })
+        }
+        reject(patchNth(bytes, "mdhd", 1, 12) { b, at -> put32(b, at, 44_100) })
+        reject(patchNth(bytes, "mdhd", 1, 16) { b, at -> put32(b, at, 3071) })
+        reject(patchNth(bytes, "tkhd", 1, 20) { b, at -> put32(b, at, 1000) })
+        reject(patchNth(bytes, "tkhd", 1, 12) { b, at -> put32(b, at, 1) })
+        reject(patchNth(bytes, "tkhd", 1, 76) { b, at -> put32(b, at, 16 shl 16) })
+        reject(patchNth(bytes, "url ", 1, 0) { b, at -> put32(b, at, 0) })
+        reject(patchNth(bytes, "stsc", 1, 16) { b, at -> put32(b, at, 2) })
+        reject(rename(bytes, "smhd", "edts"))
+        reject(rename(bytes, "esds", "sinf"))
+        val videoOffset = scan(bytes).samples.first().offset
+        reject(patchNth(bytes, "stco", 1, 8) { b, at -> put32(b, at, videoOffset.toInt()) })
+        reject(patchNth(bytes, "stco", 1, 8) { b, at -> put32(b, at, videoOffset.toInt() + 1) })
+        reject(patchNth(bytes, "stco", 1, 8) { b, at -> put32(b, at, bytes.size - 1) })
+        assertEquals(scan(bytes).conservation, scan(fixture(OriginalMovFixtures.Options(audio = true, audioSyncCount = 3))).conservation)
+        reject(fixture(OriginalMovFixtures.Options(audio = true, audioSyncCount = 2)))
+        // A declared extra sample with no bytes cannot become a zero-size padding packet.
+        reject(patchNth(bytes, "stts", 1, 8) { b, at -> put32(b, at, 2) })
+        reject(patchNth(bytes, "stsz", 1, 8) { b, at -> put32(b, at, 84_376) })
+    }
+
+    @Test fun longerAudioUsesMaximumMovieDurationButNeverChangesVideoClock() {
+        val short = scan(fixture(OriginalMovFixtures.Options(audio = true, audioCount = 2)))
+        val longBytes = fixture(OriginalMovFixtures.Options(audio = true, audioCount = 7, audioSampleRate = 44_100))
+        val long = scan(longBytes)
+        assertEquals(short.conservation.video, long.conservation.video)
+        assertEquals(short.conservation.precedingVideoSync, long.conservation.precedingVideoSync)
+        assertTrue(short.conservation.endpoint.maximumUs == short.clock.endpoint.maximumUs)
+        assertEquals(long.audio!!.clock.endpoint, long.conservation.endpoint)
+        reject(patch(longBytes, "mvhd", 16) { b, at -> put32(b, at, 1000) })
+        val mp4 = fixture(OriginalMovFixtures.Options(audio = true, audioCount = 7, audioSampleRate = 44_100, quickTime = false))
+        assertEquals(long.conservation, MovProfileProbe.scanCanonicalMp4(OriginalMovFixtures.input(mp4)).conservation)
     }
 
     @Test fun unknownColorRotationEditsCompositionAndFragmentationAreNeverGuessed() {
@@ -240,6 +345,12 @@ class MovProfileProbeTest {
     private fun rename(bytes: ByteArray, from: String, to: String): ByteArray = bytes.clone().also { writeTag(it, offset(it, from) - 4, to) }
     private fun patch(bytes: ByteArray, type: String, field: Int, operation: (ByteArray, Int) -> Unit): ByteArray =
         bytes.clone().also { operation(it, offset(it, type) + field) }
+    private fun patchNth(bytes: ByteArray, type: String, occurrence: Int, field: Int,
+        operation: (ByteArray, Int) -> Unit): ByteArray = bytes.clone().also { result ->
+        val needle = type.toByteArray(Charsets.US_ASCII)
+        val found = (4 until result.size - 3).filter { at -> (0..3).all { result[at + it] == needle[it] } }
+        operation(result, found[occurrence] + 4 + field)
+    }
     private fun offset(bytes: ByteArray, tag: String): Int {
         val needle = tag.map { it.code.toByte() }.toByteArray()
         for (at in 4 until bytes.size - 3) if ((0..3).all { bytes[at + it] == needle[it] }) return at + 4

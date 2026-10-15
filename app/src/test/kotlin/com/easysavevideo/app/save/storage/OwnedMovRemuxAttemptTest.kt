@@ -447,17 +447,22 @@ class OwnedMovRemuxAttemptTest {
     }
 
     @Test fun blockedCloseKeepsSessionAndRegistryLiveWithoutHoldingOwnerMonitor() {
-        val f = NormalizationDescriptorFixture(); val a = f.prepare(); val source = a.openSource()
+        val f = NormalizationDescriptorFixture()
         val entered = CountDownLatch(1); val resume = CountDownLatch(1); val pool = Executors.newFixedThreadPool(2)
-        f.io.before = { if (it.operation == "close" && it.path == f.primary) { entered.countDown(); check(resume.await(5, TimeUnit.SECONDS)) } }
-        val closing = pool.submit { a.close() }
+        val attempt = java.util.concurrent.atomic.AtomicReference<OwnedMovRemuxAttempt>()
+        val input = java.util.concurrent.atomic.AtomicReference<com.easysavevideo.app.save.normalization.MovRemuxInput>()
+        val closing = pool.submit {
+            val a = f.prepare(); attempt.set(a); val source = a.openSource(); input.set(source)
+            f.io.before = { if (it.operation == "close" && it.path == f.primary) { entered.countDown(); check(resume.await(5, TimeUnit.SECONDS)) } }
+            a.close()
+        }
         try {
             assertTrue(entered.await(2, TimeUnit.SECONDS))
             val status = pool.submit<Boolean> { f.attempts.hasAnyLeases() && f.attempts.hasActiveSession(f.owner.artifactId) }
-            assertTrue(status.get(1, TimeUnit.SECONDS)); assertFalse(source.releaseConfirmed)
-            f.cancellation.cancel(); assertFalse(source.releaseConfirmed)
+            assertTrue(status.get(1, TimeUnit.SECONDS)); assertFalse(input.get().releaseConfirmed)
+            f.cancellation.cancel(); assertTrue(f.attempts.resourcesUnreleased()); assertFalse(input.get().releaseConfirmed)
         } finally { resume.countDown(); closing.get(3, TimeUnit.SECONDS); pool.shutdownNow() }
-        assertTrue(source.releaseConfirmed); assertFalse(f.attempts.hasAnyLeases())
+        assertTrue(input.get().releaseConfirmed); assertFalse(f.attempts.hasAnyLeases())
     }
 
     @Test fun finishBindsExactTransferAndSourceThenAdoptsOnlyAfterSaveAcknowledgesProof() {

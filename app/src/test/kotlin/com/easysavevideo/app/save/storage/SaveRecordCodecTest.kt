@@ -19,7 +19,7 @@ class SaveRecordCodecTest {
     @Test fun wifiPolicyWaitRoundTripsWithoutChangingJournalFormat() {
         val value = record().copy(waitReason = SaveWaitReason.NETWORK, error = SaveError.WIFI_REQUIRED)
         val encoded = SaveRecordCodec.encode(value)
-        assertEquals(7, encoded[7].toInt())
+        assertEquals(9, encoded[7].toInt())
         assertEquals(value, SaveRecordCodec.decode(encoded))
     }
     @Test fun functionalRecoveryStateRoundTripsWithoutRequestCredentials() {
@@ -44,7 +44,7 @@ class SaveRecordCodecTest {
     @Test fun truncationUnknownSchemaAndTrailingBytesFailClosed() {
         val bytes = SaveRecordCodec.encode(record())
         assertThrows(Exception::class.java) { SaveRecordCodec.decode(bytes.copyOf(bytes.size - 1)) }
-        assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.decode(bytes.copyOf().also { it[7] = 8 }) }
+        assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.decode(bytes.copyOf().also { it[7] = 10 }) }
         assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.decode(bytes + byteArrayOf(0)) }
         assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.decode(ByteArray(SaveRecordCodec.MAX_BYTES + 1)) }
     }
@@ -121,9 +121,40 @@ class SaveRecordCodecTest {
             transfer = old.transfer!!.copy(expectedTotalBytes = 100, streamExpectation = StreamArtifactExpectation(2000, 1, 1, 16, 16, c)),
             checkpoint = null, verification = proof, receipt = MediaCommitReceipt("commit", "artifact", "media", 100, "a".repeat(64)))
     }
+    @Test fun privateConservedHlsSuccessPublishesWithRandomMetadataAndPreservesAudioRequirements() {
+        val old = provenStream()
+        val binding = PrivateNetworkSourceSeed.create().bindTask("task")
+        val source = SelectedMediaResource("private-candidate", "private-variant", SourceUrl("https://private-hls.invalid/secret"),
+            expectedAudio = true, sourceIdentity = binding.sourceIdentity.encoded, privateSource = binding)
+        val value = old.copy(request = SaveRequest("task", "idempotency", source, TaskMethod.STREAM).asDurableReference())
+        val bytes = SaveRecordCodec.encode(value)
+        val actual = com.easysavevideo.app.library.storage.LibraryPublicationEvidence.decode(bytes, legacy = false)
+        assertEquals(value, actual)
+        assertTrue(com.easysavevideo.app.save.mediaTaskHasCommittedSave("task", actual))
+        assertNull(actual.request.networkResource)
+        assertTrue(actual.request.networkSourceMetadata!!.expectedAudio)
+        assertFalse(bytes.toString(Charsets.ISO_8859_1).contains("private-hls.invalid"))
+        assertFalse(bytes.toString(Charsets.ISO_8859_1).contains(source.url.identity()))
+        val privateInput = value.request.input as SaveInput.PrivateNetwork
+        val originalTransfer = value.transfer!!
+        val originalExpectation = originalTransfer.streamExpectation!!
+        val silentContract = originalExpectation.conservation!!.copy(
+            audio = null, audioStartOffsetUs = null, audioChannelCount = null)
+        val silent = value.copy(
+            request = value.request.copy(input = SaveInput.PrivateNetwork(privateInput.source.copy(expectedAudio = false))),
+            transfer = originalTransfer.copy(streamExpectation = originalExpectation.copy(
+                audioTrackCount = 0, conservation = silentContract)),
+            verification = value.verification!!.copy(audioTrackCount = 0, audioTrackReadable = false,
+                streamConservation = silentContract))
+        assertEquals(silent, com.easysavevideo.app.library.storage.LibraryPublicationEvidence.decode(SaveRecordCodec.encode(silent), false))
+        // Change only the private metadata expectation, retaining otherwise valid silent evidence.
+        assertThrows(IllegalArgumentException::class.java) {
+            silent.copy(request = silent.request.copy(input = SaveInput.PrivateNetwork(privateInput.source.copy(expectedAudio = true))))
+        }
+    }
     @Test fun v5PersistsEveryConservationAndActualEosFieldInBoundedSpace() {
         val value = provenStream(); val encoded = SaveRecordCodec.encode(value)
-        assertEquals(7, encoded[7].toInt()); assertTrue(encoded.size < 4096)
+        assertEquals(9, encoded[7].toInt()); assertTrue(encoded.size < 4096)
         assertEquals(value, SaveRecordCodec.decode(encoded))
         assertEquals(value.verification, SaveRecordCodec.evidence(SaveRecordCodec.evidenceBytes(value.verification!!)))
         assertEquals(-10_000L, SaveRecordCodec.decode(encoded).transfer!!.streamExpectation!!.conservation!!.audioStartOffsetUs)
@@ -161,7 +192,7 @@ class SaveRecordCodecTest {
         val bytes = SaveRecordCodec.encode(provenStream())
         for (size in bytes.indices) assertThrows(Exception::class.java) { SaveRecordCodec.decode(bytes.copyOf(size)) }
         val evidence = SaveRecordCodec.evidenceBytes(provenStream().verification!!)
-        assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.evidence(evidence.copyOf().also { it[7] = 5 }) }
+        assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.evidence(evidence.copyOf().also { it[7] = 6 }) }
         assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.evidence(evidence + byteArrayOf(0)) }
         assertThrows(IllegalArgumentException::class.java) { SaveRecordCodec.evidence(ByteArray(4097)) }
     }
@@ -199,7 +230,7 @@ class SaveRecordCodecTest {
     @Test fun v5CaptureWithAudioAndWithoutAudioRoundTripsWithoutNetworkSourceOrGrant() {
         for (audio in listOf(false, true)) {
             val value = capturedRecord(audio); val encoded = SaveRecordCodec.encode(value)
-            assertEquals(7, encoded[7].toInt()); assertEquals(value, SaveRecordCodec.decode(encoded))
+            assertEquals(9, encoded[7].toInt()); assertEquals(value, SaveRecordCodec.decode(encoded))
             assertNull(SaveRecordCodec.decode(encoded).request.networkResource)
             val text = encoded.toString(Charsets.ISO_8859_1)
             assertFalse(text.contains("https")); assertFalse(text.contains("NETWORK"))
@@ -260,10 +291,10 @@ class SaveRecordCodecTest {
 
     @Test fun v5AndEvidenceV3PersistAllThirtyTwoIndependentBoundaries() {
         val value = resumedRecord(); val bytes = SaveRecordCodec.encode(value)
-        assertEquals(7, bytes[7].toInt()); assertTrue(bytes.size < SaveRecordCodec.MAX_BYTES)
+        assertEquals(9, bytes[7].toInt()); assertTrue(bytes.size < SaveRecordCodec.MAX_BYTES)
         assertEquals(value, SaveRecordCodec.decode(bytes))
         val owned = SaveRecordCodec.evidenceBytes(value.verification!!)
-        assertEquals(4, owned[7].toInt()); assertTrue(owned.size < 4096)
+        assertEquals(5, owned[7].toInt()); assertTrue(owned.size < 4096)
         assertEquals(value.verification, SaveRecordCodec.evidence(owned))
         assertEquals(32, SaveRecordCodec.decode(bytes).transfer!!.recordingExpectation!!.resumeBoundaries!!.size)
     }
@@ -313,7 +344,7 @@ class SaveRecordCodecTest {
         val value = old.copy(request = old.request.copy(input = SaveInput.Capture(descriptor)),
             transfer = old.transfer!!.copy(recordingExpectation = old.transfer!!.recordingExpectation!!.copy(descriptor = descriptor)))
         val bytes = SaveRecordCodec.encode(value)
-        assertEquals(7, bytes[7].toInt()); assertEquals(value, SaveRecordCodec.decode(bytes))
+        assertEquals(9, bytes[7].toInt()); assertEquals(value, SaveRecordCodec.decode(bytes))
         assertEquals(region, SaveRecordCodec.decode(bytes).request.captureDescriptor!!.regionCaptureRecipe)
         for (length in bytes.indices) assertThrows(Exception::class.java) { SaveRecordCodec.decode(bytes.copyOf(length)) }
     }
@@ -383,6 +414,7 @@ class SaveRecordCodecTest {
                     o.writeUTF(s.candidateId); o.writeUTF(s.variantId); o.writeUTF(s.url.value); o.writeBoolean(s.expectedAudio)
                     o.oldNullable(s.expiresAtEpochMillis) { o.writeLong(it) }; o.writeUTF(s.sourceIdentity); o.writeBoolean(s.durableReference)
                 }
+                is SaveInput.PrivateNetwork -> error("Private input has no legacy wire encoding")
                 is SaveInput.Capture -> { require(version == 4); o.writeUTF("CAPTURE"); writeFrozenV4Descriptor(o, input.descriptor) }
             }
             o.writeUTF(t.taskId); o.writeLong(t.revision); o.writeUTF(t.state.name); o.writeUTF(t.method.name)

@@ -14,11 +14,12 @@ import java.security.MessageDigest
 import org.json.JSONObject
 import org.json.JSONArray
 
-/** No external test dependencies. Only packaged authored bytes, no media/prefs/DB access. */
+/** No external test dependencies. Default b/ab use authored pages; opus-technical is isolated media diagnostics. */
 class OwnedVerificationInstrumentation:Instrumentation() {
     private var phase="b"
-    override fun onCreate(args:Bundle?) {super.onCreate(args);phase=args?.getString("phase")?:"b";require(phase in setOf("b","ab"));start()}
+    override fun onCreate(args:Bundle?) {super.onCreate(args);phase=args?.getString("phase")?:"b";require(phase in setOf("b","ab","opus-technical"));start()}
     override fun onStart() {
+        if (phase == "opus-technical") { OpusTechnicalValidation.run(this); return }
         val report=JSONObject();val rows=JSONArray();val failures=JSONArray()
         val cpuStart=android.os.Process.getElapsedCpuTime();val start=System.nanoTime()
         val rxStart=android.net.TrafficStats.getUidRxBytes(android.os.Process.myUid())

@@ -27,6 +27,8 @@ interface DirectNormalizedOutputOwner {
     fun requiresProcessRecovery(): Boolean
     fun acquire(artifact: StagingArtifact, output: ArtifactOutputDescriptor.NormalizedDirect,
         context: OperationContext): DirectNormalizedOutputLease
+    fun acquire(artifact: StagingArtifact, output: ArtifactOutputDescriptor.ConvertedDirect,
+        context: OperationContext): DirectNormalizedOutputLease = throw SaveFailure(SaveError.RECOVERY_REQUIRED)
 }
 
 /**
@@ -37,14 +39,19 @@ interface DirectNormalizedOutputOwner {
  */
 interface DirectNormalizedOutputLease {
     val artifact: StagingArtifact
-    val output: ArtifactOutputDescriptor.NormalizedDirect
+    val output: ArtifactOutputDescriptor
     val readOnlyInput: RandomAccessFile
     fun revalidate()
     /** One-way, idempotent, nonthrowing memory-only latch; no reverse locks. Cannot be cleared by close. */
     fun retainOnNativeReleaseUncertainty()
+    /** Converted inspection is bound once before native entry; arguments are exact opaque objects. */
+    fun bindNativeInspection(resource: Any) { throw SaveFailure(SaveError.RECOVERY_REQUIRED) }
+    fun confirmNativeRelease(resource: Any) { throw SaveFailure(SaveError.RECOVERY_REQUIRED) }
+    /** Retains the actual borrower/read; a later close must not close its still-borrowed descriptor. */
+    fun retainOnNativeReleaseUncertainty(resource: Any) { retainOnNativeReleaseUncertainty() }
     /** True only after all lease release obligations are confirmed and its ownership fence can retire. */
     val releaseConfirmed: Boolean
-    /** Always attempts the owned descriptor close; a latched native uncertainty retains the fence. */
+    /** MOV retains its existing close policy; an uncertain converted borrower prevents descriptor close. */
     fun close()
 }
 
@@ -54,10 +61,11 @@ internal object DirectNormalizedPreflight {
         val proof = output.normalizationProof
         if (proof.artifactId != artifact.artifactId || proof.commitId != artifact.commitId ||
             !proof.matchesTransfer(output.sourceTransfer)) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
-        if (proof.schemaVersion != 1 || proof.engineRevision != 1 || proof.policyRevision != 1 ||
-            !proof.noEncoding || proof.profile != DirectNormalizationProfile.QT_MOV_AVC_BASELINE_AAC_LC_V1 ||
-            proof.conservation.audio != null || proof.conservation.audioSampleRate != null ||
-            proof.conservation.audioChannelCount != null) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
+        if (!proof.isCurrentPolicy()) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        if (proof.schemaVersion != 1 || proof.engineRevision != 1 || !proof.noEncoding ||
+            proof.profile != DirectNormalizationProfile.QT_MOV_AVC_BASELINE_AAC_LC_V1)
+            throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
+        requireDirectFiniteAudioContract(proof.conservation)
         if (output.sizeBytes !in 1..DirectNormalizationLimits.MAX_BYTES ||
             context.resourceBudget.maxBytes?.let { output.sizeBytes > it } == true)
             throw SaveFailure(SaveError.BYTE_LIMIT_EXCEEDED)
@@ -86,6 +94,30 @@ internal object DirectNormalizedPreflight {
         try { lease.revalidate() }
         catch (failure: SaveFailure) { throw failure }
         catch (_: Exception) { throw SaveFailure(SaveError.RECOVERY_REQUIRED) }
+    }
+}
+
+/** Current silent policy1 or audio policy2; MOV/Editor admission is deliberately unchanged. */
+internal object DirectConvertedPreflight {
+    fun check(artifact: StagingArtifact, output: ArtifactOutputDescriptor.ConvertedDirect,
+        context: OperationContext) {
+        val proof = output.conversionProof
+        if (proof.artifactId != artifact.artifactId || proof.commitId != artifact.commitId ||
+            !proof.matchesTransfer(output.sourceTransfer) || !proof.isCurrentPolicy())
+            throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        if (proof.profile != DirectConversionProfile.WEBM_VP8_OPUS_TO_AVC_AAC_V1 ||
+            proof.completion.hasAudio != (proof.expectation.audio != null) ||
+            !proof.settings.matches(proof.expectation)) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
+        val budget = minOf(context.resourceBudget.maxBytes ?: DirectConversionLimits.MAX_BYTES, DirectConversionLimits.MAX_BYTES)
+        if (output.sizeBytes !in 1..DirectConversionLimits.MAX_BYTES ||
+            proof.rawSizeBytes > budget || output.sizeBytes > budget - proof.rawSizeBytes)
+            throw SaveFailure(SaveError.BYTE_LIMIT_EXCEEDED)
+    }
+
+    fun checkLease(lease: DirectNormalizedOutputLease, artifact: StagingArtifact,
+        output: ArtifactOutputDescriptor.ConvertedDirect) {
+        if (lease.artifact !== artifact || lease.output !== output) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        lease.revalidate()
     }
 }
 
@@ -164,7 +196,7 @@ internal fun inspectDirectFormat(actual: DirectNativeTrackFormat, profile: MovPr
     checkpoint: () -> Unit): DirectMovAvcConfiguration {
     checkpoint()
     if (actual.hasProtection) throw SaveFailure(SaveError.PROTECTED_MEDIA)
-    if (actual.trackCount != 1 || actual.mime != "video/avc" ||
+    if (actual.trackCount != (if (profile.audio == null) 1 else 2) || actual.mime != "video/avc" ||
         actual.width != profile.width || actual.height != profile.height)
         throw SaveFailure(SaveError.INVALID_MEDIA)
     val endpoint = profile.clock.endpoint
@@ -214,7 +246,8 @@ internal fun directAndroidSync(flags: Int): Int {
     return flags and 1
 }
 
-internal data class DirectInspectedSamples(val conservation: DirectRemuxConservation, val tail: DirectVideoTailPlan)
+/** Complete observed video only. The tail retains expected context, never observed audio. */
+internal data class DirectInspectedSamples(val video: DirectMovAccumulation, val tail: DirectVideoTailPlan)
 
 internal fun inspectDirectSamples(source: DirectNativeSampleSource, track: Int, input: MovProbeInput,
     profile: MovProfile, configuration: DirectMovAvcConfiguration, checkpoint: () -> Unit): DirectInspectedSamples {
@@ -245,10 +278,9 @@ internal fun inspectDirectSamples(source: DirectNativeSampleSource, track: Int, 
     }
     requireDirectEof(source, buffer, checkpoint)
     val result = directRawScan { accumulator.finish() }
-    val actual = DirectRemuxConservation(profile.width, profile.height, profile.frameRate,
-        result.track, null, null, null, result.precedingVideoSync ?: throw SaveFailure(SaveError.INVALID_MEDIA))
-    if (actual != expected) throw SaveFailure(SaveError.INVALID_MEDIA)
-    return DirectInspectedSamples(actual, builder.finish())
+    if (result.track != expected.video || result.precedingVideoSync != expected.precedingVideoSync)
+        throw SaveFailure(SaveError.INVALID_MEDIA)
+    return DirectInspectedSamples(result, builder.finish())
 }
 
 internal data class DirectReadSample(val identity: DirectSampleIdentity, val nativeBytes: Int, val canonical: ByteArray)

@@ -1,0 +1,106 @@
+[
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidControlledDirectStorage.kt",
+    "sha256": "1a79c69313ab006e06dddad5b7bab1b31f9e824fdaf553b2ecddd2ebd8cb6ad1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidNormalizationFiles.kt",
+    "sha256": "6b22682bddc01128e976b6e8a25271e067fcac32df99084cd9edb15664d350c9"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidNormalizedCommitFiles.kt",
+    "sha256": "99491d1fa7a759bb53910660a07e6fa3daa76cfa9ed96571443326cb8d47e334"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidNormalizedCommitJournal.kt",
+    "sha256": "013400590b1b1495f2b8894fc2855be272dd61d4ed7d6d4201c69a1d697d02ed"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+    "sha256": "b3ca05a3ef67187a84c9d537ec829535bdf226ac749a7d93810962977fa532ba"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/DirectRawSelectionPolicy.kt",
+    "sha256": "5cf98142bb49349c9bd2342e89fe14e9ef1676eb2940da0dbb7ab91419af6d79"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationAttemptOwner.kt",
+    "sha256": "87ee0e62a7ddcafac343de86949460ced2fa148409db74b65d6811448e8ccc09"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationDescriptorIo.kt",
+    "sha256": "c197f389b978316d51d7e396e305d6e239a6e4727b8523fcf413414cd074840e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationDurableMutationPolicy.kt",
+    "sha256": "1cb091a2659a8c6e89e996c3b1652332073e834bf6e32e9eb73c836c45ca5373"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationIoReservations.kt",
+    "sha256": "eeda132748d878a43cc7f0358f615ecdea1c701058722fe9bcf6513a6e3a2c22"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceCodec.kt",
+    "sha256": "6fac6199bf469472392eb914ed21ac8bddea2def32a4e887a16caea94ae3f4ca"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceProtocol.kt",
+    "sha256": "06dfd4e564af67f177900a56f6c58be04912a72ab121843634c9e724903c69fd"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/NormalizedCommitProtocol.kt",
+    "sha256": "20e5dbd94a1104b4b88dc92c152e9e1e647049dc5859532f8963b75357b1e7f5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/OwnedMovRemuxAttempt.kt",
+    "sha256": "490e23c908b3c0d9f1ce13b137138ecd68f80a7d9294a0d1d158b1d68407e319"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/AndroidControlledDirectStorageIntegrationTest.kt",
+    "sha256": "9d951c3b94faf791d9738a58b63fd24438636e781cab0a4002bcd8d392c84ae1"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/DirectRawSelectionPolicyTest.kt",
+    "sha256": "fb74d378102514781156871f0c783edb2c71d2baff800fe56259be612d41342f"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationCleanupCodecV2Test.kt",
+    "sha256": "ee872832cf2681393025e8cba04db8132bb6cf69457bd499fbee77f7e0d1442f"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationDescriptorTestFixtures.kt",
+    "sha256": "d7407d20df4a79e0a9b142060f000927b55afa808f43bd2ea0623d556c2f5b87"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationDurableMutationPolicyTest.kt",
+    "sha256": "c258fa07471d18b063b9a19d399112af1790ba1179aa15c1fce140404939f074"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationIoReservationsTest.kt",
+    "sha256": "743571eb40cd7db64026c6c764f59a332854260a7018377510acc640f3de2a81"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationOffLockIoTest.kt",
+    "sha256": "41dc686aeefb4f73b8070280684cebc88e2ec802207253b687c2b9b0f5ae83bf"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationWorkspaceProtocolTest.kt",
+    "sha256": "8a262dd32df30fed57ecc850a2fe7c4ddfa482a8e662fcd2433cf5816eada77a"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizedCommitProtocolTest.kt",
+    "sha256": "04a328fc9e70b9a669164f82304816ad70607424aa4b1afb418cc6c4134ddda0"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/storage/OwnedMovRemuxAttemptTest.kt",
+    "sha256": "d1bcb5f7be2deb986da711675371eefd524acdeba2e1761a24f567bebe10fba3"
+  },
+  {
+    "path": "app/src/testSupport/mov-owned-files-host/run.sh",
+    "sha256": "a881732a52dbb2c3970f0961c91dba6affe84b6f09a2168227d2ba1195aacc73"
+  },
+  {
+    "path": "scripts/verify-normalized-commit-sqlite.py",
+    "sha256": "1ed78165bd1adeee6b134e49d91b0c6b8eb35fd60c2e981ece09f079455ec0ca"
+  }
+]

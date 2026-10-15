@@ -60,14 +60,22 @@ for group, name, version in (
 verify(stdlib, 'org.jetbrains.kotlin:kotlin-stdlib:2.2.10')
 (out/'admitted-classpath.txt').write_text(':'.join(map(str, paths)))
 PY
-CP="$ANDROID_JAR:$STDLIB:$ANNOTATIONS:$(cat "$OUT/admitted-classpath.txt")"
+EXPERIMENTAL=$(find "$CACHE/androidx.annotation/annotation-experimental/1.4.1" -name '*.aar' | sort | head -1)
+unzip -p "$EXPERIMENTAL" classes.jar > "$OUT/jars/annotation-experimental-1.4.1.jar"
+CP="$ANDROID_JAR:$STDLIB:$ANNOTATIONS:$OUT/jars/annotation-experimental-1.4.1.jar:$(cat "$OUT/admitted-classpath.txt")"
 # Compile the real pure production policy and the small pure contracts it references, from source.
 "$JAVA" -cp "$COMPILER:$STDLIB:$SCRIPT:$REFLECT:$COROUTINES:$ANNOTATIONS" \
   org.jetbrains.kotlin.cli.jvm.K2JVMCompiler -no-stdlib -no-reflect -jvm-target 17 \
-  -classpath "$STDLIB" -d "$OUT/classes" \
+  -classpath "$CP" -d "$OUT/classes" \
   "$REPO/library/src/main/kotlin/com/easysavevideo/library/LibraryModels.kt" \
   "$REPO/library/src/main/kotlin/com/easysavevideo/library/LibraryPolicies.kt" \
   "$REPO/library/src/main/kotlin/com/easysavevideo/library/edit/"*.kt \
+  "$REPO/core-model/src/main/kotlin/com/easysavevideo/core/model/Errors.kt" \
+  "$REPO/core-model/src/main/kotlin/com/easysavevideo/core/model/Operations.kt" \
+  "$REPO/app/src/main/kotlin/com/easysavevideo/app/media/transform/TransformerContracts.kt" \
+  "$REPO/app/src/main/kotlin/com/easysavevideo/app/media/transform/TransformerMechanismPolicy.kt" \
+  "$REPO/app/src/main/kotlin/com/easysavevideo/app/media/transform/TransformerLaneOwner.kt" \
+  "$REPO/app/src/main/kotlin/com/easysavevideo/app/editor/engine/EditorTransformerErrors.kt" \
   "$REPO/app/src/main/kotlin/com/easysavevideo/app/editor/engine/EditorEnginePolicy.kt"
 mapfile -t SOURCES < <(find "$HERE/src" -name '*.java' | sort)
 "$JAVAC" -source 17 -target 17 -cp "$OUT/classes:$CP" -d "$OUT/classes" "${SOURCES[@]}"

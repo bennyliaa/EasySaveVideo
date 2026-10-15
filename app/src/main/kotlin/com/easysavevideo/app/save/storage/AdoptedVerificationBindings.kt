@@ -6,26 +6,27 @@ import com.easysavevideo.save.DirectLocalProcessingGate
 import com.easysavevideo.save.SaveError
 import com.easysavevideo.save.SaveFailure
 import com.easysavevideo.save.StagingArtifact
-import java.util.Collections
+import com.easysavevideo.app.save.AndroidDirectExecutionBridge
 import java.util.IdentityHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
- * Inactive identity-scoped state engine. A local permit proves ONLY a live lexical invocation of
+ * Identity-scoped state engine with separately configured actual execution issuance. A local permit proves ONLY a live lexical invocation of
  * expectedGate. It does not prove an entered Save Claim, accepted Runtime, drained legacy handles,
- * or exact ordinary-native batch ownership. There is deliberately no production issuance bridge.
+ * or exact ordinary-native batch ownership. A production registry requires its configured actual execution bridge.
  *
  * The optional internal seam is implemented only by synthetic test authorities in test sources.
  * The default constructor cannot register a binding. No Boolean or caller-created token grants
- * production execution authority. A future real bridge needs separate review and lifecycle hooks.
+ * production execution authority. Production registration never accepts the synthetic test seam.
  */
 internal class AdoptedVerificationBindings(
     private val expectedGate: DirectLocalProcessingGate,
     private val syntheticAuthority: SyntheticAuthority? = null,
+    private val executionBridge: AndroidDirectExecutionBridge? = null,
 ) {
     internal data class SyntheticRequest(
         val artifact: StagingArtifact,
-        val output: ArtifactOutputDescriptor.NormalizedDirect,
+        val output: ArtifactOutputDescriptor,
         val context: OperationContext,
         val expectedRecordRevision: Long,
     )
@@ -37,69 +38,120 @@ internal class AdoptedVerificationBindings(
         private val registry: AdoptedVerificationBindings,
         internal val request: SyntheticRequest,
         internal val permit: DirectLocalProcessingGate.LocalPermit,
+        private val authorityCheck: () -> Unit,
+        private val releaseWitness: () -> Boolean,
     ) {
         private val revoked = AtomicBoolean()
-        // Only registry transitions these fields under its short monitor.
-        internal var consumed = false
-        internal var complete = false
         val isRevoked: Boolean get() = revoked.get()
         fun revoke() { revoked.set(true) }
         internal fun requireLive() {
             registry.expectedGate.assertIssuedHere(permit, request.context)
+            authorityCheck()
             if (isRevoked) reject()
         }
+        // This terminal fact survives registry removal; it grants no live IO or execution authority.
+        internal fun requireConsumedAndReleased() { if (!releaseWitness()) reject() }
         internal fun complete() = registry.complete(this)
+        internal fun completeReleasedBy(owner: AdoptedCanonicalOutputOwner) = registry.completeReleased(this, owner)
     }
     private val lock = Any()
-    private val registrations = Collections.newSetFromMap(IdentityHashMap<Binding, Boolean>())
+    private class State(val released: AtomicBoolean, var consumed: Boolean = false, var consumingOwner: AdoptedCanonicalOutputOwner? = null)
+    private val registrations = IdentityHashMap<Binding, State>()
+
+    internal fun <T> withExecutionBinding(scope: AndroidDirectExecutionBridge.Scope,
+        artifact: StagingArtifact, output: ArtifactOutputDescriptor.NormalizedDirect,
+        context: OperationContext, expectedRecordRevision: Long, block: (Binding) -> T): T =
+        withOwnedExecutionBinding(scope, artifact, output, context, expectedRecordRevision, block)
+
+    internal fun <T> withExecutionBinding(scope: AndroidDirectExecutionBridge.Scope,
+        artifact: StagingArtifact, output: ArtifactOutputDescriptor.ConvertedDirect,
+        context: OperationContext, expectedRecordRevision: Long, block: (Binding) -> T): T =
+        withOwnedExecutionBinding(scope, artifact, output, context, expectedRecordRevision, block)
+
+    private fun <T> withOwnedExecutionBinding(scope: AndroidDirectExecutionBridge.Scope,
+        artifact: StagingArtifact, output: ArtifactOutputDescriptor,
+        context: OperationContext, expectedRecordRevision: Long, block: (Binding) -> T): T {
+        val bridge = executionBridge ?: reject()
+        if (scope.context !== context) reject()
+        scope.requireIssuer(bridge)
+        return register(scope.permit, SyntheticRequest(artifact, output, context, expectedRecordRevision),
+            { scope.requireIssuer(bridge); scope.requireLive(context) }, block,
+            liveAuthority = { scope.requireIssuer(bridge); scope.requireLive(context) })
+    }
+
 
     internal fun <T> withSyntheticBinding(
         localPermit: DirectLocalProcessingGate.LocalPermit,
         artifact: StagingArtifact,
-        output: ArtifactOutputDescriptor.NormalizedDirect,
+        output: ArtifactOutputDescriptor,
         context: OperationContext,
         expectedRecordRevision: Long,
         block: (Binding) -> T,
     ): T {
         val authority = syntheticAuthority ?: reject()
+        if (executionBridge != null) reject() // A production registry never accepts the fixture seam.
         val request = SyntheticRequest(artifact, output, context, expectedRecordRevision)
-        if (expectedRecordRevision < 0) reject()
-        expectedGate.assertIssuedHere(localPermit, context)
-        authority.assertAuthorized(request)
-        val binding = Binding(this, request, localPermit)
+        return register(localPermit, request, { authority.assertAuthorized(request) }, block)
+    }
+
+    private fun <T> register(localPermit: DirectLocalProcessingGate.LocalPermit, request: SyntheticRequest,
+        authority: () -> Unit, block: (Binding) -> T, liveAuthority: () -> Unit = {}): T {
+        if (request.expectedRecordRevision < 0 || request.output is ArtifactOutputDescriptor.Transferred) reject()
+        expectedGate.assertIssuedHere(localPermit, request.context)
+        authority()
+        val released = AtomicBoolean()
+        val binding = Binding(this, request, localPermit, liveAuthority, released::get)
         synchronized(lock) {
             binding.requireLive()
-            // Never let an ambiguous duplicate registration choose which worker receives authority.
-            if (registrations.any { !it.complete && it.request.artifact.artifactId == artifact.artifactId }) reject()
-            registrations.add(binding)
+            if (registrations.keys.any { it.request.artifact.artifactId == request.artifact.artifactId }) reject()
+            registrations[binding] = State(released)
         }
         try {
-            // A fixture authority may change during registration. No callback runs under lock.
-            authority.assertAuthorized(request)
-            binding.requireLive()
+            authority(); binding.requireLive()
             return block(binding)
         } finally {
             binding.revoke()
-            synchronized(lock) { if (!binding.consumed) { binding.complete = true; registrations.remove(binding) } }
+            synchronized(lock) { if (registrations[binding]?.consumed == false) registrations.remove(binding) }
         }
     }
 
-    internal fun consume(artifact: StagingArtifact, output: ArtifactOutputDescriptor.NormalizedDirect,
-        context: OperationContext): Binding = synchronized(lock) {
-        val matching = registrations.filter { it.request.artifact === artifact &&
-            it.request.output === output && it.request.context === context && !it.complete }
+    internal fun consume(artifact: StagingArtifact, output: ArtifactOutputDescriptor,
+        context: OperationContext): Binding = consume(artifact, output, context, null)
+
+    internal fun consumeForOwner(artifact: StagingArtifact, output: ArtifactOutputDescriptor,
+        context: OperationContext, owner: AdoptedCanonicalOutputOwner): Binding = consume(artifact, output, context, owner)
+
+    private fun consume(artifact: StagingArtifact, output: ArtifactOutputDescriptor,
+        context: OperationContext, owner: AdoptedCanonicalOutputOwner?): Binding = synchronized(lock) {
+        val matching = registrations.keys.filter { it.request.artifact === artifact &&
+            it.request.output === output && it.request.context === context }
         if (matching.size != 1) reject()
         matching.single().also {
             it.requireLive()
-            if (it.consumed) reject()
-            it.consumed = true
+            val state = registrations[it] ?: reject()
+            if (state.consumed) reject()
+            state.consumed = true
+            state.consumingOwner = owner
+        }
+    }
+
+    private fun completeReleased(binding: Binding, owner: AdoptedCanonicalOutputOwner) {
+        // Owner supplies only its private, already-confirmed close fact. No callbacks or IO under
+        // the registry monitor. Foreign, late and general complete() calls cannot create a witness.
+        if (!owner.confirmsReleasedBinding(binding)) reject()
+        synchronized(lock) {
+            val state = registrations[binding] ?: reject()
+            if (!state.consumed || state.consumingOwner !== owner) reject()
+            state.released.set(true)
+            binding.revoke()
+            registrations.remove(binding)
         }
     }
 
     private fun complete(binding: Binding) = synchronized(lock) {
         // A stale worker may only retire its own identity-registered entry.
-        if (registrations.contains(binding)) {
-            binding.revoke(); binding.complete = true; registrations.remove(binding)
+        if (registrations.containsKey(binding)) {
+            binding.revoke(); registrations.remove(binding)
         }
     }
     private companion object {

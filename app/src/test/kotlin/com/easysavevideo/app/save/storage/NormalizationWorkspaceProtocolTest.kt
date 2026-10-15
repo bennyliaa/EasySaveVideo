@@ -93,6 +93,205 @@ class NormalizationWorkspaceProtocolTest {
         }
         override fun close() { root.deleteRecursively() }
     }
+    /** Consumer DTO fixtures only; no actual conversion producer or native codec claim. */
+    private fun conversionProof(audio: Boolean = false, policy: Int = if (audio) 2 else 1): DirectConversionProof {
+        val sound = if (audio) DirectConversionAudioExpectation(0, if (policy == 2) 60_000 else 100_000,
+            if (policy == 2) 2_880 else 4_800, 4_800, 2, 0, 0, 0) else null
+        val expectation = DirectConversionExpectation(DirectConversionVideoExpectation(16, 16, 30, 100_000, 3, 0, 66_666, 0), sound)
+        val fact = if (audio) true else null
+        return DirectConversionProof(key.normalizationId, owner.taskId, "a".repeat(64), owner.artifactId, owner.commitId,
+            raw.size, raw.sha256, sourceDigest, output.size, output.sha256, expectation,
+            DirectConversionEncodingSettings.forExpectation(expectation),
+            DirectConversionCompletionFacts(true, true, true, true, true, true, fact, fact, fact, fact, fact, fact),
+            policyRevision = policy)
+    }
+    @Test fun convertedAudioTwoAdoptsThroughTheSameActualFileProtocol() = Fixture().use { f ->
+        f.begin(); f.outputFile.writeBytes(outputBytes); val proof = conversionProof(audio = true)
+        val ready = f.protocol().finishOutput(key, proof)
+        f.auth = f.auth.copy(proofSha256 = proof.digest())
+        val intent = f.protocol().recordAdoptionIntent(key, proof)
+        val adopted = f.protocol().adopt(key)
+        assertEquals(ready.copy(revision = ready.revision + 1, lifecycle = NormalizationLifecycle.ADOPT_INTENT), intent)
+        assertEquals(intent.copy(revision = intent.revision + 1, lifecycle = NormalizationLifecycle.ADOPTED), adopted)
+        assertEquals(2, proof.policyRevision); assertEquals(2_880L, proof.expectation.audio!!.sourcePcmFrameCount)
+        assertEquals(4_800L, proof.expectation.audio!!.encoderPcmFrameCount)
+        assertArrayEquals(rawBytes, f.rawFile.readBytes()); assertArrayEquals(outputBytes, f.primary.readBytes())
+    }
+    @Test fun convertedHistoricalAudioCannotFinishOrAdoptDespiteExactDurableBinding() {
+        Fixture().use { f ->
+            f.begin(); f.outputFile.writeBytes(outputBytes); val proof = conversionProof(audio = true, policy = 1)
+            val before = f.ledger.row; f.faults.events.clear()
+            assertThrows(NormalizationRecovery::class.java) { f.protocol().finishOutput(key, proof) }
+            assertEquals(before, f.ledger.row); assertTrue(f.faults.events.none { it.contains("write:") || it.contains("rename:") })
+        }
+        Fixture().use { f ->
+            f.begin(); f.outputFile.writeBytes(outputBytes)
+            val current = conversionProof(audio = true); f.protocol().finishOutput(key, current)
+            val historical = conversionProof(audio = true, policy = 1)
+            f.ledger.row = f.ledger.row!!.copy(proofSha256 = historical.digest())
+            f.auth = f.auth.copy(proofSha256 = historical.digest()); val before = f.ledger.row; f.faults.events.clear()
+            assertThrows(NormalizationRecovery::class.java) { f.protocol().recordAdoptionIntent(key, historical) }
+            assertEquals(before, f.ledger.row); assertTrue(f.faults.events.none { it.contains("write:") || it.contains("rename:") })
+        }
+    }
+    @Test fun convertedAdoptionRequiresAcknowledgedProofAndPreservesExactGeneration() = Fixture().use { f ->
+        f.begin(); f.outputFile.writeBytes(outputBytes); val proof = conversionProof()
+        val ready = f.protocol().finishOutput(key, proof)
+        assertThrows(NormalizationRecovery::class.java) { f.protocol().recordAdoptionIntent(key, proof) }
+        assertEquals(ready, f.ledger.row)
+        f.auth = f.auth.copy(proofSha256 = proof.digest())
+        val intent = f.protocol().recordAdoptionIntent(key, proof)
+        assertEquals(ready.copy(revision = ready.revision + 1, lifecycle = NormalizationLifecycle.ADOPT_INTENT), intent)
+        val adopted = f.protocol().adopt(key)
+        assertEquals(intent.copy(revision = intent.revision + 1, lifecycle = NormalizationLifecycle.ADOPTED), adopted)
+        assertArrayEquals(rawBytes, f.rawFile.readBytes()); assertArrayEquals(outputBytes, f.primary.readBytes())
+        assertFalse(f.outputFile.exists()); assertEquals(key, adopted.key)
+    }
+    @Test fun convertedAllIntentRenameAndDurabilityCrashWindowsUseOnlyThreeExistingLayouts() {
+        fun ready(f: Fixture) {
+            f.begin(); f.outputFile.writeBytes(outputBytes); f.protocol().finishOutput(key, conversionProof())
+            f.auth = f.auth.copy(proofSha256 = conversionProof().digest())
+        }
+        val windows = Fixture().use { f -> ready(f); f.faults.events.clear()
+            f.protocol().recordAdoptionIntent(key, conversionProof()); f.protocol().adopt(key); f.faults.events.distinct() }
+        for (window in windows) Fixture().use { f ->
+            ready(f); f.faults.events.clear(); f.faults.failAt = window
+            try { f.protocol().recordAdoptionIntent(key, conversionProof()); f.protocol().adopt(key) } catch (_: Exception) { }
+            f.faults.failAt = null
+            val freshLedger = Ledger(Faults()).apply {
+                row = NormalizationWorkspaceCodec.decode(NormalizationWorkspaceCodec.encode(f.ledger.row!!))
+            }
+            val fresh = NormalizationWorkspaceProtocol(freshLedger, f.files, { f.auth }, Any())
+            val inspected = fresh.inspect(owner) as NormalizationInspection.Present
+            assertTrue(inspected.layout in setOf(NormalizationLayout.READY, NormalizationLayout.RAW_MOVED, NormalizationLayout.ADOPTED))
+            if (freshLedger.row!!.lifecycle == NormalizationLifecycle.OUTPUT_READY) fresh.recordAdoptionIntent(key, conversionProof())
+            fresh.adopt(key)
+            assertEquals(NormalizationLifecycle.ADOPTED, freshLedger.row!!.lifecycle)
+            assertArrayEquals(rawBytes, f.rawFile.readBytes()); assertArrayEquals(outputBytes, f.primary.readBytes())
+            assertFalse(f.outputFile.exists())
+        }
+    }
+    @Test fun convertedAdoptionRejectsWrongDigestGenerationRawAndOverflowWithoutRenames() {
+        for (case in 0..3) Fixture().use { f ->
+            f.begin(); f.outputFile.writeBytes(outputBytes); val proof = conversionProof()
+            f.protocol().finishOutput(key, proof); f.auth = f.auth.copy(proofSha256 = proof.digest())
+            when (case) {
+                0 -> f.auth = f.auth.copy(proofSha256 = "f".repeat(64))
+                1 -> f.ledger.row = f.ledger.row!!.copy(proofSha256 = "e".repeat(64))
+                2 -> f.primary.writeBytes(byteArrayOf(1))
+                3 -> f.ledger.row = f.ledger.row!!.copy(revision = Long.MAX_VALUE)
+            }
+            f.faults.events.clear()
+            assertThrows(NormalizationRecovery::class.java) { f.protocol().recordAdoptionIntent(key, proof) }
+            assertTrue(f.faults.events.none { it.contains("rename:") || it.contains("write:") })
+            assertTrue(f.outputFile.exists()); assertFalse(f.rawFile.exists())
+        }
+    }
+    @Test fun conversionFinishUsesActualFixtureSyncHashAndOneExactOutputReadySuccessor() = Fixture().use { f ->
+        val writing = f.begin(); f.outputFile.writeBytes(outputBytes); f.faults.events.clear()
+        val proof = conversionProof()
+        val ready = f.protocol().finishOutput(key, proof)
+        assertEquals(writing.copy(revision = writing.revision + 1, lifecycle = NormalizationLifecycle.OUTPUT_READY,
+            output = output, proofSha256 = proof.digest()), ready)
+        assertTrue(f.faults.events.any { it.startsWith("after:fsync:OUTPUT") })
+        assertTrue(f.faults.events.any { it.startsWith("after:fsync:GENERATION") })
+        f.auth = f.auth.copy(proofSha256 = proof.digest())
+        val inspected = f.protocol().inspect(owner) as NormalizationInspection.Present
+        assertEquals(ready, inspected.row); assertEquals(NormalizationLayout.READY, inspected.layout)
+        assertFalse(inspected.discardOnly)
+        assertThrows(NormalizationRecovery::class.java) { f.protocol().finishOutput(key, proof) }
+        assertArrayEquals(rawBytes, f.primary.readBytes()); assertArrayEquals(outputBytes, f.outputFile.readBytes())
+    }
+    @Test fun conversionFinishWriteThenThrowAcknowledgesOnlyWholeSuccessor() {
+        for (after in listOf(false, true)) Fixture().use { f ->
+            val writing = f.begin(); f.outputFile.writeBytes(outputBytes)
+            f.faults.failAt = (if (after) "after:" else "before:") + "write:OUTPUT_READY:CONTINUE"
+            if (after) {
+                val ready = f.protocol().finishOutput(key, conversionProof())
+                assertEquals(writing.revision + 1, ready.revision); assertEquals(ready, f.ledger.row)
+            } else {
+                assertThrows(Exception::class.java) { f.protocol().finishOutput(key, conversionProof()) }
+                assertEquals(writing, f.ledger.row)
+            }
+        }
+    }
+    @Test fun conversionFinishRejectsWrongRawTransferOwnerAndOutput() {
+        val proof = conversionProof()
+        for (bad in listOf(proof.copy(rawSha256 = "c".repeat(64)), proof.copy(sourceTransferSha256 = "d".repeat(64)),
+            proof.copy(taskId = "other"), proof.copy(outputSha256 = "e".repeat(64)))) Fixture().use { f ->
+            val writing = f.begin(); f.outputFile.writeBytes(outputBytes)
+            assertThrows(NormalizationRecovery::class.java) { f.protocol().finishOutput(key, bad) }
+            assertEquals(writing, f.ledger.row)
+        }
+    }
+    @Test fun conversionFinishRejectsOverflowBeforeFilesystemOrSuccessorConstruction() = Fixture().use { f ->
+        f.begin(); f.outputFile.writeBytes(outputBytes)
+        f.ledger.row = f.ledger.row!!.copy(revision = Long.MAX_VALUE); f.faults.events.clear()
+        assertThrows(NormalizationRecovery::class.java) { f.protocol().finishOutput(key, conversionProof()) }
+        assertEquals(Long.MAX_VALUE, f.ledger.row!!.revision); assertTrue(f.faults.events.isEmpty())
+    }
+    @Test fun conversionFinishRejectsUnreleasedStopAndUnexpectedRawRole() {
+        for (case in 0..2) Fixture().use { f ->
+            val writing = f.begin(); f.outputFile.writeBytes(outputBytes)
+            when (case) {
+                0 -> f.handlesReleased = false
+                1 -> f.auth = f.auth.copy(taskState = NormalizationTaskState.CANCELLED)
+                2 -> f.rawFile.writeBytes(rawBytes)
+            }
+            assertThrows(NormalizationRecovery::class.java) { f.protocol().finishOutput(key, conversionProof()) }
+            assertEquals(writing, f.ledger.row)
+        }
+    }
+    @Test fun conversionFinalCasRereadsTerminalAuthority() = Fixture().use { f ->
+        val writing = f.begin(); f.outputFile.writeBytes(outputBytes); var checks = 0
+        val protocol = NormalizationWorkspaceProtocol(f.ledger, f.files, { f.auth }, f) {
+            assertTrue(Thread.holdsLock(f))
+            if (++checks == 3) f.auth = f.auth.copy(taskState = NormalizationTaskState.CANCELLED)
+        }
+        assertThrows(NormalizationRecovery::class.java) { protocol.finishOutput(key, conversionProof()) }
+        assertEquals(writing, f.ledger.row)
+    }
+
+    @Test fun cancellationAtTheFinalCasCheckCannotAdvanceAnOrdinaryLifecycle(): Unit = Fixture().use { f ->
+        f.begin(); f.outputFile.writeBytes(outputBytes); f.faults.events.clear()
+        var checks = 0
+        val protocol = NormalizationWorkspaceProtocol(f.ledger, f.files, { f.auth }, f) {
+            assertTrue("Authority checks must remain in a short owner-lock section", Thread.holdsLock(f))
+            // Initial continuing, post-IO continuing, then the persist section's own check.
+            if (++checks == 3) f.auth = f.auth.copy(taskState = NormalizationTaskState.CANCELLED)
+        }
+        assertThrows(NormalizationRecovery::class.java) { protocol.finishOutput(key, proof()) }
+        assertTrue(checks >= 3)
+        assertEquals(NormalizationLifecycle.WRITING, f.ledger.row!!.lifecycle)
+        assertFalse(f.faults.events.any { it.contains("write:OUTPUT_READY") })
+        assertArrayEquals(rawBytes, f.primary.readBytes()); assertArrayEquals(outputBytes, f.outputFile.readBytes())
+    }
+
+    @Test fun cleanupCasRequiresCurrentTerminalAuthorityForBothPlanAndCompletion() {
+        for (finishing in listOf(false, true)) Fixture().use { f ->
+            f.begin()
+            f.auth = f.auth.copy(taskState = NormalizationTaskState.CANCELLED)
+            if (finishing) {
+                val current = f.ledger.row!!
+                f.ledger.row = current.copy(revision = current.revision + 1,
+                    lifecycle = NormalizationLifecycle.CLEANUP_PENDING,
+                    disposition = NormalizationDisposition.DISCARD_ONLY,
+                    cleanup = NormalizationCleanupPlan(raw, null, fingerprint(byteArrayOf())))
+                assertTrue(f.outputFile.delete()); assertTrue(f.generation.delete()); assertTrue(f.workspace.delete()); assertTrue(f.primary.delete())
+            }
+            val before = f.ledger.row!!; f.faults.events.clear(); var checks = 0
+            val protocol = NormalizationWorkspaceProtocol(f.ledger, f.files, { f.auth }, f) {
+                assertTrue(Thread.holdsLock(f))
+                // Pretend terminal authority changed just before the final mutation check.
+                if (++checks == 1) f.auth = f.auth.copy(taskState = NormalizationTaskState.ACTIVE)
+            }
+            assertThrows(NormalizationRecovery::class.java) { protocol.cleanup(key, before.revision) }
+            assertTrue(checks >= 1); assertEquals(before, f.ledger.row)
+            assertFalse(f.faults.events.any { it.contains("write:") || it.contains("unlink:") })
+            if (!finishing) { assertArrayEquals(rawBytes, f.primary.readBytes()); assertTrue(f.outputFile.exists()) }
+        }
+    }
+
     @Test fun beginBeforeAfterEveryJournalCreateAndSyncFailureIsRecognizableWithoutRawCopy() {
         val windows = Fixture().use { f -> f.begin(); f.faults.events.distinct() }
         assertTrue(windows.any { it.startsWith("after:insert#") }); assertTrue(windows.any { it.startsWith("after:create:OUTPUT#") })
@@ -221,7 +420,7 @@ class NormalizationWorkspaceProtocolTest {
     }
     @Test fun adoptedCommitOwnedCannotBeRepromotedOrFailedCleanedWithoutPublicationAuthority(): Unit = Fixture().use { f ->
         f.adopted(); f.primary.delete(); f.auth = f.auth.copy(parentState = NormalizationParentState.COMMIT_PENDING)
-        assertEquals(NormalizationLayout.COMMIT_OWNED, (f.protocol().inspect(owner) as NormalizationInspection.Present).layout)
+        assertEquals(NormalizationInspection.Unreadable, f.protocol().inspect(owner))
         assertThrows(NormalizationRecovery::class.java) { f.protocol().adopt(key) }
         f.auth = f.auth.copy(taskState = NormalizationTaskState.FAILED)
         assertThrows(NormalizationRecovery::class.java) { f.protocol().cleanup(key, f.ledger.row!!.revision) }

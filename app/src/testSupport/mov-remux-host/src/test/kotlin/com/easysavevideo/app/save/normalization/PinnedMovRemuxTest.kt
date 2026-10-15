@@ -30,13 +30,173 @@ class PinnedMovRemuxTest {
         assertExactTable(files.outputBytes(), 2, 30)
     }
 
-    @Test fun audioRejectsWholeFileBeforeCreatingOutput() {
-        val files = MemoryFiles(OriginalMovFixtures.build(OriginalMovFixtures.Options(audio = true)))
+    @Test fun duplicateAudioRejectsWholeFileBeforeCreatingOutput() {
+        val files = MemoryFiles(OriginalMovFixtures.build(OriginalMovFixtures.Options(audio = true, extraAudio = true)))
         val engine = engine()
         failure(SaveError.UNSUPPORTED_MEDIA) { engine.remux(files, operation(), SaveLimits(2L * 1024 * 1024 * 1024, 4L * 1024 * 1024 * 1024)) }
         assertEquals(0, files.outputOpens); assertTrue(files.inputs.all { it.releaseConfirmed })
         assertFalse(engine.requiresProcessRecovery())
     }
+
+    @Test fun allSixAacTransportConfigsRoundTripWithIndependentEosAndEitherTrackOrder() {
+        var cases = 0
+        for (rate in listOf(32_000, 44_100, 48_000)) for (channels in 1..2)
+            for (count in listOf(2, 3, 7)) for (audioFirst in listOf(false, true)) {
+                val options = OriginalMovFixtures.Options(audio = true, audioSampleRate = rate,
+                    audioChannelCount = channels, audioCount = count, audioFirst = audioFirst,
+                    moovFirst = audioFirst, co64 = audioFirst, samplesPerChunk = 2, splitTiming = true)
+                val raw = OriginalMovFixtures.build(options)
+                val files = MemoryFiles(raw)
+                val evidence = engine().remux(files, operation(), limits())
+                val output = files.outputBytes()
+                val before = MovProfileProbe.probeQuickTime(OriginalMovFixtures.input(raw))
+                val after = MovProfileProbe.scanCanonicalMp4(OriginalMovFixtures.input(output))
+                assertEquals(before.conservation, evidence.conservation)
+                assertEquals(before.conservation, after.conservation)
+                assertEquals(before.clock.endpoint, after.clock.endpoint)
+                assertEquals(before.audio!!.clock.endpoint, after.audio!!.clock.endpoint)
+                assertEquals(count * 1024L, after.audio.clock.endpointTicks)
+                assertNotEquals(after.clock.endpoint, after.audio.clock.endpoint)
+                assertArrayEquals(OriginalMovFixtures.audioAsc(options), after.audio.configuration.asc)
+                OriginalMovFixtures.audioSamples(options).forEachIndexed { index, bytes ->
+                    assertArrayEquals(bytes, MovProfileProbe.readAudioSample(OriginalMovFixtures.input(output), after, index))
+                }
+                assertTrue(files.inputs.all { it.releaseConfirmed }); assertTrue(files.sink.releaseConfirmed)
+                cases++
+            }
+        assertEquals(36, cases)
+    }
+
+    @Test fun finalizedMiddleAudioSubstitutionFailsActualConservation() {
+        val files = MemoryFiles(OriginalMovFixtures.build(OriginalMovFixtures.Options(audio = true)))
+        files.finalizedTransform = { bytes ->
+            val before = MovProfileProbe.scanCanonicalMp4(OriginalMovFixtures.input(bytes))
+            val sample = before.audio!!.samples[1]
+            bytes[sample.offset.toInt()] = (bytes[sample.offset.toInt()].toInt() xor 1).toByte()
+            val after = MovProfileProbe.scanCanonicalMp4(OriginalMovFixtures.input(bytes))
+            assertEquals(before.conservation.video, after.conservation.video)
+            assertNotEquals(before.conservation.audio, after.conservation.audio)
+            bytes
+        }
+        failure(SaveError.INVALID_MEDIA) { engine().remux(files, operation(), limits()) }
+        assertTrue(files.inputs.all { it.releaseConfirmed }); assertTrue(files.sink.releaseConfirmed)
+    }
+
+    @Test fun audioCallbackAssemblesPrefetchOffsetAndFragmentedDataWithoutChangingBytes() {
+        val (profile, callback) = audioCallback()
+        val samples = OriginalMovFixtures.audioSamples(OriginalMovFixtures.Options(audio = true))
+        callback.sampleData(androidx.media3.common.util.ParsableByteArray(samples[0] + samples[1]), samples[0].size + samples[1].size, 0)
+        callback.sampleMetadata(0, 1, samples[0].size, samples[1].size, null)
+        callback.sampleMetadata(profile.audio!!.clock.presentationTimeUs(1), 1, samples[1].size, 0, null)
+        var at = 0
+        val reader = androidx.media3.common.DataReader { target, offset, length ->
+            val count = minOf(2, length, samples[2].size - at)
+            if (count == 0) -1 else { samples[2].copyInto(target, offset, at, at + count); at += count; count }
+        }
+        while (at < samples[2].size) callback.sampleData(reader, samples[2].size - at, false, 0)
+        callback.sampleMetadata(profile.audio.clock.presentationTimeUs(2), 0x20000001, samples[2].size, 0, null)
+        callback.finish()
+    }
+
+    @Test fun audioCallbackRejectsMissingExtraReorderedChangedAndBadTimingSamples() {
+        val samples = OriginalMovFixtures.audioSamples(OriginalMovFixtures.Options(audio = true))
+        val (_, missing) = audioCallback()
+        failure(SaveError.INCOMPLETE_TRANSFER) { missing.finish() }
+        for (value in listOf(samples[1], samples[0].clone().also { it[0] = 99 }, samples[0] + byteArrayOf(0))) {
+            val (_, callback) = audioCallback()
+            callback.sampleData(androidx.media3.common.util.ParsableByteArray(value), value.size, 0)
+            failure(SaveError.INVALID_MEDIA) { callback.sampleMetadata(0, 1, value.size, 0, null) }
+        }
+        for (flags in listOf(0, 2, 4, 8, 0x20000001)) {
+            val (_, callback) = audioCallback()
+            callback.sampleData(androidx.media3.common.util.ParsableByteArray(samples[0]), samples[0].size, 0)
+            assertThrows(IllegalArgumentException::class.java) { callback.sampleMetadata(0, flags, samples[0].size, 0, null) }
+        }
+        val (_, time) = audioCallback()
+        time.sampleData(androidx.media3.common.util.ParsableByteArray(samples[0]), samples[0].size, 0)
+        assertThrows(IllegalArgumentException::class.java) { time.sampleMetadata(1, 1, samples[0].size, 0, null) }
+        val (_, offset) = audioCallback()
+        offset.sampleData(androidx.media3.common.util.ParsableByteArray(samples[0]), samples[0].size, 0)
+        failure(SaveError.INVALID_MEDIA) { offset.sampleMetadata(0, 1, samples[0].size, 1, null) }
+        val (_, protected) = audioCallback()
+        failure(SaveError.PROTECTED_MEDIA) { protected.sampleData(androidx.media3.common.util.ParsableByteArray(byteArrayOf(1)), 1, 1) }
+        val (_, zero) = audioCallback()
+        failure(SaveError.INCOMPLETE_TRANSFER) { zero.sampleData(androidx.media3.common.DataReader { _, _, _ -> 0 }, 1, false, 0) }
+        val (profile, extra) = audioCallback()
+        samples.forEachIndexed { index, sample ->
+            extra.sampleData(androidx.media3.common.util.ParsableByteArray(sample), sample.size, 0)
+            extra.sampleMetadata(profile.audio!!.clock.presentationTimeUs(index.toLong()), 1, sample.size, 0, null)
+        }
+        extra.sampleData(androidx.media3.common.util.ParsableByteArray(samples[0]), samples[0].size, 0)
+        failure(SaveError.INVALID_MEDIA) { extra.sampleMetadata(0, 1, samples[0].size, 0, null) }
+        failure(SaveError.INCOMPLETE_TRANSFER) { extra.finish() }
+    }
+
+    @Test fun audioCallbackRejectsRateChannelsConfigTrimUnknownCodecAndProtectionHints() {
+        fun checkFormat(transform: (androidx.media3.common.Format.Builder) -> androidx.media3.common.Format.Builder,
+            expected: SaveError = SaveError.UNSUPPORTED_MEDIA) {
+            val raw = OriginalMovFixtures.input(OriginalMovFixtures.build(OriginalMovFixtures.Options(audio = true)))
+            val profile = MovProfileProbe.probeQuickTime(raw)
+            val callback = MovRemuxEngine.OneAudioOutput(raw, profile, null, {})
+            failure(expected) { callback.format(transform(audioFormat(profile).buildUpon()).build()) }
+        }
+        checkFormat({ it.setSampleRate(44_100) })
+        checkFormat({ it.setChannelCount(1) })
+        checkFormat({ it.setSampleMimeType("audio/opus") })
+        checkFormat({ it.setCodecs("mp4a.40.5") })
+        checkFormat({ it.setEncoderDelay(1) })
+        checkFormat({ it.setEncoderPadding(1) })
+        checkFormat({ it.setEncoderDelay(-2) })
+        checkFormat({ it.setEncoderPadding(-2) })
+        checkFormat({ it.setCryptoType(1) }, SaveError.PROTECTED_MEDIA)
+        checkFormat({ it.setInitializationData(listOf(byteArrayOf(0x12, 0x10))) }, SaveError.INVALID_MEDIA)
+        val raw = OriginalMovFixtures.input(OriginalMovFixtures.build(OriginalMovFixtures.Options(audio = true)))
+        val profile = MovProfileProbe.probeQuickTime(raw)
+        for (csd in listOf(emptyList(), listOf(byteArrayOf(0x11, 0x90.toByte()), byteArrayOf(0)), listOf(byteArrayOf(0x11, 0x90.toByte(), 0)))) {
+            val callback = MovRemuxEngine.OneAudioOutput(raw, profile, null, {})
+            assertThrows(IllegalArgumentException::class.java) { callback.format(audioFormat(profile).buildUpon().setInitializationData(csd).build()) }
+        }
+        // Pinned Format construction normalizes NO_VALUE (-1) to an observed zero. The adapter
+        // receives only this immutable Format, while raw container rules independently ban trim.
+        val absentTrim = audioFormat(profile).buildUpon()
+            .setEncoderDelay(androidx.media3.common.Format.NO_VALUE)
+            .setEncoderPadding(androidx.media3.common.Format.NO_VALUE).build()
+        assertEquals(0, absentTrim.encoderDelay); assertEquals(0, absentTrim.encoderPadding)
+        MovRemuxEngine.OneAudioOutput(raw, profile, null, {}).format(absentTrim)
+        val (_, duplicate) = audioCallback()
+        failure(SaveError.UNSUPPORTED_MEDIA) { duplicate.format(audioFormat(profile)) }
+    }
+
+    @Test fun dispatcherRejectsMissingDuplicateCrossIdAndUnknownTracks() {
+        fun dispatcher(audio: Boolean = true): MovRemuxEngine.AdmittedTracksOutput {
+            val raw = OriginalMovFixtures.input(OriginalMovFixtures.build(OriginalMovFixtures.Options(audio = audio)))
+            return MovRemuxEngine.AdmittedTracksOutput(raw, MovProfileProbe.probeQuickTime(raw), null, {})
+        }
+        val c = androidx.media3.common.C.TRACK_TYPE_VIDEO
+        val a = androidx.media3.common.C.TRACK_TYPE_AUDIO
+        val missing = dispatcher(); missing.track(1, c)
+        failure(SaveError.INVALID_MEDIA) { missing.endTracks() }
+        val duplicate = dispatcher(); duplicate.track(1, a)
+        failure(SaveError.UNSUPPORTED_MEDIA) { duplicate.track(2, a) }
+        val crossed = dispatcher(); crossed.track(1, c)
+        failure(SaveError.UNSUPPORTED_MEDIA) { crossed.track(1, a) }
+        failure(SaveError.UNSUPPORTED_MEDIA) { dispatcher().track(1, androidx.media3.common.C.TRACK_TYPE_TEXT) }
+        failure(SaveError.UNSUPPORTED_MEDIA) { dispatcher(false).track(1, a) }
+        val ended = dispatcher(); ended.track(1, a); ended.track(2, c); ended.endTracks()
+        failure(SaveError.INVALID_MEDIA) { ended.track(1, a) }
+        failure(SaveError.INVALID_MEDIA) { ended.endTracks() }
+        failure(SaveError.INCOMPLETE_TRANSFER) { ended.finish() }
+    }
+
+    private fun audioCallback(): Pair<MovProfile, MovRemuxEngine.OneAudioOutput> {
+        val raw = OriginalMovFixtures.input(OriginalMovFixtures.build(OriginalMovFixtures.Options(audio = true)))
+        val profile = MovProfileProbe.probeQuickTime(raw)
+        return profile to MovRemuxEngine.OneAudioOutput(raw, profile, null, {}).also { it.format(audioFormat(profile)) }
+    }
+    private fun audioFormat(profile: MovProfile): androidx.media3.common.Format = androidx.media3.common.Format.Builder()
+        .setSampleMimeType("audio/mp4a-latm").setSampleRate(profile.audio!!.configuration.sampleRate)
+        .setChannelCount(profile.audio.configuration.channelCount).setCodecs("mp4a.40.2")
+        .setInitializationData(listOf(profile.audio.configuration.asc)).build()
 
     @Test fun fullOutputDiskAllowanceIsRequiredBeforeCreatingOutput() {
         val files = MemoryFiles(OriginalMovFixtures.build()).apply { free = 1000 }

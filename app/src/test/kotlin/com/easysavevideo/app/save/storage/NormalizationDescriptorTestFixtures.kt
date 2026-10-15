@@ -20,7 +20,8 @@ internal class MemoryNormalizationDescriptorIo : NormalizationDescriptorIo {
         @Volatile var active = true
     }
     data class Call(val operation: String, val path: File, val descriptor: Descriptor? = null,
-        val mode: NormalizationDescriptorIo.Open? = null, val count: Int = 0, val position: Long = 0)
+        val mode: NormalizationDescriptorIo.Open? = null, val count: Int = 0, val position: Long = 0,
+        val thread: Thread = Thread.currentThread())
     enum class CloseMode { NORMAL, RETURNS_VALID, INVALIDATES_THEN_THROWS, THROWS_VALID }
     private val nodes = linkedMapOf<String, Node>()
     private var nextInode = 1L
@@ -181,9 +182,9 @@ internal fun normalizationTestConservation(): DirectRemuxConservation {
     return DirectRemuxConservation(16, 16, 30, track, null, null, null, first)
 }
 
-internal class NormalizationDescriptorFixture(rawSize: Int = 8192) {
+internal class NormalizationDescriptorFixture(rawSize: Int = 8192, commitId: String = "commit") {
     val root = File("/owned-normalization-host-fixture")
-    val owner = NormalizationOwner("task", "11111111-1111-4111-8111-111111111111", "commit")
+    val owner = NormalizationOwner("task", "11111111-1111-4111-8111-111111111111", commitId)
     val knownKey = NormalizationKey(owner, "22222222-2222-4222-8222-222222222222")
     val staging = File(root, "staging")
     val primary = File(staging, owner.artifactId + ".part")
@@ -216,9 +217,11 @@ internal class NormalizationDescriptorFixture(rawSize: Int = 8192) {
         override fun replaceOwnedStaging(source: File, destination: File) { throw AssertionError("Normalization must never replace staging") }
     }
     val files = AndroidNormalizationFiles(root, durable, lock, { available }, { storageClosed }, io)
+    var transcodeScopeVerifier: (com.easysavevideo.app.save.AndroidDirectExecutionBridge.Scope) -> Unit = { throw NormalizationRecovery() }
     val attempts = NormalizationAttemptOwner(ledger, files, { if (authorityUnreadable) throw IOException("HOST_AUTHORITY"); authority },
         { id -> record?.takeIf { it.task.taskId == id } }, lock, { storageClosed },
-        { if (priorHandles) throw NormalizationRecovery() }, ::checkOperation)
+        { if (priorHandles) throw NormalizationRecovery() }, ::checkOperation,
+        requireTranscodeScope = { transcodeScopeVerifier(it) })
     fun checkOperation(operation: OperationContext) {
         when (operation.stopReason(now)) {
             OperationStopReason.CANCELLED -> throw SaveFailure(SaveError.CANCELLED)

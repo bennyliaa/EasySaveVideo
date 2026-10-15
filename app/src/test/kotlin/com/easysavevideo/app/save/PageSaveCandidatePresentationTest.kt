@@ -77,7 +77,11 @@ class PageSaveCandidatePresentationTest {
         assertFalse(screen.contains("candidate.label"))
         assertTrue(screen.contains("URI(candidate.url.value).host"))
         assertTrue(screen.contains("runtime.choose(candidate, browser)"))
-        assertTrue(screen.contains("enabled = candidate.supported && !candidate.protected && runtime.canSave(candidate.method) && selection.isCurrent()"))
+        assertTrue(screen.contains("val selection = runtime.selection ?: return"))
+        assertTrue(screen.contains("val admission = LocalPrivateInputAdmission.current"))
+        assertTrue(screen.contains("fun ownsSelection() = admission() && runtime.selection === selection &&\n        runtime.currentSelectionPresentationIdentity === selection"))
+        assertTrue(screen.contains("onClick = { if (ownsSelection() && selection.isCurrent()) runtime.choose(candidate, browser) }"))
+        assertTrue(screen.contains("enabled = candidate.supported && !candidate.protected && runtime.canSave(candidate.method) && ownsSelection() && selection.isCurrent()"))
     }
     @Test fun detectorAndDtoDoNotParseTitlesOrSerializedLocalizedLabels() {
         val detector = source("PageSaveDetector")

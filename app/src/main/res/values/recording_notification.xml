@@ -10,4 +10,5 @@
     <string name="recording_notification_cancelling">Discarding recording</string>
     <string name="recording_notification_recovery_required">System resources have not been released; stop the app through the system</string>
     <string name="recording_notification_preparing_or_verifying">Preparing or verifying recording</string>
+    <string name="recording_notification_discard">Discard recording</string>
 </resources>

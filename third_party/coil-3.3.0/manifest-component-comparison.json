@@ -1,0 +1,24 @@
+[
+  {
+    "baseline": {
+      "coordinate": "androidx.core:core:1.13.1",
+      "filename": "core-1.13.1.aar",
+      "sha256": "2c27de199535675005553066597a4b20fa1eea7c228ab4ef6b32b5fe39ca1f59"
+    },
+    "baseline_file": "/workspace/scratch/df6c1284d5ab/android-build-home/gradle-home/caches/modules-2/files-2.1/androidx.core/core/1.13.1/4606d420282fe1e5c8d5c4e647ec188e1045b7be/core-1.13.1.aar",
+    "candidate": "androidx.core:core:1.15.0",
+    "manifest_byte_identical": false,
+    "manifest_diff": "--- androidx.core:core:1.13.1\n+++ androidx.core:core:1.15.0\n@@ -17,7 +17,7 @@\n <manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n     package=\"androidx.core\" >\n \n-    <uses-sdk android:minSdkVersion=\"19\" />\n+    <uses-sdk android:minSdkVersion=\"21\" />\n \n     <permission\n         android:name=\"${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\"\n"
+  },
+  {
+    "baseline": {
+      "coordinate": "androidx.profileinstaller:profileinstaller:1.4.0",
+      "filename": "profileinstaller-1.4.0.aar",
+      "sha256": "d502141fcce902430f62b674c32aecd0f75262e7ee2cd15c74adb617cd13130a"
+    },
+    "baseline_file": "/workspace/scratch/df6c1284d5ab/android-build-home/gradle-home/caches/modules-2/files-2.1/androidx.profileinstaller/profileinstaller/1.4.0/6b6262e9ca50d1f75a496f3b64ebeb092a9d42eb/profileinstaller-1.4.0.aar",
+    "candidate": "androidx.profileinstaller:profileinstaller:1.4.1",
+    "manifest_byte_identical": true,
+    "manifest_diff": ""
+  }
+]

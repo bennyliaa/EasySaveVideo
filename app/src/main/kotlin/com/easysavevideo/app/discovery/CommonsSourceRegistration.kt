@@ -3,6 +3,11 @@ package com.easysavevideo.app.discovery
 import android.content.Context
 import java.io.File
 import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.CopyOnWriteArrayList
+import com.easysavevideo.discovery.VideoSearchResult
+import com.easysavevideo.discovery.thumbnail.DiscoveryThumbnailBinding
+import com.easysavevideo.discovery.thumbnail.DiscoveryThumbnailCapability
+import com.easysavevideo.app.discovery.thumbnail.AndroidDiscoveryThumbnails
 import com.easysavevideo.commons.maintenance.ProviderRepository
 import com.easysavevideo.commons.maintenance.ProviderRepositoryResult
 import com.easysavevideo.commons.maintenance.ProviderPackageVerifier
@@ -22,6 +27,29 @@ object CommonsSourceRegistration {
     internal val managementWorker = ProviderManagementWorker()
     private val changes = AtomicLong(0)
     val managementRevision: Long get() = changes.get()
+    private val thumbnailWithdrawals = CopyOnWriteArrayList<() -> Unit>()
+    internal fun subscribeThumbnailWithdrawal(callback: () -> Unit): AutoCloseable {
+        thumbnailWithdrawals += callback
+        return AutoCloseable { thumbnailWithdrawals.remove(callback) }
+    }
+    /** Only the configured Commons producer can issue this display-only read capability. */
+    internal fun thumbnailCapability(context: Context, binding: DiscoveryThumbnailBinding,
+        result: VideoSearchResult, expectedRevision: Long, current: () -> Boolean): DiscoveryThumbnailCapability? {
+        val url = result.thumbnailUrl?.let(CommonsUrlPolicy::thumbnail) ?: return null
+        if (binding != DiscoveryThumbnailBinding.of(binding.session, binding.pageRevision, result) ||
+            !configured || !maintenanceAvailable || managementRevision != expectedRevision || !current() ||
+            result.sourceNamespace != CommonsIdentity.PROVIDER_ID || CommonsIdentity.PROVIDER_ID !in result.provenance ||
+            CommonsUrlPolicy.page(result.canonicalPageUrl) != result.canonicalPageUrl ||
+            result.sourceVideoId?.toLongOrNull()?.let { it > 0 } != true ||
+            result.rights.snapshots.none { it.providerId == CommonsIdentity.PROVIDER_ID &&
+                it.sourceNamespace == CommonsIdentity.PROVIDER_ID && it.sourceItemId == result.sourceVideoId &&
+                it.sourcePageUrl == result.canonicalPageUrl }) return null
+        val app = context.applicationContext
+        return DiscoveryThumbnailCapability.fromCommonsRegistration(binding,
+            { managementRevision == expectedRevision && configured && maintenanceAvailable && current() }) { cancellation ->
+            AndroidDiscoveryThumbnails.read(app, url, cancellation)
+        }
+    }
     // Process owner; construction only on a background lane. Inspection may open it in zero-source mode.
     // A failed first attempt is retained. Neither reopening the page nor an absent root resets evidence.
     private val owner = ProviderRepositoryOwner { directory ->
@@ -39,7 +67,11 @@ object CommonsSourceRegistration {
             override fun rollback(expectedGeneration: Long, checkCancelled: () -> Unit) =
                 changed(repository().rollback(expectedGeneration, checkCancelled))
             private fun changed(result: ProviderRepositoryResult): ProviderRepositoryResult {
-                if (result is ProviderRepositoryResult.Success) changes.incrementAndGet()
+                if (result is ProviderRepositoryResult.Success) {
+                    changes.incrementAndGet()
+                    // Do not wait for the controller's polling refresh to withdraw old readers.
+                    thumbnailWithdrawals.forEach { callback -> try { callback() } catch (_: Exception) { } }
+                }
                 return result
             }
         }

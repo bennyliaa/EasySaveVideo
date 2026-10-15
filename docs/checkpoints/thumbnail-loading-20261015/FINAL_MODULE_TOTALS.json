@@ -1,0 +1,93 @@
+{
+  "core-model": {
+    "tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 3
+  },
+  "core-domain": {
+    "tests": 58,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 8
+  },
+  "ui-theme": {
+    "tests": 17,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 2
+  },
+  "discovery": {
+    "tests": 321,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 24
+  },
+  "save": {
+    "tests": 467,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 27
+  },
+  "recording": {
+    "tests": 127,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 6
+  },
+  "library": {
+    "tests": 280,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 24
+  },
+  "hls": {
+    "tests": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 1
+  },
+  "commons-provider": {
+    "tests": 247,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 16
+  },
+  "searxng-provider": {
+    "tests": 25,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 2
+  },
+  "verification-client": {
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 2
+  },
+  "verification-local": {
+    "tests": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "suites": 6
+  },
+  "app": {
+    "tests": 4025,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": 394
+  }
+}

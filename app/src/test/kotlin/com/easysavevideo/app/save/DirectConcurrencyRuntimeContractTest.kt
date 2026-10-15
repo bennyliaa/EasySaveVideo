@@ -10,17 +10,19 @@ class DirectConcurrencyRuntimeContractTest {
     @Test fun fixedTwoTransportsAndOneSerialNativeVerifierShareTheCoreAdmission() {
         val s=runtime
         assertTrue(s.contains("transport = FixedDirectTransferPool("))
-        assertEquals(2,Regex("SystemHttpsDirectTransfer\\(staging, leases, networkPolicy = networkPolicy\\)").findAll(s).count())
-        assertTrue(s.contains("SerialArtifactVerifier(AndroidLocalMp4Verifier("))
-        assertTrue(s.contains("admission = executionAdmission)"))
+        assertEquals(2,Regex("SystemHttpsDirectTransfer\\(staging, leases, networkPolicy = networkPolicy, movAdmissionEnabled = movAdmissionEnabled\\)").findAll(s).count())
+        assertTrue(s.contains("SerialArtifactVerifier(actualVerifier, clock)"))
+        assertTrue(s.contains("admission = executionAdmission,"))
+        assertTrue(s.contains("private val movAdmissionEnabled = false"))
+        assertTrue(s.contains("controlledDirect = ControlledDirectPipeline(directLocalGate, direct.storage, movAdmissionEnabled, conversionExecutionEnabled = false)"))
         assertTrue(s.contains("ThreadPoolExecutor(2, 2"))
         assertFalse(s.contains("private val executing = AtomicBoolean"))
     }
     @Test fun directDiskProbePrecedesLeaseAndDurableTaskCreationOffMain() {
         val s=runtime.substringAfter("private fun chooseDirect(").substringBefore("private fun prepareStream(")
         assertTrue(s.indexOf("command(mediaWork = true)")<s.indexOf("executionAdmission.tryAcquireDirect()"))
-        assertTrue(s.indexOf("executionAdmission.tryAcquireDirect()")<s.indexOf("leaseFor(candidate.url, browser)"))
-        assertTrue(s.indexOf("leaseFor(candidate.url, browser)")<s.indexOf("coordinator.submit(request, context, claim)"))
+        assertTrue(s.indexOf("executionAdmission.tryAcquireDirect()")<s.indexOf("captureNetworkSource(candidate.url, captured, browser, claim)"))
+        assertTrue(s.indexOf("captureNetworkSource(candidate.url, captured, browser, claim)")<s.indexOf("coordinator.submit(request, context, claim)"))
         assertTrue(s.contains("executionForegroundGeneration != generation"))
         assertTrue(s.contains("if (!result.existing)"))
     }

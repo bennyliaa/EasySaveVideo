@@ -10,6 +10,9 @@ import androidx.compose.runtime.setValue
 import com.easysavevideo.app.storage.AndroidDiscoveryStore
 import com.easysavevideo.core.model.*
 import com.easysavevideo.discovery.*
+import com.easysavevideo.app.discovery.thumbnail.AndroidDiscoveryThumbnails
+import com.easysavevideo.app.discovery.thumbnail.DiscoveryThumbnailImageState
+import com.easysavevideo.app.discovery.thumbnail.CommonsThumbnailPolicy
 import java.util.Locale
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -17,6 +20,7 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.atomic.AtomicLong
 
 /** UI never calls SQLite/coordinator locks. Only immutable snapshots cross onto the main thread. */
 data class DiscoveryUiState(
@@ -31,7 +35,7 @@ data class DiscoveryUiState(
     val nextPagePending: Boolean = false,
     val demo: Boolean = false,
     val storageUnavailable: Boolean = false,
-    val notice: String? = null,
+    val notice: DiscoveryNotice? = null,
     val commonsConfigured: Boolean = CommonsSourceRegistration.configured,
     val commonsEnabled: Boolean = false,
     val controlTarget: DiscoveryControlTarget? = null,
@@ -44,6 +48,7 @@ data class DiscoveryUiState(
     val osPower: DiscoveryOsPowerSnapshot = DiscoveryOsPowerSnapshot(),
     val sourceRevision: Long = -1L,
     val configurationIntent: Long = 0L,
+    val thumbnailGeneration: Long = -1L,
     val pendingCandidates: List<PendingVideoCandidate> = emptyList(),
     val needsExplicitSearch: Boolean = false,
     val verificationSummary: VerificationSummary? = null,
@@ -55,6 +60,8 @@ data class DiscoveryUiState(
 class AndroidDiscoveryController(context: Context, private val errors: ErrorSink) : AutoCloseable {
     private val store = AndroidDiscoveryStore(context)
     private val appContext = context.applicationContext
+    private val thumbnails = AndroidDiscoveryThumbnails()
+    private val thumbnailMaintenanceSubscription = CommonsSourceRegistration.subscribeThumbnailWithdrawal(thumbnails::withdraw)
     private var commonsEnabled: Boolean? = null
     private val io = Executors.newSingleThreadScheduledExecutor { runnable -> Thread(runnable, "esv-discovery-ui").apply { isDaemon = true } }
     private val main = Handler(Looper.getMainLooper())
@@ -109,9 +116,12 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     private var appliedOsPower = DiscoveryOsPowerSnapshot()
     private var demo = false
     private var settings = DiscoverySettings()
+    private val thumbnailSettingsInput = AtomicReference(DiscoverySettings())
+    private val thumbnailRequestedIntent = AtomicLong(0)
+    private val thumbnailAppliedIntent = AtomicLong(0)
     private var sortOrder = ResultSort.RELEVANCE
     private var pageIndex = 0
-    private var notice: String? = null
+    private var notice: DiscoveryNotice? = null
     private var unavailable = false
     private var initialized = false
     @Volatile private var managementRevision = -1L
@@ -202,6 +212,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         val intentGeneration = filterIntentGeneration
         pendingBrowserQuery = null
         filterSearchPending = true
+        thumbnails.withdraw()
         coordinator?.invalidateVerificationSummary()
         state = state.copy(verificationSummary = null)
         submit {
@@ -304,10 +315,11 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     private fun fenceSourceConfiguration() {
         if (closed.get()) return
         sourceIntent.incrementAndGet(); filterIntentGeneration++; filterSourceChangePending = true
+        thumbnails.withdraw()
         coordinator?.suspendSourcesImmediately()
         state = state.copy(page = null, results = emptyList(), pendingCandidates = emptyList(), pendingAdmission = emptyMap(), verificationSummary = null,
             controlTarget = null, historyStatistics = null,
-            notice = "正在核对来源配置；原查询不会自动发送。")
+            notice = DiscoveryNotice.SOURCE_CONFIGURATION_CHECKING)
     }
     private fun loadedSourceConfiguration(value: SearxngConfigurationState) {
         if (closed.get() || value.busy || !value.loaded) return
@@ -344,7 +356,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             val checkpoint = c.currentCheckpoint() ?: return@submit
             if (target != state.controlTarget || candidateUrl(target, candidate) == null) return@submit
             if (!c.verifyPending(checkpoint.stamp, candidate.candidateId))
-                notice = "当前未启动验证：请确认前台状态、来源及剩余预算；候选仍保留。"
+                notice = DiscoveryNotice.VERIFICATION_NOT_STARTED
             refresh()
         }
     }
@@ -358,6 +370,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     }
     fun setVisibility(isForeground: Boolean, discoveryVisible: Boolean) {
         if (!isForeground || !discoveryVisible) {
+            thumbnails.withdraw()
             pendingBrowserQuery = null
             pageLifecycle.incrementAndGet() // Retire intent now, before any queued refresh can resume.
             state = state.copy(verificationSummary = null, nextPagePending = false)
@@ -379,7 +392,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     fun setTaskPriority(saveActive: Boolean, recordingActive: Boolean) {
         if (this.saveActive == saveActive && this.recordingActive == recordingActive) return
         this.saveActive = saveActive; this.recordingActive = recordingActive
-        if (saveActive || recordingActive) coordinator?.suspendImmediately()
+        if (saveActive || recordingActive) { thumbnails.withdraw(); coordinator?.suspendImmediately() }
         submit { coordinator?.let(::applyLifecycle); refresh() }
     }
     /** Explicit debug scenarios only. Release has an empty allowlist and always refuses this call. */
@@ -399,6 +412,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     private fun offerPowerLocked(snapshot: DiscoveryOsPowerSnapshot) {
         val input = PowerInput(simulatedPower ?: DiscoveryPowerSelection(null, snapshot.signals), snapshot)
         if (desiredPower.getAndSet(input) == input) return
+        thumbnails.withdraw()
         val c = coordinator
         val revision = c?.suspendPowerImmediately()
         // Every changed observation fences immediately, before the bounded executor delivery.
@@ -416,65 +430,88 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         }
     }
 
-    fun updateSettings(value: DiscoverySettings) = submit {
-        val old = settings; settings = value
-        if (coordinator == null) { initialize(false); return@submit }
-        coordinator?.setMode(value.mode)
-        if (initialized && (old.repeatPolicy != value.repeatPolicy || old.pageSize != value.pageSize)) {
-            if (coordinator?.reviseView(value.repeatPolicy, value.pageSize, pageIndex) == true) {
-                pageIndex = 0; pageDemandPending = true; notice = "已保留当前页；新的重复策略和每页数量应用于后续页。"
-            } else notice = null
+    fun updateSettings(value: DiscoverySettings) {
+        if (closed.get()) return
+        val thumbnailIntent = if (CommonsThumbnailPolicy.settingsInputChanged(thumbnailSettingsInput, value))
+            beginThumbnailIntent() else null
+        submit {
+            try {
+                val old = settings; settings = value
+                if (coordinator == null) { initialize(false); return@submit }
+                coordinator?.setMode(value.mode)
+                if (initialized && (old.repeatPolicy != value.repeatPolicy || old.pageSize != value.pageSize)) {
+                    if (coordinator?.reviseView(value.repeatPolicy, value.pageSize, pageIndex) == true) {
+                        pageIndex = 0; pageDemandPending = true; notice = DiscoveryNotice.VIEW_SETTINGS_CHANGED
+                    } else notice = null
+                }
+                refresh()
+            } finally { thumbnailIntent?.let(thumbnailAppliedIntent::set) }
         }
-        refresh()
     }
     fun search(query: String, filters: SearchFilters) {
         val bounded = DiscoveryPresentationPolicy.boundedQuery(query.trim())
         if (!DiscoveryPresentationPolicy.validQuery(bounded)) {
-            submit { notice = "关键词含无效字符，请修改后重试。"; refresh(readOnly = true) }
+            submit { notice = DiscoveryNotice.INVALID_QUERY; refresh(readOnly = true) }
             return // Invalid local text cannot cancel or suspend the current valid search.
         }
+        val thumbnailIntent = beginThumbnailIntent()
         coordinator?.suspendImmediately()
         state = state.copy(verificationSummary = null)
         submit {
-            if (!initialized || unavailable) return@submit
-            pageIndex = 0; pageDemandPending = true; notice = null
-            coordinator?.start(SESSION, profile(bounded, filters))
-            coordinator?.let(::applyLifecycle); refresh()
+            try {
+                if (!initialized || unavailable) return@submit
+                pageIndex = 0; pageDemandPending = true; notice = null
+                coordinator?.start(SESSION, profile(bounded, filters))
+                coordinator?.let(::applyLifecycle); refresh()
+            } finally { thumbnailAppliedIntent.set(thumbnailIntent) }
         }
     }
-    fun updateSort(value: ResultSort) = submit {
-        if (!initialized || unavailable) return@submit
-        if (coordinator?.reviseView(settings.repeatPolicy, settings.pageSize, pageIndex, value) == true) {
-            sortOrder = value; pageIndex = 0; pageDemandPending = true
-            notice = "已保留当前页；新的本地排序应用于后续页。未知日期或时长排在已知值之后。"
-        } else notice = null
-        refresh()
+    fun updateSort(value: ResultSort) {
+        if (closed.get() || !state.ready || state.storageUnavailable) return
+        val thumbnailIntent = beginThumbnailIntent()
+        submit {
+            try {
+                if (!initialized || unavailable) return@submit
+                if (coordinator?.reviseView(settings.repeatPolicy, settings.pageSize, pageIndex, value) == true) {
+                    sortOrder = value; pageIndex = 0; pageDemandPending = true
+                    notice = DiscoveryNotice.SORT_CHANGED
+                } else notice = null
+                refresh()
+            } finally { thumbnailAppliedIntent.set(thumbnailIntent) }
+        }
     }
     fun movePage(delta: Int, target: DiscoveryControlTarget? = state.controlTarget, from: Int = state.pageIndex,
-        lifecycle: Long = pageLifecycle.get()) = submit {
-        val c = coordinator ?: return@submit
-        if (target == null || target != currentControlTarget(c) || from != pageIndex || lifecycle != pageLifecycle.get() ||
-            !foreground || !visible || managementRevision != CommonsSourceRegistration.managementRevision ||
-            delta !in setOf(-1, 1)) return@submit
-        val checkpoint = c.currentCheckpoint() ?: return@submit
-        if (delta == -1) {
-            nextPageDemand.cancel()
-            if (from > 0 && checkpoint.pool.pages.any { it.pageIndex == from - 1 }) pageIndex = from - 1
-        } else {
-            if (!DiscoveryPagerPolicy.canAdvance(from, checkpoint.pool.pages.size, c.status()) ||
-                !nextPageDemand.begin(target, from, lifecycle)) return@submit
-            if (lifecycle != pageLifecycle.get() || !foreground || !visible) {
-                nextPageDemand.cancel(); return@submit
-            }
-            val page = c.page(from + 1)
-            if (page != null) {
-                if (lifecycle == pageLifecycle.get() && foreground && visible) pageIndex = from + 1
-                nextPageDemand.cancel()
-            }
-            else c.requestMore()
+        lifecycle: Long = pageLifecycle.get()) {
+        if (closed.get() || target == null || target != state.controlTarget || from != state.pageIndex ||
+            lifecycle != pageLifecycle.get() || !foreground || !visible || delta !in setOf(-1, 1)) return
+        val thumbnailIntent = beginThumbnailIntent()
+        submit {
+            try {
+                val c = coordinator ?: return@submit
+                if (target != currentControlTarget(c) || from != pageIndex || lifecycle != pageLifecycle.get() ||
+                    !foreground || !visible || managementRevision != CommonsSourceRegistration.managementRevision ||
+                    delta !in setOf(-1, 1)) return@submit
+                val checkpoint = c.currentCheckpoint() ?: return@submit
+                if (delta == -1) {
+                    nextPageDemand.cancel()
+                    if (from > 0 && checkpoint.pool.pages.any { it.pageIndex == from - 1 }) pageIndex = from - 1
+                } else {
+                    if (!DiscoveryPagerPolicy.canAdvance(from, checkpoint.pool.pages.size, c.status()) ||
+                        !nextPageDemand.begin(target, from, lifecycle)) return@submit
+                    if (lifecycle != pageLifecycle.get() || !foreground || !visible) {
+                        nextPageDemand.cancel(); return@submit
+                    }
+                    val page = c.page(from + 1)
+                    if (page != null) {
+                        if (lifecycle == pageLifecycle.get() && foreground && visible) pageIndex = from + 1
+                        nextPageDemand.cancel()
+                    }
+                    else c.requestMore()
+                }
+                notice = null
+                refresh()
+            } finally { thumbnailAppliedIntent.set(thumbnailIntent) }
         }
-        notice = null
-        refresh()
     }
     fun cancelNextPage(target: DiscoveryControlTarget? = state.controlTarget) = submit {
         val c = coordinator ?: return@submit
@@ -483,7 +520,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         refresh(readOnly = true)
     }
     fun retry() = submit {
-        if (unavailable) { notice = "本地发现数据暂不可读，原数据已保留。地址栏仍可使用。"; refresh() }
+        if (unavailable) { notice = DiscoveryNotice.STORAGE_RETRY_UNAVAILABLE; refresh() }
         else if (nextPageDemand.targetPage(coordinator?.let(::currentControlTarget), pageIndex, pageLifecycle.get()) == null) {
             pageDemandPending = true; coordinator?.requestMore(); notice = null; refresh()
         }
@@ -523,7 +560,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             },
             afterWork = { result ->
                 if (!closed.get()) {
-                    notice = DiscoveryPresentationPolicy.controlOutcomeText(result.operation.request.action, result.outcome)
+                    notice = DiscoveryPresentationPolicy.controlOutcomeNotice(result.operation.request.action, result.outcome)
                     guarded {
                         if (result.outcome != DiscoveryControlOutcome.STALE) {
                             // A later status tick must not turn a local control into new demand.
@@ -622,6 +659,9 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         try { io.execute { complete() } } catch (_: java.util.concurrent.RejectedExecutionException) { complete() }
     }
     private fun refresh(readOnly: Boolean = false) {
+        // Capture before reading page/store state. Never label old work with a later withdrawal epoch.
+        val thumbnailSnapshotGeneration = CommonsThumbnailPolicy.publicationGeneration(
+            thumbnails.currentGeneration(), thumbnailRequestedIntent.get(), thumbnailAppliedIntent.get())
         if (!readOnly && coordinator != null && managementRevision != CommonsSourceRegistration.managementRevision) {
             initialize(demo); return
         }
@@ -654,9 +694,41 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             admittedProviderDescriptors = registry.all().map { it.descriptor }, powerScenarioId = appliedPowerScenario,
             osPower = appliedOsPower,
             sourceRevision = managementRevision, configurationIntent = appliedSourceIntent,
+            thumbnailGeneration = thumbnailSnapshotGeneration,
             pendingCandidates = c.pendingCandidates(), pendingAdmission = c.pendingCandidates().associate { it.candidateId to verificationConfiguration.localSources.status(CandidateUrl(it.canonicalPageUrl)) },
             localSourceAdmission = verificationConfiguration.localSources.status, verificationGeneration = c.verificationGeneration(), verificationSummary = c.verificationSummary(), needsExplicitSearch = updated?.queryAuthorized == false))
     }
+    /** Main-thread viewport only; no raw URL or generic image reader enters the UI contract. */
+    internal fun updateThumbnailViewport(page: PageSnapshot, results: List<VideoSearchResult>, visibleIds: List<String>) {
+        check(Looper.myLooper() == Looper.getMainLooper())
+        val value = state
+        val source = sourceIntent.get()
+        val lifecycle = pageLifecycle.get()
+        val allowed = thumbnailIntentApplied() && thumbnailNetworkAllowed() && value.ready && !value.storageUnavailable && !value.demo &&
+            !value.needsExplicitSearch && !filterControlsBusy && value.page == page && value.results == results &&
+            value.commonsConfigured && value.commonsEnabled && value.configurationIntent == source &&
+            value.sourceRevision == CommonsSourceRegistration.managementRevision &&
+            value.thumbnailGeneration == thumbnails.currentGeneration() && value.status?.state != DiscoveryState.SUSPENDED &&
+            value.admittedProviderDescriptors.any { it.id == com.easysavevideo.commons.CommonsIdentity.PROVIDER_ID }
+        thumbnails.update(page, results, visibleIds, allowed, value.thumbnailGeneration) { binding, result, epoch ->
+            CommonsSourceRegistration.thumbnailCapability(appContext, binding, result, value.sourceRevision) {
+                thumbnails.isCurrent(epoch) && thumbnailIntentApplied() && thumbnailNetworkAllowed() && sourceIntent.get() == source &&
+                    pageLifecycle.get() == lifecycle && !closed.get()
+            }
+        }
+    }
+    private fun beginThumbnailIntent(): Long {
+        val intent = thumbnailRequestedIntent.incrementAndGet()
+        thumbnails.withdraw()
+        return intent
+    }
+    private fun thumbnailIntentApplied(): Boolean = thumbnailRequestedIntent.get() == thumbnailAppliedIntent.get()
+    private fun thumbnailNetworkAllowed(): Boolean = !closed.get() && foreground && visible && !saveActive && !recordingActive &&
+        DiscoveryPowerPolicy.evaluate(desiredPower.get().selection.signals, DiscoveryMode.BALANCED).allowsRequests
+    internal fun thumbnailImage(page: PageSnapshot?, result: VideoSearchResult): DiscoveryThumbnailImageState = thumbnails.state(page, result)
+    internal val thumbnailRequestGeneration: Long get() = thumbnails.requestGeneration
+    internal fun clearThumbnailViewport() { thumbnails.hideViewport() }
+
     private fun profile(query: String, filters: SearchFilters): SearchProfile = DiscoveryPresentationPolicy.profile(
         query, Locale.getDefault().toLanguageTag(), filters, settings.repeatPolicy, demo).copy(sortOrder = sortOrder)
     private val uiDelivery = DiscoveryLatestDelivery<DiscoveryUiState>(
@@ -684,6 +756,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
         localControlOwner.close()
+        thumbnailMaintenanceSubscription.close(); thumbnails.close()
         pendingBrowserQuery = null
         verificationSubscription?.close(); verificationSubscription = null
         sourceSubscription?.close(); sourceSubscription = null

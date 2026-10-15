@@ -6,6 +6,7 @@ import com.easysavevideo.app.save.normalization.MovRemuxOutput
 import com.easysavevideo.core.model.OperationContext
 import com.easysavevideo.save.SaveError
 import com.easysavevideo.save.SaveFailure
+import com.easysavevideo.save.SaveRecord
 import java.io.IOException
 import java.nio.ByteBuffer
 
@@ -22,9 +23,11 @@ internal class OwnedMovRemuxAttempt internal constructor(
     internal val sourceIdentity: String,
     internal val sourceTransferSha256: String,
     private val thread: Thread,
+    internal val reservation: NormalizationIoReservations.Token,
+    internal val expectedRecord: SaveRecord,
 ) : MovRemuxFiles, AutoCloseable {
     val key: NormalizationKey get() = writingRow.key
-    private var revoked = false
+    @Volatile private var revoked = false
     private var failed = false
     private var consumed = false
     private var finishing = false
@@ -37,6 +40,7 @@ internal class OwnedMovRemuxAttempt internal constructor(
     private var reader: Input? = null
     internal var finalizedIdentity: NormalizationFileIdentity? = null; private set
     private val lock get() = files.ownerLock
+    private val operationFiles = files.forOperation(::check, reservation)
 
     private fun check() = synchronized(lock) {
         if (Thread.currentThread() !== thread || revoked || failed || consumed) fail()
@@ -44,7 +48,7 @@ internal class OwnedMovRemuxAttempt internal constructor(
     }
     private fun <T> operation(block: () -> T): T {
         synchronized(lock) { check(); calls++ }
-        try { return block() }
+        try { return block().also { check() } }
         catch (failure: Throwable) {
             synchronized(lock) { failed = true }
             // A failed positional syscall has unknown exceptional progress. Do not retry or
@@ -52,32 +56,43 @@ internal class OwnedMovRemuxAttempt internal constructor(
             if (failure is IOException) owner.checkStop(context)
             throw failure
         }
-        finally { synchronized(lock) { calls-- }; owner.retire(this) }
+        finally {
+            synchronized(lock) { calls-- }
+            // A foreign cancel may request close, but only this opening worker drains it.
+            if (revoked && Thread.currentThread() === thread) close() else owner.retire(this)
+        }
     }
-    override fun openSource(): MovRemuxInput = operation { synchronized(lock) {
-        if (sourceTried || outputTried || readerTried) fail()
-        sourceTried = true
-        val descriptor = files.open(key, NormalizationRole.PRIMARY, NormalizationDescriptorIo.Open.READ, raw.identity, ::check, ::released)
-        Input(NormalizationRole.PRIMARY, raw.identity, descriptor).also { source = it }
-    } }
-    override fun openEmptyOutput(): MovRemuxOutput = operation { synchronized(lock) {
-        if (outputTried || readerTried || source == null || source!!.releaseConfirmed) fail()
-        outputTried = true // An attempted open consumes the only grant, including open failure.
-        files.validate(key, NormalizationRole.OUTPUT, emptyOutput)
+    override fun openSource(): MovRemuxInput = operation {
+        synchronized(lock) {
+            if (sourceTried || outputTried || readerTried) fail()
+            sourceTried = true
+        }
+        val descriptor = operationFiles.open(key, NormalizationRole.PRIMARY, NormalizationDescriptorIo.Open.READ, raw.identity, ::released)
+        Input(NormalizationRole.PRIMARY, raw.identity, descriptor).also { synchronized(lock) { source = it } }
+    }
+    override fun openEmptyOutput(): MovRemuxOutput = operation {
+        synchronized(lock) {
+            if (outputTried || readerTried || source == null || source!!.releaseConfirmed) fail()
+            outputTried = true
+        }
+        operationFiles.validate(key, NormalizationRole.OUTPUT, emptyOutput)
         if (emptyOutput.stat.size != 0L) fail()
-        val descriptor = files.open(key, NormalizationRole.OUTPUT, NormalizationDescriptorIo.Open.WRITE_EXISTING, emptyOutput, ::check, ::released)
-        Output(descriptor).also { sink = it }
-    } }
-    override fun openFinalizedOutput(): MovRemuxInput = operation { synchronized(lock) {
-        val output = sink ?: fail()
-        if (readerTried || !output.releaseConfirmed) fail()
-        readerTried = true
-        val identity = files.capture(key, NormalizationRole.OUTPUT, outputMaximum)
+        val descriptor = operationFiles.open(key, NormalizationRole.OUTPUT, NormalizationDescriptorIo.Open.WRITE_EXISTING, emptyOutput, ::released)
+        Output(descriptor).also { synchronized(lock) { sink = it } }
+    }
+    override fun openFinalizedOutput(): MovRemuxInput = operation {
+        val output = synchronized(lock) {
+            val value = sink ?: fail()
+            if (readerTried || !value.releaseConfirmed) fail()
+            readerTried = true
+            value
+        }
+        val identity = operationFiles.capture(key, NormalizationRole.OUTPUT, outputMaximum)
         if (identity.stat != output.expected || !identity.stat.sameInode(emptyOutput.stat)) fail()
-        val descriptor = files.open(key, NormalizationRole.OUTPUT, NormalizationDescriptorIo.Open.READ, identity, ::check, ::released)
-        Input(NormalizationRole.OUTPUT, identity, descriptor).also { reader = it; finalizedIdentity = identity }
-    } }
-    override fun availableBytes(): Long = operation { files.availableBytes() }
+        val descriptor = operationFiles.open(key, NormalizationRole.OUTPUT, NormalizationDescriptorIo.Open.READ, identity, ::released)
+        Input(NormalizationRole.OUTPUT, identity, descriptor).also { synchronized(lock) { reader = it; finalizedIdentity = identity } }
+    }
+    override fun availableBytes(): Long = operation { operationFiles.availableBytes() }
 
     internal fun consumeForFinish() = synchronized(lock) {
         check()
@@ -94,6 +109,7 @@ internal class OwnedMovRemuxAttempt internal constructor(
     override fun close() {
         val handles = synchronized(lock) {
             revoked = true
+            if (reservation.registered && reservation.stage == NormalizationIoReservations.Stage.REMUX) owner.reservations.revoke(reservation)
             listOfNotNull<AutoCloseable>(reader, sink, source)
         }
         var uncertain = false
@@ -112,22 +128,22 @@ internal class OwnedMovRemuxAttempt internal constructor(
         override val length: Long get() = identity.stat.size
         override val releaseConfirmed: Boolean get() = descriptor.releaseConfirmed
         override fun validateIdentity() = operation { descriptor.call {
-            check(); files.validate(key, role, identity, descriptor)
+            check(); operationFiles.validate(key, role, identity, descriptor)
         } }
         override fun readAt(offset: Long, target: ByteArray, targetOffset: Int, length: Int) = operation {
             if (offset < 0 || offset > this.length || length < 0 || length.toLong() > this.length - offset ||
                 targetOffset < 0 || targetOffset > target.size || length > target.size - targetOffset) throw IOException("NORMALIZATION_READ_RANGE")
             descriptor.call {
-                check(); files.validate(key, role, identity, descriptor)
+                check(); operationFiles.validate(key, role, identity, descriptor)
                 var done = 0
                 while (done < length) {
-                    check(); files.validate(key, role, identity, descriptor)
+                    check(); operationFiles.validate(key, role, identity, descriptor)
                     val requested = minOf(CHUNK, length - done)
                     // EINTR/InterruptedIOException are bounded failures. Never infer partial progress.
                     val count = files.io.pread(descriptor.handle, target, targetOffset + done, requested, offset + done)
                     if (count <= 0 || count > requested) throw IOException("NORMALIZATION_READ_PROGRESS")
                     done += count
-                    check(); files.validate(key, role, identity, descriptor)
+                    check(); operationFiles.validate(key, role, identity, descriptor)
                 }
             }
         }
@@ -139,14 +155,14 @@ internal class OwnedMovRemuxAttempt internal constructor(
         internal var expected = emptyOutput.stat; private set
         override val releaseConfirmed: Boolean get() = descriptor.releaseConfirmed
         override fun isOpen(): Boolean = !descriptor.closeRequested && !descriptor.releaseConfirmed
-        private fun validate() { check(); files.validate(key, NormalizationRole.OUTPUT, emptyOutput, descriptor, expected) }
+        private fun validate() { check(); operationFiles.validate(key, NormalizationRole.OUTPUT, emptyOutput, descriptor, expected) }
         private fun extent(value: Long) {
             if (value !in 0..outputMaximum) throw SaveFailure(SaveError.BYTE_LIMIT_EXCEEDED)
         }
         private fun updated(size: Long) {
             val after = files.io.fstat(descriptor.handle)
             if (!after.sameInode(emptyOutput.stat) || after.links != 1L || after.size != size || after.size > outputMaximum) fail()
-            files.validate(key, NormalizationRole.OUTPUT, emptyOutput, descriptor, after)
+            operationFiles.validate(key, NormalizationRole.OUTPUT, emptyOutput, descriptor, after)
             expected = after
         }
         override fun getPosition(): Long = operation { descriptor.call { validate(); position } }
@@ -176,7 +192,7 @@ internal class OwnedMovRemuxAttempt internal constructor(
                 val end = position + count // Safe after subtraction bounds above.
                 val growth = (end - expected.size).coerceAtLeast(0)
                 // Charge sparse gap as well as bytes; overwrites still require chunk headroom.
-                if (files.availableBytes() < maxOf(growth, count.toLong())) throw SaveFailure(SaveError.STORAGE_FULL)
+                if (operationFiles.availableBytes() < maxOf(growth, count.toLong())) throw SaveFailure(SaveError.STORAGE_FULL)
                 val copy = source.duplicate(); copy.limit(copy.position() + count); copy.get(bytes, 0, count)
                 val written = files.io.pwrite(descriptor.handle, bytes, 0, count, position)
                 if (written <= 0 || written > count) throw IOException("NORMALIZATION_WRITE_PROGRESS")

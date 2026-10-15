@@ -47,6 +47,7 @@ class StreamAlternativeProposal internal constructor(
     internal val expectedAudio: Boolean,
     internal val operation: OperationContext,
     internal val expiresAtEpochMillis: Long,
+    internal val privateSeed: PrivateNetworkSourceSeed? = null,
 ) {
     private val consumed = AtomicBoolean(false)
     private val revoked = AtomicBoolean(false)

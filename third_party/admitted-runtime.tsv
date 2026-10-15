@@ -1,9 +1,10 @@
-# Exact reviewed Android runtime; UI scoped admission 2026-10-11
+# Exact reviewed Android runtime; scoped Coil core-only graph checkpoint 2026-10-15
 androidx.activity:activity-compose:1.10.1	activity-compose-1.10.1.aar	f89af1b26ccc834634387c857c2dd4f4654d37650890039c527c2fed07db6a61
 androidx.activity:activity-ktx:1.10.1	activity-ktx-1.10.1.aar	f396f58dbd772c065b873696b74a3d4d087554b3766280e63b49b25dbb53ab16
 androidx.activity:activity:1.10.1	activity-1.10.1.aar	b62b528c917de9be497eb6f88830197c20e9d21267c3916c613492e5ee837d4d
 androidx.annotation:annotation-experimental:1.4.1	annotation-experimental-1.4.1.aar	6bd4c7c7476f8260cd3bdbb81183583e93fc9f790c27dea7dc314181cbf87aa0
 androidx.annotation:annotation-jvm:1.9.1	annotation-jvm-1.9.1.jar	1e343917ebf27ba96fe4dc52b1cad7fd32b738fbc6355bb6cd5b3b305d7212d0
+androidx.appcompat:appcompat-resources:1.7.1	appcompat-resources-1.7.1.aar	8e2db31224ca53b108c784da2b361959062716d416b210cfef3d5a3828306df0
 androidx.arch.core:core-common:2.2.0	core-common-2.2.0.jar	65308a06b1c00ee186cb9e19321383f043b993813f1522c47f4a3e3303bdba41
 androidx.arch.core:core-runtime:2.2.0	core-runtime-2.2.0.aar	a1be5e0caa2b07623862af6ae21b3ab0718123245184d0e30dea81b53f990a47
 androidx.autofill:autofill:1.0.0	autofill-1.0.0.aar	c9468f56e05006ea151a426c54957cd0799b8b83a579d2846dd22061f33e5ecd
@@ -26,12 +27,12 @@ androidx.compose.ui:ui-text-android:1.8.3	ui-text-release.aar	3d8191b48686e48a84
 androidx.compose.ui:ui-unit-android:1.8.3	ui-unit-release.aar	1bc7011b35339e016b61787e6ef854817b11d35ea3a70b47142d7d3336e6f386
 androidx.compose.ui:ui-util-android:1.8.3	ui-util-release.aar	123818b76aa874db83cc9e842dd9fa14eae4c5f82bec1d7336bd354d98651dfe
 androidx.concurrent:concurrent-futures:1.2.0	concurrent-futures-1.2.0.jar	4810315a798690b5d3bb40c92bcd41c045fd2c36bbfc50b27cbac3d6a0eda190
-androidx.core:core-ktx:1.13.1	core-ktx-1.13.1.aar	19ba50d094c7368ede1b4ccf1195ceb83e35970736593f823e5af716f8d05d70
+androidx.core:core-ktx:1.15.0	core-ktx-1.15.0.aar	c72c97ff4a32308bcaf3061eea5ddf33455ce413cee4aa1d5c82440c5759d4bc
 androidx.core:core-viewtree:1.0.0	core-viewtree-1.0.0.aar	dc1b678d58ebcf2bfa1587be68ff826694ce3d221251b9ef30d4d4b36297e6de
-androidx.core:core:1.13.1	core-1.13.1.aar	2c27de199535675005553066597a4b20fa1eea7c228ab4ef6b32b5fe39ca1f59
+androidx.core:core:1.15.0	core-1.15.0.aar	432b85a1974076e14b487ece4a28c59a84f1b9efc3fc8be72cd7f05d32055e51
 androidx.customview:customview-poolingcontainer:1.0.0	customview-poolingcontainer-1.0.0.aar	3584102fc49bf399c56e3b7be4bfe12000c46112320cd8cf85cc0a8f93f3e752
 androidx.emoji2:emoji2:1.4.0	emoji2-1.4.0.aar	433febd3434a45667176c76a64f3f205ca6335a6b544c5b5d57f25a38a375242
-androidx.exifinterface:exifinterface:1.3.6	exifinterface-1.3.6.aar	1804105e9e05fdd8f760413bad5de498c381aa329f4f9d94c851bc891ac654c6
+androidx.exifinterface:exifinterface:1.4.1	exifinterface-1.4.1.aar	17e17a6b86bb54074d3a7ecfa695ab920eaff4cf667a8371ed82e377580cfcf6
 androidx.graphics:graphics-path:1.0.1	graphics-path-1.0.1.aar	8ca4032b6d79b351f0b59ad4b580eddbb9423e1652f7c958830687f1eee2ec03
 androidx.interpolator:interpolator:1.0.0	interpolator-1.0.0.aar	33193135a64fe21fa2c35eec6688f1a76e512606c0fc83dc1b689e37add7732a
 androidx.lifecycle:lifecycle-common-java8:2.8.7	lifecycle-common-java8-2.8.7.jar	c6deada2fac53b8ea6523dbda77597b128006674616f140f04df23264c6d1aa3
@@ -61,12 +62,15 @@ androidx.navigation:navigation-common:2.8.9	navigation-common-2.8.9.aar	3541faa3
 androidx.navigation:navigation-compose:2.8.9	navigation-compose-2.8.9.aar	d805b7340a2c1794a8baa93d0623ae502e22921679a3aa8422a1a6b855bad4c2
 androidx.navigation:navigation-runtime-ktx:2.8.9	navigation-runtime-ktx-2.8.9.aar	62a9f256528e8505f276f06e5a7bea3ae4b3c56a13aabf54ff69e410750aa3cb
 androidx.navigation:navigation-runtime:2.8.9	navigation-runtime-2.8.9.aar	3f24fb9da8786c6c5e356a86d77f63e2ce3473851cfc28d931f15157a0c35a5c
-androidx.profileinstaller:profileinstaller:1.4.0	profileinstaller-1.4.0.aar	d502141fcce902430f62b674c32aecd0f75262e7ee2cd15c74adb617cd13130a
+androidx.profileinstaller:profileinstaller:1.4.1	profileinstaller-1.4.1.aar	b519f9317ded1e2c1c2993038c0692e30da326ca99097d9331ff2d3a5861a428
 androidx.savedstate:savedstate-ktx:1.2.1	savedstate-ktx-1.2.1.aar	8553f87e7136c24ec5243560f48f1c32cba56daa77722f89589a5cafcb8f7894
 androidx.savedstate:savedstate:1.2.1	savedstate-1.2.1.aar	21a7d4bcf6bdb94ad7b9283801529300b4fbb8808ca4f191e0cdce6fd8e4705a
 androidx.startup:startup-runtime:1.1.1	startup-runtime-1.1.1.aar	e0a6329a371262fe4c450372b70fdaf33b769ef6917094723787cfce896b1dd3
-androidx.tracing:tracing:1.0.0	tracing-1.0.0.aar	07b8b6139665b884a162eccf97891ca50f7f56831233bf25168ae04f7b568612
+androidx.tracing:tracing:1.2.0	tracing-1.2.0.aar	6faa90390d1fdbf0adb9a99bf99de67b94c6c6f35aea9510593a9d17973736a2
+androidx.vectordrawable:vectordrawable-animated:1.1.0	vectordrawable-animated-1.1.0.aar	76da2c502371d9c38054df5e2b248d00da87809ed058f3363eae87ce5e2403f8
+androidx.vectordrawable:vectordrawable:1.1.0	vectordrawable-1.1.0.aar	46fd633ac01b49b7fcabc263bf098c5a8b9e9a69774d234edcca04fb02df8e26
 androidx.versionedparcelable:versionedparcelable:1.1.1	versionedparcelable-1.1.1.aar	57e8d93260d18d5b9007c9eed3c64ad159de90c8609ebfc74a347cbd514535a4
+androidx.webkit:webkit:1.17.1	webkit-1.17.1.aar	29dc7a9a32614828c97cf85951eb43c9e455157ab411e5e77d2ca4e72da28a36
 androidx.window:window:1.0.0	window-1.0.0.aar	3212985be4127373ca4d0ea7f8b81a250ae2105e924f7940105d067a0f9ac130
 com.google.code.findbugs:jsr305:3.0.2	jsr305-3.0.2.jar	766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7
 com.google.code.gson:gson:2.13.2	gson-2.13.2.jar	dd0ce1b55a3ed2080cb70f9c655850cda86c206862310009dcb5e5c95265a5e0
@@ -77,14 +81,15 @@ com.google.guava:guava:33.3.1-android	guava-33.3.1-android.jar	2c3e41d1b380f2044
 com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava	listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar	b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99
 com.google.j2objc:j2objc-annotations:3.0.0	j2objc-annotations-3.0.0.jar	88241573467ddca44ffd4d74aa04c2bbfd11bf7c17e0c342c94c9de7a70a7c64
 com.squareup.okhttp3:okhttp:4.12.0	okhttp-4.12.0.jar	b1050081b14bb7a3a7e55a4d3ef01b5dcfabc453b4573a4fc019767191d5f4e0
-com.squareup.okio:okio-jvm:3.6.0	okio-jvm-3.6.0.jar	67543f0736fc422ae927ed0e504b98bc5e269fda0d3500579337cb713da28412
+com.squareup.okio:okio-jvm:3.15.0	okio-jvm-3.15.0.jar	483dc383b1049d220892322a0d6a4308425f09bb05b48c43d4eaa9ff82b1cd16
 dev.skinkit:skinkit-contract:1.0.0	skinkit-contract-1.0.0.jar	4bbb7cf74f53e64f4adc7bd42d10b423f38dc961ba6a0dad145c16327007a083
 dev.skinkit:skinkit-default:1.0.0	skinkit-default-1.0.0.jar	b0f7b327ec9c9228de6fed2409b883b5f55973d1f65c3d69a96c45a8f2ee15df
+io.coil-kt.coil3:coil-core-android:3.3.0	coil-core-release.aar	b57fcf001178db5ff84683e7d11818bcda6c115d9d530443d382b3a8b3f6806b
 org.checkerframework:checker-qual:3.43.0	checker-qual-3.43.0.jar	3fbc2e98f05854c3df16df9abaa955b91b15b3ecac33623208ed6424640ef0f6
 org.jetbrains.kotlin:kotlin-stdlib:2.2.10	kotlin-stdlib-2.2.10.jar	9c67cc79efd6b9215b49d2a4308f5f3433537376c7c88e89bdd6729bd096e61a
-org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0	kotlinx-coroutines-android-1.9.0.jar	bd783acd2f9738845d58380f46f45b5cde95d0cb03027d56725338b26bfc4d72
-org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0	kotlinx-coroutines-core-jvm-1.9.0.jar	ad89c2892235e670f222d819cb3d81188143cb19a05b59df9889ae4269f5c70a
-org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.9.0	kotlinx-coroutines-guava-1.9.0.jar	ca68323328a85a2df3c03429d5e7b124bc784f07fbace958399a5bba4118d7a0
+org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2	kotlinx-coroutines-android-1.10.2.jar	e713f1f874244115a07571065cffa0f24f5e78300e9720fea16de3af1d75fd41
+org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2	kotlinx-coroutines-core-jvm-1.10.2.jar	5ca175b38df331fd64155b35cd8cae1251fa9ee369709b36d42e0a288ccce3fd
+org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.10.2	kotlinx-coroutines-guava-1.10.2.jar	d54c4c9f9f2d3612afa5801daf70a7b68687f78d8936360341f1a89b535abfee
 org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.6.3	kotlinx-serialization-core-jvm-1.6.3.jar	29c821a8d4e25cbfe4f2ce96cdd4526f61f8f4e69a135f9612a34a81d93b65f1
 org.jetbrains:annotations:23.0.0	annotations-23.0.0.jar	7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05
 org.jsoup:jsoup:1.21.2	jsoup-1.21.2.jar	f05496e255734759f0d4b5632da7b24f81313147c78c69e90ad045d096191344

@@ -1,5 +1,7 @@
 package com.easysavevideo.app.save
 
+import com.easysavevideo.app.save.normalization.MovProfileProbe
+import com.easysavevideo.app.save.normalization.OriginalMovFixtures
 import com.easysavevideo.save.SaveError
 import com.easysavevideo.save.SaveFailure
 import org.junit.Assert.*
@@ -91,4 +93,28 @@ class FixedDirectOutputInputTest {
         failure(SaveError.CANCELLED) { stopped.sha256() }
         assertTrue(input.fd.valid())
     }
+
+    @Test fun audioRawScanAndFinalHashReadTheSameDescriptorAfterActualSampleMutation() {
+        val bytes = OriginalMovFixtures.build(OriginalMovFixtures.Options(quickTime = false, audio = true))
+        val file = File.createTempFile("direct-audio-owned-", ".mp4")
+        try {
+            file.writeBytes(bytes)
+            RandomAccessFile(file, "r").use { input ->
+                val captured = DirectFileIdentity(7, 11, input.length())
+                val fixed = FixedDirectOutputInput(input, captured, { captured.copy(size = input.length()) }, {})
+                val before = fixed.sha256()
+                val profile = MovProfileProbe.scanCanonicalMp4(fixed)
+                val reference = requireNotNull(profile.audio).samples[1]
+                val observed = MovProfileProbe.readAudioSample(fixed, profile, 1)
+                RandomAccessFile(file, "rw").use { writer ->
+                    writer.seek(reference.offset)
+                    writer.writeByte(observed[0].toInt() xor 1)
+                }
+                assertFalse(observed.contentEquals(MovProfileProbe.readAudioSample(fixed, profile, 1)))
+                failure(SaveError.RESOURCE_CHANGED) { fixed.requireHash(before) }
+                assertTrue(input.fd.valid())
+            }
+        } finally { file.delete() }
+    }
+
 }

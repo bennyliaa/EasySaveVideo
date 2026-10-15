@@ -1,0 +1,242 @@
+[
+  {
+    "path": "AGENTS.md",
+    "bytes": 4338,
+    "sha256": "1f82be791e6d1391638dfaee5db4eb63deb04e054274e47936846f8dd29378f7",
+    "git_sha": "36013bd3b42833fd87e8ea4a226db3317bdf7725",
+    "base_git_sha": "792bbe9cea93a24d7997c6f6cc339fffa5a8550f",
+    "binary": false
+  },
+  {
+    "path": "app/build.gradle.kts",
+    "bytes": 18147,
+    "sha256": "53c143474d0cdb1ff57183c794ba0e5f37f1cb5e82fbb1be3152c2667d72376d",
+    "git_sha": "ead34c70a8796359112a743ca8002a631a887e09",
+    "base_git_sha": "80b90b53f285ba5b189d8c7c6c3733272639ab6d",
+    "binary": false
+  },
+  {
+    "path": "app/gradle.lockfile",
+    "bytes": 46937,
+    "sha256": "4173575429c82198195dab5309aea8be1d351fff00df2603795ecbb0d9ddbb8a",
+    "git_sha": "bd2e55e36b3b0f02f7bdf732aa80aabaab4adc5b",
+    "base_git_sha": "de480728652e3b8cb538f0cb888af357f7c5d64d",
+    "binary": false
+  },
+  {
+    "path": "app/src/main/assets/third-party-notices.txt",
+    "bytes": 575913,
+    "sha256": "a7ceffffb383ef2953b457a8f02ec2824c691b1500158bc399d38f862e58fb8f",
+    "git_sha": "ee32674806864eee3bd1d3e20f929859cf0237de",
+    "base_git_sha": "b113f1653901cc722149509e494ba9034af2cbf6",
+    "binary": false
+  },
+  {
+    "path": "docs/ui/implementation/ORIGINAL_REQUIREMENTS_REMAINING_QUEUE_20261014.md",
+    "bytes": 18930,
+    "sha256": "a6d45eb3230481154f8440662ff4c1d387ee5812437b5d8a7efd0a3405122091",
+    "git_sha": "4e3bc031325b830749712373dc1888da7e514ccd",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "docs/ui/implementation/WEBKIT_ADMISSION_20261014.md",
+    "bytes": 3260,
+    "sha256": "bc0791af5b49cb19b3b150c9ed2f10618caf5dbf8633027fa89242a5073d3276",
+    "git_sha": "0686114205d52397efa75e01af9a9a745c5f41f2",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "docs/ui/implementation/webkit-admission-20261014/BOUNDARIES.json",
+    "bytes": 421,
+    "sha256": "bcfeb662c64e6d4d0b6bd34913f501a6de3da0ba95912f99026a3f2ff76199a2",
+    "git_sha": "242e4bb8fc1638ccef9fcc262c1769ac1540e97c",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "docs/ui/implementation/webkit-admission-20261014/LINT_SUMMARY.json",
+    "bytes": 107,
+    "sha256": "43dcaf812889d7286a8adcaea0e4cf273a142d12cc32c2c903f9fb85750ba093",
+    "git_sha": "a37247f4f398aaba035d5425872b796b2073ca71",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "docs/ui/implementation/webkit-admission-20261014/LOCK_DIFF.json",
+    "bytes": 27468,
+    "sha256": "3b32a5a3c2c1bacd333bfbfb88f9f0f9f4e4941160a646a9cb6712809e99c67e",
+    "git_sha": "3a631f867ccf15e4afb125450686358e05d24e0e",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "docs/ui/implementation/webkit-admission-20261014/RUNTIME_SUMMARY.json",
+    "bytes": 473,
+    "sha256": "24ecd157e12dffb950beb1ef4962fe1db23e84967cd7d1561a58277c74673897",
+    "git_sha": "f5a4bfd979cae9b291eec486896e98f690315f8d",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "docs/ui/implementation/webkit-admission-20261014/TASK_STATUS.json",
+    "bytes": 9228,
+    "sha256": "5f3e45372ccd9907fe13582e935be8f22996aadf6eb5f902f0e3c389ceebda4e",
+    "git_sha": "638e20eabd676d9bbe4c4bea55a331ab4a25057a",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "docs/ui/implementation/webkit-admission-20261014/TEST_SUMMARY.json",
+    "bytes": 1403,
+    "sha256": "9ca008c0966a6faa22261912e2b9930a03ad5781d3c83311b17ff8af1837e244",
+    "git_sha": "1e20228980d875e5960246fb74068ab688d5749f",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "docs/ui/implementation/webkit-admission-20261014/debug-runtime.tsv",
+    "bytes": 12346,
+    "sha256": "99f9de8933f2b979ee47afe303ffc3425867075093f34b4675b4c3accf81d96a",
+    "git_sha": "41e87f8d07d786bd4dbd23dd4bf520781158aede",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "docs/ui/implementation/webkit-admission-20261014/release-runtime.tsv",
+    "bytes": 12346,
+    "sha256": "99f9de8933f2b979ee47afe303ffc3425867075093f34b4675b4c3accf81d96a",
+    "git_sha": "41e87f8d07d786bd4dbd23dd4bf520781158aede",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "gradle/verification-metadata.xml",
+    "bytes": 178111,
+    "sha256": "35a7c14069d2288ec9f83e6de6b89204b39023295bee1f0c1674d0fb990c0dee",
+    "git_sha": "e0b2d4f9e6d977741eeddebcc0bc7df1f81e1477",
+    "base_git_sha": "e94a92694c5153f04aca6d4b853e5a44969fe7e3",
+    "binary": false
+  },
+  {
+    "path": "scripts/check-webkit-admission.py",
+    "bytes": 3308,
+    "sha256": "ca1b5f4f60e3540004a2deed56ae04db516d3cd29ae06b13082ab88c5318d70a",
+    "git_sha": "5cc20ce5c3847eb433f7e60f40a29dd2cd252db0",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "settings.gradle.kts",
+    "bytes": 4096,
+    "sha256": "cac565d100494b96fca20367dfd1d0b9dc5e2374e1ec48555c10e0a6e2d82fc6",
+    "git_sha": "e51a780ca6fc7e5e464be7c7104dba8dcda637fe",
+    "base_git_sha": "d0eec4cfa05d166808e761fcc0a1d695437d30a6",
+    "binary": false
+  },
+  {
+    "path": "third_party/admitted-runtime.tsv",
+    "bytes": 12411,
+    "sha256": "a18548e7ed1f26809d46a9bbedc795f4b5d2c6ae3aef3794ad3baa057160ccb1",
+    "git_sha": "f443355808082944c01b2a0043ee4512929e8a1d",
+    "base_git_sha": "17057075ec6a81e28be17089f8e41f605088efaa",
+    "binary": false
+  },
+  {
+    "path": "third_party/candidates/webkit-1.17.1/CHROMIUM-LICENSE.txt",
+    "bytes": 1536,
+    "sha256": "368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b",
+    "git_sha": "2249a28657f86c645f8978b75babc1bd52aca318",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "third_party/candidates/webkit-1.17.1/EVALUATION.md",
+    "bytes": 14368,
+    "sha256": "42d26cbb18adafb81ee71e2da28a9a7fca9c382739f7ba3b32e084db4615ac0d",
+    "git_sha": "6d4898ea96bb7207467e0447f85cbce0081b8eaa",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "third_party/candidates/webkit-1.17.1/WEBKIT-LICENSE.txt",
+    "bytes": 10175,
+    "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+    "git_sha": "e454a52586f29b8ce8a6799163eac1f875e9ac01",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "third_party/candidates/webkit-1.17.1/artifact-manifest.json",
+    "bytes": 737,
+    "sha256": "022072754f8b02d64efb03c6ae0b294263621b36a9de64cebbe0e04fe21a5b23",
+    "git_sha": "742a17ad919bc8c9bda4e72b8683c4b81c62f063",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "third_party/candidates/webkit-1.17.1/baseline-runtime-90.tsv",
+    "bytes": 12298,
+    "sha256": "39916329c75d305ab234fd73f694b76c9486bb461ba2359f81b4dffaca344885",
+    "git_sha": "17057075ec6a81e28be17089f8e41f605088efaa",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "third_party/candidates/webkit-1.17.1/chromium-boundary-attributions.txt",
+    "bytes": 11522,
+    "sha256": "7ef1e0f9c886336175837c93eba33963dcf2c8b13ed2a95e26ff3078d8551e61",
+    "git_sha": "ceebba638cd2fe36691eb0c244a7d356951c9344",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "third_party/candidates/webkit-1.17.1/graph-diff.json",
+    "bytes": 462,
+    "sha256": "6993fbc82b6894f9b9ed3a7a2ed5df3f9f5ab764cb2a2be719d0f4df59014c00",
+    "git_sha": "16b78981a8b2d0138c212c4b316d5401608eddbf",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "third_party/candidates/webkit-1.17.1/official-artifact-urls.json",
+    "bytes": 480,
+    "sha256": "97220b96fad165bd44897378efb694fb6d6447f55788d57a18c82072836d2327",
+    "git_sha": "8b8d0369b3b27dbe704d91adf27fc56470579de0",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "third_party/candidates/webkit-1.17.1/webkit-1.17.1-sources.jar",
+    "bytes": 297508,
+    "sha256": "1fc3abdfcc179717f0a1b0b8634175afe4d84ba5938eba1df75128397663ebea",
+    "git_sha": "964a65b367d8331630b5405a0e31a4fe5056e9a3",
+    "base_git_sha": null,
+    "binary": true
+  },
+  {
+    "path": "vendor/webkit-maven/androidx/webkit/webkit/1.17.1/webkit-1.17.1.aar",
+    "bytes": 292669,
+    "sha256": "29dc7a9a32614828c97cf85951eb43c9e455157ab411e5e77d2ca4e72da28a36",
+    "git_sha": "58d11986aecba333241cca2386160e09ae79d6ef",
+    "base_git_sha": null,
+    "binary": true
+  },
+  {
+    "path": "vendor/webkit-maven/androidx/webkit/webkit/1.17.1/webkit-1.17.1.module",
+    "bytes": 4797,
+    "sha256": "fee069430a913a43fa694ad466682f132d21251b62cd03655142ddafe15b52eb",
+    "git_sha": "6a72470f00e036e26f8c5250361a054e7d5130cc",
+    "base_git_sha": null,
+    "binary": false
+  },
+  {
+    "path": "vendor/webkit-maven/androidx/webkit/webkit/1.17.1/webkit-1.17.1.pom",
+    "bytes": 2534,
+    "sha256": "b5294d03f04cf806e975afe48a67e70180e6a1e74086e7e62a1fe64c4a636bae",
+    "git_sha": "2fd4454105cdc7c40e0902cb20c3047ce4d660da",
+    "base_git_sha": null,
+    "binary": false
+  }
+]

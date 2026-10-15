@@ -1,0 +1,265 @@
+{
+  "scope": "13 changed/new artifacts; exact actual 95-artifact dependency set. Not production admission, content-rights permission, or legal/store assurance.",
+  "artifacts": [
+    {
+      "coordinate": "androidx.appcompat:appcompat-resources:1.7.1",
+      "binary": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.aar",
+        "bytes": 63997,
+        "sha256": "8e2db31224ca53b108c784da2b361959062716d416b210cfef3d5a3828306df0"
+      },
+      "source": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1-sources.jar",
+        "bytes": 40127,
+        "sha256": "cacf441fbbec0ebf12b4308bbeeb9a7389387c35a66f13bd2551dc328cf33ead"
+      },
+      "pom": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.pom",
+        "bytes": 2993,
+        "sha256": "2faf922e8c3d706f29d862b3fbb3aa1347705c21c6eae18586d2bb1f7366ea01"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "androidx.core:core-ktx:1.15.0",
+      "binary": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.aar",
+        "bytes": 175963,
+        "sha256": "c72c97ff4a32308bcaf3061eea5ddf33455ce413cee4aa1d5c82440c5759d4bc"
+      },
+      "source": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0-sources.jar",
+        "bytes": 74218,
+        "sha256": "5bedb726f4388be868bb5e35d5f726e1c5745d3ea285fd5138288571182860c1"
+      },
+      "pom": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.pom",
+        "bytes": 2450,
+        "sha256": "417c6aa0279ec78db02fe395d401a09bcaaa9d82d935148a3e2de90fdf38d94c"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "androidx.core:core:1.15.0",
+      "binary": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/core/core/1.15.0/core-1.15.0.aar",
+        "bytes": 1336135,
+        "sha256": "432b85a1974076e14b487ece4a28c59a84f1b9efc3fc8be72cd7f05d32055e51"
+      },
+      "source": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/core/core/1.15.0/core-1.15.0-sources.jar",
+        "bytes": 945720,
+        "sha256": "f56a83aa404e6bba2065b7bacfb18b38f070c8861068fed656dd04570644a0e3"
+      },
+      "pom": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/core/core/1.15.0/core-1.15.0.pom",
+        "bytes": 3853,
+        "sha256": "e168ae56064b8e5a40bce415ef95ffd5a813abb5456d2775f0fef426ed49e35a"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "androidx.exifinterface:exifinterface:1.4.1",
+      "binary": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.aar",
+        "bytes": 75523,
+        "sha256": "17e17a6b86bb54074d3a7ecfa695ab920eaff4cf667a8371ed82e377580cfcf6"
+      },
+      "source": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1-sources.jar",
+        "bytes": 73275,
+        "sha256": "6451ce7b1d935c8d295bc704ae4cc9c1c1ef890ccf61dca65dccd17980990997"
+      },
+      "pom": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.pom",
+        "bytes": 2004,
+        "sha256": "944e867584e20748613cc7610bd5fa10a968cc98cb59fdfdb863e9f0201df289"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "androidx.profileinstaller:profileinstaller:1.4.1",
+      "binary": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.aar",
+        "bytes": 54044,
+        "sha256": "b519f9317ded1e2c1c2993038c0692e30da326ca99097d9331ff2d3a5861a428"
+      },
+      "source": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1-sources.jar",
+        "bytes": 44465,
+        "sha256": "a20b963dad2bf9de25c5d043d4dc50d01353e3ee1580e1813ebdfe8587acf899"
+      },
+      "pom": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.pom",
+        "bytes": 2477,
+        "sha256": "6dde43827b40535e4053d1c52d4b227a411556c289e65400c9a1cc61e2b41ce3"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "androidx.tracing:tracing:1.2.0",
+      "binary": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.2.0/tracing-1.2.0.aar",
+        "bytes": 6060,
+        "sha256": "6faa90390d1fdbf0adb9a99bf99de67b94c6c6f35aea9510593a9d17973736a2"
+      },
+      "source": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.2.0/tracing-1.2.0-sources.jar",
+        "bytes": 6669,
+        "sha256": "3daf3a210e213f1675e6ea9ae2a9c0b9c837b42805835b65d999eca58fbddc90"
+      },
+      "pom": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.2.0/tracing-1.2.0.pom",
+        "bytes": 1968,
+        "sha256": "f34bec4eb58871d31002901377108aaa1ebfe77fa6d882b8b86200b158e26ea1"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "androidx.vectordrawable:vectordrawable-animated:1.1.0",
+      "binary": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.aar",
+        "bytes": 34496,
+        "sha256": "76da2c502371d9c38054df5e2b248d00da87809ed058f3363eae87ce5e2403f8"
+      },
+      "source": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0-sources.jar",
+        "bytes": 24016,
+        "sha256": "a3880c595965c55fd1bdee0554b99c66e9c28d3311b7ce6242189fc1f554fcf1"
+      },
+      "pom": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.pom",
+        "bytes": 1798,
+        "sha256": "276a20116b705fb75b9003ee9496c56f6fd3b32375fb232472811eba60a040bd"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "androidx.vectordrawable:vectordrawable:1.1.0",
+      "binary": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.aar",
+        "bytes": 33236,
+        "sha256": "46fd633ac01b49b7fcabc263bf098c5a8b9e9a69774d234edcca04fb02df8e26"
+      },
+      "source": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0-sources.jar",
+        "bytes": 19475,
+        "sha256": "a1ae4fccc4ab76a734c10f79adf39262517658a79084bad467c4c6f41c478187"
+      },
+      "pom": {
+        "official_url": "https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.pom",
+        "bytes": 1726,
+        "sha256": "5b0e2d5b2179e54804785cbc21ce5f473b5e1ddd55a57da482e94dcd39492bb2"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "com.squareup.okio:okio-jvm:3.15.0",
+      "binary": {
+        "official_url": "https://repo.maven.apache.org/maven2/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.jar",
+        "bytes": 376949,
+        "sha256": "483dc383b1049d220892322a0d6a4308425f09bb05b48c43d4eaa9ff82b1cd16"
+      },
+      "source": {
+        "official_url": "https://repo.maven.apache.org/maven2/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0-sources.jar",
+        "bytes": 189053,
+        "sha256": "eca487c49a4905a89556ce413ea198f40f20bb2dc6249d916b3917913bd6dbab"
+      },
+      "pom": {
+        "official_url": "https://repo.maven.apache.org/maven2/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.pom",
+        "bytes": 1699,
+        "sha256": "078e42f68ca4613ff2597fbc5541c5ce578cdcc48839da89da7ca760518bfb79"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "io.coil-kt.coil3:coil-core-android:3.3.0",
+      "binary": {
+        "official_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.aar",
+        "bytes": 471284,
+        "sha256": "b57fcf001178db5ff84683e7d11818bcda6c115d9d530443d382b3a8b3f6806b"
+      },
+      "source": {
+        "official_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0-sources.jar",
+        "bytes": 134847,
+        "sha256": "58bf55460e62be9608819ec72ced3138cedba6d05216e0136048e05a970cd23d"
+      },
+      "pom": {
+        "official_url": "https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.pom",
+        "bytes": 6640,
+        "sha256": "cd627afd3e4d4a60f04c7a782168d57fee470c6ae7aa87408f1a644f4172516f"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2",
+      "binary": {
+        "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.jar",
+        "bytes": 17826,
+        "sha256": "e713f1f874244115a07571065cffa0f24f5e78300e9720fea16de3af1d75fd41"
+      },
+      "source": {
+        "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2-sources.jar",
+        "bytes": 7783,
+        "sha256": "e903e0f46b8c5337816f2492ac3f9f543cb21ebf6b80fd0dbfe8cf38d1f3ebcf"
+      },
+      "pom": {
+        "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.pom",
+        "bytes": 2193,
+        "sha256": "b92d3672e7f9e8f4c4e2ab187c3e31fecc506496396f4a5f27ee1c957a42b319"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2",
+      "binary": {
+        "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.jar",
+        "bytes": 1479317,
+        "sha256": "5ca175b38df331fd64155b35cd8cae1251fa9ee369709b36d42e0a288ccce3fd"
+      },
+      "source": {
+        "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2-sources.jar",
+        "bytes": 409492,
+        "sha256": "cd86e9635cc7ac1b7d9854ed589e3041fb11cc67d2273e7d312278ba5628e2c8"
+      },
+      "pom": {
+        "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.pom",
+        "bytes": 2167,
+        "sha256": "658f576b96c832e7382406adb197d64d8e2e97de10e96dfa3700decfa2a60def"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    },
+    {
+      "coordinate": "org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.10.2",
+      "binary": {
+        "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.jar",
+        "bytes": 17969,
+        "sha256": "d54c4c9f9f2d3612afa5801daf70a7b68687f78d8936360341f1a89b535abfee"
+      },
+      "source": {
+        "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2-sources.jar",
+        "bytes": 7526,
+        "sha256": "988ad4424350cfc88e92e06dd9a5ec0420c6f663872fe7bf455bcd8169e3ebd6"
+      },
+      "pom": {
+        "official_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.pom",
+        "bytes": 2368,
+        "sha256": "126d860e3963148b36c180a04220401867b15703e71df201d4c89b3081456e3c"
+      },
+      "license": "Apache-2.0",
+      "source_details": "Exact copyright lines and complete license/NOTICE text are in RUNTIME_NOTICES_SUPPLEMENT.txt; unchanged runtime obligations remain in the existing retained notices."
+    }
+  ]
+}

@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  * Real host temporary files and real read-only RAFs. Metadata and execution/batch authority are
  * explicitly synthetic. This fixture proves neither Android syscall behavior nor a real live bridge.
  */
-internal class AdoptedCanonicalTestFixture : AutoCloseable {
+internal class AdoptedCanonicalTestFixture(deadlineMillis: Long = 100_000) : AutoCloseable {
     val root = Files.createTempDirectory("esv-adopted-owner-").toFile()
     val ownerKey = NormalizationOwner("task", "11111111-1111-4111-8111-111111111111", "commit")
     val key = NormalizationKey(ownerKey, "22222222-2222-4222-8222-222222222222")
@@ -33,7 +33,7 @@ internal class AdoptedCanonicalTestFixture : AutoCloseable {
     val canonical = normalizationTestFingerprint(outputBytes)
     val lock = Any()
     val cancellation = CancellationSource()
-    val context = OperationContext("adopted-test", 100_000, cancellation,
+    val context = OperationContext("adopted-test", deadlineMillis, cancellation,
         resourceBudget = ResourceBudget(1, NORMALIZATION_MAX_BYTES))
     val gate = DirectLocalProcessingGate(EpochClock { 0 })
     val resource = SelectedMediaResource("candidate", "variant", SourceUrl("https://example.invalid/owned.mov")).asDurableReference()
@@ -42,6 +42,14 @@ internal class AdoptedCanonicalTestFixture : AutoCloseable {
         artifact.artifactId, artifact.commitId, raw.size, raw.sha256, sourceTransferFingerprint(transfer),
         canonical.size, canonical.sha256, normalizationTestConservation())
     val output = ArtifactOutputDescriptor.NormalizedDirect(transfer, proof)
+    val convertedTransfer = transfer.copy(responseMimeType = "video/webm")
+    val conversionExpectation = DirectConversionExpectation(
+        DirectConversionVideoExpectation(16, 16, 25, 120_000, 3, 0, 80_000, 0), null)
+    val conversionProof = DirectConversionProof(key.normalizationId, ownerKey.taskId, resource.sourceIdentity,
+        artifact.artifactId, artifact.commitId, raw.size, raw.sha256, sourceTransferFingerprint(convertedTransfer),
+        canonical.size, canonical.sha256, conversionExpectation, DirectConversionEncodingSettings.forExpectation(conversionExpectation),
+        DirectConversionCompletionFacts(true, true, true, true, true, true, null, null, null, null, null, null))
+    val convertedOutput = ArtifactOutputDescriptor.ConvertedDirect(convertedTransfer, conversionProof)
     val revision = 12L
     @Volatile var record: SaveRecord? = SaveRecord(SaveRequest(ownerKey.taskId, "request-key", resource),
         TaskSnapshot(ownerKey.taskId, revision, TaskState.RUNNING, TaskMethod.DIRECT), artifact.commitId,
@@ -62,7 +70,7 @@ internal class AdoptedCanonicalTestFixture : AutoCloseable {
     var authorityCheck: (AdoptedVerificationBindings.SyntheticRequest) -> Unit = {}
     val bindings = AdoptedVerificationBindings(gate, AdoptedVerificationBindings.SyntheticAuthority { request ->
         check(!Thread.holdsLock(lock)) { "SYNTHETIC_AUTHORITY_UNDER_STORAGE_LOCK" }
-        check(request.artifact === artifact && request.output === output && request.context === context &&
+        check(request.artifact === artifact && (request.output === output || request.output === convertedOutput) && request.context === context &&
             request.expectedRecordRevision == revision) { "SYNTHETIC_REQUEST_NOT_GRANTED" }
         authorityChecks++
         authorityCheck(request)
@@ -96,6 +104,14 @@ internal class AdoptedCanonicalTestFixture : AutoCloseable {
 
     fun <T> bound(block: (AdoptedVerificationBindings.Binding) -> T): T = gate.withBoundPermit(Any(), context) { permit ->
         bindings.withSyntheticBinding(permit, artifact, output, context, revision, block)
+    }
+
+    fun useConverted() {
+        record = record!!.copy(transfer = convertedTransfer, directNormalization = null, directConversion = conversionProof)
+        ledger.row = ledger.row!!.copy(sourceTransferSha256 = conversionProof.sourceTransferSha256, proofSha256 = conversionProof.digest())
+    }
+    fun <T> boundConverted(block: (AdoptedVerificationBindings.Binding) -> T): T = gate.withBoundPermit(Any(), context) { permit ->
+        bindings.withSyntheticBinding(permit, artifact, convertedOutput, context, revision, block)
     }
 
     /** Teardown closes host resources directly, never as evidence of production owner retirement. */

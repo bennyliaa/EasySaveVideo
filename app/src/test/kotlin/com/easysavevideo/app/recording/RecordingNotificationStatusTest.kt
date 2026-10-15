@@ -49,6 +49,7 @@ class RecordingNotificationStatusTest {
         Leaf(R.string.recording_notification_channel, "recording_notification_channel", "屏幕录制"),
         Leaf(R.string.recording_notification_title, "recording_notification_title", "③ 屏幕录制"),
         Leaf(R.string.recording_notification_stop, "recording_notification_stop", "停止并保存"),
+        Leaf(R.string.recording_notification_discard, "recording_notification_discard", "放弃本次录制"),
     )
     private val allLeaves get() = statusLeaves.values + chromeLeaves
 
@@ -119,7 +120,7 @@ class RecordingNotificationStatusTest {
         assertNull(recordingSegmentNotificationStatus(RecordingSegmentsPhase.SUCCEEDED))
     }
 
-    @Test fun everyStatusHasItsExactDistinctResourceAndPreservesAllFifteenChineseLeaves() {
+    @Test fun everyStatusHasItsExactDistinctResourceAndPreservesAllSixteenChineseLeaves() {
         val chinese = displayStrings("values-zh-rCN")
         assertEquals(12, RecordingNotificationStatus.entries.size)
         assertEquals(RecordingNotificationStatus.entries.toSet(), statusLeaves.keys)
@@ -129,14 +130,14 @@ class RecordingNotificationStatusTest {
         }
         chromeLeaves.forEach { leaf -> assertEquals(leaf.key, leaf.chinese, chinese.getValue(leaf.key)) }
         assertEquals(12, RecordingNotificationStatus.entries.map(::recordingNotificationStatusResource).toSet().size)
-        assertEquals(15, allLeaves.size)
-        assertEquals(15, allLeaves.map { it.resource }.toSet().size)
-        assertEquals(15, allLeaves.map { it.chinese }.toSet().size)
+        assertEquals(16, allLeaves.size)
+        assertEquals(16, allLeaves.map { it.resource }.toSet().size)
+        assertEquals(16, allLeaves.map { it.chinese }.toSet().size)
     }
 
-    @Test fun exactlyTenPairedNewKeysReuseOnlyTheFiveExistingSegmentResources() {
+    @Test fun exactlyElevenPairedKeysIncludeDiscardAndReuseOnlyTheFiveExistingSegmentResources() {
         val expectedNewKeys = allLeaves.map { it.key }.filter { it.startsWith("recording_notification_") }.toSet()
-        assertEquals(10, expectedNewKeys.size)
+        assertEquals(11, expectedNewKeys.size)
         for (locale in listOf("values", "values-zh-rCN")) {
             val newStrings = strings(locale, "recording_notification.xml")
             assertEquals(locale, expectedNewKeys, newStrings.keys)

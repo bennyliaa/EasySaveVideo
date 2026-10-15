@@ -1,3 +1,764 @@
+EasySaveVideo 第三方软件许可与归属 — 精确依赖清单
+
+本节记录此依赖集合的 95 项精确运行时制品。相较此前 91 项集合，82 项坐标及字节保持不变，9 项升级，4 项新增。以下新版本清单及对应来源链接为本集合的准确信息。
+
+本说明不授予 ESV 自有代码或 SkinKit 公共开源许可。SkinKit 1.0.0 的独立条款及全部既有第三方许可继续适用。软件依赖许可也不授予网络图片内容的使用权。
+
+精确运行时坐标：
+androidx.activity:activity-compose:1.10.1
+androidx.activity:activity-ktx:1.10.1
+androidx.activity:activity:1.10.1
+androidx.annotation:annotation-experimental:1.4.1
+androidx.annotation:annotation-jvm:1.9.1
+androidx.appcompat:appcompat-resources:1.7.1
+androidx.arch.core:core-common:2.2.0
+androidx.arch.core:core-runtime:2.2.0
+androidx.autofill:autofill:1.0.0
+androidx.collection:collection-jvm:1.5.0
+androidx.collection:collection-ktx:1.5.0
+androidx.compose.animation:animation-android:1.8.3
+androidx.compose.animation:animation-core-android:1.8.3
+androidx.compose.foundation:foundation-android:1.8.3
+androidx.compose.foundation:foundation-layout-android:1.8.3
+androidx.compose.material3:material3-android:1.3.2
+androidx.compose.material3:material3-window-size-class-android:1.3.2
+androidx.compose.material:material-icons-core-android:1.7.8
+androidx.compose.material:material-ripple-android:1.8.3
+androidx.compose.runtime:runtime-android:1.8.3
+androidx.compose.runtime:runtime-saveable-android:1.8.3
+androidx.compose.ui:ui-android:1.8.3
+androidx.compose.ui:ui-geometry-android:1.8.3
+androidx.compose.ui:ui-graphics-android:1.8.3
+androidx.compose.ui:ui-text-android:1.8.3
+androidx.compose.ui:ui-unit-android:1.8.3
+androidx.compose.ui:ui-util-android:1.8.3
+androidx.concurrent:concurrent-futures:1.2.0
+androidx.core:core-ktx:1.15.0
+androidx.core:core-viewtree:1.0.0
+androidx.core:core:1.15.0
+androidx.customview:customview-poolingcontainer:1.0.0
+androidx.emoji2:emoji2:1.4.0
+androidx.exifinterface:exifinterface:1.4.1
+androidx.graphics:graphics-path:1.0.1
+androidx.interpolator:interpolator:1.0.0
+androidx.lifecycle:lifecycle-common-java8:2.8.7
+androidx.lifecycle:lifecycle-common-jvm:2.8.7
+androidx.lifecycle:lifecycle-livedata-core:2.8.7
+androidx.lifecycle:lifecycle-process:2.8.7
+androidx.lifecycle:lifecycle-runtime-android:2.8.7
+androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7
+androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.7
+androidx.lifecycle:lifecycle-viewmodel-android:2.8.7
+androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7
+androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7
+androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7
+androidx.media3:media3-common:1.11.1
+androidx.media3:media3-container:1.11.1
+androidx.media3:media3-database:1.11.1
+androidx.media3:media3-datasource:1.11.1
+androidx.media3:media3-decoder:1.11.1
+androidx.media3:media3-effect:1.11.1
+androidx.media3:media3-exoplayer-hls:1.11.1
+androidx.media3:media3-exoplayer:1.11.1
+androidx.media3:media3-extractor:1.11.1
+androidx.media3:media3-muxer:1.11.1
+androidx.media3:media3-transformer:1.11.1
+androidx.navigation:navigation-common-ktx:2.8.9
+androidx.navigation:navigation-common:2.8.9
+androidx.navigation:navigation-compose:2.8.9
+androidx.navigation:navigation-runtime-ktx:2.8.9
+androidx.navigation:navigation-runtime:2.8.9
+androidx.profileinstaller:profileinstaller:1.4.1
+androidx.savedstate:savedstate-ktx:1.2.1
+androidx.savedstate:savedstate:1.2.1
+androidx.startup:startup-runtime:1.1.1
+androidx.tracing:tracing:1.2.0
+androidx.vectordrawable:vectordrawable-animated:1.1.0
+androidx.vectordrawable:vectordrawable:1.1.0
+androidx.versionedparcelable:versionedparcelable:1.1.1
+androidx.webkit:webkit:1.17.1
+androidx.window:window:1.0.0
+com.google.code.findbugs:jsr305:3.0.2
+com.google.code.gson:gson:2.13.2
+com.google.crypto.tink:tink-android:1.23.0
+com.google.errorprone:error_prone_annotations:2.41.0
+com.google.guava:failureaccess:1.0.2
+com.google.guava:guava:33.3.1-android
+com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
+com.google.j2objc:j2objc-annotations:3.0.0
+com.squareup.okhttp3:okhttp:4.12.0
+com.squareup.okio:okio-jvm:3.15.0
+dev.skinkit:skinkit-contract:1.0.0
+dev.skinkit:skinkit-default:1.0.0
+io.coil-kt.coil3:coil-core-android:3.3.0
+org.checkerframework:checker-qual:3.43.0
+org.jetbrains.kotlin:kotlin-stdlib:2.2.10
+org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2
+org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2
+org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.10.2
+org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.6.3
+org.jetbrains:annotations:23.0.0
+org.jsoup:jsoup:1.21.2
+org.jspecify:jspecify:1.0.0
+
+升级版本：
+androidx.core:core-ktx:1.13.1 → androidx.core:core-ktx:1.15.0
+androidx.core:core:1.13.1 → androidx.core:core:1.15.0
+androidx.exifinterface:exifinterface:1.3.6 → androidx.exifinterface:exifinterface:1.4.1
+androidx.profileinstaller:profileinstaller:1.4.0 → androidx.profileinstaller:profileinstaller:1.4.1
+androidx.tracing:tracing:1.0.0 → androidx.tracing:tracing:1.2.0
+com.squareup.okio:okio-jvm:3.6.0 → com.squareup.okio:okio-jvm:3.15.0
+org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0 → org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2
+org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0 → org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2
+org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.9.0 → org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.10.2
+
+新增制品：
+androidx.appcompat:appcompat-resources:1.7.1
+androidx.vectordrawable:vectordrawable-animated:1.1.0
+androidx.vectordrawable:vectordrawable:1.1.0
+io.coil-kt.coil3:coil-core-android:3.3.0
+
+13 项新增或升级制品的当前归属、官方来源和完整补充许可
+
+androidx.appcompat:appcompat-resources:1.7.1
+============================================
+Official binary: https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.aar
+Binary SHA256: 8e2db31224ca53b108c784da2b361959062716d416b210cfef3d5a3828306df0
+Official POM: https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/appcompat/appcompat-resources/1.7.1/appcompat-resources-1.7.1-sources.jar
+Source SHA256: cacf441fbbec0ebf12b4308bbeeb9a7389387c35a66f13bd2551dc328cf33ead
+License: Apache License, Version 2.0
+
+Copyright (C) 2014 The Android Open Source Project
+Copyright (C) 2015 The Android Open Source Project
+Copyright (C) 2018 The Android Open Source Project
+Copyright (C) 2019 The Android Open Source Project
+Copyright 2016 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+androidx.core:core-ktx:1.15.0
+=============================
+Official binary: https://dl.google.com/dl/android/maven2/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.aar
+Binary SHA256: c72c97ff4a32308bcaf3061eea5ddf33455ce413cee4aa1d5c82440c5759d4bc
+Official POM: https://dl.google.com/dl/android/maven2/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/core/core-ktx/1.15.0/core-ktx-1.15.0-sources.jar
+Source SHA256: 5bedb726f4388be868bb5e35d5f726e1c5745d3ea285fd5138288571182860c1
+License: Apache License, Version 2.0
+
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2018 The Android Open Source Project
+Copyright (C) 20188 The Android Open Source Project
+Copyright (C) 2019 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+androidx.core:core:1.15.0
+=========================
+Official binary: https://dl.google.com/dl/android/maven2/androidx/core/core/1.15.0/core-1.15.0.aar
+Binary SHA256: 432b85a1974076e14b487ece4a28c59a84f1b9efc3fc8be72cd7f05d32055e51
+Official POM: https://dl.google.com/dl/android/maven2/androidx/core/core/1.15.0/core-1.15.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/core/core/1.15.0/core-1.15.0-sources.jar
+Source SHA256: f56a83aa404e6bba2065b7bacfb18b38f070c8861068fed656dd04570644a0e3
+License: Apache License, Version 2.0
+
+Copyright (C) 2009 The Android Open Source Project
+Copyright (C) 2011 The Android Open Source Project
+Copyright (C) 2012 The Android Open Source Project
+Copyright (C) 2013 The Android Open Source Project
+Copyright (C) 2014 The Android Open Source Project
+Copyright (C) 2015 The Android Open Source Project
+Copyright (C) 2016 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2018 The Android Open Source Project
+Copyright (C) 2019 The Android Open Source Project
+Copyright (C) 2021 The Android Open Source Project
+Copyright (C) 2022 The Android Open Source Project
+Copyright (C) 2023 The Android Open Source Project
+Copyright 2015 The Android Open Source Project
+Copyright 2017 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+androidx.exifinterface:exifinterface:1.4.1
+==========================================
+Official binary: https://dl.google.com/dl/android/maven2/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.aar
+Binary SHA256: 17e17a6b86bb54074d3a7ecfa695ab920eaff4cf667a8371ed82e377580cfcf6
+Official POM: https://dl.google.com/dl/android/maven2/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/exifinterface/exifinterface/1.4.1/exifinterface-1.4.1-sources.jar
+Source SHA256: 6451ce7b1d935c8d295bc704ae4cc9c1c1ef890ccf61dca65dccd17980990997
+License: Apache License, Version 2.0
+
+Copyright 2018 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+androidx.profileinstaller:profileinstaller:1.4.1
+================================================
+Official binary: https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.aar
+Binary SHA256: b519f9317ded1e2c1c2993038c0692e30da326ca99097d9331ff2d3a5861a428
+Official POM: https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/profileinstaller/profileinstaller/1.4.1/profileinstaller-1.4.1-sources.jar
+Source SHA256: a20b963dad2bf9de25c5d043d4dc50d01353e3ee1580e1813ebdfe8587acf899
+License: Apache License, Version 2.0
+
+Copyright (C) 2021 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+androidx.tracing:tracing:1.2.0
+==============================
+Official binary: https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.2.0/tracing-1.2.0.aar
+Binary SHA256: 6faa90390d1fdbf0adb9a99bf99de67b94c6c6f35aea9510593a9d17973736a2
+Official POM: https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.2.0/tracing-1.2.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/tracing/tracing/1.2.0/tracing-1.2.0-sources.jar
+Source SHA256: 3daf3a210e213f1675e6ea9ae2a9c0b9c837b42805835b65d999eca58fbddc90
+License: Apache License, Version 2.0
+
+Copyright 2020 The Android Open Source Project
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+androidx.vectordrawable:vectordrawable-animated:1.1.0
+=====================================================
+Official binary: https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.aar
+Binary SHA256: 76da2c502371d9c38054df5e2b248d00da87809ed058f3363eae87ce5e2403f8
+Official POM: https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable-animated/1.1.0/vectordrawable-animated-1.1.0-sources.jar
+Source SHA256: a3880c595965c55fd1bdee0554b99c66e9c28d3311b7ce6242189fc1f554fcf1
+License: Apache License, Version 2.0
+
+Copyright (C) 2015 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+androidx.vectordrawable:vectordrawable:1.1.0
+============================================
+Official binary: https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.aar
+Binary SHA256: 46fd633ac01b49b7fcabc263bf098c5a8b9e9a69774d234edcca04fb02df8e26
+Official POM: https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0.pom
+Official source archive: https://dl.google.com/dl/android/maven2/androidx/vectordrawable/vectordrawable/1.1.0/vectordrawable-1.1.0-sources.jar
+Source SHA256: a1ae4fccc4ab76a734c10f79adf39262517658a79084bad467c4c6f41c478187
+License: Apache License, Version 2.0
+
+Copyright (C) 2015 The Android Open Source Project
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+com.squareup.okio:okio-jvm:3.15.0
+=================================
+Official binary: https://repo.maven.apache.org/maven2/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.jar
+Binary SHA256: 483dc383b1049d220892322a0d6a4308425f09bb05b48c43d4eaa9ff82b1cd16
+Official POM: https://repo.maven.apache.org/maven2/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0.pom
+Official source archive: https://repo.maven.apache.org/maven2/com/squareup/okio/okio-jvm/3.15.0/okio-jvm-3.15.0-sources.jar
+Source SHA256: eca487c49a4905a89556ce413ea198f40f20bb2dc6249d916b3917913bd6dbab
+License: Apache License, Version 2.0
+
+Copyright (C) 2014 Square, Inc.
+Copyright (C) 2015 Square, Inc.
+Copyright (C) 2016 Square, Inc.
+Copyright (C) 2017 Square, Inc.
+Copyright (C) 2018 Square, Inc.
+Copyright (C) 2019 Square, Inc.
+Copyright (C) 2020 Square, Inc.
+Copyright (C) 2020 Square, Inc. and others.
+Copyright (C) 2021 Square, Inc.
+Copyright (C) 2023 Square, Inc.
+Copyright (C) 2024 Square, Inc.
+Copyright (C) 2025 Square, Inc.
+Copyright 2014 Square Inc.
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+io.coil-kt.coil3:coil-core-android:3.3.0
+========================================
+Official binary: https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.aar
+Binary SHA256: b57fcf001178db5ff84683e7d11818bcda6c115d9d530443d382b3a8b3f6806b
+Official POM: https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0.pom
+Official source archive: https://repo.maven.apache.org/maven2/io/coil-kt/coil3/coil-core-android/3.3.0/coil-core-android-3.3.0-sources.jar
+Source SHA256: 58bf55460e62be9608819ec72ced3138cedba6d05216e0136048e05a970cd23d
+License: Apache License, Version 2.0
+
+Copyright 2025 Coil Contributors
+Copyright (C) 2011 The Android Open Source Project
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2
+=======================================================
+Official binary: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.jar
+Binary SHA256: e713f1f874244115a07571065cffa0f24f5e78300e9720fea16de3af1d75fd41
+Official POM: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2.pom
+Official source archive: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-android/1.10.2/kotlinx-coroutines-android-1.10.2-sources.jar
+Source SHA256: e903e0f46b8c5337816f2492ac3f9f543cb21ebf6b80fd0dbfe8cf38d1f3ebcf
+License: Apache License, Version 2.0
+
+No copyright line was found in the published source archive; no owner/year is invented. The exact official POM declares Apache-2.0.
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2
+========================================================
+Official binary: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.jar
+Binary SHA256: 5ca175b38df331fd64155b35cd8cae1251fa9ee369709b36d42e0a288ccce3fd
+Official POM: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2.pom
+Official source archive: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.10.2/kotlinx-coroutines-core-jvm-1.10.2-sources.jar
+Source SHA256: cd86e9635cc7ac1b7d9854ed589e3041fb11cc67d2273e7d312278ba5628e2c8
+License: Apache License, Version 2.0
+
+No copyright line was found in the published source archive; no owner/year is invented. The exact official POM declares Apache-2.0.
+
+Preserve copyright/attribution and supplied NOTICE text; provide the Apache-2.0 license; mark modifications if made. Trademark rights are not granted.
+
+org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.10.2
+=====================================================
+Official binary: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.jar
+Binary SHA256: d54c4c9f9f2d3612afa5801daf70a7b68687f78d8936360341f1a89b535abfee
+Official POM: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2.pom
+Official source archive: https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-guava/1.10.2/kotlinx-coroutines-guava-1.10.2-sources.jar
+Source SHA256: 988ad4424350cfc88e92e06dd9a5ec0420c6f663872fe7bf455bcd8169e3ebd6
+License: Apache License, Version 2.0
+Exact upstream coroutines 1.10.2 LICENSE and NOTICE reproduced below apply to this module.
+No source copyright line is invented.
+
+Full upstream Coil 3.3.0 Apache-2.0 text (also covers the AOSP-derived DiskLruCache code subject to its retained attribution):
+
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright 2025 Coil Contributors
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+
+Exact upstream kotlinx.coroutines 1.10.2 NOTICE:
+=========================================================================
+==  NOTICE file corresponding to the section 4 d of                    ==
+==  the Apache License, Version 2.0,                                   ==
+==  in this case for the kotlinx.coroutines library.                   ==
+=========================================================================
+
+kotlinx.coroutines library.
+Copyright 2016-2025 JetBrains s.r.o and contributors
+
+Exact upstream kotlinx.coroutines 1.10.2 LICENSE:
+
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright 2000-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+
+既有许可与来源归属全文（原文保留）
+
+以下原文完整保留此前集合的版权、许可、NOTICE、来源及历史说明，包括 WebKit 的 Apache/Chromium BSD、Kotlin 补充许可、OkHttp Public Suffix List 等。原文中的旧版本标识及“current”等历史标题仅表示当时的来源记录；本依赖集合的当前版本以本文件开头的 95 项精确清单及上面的 13 项补充归属为准。保留旧归属不表示仍同时打包已经升级的旧运行时制品。
+
 EasySaveVideo 第三方软件许可与归属
 
 这是依赖作品的许可说明，不是新的产品服务协议。ESV 自有代码及自有 SkinKit 不由此获得公共开源许可。
@@ -19921,3 +20682,485 @@ org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.6.3
 License: Apache-2.0
 https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-serialization-core-jvm/1.6.3/kotlinx-serialization-core-jvm-1.6.3.pom
 https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-serialization-core-jvm/1.6.3/kotlinx-serialization-core-jvm-1.6.3.jar
+
+AndroidX WebKit 1.17.1
+Copyright The Android Open Source Project
+https://developer.android.com/jetpack/androidx/releases/webkit#1.17.1
+
+
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+
+
+Bundled Chromium WebView support boundary interfaces
+Copyright The Chromium Authors (individual source copyright headers preserved in chromium-boundary-attributions.txt)
+Canonical source: https://chromium.googlesource.com/chromium/src/android_webview/support_library/boundary_interfaces/
+
+// Copyright 2015 The Chromium Authors
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//    * Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+//    * Redistributions in binary form must reproduce the above
+// copyright notice, this list of conditions and the following disclaimer
+// in the documentation and/or other materials provided with the
+// distribution.
+//    * Neither the name of Google LLC nor the names of its
+// contributors may be used to endorse or promote products derived from
+// this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+org/chromium/support_lib_boundary/WebMessageCallbackBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/SpeculativeLoadingConfigBoundaryInterface.java
+// Copyright 2025 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebMessagePortBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewNavigationListenerBoundaryInterface.java
+// Copyright 2025 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/NoVarySearchDataBoundaryInterface.java
+// Copyright 2024 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebMessageListenerBoundaryInterface.java
+// Copyright 2019 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/VisualStateCallbackBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebSettingsBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/HttpCacheBoundaryInterface.java
+// Copyright 2026 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewRendererBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/ProfileStoreBoundaryInterface.java
+// Copyright 2023 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/package-info.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/SpeculativeLoadingParametersBoundaryInterface.java
+// Copyright 2024 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/ProcessGlobalConfigConstants.java
+// Copyright 2022 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebMessagePayloadBoundaryInterface.java
+// Copyright 2022 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewStartUpConfigBoundaryInterface.java
+// Copyright 2024 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewProviderFactoryBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewCookieManagerBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/StaticsBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/ServiceWorkerWebSettingsBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/ProxyControllerBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebResourceRequestBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/OriginMatchedHeaderBoundaryInterface.java
+// Copyright 2025 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewNavigationClientBoundaryInterface.java
+// Copyright 2025 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/ExecuteJavaScriptCallbackBoundaryInterface.java
+// Copyright 2026 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebStorageBoundaryInterface.java
+// Copyright 2024 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/NavigationParametersBoundaryInterface.java
+// Copyright 2026 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/JsReplyProxyBoundaryInterface.java
+// Copyright 2019 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewBuilderBoundaryInterface.java
+// Copyright 2025 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewRendererClientBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewStartUpResultBoundaryInterface.java
+// Copyright 2024 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/ServiceWorkerClientBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewPageBoundaryInterface.java
+// Copyright 2025 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/TracingControllerBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewProviderBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/DropDataContentProviderBoundaryInterface.java
+// Copyright 2022 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/FeatureFlagHolderBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewStartUpCallbackBoundaryInterface.java
+// Copyright 2024 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/IsomorphicObjectBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/ServiceWorkerControllerBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/ProfileBoundaryInterface.java
+// Copyright 2023 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewNavigationBoundaryInterface.java
+// Copyright 2025 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/SafeBrowsingResponseBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/PrefetchOperationCallbackBoundaryInterface.java
+// Copyright 2024 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebkitToCompatConverterBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebResourceErrorBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebMessageBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewClientBoundaryInterface.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/WebViewBackForwardCacheSettingsBoundaryInterface.java
+// Copyright 2025 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/ScriptHandlerBoundaryInterface.java
+// Copyright 2020 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/util/BoundaryInterfaceReflectionUtil.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/util/Features.java
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+org/chromium/support_lib_boundary/util/Contract.java
+// Copyright 2025 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.

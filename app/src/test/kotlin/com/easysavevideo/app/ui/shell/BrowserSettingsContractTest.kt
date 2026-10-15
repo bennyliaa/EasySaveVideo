@@ -11,7 +11,11 @@ class BrowserSettingsContractTest {
     @Test fun bothEntriesUseExactlyOneSharedStatelessDetail() {
         val central=source("ui/shell/EsvSettingsScreen.kt");val browser=source("ui/BrowserScreen.kt")
         assertTrue(central.contains("SettingsCategory.BROWSER -> BrowserSettingsDetail(settings.browser,browserEditable,onChange)"))
-        assertTrue(browser.contains("BrowserSettingsDetail(settings.browser, editable, update)"))
+        val panel=browser.substringAfter("@Composable private fun SettingsPanel(").substringBefore("@Composable private fun Toggle(")
+        assertTrue(panel.contains("val admission = LocalPrivateInputAdmission.current"))
+        assertTrue(panel.contains("key(admission) {"))
+        assertTrue(panel.contains("BrowserSettingsDetail(settings.browser, editable && admission()) { if (admission()) update(it) }"))
+        assertEquals(1,Regex("BrowserSettingsDetail\\(").findAll(browser).count())
         assertFalse(browser.contains("settings.copy(browser"))
         assertTrue(browser.contains("onSettings: (SettingsEdit.BrowserEdit) -> Unit"))
         assertEquals(2,Regex("editable = settingsEditable").findAll(browser).count())

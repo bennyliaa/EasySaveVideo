@@ -39,7 +39,7 @@ class SaveMethodAlternativeContractTest {
     }
     @Test fun existingVariantDestinationAndExclusiveClaimRemainTheConfirmationBoundary() {
         val body = runtime.substringAfter("private fun chooseHlsVariantSelected(").substringBefore("fun cancel(")
-        assertTrue(body.contains("val resource = try { stream.select(prepared, identity) }"))
+        assertTrue(body.contains("stream.select(prepared, identity, binding)"))
         assertTrue(body.contains("val id = admission.creationId"))
         assertTrue(body.contains("val request = SaveRequest(id, id, resource, TaskMethod.STREAM)"))
         assertTrue(body.indexOf("val request =") < body.indexOf("coordinator.confirmStreamAlternative("))

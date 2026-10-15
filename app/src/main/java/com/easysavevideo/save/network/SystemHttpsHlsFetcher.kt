@@ -116,6 +116,8 @@ class SystemHttpsHlsFetcher(
             if (resource.expiresAtEpochMillis?.let { clock.nowMillis() >= it } == true)
                 throw SaveFailure(SaveError.EXPIRED_RESOURCE)
             bind(resource, context, limits)
+            val sourceAuthority = session!!.sourceAuthority
+            sourceAuthority?.check()
             // The coordinator may wrap cancellation. Retain the original token as an additional OR
             // condition so a replacement token cannot revive a cancelled preparation/session.
             val originalToken = session!!.context.cancelToken
@@ -128,15 +130,21 @@ class SystemHttpsHlsFetcher(
             val visited = mutableSetOf<String>()
             for (hop in 0..limits.maxRedirects) {
                 checkContext(context)
+                sourceAuthority?.check()
                 validate(target)
                 if (!visited.add(HttpsRequestPolicy.canonical(target))) throw SaveFailure(SaveError.POLICY_BLOCKED)
                 if (CookieHandler.getDefault() != null) throw SaveFailure(SaveError.POLICY_BLOCKED)
                 val timeout = boundedTimeout(limits.connectTimeoutMillis, context)
-                val network = try { networkPolicy.acquireApproved() } catch (failure: Exception) {
+                val network = try {
+                    sourceAuthority?.check()
+                    networkPolicy.acquireApproved().let { sourceAuthority?.guard(it) ?: it }.also { it.requireApproved() }
+                } catch (failure: Exception) {
                     checkContext(context) // Explicit cancellation wins over an unavailable network.
+                    sourceAuthority?.check()
                     throw failure
                 }
                 checkContext(context)
+                sourceAuthority?.check()
                 val connection = try { connections.open(target, timeout, network) } catch (failure: Exception) {
                     failure.releaseFailureOrNull()?.let {
                         cleanupUncertain.set(true)
@@ -147,9 +155,10 @@ class SystemHttpsHlsFetcher(
                     throw failure
                 }
                 val guard = initializeNetworkOwner(connection, { cleanupUncertain.set(true) }) {
-                    HlsTransferGuard(connection, guardedContext, limits.noProgressTimeoutMillis, clock, network)
+                    HlsTransferGuard(connection, guardedContext, limits.noProgressTimeoutMillis, clock, network, sourceAuthority)
                 }
                 try {
+                    guard.check()
                     connection.instanceFollowRedirects = false
                     connection.useCaches = false
                     connection.doInput = true
@@ -163,7 +172,7 @@ class SystemHttpsHlsFetcher(
                     // Leases are exact-source-URL only, and NEVER follow a redirect or a playlist URI.
                     if (type == ResourceType.PLAYLIST && hop == 0 && HttpsRequestPolicy.canonical(selected) == HttpsRequestPolicy.canonical(target)) {
                         requestContexts.headers(resource.requestContextRef, selected, target, true)
-                            .forEach { (name, value) -> connection.setRequestProperty(name, value) }
+                            .forEach { (name, value) -> guard.check(); connection.setRequestProperty(name, value) }
                     }
                     guard.check()
                     if (CookieHandler.getDefault() != null) throw SaveFailure(SaveError.POLICY_BLOCKED)
@@ -236,6 +245,7 @@ class SystemHttpsHlsFetcher(
                          progress: TransferProgress, guard: HlsTransferGuard, digest: MessageDigest? = null): Long {
         val perRequest = minOf(maxBytes, limits.maxArtifactBytes)
         val buffer = ByteArray(minOf(limits.copyBufferBytes, 64 * 1024))
+        guard.check()
         val input = connection.inputStream
         try {
             var bytes = 0L
@@ -284,15 +294,22 @@ class SystemHttpsHlsFetcher(
         val old = session
         if (old == null) {
             session = Session(resource.sourceIdentity, context, limits,
-                minOf(limits.maxTotalTransferBytes, context.resourceBudget.maxBytes ?: Long.MAX_VALUE))
+                minOf(limits.maxTotalTransferBytes, context.resourceBudget.maxBytes ?: Long.MAX_VALUE),
+                resource.requestContextRef, requestContexts.captureAuthority(resource))
         } else if (old.sourceIdentity != resource.sourceIdentity || old.context.operationId != context.operationId ||
             old.context.deadlineEpochMillis != context.deadlineEpochMillis ||
-            old.context.resourceBudget != context.resourceBudget || old.limits != limits) {
+            old.context.resourceBudget != context.resourceBudget || old.limits != limits ||
+            (old.sourceAuthority != null && old.requestContextRef != resource.requestContextRef)) {
             throw SaveFailure(SaveError.INVALID_REQUEST)
         }
+        val privateSource = resource.privateSource
+        if (privateSource != null && (session!!.sourceAuthority == null || !privateSource.isLive()))
+            throw SaveFailure(SaveError.SOURCE_RESELECTION_REQUIRED)
+        session!!.sourceAuthority?.check()
     }
     private fun remaining(): Long = (session!!.totalBudget - consumed).coerceAtLeast(0)
-    private class Session(val sourceIdentity: String, val context: OperationContext, val limits: SaveLimits, val totalBudget: Long)
+    private class Session(val sourceIdentity: String, val context: OperationContext, val limits: SaveLimits, val totalBudget: Long,
+                          val requestContextRef: RequestContextRef?, val sourceAuthority: RequestContextAuthority?)
 
     private fun validateHeaders(connection: HttpURLConnection, type: ResourceType): Long? {
         if (header(connection, "Content-Range") != null) throw SaveFailure(SaveError.INVALID_RANGE)
@@ -413,7 +430,8 @@ class SystemHttpsHlsFetcher(
 /** One bounded watchdog per active call. The caller's lane stays occupied until disconnect returns. */
 private class HlsTransferGuard(private val connection: HttpURLConnection, private val context: OperationContext,
                                private val timeout: Int, private val clock: EpochClock,
-                            private val network: TransferNetworkBinding) {
+                               private val network: TransferNetworkBinding,
+                               private val sourceAuthority: RequestContextAuthority?) {
     private val finished = AtomicBoolean(false)
     private val disconnectStarted = AtomicBoolean(false)
     private val disconnectFailed = AtomicBoolean(false)
@@ -432,6 +450,7 @@ private class HlsTransferGuard(private val connection: HttpURLConnection, privat
         // A network failure may already be latched while disconnect is blocked. A later explicit
         // cancellation must still win when the caller finally observes the released connection.
         if (context.cancelToken.isCancelled) return SaveError.CANCELLED
+        sourceAuthority?.failureOrNull()?.let { return it }
         reason.get()?.let { return it }
         if (clock.nowMillis() >= context.deadlineEpochMillis) return SaveError.DEADLINE_EXCEEDED
         network.failureOrNull()?.let { return it }

@@ -10,11 +10,12 @@ internal object SaveRecordCodec {
     const val MAX_BYTES = 32 * 1024
     private const val MAGIC = 0x45535633
     private const val EVIDENCE_MAGIC = 0x45535645
-    private const val VERSION = 7
+    private const val VERSION = 9
     fun encode(record: SaveRecord): ByteArray {
         require(record.schemaVersion == 1 && record.request.networkResource?.let {
             it.requestContextRef == null && it.durableReference && it.url == it.url.originOnly()
         } != false)
+        requirePrivateDurable(record)
         val buffer = ByteArrayOutputStream()
         DataOutputStream(buffer).use { o ->
             o.writeInt(MAGIC); o.writeInt(VERSION)
@@ -26,6 +27,13 @@ internal object SaveRecordCodec {
                     o.writeUTF(s.candidateId); o.writeUTF(s.variantId); o.writeUTF(s.url.value); o.writeBoolean(s.expectedAudio)
                     o.nullable(s.expiresAtEpochMillis) { o.writeLong(it) }
                     o.writeUTF(s.sourceIdentity); o.writeBoolean(s.durableReference)
+                }
+                is SaveInput.PrivateNetwork -> {
+                    o.writeUTF("PRIVATE_NETWORK")
+                    o.writeUTF(input.source.identity.encoded)
+                    o.writeUTF(input.source.candidateId.encoded)
+                    o.writeUTF(input.source.variantId.encoded)
+                    o.writeBoolean(input.source.expectedAudio)
                 }
                 is SaveInput.Capture -> { o.writeUTF("CAPTURE"); writeDescriptor(o, input.descriptor) }
             }
@@ -54,6 +62,7 @@ internal object SaveRecordCodec {
             }
             o.nullable(record.waitReason) { o.writeUTF(it.name) }; o.nullable(record.error) { o.writeUTF(it.name) }
             o.nullable(record.directNormalization) { writeDirectNormalization(o, it) }
+            o.nullable(record.directConversion) { value -> o.bounded { writeDirectConversion(it, value) } }
         }
         return buffer.toByteArray().also { require(it.size <= MAX_BYTES) }
     }
@@ -66,8 +75,15 @@ internal object SaveRecordCodec {
             val origin = CommandOrigin.valueOf(i.readUTF())
             val discriminator = if (version >= 4) i.readUTF() else "NETWORK"
             val input = when (discriminator) {
-                "NETWORK" -> SaveInput.Network(SelectedMediaResource(i.readUTF(), i.readUTF(), SourceUrl(i.readUTF()), i.readBoolean(), null,
-                    i.nullable { i.readLong() }, i.readUTF(), i.readBoolean()))
+                "NETWORK" -> SaveInput.Network(SelectedMediaResource(i.readUTF(), i.readUTF(), SourceUrl(i.readUTF()), i.readStrictBoolean(), null,
+                    i.nullable { i.readLong() }, i.readUTF(), i.readStrictBoolean()))
+                "PRIVATE_NETWORK" -> {
+                    require(version >= 8)
+                    SaveInput.PrivateNetwork(PrivateDurableSource(
+                        PrivateTaskSourceIdentity.fromDurable(i.readUTF()),
+                        PrivateSelectionIdentity.fromDurable(i.readUTF()),
+                        PrivateSelectionIdentity.fromDurable(i.readUTF()), i.readStrictBoolean()))
+                }
                 "CAPTURE" -> SaveInput.Capture(readDescriptor(i, version >= 6))
                 else -> throw IllegalArgumentException("Unknown save input")
             }
@@ -83,27 +99,47 @@ internal object SaveRecordCodec {
                         if (version >= 3) i.nullable { readConservation(i) } else null) } else null,
                     if (version >= 4) i.nullable { readRecordingExpectation(i, version >= 5, version >= 6) } else null)
             }
-            val verification = i.nullable { readEvidence(i, version >= 3, version >= 4, version >= 5, version >= 7) }; val receipt = i.nullable { readReceipt(i) }
+            val verification = i.nullable { readEvidence(i, version >= 3, version >= 4, version >= 5, version >= 7, version >= 9) }; val receipt = i.nullable { readReceipt(i) }
             val count = i.readLong()
             val checkpoint = i.nullable { DownloadCheckpoint(i.readUTF(), i.readUTF(), i.readLong(), i.readUTF(), i.readLong()) }
             val wait = i.nullable { SaveWaitReason.valueOf(i.readUTF()) }; val error = i.nullable { SaveError.valueOf(i.readUTF()) }
             val directNormalization = if (version >= 7) i.nullable { readDirectNormalization(i) } else null
+            val directConversion = if (version >= 9) i.nullable { i.bounded(::readDirectConversion) } else null
             require(i.available() == 0)
             SaveRecord(SaveRequest(requestId, key, input, method, origin), task, commit, operation, deadline, retry,
                 attempt, phase, artifact, transfer, verification, receipt, count, checkpoint, wait, error,
-                directNormalization = directNormalization)
+                directNormalization = directNormalization, directConversion = directConversion).also(::requirePrivateDurable)
         }
     }
+    /** Static durable format rules, never a current device/admission/entitlement decision. */
+    private fun requirePrivateDurable(record: SaveRecord) {
+        if (!record.request.isPrivateNetwork) return
+        require(record.request.input is SaveInput.PrivateNetwork && record.request.networkResource == null)
+        require(record.checkpoint == null)
+        require(record.transfer?.responseMimeType?.let { it in setOf(
+            "video/mp4", "application/mp4", "application/octet-stream", "video/quicktime", "video/webm") } != false)
+        record.directNormalization?.let { require(it.sourceIdentity == record.request.networkSourceMetadata!!.sourceIdentity) }
+        record.directConversion?.let { require(it.sourceIdentity == record.request.networkSourceMetadata!!.sourceIdentity) }
+        record.verification?.directConversionProof?.let {
+            require(it.sourceIdentity == record.request.networkSourceMetadata!!.sourceIdentity)
+        }
+        record.verification?.directNormalizationProof?.let {
+            require(it.sourceIdentity == record.request.networkSourceMetadata!!.sourceIdentity)
+        }
+    }
+
     internal fun evidenceBytes(evidence: VerificationEvidence): ByteArray = ByteArrayOutputStream().also { buffer ->
-        DataOutputStream(buffer).use { o -> o.writeInt(EVIDENCE_MAGIC); o.writeInt(4); writeEvidence(o, evidence) }
-    }.toByteArray().also { require(it.size <= 4096) }
+        DataOutputStream(buffer).use { o -> o.writeInt(EVIDENCE_MAGIC); o.writeInt(5); writeEvidence(o, evidence) }
+    }.toByteArray().also { requireEvidenceEnvelopeBytes(it.size - 8) }
+    /** Same cap for standalone and nested evidence, including its eight-byte envelope. */
+    internal fun requireEvidenceEnvelopeBytes(payloadBytes: Int) { require(payloadBytes in 0..4088) }
     internal fun evidence(bytes: ByteArray): VerificationEvidence {
         require(bytes.size in 1..4096)
         return DataInputStream(ByteArrayInputStream(bytes)).use { i ->
             i.mark(8)
             val versioned = bytes.size >= 8 && i.readInt() == EVIDENCE_MAGIC
-            val version = if (versioned) i.readInt().also { require(it in 1..4) } else { i.reset(); 0 }
-            readEvidence(i, version >= 1, version >= 2, version >= 3, version >= 4).also { require(i.available() == 0) }
+            val version = if (versioned) i.readInt().also { require(it in 1..5) } else { i.reset(); 0 }
+            readEvidence(i, version >= 1, version >= 2, version >= 3, version >= 4, version >= 5).also { require(i.available() == 0) }
         }
     }
     private fun writeEvidence(o: DataOutputStream, e: VerificationEvidence) {
@@ -119,29 +155,31 @@ internal object SaveRecordCodec {
         }
         o.nullable(e.recordingProof) { writeRecordingProof(o, it) }
         o.nullable(e.directNormalizationProof) { writeDirectVerification(o, it) }
+        o.nullable(e.directConversionProof) { value -> o.bounded { writeDirectConversionVerification(it, value) } }
     }
     private fun readEvidence(i: DataInputStream, includeStream: Boolean, includeRecording: Boolean, includeResumeBoundaries: Boolean,
-        includeDirect: Boolean): VerificationEvidence {
+        includeDirect: Boolean, includeConversion: Boolean): VerificationEvidence {
         val before = i.available()
-        val id = i.readUTF(); val size = i.readLong(); val sha = i.readUTF(); val mp4 = i.readBoolean()
+        val id = i.readUTF(); val size = i.readLong(); val sha = i.readUTF(); val mp4 = i.readStrictBoolean()
         require(id.matches(Regex("[A-Za-z0-9_.-]{1,128}")) && size > 0 && sha.matches(Regex("[a-f0-9]{64}")))
         val video = i.readInt(); val audio = i.readInt(); val duration = i.readLong(); val width = i.readInt(); val height = i.readInt()
         require(video > 0 && audio >= 0 && duration > 0 && width > 0 && height > 0)
-        val encrypted = i.readBoolean(); val flags = i.readInt(); require(flags and 7 == flags)
-        val audioReadable = i.readBoolean()
+        val encrypted = i.readStrictBoolean(); val flags = i.readInt(); require(flags and 7 == flags)
+        val audioReadable = i.readStrictBoolean()
         return VerificationEvidence(id, size, sha, mp4, video, audio, duration, width, height, encrypted,
             DecodePosition.entries.filter { flags and (1 shl it.ordinal) != 0 }.toSet(), audioReadable,
             if (includeStream) i.nullable { readConservation(i) } else null,
-            if (includeStream) i.nullable { StreamTailProof(readSample(i), readSample(i), i.readLong(), i.readBoolean()) } else null,
+            if (includeStream) i.nullable { StreamTailProof(readSample(i), readSample(i), i.readLong(), i.readStrictBoolean()) } else null,
             if (includeRecording) i.nullable { readRecordingProof(i, includeResumeBoundaries) } else null,
-            if (includeDirect) i.nullable { readDirectVerification(i) } else null).also {
-                require(before - i.available() + 8 <= 4096)
+            if (includeDirect) i.nullable { readDirectVerification(i) } else null,
+            if (includeConversion) i.nullable { i.bounded(::readDirectConversionVerification) } else null).also {
+                requireEvidenceEnvelopeBytes(before - i.available())
                 requireEvidenceDiscriminator(it)
             }
     }
     private fun requireEvidenceDiscriminator(e: VerificationEvidence) {
         val stream = e.streamConservation != null || e.streamTailProof != null
-        require(listOf(stream, e.recordingProof != null, e.directNormalizationProof != null).count { it } <= 1)
+        require(listOf(stream, e.recordingProof != null, e.directNormalizationProof != null, e.directConversionProof != null).count { it } <= 1)
     }
     private fun writeProfile(o: DataOutputStream, p: RecordingProfile) {
         o.writeInt(p.width); o.writeInt(p.height); o.writeInt(p.frameRate); o.writeInt(p.videoBitrate)
@@ -173,7 +211,7 @@ internal object SaveRecordCodec {
         o.writeLong(t.syncSampleCount); o.writeBoolean(t.firstSampleIsKeyFrame)
     }
     private fun readTrack(i: DataInputStream) = RecordingTrackEvidence(i.readLong(), i.readLong(), i.readLong(), i.readLong(),
-        i.readLong(), i.readBoolean())
+        i.readLong(), i.readStrictBoolean())
     private fun writeRecordingExpectation(o: DataOutputStream, e: RecordingArtifactExpectation) {
         writeDescriptor(o, e.descriptor); writeProfile(o, e.actualProfile)
         o.writeUTF(e.audioOutcome.name); o.writeUTF(e.stopReason.name); writeTrack(o, e.video)
@@ -183,7 +221,7 @@ internal object SaveRecordCodec {
     }
     private fun readRecordingExpectation(i: DataInputStream, includeResumeBoundaries: Boolean, includeRegion: Boolean) = RecordingArtifactExpectation(readDescriptor(i, includeRegion), readProfile(i),
         RecordingAudioOutcome.valueOf(i.readUTF()), RecordingStopReason.valueOf(i.readUTF()), readTrack(i),
-        i.nullable { readTrack(i) }, i.readLong(), i.readLong(), i.readBoolean(), i.readBoolean(),
+        i.nullable { readTrack(i) }, i.readLong(), i.readLong(), i.readStrictBoolean(), i.readStrictBoolean(),
         if (includeResumeBoundaries) readResumeBoundaries(i) else null)
     private fun writeRecordingProof(o: DataOutputStream, p: RecordingVerificationProof) {
         writeTrack(o, p.video); o.nullable(p.audio) { writeTrack(o, it) }; o.writeUTF(p.videoMimeType)
@@ -192,7 +230,7 @@ internal object SaveRecordCodec {
         writeResumeBoundaries(o, p.decodedResumeBoundaries)
     }
     private fun readRecordingProof(i: DataInputStream, includeResumeBoundaries: Boolean) = RecordingVerificationProof(readTrack(i), i.nullable { readTrack(i) },
-        i.readUTF(), i.nullable { i.readUTF() }, i.nullable { i.readInt() }, i.nullable { i.readInt() }, i.readLong(), i.readBoolean(),
+        i.readUTF(), i.nullable { i.readUTF() }, i.nullable { i.readInt() }, i.nullable { i.readInt() }, i.readLong(), i.readStrictBoolean(),
         if (includeResumeBoundaries) readResumeBoundaries(i) else null)
     private fun writeResumeBoundaries(o: DataOutputStream, boundaries: List<RecordingResumeBoundary>?) {
         o.nullable(boundaries) { values ->
@@ -283,6 +321,84 @@ internal object SaveRecordCodec {
         o.writeLong(p.index); o.writeLong(p.presentationTimeUs); o.writeInt(p.canonicalBytes); o.writeUTF(p.sha256); o.writeInt(p.flags)
     }
     private fun readDirectSample(i: DataInputStream) = DirectSampleIdentity(i.readLong(), i.readLong(), i.readInt(), i.readUTF(), i.readInt())
+    /** Length-delimited fixed technical fields; each nested decoder rejects trailing data. */
+    private fun DataOutputStream.bounded(write: (DataOutputStream) -> Unit) {
+        val payload = ByteArrayOutputStream().also { buffer -> DataOutputStream(buffer).use(write) }.toByteArray()
+        require(payload.size in 1..4096)
+        writeInt(payload.size); write(payload)
+    }
+    private fun <T> DataInputStream.bounded(read: (DataInputStream) -> T): T {
+        val count = readInt(); require(count in 1..4096 && count <= available())
+        val payload = ByteArray(count); readFully(payload)
+        return DataInputStream(ByteArrayInputStream(payload)).use { input -> read(input).also { require(input.available() == 0) } }
+    }
+    private fun writeDirectConversion(o: DataOutputStream, p: DirectConversionProof) {
+        o.writeInt(p.schemaVersion); o.writeUTF(p.profile.name)
+        o.writeUTF(p.normalizationId); o.writeUTF(p.taskId); o.writeUTF(p.sourceIdentity); o.writeUTF(p.artifactId); o.writeUTF(p.commitId)
+        o.writeLong(p.rawSizeBytes); o.writeUTF(p.rawSha256); o.writeUTF(p.sourceTransferSha256)
+        o.writeLong(p.outputSizeBytes); o.writeUTF(p.outputSha256); o.writeInt(p.engineRevision); o.writeInt(p.policyRevision)
+        with(p.expectation.video) {
+            o.writeInt(width); o.writeInt(height); o.writeInt(frameRate); o.writeLong(sourceDurationUs)
+            o.writeLong(displayedFrameCount); o.writeLong(firstDisplayedTimeUs); o.writeLong(lastDisplayedTimeUs); o.writeLong(maximumFrameDeviationUs)
+        }
+        o.nullable(p.expectation.audio) { a ->
+            o.writeLong(a.sourceStartUs); o.writeLong(a.sourceEndUs); o.writeLong(a.sourcePcmFrameCount); o.writeLong(a.encoderPcmFrameCount)
+            o.writeInt(a.channelCount); o.writeLong(a.codecDelayUs); o.writeLong(a.seekPrerollUs); o.writeLong(a.discardPaddingUs); o.writeInt(a.sampleRate)
+        }
+        o.writeInt(p.settings.videoBitrate); o.nullable(p.settings.audioBitrate) { o.writeInt(it) }
+        with(p.completion) {
+            o.writeBoolean(rawExtentEof); o.writeBoolean(videoDecoderInputEos); o.writeBoolean(videoDecoderOutputEnded)
+            o.writeBoolean(videoPendingBufferAbsent); o.writeBoolean(muxerFinalized); o.writeBoolean(nativeResourcesReleased)
+            o.writeBoolean(hasAudio)
+            if (hasAudio) {
+                o.writeBoolean(audioDecoderInputEos!!); o.writeBoolean(audioDecoderOutputEnded!!); o.writeBoolean(sourceConsumerAcceptedEos!!)
+                o.writeBoolean(sourceAudioContinuous!!); o.writeBoolean(audioEncoderInputEos!!); o.writeBoolean(audioEncoderOutputEnded!!)
+            }
+        }
+    }
+    private fun readDirectConversion(i: DataInputStream): DirectConversionProof {
+        val version = i.readInt(); require(version == 1)
+        val profile = DirectConversionProfile.valueOf(i.readUTF())
+        val id = i.readUTF(); val task = i.readUTF(); val source = i.readUTF(); val artifact = i.readUTF(); val commit = i.readUTF()
+        val rawSize = i.readLong(); val rawHash = i.readUTF(); val transferHash = i.readUTF()
+        val outputSize = i.readLong(); val outputHash = i.readUTF(); val engine = i.readInt(); val policy = i.readInt()
+        require(engine == 1 && policy in 1..2) // Known durable revisions; the proof enforces audio/silent semantics.
+        val video = DirectConversionVideoExpectation(i.readInt(), i.readInt(), i.readInt(), i.readLong(),
+            i.readLong(), i.readLong(), i.readLong(), i.readLong())
+        val audio = i.nullable { DirectConversionAudioExpectation(i.readLong(), i.readLong(), i.readLong(), i.readLong(),
+            i.readInt(), i.readLong(), i.readLong(), i.readLong(), i.readInt()) }
+        val settings = DirectConversionEncodingSettings(i.readInt(), i.nullable { i.readInt() })
+        val rawEof = i.readStrictBoolean(); val videoInput = i.readStrictBoolean(); val videoOutput = i.readStrictBoolean()
+        val noPending = i.readStrictBoolean(); val finalized = i.readStrictBoolean(); val released = i.readStrictBoolean()
+        val hasAudio = i.readStrictBoolean()
+        fun audioFact(): Boolean? = if (hasAudio) i.readStrictBoolean() else null
+        val completion = DirectConversionCompletionFacts(rawEof, videoInput, videoOutput, noPending, finalized, released,
+            audioFact(), audioFact(), audioFact(), audioFact(), audioFact(), audioFact())
+        return DirectConversionProof(id, task, source, artifact, commit, rawSize, rawHash, transferHash, outputSize, outputHash,
+            DirectConversionExpectation(video, audio), settings, completion, version, profile, engine, policy)
+    }
+    private fun writeDirectConversionVerification(o: DataOutputStream, p: DirectConversionVerificationProof) {
+        o.writeInt(p.schemaVersion); o.writeInt(p.policyRevision)
+        o.writeUTF(p.normalizationId); o.writeUTF(p.taskId); o.writeUTF(p.sourceIdentity); o.writeUTF(p.artifactId); o.writeUTF(p.commitId)
+        o.writeUTF(p.conversionProofSha256); o.writeLong(p.outputSizeBytes); o.writeUTF(p.outputSha256)
+        o.writeLong(p.decodedVideoFrameCount); o.writeLong(p.firstVideoTimeUs); o.writeLong(p.lastVideoTimeUs)
+        o.writeLong(p.videoDurationUs); o.writeLong(p.maximumFrameDeviationUs)
+        o.nullable(p.audio) { a ->
+            o.writeLong(a.outputStartUs); o.writeLong(a.outputEndUs); o.writeLong(a.effectiveDecodedPcmFrameCount)
+            o.writeInt(a.sampleRate); o.writeInt(a.channelCount); o.writeBoolean(a.outputEos); o.writeBoolean(a.continuous)
+        }
+        o.writeBoolean(p.containerComplete); o.writeBoolean(p.videoOutputEos); o.writeBoolean(p.nativeResourcesReleased)
+    }
+    private fun readDirectConversionVerification(i: DataInputStream): DirectConversionVerificationProof {
+        val version = i.readInt(); val policy = i.readInt(); require(version == 1 && policy in 1..2)
+        val id = i.readUTF(); val task = i.readUTF(); val source = i.readUTF(); val artifact = i.readUTF(); val commit = i.readUTF()
+        val proofHash = i.readUTF(); val outputSize = i.readLong(); val outputHash = i.readUTF()
+        val frames = i.readLong(); val first = i.readLong(); val last = i.readLong(); val duration = i.readLong(); val deviation = i.readLong()
+        val audio = i.nullable { DirectConversionAudioVerification(i.readLong(), i.readLong(), i.readLong(), i.readInt(), i.readInt(),
+            i.readStrictBoolean(), i.readStrictBoolean()) }
+        return DirectConversionVerificationProof(id, task, source, artifact, commit, proofHash, outputSize, outputHash,
+            frames, first, last, duration, deviation, audio, i.readStrictBoolean(), i.readStrictBoolean(), i.readStrictBoolean(), version, policy)
+    }
     private fun writeReceipt(o: DataOutputStream, r: MediaCommitReceipt) {
         o.writeUTF(r.commitId); o.writeUTF(r.artifactId); o.writeUTF(r.mediaId); o.writeLong(r.sizeBytes); o.writeUTF(r.sha256)
     }

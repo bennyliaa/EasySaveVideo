@@ -84,9 +84,11 @@ fun RecordingScreen(
                 Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner))
                     .padding(v.spacingMedium), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                     EsvText(stringResource(R.string.advanced_copy_13), style = v.titleTextStyle)
-                    EsvText(stringResource(R.string.final_copy_65))
+                    if (showingAdvanced) EsvText(stringResource(R.string.final_copy_65))
                     EsvText(if (showingAdvanced) stringResource(R.string.final_copy_66)
-                        else stringResource(R.string.final_copy_67), style = v.captionTextStyle, color = v.colors.muted)
+                        else stringResource(R.string.private_record_disclosure), style = v.captionTextStyle, color = v.colors.muted)
+                    if (!showingAdvanced && android.os.Build.VERSION.SDK_INT <= 32)
+                        EsvText(stringResource(R.string.private_record_legacy_recents), style = v.captionTextStyle)
                     if (showingAdvanced) {
                         EsvText(stringResource(R.string.final_copy_68), style = v.captionTextStyle)
                         EsvText(if (previewMode) recordingPreviewScopeDisclosure else stringResource(R.string.final_copy_69), style = v.captionTextStyle)
@@ -96,7 +98,8 @@ fun RecordingScreen(
                     EsvText(stringResource(R.string.final_copy_72), style = v.captionTextStyle, color = v.colors.muted)
                     EsvText(stringResource(R.string.final_copy_73), style = v.captionTextStyle, color = v.colors.muted)
                     EsvText(if (showingAdvanced) "开发版本：高级录制会话从开始起最多 2 小时（含暂停），单次暂停最多 10 分钟；当前合成输出有效总时长最多 30 分钟（不含暂停）。私有片段合计最多 2 GiB，单片段最多 2 GiB。最多 32 次真正恢复录入（初始片段加最多 32 个后续片段）。设备与真实权限验收尚未执行。"
-                        else "开发版本：会话资源上限 2 小时、单次暂停最多 10 分钟、单文件最多 2 GiB；这些不是已经实测的可保存时长。每会话最多 32 次真正恢复录入，超出时安全停止并尝试保存已录部分。尺寸变化或系统结束共享会触发安全收尾。会检查全部样本结构，并实际解码首、中、末及每次恢复关键帧所在的画面组。校验最多 60 秒，较长成片可能超时而不发布；不保证每帧均已解码。设备与真实权限验收尚未执行。", style = v.captionTextStyle, color = v.colors.muted)
+                        else stringResource(R.string.private_record_limits), style = v.captionTextStyle, color = v.colors.muted)
+                    if (!showingAdvanced) EsvText(stringResource(R.string.private_record_verification_help), style = v.captionTextStyle, color = v.colors.muted)
                     if (showingAdvanced) EsvText(stringResource(R.string.final_copy_74), style = v.captionTextStyle, color = v.colors.muted)
                 }
                 if (!active && !consent.requestInFlight) {

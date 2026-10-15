@@ -10,9 +10,11 @@ class InputClearWiringTest {
     private fun source(path: String) = String(Files.readAllBytes(Paths.get("src/main", path)), Charsets.UTF_8)
     private val browser get() = source("kotlin/com/easysavevideo/app/ui/BrowserScreen.kt")
     private val discovery get() = source("kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt")
-    @Test fun browserClearBodiesCannotSubmitOrNavigateAndReadLatestEnvironment() {
+    @Test fun browserClearBodiesCannotSubmitOrNavigateAndKeepExactGeneration() {
         val source = browser
-        assertTrue(source.contains("val currentClearEnvironment by rememberUpdatedState"))
+        assertTrue(source.contains("val currentClearEnvironment = {"))
+        assertFalse(source.contains("val currentClearEnvironment by rememberUpdatedState"))
+        assertTrue(source.contains("fun clearOwnerCurrent(): Boolean = inputAllowed() &&"))
         assertTrue(source.contains("canSubmitNewTabInput(newTabInputGeneration)"))
         assertTrue(source.contains("browser.saveInspectionRevision"))
         assertTrue(source.contains("!saveScanning && saveRuntime?.scanning != true"))
@@ -32,9 +34,9 @@ class InputClearWiringTest {
         assertTrue(source.contains("address = it.take(8192); addressClearToken = addressClearGate.invalidate()"))
         assertTrue(source.contains("videoInput = it.take(8193); videoInputError = false; videoClearToken = videoClearGate.invalidate()"))
         assertTrue(source.contains("videoMode = mode; videoInputError = false; videoClearToken = videoClearGate.invalidate()"))
-        val sync = source.substringAfter("LaunchedEffect(selected?.address?.value)").substringBefore("fun go()")
+        val sync = source.substringAfter("LaunchedEffect(selected?.address?.value, recordingPresentation)").substringBefore("fun go()")
         assertTrue(sync.contains("addressClearToken = addressClearGate.invalidate()"))
-        val submit = source.substringAfter("fun submitVideoInput()").substringBefore("LaunchedEffect(selected?.address?.value)")
+        val submit = source.substringAfter("fun submitVideoInput()").substringBefore("LaunchedEffect(selected?.address?.value, recordingPresentation)")
         assertTrue(submit.indexOf("videoSubmission.claim") < submit.indexOf("videoClearGate.retire()"))
         assertTrue(source.contains("onDispose { addressClearGate.retire(); videoClearGate.retire() }"))
     }

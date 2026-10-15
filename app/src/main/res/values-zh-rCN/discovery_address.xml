@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_address_placeholder">https://example.com 或 example.com</string>
+    <string name="discovery_address_open">打开</string>
+    <string name="discovery_address_invalid">请输入有效的 HTTP 或 HTTPS 网页地址。关键词请使用单独的视频搜索框。</string>
+    <string name="discovery_address_unavailable">暂时无法打开此地址。请在此页面可用时重试。</string>
+    <string name="discovery_address_route_veto">暂时无法显示浏览器，请重试。</string>
+</resources>

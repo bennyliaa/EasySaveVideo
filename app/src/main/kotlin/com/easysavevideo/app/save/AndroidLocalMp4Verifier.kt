@@ -1,5 +1,6 @@
 package com.easysavevideo.app.save
 
+import com.easysavevideo.app.media.verification.*
 import android.media.MediaCodec
 import android.media.MediaExtractor
 import android.media.MediaFormat
@@ -28,11 +29,26 @@ import kotlin.math.abs
  * occupied if a native call ignores interruption. No replacement threads are created, and
  * timed-out evidence cannot return to the caller or publish a media item.
  */
-class AndroidLocalMp4Verifier(
+class AndroidLocalMp4Verifier private constructor(
     private val stagingFile: (StagingArtifact) -> File,
     private val timeoutMillis: Long,
-    private val normalizedOutputOwner: DirectNormalizedOutputOwner? = null,
+    private val normalizedOutputOwner: DirectNormalizedOutputOwner?,
+    private val legacyReadOwnership: ((StagingArtifact, OperationContext) -> ((Boolean) -> Unit))?,
+    private val convertedInspectionFactory: (BorrowedAvcAacRead) -> BorrowedAvcAacInspection,
 ) : ArtifactVerifier {
+    constructor(stagingFile: (StagingArtifact) -> File, timeoutMillis: Long,
+        normalizedOutputOwner: DirectNormalizedOutputOwner? = null,
+        legacyReadOwnership: ((StagingArtifact, OperationContext) -> ((Boolean) -> Unit))? = null) :
+        this(stagingFile, timeoutMillis, normalizedOutputOwner, legacyReadOwnership, { BorrowedAvcAacInspection(it) })
+
+    /** Host-only native-body seam; execution still uses the real existing lane and ownership body. */
+    internal constructor(stagingFile: (StagingArtifact) -> File, timeoutMillis: Long,
+        normalizedOutputOwner: DirectNormalizedOutputOwner,
+        legacyReadOwnership: ((StagingArtifact, OperationContext) -> ((Boolean) -> Unit))?,
+        convertedNativeBody: (BorrowedAvcAacRead, AvcAacNativeResources, AvcAacOutputExpectation, () -> Unit) -> AvcAacOutputObservations) :
+        this(stagingFile, timeoutMillis, normalizedOutputOwner, legacyReadOwnership,
+            { read: BorrowedAvcAacRead -> BorrowedAvcAacInspection(read, convertedNativeBody) })
+
     override fun requiresProcessRecovery(): Boolean = isDraining || normalizedOutputOwner?.requiresProcessRecovery() == true
 
     override fun verify(artifact: StagingArtifact, transfer: TransferResult, context: OperationContext): VerificationEvidence =
@@ -42,11 +58,14 @@ class AndroidLocalMp4Verifier(
         context: OperationContext): VerificationEvidence {
         if (requiresProcessRecovery()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
         checkActive(context)
-        if (output is ArtifactOutputDescriptor.NormalizedDirect) {
-            DirectNormalizedPreflight.check(artifact, output, context)
-            // The legacy pathname callback cannot assert adopted-generation ownership.
-            if (normalizedOutputOwner == null) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        when (output) {
+            is ArtifactOutputDescriptor.NormalizedDirect -> DirectNormalizedPreflight.check(artifact, output, context)
+            is ArtifactOutputDescriptor.ConvertedDirect -> DirectConvertedPreflight.check(artifact, output, context)
+            is ArtifactOutputDescriptor.Transferred -> Unit
         }
+        // The legacy pathname callback cannot assert either adopted-generation ownership.
+        if (output !is ArtifactOutputDescriptor.Transferred && normalizedOutputOwner == null)
+            throw SaveFailure(SaveError.RECOVERY_REQUIRED)
         val deadlineNanos = System.nanoTime() + minOf(timeoutMillis,
             (context.deadlineEpochMillis - System.currentTimeMillis()).coerceAtLeast(1)) * 1_000_000
         val lease = NativeVerificationLease({ draining.incrementAndGet() }, { draining.decrementAndGet() })
@@ -55,7 +74,22 @@ class AndroidLocalMp4Verifier(
                 if (!lease.start()) throw SaveFailure(SaveError.CANCELLED)
                 try {
                     when (output) {
-                        is ArtifactOutputDescriptor.Transferred -> inspect(artifact, output.transfer, context, deadlineNanos)
+                        is ArtifactOutputDescriptor.ConvertedDirect -> DirectConvertedAndroidVerifier(
+                            requireNotNull(normalizedOutputOwner), { releaseUnconfirmed.set(true) }, convertedInspectionFactory
+                        ).inspect(artifact, output, context) {
+                            checkActive(context)
+                            if (System.nanoTime() >= deadlineNanos) throw SaveFailure(SaveError.DEADLINE_EXCEEDED)
+                        }
+                        is ArtifactOutputDescriptor.Transferred -> {
+                            val report = legacyReadOwnership?.invoke(artifact, context)
+                            var inputReleased = false
+                            try { inspect(artifact, output.transfer, context, deadlineNanos) { inputReleased = it } }
+                            finally {
+                                // Actual worker finally, never Future completion or cancellation.
+                                try { report?.invoke(inputReleased && !releaseUnconfirmed.get()) }
+                                catch (_: Exception) { releaseUnconfirmed.set(true) }
+                            }
+                        }
                         is ArtifactOutputDescriptor.NormalizedDirect -> DirectNormalizedAndroidVerifier(
                             requireNotNull(normalizedOutputOwner), { releaseUnconfirmed.set(true) }
                         ).inspect(artifact, output, context) {
@@ -76,13 +110,14 @@ class AndroidLocalMp4Verifier(
                     val result = future.get(minOf(remaining, 50_000_000), TimeUnit.NANOSECONDS)
                     checkActive(context)
                     if (System.nanoTime() >= deadlineNanos) throw SaveFailure(SaveError.DEADLINE_EXCEEDED)
-                    if (output is ArtifactOutputDescriptor.NormalizedDirect && requiresProcessRecovery())
+                    if (output !is ArtifactOutputDescriptor.Transferred && requiresProcessRecovery())
                         throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
                     return result
                 } catch (_: TimeoutException) { /* Keep the UI cancellation latency bounded. */ }
             }
         } catch (error: ExecutionException) {
-            throw (error.cause as? SaveFailure ?: SaveFailure(SaveError.INVALID_MEDIA))
+            throw (error.cause as? SaveFailure ?: SaveFailure(if (output is ArtifactOutputDescriptor.ConvertedDirect)
+                SaveError.VERIFICATION_UNAVAILABLE else SaveError.INVALID_MEDIA))
         } catch (_: InterruptedException) {
             Thread.currentThread().interrupt(); throw SaveFailure(SaveError.CANCELLED)
         } finally {
@@ -96,14 +131,16 @@ class AndroidLocalMp4Verifier(
     }
 
     private fun inspect(artifact: StagingArtifact, transfer: TransferResult, context: OperationContext,
-        deadlineNanos: Long): VerificationEvidence {
+        deadlineNanos: Long, inputClosed: (Boolean) -> Unit = {}): VerificationEvidence {
         fun checkpoint() {
             checkActive(context)
             if (System.nanoTime() >= deadlineNanos) throw SaveFailure(SaveError.DEADLINE_EXCEEDED)
         }
         val file = stagingFile(artifact)
         val input = RandomAccessFile(file, "r")
+        var inputDescriptor: java.io.FileDescriptor? = null
         try {
+            inputDescriptor = input.fd
             checkpoint()
             val size = input.length()
             if (size <= 0 || size != transfer.bytesOnDisk ||
@@ -252,6 +289,7 @@ class AndroidLocalMp4Verifier(
             }
         } finally {
             try { input.close() } catch (_: Exception) { releaseUnconfirmed.set(true); throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED) }
+            inputClosed(inputDescriptor?.valid() == false)
         }
     }
     private fun hashFile(input: RandomAccessFile, size: Long, checkpoint: () -> Unit): String {

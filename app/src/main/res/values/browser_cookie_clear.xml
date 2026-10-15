@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_cookie_clear_rejected">Cookie clearing was not started. Return to ordinary browsing and confirm again.</string>
+    <string name="browser_cookie_clear_not_started">Cookie clearing could not be started. To try again, use Clear all cookies in Browser options.</string>
+    <string name="browser_cookie_clear_removed">Ordinary-browser cookie clearing completed. Websites may be signed out; open pages can create new cookies.</string>
+    <string name="browser_cookie_clear_none_removed">Cookie clearing completed. WebView reported no cookies removed.</string>
+    <string name="browser_cookie_clear_unconfirmed">Cookie clearing could not be confirmed. Some cookies may already have been removed. To try again, use Clear all cookies in Browser options.</string>
+</resources>

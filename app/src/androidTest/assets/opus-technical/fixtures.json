@@ -1,0 +1,28 @@
+{
+  "cases": [
+    {
+      "id": "aligned_1s",
+      "bytes": 9795,
+      "sha256": "3b06438e3a1037bb449dd4ad6ce01fb996f72eccb32276af220bf0c6b756e5d0",
+      "reference_pcm_sha256": "98bca6d4c874ad77d2a3256d460df1235b4d1ff11e0553883921920ede10fe39",
+      "known_source_frames": 48000,
+      "candidate_expected": false
+    },
+    {
+      "id": "nonaligned_1007ms",
+      "bytes": 9842,
+      "sha256": "90a290a441eb3fc0050e246983c76ae497d7d7ace5d9075b3b5cbea67f3b41e8",
+      "reference_pcm_sha256": "5877a2a19cb81f1e2bd30cad4ca3d0183ac2da55c6ab1055f10bc2ccd038daa7",
+      "known_source_frames": 48336,
+      "candidate_expected": true
+    },
+    {
+      "id": "short_audio_600ms",
+      "bytes": 6455,
+      "sha256": "1772ddf33feec0cb198e9736cb2ced7838e0e76fc8746243fe15cdcfafe97919",
+      "reference_pcm_sha256": "a177042b7590e228766d4966ad77b7b314f6dbaaa83cbf92fd7f4cdf455008bc",
+      "known_source_frames": 28800,
+      "candidate_expected": true
+    }
+  ]
+}

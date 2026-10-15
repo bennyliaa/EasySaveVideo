@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_address_placeholder">https://example.com or example.com</string>
+    <string name="discovery_address_open">Open</string>
+    <string name="discovery_address_invalid">Enter a valid HTTP or HTTPS web address. Use the separate video search field for keywords.</string>
+    <string name="discovery_address_unavailable">This address could not be opened. Try again when this screen is available.</string>
+    <string name="discovery_address_route_veto">Browser could not be shown. Try again.</string>
+</resources>

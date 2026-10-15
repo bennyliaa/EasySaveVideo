@@ -24,7 +24,10 @@ class CentralSaveDestinationContractTest {
     }
     @Test fun oldBrowserCallShapeStillUsesTheSameProductionComponent() {
         val s=read("src/main/kotlin/com/easysavevideo/app/ui/BrowserScreen.kt")
-        assertTrue(s.contains("OrdinaryDestinationSettings(it)"))
+        val panel=s.substringAfter("@Composable private fun SettingsPanel(").substringBefore("@Composable private fun Toggle(")
+        assertTrue(panel.contains("val admission = LocalPrivateInputAdmission.current"))
+        assertTrue(panel.contains("destinations?.let { OrdinaryDestinationSettings(it, canAct = admission) }"))
+        assertEquals(1,Regex("OrdinaryDestinationSettings\\(").findAll(s).count())
         val ui=read("src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationUi.kt")
         assertTrue(ui.contains("actionScopeKey: Long = 0"));assertTrue(ui.contains("showNotice: Boolean = true"))
         assertTrue(ui.contains("if (showNotice) OrdinaryDestinationNotice(runtime, actions::dismiss)"))

@@ -4,6 +4,8 @@ import com.easysavevideo.discovery.*
 import java.nio.ByteBuffer
 import java.util.Base64
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.CountDownLatch
 
 /** Exact observation identity, never a URL-derived read authority. */
 class DiscoveryThumbnailBinding private constructor(
@@ -67,7 +69,7 @@ interface DiscoveryThumbnailFrame : AutoCloseable {
 }
 
 /** Released certifies all reader/native resources are released, except the returned frame. */
-internal sealed interface DiscoveryThumbnailRead {
+sealed interface DiscoveryThumbnailRead {
     data class Released(val frame: DiscoveryThumbnailFrame?) : DiscoveryThumbnailRead
     data object ReleaseUnconfirmed : DiscoveryThumbnailRead
 }
@@ -76,22 +78,62 @@ internal fun interface DiscoveryThumbnailReader {
 }
 
 /** Possession is an explicit reviewed reader grant, not evidence inferred from ResultRights or thumbnailUrl.
- * The only public factory is a caller-owned in-memory RGBA fixture. No file, URI, network or codec access.
- * A future Android reader factory needs separate admission and resource-release review.
+ * Fixtures remain local. The scoped Commons registration SPI supplies the separately reviewed
+ * production reader without exposing URLs, Android types or codecs to the feature model.
  */
 class DiscoveryThumbnailCapability internal constructor(
     val binding: DiscoveryThumbnailBinding,
     private val reader: DiscoveryThumbnailReader,
+    private val sourceCurrent: () -> Boolean = { true },
+    private val registeredReader: ((DiscoveryCancellation) -> DiscoveryThumbnailRead)? = null,
 ) : AutoCloseable {
     private val revoked = AtomicBoolean()
-    internal val isRevoked: Boolean get() = revoked.get()
-    internal fun read(cancelled: () -> Boolean): DiscoveryThumbnailRead =
-        if (revoked.get() || cancelled()) DiscoveryThumbnailRead.Released(null)
-        else reader.read { revoked.get() || cancelled() }
-    override fun close() { revoked.set(true) }
+    internal val isRevoked: Boolean get() = revoked.get() || try { !sourceCurrent() } catch (_: Exception) { true }
+    private val active = AtomicReference<DiscoveryCancellation?>()
+    internal fun read(cancellation: DiscoveryCancellation): DiscoveryThumbnailRead {
+        if (isRevoked || cancellation.isCancelled) return DiscoveryThumbnailRead.Released(null)
+        check(active.compareAndSet(null, cancellation))
+        val drained = CountDownLatch(1)
+        cancellation.drained = { drained.countDown() }
+        if (cancellation.isDrained) drained.countDown()
+        var readerReturned = false
+        try {
+            if (isRevoked) cancellation.cancel()
+            val result = if (cancellation.isCancelled) DiscoveryThumbnailRead.Released(null)
+                else registeredReader?.invoke(cancellation) ?: reader.read { revoked.get() || cancellation.isCancelled }
+            if (result == DiscoveryThumbnailRead.ReleaseUnconfirmed) cancellation.cancel()
+            readerReturned = true
+            return result
+        } finally {
+            // A cancelled transport hook can still be closing resources after read returns.
+            // Keep the physical lane occupied until both the reader and those hooks have exited.
+            if (!readerReturned) cancellation.cancel()
+            // Atomically retire unstarted hooks, or wait if cancellation already claimed them.
+            // Checking isCancelled alone would race cancel immediately before active is cleared.
+            val completedWithoutCancellation = cancellation.releaseCompletedAttempt()
+            var interrupted = false
+            while (!completedWithoutCancellation && !cancellation.isDrained) {
+                try { drained.await() } catch (_: InterruptedException) { interrupted = true }
+            }
+            active.compareAndSet(cancellation, null)
+            if (interrupted) Thread.currentThread().interrupt()
+        }
+    }
+    override fun close() { revoked.set(true); active.get()?.cancel() }
     override fun toString(): String = "DiscoveryThumbnailCapability([redacted])"
 
     companion object {
+        /** Trusted composition-root SPI, solely used by the reviewed Commons registration.
+         * No URL is accepted here. The producer must bind exact current metadata/configuration;
+         * this Kotlin API does not sandbox other trusted application code.
+         */
+        fun fromCommonsRegistration(binding: DiscoveryThumbnailBinding, sourceCurrent: () -> Boolean,
+            read: (DiscoveryCancellation) -> DiscoveryThumbnailRead): DiscoveryThumbnailCapability =
+            DiscoveryThumbnailCapability(binding, DiscoveryThumbnailReader { DiscoveryThumbnailRead.Released(null) }, sourceCurrent) { cancellation ->
+                if (!sourceCurrent() || cancellation.isCancelled) DiscoveryThumbnailRead.Released(null)
+                else read(cancellation)
+            }
+
         /** Caller affirms these fixture pixels are owned/local. Copies input; no URL is dereferenced. */
         fun ownedRgbaFixture(binding: DiscoveryThumbnailBinding, width: Int, height: Int, pixels: ByteArray): DiscoveryThumbnailCapability {
             require(width in 1..256 && height in 1..256 && pixels.size == width * height * 4)

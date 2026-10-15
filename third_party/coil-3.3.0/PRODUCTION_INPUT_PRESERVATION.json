@@ -1,0 +1,59 @@
+{
+  "all_pinned_production_inputs_unchanged": true,
+  "files": [
+    {
+      "path": "/workspace/shared/esv-cloud-handoff-20fddc9/source/AGENTS.md",
+      "original_sha256": "1f82be791e6d1391638dfaee5db4eb63deb04e054274e47936846f8dd29378f7",
+      "current_sha256": "1f82be791e6d1391638dfaee5db4eb63deb04e054274e47936846f8dd29378f7",
+      "unchanged": true
+    },
+    {
+      "path": "/workspace/shared/esv-cloud-handoff-20fddc9/source/third_party/admitted-runtime.tsv",
+      "original_sha256": "a18548e7ed1f26809d46a9bbedc795f4b5d2c6ae3aef3794ad3baa057160ccb1",
+      "current_sha256": "a18548e7ed1f26809d46a9bbedc795f4b5d2c6ae3aef3794ad3baa057160ccb1",
+      "unchanged": true
+    },
+    {
+      "path": "/workspace/shared/esv-cloud-handoff-20fddc9/source/app/src/main/assets/third-party-notices.txt",
+      "original_sha256": "a7ceffffb383ef2953b457a8f02ec2824c691b1500158bc399d38f862e58fb8f",
+      "current_sha256": "a7ceffffb383ef2953b457a8f02ec2824c691b1500158bc399d38f862e58fb8f",
+      "unchanged": true
+    },
+    {
+      "path": "/workspace/shared/esv-cloud-handoff-20fddc9/source/app/src/main/assets/skinkit-1.0.0-license.txt",
+      "original_sha256": "e7a534348b70435d09a26783c9c54faf8bc78b0e8243e6ce5c9beb08fb6e7b49",
+      "current_sha256": "e7a534348b70435d09a26783c9c54faf8bc78b0e8243e6ce5c9beb08fb6e7b49",
+      "unchanged": true
+    },
+    {
+      "path": "/workspace/shared/esv-cloud-handoff-20fddc9/source/third_party/skinkit-1.0.0/LICENSE-SKINKIT.txt",
+      "original_sha256": "e7a534348b70435d09a26783c9c54faf8bc78b0e8243e6ce5c9beb08fb6e7b49",
+      "current_sha256": "e7a534348b70435d09a26783c9c54faf8bc78b0e8243e6ce5c9beb08fb6e7b49",
+      "unchanged": true
+    },
+    {
+      "path": "/workspace/shared/esv-cloud-handoff-20fddc9/source/third_party/candidates/webkit-1.17.1/CHROMIUM-LICENSE.txt",
+      "original_sha256": "368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b",
+      "current_sha256": "368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b",
+      "unchanged": true
+    },
+    {
+      "path": "/workspace/shared/esv-cloud-handoff-20fddc9/source/third_party/candidates/webkit-1.17.1/WEBKIT-LICENSE.txt",
+      "original_sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "current_sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "unchanged": true
+    },
+    {
+      "path": "/workspace/shared/esv-cloud-handoff-20fddc9/source/third_party/candidates/webkit-1.17.1/chromium-boundary-attributions.txt",
+      "original_sha256": "7ef1e0f9c886336175837c93eba33963dcf2c8b13ed2a95e26ff3078d8551e61",
+      "current_sha256": "7ef1e0f9c886336175837c93eba33963dcf2c8b13ed2a95e26ff3078d8551e61",
+      "unchanged": true
+    },
+    {
+      "path": "/workspace/shared/esv-cloud-handoff-20fddc9/source/third_party/current-runtime/licenses/Apache-2.0-AOSP.txt",
+      "original_sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "current_sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "unchanged": true
+    }
+  ]
+}

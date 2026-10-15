@@ -1,0 +1,27 @@
+# Pinned finite WebM production-preflight host tests
+
+This runner compiles the four actual `app/save/conversion` implementation files against the exact admitted Media3 1.11.1 class JARs. It does not compile the external r1 safe-policy draft. The original synthetic fixture writer and Android host shim are reused; no upstream reader/parser source is copied.
+
+Run with the same already installed JAVA_HOME, ANDROID_HOME and GRADLE_USER_HOME used for `mov-remux-host`:
+
+```sh
+bash app/src/testSupport/webm-probe-host/run.sh "$PWD" /path/to/external/webm-host-output
+```
+
+No Gradle, network, APK, adb/device or upload is invoked. Output under the source checkout is refused. The owner runs/serializes build work. Actual results appear in the supplied output directory as `results.log` and `results.json`; this README alone is not evidence that they passed.
+
+The preflight accepts only the factory's exact guarded input over a caller-owned fixed-extent positional capability. No bare path, arbitrary URI/DataSource or future Transformer factory is exposed. The factory's policy is intended for later reuse; actual Transformer loading still requires separately reviewed, paired, storage-issued private-token DataSource and extractor factories. Neither implementing the borrowed interface nor constructing a factory creates storage/publication authority. No borrowed descriptor is closed here.
+
+`BoundedWebmExtractor` is a composition wrapper around a protected-hook Matroska subclass because the pinned `read` and `sniff` methods are final. The wrapper checks the exact input instance. Every read/skip/peek/advance overload checks identity, operation checkpoint, range and bounded request before the delegate can enlarge its peek buffer. The same shared binding charges repeated/cached accesses; resetPeek does not reset the allowance. The required checkpoint has no default and must enforce the caller's actual cancellation and deadline. The entire held peek window is separately capped; repeated small advances cannot grow it to the source extent.
+
+Every master and binary dispatch uses the same original candidate-first <=12-byte literal-header guard extracted from the actual r1 probe. Unknown and original string dispatch are controlled before allocation/skip; a long declared extent is checked before int conversion or payload delegation. Negative tests assert a typed technical rejection and, for length/ambiguity cases, require zero superclass payload delegations. There is no preempting multi-GiB host sentinel in the production adapter.
+
+Transport facts include track formats/configuration, container-declared duration, emitted source sample callback counts and first/last source timestamps. They explicitly do not establish displayed frame count, CFR, native decode/playability, media quality, actual Opus audio time mapping, release fencing, conversion, output verification or publication eligibility. The original packet bodies are opaque test transport bytes.
+
+The external r1 reference remains frozen at `/workspace/shared/esv-webm-basic-conversion-20261014/pinned-probe-overlay`. Its 58 passing assertions and 32 observations are historical evidence, not a second maintained safe implementation. In that historical runner, positive binary lengths above the 8 MiB host envelope (including Integer.MAX_VALUE) hit HOST_TRACE_BINARY_ALLOCATION_GUARD before framed checks; those particular results proved host safety, not directly the full-header guard. Small-positive-wrap and negative-int cases did exercise full framing. The production tests remove that ambiguity with technical codes and payload-delegation counters.
+
+Current compatibility is deliberately narrow. All unrecognized feature IDs fail unsupported; selected bounded inert metadata is skipped without retention. This is not a general WebM validator. Actual source bindings, HTTP transfer completion, post-conversion identity/hash, storage schema/CAS/recovery, paired native loading, visible-frame/audio time evidence and device admission remain outside this slice. Gates are not changed by these files or by host results.
+
+Caller callback errors from length/checkpoint/identity/readAt preserve the original exception instance through an internal carrier, unwrapped at the synchronous probe boundary. Parser-originated exceptions remain MALFORMED. Current counters are single-thread confined; future paired/native integration must separately review concurrency and wrapped-error propagation.
+
+Current policy admits FlagInterlaced=0 (undetermined) or 2 (progressive) only inside Video, and a unique known-sized Colour master with explicit limited/full range, BT.709 or BT.601 primaries, and BT.709/SMPTE170M SDR transfer using admitted Media3 interpretation. Absent fields remain unknown; range-only metadata does not prove SDR pixel content. Unsupported/unspecified colour values, MatrixCoefficients (not interpreted by this pinned extractor), HDR/MasteringMetadata, projection, stereo, alpha and crop remain rejected. Audio BitDepth is a unique Audio child in the bounded 1..32 subset for the actual Opus track; it does not assert decoder PCM precision. Context, duplicate, bounded-header, Format and native/output gates remain independent. The permanent ProgressiveSdrWebmTest runs alongside the original host regressions, with three exact original FFmpeg-generated fixtures and controlled in-memory byte variants; no FFmpeg runtime dependency is added. No full-design, native colour fidelity or device-admission claim follows from these host checks.

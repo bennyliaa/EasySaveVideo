@@ -1,0 +1,92 @@
+[
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
+    "base_sha256": "01fa976ba64687af3b8a20ef62daf68b2197c95d298fcdbabab2bcc3b3969b3c",
+    "overlay_sha256": "5af9fa30eadd157fa170268cb7698fce4530e3e1712f756b38afd154d0b35160"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/CommonsSourceRegistration.kt",
+    "base_sha256": "dec2e192cacd0ccd113bd9e1bbb0db8ff077f40f535c4fcc7867199ca93f1a87",
+    "overlay_sha256": "8f99cae93b8093216e95a4b00c3893271f0fbeef497127f719668de23488b645"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/thumbnail/AndroidDiscoveryThumbnails.kt",
+    "base_sha256": null,
+    "overlay_sha256": "ffe9f18ea6d120ae5746d3b23076fe12f6d57ca653afb1a4ee75de14547ba9d4"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailReader.kt",
+    "base_sha256": null,
+    "overlay_sha256": "9c1326cb55a860b4781d22beedc7198ffbcd99ad44bce809cf1c2581df258fe3"
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/ui/DiscoveryScreen.kt",
+    "base_sha256": "167e152de33467b55f86d44fd650fb4eb611a19e681e055f37e400b55c59d64e",
+    "overlay_sha256": "ef504fc063b4c50f3548b104a8f0f002de55db028547be4170fcdad86e6181cd"
+  },
+  {
+    "path": "app/src/main/res/values/discovery_copy.xml",
+    "base_sha256": "cd8b4cdfab213aa2ae78bb065dcf300c220f294ddffa3950cc90c462c0f30fb9",
+    "overlay_sha256": "370726d71ef4484979f225c38b08226f5c6160d133584fa7befa67cd15b7d324"
+  },
+  {
+    "path": "app/src/main/res/values-zh-rCN/discovery_copy.xml",
+    "base_sha256": "d2e5abbae37039d74c43c54449f03227ac9f1ffa8850cee3227fb255d2a66fb4",
+    "overlay_sha256": "633b3e837e97c2f3a849c4b4f92f46d023a820a47cf85d24ddafb1febf39f5d4"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/browser/NewTabSearchContractTest.kt",
+    "base_sha256": "20bfb465fb3011bc9222ac08c564488a5f639cd43f4e4c989e3fa50bd65b3c64",
+    "overlay_sha256": "659ef65ed6f3ae09509b552be2a653de8817323c17d1d9a02804d14d2b2fcf01"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsAnonymousImageClientTest.kt",
+    "base_sha256": null,
+    "overlay_sha256": "a4659f0c9bad3f8bccf0c9c63ca700ee43200599e91e0e89ae0056e54a32a623"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailGenerationTest.kt",
+    "base_sha256": null,
+    "overlay_sha256": "f8dbea91668f8daa995355bdcfc888ac43f9938090d442388652d4ca62335e95"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailLaneTest.kt",
+    "base_sha256": null,
+    "overlay_sha256": "1d97445270d8208bb63aed053b52d22fccfe5fe47482c7a9e8498ec2c37a00d0"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailPolicyTest.kt",
+    "base_sha256": null,
+    "overlay_sha256": "65d1e00658402e7bfec23c7ff055f2661075600556f2da198916f839501d6c94"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailProductWiringTest.kt",
+    "base_sha256": null,
+    "overlay_sha256": "2f01b8b70a9921d9ea412e3b532f993a63d00bb6c65768f1df0ee0e2e03f5a76"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailWiringContractTest.kt",
+    "base_sha256": null,
+    "overlay_sha256": "a8008da206c459ac65cf086a91e3b8d5634ddd9d2c4adb708581bcd73f4cdbed"
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/ui/SourceProviderDialogResourcesTest.kt",
+    "base_sha256": "21f80eab14112cf8e002725e11ea6240065de65e8cc97c8c4cc4e5c6807489a2",
+    "overlay_sha256": "d2a357c155ae91905951d0b467fdb797394e35a5d4e9c8ef8bcd0dc4dec9df67"
+  },
+  {
+    "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailCapability.kt",
+    "base_sha256": "10bb7fbcfa1bdb15f2041c470115efa98fcb31913067be96459518584bd19ca7",
+    "overlay_sha256": "efa5b19a065d0054faba451867d41a5816363cf72fc4e4b3f8556516215738b6"
+  },
+  {
+    "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailSession.kt",
+    "base_sha256": "6b14fc8cf094bf3c15aef778850a81f38ae0988078c8445e4ad62de42d56dc5a",
+    "overlay_sha256": "fbc7a14b6b83a5331145e9ff36e77c7d23a80876175c171bb6510150b93c9410"
+  },
+  {
+    "path": "discovery/src/test/kotlin/com/easysavevideo/discovery/thumbnail/DiscoveryThumbnailCancellationIntegrationTest.kt",
+    "base_sha256": null,
+    "overlay_sha256": "829d7cce3426732076f4c0ba6daf652033528b6211bbf22e9df58b268f9291ad"
+  }
+]

@@ -55,7 +55,7 @@ class SaveWifiWiringContractTest {
     }
     @Test fun networkGateIsSharedByDirectPreparationAndCoordinator() {
         val runtime = source("kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt")
-        assertTrue(runtime.contains("SystemHttpsDirectTransfer(staging, leases, networkPolicy = networkPolicy)"))
+        assertTrue(runtime.contains("SystemHttpsDirectTransfer(staging, leases, networkPolicy = networkPolicy, movAdmissionEnabled = movAdmissionEnabled)"))
         assertTrue(runtime.contains("AndroidHlsStreamPort(application, storage, leases, limits, clock, networkPolicy)"))
         assertTrue(runtime.contains("networkGate = SaveNetworkGate { networkPolicy.checkAdmission() }"))
         assertTrue(runtime.contains("coordinator.deferForNetwork(taskId)"))

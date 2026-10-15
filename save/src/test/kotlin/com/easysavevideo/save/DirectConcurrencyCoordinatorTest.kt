@@ -43,8 +43,10 @@ class DirectConcurrencyCoordinatorTest {
         val journal = MemorySaveJournal(); val store = ConcurrentStore()
         val pool = FixedDirectTransferPool(first, second)
         val verifier = SerialArtifactVerifier(verify, clock)
+        val firstBatchClaims = AtomicInteger()
         val admission = SaveExecutionAdmission(max, limits.maxArtifactBytes, { 2 * limits.maxArtifactBytes },
-            { pool.requiresProcessRecovery() || verifier.requiresProcessRecovery() || externalRecovery() })
+            { pool.requiresProcessRecovery() || verifier.requiresProcessRecovery() || externalRecovery() },
+            onFirstDirect = { firstBatchClaims.incrementAndGet(); true })
         val coordinator = SaveCoordinator(journal, pool, verifier, store, clock, limits,
             delay, admission = admission)
         fun request(id: String) = SaveRequest(id, "key-$id", SelectedMediaResource("candidate", "variant",
@@ -337,7 +339,7 @@ class DirectConcurrencyCoordinatorTest {
         assertFalse(h.store.removedStaging.contains("b"))
     }
 
-    @Test fun legacyRetryAfterBookkeepingReadFailureReacquiresRatherThanReusingReleasedPoolSlot() {
+    @Test fun exitedRuntimeAfterBookkeepingReadFailureRequiresRecoveryAndExplicitResumeBeforeReacquiring() {
         val failRead = AtomicBoolean()
         val first = Port { _, _, _, _, _ -> failRead.set(true); throw SaveFailure(SaveError.NETWORK_TIMEOUT) }
         val second = Port { _, a, _, _, p -> p.onBytes(1024); result(a) }
@@ -347,11 +349,52 @@ class DirectConcurrencyCoordinatorTest {
         assertThrows(IllegalStateException::class.java) { h.coordinator.execute("a") }
         assertEquals(TaskState.RUNNING, h.coordinator.record("a")!!.task.state)
         assertFalse(h.admission.snapshot().busy)
+        assertEquals(1, h.firstBatchClaims.get())
+        assertEquals(TaskState.WAITING_USER, h.coordinator.execute("a")!!.task.state)
+        assertEquals(1, h.firstBatchClaims.get()) // Old execute did not obtain a new Claim.
+        assertEquals(1, first.calls.get()); assertEquals(0, second.calls.get())
+        assertFalse(h.admission.snapshot().busy)
+        assertEquals(TaskState.WAITING_USER, h.coordinator.recover(h.operation("recovery")).single().task.state)
         val unrelatedOwner = Any()
         assertSame(first, h.pool.acquire(unrelatedOwner))
+        assertEquals(TaskState.RUNNING, h.coordinator.resume("a", h.operation("explicit-resume"),
+            resource = h.request("a").resource)!!.task.state)
         assertEquals(TaskState.SUCCEEDED, h.coordinator.execute("a")!!.task.state)
+        assertEquals(2, h.firstBatchClaims.get()) // Only the new explicitly accepted Runtime reacquires.
         assertEquals(1, first.calls.get()); assertEquals(1, second.calls.get())
         assertTrue(h.pool.release(unrelatedOwner))
+    }
+
+    @Test fun exitedExternalRuntimeRejectsRetainedAndReleasedOldClaimsBeforeAnyNewIo() {
+        val failRead = AtomicBoolean(); val failedOnce = AtomicBoolean(); val verifies = AtomicInteger()
+        val first = Port { _, artifact, _, _, progress ->
+            if (failedOnce.compareAndSet(false, true)) {
+                failRead.set(true); throw SaveFailure(SaveError.NETWORK_TIMEOUT)
+            }
+            progress.onBytes(1024); result(artifact)
+        }
+        val second = Port { _, artifact, _, _, progress -> progress.onBytes(1024); result(artifact) }
+        val h = Fixture(first, second, verify = ArtifactVerifier { artifact, raw, _ ->
+            verifies.incrementAndGet(); goodEvidence(artifact, raw)
+        })
+        h.journal.beforeRead = { if (failRead.compareAndSet(true, false)) throw IllegalStateException() }
+        val old = h.submit("a")
+        assertThrows(IllegalStateException::class.java) { h.coordinator.execute("a", old) }
+        val unchanged = h.coordinator.record("a")!!
+        assertEquals(TaskState.RUNNING, unchanged.task.state)
+        assertEquals(unchanged, h.coordinator.execute("a", old))
+        assertEquals(1, first.calls.get()); assertEquals(0, second.calls.get()); assertEquals(0, verifies.get())
+        assertEquals(1, h.firstBatchClaims.get()); assertTrue(h.admission.owns(old))
+        assertTrue(h.admission.release(old)) // The rejected duplicate left no entered Claim marker.
+        assertEquals(TaskState.WAITING_USER, h.coordinator.recover(h.operation("recovery")).single().task.state)
+        val fresh = h.admission.tryAcquireDirect()!!
+        assertEquals(TaskState.RUNNING, h.coordinator.resume("a", h.operation("explicit-resume"), fresh,
+            resource = h.request("a").resource)!!.task.state)
+        assertEquals(TaskState.RUNNING, h.coordinator.execute("a", old)!!.task.state)
+        assertEquals(1, first.calls.get()); assertEquals(0, verifies.get())
+        assertEquals(TaskState.SUCCEEDED, h.coordinator.execute("a", fresh)!!.task.state)
+        assertEquals(2, first.calls.get()); assertEquals(1, verifies.get())
+        assertTrue(h.admission.release(fresh))
     }
 
     @Test fun liveExternalRecoveryCallbackFencesPublicationAfterCommitThenAllowsExplicitRecoveryAfterRelease() {

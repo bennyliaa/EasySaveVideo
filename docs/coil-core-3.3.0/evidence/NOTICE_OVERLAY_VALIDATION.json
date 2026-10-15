@@ -1,0 +1,19 @@
+{
+  "source_original_sha256": "a7ceffffb383ef2953b457a8f02ec2824c691b1500158bc399d38f862e58fb8f",
+  "overlay_sha256": "c124394e222d0e4a317f60ba3d97b60666fd6cfe17188a6773316bfcc307f2d5",
+  "overlay_bytes": 619318,
+  "overlay_utf16_code_units": 616389,
+  "existing_reader_limit_utf16_code_units": 1048576,
+  "within_existing_reader_bound": true,
+  "original_notice_bytes_preserved_as_exact_suffix": true,
+  "all_95_coordinates_present": true,
+  "all_13_official_source_urls_present": true,
+  "exact_coil_full_license_in_asset": true,
+  "exact_coroutines_full_license_in_asset": true,
+  "exact_coroutines_notice_in_asset": true,
+  "existing_webkit_chromium_license_retained": true,
+  "skinkit_asset_not_part_of_overlay": true,
+  "preserved_skinkit_asset_sha256": "e7a534348b70435d09a26783c9c54faf8bc78b0e8243e6ce5c9beb08fb6e7b49",
+  "jvm_gradle_device_test_performed": false,
+  "scope": "Static exact-text/preservation/reader-bound verification only. Existing central full tests/lint and final app viewer/package/device checks are separate."
+}

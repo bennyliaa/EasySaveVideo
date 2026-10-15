@@ -61,10 +61,10 @@ class SaveResumeRecoverySourceContractTest {
         assertFalse(repair.contains("tickets["))
     }
 
-    @Test fun cancelRetiresBeforeSignalOrQueueAndLifecycleNeverRetriesCompensation() {
+    @Test fun cancelSignalsImmediatelyAndRetiresBeforeQueueWhileLifecycleNeverRetriesCompensation() {
         val cancel = runtime.substringAfter("fun cancel(taskId:").substringBefore("fun resume(taskId:")
-        ordered(cancel, "requireMain()", "resumeHandoff.cancel(taskId)", "taskCommands.tryCancel(taskId)",
-            "coordinator.signalUserCancel(taskId)", "command(mediaWork = true")
+        ordered(cancel, "requireMain()", "coordinator.signalUserCancel(taskId)",
+            "resumeHandoff.cancel(taskId)", "taskCommands.tryCancel(taskId)", "command(mediaWork = true")
         val retirement = helper.substringAfter("fun cancel(taskId:").substringBefore("private fun repair")
         ordered(retirement, "ticket.live.set(false)", "ticket.resumeAttempt.cancellation.cancel()", "tickets.remove(taskId, ticket)")
         for (section in listOf(

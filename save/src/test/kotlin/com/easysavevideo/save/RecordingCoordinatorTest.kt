@@ -4,8 +4,11 @@ import com.easysavevideo.core.model.*
 import com.easysavevideo.recording.*
 import org.junit.Assert.*
 import org.junit.Test
+import java.util.concurrent.Callable
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.FutureTask
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
 
 class RecordingCoordinatorTest {
@@ -397,6 +400,191 @@ class RecordingCoordinatorTest {
             assertEquals(expected, SaveErrors.classify(RecordingFailure(input)))
             assertFalse(SaveErrors.policy(expected).retryable)
         }
+    }
+
+    private fun <T> recordingCall(block: () -> T): FutureTask<T> = FutureTask(Callable { block() }).also { task ->
+        // Surface worker assertions through FutureTask and keep all waits bounded.
+        thread(isDaemon = true, name = "recording-publication-test") { task.run() }
+    }
+
+    private fun requestDiscardWhileBlocked(h: Harness, phase: SavePhase) {
+        // Match AndroidSaveRuntime: the immediate signal precedes the queued durable command.
+        // Each call must return while the verifier or provisional store is still blocked.
+        assertEquals(phase, recordingCall { h.coordinator.phaseSnapshot("capture") }.get(3, TimeUnit.SECONDS))
+        recordingCall { h.coordinator.signalUserCancel("capture") }.get(3, TimeUnit.SECONDS)
+        val cancelled = recordingCall { h.coordinator.cancel("capture") }.get(3, TimeUnit.SECONDS)
+        assertEquals(TaskState.RUNNING, cancelled!!.state)
+        assertEquals(listOf("cancel:capture", "cancel:capture"), h.commands)
+    }
+
+    @Test fun discardAfterNativeDrainDuringVerificationRejectsLateEvidenceAndNeverPublishes() {
+        val verificationEntered = CountDownLatch(1); val releaseVerification = CountDownLatch(1)
+        val publications = AtomicInteger()
+        val h = Harness(verify = { transfer ->
+            verificationEntered.countDown()
+            assertTrue(releaseVerification.await(10, TimeUnit.SECONDS))
+            // Deliberately return valid evidence even after cancellation: the coordinator must fence it.
+            evidence(transfer)
+        })
+        h.journal.beforeSuccess = { publications.incrementAndGet() }
+        assertTrue(h.submit() is SaveSubmission.Accepted)
+        val execution = recordingCall { h.coordinator.execute("capture")!! }
+        lateinit var result: SaveRecord
+        try {
+            assertTrue(verificationEntered.await(3, TimeUnit.SECONDS))
+            val finalized = h.coordinator.record("capture")!!
+            assertEquals(SavePhase.VERIFYING, finalized.phase)
+            assertTrue(finalized.transfer!!.recordingExpectation!!.finalized)
+            assertTrue(finalized.transfer!!.recordingExpectation!!.resourcesReleased)
+            assertEquals(1, h.captureCalls); assertEquals(1, h.verifierCalls)
+            requestDiscardWhileBlocked(h, SavePhase.VERIFYING)
+            assertFalse(execution.isDone)
+            assertEquals(0, publications.get()); assertEquals(0, h.store.commitCalls)
+        } finally {
+            releaseVerification.countDown()
+            result = execution.get(3, TimeUnit.SECONDS)
+        }
+        assertEquals(TaskState.CANCELLED, result.task.state); assertEquals(SaveError.CANCELLED, result.error)
+        assertNotNull(result.transfer); assertNull(result.verification); assertNull(result.receipt)
+        assertEquals(TaskState.CANCELLED, h.coordinator.snapshot("capture")!!.state)
+        assertEquals(0, publications.get()); assertEquals(0, h.store.commitCalls)
+        assertTrue(h.store.committed.isEmpty()); assertEquals(listOf(artifact to false), h.store.cleanup)
+        assertEquals(0, h.networkCalls)
+    }
+
+    @Test fun discardDuringProvisionalCommitIsNonblockingAndNeverPublishes() {
+        assertDiscardDuringProvisionalStep(blockInspection = false)
+    }
+
+    @Test fun discardDuringProvisionalInspectionIsNonblockingAndNeverPublishes() {
+        assertDiscardDuringProvisionalStep(blockInspection = true)
+    }
+
+    private fun assertDiscardDuringProvisionalStep(blockInspection: Boolean) {
+        val journal = MemorySaveJournal()
+        val provisionalEntered = CountDownLatch(1); val releaseProvisional = CountDownLatch(1)
+        val publications = AtomicInteger()
+        journal.beforeSuccess = { publications.incrementAndGet() }
+        fun <T> blockProvisional(result: T): T = synchronized(journal) {
+            // A durable read here would block. phaseSnapshot and the immediate cancellation signal
+            // must use memory only, even while a provisional storage operation owns this monitor.
+            provisionalEntered.countDown()
+            assertTrue(releaseProvisional.await(10, TimeUnit.SECONDS))
+            result // Return the late receipt/inspection despite the cancellation signal.
+        }
+        val store = object : FakeMediaStore() {
+            override fun commit(artifact: VerifiedArtifact, context: OperationContext): MediaCommitReceipt {
+                val receipt = super.commit(artifact, context)
+                return if (blockInspection) receipt else blockProvisional(receipt)
+            }
+            override fun inspectCommitted(commitId: String, context: OperationContext): CommitInspection? {
+                val inspection = super.inspectCommitted(commitId, context)
+                return if (blockInspection) blockProvisional(inspection) else inspection
+            }
+        }
+        val h = Harness(journal = journal, store = store)
+        assertTrue(h.submit() is SaveSubmission.Accepted)
+        val execution = recordingCall { h.coordinator.execute("capture")!! }
+        lateinit var result: SaveRecord
+        try {
+            assertTrue(provisionalEntered.await(3, TimeUnit.SECONDS))
+            assertEquals(1, h.captureCalls); assertEquals(1, h.verifierCalls)
+            assertEquals(1, store.commitCalls); assertEquals(1, store.committed.size)
+            assertEquals(TaskState.RUNNING, h.coordinator.snapshot("capture")!!.state)
+            requestDiscardWhileBlocked(h, SavePhase.COMMITTING)
+            assertFalse(execution.isDone); assertEquals(0, publications.get())
+        } finally {
+            releaseProvisional.countDown()
+            result = execution.get(3, TimeUnit.SECONDS)
+        }
+        assertEquals(TaskState.CANCELLED, result.task.state); assertEquals(SaveError.CANCELLED, result.error)
+        assertEquals(SavePhase.COMMITTING, result.phase)
+        assertNotNull(result.transfer); assertNotNull(result.verification); assertNull(result.receipt)
+        assertEquals(TaskState.CANCELLED, h.coordinator.snapshot("capture")!!.state)
+        assertEquals(0, publications.get())
+        // FakeMediaStore.committed holds invisible provisional receipts, not published library rows.
+        // CANCELLED never crosses the journal's SUCCEEDED publication boundary or deletes them speculatively.
+        assertEquals(1, store.committed.size); assertTrue(store.cleanup.isEmpty())
+        assertEquals(0, h.networkCalls)
+    }
+
+    @Test fun publicationThatWinsBeforeDelayedDiscardRetainsSuccessAndCommittedMedia() {
+        val cleanupEntered = CountDownLatch(1); val releaseCleanup = CountDownLatch(1)
+        val publications = AtomicInteger()
+        val store = object : FakeMediaStore() {
+            override fun cleanup(artifact: StagingArtifact, committed: Boolean) {
+                assertTrue(committed)
+                cleanupEntered.countDown()
+                assertTrue(releaseCleanup.await(10, TimeUnit.SECONDS))
+                super.cleanup(artifact, committed)
+            }
+        }
+        val h = Harness(store = store)
+        h.journal.beforeSuccess = { publications.incrementAndGet() }
+        assertTrue(h.submit() is SaveSubmission.Accepted)
+        val execution = recordingCall { h.coordinator.execute("capture")!! }
+        lateinit var result: SaveRecord
+        lateinit var published: SaveRecord
+        try {
+            assertTrue(cleanupEntered.await(3, TimeUnit.SECONDS))
+            // Keep the execution alive after publication so the delayed signal reaches its Runtime.
+            published = h.coordinator.record("capture")!!
+            assertEquals(TaskState.SUCCEEDED, published.task.state); assertNotNull(published.receipt)
+            assertEquals(SavePhase.CLEANUP, h.coordinator.phaseSnapshot("capture"))
+            assertEquals(1, publications.get()); assertFalse(execution.isDone)
+            recordingCall { h.coordinator.signalUserCancel("capture") }.get(3, TimeUnit.SECONDS)
+            val cancelled = recordingCall { h.coordinator.cancel("capture") }.get(3, TimeUnit.SECONDS)
+            assertEquals(TaskState.SUCCEEDED, cancelled!!.state)
+            assertEquals(published, h.coordinator.record("capture"))
+            assertEquals(listOf("cancel:capture", "cancel:capture"), h.commands)
+        } finally {
+            releaseCleanup.countDown()
+            result = execution.get(3, TimeUnit.SECONDS)
+        }
+        assertEquals(published, result); assertEquals(TaskState.SUCCEEDED, result.task.state)
+        assertEquals(1, publications.get()); assertEquals(1, store.commitCalls)
+        assertEquals(result.receipt, store.committed["capture"])
+        assertEquals(listOf(artifact to true), store.cleanup)
+        // A still later queued cancellation must also preserve the completed publication.
+        assertEquals(result.task, h.coordinator.cancel("capture"))
+        assertEquals(result, h.coordinator.record("capture")); assertEquals(1, publications.get())
+    }
+
+    @Test fun keepAfterNativeDrainDoesNotCancelVerificationOrPublication() {
+        val verificationEntered = CountDownLatch(1); val releaseVerification = CountDownLatch(1)
+        val publications = AtomicInteger()
+        lateinit var captureContext: OperationContext
+        val h = Harness(block = { context -> captureContext = context; output() }, verify = { transfer ->
+            verificationEntered.countDown()
+            assertTrue(releaseVerification.await(10, TimeUnit.SECONDS))
+            assertFalse(captureContext.cancelToken.isCancelled)
+            evidence(transfer)
+        })
+        h.journal.beforeSuccess = { publications.incrementAndGet() }
+        assertTrue(h.submit() is SaveSubmission.Accepted)
+        val execution = recordingCall { h.coordinator.execute("capture")!! }
+        lateinit var result: SaveRecord
+        try {
+            assertTrue(verificationEntered.await(3, TimeUnit.SECONDS))
+            val finalized = h.coordinator.record("capture")!!
+            assertTrue(finalized.transfer!!.recordingExpectation!!.resourcesReleased)
+            assertEquals(SavePhase.VERIFYING, h.coordinator.phaseSnapshot("capture"))
+            // KEEP is the save disposition, including when native stop/drain has already finished.
+            recordingCall { h.coordinator.stopAndSave("capture") }.get(3, TimeUnit.SECONDS)
+            assertEquals(listOf("stop:capture"), h.commands)
+            assertFalse(captureContext.cancelToken.isCancelled)
+            assertEquals(TaskState.RUNNING, h.coordinator.snapshot("capture")!!.state)
+            assertFalse(execution.isDone); assertEquals(0, publications.get())
+        } finally {
+            releaseVerification.countDown()
+            result = execution.get(3, TimeUnit.SECONDS)
+        }
+        assertEquals(TaskState.SUCCEEDED, result.task.state); assertNotNull(result.receipt)
+        assertEquals(1, publications.get()); assertEquals(1, h.store.commitCalls)
+        assertEquals(result.receipt, h.store.committed["capture"])
+        assertEquals(listOf(artifact to true), h.store.cleanup)
+        assertEquals(listOf("stop:capture"), h.commands)
+        assertEquals(1, h.captureCalls); assertEquals(1, h.verifierCalls); assertEquals(0, h.networkCalls)
     }
 
 }

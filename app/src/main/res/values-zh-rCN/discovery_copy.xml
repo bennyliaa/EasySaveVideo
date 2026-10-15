@@ -100,4 +100,7 @@
     <string name="discovery_page_waiting">正在查找下一页，当前页保持显示。</string>
     <string name="discovery_page_cancel">留在当前页</string>
     <string name="discovery_pages_exhausted">当前来源暂无更多结果，可更换关键词或来源。</string>
+    <string name="discovery_thumbnail_image">视频预览图</string>
+    <string name="discovery_thumbnail_loading">正在加载预览图</string>
+    <string name="discovery_thumbnail_failed">预览图暂不可用</string>
 </resources>

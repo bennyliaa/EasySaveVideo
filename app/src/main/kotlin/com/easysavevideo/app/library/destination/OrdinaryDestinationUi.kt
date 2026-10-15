@@ -13,7 +13,8 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
+import com.easysavevideo.app.ui.EsvAppDialog
+import com.easysavevideo.app.ui.LocalPrivateInputAdmission
 import com.easysavevideo.app.R
 import com.easysavevideo.app.theme.*
 import com.easysavevideo.library.destination.*
@@ -22,7 +23,7 @@ import com.easysavevideo.library.destination.*
 fun OrdinaryDestinationSettings(runtime: AndroidOrdinaryDestinationRuntime, actionScopeKey: Long = 0,
     canAct: () -> Boolean = { true }, showNotice: Boolean = true) {
     val v = LocalEsvVisuals.current
-    val actions = remember(runtime, actionScopeKey) {
+    val actions = remember(runtime, actionScopeKey, canAct) {
         DestinationSettingsActions(canAct, {
             DestinationSettingsAvailability(runtime.ready, runtime.savingPreference, runtime.choosingFolder,
                 runtime.asking, runtime.admitting, runtime.hasRememberedFolder)
@@ -57,9 +58,13 @@ fun OrdinaryDestinationSettings(runtime: AndroidOrdinaryDestinationRuntime, acti
 @Composable
 fun OrdinaryDestinationNotice(runtime: AndroidOrdinaryDestinationRuntime, onDismiss: () -> Unit = runtime::clearNotice) {
     val v = LocalEsvVisuals.current
+    val admission = LocalPrivateInputAdmission.current
+    val request = runtime.currentNoticeIdentity
     runtime.notice?.let {
         EsvText(stringResource(ordinaryDestinationNoticeResource(it)), style = v.captionTextStyle)
-        EsvButton(stringResource(R.string.ordinary_destination_close_notice), onClick = onDismiss)
+        EsvButton(stringResource(R.string.ordinary_destination_close_notice), onClick = {
+            if (admission() && request != null && runtime.currentNoticeIdentity === request) onDismiss()
+        })
     }
     if (runtime.admitting) EsvText(stringResource(R.string.ordinary_destination_admitting), style = v.captionTextStyle)
 }
@@ -68,35 +73,42 @@ fun OrdinaryDestinationNotice(runtime: AndroidOrdinaryDestinationRuntime, onDism
 fun OrdinaryDestinationDialog(runtime: AndroidOrdinaryDestinationRuntime) {
     if (!runtime.asking) {
         val notice = runtime.notice ?: return
+        val request = runtime.currentNoticeIdentity ?: return
         val v = LocalEsvVisuals.current
-        Dialog(onDismissRequest = runtime::clearNotice) {
+        EsvAppDialog(request, { !runtime.asking && runtime.currentNoticeIdentity === request },
+            onDismissRequest = { runtime.clearNotice(request) }) {
+            val admission = LocalPrivateInputAdmission.current
             Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingLarge),
                 verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
                 EsvText(stringResource(R.string.ordinary_destination_title), style = v.titleTextStyle)
                 EsvText(stringResource(ordinaryDestinationNoticeResource(notice)))
-                EsvButton(stringResource(R.string.ordinary_destination_acknowledge), onClick = runtime::clearNotice)
+                EsvButton(stringResource(R.string.ordinary_destination_acknowledge), onClick = { if (admission()) runtime.clearNotice(request) })
             }
         }
         return
     }
+    val request = runtime.currentSelectionIdentity ?: return
     val v = LocalEsvVisuals.current
-    Dialog(onDismissRequest = runtime::cancelSelection) {
+    EsvAppDialog(request, { runtime.currentSelectionIdentity === request },
+        onDismissRequest = { runtime.cancelSelection(request) }) {
+        val admission = LocalPrivateInputAdmission.current
         Column(Modifier.fillMaxWidth().heightIn(max = 600.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
             .verticalScroll(rememberScrollState()).padding(v.spacingLarge), verticalArrangement = Arrangement.spacedBy(v.spacingMedium)) {
             EsvText(stringResource(R.string.ordinary_destination_prompt_title), style = v.titleTextStyle)
             EsvText(stringResource(R.string.ordinary_destination_prompt_description))
-            EsvButton(stringResource(R.string.ordinary_destination_app_library), onClick = { runtime.choose(OrdinaryDestinationChoice.APP_LIBRARY) }, modifier = Modifier.fillMaxWidth())
-            EsvButton(stringResource(R.string.ordinary_destination_album_copy), onClick = { runtime.choose(OrdinaryDestinationChoice.ALBUM_COPY) }, modifier = Modifier.fillMaxWidth())
-            EsvButton(stringResource(R.string.ordinary_destination_remembered_folder_copy), onClick = { runtime.choose(OrdinaryDestinationChoice.FOLDER_COPY) },
+            EsvButton(stringResource(R.string.ordinary_destination_app_library), onClick = { if (admission()) runtime.choose(request, OrdinaryDestinationChoice.APP_LIBRARY) }, modifier = Modifier.fillMaxWidth())
+            EsvButton(stringResource(R.string.ordinary_destination_album_copy), onClick = { if (admission()) runtime.choose(request, OrdinaryDestinationChoice.ALBUM_COPY) }, modifier = Modifier.fillMaxWidth())
+            EsvButton(stringResource(R.string.ordinary_destination_remembered_folder_copy), onClick = { if (admission()) runtime.choose(request, OrdinaryDestinationChoice.FOLDER_COPY) },
                 enabled = runtime.hasRememberedFolder, modifier = Modifier.fillMaxWidth())
             EsvText(stringResource(R.string.ordinary_destination_prompt_folder_notice), style = v.captionTextStyle)
-            EsvButton(stringResource(R.string.ordinary_destination_cancel_creation), onClick = runtime::cancelSelection, modifier = Modifier.fillMaxWidth())
+            EsvButton(stringResource(R.string.ordinary_destination_cancel_creation), onClick = { if (admission()) runtime.cancelSelection(request) }, modifier = Modifier.fillMaxWidth())
         }
     }
 }
 
 @Composable
 fun OrdinaryDestinationHistory(runtime: AndroidOrdinaryDestinationRuntime) {
+    val admission = LocalPrivateInputAdmission.current
     val v = LocalEsvVisuals.current
     EsvText(stringResource(R.string.ordinary_destination_history_title), style = v.titleTextStyle)
     OrdinaryDestinationNotice(runtime)
@@ -105,8 +117,8 @@ fun OrdinaryDestinationHistory(runtime: AndroidOrdinaryDestinationRuntime) {
         val display = ordinaryCopyDisplay(status)
         EsvText(stringResource(ordinaryCopyStateResource(display.state),
             stringResource(ordinaryCopyKindResource(display.kind))), style = v.captionTextStyle)
-        if (ordinaryCopyCanCancel(status)) EsvButton(stringResource(R.string.ordinary_destination_cancel_copy), onClick = { runtime.cancelCopy(status.creationId) })
+        if (ordinaryCopyCanCancel(status)) EsvButton(stringResource(R.string.ordinary_destination_cancel_copy), onClick = { if (admission()) runtime.cancelCopy(status.creationId) })
     }
     EsvText(stringResource(R.string.ordinary_destination_history_notice), style = v.captionTextStyle, color = v.colors.muted)
-    EsvButton(stringResource(R.string.ordinary_destination_reconcile), onClick = runtime::reconcile)
+    EsvButton(stringResource(R.string.ordinary_destination_reconcile), onClick = { if (admission()) runtime.reconcile() })
 }

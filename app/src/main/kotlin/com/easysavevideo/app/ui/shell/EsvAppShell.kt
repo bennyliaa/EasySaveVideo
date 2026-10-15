@@ -20,13 +20,14 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.compose.*
 import com.easysavevideo.app.R
 
 @Composable
 fun EsvAppShell(controller: NavHostController, initial: EsvDestination,
     windowSize: WindowSizeClass, chromeVisible: Boolean, navigationEnabled: Boolean,
-    onNavigate: (EsvDestination) -> Unit, content: @Composable (EsvDestination) -> Unit) {
+    onNavigate: (EsvDestination) -> Unit, content: @Composable (EsvDestination, NavBackStackEntry) -> Unit) {
     val entry by controller.currentBackStackEntryAsState()
     val destination = EsvDestination.fromRoute(entry?.destination?.route)
     val labels = mapOf(EsvDestination.DISCOVER to R.string.ui_discover,
@@ -94,7 +95,7 @@ fun EsvAppShell(controller: NavHostController, initial: EsvDestination,
                         enterTransition = { EnterTransition.None }, exitTransition = { ExitTransition.None },
                         popEnterTransition = { EnterTransition.None }, popExitTransition = { ExitTransition.None }) {
                         EsvDestination.entries.forEach { route ->
-                            composable(route.route) { content(route) }
+                            composable(route.route) { exactEntry -> content(route, exactEntry) }
                         }
                     }
                 }

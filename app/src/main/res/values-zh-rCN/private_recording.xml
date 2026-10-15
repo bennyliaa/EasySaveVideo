@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="private_record_title">屏幕录制</string>
+    <string name="private_record_disclosure">录制会持续记录你在 Android 授权页选择的范围；拖动进度条、切换页面、弹窗和其他操作不会自动停止。范围内的网页、输入内容、控件、通知或其他可见信息都可能入镜。无痕录制期间会临时解除相关 ESV 窗口的防截图保护，其他截屏或录屏应用也可能看到这些窗口。受保护内容可能显示黑屏，部分声音可能无法录入。点击“停止并保存”或“放弃”结束；系统中止或资源不足也可能结束录制。</string>
+    <string name="private_record_waiting">正在等待 Android 授权，尚未开始录制。返回后请点击“继续录制”。</string>
+    <string name="private_record_continue_help">请再次检查当前网页。授权本身不会开始录制；确认页面与所选声音后，再点击继续。</string>
+    <string name="private_record_arming">正在准备已授权的录制，屏幕保护由录制控制器管理。</string>
+    <string name="private_record_active">正在持续录制，正常操作不会停止。点击“停止并保存”后，有效结果须经过检查并发布才算保存成功。</string>
+    <string name="private_record_stopping">正在停止捕获。本次录制尚未发布时，仍可选择放弃。</string>
+    <string name="private_record_unavailable">当前 Android、WebView 或页面状态暂不支持无痕录制。关闭此面板后，仍可无痕浏览及使用兼容的直接保存、流媒体保存。</string>
+    <string name="private_record_silent">无声</string>
+    <string name="private_record_device_audio">设备播放声音</string>
+    <string name="private_record_audio_help">设备声音可能包含其他允许捕获的播放内容，并非仅本页；不启用麦克风录音。</string>
+    <string name="private_record_start">申请 Android 授权</string>
+    <string name="private_record_continue">继续录制</string>
+    <string name="private_record_stop_save">停止并保存</string>
+    <string name="private_record_discard">放弃本次录制…</string>
+    <string name="private_record_discard_help">确定放弃本次尚未发布的录制吗？以前已保存的文件仍保留在媒体库。</string>
+    <string name="private_record_discard_confirm">确认放弃</string>
+    <string name="private_record_keep">保留本次录制</string>
+    <string name="private_record_close">关闭录制面板</string>
+    <string name="private_record_current_marker">实心圆标明当前阶段，其余行仅为未激活的阶段说明。</string>
+    <string name="private_record_verifying">正在检查录制文件，发布前仍可选择放弃。</string>
+    <string name="private_record_committing">正在完成保存；发布完成前仍可选择放弃。</string>
+    <string name="private_record_saved">录制已保存并发布，不能再通过此处的“放弃”撤销。</string>
+    <string name="private_record_failed">本次录制未能保存，请在任务中查看失败原因。</string>
+    <string name="private_record_cancelled">本次未发布的录制已放弃，以前保存的媒体不受影响。</string>
+    <string name="private_record_legacy_recents">在 Android 12 / 12L 上，录制期间最近任务列表可能留下页面缩略图；ESV 无法保证删除系统已保存的缩略图。</string>
+    <string name="private_record_limits">当前工程限制：每次最多 2 小时、单文件 2 GiB，预留存储安全余量且至少需要 64 MiB 可用空间；准备和结束处理各限 15 秒。主动暂停录制最多 10 分钟、恢复边界最多 32 次。这些是限制，并非已测得的持续能力；网页播放、暂停和拖动进度条不计为录制暂停。</string>
+    <string name="private_record_verification_help">会检查全部样本结构，并实际解码首、中、末及每次恢复关键帧所在的画面组。校验最多 60 秒，较长成片可能超时而不发布；不保证每帧均已解码。设备与真实权限验收仍须单独完成。</string>
+    <string name="private_record_recovery_required">尚未确认原生录制资源已退出，当前无法开始新录制。请通过 Android 结束应用后重新打开以恢复；录制不会自动重启。保存任务结束并不代表捕获资源已清理。</string>
+</resources>

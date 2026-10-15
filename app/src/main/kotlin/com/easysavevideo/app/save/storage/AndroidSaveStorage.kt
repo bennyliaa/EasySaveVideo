@@ -33,10 +33,15 @@ import com.easysavevideo.app.library.storage.StorageOwnerRelease
 import com.easysavevideo.library.LibraryFailure
 import com.easysavevideo.library.LibraryRepository
 import com.easysavevideo.library.MediaReadRef
+import com.easysavevideo.core.model.TaskMethod
 import com.easysavevideo.core.model.OperationContext
 import com.easysavevideo.core.model.TaskState
 import com.easysavevideo.save.*
 import com.easysavevideo.app.save.normalization.MovRemuxEvidence
+import com.easysavevideo.app.save.normalization.MovRemuxEngine
+import com.easysavevideo.app.save.AndroidDirectExecutionBridge
+import com.easysavevideo.app.save.DirectNormalizedOutputOwner
+import com.easysavevideo.core.model.EpochClock
 import com.easysavevideo.app.storage.OwnedFileInputStream
 import com.easysavevideo.app.storage.OwnedFileOutputStream
 import java.io.File
@@ -52,7 +57,9 @@ import java.nio.file.StandardCopyOption
  * Private Android storage. Nothing here uses public MediaStore, M2 databases, external names or backups.
  * One instance is owned by the app composition root and closed only after active Save work has stopped.
  */
-class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, AutoCloseable {
+class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMediaStore, AutoCloseable {
+    private val applicationContext = context.applicationContext
+    private val directTransformer by lazy { com.easysavevideo.app.media.transform.TransformerEngine(applicationContext) }
     private val directory = File(context.applicationContext.noBackupFilesDir, "save_m3_v1")
     private val helper: Database
     private val catalog: Catalog
@@ -93,7 +100,13 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
     private var canonicalReadBindings: AdoptedVerificationBindings? = null
     // Sole monitor for Save, Library and Editor. Never nest this under an instance monitor.
     private val fileLock = Any()
+    private val normalizationReservations = NormalizationIoReservations(fileLock)
     private val ownerLease: PrivateDirectoryLease
+    private val startupRawRecords: Map<String, SaveRecord>
+    @Volatile private var controlledStorage: AndroidControlledDirectStorage? = null
+    private var controlledGate: DirectLocalProcessingGate? = null
+    private var controlledBridge: AndroidDirectExecutionBridge? = null
+    private var normalizedCommitter: NormalizedCommitProtocol? = null
     @Volatile private var closed = false
     init {
         if (Files.isSymbolicLink(directory.toPath()) || (!directory.isDirectory && !directory.mkdirs()))
@@ -102,6 +115,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             if (failedStorageOwner != null) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
         }
         ownerLease = PrivateDirectoryLease(directory)
+        val firstProcessLifetime = synchronized(failedOwnerLock) { seenDirectoryLifetimes.add(directory.absolutePath) }
         var initializingHelper: Database? = null
         try {
             helper = Database(context.applicationContext, File(directory, "save_m3_v1.db")).also { initializingHelper = it }
@@ -111,6 +125,13 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
                 OrdinaryMediaFiles(File(directory, "media"), AndroidFileOps::syncDirectory), { closed })
             // Bounded, durable-only recovery. Failed unlink remains a visible pending operation.
             libraryStorage.processPendingDeletes(100)
+            // Snapshot BEFORE Coordinator recovery/Resume can alter control revisions or phases.
+            // Reopening a directory in the same process never constitutes a process restart.
+            startupRawRecords = if (firstProcessLifetime) synchronized(fileLock) {
+                records("state NOT IN ('SUCCEEDED','FAILED','CANCELLED')", 1000)
+                    .filter { it.transfer != null && it.artifact != null }
+                    .associateBy { it.task.taskId }
+            } else emptyMap()
         } catch (failure: Exception) {
             releaseStorageOwner(initializingHelper)
             throw failure
@@ -118,6 +139,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
     }
     private companion object {
         val failedOwnerLock = Any()
+        val seenDirectoryLifetimes = mutableSetOf<String>()
         var failedStorageOwner: Pair<AutoCloseable?, AutoCloseable>? = null
     }
     override fun findByIdempotencyKey(key: String): SaveRecord? = dbCall {
@@ -126,6 +148,8 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
     override fun read(taskId: String): SaveRecord? = dbCall { queryRecord("task_id=?", arrayOf(taskId)) }
     override fun insert(record: SaveRecord, maxEntries: Int): SaveRecord = dbCall {
         require(maxEntries in 1..1000)
+        // New technical DTOs cannot establish owned conversion/normalization authority.
+        if (!NormalizationDurableMutationPolicy.permitsInsert(record)) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
         transaction { db ->
             queryRecord("idempotency_key=?", arrayOf(record.request.idempotencyKey))?.let { return@transaction it }
             // Terminal provenance and idempotency rows do not consume active-work capacity.
@@ -141,6 +165,13 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             if (prior.task.revision != expectedRevision || prior.task.state.isTerminal ||
                 next.task.revision != expectedRevision + 1 || next.commitId != prior.commitId ||
                 next.request != prior.request) return@transaction false
+            val normalizedPresence = inspectNormalizationPresence(prior.task.taskId, prior.artifact, prior.commitId)
+            val liveNormalizationOwner = prior.artifact?.let { normalizationReservations.hasReservation(it.artifactId) } == true
+            val durableWorkspace = if (normalizedPresence == DirectWorkspacePresence.PRESENT) prior.artifact?.let {
+                (normalizationLedger.lookup(NormalizationOwner(prior.task.taskId, it.artifactId, prior.commitId)) as? NormalizationLookup.Present)?.row
+            } else null
+            if (!NormalizationDurableMutationPolicy.permitsGeneric(prior, next, normalizedPresence,
+                    liveNormalizationOwner, durableWorkspace)) return@transaction false
             val readOwnedArtifact = listOfNotNull(prior.artifact?.artifactId, next.artifact?.artifactId)
                 .firstOrNull { canonicalReadOwner?.hasReservation(it) == true }
             if (readOwnedArtifact != null && !AdoptedCanonicalMutationPolicy.permitsStopOnly(prior, next))
@@ -165,6 +196,51 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             // becomes unknown, retaining a revoked reader is conservative; no evidence may publish.
             readOwnedArtifact?.let { canonicalReadOwner?.revoke(it) }
             true
+        }
+    }
+    /** Bounded SQL-only lookup includes orphan rows when artifact is absent. */
+    internal fun inspectNormalizationPresence(taskId: String, artifact: StagingArtifact?, commitId: String): DirectWorkspacePresence =
+        try { dbCall {
+            val rows = helper.readableDatabase.rawQuery(
+                "SELECT task_id,artifact_id,commit_id FROM save_normalization_workspace WHERE task_id=? OR commit_id=? OR artifact_id=? LIMIT 2",
+                arrayOf(taskId, commitId, artifact?.artifactId ?: "")).use { c -> buildList {
+                    while (c.moveToNext()) add(Triple(c.getString(0), c.getString(1), c.getString(2)))
+                } }
+            if (rows.isEmpty()) DirectWorkspacePresence.ABSENT
+            else if (rows.size != 1 || artifact == null || rows.single() != Triple(taskId, artifact.artifactId, commitId))
+                DirectWorkspacePresence.UNREADABLE
+            else when (normalizationLedger.lookup(NormalizationOwner(taskId, artifact.artifactId, commitId))) {
+                is NormalizationLookup.Present -> DirectWorkspacePresence.PRESENT
+                else -> DirectWorkspacePresence.UNREADABLE
+            }
+        } } catch (_: Exception) { DirectWorkspacePresence.UNREADABLE }
+
+    override fun compareAndSetProof(expectedRevision: Long, next: SaveRecord, completion: DirectProofCompletion): Boolean = dbCall {
+        transaction { db ->
+            val owned = completion as? NormalizationProofCompletion ?: return@transaction false
+            owned.requireOwnedBy(normalizationOwner())
+            val prior = queryRecord("task_id=?", arrayOf(next.task.taskId)) ?: return@transaction false
+            if (prior != owned.expectedRecord || prior.task.revision != expectedRevision ||
+                next != prior.copy(task = prior.task.copy(revision = expectedRevision + 1),
+                    directNormalization = owned.proof, checkpoint = null)) return@transaction false
+            db.update("save_tasks", recordValues(next), "task_id=? AND revision=?",
+                arrayOf(next.task.taskId, expectedRevision.toString())) == 1
+        }
+    }
+    /** Only the original registered conversion completion may install proof and retire RAW checkpoint. */
+    override fun compareAndSetConversionProof(expectedRevision: Long, next: SaveRecord,
+        completion: DirectConversionProofCompletion): Boolean = dbCall {
+        transaction { db ->
+            val owned = completion as? NormalizationConversionProofCompletion ?: return@transaction false
+            owned.requireOwnedBy(normalizationOwner())
+            val prior = queryRecord("task_id=?", arrayOf(next.task.taskId)) ?: return@transaction false
+            if (expectedRevision == Long.MAX_VALUE || prior != owned.expectedRecord || prior.task.revision != expectedRevision ||
+                prior.phase != SavePhase.NORMALIZING || prior.task.state != TaskState.RUNNING ||
+                prior.hasDirectOutputProof() || prior.verification != null || prior.receipt != null ||
+                next != prior.copy(task = prior.task.copy(revision = expectedRevision + 1),
+                    directConversion = owned.proof, checkpoint = null)) return@transaction false
+            db.update("save_tasks", recordValues(next), "task_id=? AND revision=?",
+                arrayOf(next.task.taskId, expectedRevision.toString())) == 1
         }
     }
     override fun listUnfinished(limit: Int): List<SaveRecord> = dbCall {
@@ -213,6 +289,11 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         ensureLegacyNormalizationArtifact(artifact); ensureNoWriter(artifact); protocol.adoptStreamOutput(artifact, output, context)
     }
     /** Writable staging only. The path is generated locally and must match the durable ownership row. */
+    /** Size-only network metadata; no path escapes into an untracked legacy reader. */
+    fun stagingLength(artifact: StagingArtifact): Long = fileCall {
+        ensureLegacyNormalizationArtifact(artifact)
+        protocol.stagingFile(artifact).length()
+    }
     fun stagingFile(artifact: StagingArtifact): File = fileCall { ensureLegacyNormalizationArtifact(artifact); protocol.stagingFile(artifact) }
     /** Read-only validator input, also allowing a previously promoted, still provisional commit on recovery. */
     fun verificationFile(artifact: StagingArtifact): File = fileCall { ensureLegacyNormalizationArtifact(artifact); ensureActiveCommit(artifact.commitId); ensureNoWriter(artifact); protocol.verificationFile(artifact) }
@@ -296,8 +377,8 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         synchronized(failedOwnerLock) {
             if (failedStorageOwner?.second === ownerLease) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
         }
-        if (normalizationFilesOwner?.releaseUnconfirmed() == true || canonicalReadOwner?.requiresProcessRecovery() == true) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
-        if (normalizationFilesOwner?.hasAnyLeases() == true || canonicalReadOwner?.hasAnyLeases() == true || openWriters.isNotEmpty() || nativeWriters.isNotEmpty() || openReaders != 0 || libraryStorage.hasActiveReaders() || editorStorage?.hasActiveOwners() == true || segmentStorage?.hasActiveOwners() == true) throw SaveFailure(SaveError.BUSY)
+        if (normalizationReservations.resourcesUnreleased() || normalizationReservations.requiresProcessRecovery() || normalizationFilesOwner?.releaseUnconfirmed() == true || canonicalReadOwner?.requiresProcessRecovery() == true) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+        if (normalizationReservations.hasAnyReservations() || normalizationFilesOwner?.hasAnyLeases() == true || canonicalReadOwner?.hasAnyLeases() == true || openWriters.isNotEmpty() || nativeWriters.isNotEmpty() || openReaders != 0 || libraryStorage.hasActiveReaders() || editorStorage?.hasActiveOwners() == true || segmentStorage?.hasActiveOwners() == true) throw SaveFailure(SaveError.BUSY)
         if (!closed) {
             closed = true
             releaseStorageOwner(helper)
@@ -312,6 +393,9 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
     }
     /** Durable fence, deliberately independent of any active descriptor/session registry. */
     private fun ensureLegacyNormalizationArtifact(artifact: StagingArtifact) {
+        if (!NormalizationDurableMutationPolicy.permitsLegacyRecord(queryRecord("commit_id=?", arrayOf(artifact.commitId))))
+            throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        normalizationReservations.requireLegacyAvailable(artifactId = artifact.artifactId, commitId = artifact.commitId)
         NormalizationLegacyFence.requireAbsent {
             val owned = catalog.findOwned(artifact.commitId)
             if (owned != null) {
@@ -327,6 +411,9 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         }
     }
     private fun ensureLegacyNormalizationCommit(commitId: String, taskId: String? = null) {
+        if (!NormalizationDurableMutationPolicy.permitsLegacyRecord(queryRecord("commit_id=?", arrayOf(commitId))))
+            throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+        normalizationReservations.requireLegacyAvailable(taskId = taskId, commitId = commitId)
         NormalizationLegacyFence.requireAbsent {
             val owned = catalog.findOwned(commitId)
             if (owned != null) {
@@ -504,7 +591,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
                 "commit_id=? AND artifact_id=? AND state='STAGING'", arrayOf(row.artifact.commitId, row.artifact.artifactId))
         }
     }
-    /** Typed inactive API failures; no enclosing lock around long-lived descriptor operations. */
+    /** Typed API failures; no enclosing lock around long-lived descriptor operations. */
     private inline fun <T> normalizationCall(block: () -> T): T = try { block() }
         catch (failure: SaveFailure) { throw failure }
         catch (_: NormalizationRecovery) { throw SaveFailure(SaveError.RECOVERY_REQUIRED) }
@@ -514,20 +601,31 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         catch (_: IllegalArgumentException) { throw SaveFailure(SaveError.RECOVERY_REQUIRED) }
         catch (_: SecurityException) { throw SaveFailure(SaveError.STORAGE_FAILURE) }
 
-    /** Inactive internal capability: no runtime or detector calls this layer. Worker thread only. */
+    /** Storage-issued capability for the controlled Direct pipeline. Worker thread only. */
     private fun normalizationOwner(): NormalizationAttemptOwner = synchronized(fileLock) {
         if (closed) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
         normalizationFilesOwner ?: NormalizationAttemptOwner(
             ledger = normalizationLedger,
-            files = AndroidNormalizationFiles(directory, AndroidFileOps, fileLock, protocol::availableBytes, { closed }),
+            files = AndroidNormalizationFiles(directory, AndroidFileOps, fileLock, protocol::availableBytes, { closed }, reservations = normalizationReservations),
             authority = ::normalizationAuthority,
             readSave = { queryRecord("task_id=?", arrayOf(it)) },
             ownerLock = fileLock,
             closed = { closed },
-            ensureNoExistingHandles = { owner -> ensureNoWriter(StagingArtifact(owner.artifactId, owner.commitId)) },
+            ensureNoExistingHandles = { owner -> ensureNoRawHandleConflict(owner) },
             checkOperation = ::checkNormalizationOperation,
             ensureNoCanonicalReaders = { ensureNoCanonicalReader(it.artifactId) },
+            requireTranscodeScope = { scope ->
+                scope.requireIssuer(controlledBridge ?: throw NormalizationRecovery())
+            },
+            directEngine = directTransformer,
         ).also { normalizationFilesOwner = it }
+    }
+    /** Called by an owner that may already hold its exact shared reservation. */
+    private fun ensureNoRawHandleConflict(owner: NormalizationOwner) {
+        if (owner.artifactId in openWriters || owner.artifactId in nativeWriters || openReaders != 0 ||
+            libraryStorage.hasActiveReaders() || editorStorage?.hasActiveOwners() == true ||
+            segmentStorage?.hasActiveOwners() == true) throw SaveFailure(SaveError.BUSY)
+        ensureNoCanonicalReader(owner.artifactId)
     }
     private fun checkNormalizationOperation(context: OperationContext) {
         if (Thread.currentThread().isInterrupted) throw SaveFailure(SaveError.CANCELLED)
@@ -539,7 +637,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         }
         if (error != null) throw SaveFailure(error)
     }
-    /** Inactive port: an unbound registry cannot authorize acquisition; no runtime caller exists. */
+    /** Only an exact execution-bound registry can authorize a canonical reader. */
     internal fun adoptedCanonicalOutputOwner(bindings: AdoptedVerificationBindings): AdoptedCanonicalOutputOwner = synchronized(fileLock) {
         if (closed) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
         canonicalReadOwner?.let {
@@ -554,6 +652,61 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             checkOperation = ::checkNormalizationOperation,
         ).also { canonicalReadBindings = bindings; canonicalReadOwner = it }
     }
+    internal data class ControlledComponents(val storage: AndroidControlledDirectStorage,
+        val normalizedOwner: DirectNormalizedOutputOwner)
+    /** Actual composition, created on the existing control worker. No new lane or executor. */
+    internal fun controlledDirectComponents(gate: DirectLocalProcessingGate,
+        bridge: AndroidDirectExecutionBridge, clock: EpochClock, limits: SaveLimits): ControlledComponents = synchronized(fileLock) {
+        if (closed) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+        controlledStorage?.let {
+            if (controlledGate !== gate || controlledBridge !== bridge) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+            return@synchronized ControlledComponents(it, requireNotNull(canonicalReadOwner))
+        }
+        val bindings = AdoptedVerificationBindings(gate, executionBridge = bridge)
+        val reader = adoptedCanonicalOutputOwner(bindings)
+        val journal = AndroidNormalizedCommitJournal({ helper.writableDatabase }, fileLock, { closed },
+            { db, next -> destinations.bindVerifiedPublication(db, next.task.taskId,
+                MediaReadRef(requireNotNull(next.receipt).mediaId, 1, 1)) })
+        val committer = NormalizedCommitProtocol(journal,
+            AndroidNormalizedCommitFiles(directory, normalizationReservations, AndroidFileOps),
+            normalizationReservations, fileLock, gate, { closed }, ::ensureNoRawHandleConflict,
+            ::checkNormalizationOperation,
+            { execution, record, permit, context ->
+                if (record.task.taskId != execution.taskId || record.operationId != execution.operationId)
+                    throw SaveFailure(SaveError.RECOVERY_REQUIRED)
+                bridge.capture(execution, permit, context).use { it.requireLive(context) }
+            }, limits.maxArtifactBytes)
+        val adapter = AndroidControlledDirectStorage(
+            readSave = { taskId -> dbCall { queryRecord("task_id=?", arrayOf(taskId)) } },
+            readOwned = { commitId -> dbCall { catalog.findOwned(commitId) } },
+            ledger = normalizationLedger, presence = ::inspectNormalizationPresence,
+            ownerLock = fileLock, ensureNoHandles = ::ensureNoRawHandleConflict,
+            startupRaw = { key -> startupRawRecords[key.taskId]?.takeIf {
+                it.commitId == key.commitId && it.artifact?.artifactId == key.artifactId } },
+            owner = normalizationOwner(), engine = MovRemuxEngine(clock), bridge = bridge,
+            gate = gate, bindings = bindings, committer = committer, closed = { closed },
+            terminalPage = ::terminalNormalizationCleanupPage)
+        controlledGate = gate; controlledBridge = bridge; normalizedCommitter = committer; controlledStorage = adapter
+        ControlledComponents(adapter, reader)
+    }
+    override fun compareAndSetVerification(expectedRevision: Long, next: SaveRecord,
+        completion: DirectVerificationCompletion): Boolean = dbCall {
+        transaction { db ->
+            val fact = controlledStorage?.verificationCompletion(completion) ?: return@transaction false
+            val prior = queryRecord("task_id=?", arrayOf(next.task.taskId)) ?: return@transaction false
+            if (expectedRevision == Long.MAX_VALUE || prior.task.revision == Long.MAX_VALUE ||
+                prior != fact.expectedRecord || prior.task.revision != expectedRevision ||
+                next != prior.copy(task = prior.task.copy(revision = expectedRevision + 1),
+                    verification = fact.evidence, phase = SavePhase.COMMITTING)) return@transaction false
+            db.update("save_tasks", recordValues(next), "task_id=? AND revision=?",
+                arrayOf(next.task.taskId, expectedRevision.toString())) == 1
+        }
+    }
+    override fun compareAndSetNormalized(expectedRevision: Long, next: SaveRecord,
+        publication: NormalizedPublicationHandle): Boolean = normalizationCall {
+        normalizedCommitter?.publish(expectedRevision, next, publication) ?: false
+    }
+
     internal fun prepareMovRemux(owner: NormalizationOwner, context: OperationContext, limits: SaveLimits): OwnedMovRemuxAttempt =
         normalizationCall { normalizationOwner().prepare(owner, context, limits) }
     internal fun finishMovRemux(attempt: OwnedMovRemuxAttempt, evidence: MovRemuxEvidence, context: OperationContext): DirectNormalizationProof =
@@ -562,13 +715,19 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         try { normalizationOwner().inspect(owner) } catch (_: Exception) { NormalizationInspection.Unreadable }
     internal fun recordNormalizationAdoptionIntent(key: NormalizationKey, proof: DirectNormalizationProof, context: OperationContext): NormalizationWorkspace =
         normalizationCall { normalizationOwner().recordAdoptionIntent(key, proof, context) }
+    internal fun recordNormalizationAdoptionIntent(key: NormalizationKey, proof: DirectConversionProof, context: OperationContext): NormalizationWorkspace =
+        normalizationCall { normalizationOwner().recordAdoptionIntent(key, proof, context) }
     internal fun adoptNormalization(key: NormalizationKey, context: OperationContext): NormalizationWorkspace = normalizationCall { normalizationOwner().adopt(key, context) }
     internal fun cleanupNormalization(key: NormalizationKey, expectedRevision: Long): NormalizationWorkspace = normalizationCall { normalizationOwner().cleanup(key, expectedRevision) }
     /** Memory-only: safe for a future admission hook, without touching storage/fileLock. */
     internal fun normalizationReleaseUnconfirmed(): Boolean =
-        normalizationFilesOwner?.releaseUnconfirmed() == true || canonicalReadOwner?.requiresProcessRecovery() == true
+        normalizationReservations.resourcesUnreleased() || normalizationReservations.requiresProcessRecovery() || normalizationFilesOwner?.releaseUnconfirmed() == true || canonicalReadOwner?.requiresProcessRecovery() == true ||
+            controlledStorage?.requiresProcessRecovery() == true
 
     /** Independent file-lifecycle journal; terminal Save rows are deliberately not filtered out. */
+    internal fun terminalNormalizationCleanupPage(after: Long, limit: Int): DirectTerminalCleanupPage =
+        (normalizationLedger as NormalizationJournal).terminalPage(after, limit)
+
     internal val normalizationLedger: NormalizationLedger by lazy { NormalizationJournal() }
     internal fun normalizationAuthority(owner: NormalizationOwner): NormalizationAuthority = dbCall {
         val task = queryRecord("task_id=?", arrayOf(owner.taskId)) ?: throw NormalizationRecovery()
@@ -580,7 +739,62 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
         if (transfer.artifactId != owner.artifactId || transfer.bytesOnDisk !in 1..NORMALIZATION_MAX_BYTES ||
             (transfer.expectedTotalBytes != null && transfer.expectedTotalBytes != transfer.bytesOnDisk)) throw NormalizationRecovery()
         val proof = task.directNormalization
-        if (proof != null && !proof.matchesSource(owner.taskId, task.request.networkResource?.sourceIdentity ?: throw NormalizationRecovery(), artifact, transfer)) throw NormalizationRecovery()
+        val conversion = task.directConversion
+        if (proof != null && conversion != null) throw NormalizationRecovery()
+        if (proof != null && !proof.matchesSource(owner.taskId, task.request.networkSourceMetadata?.sourceIdentity ?: throw NormalizationRecovery(), artifact, transfer)) throw NormalizationRecovery()
+        if (conversion != null) {
+            val source = task.request.networkSourceMetadata ?: throw NormalizationRecovery()
+            val row = (normalizationLedger.lookup(owner) as? NormalizationLookup.Present)?.row ?: throw NormalizationRecovery()
+            val evidence = task.verification
+            val terminal = task.task.state.isTerminal
+            // Constructed proofs have known durable structure; only exact terminal cleanup may use history.
+            if (task.task.method != TaskMethod.DIRECT || (!terminal && !conversion.isCurrentPolicy()) ||
+                !conversion.matchesSource(owner.taskId, source.sourceIdentity, artifact, transfer) ||
+                (source.expectedAudio && conversion.expectation.audio == null) || task.checkpoint != null ||
+                row.key.owner != owner || row.key.normalizationId != conversion.normalizationId ||
+                row.raw != NormalizationFingerprint(conversion.rawSizeBytes, conversion.rawSha256) ||
+                row.output != NormalizationFingerprint(conversion.outputSizeBytes, conversion.outputSha256) ||
+                row.proofSha256 != conversion.digest() || row.sourceTransferSha256 != sourceTransferFingerprint(transfer) ||
+                row.failure != null) throw NormalizationRecovery()
+            if (evidence != null && !evidence.isValidFor(artifact,
+                    ArtifactOutputDescriptor.ConvertedDirect(transfer, conversion), source.expectedAudio)) throw NormalizationRecovery()
+            val cleaned = row.lifecycle in setOf(NormalizationLifecycle.CLEANUP_PENDING, NormalizationLifecycle.CLEANED)
+            if (cleaned) {
+                if (!terminal || (task.task.state == TaskState.SUCCEEDED && row.disposition != NormalizationDisposition.CONTINUE) ||
+                    (task.task.state != TaskState.SUCCEEDED && (row.disposition != NormalizationDisposition.DISCARD_ONLY ||
+                        owned.state != OwnedState.DISCARDED))) throw NormalizationRecovery()
+            } else if (row.disposition != NormalizationDisposition.CONTINUE || row.cleanup != null) throw NormalizationRecovery()
+            if (!cleaned) when (row.lifecycle) {
+                NormalizationLifecycle.OUTPUT_READY -> if (task.phase !in setOf(SavePhase.NORMALIZING, SavePhase.ADOPTING)) throw NormalizationRecovery()
+                NormalizationLifecycle.ADOPT_INTENT -> if (task.phase != SavePhase.ADOPTING) throw NormalizationRecovery()
+                NormalizationLifecycle.ADOPTED -> if (task.phase !in setOf(SavePhase.ADOPTING, SavePhase.VERIFYING,
+                    SavePhase.COMMITTING, SavePhase.CLEANUP)) throw NormalizationRecovery()
+                else -> throw NormalizationRecovery()
+            }
+            when (task.phase) {
+                SavePhase.NORMALIZING, SavePhase.ADOPTING, SavePhase.VERIFYING -> if (evidence != null || task.receipt != null ||
+                    owned.evidence != null || owned.state !in (if (cleaned) setOf(OwnedState.DISCARDED) else setOf(OwnedState.STAGING))) throw NormalizationRecovery()
+                SavePhase.COMMITTING -> if (evidence == null || task.receipt != null ||
+                    (owned.state == OwnedState.STAGING && owned.evidence != null) ||
+                    (owned.state in setOf(OwnedState.INTENT, OwnedState.INDEXED) && owned.evidence != evidence) ||
+                    (owned.state == OwnedState.DISCARDED && (!cleaned || (owned.evidence != null && owned.evidence != evidence)))) throw NormalizationRecovery()
+                SavePhase.CLEANUP -> if (task.task.state != TaskState.SUCCEEDED || evidence == null ||
+                    owned.state != OwnedState.INDEXED || owned.evidence != evidence || task.receipt != owned.receipt()) throw NormalizationRecovery()
+                else -> throw NormalizationRecovery()
+            }
+            if (task.task.state != TaskState.SUCCEEDED) {
+                val indexed = catalog.indexed(owner.commitId)
+                if ((owned.state == OwnedState.INDEXED && indexed != owned.receipt()) ||
+                    (owned.state != OwnedState.INDEXED && indexed != null)) throw NormalizationRecovery()
+                val visible = helper.readableDatabase.rawQuery("SELECT visible FROM save_media WHERE commit_id=?", arrayOf(owner.commitId)).use {
+                    it.moveToFirst() && it.getInt(0) != 0
+                }
+                val linked = helper.readableDatabase.rawQuery("""SELECT 1 FROM library_item WHERE origin_commit_id=? OR item_id=?
+                    UNION ALL SELECT 1 FROM media_representation WHERE opaque_locator=? LIMIT 1""",
+                    arrayOf(owner.commitId, owned.mediaId, owned.mediaId)).use { it.moveToFirst() }
+                if (visible || linked) throw NormalizationRecovery()
+            }
+        }
         val state = when (task.task.state) {
             TaskState.SUCCEEDED -> NormalizationTaskState.SUCCEEDED
             TaskState.FAILED -> NormalizationTaskState.FAILED
@@ -601,7 +815,7 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             owned.state == OwnedState.STAGING -> NormalizationParentState.STAGING
             owned.state == OwnedState.DISCARDED -> NormalizationParentState.DISCARDED
             else -> NormalizationParentState.COMMIT_PENDING
-        }, sourceTransferFingerprint(transfer), proof?.digest(), published)
+        }, sourceTransferFingerprint(transfer), proof?.digest() ?: conversion?.digest(), published)
     }
     private inner class NormalizationJournal : NormalizationLedger {
         override fun lookup(owner: NormalizationOwner): NormalizationLookup = try { dbCall {
@@ -630,6 +844,33 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             db.update("save_normalization_workspace", normalizationValues(next), "normalization_id=? AND revision=?",
                 arrayOf(expected.key.normalizationId, expected.revision.toString())) == 1
         } }
+        fun terminalPage(after: Long, limit: Int): DirectTerminalCleanupPage {
+            require(after >= 0 && limit in 1..100)
+            return try { dbCall {
+                val keys = helper.readableDatabase.rawQuery("""SELECT sequence FROM save_normalization_workspace
+                    INDEXED BY save_normalization_pending WHERE lifecycle!='CLEANED' AND sequence>? ORDER BY sequence LIMIT ?""",
+                    arrayOf(after.toString(), (limit + 1).toString())).use { c -> buildList {
+                    while (c.moveToNext()) add(c.getLong(0))
+                } }
+                val entries = keys.take(limit).map { sequence ->
+                    val candidate = try {
+                        val workspace = normalizationRow(sequence)
+                        val save = queryRecord("task_id=?", arrayOf(workspace.key.owner.taskId))
+                        save?.takeIf { record ->
+                            record.task.state.isTerminal && record.request.method == TaskMethod.DIRECT &&
+                                record.artifact?.artifactId == workspace.key.owner.artifactId &&
+                                record.commitId == workspace.key.owner.commitId &&
+                                record.transfer?.let { it.bytesOnDisk == workspace.raw.size &&
+                                    sourceTransferFingerprint(it) == workspace.sourceTransferSha256 } == true
+                        }
+                    } catch (failure: android.database.SQLException) { throw failure }
+                    catch (_: Exception) { null } // Advance this malformed key without granting cleanup.
+                    DirectTerminalCleanupEntry(sequence, candidate)
+                }
+                DirectTerminalCleanupPage.Readable(entries, keys.size > limit)
+            } } catch (_: Exception) { DirectTerminalCleanupPage.Unreadable }
+        }
+
         override fun pending(after: Long, limit: Int): NormalizationPendingPage {
             require(after >= 0 && limit in 1..100)
             return try { dbCall {
@@ -650,9 +891,24 @@ class AndroidSaveStorage(context: Context) : SaveJournal, PrivateMediaStore, Aut
             if (row.disposition == NormalizationDisposition.DISCARD_ONLY && auth.taskState !in setOf(NormalizationTaskState.FAILED, NormalizationTaskState.CANCELLED)) throw NormalizationRecovery()
             if (auth.taskState == NormalizationTaskState.SUCCEEDED && (row.disposition == NormalizationDisposition.DISCARD_ONLY || row.lifecycle !in setOf(NormalizationLifecycle.CLEANUP_PENDING, NormalizationLifecycle.CLEANED))) throw NormalizationRecovery()
             if (row.lifecycle in setOf(NormalizationLifecycle.ADOPT_INTENT, NormalizationLifecycle.ADOPTED)) {
-                val proof = task.directNormalization ?: throw NormalizationRecovery()
-                if (auth.proofSha256 != row.proofSha256 || proof.normalizationId != row.key.normalizationId || proof.rawSizeBytes != row.raw.size || proof.rawSha256 != row.raw.sha256 ||
-                    row.output != NormalizationFingerprint(proof.outputSizeBytes, proof.outputSha256)) throw NormalizationRecovery()
+                if (auth.proofSha256 != row.proofSha256) throw NormalizationRecovery()
+                when (val output = task.selectedOutputDescriptor() ?: throw NormalizationRecovery()) {
+                    is ArtifactOutputDescriptor.NormalizedDirect -> {
+                        val proof = output.normalizationProof
+                        if (proof.normalizationId != row.key.normalizationId || proof.rawSizeBytes != row.raw.size ||
+                            proof.rawSha256 != row.raw.sha256 || row.output != NormalizationFingerprint(proof.outputSizeBytes, proof.outputSha256)) throw NormalizationRecovery()
+                    }
+                    is ArtifactOutputDescriptor.ConvertedDirect -> {
+                        val proof = output.conversionProof
+                        if ((!task.task.state.isTerminal && !proof.isCurrentPolicy()) ||
+                            (task.request.networkSourceMetadata?.expectedAudio == true && proof.expectation.audio == null) ||
+                            task.checkpoint != null ||
+                            proof.normalizationId != row.key.normalizationId || proof.rawSizeBytes != row.raw.size ||
+                            proof.rawSha256 != row.raw.sha256 || proof.sourceTransferSha256 != row.sourceTransferSha256 ||
+                            row.output != NormalizationFingerprint(proof.outputSizeBytes, proof.outputSha256)) throw NormalizationRecovery()
+                    }
+                    is ArtifactOutputDescriptor.Transferred -> throw NormalizationRecovery()
+                }
             }
         }
         private fun normalizationSequences(owner: NormalizationOwner, live: Boolean): List<Long> = helper.readableDatabase.rawQuery("""SELECT sequence,length(record)

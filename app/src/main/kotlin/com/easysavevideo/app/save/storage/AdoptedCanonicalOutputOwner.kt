@@ -2,6 +2,8 @@ package com.easysavevideo.app.save.storage
 
 import com.easysavevideo.app.save.DirectNormalizedOutputLease
 import com.easysavevideo.app.save.DirectNormalizedOutputOwner
+import com.easysavevideo.app.save.DirectConvertedPreflight
+import com.easysavevideo.app.media.verification.BorrowedAvcAacInspection
 import com.easysavevideo.app.save.DirectNormalizedPreflight
 import com.easysavevideo.core.model.OperationContext
 import com.easysavevideo.core.model.TaskMethod
@@ -63,6 +65,10 @@ internal class AdoptedCanonicalOutputOwner(
         @Volatile var input: RandomAccessFile? = null
         var descriptor: FileDescriptor? = null
         var layout: Layout? = null
+        @Volatile var nativeInspection: BorrowedAvcAacInspection? = null
+        @Volatile var convertedNativeReleased = false
+        @Volatile var retainedNativeInspection: BorrowedAvcAacInspection? = null
+        var releaseWitnessEligible = false
         var rafCloseStarted = false
         var rafReleased = false
         val directories = mutableListOf<DirectoryObligation>() // Acquiring/validating worker only.
@@ -84,10 +90,20 @@ internal class AdoptedCanonicalOutputOwner(
     fun revoke(artifactId: String) { reservations[artifactId]?.binding?.revoke() }
 
     override fun acquire(artifact: StagingArtifact, output: ArtifactOutputDescriptor.NormalizedDirect,
+        context: OperationContext): DirectNormalizedOutputLease = acquireOwned(artifact, output, context)
+
+    override fun acquire(artifact: StagingArtifact, output: ArtifactOutputDescriptor.ConvertedDirect,
+        context: OperationContext): DirectNormalizedOutputLease = acquireOwned(artifact, output, context)
+
+    private fun acquireOwned(artifact: StagingArtifact, output: ArtifactOutputDescriptor,
         context: OperationContext): DirectNormalizedOutputLease {
         checkOperation(context)
-        DirectNormalizedPreflight.check(artifact, output, context)
-        val binding = bindings.consume(artifact, output, context)
+        when (output) {
+            is ArtifactOutputDescriptor.NormalizedDirect -> DirectNormalizedPreflight.check(artifact, output, context)
+            is ArtifactOutputDescriptor.ConvertedDirect -> DirectConvertedPreflight.check(artifact, output, context)
+            is ArtifactOutputDescriptor.Transferred -> reject()
+        }
+        val binding = bindings.consumeForOwner(artifact, output, context, this)
         var reservation: Reservation? = null
         try {
             val owned = synchronized(ownerLock) {
@@ -146,13 +162,18 @@ internal class AdoptedCanonicalOutputOwner(
     private fun authority(binding: AdoptedVerificationBindings.Binding): Authority {
         binding.requireLive()
         val request = binding.request
-        val proof = request.output.normalizationProof
-        val record = readSave(proof.taskId) ?: reject()
+        val selected = request.output
+        val taskId = when (selected) {
+            is ArtifactOutputDescriptor.NormalizedDirect -> selected.normalizationProof.taskId
+            is ArtifactOutputDescriptor.ConvertedDirect -> selected.conversionProof.taskId
+            is ArtifactOutputDescriptor.Transferred -> reject()
+        }
+        val record = readSave(taskId) ?: reject()
         val transfer = record.transfer ?: reject()
-        val source = record.request.networkResource ?: reject()
+        val source = record.request.networkSourceMetadata ?: reject()
         val artifact = request.artifact
         val context = request.context
-        if (record.task.taskId != proof.taskId || record.task.revision != request.expectedRecordRevision ||
+        if (record.task.taskId != taskId || record.task.revision != request.expectedRecordRevision ||
             record.task.state != TaskState.RUNNING || record.task.method != TaskMethod.DIRECT ||
             record.request.method != TaskMethod.DIRECT || record.phase != SavePhase.VERIFYING ||
             record.artifact != artifact || record.commitId != artifact.commitId ||
@@ -161,23 +182,40 @@ internal class AdoptedCanonicalOutputOwner(
             record.verification != null || record.receipt != null || record.checkpoint != null ||
             transfer.bytesOnDisk <= 0 || transfer.expectedTotalBytes?.let { it != transfer.bytesOnDisk } == true ||
             transfer.streamExpectation != null || transfer.recordingExpectation != null ||
-            transfer != request.output.sourceTransfer || record.directNormalization != proof ||
-            record.selectedOutputDescriptor() != request.output ||
-            !proof.matchesSource(record.task.taskId, source.sourceIdentity, artifact, transfer)) reject()
-        DirectNormalizedPreflight.check(artifact, request.output, context)
-        // The admitted video-only proof cannot satisfy a caller that actually requested audio.
-        if (source.expectedAudio && proof.conservation.audio == null) reject()
+            transfer != selected.sourceTransfer || record.selectedOutputDescriptor() != selected) reject()
         val catalog = readCatalog(artifact.commitId) ?: reject()
         if (catalog.taskId != record.task.taskId || catalog.artifact != artifact ||
             catalog.state != OwnedState.STAGING || catalog.evidence != null) reject()
-        val key = NormalizationKey(NormalizationOwner(record.task.taskId, artifact.artifactId, artifact.commitId), proof.normalizationId)
-        val row = (ledger.lookup(key.owner) as? NormalizationLookup.Present)?.row ?: reject()
-        if (row.key != key || row.lifecycle != NormalizationLifecycle.ADOPTED ||
+        val row = (ledger.lookup(NormalizationOwner(taskId, artifact.artifactId, artifact.commitId))
+            as? NormalizationLookup.Present)?.row ?: reject()
+        if (row.lifecycle != NormalizationLifecycle.ADOPTED ||
             row.disposition != NormalizationDisposition.CONTINUE || row.cleanup != null || row.failure != null ||
-            row.raw != NormalizationFingerprint(proof.rawSizeBytes, proof.rawSha256) ||
-            row.sourceTransferSha256 != sourceTransferFingerprint(transfer) ||
-            row.output != NormalizationFingerprint(proof.outputSizeBytes, proof.outputSha256) ||
-            row.proofSha256 != proof.digest()) reject()
+            row.sourceTransferSha256 != sourceTransferFingerprint(transfer)) reject()
+        when (selected) {
+            is ArtifactOutputDescriptor.NormalizedDirect -> {
+                val proof = selected.normalizationProof
+                DirectNormalizedPreflight.check(artifact, selected, context)
+                if (record.directConversion != null || record.directNormalization != proof ||
+                    !proof.matchesSource(taskId, source.sourceIdentity, artifact, transfer) ||
+                    (source.expectedAudio && proof.conservation.audio == null) ||
+                    row.key != NormalizationKey(NormalizationOwner(taskId, artifact.artifactId, artifact.commitId), proof.normalizationId) ||
+                    row.raw != NormalizationFingerprint(proof.rawSizeBytes, proof.rawSha256) ||
+                    row.output != NormalizationFingerprint(proof.outputSizeBytes, proof.outputSha256) ||
+                    row.proofSha256 != proof.digest()) reject()
+            }
+            is ArtifactOutputDescriptor.ConvertedDirect -> {
+                val proof = selected.conversionProof
+                DirectConvertedPreflight.check(artifact, selected, context)
+                if (record.directNormalization != null || record.directConversion != proof || !proof.isCurrentPolicy() ||
+                    (source.expectedAudio && proof.expectation.audio == null) ||
+                    !proof.matchesSource(taskId, source.sourceIdentity, artifact, transfer) ||
+                    row.key != NormalizationKey(NormalizationOwner(taskId, artifact.artifactId, artifact.commitId), proof.normalizationId) ||
+                    row.raw != NormalizationFingerprint(proof.rawSizeBytes, proof.rawSha256) ||
+                    row.output != NormalizationFingerprint(proof.outputSizeBytes, proof.outputSha256) ||
+                    row.proofSha256 != proof.digest()) reject()
+            }
+            is ArtifactOutputDescriptor.Transferred -> reject()
+        }
         binding.requireLive() // Revocation during a durable read wins before any filesystem work.
         return Authority(record, row, catalog)
     }
@@ -296,7 +334,7 @@ internal class AdoptedCanonicalOutputOwner(
 
     private inner class Lease(private val owned: Reservation) : DirectNormalizedOutputLease {
         override val artifact: StagingArtifact get() = owned.artifact
-        override val output: ArtifactOutputDescriptor.NormalizedDirect get() = owned.output
+        override val output: ArtifactOutputDescriptor get() = owned.output
         override val readOnlyInput: RandomAccessFile get() {
             checkLive(owned)
             return synchronized(ownerLock) {
@@ -342,8 +380,43 @@ internal class AdoptedCanonicalOutputOwner(
             owned.binding.revoke()
             poison(owned)
         }
+        override fun bindNativeInspection(resource: Any) {
+            checkLive(owned)
+            val inspection = resource as? BorrowedAvcAacInspection ?: reject()
+            val input = owned.input ?: reject()
+            val descriptor = owned.descriptor ?: reject()
+            if (owned.output !is ArtifactOutputDescriptor.ConvertedDirect || owned.stage != Stage.ACTIVE ||
+                owned.nativeInspection != null || !inspection.isPristine ||
+                !inspection.borrows(descriptor, input.channel, owned.output.sizeBytes)) reject()
+            // Worker-only, memory-only assignment. No native/IO callback under ownerLock.
+            owned.nativeInspection = inspection
+        }
+        override fun confirmNativeRelease(resource: Any) {
+            checkWorker(owned)
+            val inspection = owned.nativeInspection ?: reject()
+            if (resource !== inspection || owned.nativeUncertain.get() ||
+                owned.retainedNativeInspection != null || !inspection.nativeReleaseConfirmed ||
+                owned.stage != Stage.ACTIVE || owned.rafCloseStarted) reject()
+            owned.convertedNativeReleased = true
+        }
+        override fun retainOnNativeReleaseUncertainty(resource: Any) {
+            // Binding predates native entry. Keep exactly that borrower, never a replacement.
+            val inspection = owned.nativeInspection
+            if (inspection == null || resource !== inspection) {
+                // A broken integration must still never close a potentially borrowed descriptor.
+                owned.nativeUncertain.set(true)
+                owned.binding.revoke()
+                poison(owned)
+                return
+            }
+            owned.retainedNativeInspection = inspection
+            retainOnNativeReleaseUncertainty()
+        }
         override val releaseConfirmed: Boolean get() = owned.stage == Stage.RELEASED && !owned.nativeUncertain.get()
         override fun close() {
+            if (Thread.currentThread() === owned.worker && owned.stage == Stage.ACTIVE &&
+                !owned.closeRequested.get() && !owned.binding.isRevoked && !owned.failed &&
+                !owned.nativeUncertain.get()) owned.releaseWitnessEligible = true
             owned.closeRequested.set(true)
             owned.binding.revoke()
             if (Thread.currentThread() !== owned.worker) return // Only request; never close under native IO.
@@ -355,6 +428,16 @@ internal class AdoptedCanonicalOutputOwner(
     /** Only the owning worker, after all its native cleanup, performs bottom-level exact-once close. */
     private fun closeOwned(owned: Reservation) {
         checkWorker(owned)
+        // Native borrowing is sticky. Scope finally, late/repeated close and cancellation may only
+        // revoke/retain this same reservation; they cannot close or retry the borrowed RAF.
+        if (owned.output is ArtifactOutputDescriptor.ConvertedDirect &&
+            (owned.nativeUncertain.get() || owned.retainedNativeInspection != null ||
+                (owned.nativeInspection != null && !owned.convertedNativeReleased))) {
+            owned.binding.revoke()
+            owned.stage = Stage.UNCERTAIN
+            poison(owned)
+            return
+        }
         val shouldClose = synchronized(ownerLock) {
             if (owned.stage == Stage.RELEASED || owned.stage == Stage.CLOSING || owned.stage == Stage.VALIDATING) false
             else if (owned.rafCloseStarted) false
@@ -385,13 +468,26 @@ internal class AdoptedCanonicalOutputOwner(
                 owned.directories.all { !it.opening && it.released } && owned.stage != Stage.UNCERTAIN
             if (released) {
                 owned.stage = Stage.RELEASED
+                if (confirmsReleasedBinding(owned.binding)) owned.binding.completeReleasedBy(this)
+                else owned.binding.complete()
                 if (reservations[owned.artifact.artifactId] === owned) reservations.remove(owned.artifact.artifactId, owned)
-                owned.binding.complete()
             } else {
                 owned.stage = Stage.UNCERTAIN
                 poison(owned)
             }
         }
+    }
+    /** Private reservation facts only; no IO, authority callback, or new release attempt. */
+    internal fun confirmsReleasedBinding(binding: AdoptedVerificationBindings.Binding): Boolean {
+        val owned = reservations[binding.request.artifact.artifactId] ?: return false
+        return owned.binding === binding && Thread.currentThread() === owned.worker &&
+            owned.stage == Stage.RELEASED && owned.releaseWitnessEligible && !owned.failed &&
+            owned.input != null && owned.descriptor != null && owned.rafReleased && !owned.unresolvedOpen &&
+            !owned.nativeUncertain.get() && owned.retainedNativeInspection == null &&
+            owned.directories.all { !it.opening && it.released } &&
+            (owned.output !is ArtifactOutputDescriptor.ConvertedDirect ||
+                (owned.nativeInspection != null && owned.convertedNativeReleased &&
+                    owned.nativeInspection!!.successfulInspection && owned.nativeInspection!!.nativeReleaseConfirmed))
     }
     private fun poison(owned: Reservation) {
         owned.failed = true

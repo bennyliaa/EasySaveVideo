@@ -57,7 +57,15 @@ class AndroidOrdinaryDestinationRuntime internal constructor(
     var savingPreference by mutableStateOf(false); private set
     var asking by mutableStateOf(false); private set
     var admitting by mutableStateOf(false); private set
-    var notice by mutableStateOf<OrdinaryDestinationNoticeCode?>(null); private set
+    // A repeated notice code is still a new presentation. Never authorize a queued old button
+    // from enum equality, or from a Boolean asking flag which can return to the same value.
+    private class NoticePresentation(val code: OrdinaryDestinationNoticeCode)
+    private var noticePresentation by mutableStateOf<NoticePresentation?>(null)
+    var notice: OrdinaryDestinationNoticeCode?
+        get() = noticePresentation?.code
+        private set(value) { noticePresentation = value?.let(::NoticePresentation) }
+    internal val currentNoticeIdentity: Any? get() = noticePresentation
+    internal val currentSelectionIdentity: Any? get() = pending?.takeIf { asking }
     var statuses by mutableStateOf<List<OrdinaryDestinationStatus>>(emptyList()); private set
     init {
         exports?.observeDestinationState(::refreshSettings)
@@ -95,6 +103,21 @@ class AndroidOrdinaryDestinationRuntime internal constructor(
         val automatic = automaticDestination(ticket.preference)
         if (automatic == null) asking = true else choose(automatic)
         return receipt
+    }
+    internal fun choose(expectedIdentity: Any, choice: OrdinaryDestinationChoice) {
+        requireMain()
+        if (currentSelectionIdentity !== expectedIdentity) return
+        choose(choice)
+    }
+    internal fun cancelSelection(expectedIdentity: Any) {
+        requireMain()
+        if (currentSelectionIdentity !== expectedIdentity) return
+        cancelSelection()
+    }
+    internal fun clearNotice(expectedIdentity: Any) {
+        requireMain()
+        if (currentNoticeIdentity !== expectedIdentity) return
+        clearNotice()
     }
     fun choose(choice: OrdinaryDestinationChoice) {
         requireMain()

@@ -47,7 +47,7 @@ Android 进程共享一个 worker 和 fence，Activity 重建不创建更多工�
 
 ## NOT_RUN / 不在本组验收内
 
-- Android 真机、模拟器、真实 SAF 文件提供方、跨 OEM grant/Activity 重建/Binder 阻塞行为：NOT_RUN，按用户要求延后装机。
+- Android 真机、emulator-5556、真实 SAF 文件提供方、跨 OEM grant/Activity 重建/Binder 阻塞行为：NOT_RUN，按用户要求延后装机。
 - 未组装 APK/AAB，未安装设备，未发布/上传；由父任务统一处理已授权仓库备份。
 - 不宣称全项目产品验收、Release 运行时隐私审计、T-P01–05 全业务/Logcat 验收完成。
 - 不解决 OPPO 编辑/分享未知根因，不修改既有门禁；不引入依赖、Vault 启用、数据迁移、本地导入或真实支付。

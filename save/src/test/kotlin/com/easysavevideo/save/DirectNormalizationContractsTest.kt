@@ -36,6 +36,29 @@ class DirectNormalizationContractsTest {
             bytesTransferred = rawSize, directNormalization = proof)
     }
 
+    @Test fun historicalAudioOneRemainsReadableWhileCurrentAudioRequiresExplicitPolicyTwo() {
+        val silent = record().directNormalization!!
+        val historical = record(audio = true)
+        val old = historical.directNormalization!!
+        assertEquals(1, old.policyRevision)
+        assertFalse(old.isCurrentPolicy())
+        assertTrue(silent.isCurrentPolicy())
+        assertTrue(historical.verification!!.isValidFor(historical.artifact!!, historical.selectedOutputDescriptor()!!, true))
+        val current = old.copy(policyRevision = 2)
+        assertTrue(current.isCurrentPolicy())
+        assertNotEquals(old.digest(), current.digest())
+        assertFalse(historical.verification!!.directNormalizationProof!!.matches(current))
+        assertFalse(historical.verification!!.isValidFor(historical.artifact!!,
+            ArtifactOutputDescriptor.NormalizedDirect(historical.transfer!!, current), true))
+        // Structural compatibility cannot silently change an existing proof/evidence digest tuple.
+        assertThrows(IllegalArgumentException::class.java) { historical.copy(directNormalization = current) }
+        for (revision in listOf(Int.MIN_VALUE, -1, 0, 3, Int.MAX_VALUE)) {
+            assertThrows(IllegalArgumentException::class.java) { old.copy(policyRevision = revision) }
+            assertThrows(IllegalArgumentException::class.java) { silent.copy(policyRevision = revision) }
+        }
+        assertThrows(IllegalArgumentException::class.java) { silent.copy(policyRevision = 2) }
+    }
+
     @Test fun canonicalOutputCanBeLargerOrSmallerThanUnchangedRawHttpEvidence() {
         for ((raw, output) in listOf(4096L to 2048L, 2048L to 4096L)) {
             val r = record(raw, output)

@@ -23,6 +23,7 @@ internal interface NormalizationDescriptorIo {
         fun sameInode(other: Stat) = device == other.device && inode == other.inode && kind == other.kind
     }
     fun lstat(path: File): Stat?
+    /** Only NormalizationOpenRejected certifies that construction returned no live handle. */
     fun open(path: File, mode: Open): Handle
     fun fstat(handle: Handle): Stat
     fun pread(handle: Handle, bytes: ByteArray, offset: Int, count: Int, position: Long): Int
@@ -37,6 +38,9 @@ internal interface NormalizationDescriptorIo {
     /** Must stop at maximum + 1, rather than materializing an unbounded directory. */
     fun children(path: File, maximum: Int, closeStarted: () -> Unit = {}, closeConfirmed: () -> Unit = {}): List<String>
 }
+
+/** Positive no-handle acknowledgement from the syscall adapter, never inferred by a caller. */
+internal class NormalizationOpenRejected(val failure: Exception) : IOException("NORMALIZATION_OPEN_REJECTED", failure)
 
 /** Public DirectoryStream does not expose its FD. Successful close return is its release contract.
  * An uncertain close retains the actual stream; it must never be retried or abandoned to GC. */
@@ -57,7 +61,7 @@ internal object AndroidNormalizationDescriptorIo : NormalizationDescriptorIo {
     private inline fun <T> call(block: () -> T): T = try { block() } catch (e: ErrnoException) { throw normalizationErrnoFailure(e.errno) }
     override fun lstat(path: File): NormalizationDescriptorIo.Stat? = try { stat(Os.lstat(path.path)) }
         catch (e: ErrnoException) { if (e.errno == OsConstants.ENOENT) null else throw normalizationErrnoFailure(e.errno) }
-    override fun open(path: File, mode: NormalizationDescriptorIo.Open): NormalizationDescriptorIo.Handle = call {
+    override fun open(path: File, mode: NormalizationDescriptorIo.Open): NormalizationDescriptorIo.Handle {
         val flags = OsConstants.O_CLOEXEC or OsConstants.O_NOFOLLOW or OsConstants.O_NONBLOCK or when (mode) {
             NormalizationDescriptorIo.Open.READ -> OsConstants.O_RDONLY
             NormalizationDescriptorIo.Open.WRITE_EXISTING -> OsConstants.O_RDWR
@@ -65,7 +69,11 @@ internal object AndroidNormalizationDescriptorIo : NormalizationDescriptorIo {
             // Android public API has no O_DIRECTORY; pre/post lstat + fstat enforce directory type.
             NormalizationDescriptorIo.Open.DIRECTORY -> OsConstants.O_RDONLY
         }
-        Descriptor(Os.open(path.path, flags, 384 /* 0600; only exclusive creation uses mode */))
+        // Catch only the syscall's explicit rejection. A later wrapper-construction failure is
+        // unknown acquisition and must retain the pending obligation at the owning caller.
+        val opened = try { Os.open(path.path, flags, 384 /* 0600; only exclusive creation uses mode */) }
+            catch (failure: ErrnoException) { throw NormalizationOpenRejected(normalizationErrnoFailure(failure.errno)) }
+        return Descriptor(opened)
     }
     override fun fstat(handle: NormalizationDescriptorIo.Handle) = call { stat(Os.fstat(fd(handle))) }
     override fun pread(handle: NormalizationDescriptorIo.Handle, bytes: ByteArray, offset: Int, count: Int, position: Long) =

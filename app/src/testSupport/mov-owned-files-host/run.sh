@@ -8,6 +8,10 @@ REPO=${1:-"$REPO"}
 OUT=${2:-"$REPO/build/mov-owned-files-host"}
 CACHE=${KOTLIN_CACHE:-"${GRADLE_USER_HOME:?Set GRADLE_USER_HOME}/caches/modules-2/files-2.1"}
 ANDROID_JAR=${ANDROID_JAR:-"${ANDROID_HOME:?Set ANDROID_HOME}/platforms/android-36/android.jar"}
+# Owner now names the real registered async pair/session types. Use only this checkpoint's
+# production app classes for their transitive types; never compile stand-in authority classes.
+: "${ESV_MAIN_CLASSES:?Supply matching checkpoint production app classes}" "${ESV_PROJECT_CLASSPATH:?Supply matching project runtime classpath}" "${ESV_SOURCE_MANIFEST:?Supply matching source SHA-256 manifest}"
+(cd "$REPO" && sha256sum --check --status "$ESV_SOURCE_MANIFEST")
 # Fail closed on a replaced pinned bytecode artifact; hashes are the admitted local AARs.
 (cd "$REPO" && sha256sum --check --status <<'PINS'
 f68fa5996882a5f08ea0925463bc56e1c2b20ead3f556dadba24686fc4c979f1  vendor/media3-maven/androidx/media3/media3-muxer/1.11.1/media3-muxer-1.11.1.aar
@@ -31,7 +35,7 @@ ANNOTATIONS=$(one org.jetbrains/annotations/13.0)
 JUNIT=$(one junit/junit/4.13.2)
 HAMCREST=$(one org.hamcrest/hamcrest-core/1.3)
 PROJECT_JARS=$(find "$REPO/save/build/libs" "$REPO/core-model/build/libs" "$REPO/core-domain/build/libs" "$REPO/recording/build/libs" -name '*.jar' | sort | paste -sd:)
-CP="$PROJECT_JARS:$ANDROID_JAR:$STDLIB:$ANNOTATIONS:$JUNIT:$HAMCREST:$(find "$OUT/jars" "$REPO/vendor/media3-maven" -name '*.jar' ! -name '*-sources.jar' | sort | paste -sd:)"
+CP="$ESV_MAIN_CLASSES:$ESV_PROJECT_CLASSPATH:$PROJECT_JARS:$ANDROID_JAR:$STDLIB:$ANNOTATIONS:$JUNIT:$HAMCREST:$(find "$OUT/jars" "$REPO/vendor/media3-maven" -name '*.jar' ! -name '*-sources.jar' | sort | paste -sd:)"
 mapfile -t JAVA < <(find "$HERE/../hls-mux-conservation/src/test/java/android" "$HERE/../hls-eof-compat/src/test/java/android" -name '*.java' | sort)
 "${JAVAC_BIN:-${JAVA_HOME:?Set JAVA_HOME}/bin/javac}" -source 17 -target 17 -cp "$CP" -d "$OUT/classes" "${JAVA[@]}"
 mapfile -t KOTLIN < <(find "$HERE/src/test/kotlin" -name '*.kt' | sort)
@@ -39,12 +43,14 @@ for name in MovProfileProbe MovAvcProfile MovRemuxFiles MovRemuxEngine; do
   KOTLIN+=("$REPO/app/src/main/kotlin/com/easysavevideo/app/save/normalization/$name.kt")
 done
 KOTLIN+=("$REPO/app/src/test/kotlin/com/easysavevideo/app/save/normalization/OriginalMovFixtures.kt")
-for name in NormalizationDescriptorIo AndroidNormalizationFiles NormalizationAttemptOwner OwnedMovRemuxAttempt NormalizationWorkspaceCodec NormalizationWorkspaceProtocol PrivateCommitProtocol; do
+for name in NormalizationIoReservations NormalizationDescriptorIo AndroidNormalizationFiles NormalizationAttemptOwner OwnedMovRemuxAttempt NormalizationWorkspaceCodec NormalizationWorkspaceProtocol PrivateCommitProtocol; do
   KOTLIN+=("$REPO/app/src/main/kotlin/com/easysavevideo/app/save/storage/$name.kt")
 done
 KOTLIN+=("$REPO/app/src/test/kotlin/com/easysavevideo/app/save/storage/NormalizationDescriptorTestFixtures.kt")
 java -cp "$COMPILER:$STDLIB:$SCRIPT:$REFLECT:$COROUTINES:$ANNOTATIONS" \
-  org.jetbrains.kotlin.cli.jvm.K2JVMCompiler -no-stdlib -no-reflect -jvm-target 17 \
+  org.jetbrains.kotlin.cli.jvm.K2JVMCompiler -no-stdlib -no-reflect -jvm-target 17 -Xfriend-paths="$ESV_MAIN_CLASSES" \
   -classpath "$OUT/classes:$CP" -d "$OUT/classes" "${KOTLIN[@]}"
 timeout 180s java -Desv.mov.output="$OUT" -cp "$OUT/classes:$CP" \
   com.easysavevideo.app.save.storage.PinnedOwnedMovFilesRunner | tee "$OUT/results.log"
+
+(cd "$REPO" && sha256sum --check --status "$ESV_SOURCE_MANIFEST")

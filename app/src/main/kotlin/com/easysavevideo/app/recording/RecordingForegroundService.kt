@@ -17,7 +17,6 @@ import android.os.IBinder
 import com.easysavevideo.app.MainActivity
 import com.easysavevideo.app.R
 import com.easysavevideo.app.save.AndroidSaveRuntime
-import com.easysavevideo.recording.RecordingStopReason
 
 /** User-started, non-sticky owner. Service commands carry identifiers only, never projection grants. */
 class RecordingForegroundService : Service() {
@@ -29,7 +28,7 @@ class RecordingForegroundService : Service() {
     private val screenOff = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == Intent.ACTION_SCREEN_OFF) requestId?.let {
-                runtime.safetyStopRecording(it, RecordingStopReason.SYSTEM_STOPPED)
+                runtime.onRecordingScreenOff(it)
             }
         }
     }
@@ -40,8 +39,10 @@ class RecordingForegroundService : Service() {
             if (requestId == null) stopSelf(startId)
             return START_NOT_STICKY
         }
-        if (intent.action == ACTION_STOP) {
-            if (requestId == id) runtime.stopRecording(id)
+        if (intent.action == ACTION_STOP || intent.action == ACTION_DISCARD) {
+            if (requestId == id) {
+                if (intent.action == ACTION_DISCARD) runtime.cancel(id) else runtime.stopRecording(id)
+            }
             else if (requestId == null) stopSelf(startId)
             return START_NOT_STICKY
         }
@@ -120,18 +121,23 @@ class RecordingForegroundService : Service() {
         // Unique identifier is part of Intent identity; an old action cannot stop a newer session.
         stop.identifier = id
         val stopIntent = PendingIntent.getService(this, 0, stop, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val discard = Intent(this, RecordingForegroundService::class.java).setAction(ACTION_DISCARD)
+            .putExtra(REQUEST_ID, id).apply { identifier = id }
+        val discardIntent = PendingIntent.getService(this, 0, discard, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val open = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         return Notification.Builder(this, CHANNEL).setSmallIcon(R.drawable.esv_launcher)
             .setContentTitle(localized.getString(R.string.recording_notification_title))
             .setContentText(localized.getString(recordingNotificationStatusResource(status))).setContentIntent(open)
             .setOngoing(true).setOnlyAlertOnce(true).setCategory(Notification.CATEGORY_SERVICE)
-            .addAction(Notification.Action.Builder(null, localized.getString(R.string.recording_notification_stop), stopIntent).build()).build()
+            .addAction(Notification.Action.Builder(null, localized.getString(R.string.recording_notification_stop), stopIntent).build())
+            .addAction(Notification.Action.Builder(null, localized.getString(R.string.recording_notification_discard), discardIntent).build()).build()
     }
     companion object {
         private const val CHANNEL = "esv_recording"
         private const val NOTIFICATION_ID = 4301
         private const val ACTION_START = "com.easysavevideo.app.recording.START"
         private const val ACTION_STOP = "com.easysavevideo.app.recording.STOP"
+        private const val ACTION_DISCARD = "com.easysavevideo.app.recording.DISCARD"
         private const val REQUEST_ID = "request_id"
         fun start(context: Context, requestId: String) {
             context.startForegroundService(Intent(context, RecordingForegroundService::class.java)

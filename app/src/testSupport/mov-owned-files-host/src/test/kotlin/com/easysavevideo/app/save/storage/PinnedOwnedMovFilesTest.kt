@@ -6,7 +6,7 @@ import com.easysavevideo.save.*
 import org.junit.Assert.*
 import org.junit.Test
 
-/** Actual pinned remux + production file/session/protocol; syscalls and SQL are deterministic fakes. */
+/** Actual pinned remux + production file/session/protocol; fake syscalls/journal, no native AAC or SQLite acceptance. */
 class PinnedOwnedMovFilesTest {
     private fun fixture(options: OriginalMovFixtures.Options = OriginalMovFixtures.Options()): Pair<NormalizationDescriptorFixture, ByteArray> {
         val raw = OriginalMovFixtures.build(options)
@@ -45,6 +45,31 @@ class PinnedOwnedMovFilesTest {
         assertEquals(TaskState.RUNNING, f.record!!.task.state) // Adoption never publishes.
     }
 
+    @Test fun actualPinnedAudioTransportIssuesPolicyTwoAndAdoptsTheExactConservedOutput() {
+        // Synthetic opaque AAC packets establish transport only; no native decoding occurs here.
+        for (count in listOf(3, 7)) {
+            val options = OriginalMovFixtures.Options(audio = true, audioCount = count)
+            val (f, raw) = fixture(options)
+            val attempt = f.prepare()
+            val evidence = engine().remux(attempt, f.context, f.limits)
+            val bytes = f.io.bytes(f.outputFile(attempt.key))
+            val observed = MovProfileProbe.scanCanonicalMp4(OriginalMovFixtures.input(bytes))
+            val proof = f.attempts.finish(attempt, evidence, f.context)
+            assertEquals(2, proof.policyRevision); assertTrue(proof.isCurrentPolicy())
+            assertNotNull(proof.conservation.audio)
+            assertEquals(count.toLong(), proof.conservation.audio!!.sampleCount)
+            assertEquals(evidence.conservation, observed.conservation)
+            assertEquals(proof.digest(), f.ledger.row!!.proofSha256)
+            adopt(f, attempt.key, proof)
+            assertEquals(NormalizationLifecycle.ADOPTED, f.ledger.row!!.lifecycle)
+            assertArrayEquals(raw, f.io.bytes(f.rawFile(attempt.key)))
+            assertArrayEquals(bytes, f.io.bytes(f.primary))
+            assertNull(f.record!!.verification); assertNull(f.record!!.receipt)
+            assertEquals(TaskState.RUNNING, f.record!!.task.state)
+            assertTrue(f.io.handles.none { it.active }); assertFalse(f.attempts.hasAnyLeases())
+        }
+    }
+
     @Test fun realMuxCancellationLeavesWritingAndOnlyExplicitTerminalCleanupRemovesIt() {
         val (f, raw) = fixture(); val attempt = f.prepare()
         f.io.after = { if (it.operation == "pwrite") f.cancellation.cancel() }
@@ -60,8 +85,8 @@ class PinnedOwnedMovFilesTest {
         assertTrue(f.io.handles.none { it.active })
     }
 
-    @Test fun audioRejectsBeforeOpeningAWriterAndCannotProduceReadyProof() {
-        val (f, raw) = fixture(OriginalMovFixtures.Options(audio = true)); val attempt = f.prepare()
+    @Test fun duplicateAudioRejectsBeforeOpeningAWriterAndCannotProduceReadyProof() {
+        val (f, raw) = fixture(OriginalMovFixtures.Options(audio = true, extraAudio = true)); val attempt = f.prepare()
         val failure = assertThrows(SaveFailure::class.java) { engine().remux(attempt, f.context, f.limits) }
         assertEquals(SaveError.UNSUPPORTED_MEDIA, failure.code); attempt.close()
         assertFalse(f.io.calls.any { it.operation == "open" && it.mode == NormalizationDescriptorIo.Open.WRITE_EXISTING })

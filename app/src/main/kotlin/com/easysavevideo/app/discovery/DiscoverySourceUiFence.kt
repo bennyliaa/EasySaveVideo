@@ -14,5 +14,5 @@ object DiscoverySourceUiFence {
     fun accepts(publishedIntent: Long, currentIntent: Long): Boolean = publishedIntent == currentIntent
     fun failure(intent: Long, demo: Boolean) = DiscoveryUiState(ready = true, demo = demo, storageUnavailable = true,
         configurationIntent = intent, needsExplicitSearch = true,
-        notice = "发现数据暂不可读，原始数据已保留。仍可使用浏览器地址栏。")
+        notice = DiscoveryNotice.STORAGE_RECOVERY_UNAVAILABLE)
 }

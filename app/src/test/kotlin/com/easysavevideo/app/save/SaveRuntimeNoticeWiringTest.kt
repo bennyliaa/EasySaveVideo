@@ -12,16 +12,16 @@ class SaveRuntimeNoticeWiringTest {
     @Test fun everyEmissionUsesOneOfTheFourTypedFamiliesAndAllFiveClearsRemain() {
         val text = runtime
         assertTrue(text.contains("internal var notice by mutableStateOf<SaveRuntimeNotice?>(null); private set"))
-        assertEquals(51, Regex("\\bnotice = ").findAll(text).count())
+        assertEquals(54, Regex("\\bnotice = ").findAll(text).count())
         assertEquals(5, Regex("\\bnotice = null").findAll(text).count())
-        assertEquals(39, Regex("notice = SaveRuntimeNotice.Fixed\\(").findAll(text).count())
+        assertEquals(41, Regex("notice = SaveRuntimeNotice.Fixed\\(").findAll(text).count())
         assertEquals(1, Regex("notice = SaveRuntimeNotice.TaskCapacityReached\\(").findAll(text).count())
         assertEquals(1, Regex("notice = SaveRuntimeNotice.DetectionUnavailable\\(").findAll(text).count())
-        assertEquals(5, Regex("notice = saveRuntimeFailureNotice\\(").findAll(text).count())
+        assertEquals(6, Regex("notice = saveRuntimeFailureNotice\\(").findAll(text).count())
         SaveRuntimeFixedNotice.entries.forEach { kind ->
             val count = Regex("SaveRuntimeFixedNotice\\.${kind.name}\\b").findAll(text).count()
             assertEquals(kind.name, if (kind in setOf(SaveRuntimeFixedNotice.MEDIA_RESOURCES_EXITING,
-                SaveRuntimeFixedNotice.RECORDING_PAUSE_RESUME_ENTITLEMENT_REQUIRED)) 2
+                SaveRuntimeFixedNotice.RECORDING_PAUSE_RESUME_ENTITLEMENT_REQUIRED, SaveRuntimeFixedNotice.RECORDING_FOREGROUND_START_REJECTED, SaveRuntimeFixedNotice.DIRECT_TASK_ACCEPTED)) 2
                 else if (kind == SaveRuntimeFixedNotice.SAVE_OPERATION_BUSY) 3 else 1, count)
         }
         assertTrue(text.contains("notice = SaveRuntimeNotice.TaskCapacityReached(limits.maxJournalEntries)"))

@@ -1,0 +1,27 @@
+[
+  {
+    "file": "webkit-1.17.1-classes.jar",
+    "bytes": 308378,
+    "sha256": "ffaed65de4e54658cd2833f19827d165a5f9d70c126f74bcbf1d4bb91eba7e6f"
+  },
+  {
+    "file": "webkit-1.17.1-sources.jar",
+    "bytes": 297508,
+    "sha256": "1fc3abdfcc179717f0a1b0b8634175afe4d84ba5938eba1df75128397663ebea"
+  },
+  {
+    "file": "webkit-1.17.1.aar",
+    "bytes": 292669,
+    "sha256": "29dc7a9a32614828c97cf85951eb43c9e455157ab411e5e77d2ca4e72da28a36"
+  },
+  {
+    "file": "webkit-1.17.1.module",
+    "bytes": 4797,
+    "sha256": "fee069430a913a43fa694ad466682f132d21251b62cd03655142ddafe15b52eb"
+  },
+  {
+    "file": "webkit-1.17.1.pom",
+    "bytes": 2534,
+    "sha256": "b5294d03f04cf806e975afe48a67e70180e6a1e74086e7e62a1fe64c4a636bae"
+  }
+]

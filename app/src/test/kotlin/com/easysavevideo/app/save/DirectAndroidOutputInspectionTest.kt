@@ -61,7 +61,7 @@ class DirectAndroidOutputInspectionTest {
     @Test fun actualFullWalkRecomputesConservationAndKeepsOnlyFinalGop() {
         val f = Fixture()
         val actual = f.scan()
-        assertEquals(f.profile.conservation, actual.conservation)
+        assertEquals(f.profile.conservation, assembleDirectConservation(f.profile, actual, null))
         assertEquals(3, actual.tail.sampleCount)
         assertEquals(f.profile.conservation.precedingVideoSync, actual.tail.samples.first().identity)
         assertEquals(f.profile.conservation.video.lastSample, actual.tail.samples.last().identity)
@@ -72,19 +72,19 @@ class DirectAndroidOutputInspectionTest {
             val actual = f.scan()
             assertEquals(1, actual.tail.sampleCount)
             assertEquals((count - 1).toLong(), actual.tail.samples.single().identity.index)
-            assertEquals(f.profile.clock.endpoint, actual.conservation.video.endpoint)
+            assertEquals(f.profile.clock.endpoint, actual.video.track.endpoint)
         }
     }
     @Test fun allApprovedClockRoundingPhasesRemainExact() {
         for (rate in DirectMovClock.VIDEO_FRAME_RATES) {
             val f = Fixture(OriginalMovFixtures.Options(frameRate = rate, count = 5, quickTime = false))
-            assertEquals(f.profile.conservation, f.scan().conservation)
+            assertEquals(f.profile.conservation, assembleDirectConservation(f.profile, f.scan(), null))
         }
     }
     @Test fun multisliceAudAndInBandConfigurationAreNotDiscarded() {
         val f = Fixture(OriginalMovFixtures.Options(width = 32, slices = 2, aud = true,
             inBandConfig = true, quickTime = false))
-        assertEquals(f.profile.conservation, f.scan().conservation)
+        assertEquals(f.profile.conservation, assembleDirectConservation(f.profile, f.scan(), null))
     }
     @Test fun missingDuplicateReorderedAndChangedMiddleSamplesReject() {
         val f = Fixture()

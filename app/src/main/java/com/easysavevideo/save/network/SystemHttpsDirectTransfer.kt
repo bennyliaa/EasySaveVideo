@@ -27,6 +27,7 @@ class SystemHttpsDirectTransfer(
     private val clock: EpochClock = EpochClock(System::currentTimeMillis),
     private val connections: DirectConnectionFactory = SystemHttpsConnectionFactory(),
     private val networkPolicy: TransferNetworkPolicy = UnrestrictedTransferNetworkPolicy,
+    private val movAdmissionEnabled: Boolean = false,
 ) : DirectTransferPort {
     private val active = AtomicBoolean(false)
     private val cleanupUncertain = AtomicBoolean(false)
@@ -46,6 +47,7 @@ class SystemHttpsDirectTransfer(
             if (resource.expiresAtEpochMillis?.let { clock.nowMillis() >= it } == true)
                 throw SaveFailure(SaveError.EXPIRED_RESOURCE)
             val selected = HttpsRequestPolicy.validate(URI(resource.url.value))
+            val sourceAuthority = requestContexts.captureAuthority(resource)
             var target = selected
             val visited = mutableSetOf<String>()
             val usableCheckpoint = checkpoint?.takeIf {
@@ -55,17 +57,23 @@ class SystemHttpsDirectTransfer(
             }
             for (hop in 0..limits.maxRedirects) {
                 checkContext(context)
+                sourceAuthority?.check()
                 HttpsRequestPolicy.validate(target)
                 if (!visited.add(HttpsRequestPolicy.canonical(target))) throw SaveFailure(SaveError.POLICY_BLOCKED)
                 // Both checks precede responseCode: never let a process-global cookie handler read or
                 // store another origin's cookies. The app does not install a global CookieHandler.
                 if (CookieHandler.getDefault() != null) throw SaveFailure(SaveError.POLICY_BLOCKED)
                 val timeout = boundedTimeout(limits.connectTimeoutMillis, context)
-                val network = try { networkPolicy.acquireApproved() } catch (failure: Exception) {
+                val network = try {
+                    sourceAuthority?.check()
+                    networkPolicy.acquireApproved().let { sourceAuthority?.guard(it) ?: it }.also { it.requireApproved() }
+                } catch (failure: Exception) {
                     checkContext(context) // Explicit cancellation wins over an unavailable network.
+                    sourceAuthority?.check()
                     throw failure
                 }
                 checkContext(context)
+                sourceAuthority?.check()
                 val connection = try { connections.open(target, timeout, network) } catch (failure: Exception) {
                     failure.releaseFailureOrNull()?.let {
                         cleanupUncertain.set(true)
@@ -76,9 +84,10 @@ class SystemHttpsDirectTransfer(
                     throw failure
                 }
                 val guard = initializeNetworkOwner(connection, { cleanupUncertain.set(true) }) {
-                    TransferGuard(connection, context, limits.noProgressTimeoutMillis, clock, network)
+                    TransferGuard(connection, context, limits.noProgressTimeoutMillis, clock, network, sourceAuthority)
                 }
                 try {
+                    guard.check()
                     connection.instanceFollowRedirects = false
                     connection.useCaches = false
                     connection.doInput = true
@@ -90,7 +99,7 @@ class SystemHttpsDirectTransfer(
                     connection.setRequestProperty("Accept", "video/mp4, application/mp4, application/octet-stream")
                     connection.setRequestProperty("Connection", "close")
                     requestContexts.headers(resource.requestContextRef, selected, target, hop == 0)
-                        .forEach { (name, value) -> connection.setRequestProperty(name, value) }
+                        .forEach { (name, value) -> guard.check(); connection.setRequestProperty(name, value) }
                     val resume = usableCheckpoint?.takeIf { it.resourceIdentity == HttpsRequestPolicy.identity(target) }
                     if (resume != null) {
                         connection.setRequestProperty("Range", "bytes=${resume.offset}-")
@@ -159,7 +168,8 @@ class SystemHttpsDirectTransfer(
         if (encoding != null && !encoding.equals("identity", true)) throw SaveFailure(SaveError.UNSUPPORTED_MEDIA)
         val mime = (header(connection, "Content-Type") ?: "application/octet-stream")
             .substringBefore(';').trim().lowercase(Locale.ROOT)
-        if (mime !in setOf("video/mp4", "application/mp4", "application/octet-stream"))
+        if (mime !in setOf("video/mp4", "application/mp4", "application/octet-stream") &&
+            !(movAdmissionEnabled && mime == "video/quicktime"))
             throw SaveFailure(if (mime.startsWith("multipart/")) SaveError.INVALID_RANGE else SaveError.UNSUPPORTED_MEDIA)
         val transferEncoding = header(connection, "Transfer-Encoding")
         if (transferEncoding != null && !transferEncoding.equals("chunked", true)) throw SaveFailure(SaveError.INCOMPLETE_TRANSFER)
@@ -212,6 +222,7 @@ class SystemHttpsDirectTransfer(
             }
         }
         try {
+            guard.check()
             val ownedInput = object : FilterInputStream(connection.inputStream) {
                 override fun close() {
                     try { super.close() } catch (_: Exception) {
@@ -330,7 +341,8 @@ class SystemHttpsDirectTransfer(
 /** One daemon per active transfer, no unbounded cancel executor or false stopped callback. */
 private class TransferGuard(private val connection: HttpURLConnection, private val context: OperationContext,
                             private val timeout: Int, private val clock: EpochClock,
-                            private val network: TransferNetworkBinding) {
+                            private val network: TransferNetworkBinding,
+                            private val sourceAuthority: RequestContextAuthority?) {
     private val finished = AtomicBoolean(false)
     private val disconnectStarted = AtomicBoolean(false)
     private val disconnectFailed = AtomicBoolean(false)
@@ -350,6 +362,7 @@ private class TransferGuard(private val connection: HttpURLConnection, private v
         // A network failure may already be latched while disconnect is blocked. A later explicit
         // cancellation must still win when the caller finally observes the released connection.
         if (context.cancelToken.isCancelled) return SaveError.CANCELLED
+        sourceAuthority?.failureOrNull()?.let { return it }
         reason.get()?.let { return it }
         if (clock.nowMillis() >= context.deadlineEpochMillis) return SaveError.DEADLINE_EXCEEDED
         network.failureOrNull()?.let { return it }

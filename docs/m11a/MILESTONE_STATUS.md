@@ -10,13 +10,45 @@ not be reused as current project-wide conclusions.
 
 ## Evidence boundary
 
-- Latest verified published source checkpoint: [24bc104a51e1b87dc2752c01bd616be29b44dc08](https://github.com/bennyliaa/EasySaveVideo/commit/24bc104a51e1b87dc2752c01bd616be29b44dc08),
-  `development/cloud-followup-20261013`: editor destination-attempt acknowledgement,
-  42 changed files / 42 exact blob readbacks. It follows published recording foreground
-  notifications `1f25214f`, live-original-page authentication navigation `4f22d43` and
-  Discovery reading anchor `55c51cd`. Earlier source slices remain published. Main is unchanged at
-  `ea87963dee631a498774f648c9a1dabd9f665b90`; repository visibility remains private;
-  no main merge or release acceptance.
+- Latest verified published source checkpoint: [dbff3f4e5452fa3470de77ae1eb974f43a221d90](https://github.com/bennyliaa/EasySaveVideo/commit/dbff3f4e5452fa3470de77ae1eb974f43a221d90),
+  `development/cloud-followup-20261013`: batch directory confirmation replay safety and
+  actual Library-exit cancellation (A/B34). Its direct parent is published Editor Back
+  [c26df3f338ed6b183438960ea1beb7b5d6dad300](https://github.com/bennyliaa/EasySaveVideo/commit/c26df3f338ed6b183438960ea1beb7b5d6dad300),
+  40 files. The two receipts verify 34 and 40 exact changed-blob readbacks respectively;
+  A/B also rechecks the preceding 40 blobs. These are 74 scoped changed-file readbacks,
+  not whole-tree equality or a test count. Earlier source publications remain published.
+  Main is unchanged at `ea87963dee631a498774f648c9a1dabd9f665b90`; repository visibility
+  remains private; no main merge or release acceptance.
+- The reviewed production chain after dbff3f4e is still **pending publication** in this
+  exact order: **Picker29 → Resume29 → ExportRecovery37 → UnadmittedSave48 → ReadingReturn25**.
+  Counts in these labels are frozen file counts, not tests. Their direct publication
+  parents must be the actual preceding published heads; no pending commit SHA is invented.
+  Exact manifest hashes, stage evidence and the separate 18-file evidence-only group are
+  listed in `PROJECT_COMPLETION_EVIDENCE_2026-10-13.md` §1.
+- The current integrated **13-module JVM regression completed** on the full local chain:
+  **337 fresh suites / 3,551 registered / 3,549 passed / 0 failures / 0 errors / 2 private-corpus
+  skips**. All thirteen module tasks plus runtime admission actually reran; App **2,263**,
+  Save **120** and Theme **17** are fresh in this run. Gradle exited 0 in 38s, 77 tasks:
+  14 executed and 63 dependency tasks UP-TO-DATE. Dual compile/lint are associated from
+  ReadingReturn25 on the **same 1,453 pinned inputs**, not rerun here: Debug lint
+  **54 warnings/8 hints**, Release **55 warnings/8 hints**, zero errors. Runtime90 and
+  seven compiled/source/ABI boundaries passed. Current host SQL **14 tests/344 rollback
+  boundaries** and synthetic DOM **22/11** passed. Historical **16 missing-Git / 2 missing-evidence /
+  13 stale-anchor FAIL** results and the first save-detector ENOENT remain preserved.
+- A separate new **local Debug APK is built and statically checked**, 47,803,784 bytes,
+  SHA-256 `fd8af644ae532f8241ea830a869995360139732089aee9c918a1da5e6c05480e`.
+  Source input manifest SHA-256
+  `592edc3376718657105082bbab834b586b0e418a6fcd2b0ecef8cdb32e9219aa` binds all five pending
+  production groups after dbff3f4e. This is local-manifest identity, **not Git HEAD or a
+  remote commit build**. Package `com.easysavevideo.app`, min31/target36, code8 /
+  `0.8.0-ui-dev`; the existing test signer matches, APK v2 signature and zipalign pass.
+  Debuggable and the unchanged global cleartext allowance remain caveats. The independent
+  static report/evidence package is being finalized; no whole-product or device acceptance
+  is claimed. **No upload or installation**. The older c794ef APK remains unchanged and
+  separate. Current evidence is under `/workspace/shared/esv-integrated-candidate-scratch-20261013/`;
+  intended final evidence directory: `/workspace/shared/esv-integrated-candidate-frozen-20261013/`.
+  No final freeze manifest is asserted before packaging completes. See the completion
+  ledger §2 for exact current evidence and APK path.
 - Subsequent bounded stages are separate, not a cumulative/full-regression total:
   - Published Save notice `c794ef`: App **1,905**, 19 new tests, zero failure/error/skip;
     dual compile/lint, runtime90 and seven compiled-boundary checks passed; other module tests
@@ -43,7 +75,7 @@ not be reused as current project-wide conclusions.
   - A Debug code8 / 0.8.0-ui-dev APK was assembled and statically checked from **c794ef before
     the anchor change**, using the existing matching test signer. It remains unchanged,
     **local-only, not uploaded or installed**, and not a release or device pass. This APK
-    contains none of the later published slices or the current Editor Back repair. Global cleartext allowance is an unchanged
+    contains none of the later published or pending slices, including Editor Back. Global cleartext allowance is an unchanged
     caveat. See `DEBUG_CANDIDATE_STATIC_ACCEPTANCE_20261013.md`.
 - Published editor destination-attempt acknowledgement `24bc104a`: Build2 actually passed **2,050 App
   tests / 24 new / 0 failures / 0 errors / 0 skips**. All ten requested tasks were forced
@@ -58,8 +90,7 @@ not be reused as current project-wide conclusions.
   Actual Compose dismissal/retry/lifecycle and native editing acceptance remain NOT_RUN.
   Evidence: `artifacts/ui/editor-destination-ack-20261013/VERIFICATION.json`.
   Report: `EDITOR_DESTINATION_ACKNOWLEDGEMENT_20261013.md`.
-- Current Editor Back confirmation/publication feedback is **source/JVM tested,
-  pending publication**. The first and only build passed **2,077 App tests / 27 new /
+- Published Editor Back confirmation/publication feedback `c26df3f3` is **source/JVM tested**. The first and only build passed **2,077 App tests / 27 new /
   0 failures / 0 errors / 0 skips**, across 230 fresh suites. All ten requested tasks
   actually executed: full App tests, dual compile/lint and runtime admission; each lint
   retains **60 warnings/8 hints/0 errors**, with unchanged issue/message multisets.
@@ -72,9 +103,54 @@ not be reused as current project-wide conclusions.
   device/emulator/accessibility and PPT acceptance remain NOT_RUN; no APK was built or
   installed. See `EDITOR_BACK_CONFIRMATION_20261013.md` and
   `artifacts/ui/editor-back-20261013/VERIFICATION.json`.
-- Latest full cloud regression, bound only to **b0c5647**, not later Save-notice, anchor,
-  authentication-origin, recording-notification, editor destination acknowledgement or
-  Editor Back inputs:
+- Published A/B batch recovery `dbff3f4e`: first build **2,100 App tests / 23 new /
+  zero failures/errors/skips**, 233 suites; all ten requested App/dual compile/lint/runtime
+  tasks executed. Both lint variants retain **60 warnings/8 hints/0 errors**, runtime90
+  and seven boundary checks passed; 1,435 pinned inputs stayed unchanged. Exact one-shot
+  directory confirmation and actual Library route exits are bounded source/JVM coverage,
+  not real NavController/SAF timing. See `LIBRARY_BATCH_RECOVERY_20261013.md`.
+- Pending production slices retain separate executed evidence, with new tests already
+  included in each total and no summing of overlapping runs:
+  - Picker29: **App 2,120 / +20**, 234 suites; strict current selection and the exact
+    picker-return reading page are revalidated. `LIBRARY_PICKER_PAGE_RETURN_20261013.md`.
+  - Resume29: **App 2,156 / +36**, 237 suites; owned, exactly-once Resume admission and
+    reservation cleanup. Its original unadmitted-RUNNING limitation remains recorded in
+    that immutable report; the later repair is separate. `SAVE_RESUME_REPLAY_20261013.md`.
+  - ExportRecovery37: **App 2,201 / +45**, 240 suites; truthful failed/unknown recovery
+    state and an explicit retry route. Existing PREPARED recovery may perform the first
+    accepted copy; it is not a promise of read-only checking. `EXPORT_RECOVERY_RETRY_20261013.md`.
+  - UnadmittedSave48: final third attempt **App 2,250 / +49** and separately executed
+    **Save 120 / +25**, zero failures/errors/skips; two failed attempts are preserved.
+    Only exact proven-unadmitted operations can receive local explicit state repair;
+    unknown worker admission retains the existing fallback. `UNADMITTED_SAVE_RECOVERY_20261013.md`.
+  - ReadingReturn25: **App 2,263 / +13**, 242 suites; same live Library runtime preserves
+    read query/cursor and performs a real repository requery. No selected command authority
+    or full scroll-anchor restoration is restored. Save120 was **not rerun** in this slice.
+    `LIBRARY_READING_RETURN_20261013.md`.
+  Each stage actually executed its requested compile/lint/runtime tasks and seven boundary
+  checks; all above final App/Save results have zero failures/errors/skips. Picker/Resume/
+  ExportRecovery lint: each variant **60 warnings/8 hints/0 errors**. UnadmittedSave and
+  ReadingReturn: Debug **54 warnings/8 hints**, Release **55 warnings/8 hints**, zero errors;
+  six/five GradleDependency notices were not emitted, not fixed by dependency changes.
+  These are App-only slices except the explicitly listed UnadmittedSave Save run, not
+  five fresh whole-project regressions. Device/Compose/SAF/real-media acceptance remains NOT_RUN.
+- Earlier completed 13-module regression is the separate **18-file evidence-only**
+  group on EditorBack40 → A/B34 → Picker29 inputs, not on Resume29 or later production.
+  **328 fresh suites / 3,383 registered / 3,381 passed / 0 failures / 0 errors / 2 skipped**;
+  App **2,120** and Theme **17** actually reran. All thirteen module tasks plus runtime
+  admission actually executed; runtime90 and seven boundary checks passed. Compile/lint
+  were associated from the preceding Picker run on the exact same 1,437 inputs and were
+  **not rerun** in this regression. Its 18-file freeze changes no production and remains
+  separately unpublished; it is not a sixth production slice. See
+  `THREE_UI_SLICES_CLOUD_REGRESSION_20261013.md` and
+  `artifacts/regression/three-ui-slices-20261013/VERIFICATION.json`.
+  Current SQL **14 tests/344 rollback boundaries** and synthetic DOM **22/11** checks passed
+  at that older input stage. The two unavailable private-corpus cases, historical
+  admission/SQL BLOCKED/FAIL gates and retained detector-output failure remain open.
+  The new 3,551-test integrated run above supplies separate current-input evidence; it does
+  not rewrite this older 3,383-test run or its publication state.
+- Earlier completed full cloud regression, bound only to **b0c5647**, not later Save-notice,
+  anchor, authentication-origin, recording-notification, editor or batch/return inputs:
   **13 module test tasks actually reran with `--rerun`**;
   **307 fresh JUnit suites**, **3,149 registered / 3,147 passed / 0 failures / 0 errors / 2 skipped**. App **1,886**
   and Theme **17** both actually ran. The two unavailable `ESV_OWNED_CORPUS` cases
@@ -94,8 +170,9 @@ not be reused as current project-wide conclusions.
   evidence: `artifacts/regression/full-ui-20261013/VERIFICATION.json`.
   Historical App slice counts 1,835 (input Clear), 1,857 (authentication/fixed copy),
   1,864 (typed destination), 1,870 (filter role) and 1,886 (candidate/permission) stay
-  separately dated. Theme was not rerun in those intermediate slices; its actual full
-  regression run remains bound to b0c5647. Overlapping totals must not be summed.
+  separately dated. Theme was not rerun in those intermediate slices; its completed full
+  regression runs remain separately bound to b0c5647, the Picker chain and the current
+  1,453-input integrated manifest. Overlapping totals must not be summed.
 - Authentication waiting retains the ordinary Browser fallback and now separately offers
   the bounded still-live original-page selection published in `4f22d43`. Full authentication,
   recovered/cross-origin routing and task resume remain incomplete/unverified. Destination's
@@ -106,7 +183,7 @@ not be reused as current project-wide conclusions.
   notices and full-App localization remain partial.
 - SOURCE/HOST means implementation plus bounded evidence. DEVICE_PARTIAL means only
   specifically recorded older flows. Current device/emulator/real-media/PPT/rendered
-  acceptance is **NOT_RUN**; the local pre-anchor APK has only build/static evidence; no whole milestone is accepted. Follow the unexecuted
+  acceptance is **NOT_RUN**; the old local pre-anchor APK has only build/static evidence, and the new integrated candidate is built/statically checked without device execution; no whole milestone is accepted. Follow the unexecuted
   `docs/m11a/UI_DEVICE_ACCEPTANCE_CHECKLIST_20261013.md` for the remaining native checks.
   Older OPPO edit/share, ANR/second-recording and Windows symlink/setup-guard issues remain
   open and are not erased by cloud tests.
@@ -122,17 +199,17 @@ not be reused as current project-wide conclusions.
 |---|---|---|
 | M0 — admission and architecture | Reconstructed Core/Adapter boundary, original SystemWebView, admitted SkinKit Contract/Default 1.0.0 and exact 90-artifact Android runtime graph. `AGENTS.md`; `docs/m0/ADR_005_LICENSE_ADMISSION_GATE_RECONSTRUCTED.md`; `docs/ui/implementation/UI_SHELL_APPEARANCE_SLICE_20261011.md` | Missing old M0 history is not recovered. Candidate/service restrictions remain. Current dependencies do not authorize all originally proposed projects or public-source benchmarks; preserve exact-byte admission. |
 | M1 — foundation/browser/settings | SOURCE/HOST: tab/session/navigation, bookmarks, JS dialogs, new-tab search-input transfer, bounded video hint and READY same-document explicit inspection; responsive SkinKit shell/settings with persistent visible root labels, offline notices, editor default compression, bilingual Browser copy, bounded semantic tokens, explicit Browser/new-tab Clear and localized typed permission-denial notices. `docs/browser-bookmarks/VERIFICATION.md`; `docs/browser-js-dialogs/VERIFICATION.md`; `docs/ui/implementation/EDITOR_DEFAULT_COMPRESSION_20261013.md` | Ordinary history is an unconnected foundation pending retention choice; incognito has no user-facing entry and no cookie/storage isolation; web camera/mic/location requests currently deny. Finish bounded runtime paths and separately verify native WebView, layout, accessibility and lifecycle. |
-| M2 — Discovery MVP | SOURCE/HOST: provider framework, Commons, optional SearXNG/service/local validation boundaries, no-provider fallback, explicit next-page demand, distinct body-state feedback, query Clear and shared inline/floating filter roles (floating host remains Dialog); stable-result reading anchors and exact read-only restore provenance published in `55c51cd`. `docs/m2-commons/IMPLEMENTATION_AND_ACCEPTANCE.md`; `docs/ui/implementation/DISCOVERY_PAGE_DEMAND_20261013.md`; `docs/searxng-discovery/REMAINING_TASKS.md` | Actual Compose/device reading-position restoration remains NOT_RUN. Real Discovery thumbnail reader/decoder/UI are not connected. Public/source admission and actual search→validation quality remain bounded/unverified; two private corpus tests skipped. Implement owned-fixture thumbnail integration by reusing admitted media Reader/thumbnail and mature-loader capabilities under original UI08; no arbitrary URL reads or new generic image-download/decode/cache framework is authorized. |
-| M3 — Direct / Stream save | SOURCE/HOST: HTTPS MP4 and restricted static AVC/AAC HLS, verified media publication, failure guidance/fresh explicit reinspection; Wi-Fi-only source enforcement is validated and published in `172fa3c`; localized Save display/formatting is published in `8fa0c4a`. `docs/m3a/IMPLEMENTATION_AND_ACCEPTANCE.md`; `docs/m3b-eof/DEVICE_ACCEPTANCE_CHECKLIST.md`; `docs/ui/implementation/SAVE_FAILURE_GUIDANCE_20261012.md` | Not universal HLS/DRM extraction or automatic ①→②→③ fallback. Native download/remux/AV sync/recovery needs its own device evidence. Native network-transition/VPN acceptance remains NOT_RUN. Ordinary Browser fallback is published in `62b5f6d`; bounded same-origin still-live original-page selection is published in `4f22d43`. Full login/recovery/resume is not established. Candidate numbering is locale-rendered in `b0c5647`; the complete Save runtime notice display channel is published in `c794ef`. Neither source verification nor publication implies device acceptance. |
+| M2 — Discovery MVP | SOURCE/HOST: provider framework, optional configured Commons metadata candidate, SearXNG/service/local validation boundaries, no-provider fallback, explicit next-page demand, distinct body-state feedback, query Clear and shared inline/floating filter roles (floating host remains Dialog); stable-result reading anchors and exact read-only restore provenance published in `55c51cd`. `docs/m2-commons/IMPLEMENTATION_AND_ACCEPTANCE.md`; `docs/ui/implementation/DISCOVERY_PAGE_DEMAND_20261013.md`; `docs/searxng-discovery/REMAINING_TASKS.md` | Actual Compose/device reading-position restoration remains NOT_RUN. Real Discovery thumbnails have no admitted source/read capability or connected decoder, retained image owner and viewport/UI path. Library MediaReadRef readers cannot read web URLs; no mature public-image loader is admitted. Commons is only a possible bounded metadata/image-source candidate for review, never a hard dependency or blanket image grant; zero-provider startup must remain valid. Before real fetching, review source/reader authority and exact mature-loader admission or a justified narrow platform-adapter exception under UI03/UI08. Owned RGBA fixtures and URL/rights metadata are not real-image acceptance. Two private corpus tests remain skipped; no generic downloader/decode/cache framework is authorized. |
+| M3 — Direct / Stream save | SOURCE/HOST: HTTPS MP4 and restricted static AVC/AAC HLS, verified media publication, failure guidance/fresh explicit reinspection; pending Resume29 replay protection and UnadmittedSave48 exact local recovery have bounded App/Save evidence; Wi-Fi-only source enforcement is validated and published in `172fa3c`; localized Save display/formatting is published in `8fa0c4a`. `docs/m3a/IMPLEMENTATION_AND_ACCEPTANCE.md`; `docs/m3b-eof/DEVICE_ACCEPTANCE_CHECKLIST.md`; `docs/ui/implementation/SAVE_FAILURE_GUIDANCE_20261012.md` | Not universal HLS/DRM extraction or automatic ①→②→③ fallback. Native download/remux/AV sync/recovery needs its own device evidence. Native network-transition/VPN acceptance remains NOT_RUN. Ordinary Browser fallback is published in `62b5f6d`; bounded same-origin still-live original-page selection is published in `4f22d43`. Full login/recovery/resume is not established. Candidate numbering is locale-rendered in `b0c5647`; the complete Save runtime notice display channel is published in `c794ef`. Neither source verification nor publication implies device acceptance. |
 | M4 — recording | SOURCE/HOST: system-consent capture, pause/resume, internal playback-audio option, verified publication and advanced modes; complete existing foreground-notification text channel and bounded language refresh published in `1f25214f`. `docs/m4/IMPLEMENTATION_AND_ACCEPTANCE.md`; `docs/m6c/IMPLEMENTATION_AND_ACCEPTANCE.md` | Older OPPO code8 includes bounded recording/replay acceptance as reported by the delivery owner, not cloud execution. Actual notification first-frame language, active/paused continuity, channel/action rendering and post-finish no-resurrection are NOT_RUN. Full projection/audio/codec/GPU/OEM/interruption matrix remains open; recording default compression is not supplied by editor defaults. |
-| M5 — ordinary library/export | SOURCE/HOST: ordinary library/folders/playback, share/export, App Library/ASK/album destinations and remembered SAF folder route, batch selection/copy/move and one-folder Files export. `docs/m5a4a/IMPLEMENTATION_AND_ACCEPTANCE.md`; `docs/m5a4b/IMPLEMENTATION_AND_ACCEPTANCE.md`; `docs/ui/implementation/BATCH_DIRECTORY_COPY_20261012.md` | Older code8 two-item copy/move and dialog-scroll checks are partial acceptance. Share `INITIALIZATION_FAILED` remains open; newer diagnostics await a bounded device reproduction. Preserve originals and distinguish verified/unverified copies. `OrdinaryDestinationUi` fixed copy and typed dynamic notice/copy-state display are published in `62b5f6d`/`795b6bb`; Save runtime notices were a separate migration, now published in `c794ef`. No broad provider/device pass. |
+| M5 — ordinary library/export | SOURCE/HOST: ordinary library/folders/playback, share/export, App Library/ASK/album destinations and remembered SAF folder route, batch selection/copy/move and one-folder Files export; published A/B confirmation/exit safety (`dbff3f4e`), plus pending Picker29 strict return, ExportRecovery37 retry and ReadingReturn25 read-page continuity. `docs/m5a4a/IMPLEMENTATION_AND_ACCEPTANCE.md`; `docs/m5a4b/IMPLEMENTATION_AND_ACCEPTANCE.md`; `docs/ui/implementation/BATCH_DIRECTORY_COPY_20261012.md` | Older code8 two-item copy/move and dialog-scroll checks are partial acceptance. Share `INITIALIZATION_FAILED` remains open; newer diagnostics await a bounded device reproduction. Preserve originals and distinguish verified/unverified copies. `OrdinaryDestinationUi` fixed copy and typed dynamic notice/copy-state display are published in `62b5f6d`/`795b6bb`; Save runtime notices were a separate migration, now published in `c794ef`. No broad provider/device pass. |
 | M5 — Vault | DEFERRED / DISABLED / ISOLATED: dependency admission only. `docs/m5-vault-dependencies/`; `AGENTS.md` | Not implemented or security-accepted. Keep shelved; do not reopen blocked candidate reviews or claim ordinary plaintext media is encrypted Vault storage. |
-| M6 — advanced video tools | SOURCE/HOST: guarded trim/merge/crop/compress, region/segments/frame preview; new-edit compression preference wired. `docs/m6a/`; `docs/m6b/`; `docs/m6c/`; `docs/ui/implementation/EDITOR_DEFAULT_COMPRESSION_20261013.md` | Editor destination-attempt acknowledgement is published in `24bc104a` (2,050 App tests, 24 new). The separate Editor Back confirmation/publication-feedback slice passed 2,077 App tests (27 new) and awaits publication: PROCESSING/VERIFYING confirms stop without navigation, PUBLISHING shows status only, and fresh Back in other phases retains existing behavior. Native dismissal/retry/Back/lifecycle acceptance is NOT_RUN. OPPO edit `STORAGE_UNAVAILABLE` remains unresolved; diagnostic implementation is not root-cause repair. Real editing/encoding/output visual/AV/OEM acceptance remains open. New local video import is deferred, not a newly discovered original-spec defect. |
+| M6 — advanced video tools | SOURCE/HOST: guarded trim/merge/crop/compress, region/segments/frame preview; new-edit compression preference wired. `docs/m6a/`; `docs/m6b/`; `docs/m6c/`; `docs/ui/implementation/EDITOR_DEFAULT_COMPRESSION_20261013.md` | Editor destination-attempt acknowledgement is published in `24bc104a` (2,050 App tests, 24 new). The separate Editor Back confirmation/publication-feedback slice is published in `c26df3f3` with 2,077 App tests (27 new): PROCESSING/VERIFYING confirms stop without navigation, PUBLISHING shows status only, and fresh Back in other phases retains existing behavior. Native dismissal/retry/Back/lifecycle acceptance is NOT_RUN. OPPO edit `STORAGE_UNAVAILABLE` remains unresolved; diagnostic implementation is not root-cause repair. Real editing/encoding/output visual/AV/OEM acceptance remains open. New local video import is deferred, not a newly discovered original-spec defect. |
 | M7 — provider maintenance | SOURCE/HOST: bounded signed fixed Commons parameter/policy repository, rollback/health/runtime; optional isolated verification-service architecture. `docs/m7a/`; `docs/m7b/`; `docs/m7c/`; `docs/verification-service/IMPLEMENTATION_AND_ACCEPTANCE.md` | Production trust roots/endpoint/live service not established. Dynamic-rule candidate remains deferred/isolated. No general rule interpreter or production deployment acceptance. |
 | M8 — history/quality/power | SOURCE/HOST: bounded Seen/origin/filter/media-priority policies and active lifecycle-owned OS signal adapter; explicit paging improvements. `docs/m8b4/CURRENT_MILESTONE_STATUS.md`; `docs/m8b4/VERIFICATION.md` | OS adapter is connected, but physical energy/calibration/OEM acceptance is not measured. Native SAVED/PLAYED identity stays UNKNOWN without trustworthy signals; a video hint or page visit does not grant identity. Browser history retention is a separate open decision. |
-| M9 — reliability/compatibility | SOURCE/HOST: fault isolation/recovery, callback/cancellation/freshness guards and bounded diagnostics; full 13-module regression on `b0c5647` recorded with 3,147 passes and 2 explicit corpus skips; later slices have separate App-only test evidence. Historical limited emulator/API31 and OPPO device evidence exists. `docs/m9a/`; `docs/ui/implementation/INITIALIZATION_DIAGNOSTICS_CLOUD_20261012.md` | Full Android12+ phone/tablet/rotation/process-kill/storage-fault/WebView/codec matrix incomplete. OPPO edit/share and ANR/second-recording unresolved; historical Windows symlink/setup-guard and environment-limited tests are not erased by cloud tests. No whole-project/device acceptance. |
+| M9 — reliability/compatibility | SOURCE/HOST: fault isolation/recovery, callback/cancellation/freshness guards and bounded diagnostics; current 13-module regression on the complete local manifest chain recorded 3,551 registered/3,549 passes/2 explicit corpus skips; App2,263 and Save120 both actually reran. Compile/lint are associated from identical ReadingReturn25 inputs, not rerun. Picker3,383/3,381/2 and b0c5647 3,149/3,147/2 remain separate historical runs. Historical limited emulator/API31 and OPPO device evidence exists. `docs/m9a/`; `docs/ui/implementation/INITIALIZATION_DIAGNOSTICS_CLOUD_20261012.md` | Full Android12+ phone/tablet/rotation/process-kill/storage-fault/WebView/codec matrix incomplete. OPPO edit/share and ANR/second-recording unresolved; historical Windows symlink/setup-guard and environment-limited tests are not erased by cloud tests. No whole-project/device acceptance. |
 | M10 — real IAP | Preparation only: channel-neutral store/entitlement contracts and explicit distribution identities. Six intended Android markets documented. `docs/m10a/STORE_BOUNDARY.md`; `docs/m10b/CHANNEL_READINESS.md` | Payment model/products/SKUs/accounts/real SDK/receipt backend remain undecided or unknown; all channel payment adapters unconfigured. Channel identity is not purchase/restore/refund acceptance. |
-| M11 — Android release | Development APK deliveries and source publication exist; the c794ef code8 candidate is local-only and predates the published reading-anchor, authentication-origin, recording-notification and editor destination-acknowledgement slices, plus the pending Editor Back slice; release preparation remains partial. `docs/ui/implementation/CODE8_INITIALIZATION_INVESTIGATION_20261012.md`; `docs/m10b/CHANNEL_READINESS.md` | Final release package/signing/notices/privacy/current market review/qualification and scoped device acceptance still required. No configured CI workflows is not green CI. Nine original UI Markdown documents are recovered/published; the original PPT binary is still unavailable. No complete visual parity or UI-E claim. |
+| M11 — Android release | Development APK deliveries and source publication exist; the unchanged c794ef code8 candidate is local-only and predates every later slice. A new 47,803,784-byte local Debug candidate on the complete manifest-bound production chain is built/statically checked, with no upload/install and no device acceptance; release preparation remains partial. `docs/ui/implementation/CODE8_INITIALIZATION_INVESTIGATION_20261012.md`; `docs/m10b/CHANNEL_READINESS.md` | Final release package/signing/notices/privacy/current market review/qualification and scoped device acceptance still required. No configured CI workflows is not green CI. Nine original UI Markdown documents are recovered/published; the original PPT binary is still unavailable. No complete visual parity or UI-E claim. |
 | M12 — iOS | Shared specification only | Native implementation and authorization remain outside current Android work. |
 
 ## Core metadata compatibility note (preserved)
@@ -150,15 +227,20 @@ The original M11-A tested base recorded 1,822 JVM tests, dual compile/lint, exac
 and cold aggregate passes, as summarized in `docs/m11a/README.md`.
 The original receipt referenced by that README is absent from this cloud snapshot;
 this refresh has not revalidated its bytes. Historical reports are not replaced with
-current totals or relabeled as a run on today's code. Use the b0c5647 full-regression
-report and separately dated later slice reports without extending any run to later inputs. Unit/host success,
+current totals or relabeled as a run on today's code. Use the separate b0c5647, Picker-chain and current local-manifest full-regression
+results and slice reports without extending any run to later inputs. Unit/host success,
 compilation, source review, published bytes and device acceptance remain separate claims.
-The full-regression evidence was published in `ef5d6fc`; Save notices in `c794ef`; reading anchors
-and small pre-anchor packaging reports in `55c51cd`; live-original-page selection in `4f22d43`;
-recording foreground notifications in `1f25214f`; and editor destination acknowledgement in
-`24bc104a` (42 exact readbacks). Only this new two-ledger refresh and the source/JVM-tested
-Editor Back confirmation slice await publication. Its first-build 2,077-test App result
-is separate from the preceding 2,050-test acknowledgement group, whose failed first
-attempt and semantic-test correction remain preserved, and from the b0c5647 full regression.
-The 46 MB local pre-anchor APK remains excluded and unchanged. Already published source
-does not become pending again; this refresh itself adds no run.
+The b0c5647 full-regression evidence was published in `ef5d6fc`; Save notices in `c794ef`;
+reading anchors and small pre-anchor packaging reports in `55c51cd`; live-original-page
+selection in `4f22d43`; recording foreground notifications in `1f25214f`; destination
+acknowledgement in `24bc104a`; Editor Back in `c26df3f3` (40 exact readbacks); and A/B batch
+recovery in `dbff3f4e` (34 exact readbacks). Already published scopes do not become pending.
+Picker29 → Resume29 → ExportRecovery37 → UnadmittedSave48 → ReadingReturn25, the independent
+18-file regression evidence bundle and this current two-ledger refresh await publication.
+Frozen reports retain their original publication-time wording and failure records.
+The current integrated 3,551/3,549/2 regression and built/statically checked Debug candidate
+are bound to local input/chain manifests rather than a fabricated Git HEAD. Their final
+evidence packaging is separate from publication or device acceptance; this documentation
+refresh itself adds no run. Host input hashes were finalized before this results-only
+ledger update; no tested production/test/script/dependency input changed.
+The 46 MB local pre-anchor APK remains separate, excluded from upload and unchanged.

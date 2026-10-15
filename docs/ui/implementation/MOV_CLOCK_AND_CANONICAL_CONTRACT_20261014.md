@@ -6,6 +6,26 @@ Date: 2026-10-14 UTC. **Design and pinned-source inspection only. MOV host bytec
 
 Use admitted **Media3 1.11.1 `Mp4Extractor` → `Mp4Muxer`**, directly. Use `Mp4Extractor(SubtitleParser.Factory.UNSUPPORTED, 0)`; do not enable edit-list workarounds, dependency-derived extra flags, auxiliary tracks, or sample-table omission. Do not use Transformer, MediaCodec, a decoder, or an encoder in this remux adapter. Final Android decode verification remains a separate required gate.
 
+## 2026-10-14 reviewed AAC policy update
+
+The original silent adapter decision below is historical. The independently reviewed
+`MOV_AAC_TRUSTED_DECODER_INTEGRATION_20261014.md` (SHA256
+`189236cb84ec0219769ef3c7137aba19c7656de304fb13ed399fca0cee85b351`)
+explicitly replaces the extra full-AU-formal-syntax/individual-AU-attribution gate
+for the next finite audio implementation. Admitted Media3 and Android codecs interpret
+elementary syntax; ESV must still preserve all declared tracks and prove bounded
+container/config/sample/clock conservation, observe complete fresh-session PCM/EOS,
+and confirm native release plus same-FD hash/owner checks. This is an operational
+playback acceptance policy, not a claim of every-bit consumption, absence of decoder
+concealment, or independent 1024-frame attribution to every packet.
+
+New audio proofs use the existing policyRevision integer value 2; silent remains 1.
+Legacy policy-1 audio remains historically readable; unfinished legacy audio is
+recovery-required rather than silently upgraded. The record v8 field layout stays
+unchanged. Exact implementation/compatibility gates are in the reviewed integration
+plan. This update authorizes implementation, not production or device acceptance;
+`movAdmissionEnabled=false` remains. No audio track may ever be dropped to obtain success.
+
 ## Production admission decision from independent review
 
 The first adapter profile admits **silent MOV only**. Audio admission defaults closed.

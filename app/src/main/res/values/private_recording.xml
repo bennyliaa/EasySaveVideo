@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="private_record_title">Screen recording</string>
+    <string name="private_record_disclosure">Recording continues within the scope you choose in Android permission. Seeking, navigation, dialogs and other interactions do not stop recording. Pages, text you enter, controls, notifications and other visible information within that scope may appear. During private recording, capture protection is temporarily lifted for the relevant ESV windows; other capture apps may also see them. Protected content may be black and some playback sound may be unavailable. Stop and save or Discard ends the session; system interruption or resource limits can also end it.</string>
+    <string name="private_record_waiting">Waiting for Android permission. Recording has not started. Return here and tap Continue.</string>
+    <string name="private_record_continue_help">Review the visible page again. Permission alone does not start recording. Continue only when the page and selected sound are ready.</string>
+    <string name="private_record_arming">Preparing the approved recording. Screen protection is managed by the recording owner.</string>
+    <string name="private_record_active">Recording continues across normal interactions. Stop and save preserves a valid result only after verification and publication.</string>
+    <string name="private_record_stopping">Stopping capture. You can still discard while this recording remains unpublished.</string>
+    <string name="private_record_unavailable">Private recording is unavailable on this Android/WebView configuration or current surface. You can close this panel and continue private browsing and compatible direct or stream saves.</string>
+    <string name="private_record_silent">No sound</string>
+    <string name="private_record_device_audio">Device playback sound</string>
+    <string name="private_record_audio_help">Device sound can include other eligible playback, not just this page. Microphone audio is not enabled.</string>
+    <string name="private_record_start">Review Android permission</string>
+    <string name="private_record_continue">Continue recording</string>
+    <string name="private_record_stop_save">Stop and save</string>
+    <string name="private_record_discard">Discard this recording…</string>
+    <string name="private_record_discard_help">Discard the unpublished recording from this attempt? Previously saved files remain in the media library.</string>
+    <string name="private_record_discard_confirm">Confirm discard</string>
+    <string name="private_record_keep">Keep this recording</string>
+    <string name="private_record_close">Close recording panel</string>
+    <string name="private_record_current_marker">The filled circle marks the current stage; the other rows are inactive.</string>
+    <string name="private_record_verifying">Checking the recording. You can still discard before publication.</string>
+    <string name="private_record_committing">Completing the save. Discard remains available until publication wins.</string>
+    <string name="private_record_saved">Recording saved. It is already published and can no longer be discarded here.</string>
+    <string name="private_record_failed">The recording could not be saved. Check the task for its failure reason.</string>
+    <string name="private_record_cancelled">This unpublished recording was discarded. Previously saved media is unchanged.</string>
+    <string name="private_record_legacy_recents">On Android 12 / 12L, recording may leave a page thumbnail in Recents. ESV cannot guarantee deletion of thumbnails already saved by Android.</string>
+    <string name="private_record_limits">Current engineering limits: up to 2 hours and 2 GiB per recording, with a storage safety reserve and at least 64 MiB free. Preparation and finalization each have a 15-second budget. Explicit recording pauses are limited to 10 minutes and 32 resumed boundaries. These are limits, not measured capacity guarantees; webpage play, pause and seeking are separate.</string>
+    <string name="private_record_verification_help">Verification checks sample structure and decodes first, middle, final and resumed keyframe groups. The 60-second verification budget may reject a long recording; not every frame is decoded. Device and real-permission acceptance remains separate.</string>
+    <string name="private_record_recovery_required">Native recording resources have not confirmed release. New recording is blocked. End the app through Android and reopen it to recover; recording will not restart automatically. A completed save task alone does not confirm capture cleanup.</string>
+</resources>

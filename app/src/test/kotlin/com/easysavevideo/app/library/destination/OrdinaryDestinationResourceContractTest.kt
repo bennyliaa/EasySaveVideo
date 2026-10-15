@@ -95,7 +95,7 @@ class OrdinaryDestinationResourceContractTest {
         assertFalse(Regex("[\\u4e00-\\u9fff]").containsMatchIn(ui + mapper))
         listOf("Locale.getDefault", "getString(", "remember {", "LaunchedEffect")
             .forEach { assertFalse(it, (ui + mapper).contains(it)) }
-        assertTrue(source("ui/BrowserScreen.kt").contains("destinations?.let { OrdinaryDestinationSettings(it) }"))
+        assertTrue(source("ui/BrowserScreen.kt").contains("destinations?.let { OrdinaryDestinationSettings(it, canAct = admission) }"))
         assertTrue(source("MainActivity.kt").contains("if (isForeground) saves.destinations?.let { OrdinaryDestinationDialog(it) }"))
         assertTrue(source("save/SaveTaskScreen.kt").contains("runtime.destinations?.let { OrdinaryDestinationHistory(it) }"))
         assertEquals(1, Regex("OrdinaryDestinationNotice\\(runtime\\)").findAll(ui).count())
@@ -103,19 +103,26 @@ class OrdinaryDestinationResourceContractTest {
 
     @Test fun realCallbacksAndDismissalActionsAreUnchangedAndNeverInvokeOnComposition() {
         val callbacks = Regex("onClick\\s*=\\s*(\\{[^}]+\\}|(?:runtime|actions)::[A-Za-z]+|onDismiss)").findAll(ui)
-            .map { it.groupValues[1].trim() }.toList()
+            .map { it.groupValues[1].replace(Regex("\\s+"), " ").trim() }.toList()
         assertEquals(listOf(
             "{ actions.select(value) }", "actions::choose", "actions::forget",
-            "actions::cancel", "onDismiss", "runtime::clearNotice",
-            "{ runtime.choose(OrdinaryDestinationChoice.APP_LIBRARY) }",
-            "{ runtime.choose(OrdinaryDestinationChoice.ALBUM_COPY) }",
-            "{ runtime.choose(OrdinaryDestinationChoice.FOLDER_COPY) }", "runtime::cancelSelection",
-            "{ runtime.cancelCopy(status.creationId) }", "runtime::reconcile"
+            "actions::cancel", "{ if (admission() && request != null && runtime.currentNoticeIdentity === request) onDismiss() }",
+            "{ if (admission()) runtime.clearNotice(request) }",
+            "{ if (admission()) runtime.choose(request, OrdinaryDestinationChoice.APP_LIBRARY) }",
+            "{ if (admission()) runtime.choose(request, OrdinaryDestinationChoice.ALBUM_COPY) }",
+            "{ if (admission()) runtime.choose(request, OrdinaryDestinationChoice.FOLDER_COPY) }",
+            "{ if (admission()) runtime.cancelSelection(request) }",
+            "{ if (admission()) runtime.cancelCopy(status.creationId) }", "{ if (admission()) runtime.reconcile() }"
         ), callbacks)
-        assertEquals(listOf("runtime::clearNotice", "runtime::cancelSelection"),
-            Regex("onDismissRequest\\s*=\\s*(runtime::[A-Za-z]+)").findAll(ui).map { it.groupValues[1] }.toList())
-        assertEquals(listOf("choose", "choose", "choose", "cancelCopy"),
+        assertEquals(listOf("{ runtime.clearNotice(request) }", "{ runtime.cancelSelection(request) }"),
+            Regex("onDismissRequest\\s*=\\s*(\\{[^}]+\\})").findAll(ui).map { it.groupValues[1] }.toList())
+        assertEquals(listOf("clearNotice", "clearNotice", "cancelSelection", "choose", "choose", "choose", "cancelSelection", "cancelCopy", "reconcile"),
             Regex("runtime\\.([A-Za-z]+)\\(").findAll(ui).map { it.groupValues[1] }.toList())
+        assertTrue(ui.substringAfter("fun OrdinaryDestinationHistory(").contains("val admission = LocalPrivateInputAdmission.current"))
+        assertTrue(ui.contains("val request = runtime.currentNoticeIdentity ?: return"))
+        assertTrue(ui.contains("val request = runtime.currentSelectionIdentity ?: return"))
+        assertTrue(ui.contains("EsvAppDialog(request, { !runtime.asking && runtime.currentNoticeIdentity === request },"))
+        assertTrue(ui.contains("EsvAppDialog(request, { runtime.currentSelectionIdentity === request },"))
     }
 
     @Test fun busyFolderAndSavedRowGatesAndTypedDisplayConsumersRemainUnchanged() {

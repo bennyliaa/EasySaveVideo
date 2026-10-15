@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discovery_pending_notice_candidates">搜索来源报告的候选；各项验证结果见下方。</string>
+    <string name="discovery_pending_notice_scope">不会自动获取网页或缩略图；时长、可播放性和使用许可均未知。这里只保留本次查询的有界候选。</string>
+    <string name="discovery_pending_badge">待验证 · 来源报告</string>
+    <string name="discovery_pending_site_unknown">网站未知</string>
+    <string name="discovery_pending_sources">来源：%1$s</string>
+    <string name="discovery_pending_unverified_metadata">视频、时长、许可：未核验</string>
+    <string name="discovery_pending_admission_notice">本地验证须有明确来源准入；未配置或不匹配时拒绝。页面证据不代表可播放、下载或保存。</string>
+    <string name="discovery_pending_verify_active">验证中</string>
+    <string name="discovery_pending_verify_attempted">本轮已尝试验证</string>
+    <string name="discovery_pending_verify_action">验证（有限预算）</string>
+    <string name="discovery_pending_open">打开候选原网页</string>
+    <string name="discovery_admission_unconfigured">未配置</string>
+    <string name="discovery_admission_ready">已配置</string>
+    <string name="discovery_admission_unsupported">来源地址不受支持</string>
+    <string name="discovery_admission_denied">来源未获准入</string>
+    <string name="discovery_verification_outcome_page_evidence">已取得页面证据</string>
+    <string name="discovery_verification_outcome_unknown">结果未知</string>
+    <string name="discovery_verification_outcome_unavailable">验证不可用</string>
+    <string name="discovery_verification_outcome_denied">验证被拒绝</string>
+    <string name="discovery_verification_outcome_rate_limited">验证受频率限制</string>
+    <string name="discovery_verification_outcome_timeout">验证超时</string>
+    <string name="discovery_verification_outcome_cancelled">验证已取消</string>
+    <string name="discovery_verification_outcome_error">验证出错</string>
+    <string name="discovery_verification_evidence_none">无页面证据</string>
+    <string name="discovery_verification_evidence_html_video">HTML 视频证据</string>
+    <string name="discovery_verification_evidence_dynamic_video">动态页面视频证据</string>
+</resources>

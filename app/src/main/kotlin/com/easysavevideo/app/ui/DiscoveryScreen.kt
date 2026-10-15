@@ -3,8 +3,10 @@ package com.easysavevideo.app.ui
 import android.os.SystemClock
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -22,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
@@ -57,6 +60,10 @@ import com.easysavevideo.app.R
 import com.easysavevideo.core.model.*
 import com.easysavevideo.discovery.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import androidx.compose.ui.layout.ContentScale
+import com.easysavevideo.discovery.thumbnail.DiscoveryThumbnailStatus
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 
@@ -65,7 +72,9 @@ import androidx.compose.material3.Text
 internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoverySettings, active: Boolean,
     onSettings: (SettingsEdit.DiscoveryEdit) -> Unit, onBrowser: () -> Unit, onOpen: (DiscoveryCardOpenRequest) -> Boolean,
     onLink: (String) -> Unit, onLibrary: () -> Unit, onManageProviders: () -> Unit,
-    canClearQuery: () -> Boolean = { false }, settingsEditable: Boolean = true) {
+    canClearQuery: () -> Boolean = { false }, settingsEditable: Boolean = true,
+    addressVisit: Any, addressAction: Any, canOpenAddress: () -> Boolean, canEditAddress: () -> Boolean,
+    onOpenAddress: (String, () -> Boolean) -> Boolean) {
     val v = LocalEsvVisuals.current
     BoxWithConstraints(Modifier.fillMaxSize().imePadding()) {
     val paneLayout = responsivePaneLayout(maxWidth.value - 2 * v.spacingMedium.value,
@@ -105,6 +114,8 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
         active && canClearQuery() && !(options && !paneLayout.split) && localControlConfirm == null &&
             safeDisableConfirm == null && rightsDetails == null
     }
+    val presentationCopy = discoveryPresentationCopy()
+    val rightsCopy = rightsPresentationCopy()
     val copyResources = LocalContext.current.resources
     val filterCopy = FilterCopyText { key, args -> copyResources.getString(key.resource, *args) }
     val validation = DiscoveryFilterPresentationPolicy.validate(draft, filterCopy)
@@ -117,6 +128,25 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
         else if (appliedReadable && storedDraft != draft) controller.updateFilterDraft(storedDraft, draft)
     }
     val focus = LocalFocusManager.current
+    // The visit owns text; this attempt's epoch/revision changes only retire its callbacks.
+    var addressText by remember(addressVisit) { mutableStateOf("") }
+    var addressFeedback by remember(addressVisit) { mutableStateOf<DiscoveryAddressFeedback?>(null) }
+    val addressInput = remember(addressAction) { DiscoveryAddressInput() }
+    var addressToken by remember(addressInput) { mutableStateOf(addressInput.gate.token) }
+    DisposableEffect(addressInput) { onDispose { addressInput.gate.retire() } }
+    // Read mutable local modal owners at the callback boundary, even before recomposition.
+    // Only layout is refreshed; the Main owner callback stays captured to this visit.
+    val addressSplit by rememberUpdatedState(paneLayout.split)
+    val addressInteractive = { active && canOpenAddress() && !(options && !addressSplit) &&
+        localControlState.prompt == null && safeDisableConfirm == null && rightsDetails == null }
+    val addressActionCurrent = { addressInteractive() && canEditAddress() }
+    val renderedAddress = addressText
+    val renderedAddressToken = addressToken
+    val openAddress = {
+        addressInput.submit(renderedAddress, renderedAddressToken, addressInteractive,
+            tokenChanged = { addressToken = it }, clearFocus = { focus.clearFocus() },
+            open = onOpenAddress, feedback = { addressFeedback = it }, actionCurrent = addressActionCurrent)
+    }
     val grid = rememberLazyGridState()
     LaunchedEffect(options, state.controlTarget) {
         if (options && state.controlTarget != null) controller.refreshHistoryStatistics(state.controlTarget)
@@ -178,16 +208,29 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
             delay(100)
         }
     }
+    val thumbnailVisible = active && bodyState == DiscoveryBodyState.CONTENT && !showPending && !optionsIsModal &&
+        localControlConfirm == null && safeDisableConfirm == null && rightsDetails == null &&
+        !state.saveActive && !state.recordingActive && state.status?.powerPolicy?.allowsRequests == true &&
+        !controller.filterSearchPending
+    DisposableEffect(controller) { onDispose { controller.clearThumbnailViewport() } }
+    LaunchedEffect(page, state.results, thumbnailVisible, state.configurationIntent, state.sourceRevision, state.commonsEnabled,
+        state.thumbnailGeneration, controller.thumbnailRequestGeneration) {
+        if (page == null || !thumbnailVisible) {
+            controller.clearThumbnailViewport()
+        } else snapshotFlow {
+            grid.layoutInfo.visibleItemsInfo.sortedWith(compareBy({ it.offset.y }, { it.offset.x })).map { it.key.toString() }
+        }.distinctUntilChanged().collect { ids -> controller.updateThumbnailViewport(page, state.results, ids) }
+    }
     val optionsContent: @Composable (Modifier, DiscoveryFilterPanelPresentation) -> Unit = { panelModifier, presentation ->
         val panel = discoveryFilterPanelVisuals(v, presentation)
         Column(panelModifier.fillMaxWidth().background(panel.background, RoundedCornerShape(panel.corner))
             .padding(v.spacingLarge).verticalScroll(optionsScroll), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
             EsvText(stringResource(R.string.flow_discoveryscreen_21), style = v.titleTextStyle)
             EsvButton(stringResource(R.string.flow_discoveryscreen_22), onClick = { options = false })
-            state.notice?.let { EsvText(it, style = v.captionTextStyle) }
+            state.notice?.let { EsvText(DiscoveryPresentationPolicy.noticeText(it, presentationCopy), style = v.captionTextStyle) }
             EsvText(stringResource(R.string.flow_discoveryscreen_23), style = v.captionTextStyle)
             ResultSort.entries.forEach { order ->
-                EsvButton((if (state.profile.sortOrder == order) "✓ " else "") + DiscoveryPresentationPolicy.sortLabel(order),
+                EsvButton((if (state.profile.sortOrder == order) "✓ " else "") + DiscoveryPresentationPolicy.sortLabel(order, presentationCopy),
                     onClick = { controller.updateSort(order) }, enabled = state.ready && !state.storageUnavailable)
             }
             EsvText(stringResource(R.string.discovery_copy_17), style = v.captionTextStyle)
@@ -278,13 +321,13 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
             }
             val statistics = state.historyStatistics
             if (statistics != null) {
-                EsvText(DiscoveryPresentationPolicy.statisticsText(stringResource(R.string.discovery_copy_45), statistics.currentProfile), style = v.captionTextStyle)
-                EsvText(DiscoveryPresentationPolicy.statisticsText(stringResource(R.string.discovery_copy_46), statistics.allProfiles), style = v.captionTextStyle)
+                EsvText(DiscoveryPresentationPolicy.statisticsText(stringResource(R.string.discovery_copy_45), statistics.currentProfile, presentationCopy), style = v.captionTextStyle)
+                EsvText(DiscoveryPresentationPolicy.statisticsText(stringResource(R.string.discovery_copy_46), statistics.allProfiles, presentationCopy), style = v.captionTextStyle)
             } else EsvText(if (state.historyStatisticsUnavailable || state.storageUnavailable) stringResource(R.string.discovery_copy_47)
                 else stringResource(R.string.discovery_copy_48), style = v.captionTextStyle)
             EsvButton(stringResource(R.string.flow_discoveryscreen_53), onClick = { controller.refreshHistoryStatistics(state.controlTarget) },
                 enabled = active && state.controlTarget != null && !state.storageUnavailable && !controller.localControlState.busy && localControlPrompt == null)
-            EsvText(DiscoveryPresentationPolicy.retentionNotice(), style = v.captionTextStyle)
+            EsvText(DiscoveryPresentationPolicy.retentionNotice(copy = presentationCopy), style = v.captionTextStyle)
             EsvButton(stringResource(R.string.discovery_copy_49), onClick = {
                 localControlActions.begin(DiscoveryLocalAction.CLEAR_CURRENT_HISTORY)
             }, enabled = active && state.controlTarget != null && !state.storageUnavailable && !controller.localControlState.busy && localControlPrompt == null)
@@ -292,7 +335,7 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
                 localControlActions.begin(DiscoveryLocalAction.CLEAR_ALL_HISTORY)
             }, enabled = active && state.controlTarget != null && !state.storageUnavailable && !controller.localControlState.busy && localControlPrompt == null)
             state.status?.providers?.forEach { progress ->
-                EsvText(DiscoveryPresentationPolicy.providerProgressText(progress), style = v.captionTextStyle)
+                EsvText(DiscoveryPresentationPolicy.providerProgressText(progress, presentationCopy), style = v.captionTextStyle)
                 EsvButton(stringResource(R.string.discovery_copy_51, progress.providerId), onClick = {
                     localControlActions.begin(DiscoveryLocalAction.RESET_PROVIDER_PROGRESS, progress.providerId)
                 }, enabled = active && state.controlTarget != null && !state.storageUnavailable && !controller.localControlState.busy && localControlPrompt == null)
@@ -314,6 +357,45 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
             Column(Modifier.fillMaxWidth().heightIn(max = paneLayout.headerMaxHeightDp.dp).verticalScroll(headerScroll),
                 verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
 
+            // Always present, including zero-Provider/startup/error and pending-search bodies.
+            BoxWithConstraints(Modifier.fillMaxWidth()) {
+                val addressLayout = discoveryResponsiveLayout(maxWidth.value, LocalDensity.current.fontScale, settings.columns, v.spacingSmall.value)
+                val addressDescription = stringResource(R.string.flow_address_description)
+                val AddressField: @Composable (Modifier) -> Unit = { modifier ->
+                    OutlinedTextField(renderedAddress, onValueChange = { value ->
+                        addressInput.edit(addressActionCurrent()) { token ->
+                            addressToken = token; addressText = value.take(8193); addressFeedback = null
+                        }
+                    }, singleLine = true, enabled = addressActionCurrent(),
+                        modifier = modifier.semantics { contentDescription = addressDescription },
+                        label = { Text(addressDescription) }, textStyle = v.bodyTextStyle,
+                        placeholder = { Text(stringResource(R.string.discovery_address_placeholder)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Go),
+                        keyboardActions = KeyboardActions(onGo = { openAddress() }),
+                        trailingIcon = { InputClearButton(R.string.input_clear_address,
+                            enabled = renderedAddress.isNotEmpty() && addressActionCurrent(), onClear = {
+                                addressInput.clear(renderedAddressToken, addressActionCurrent(), renderedAddress.isNotEmpty()) { token ->
+                                    addressToken = token; addressText = ""; addressFeedback = null
+                                }
+                            }) })
+                }
+                if (addressLayout.stackSearch) Column(verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                    AddressField(Modifier.fillMaxWidth())
+                    EsvButton(stringResource(R.string.discovery_address_open), onClick = openAddress,
+                        enabled = renderedAddress.isNotEmpty() && addressActionCurrent(), modifier = Modifier.fillMaxWidth())
+                } else Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                    AddressField(Modifier.weight(1f))
+                    EsvButton(stringResource(R.string.discovery_address_open), onClick = openAddress,
+                        enabled = renderedAddress.isNotEmpty() && addressActionCurrent())
+                }
+            }
+            addressFeedback?.let { feedback ->
+                EsvText(stringResource(when (feedback) {
+                    DiscoveryAddressFeedback.INVALID -> R.string.discovery_address_invalid
+                    DiscoveryAddressFeedback.UNAVAILABLE -> R.string.discovery_address_unavailable
+                    DiscoveryAddressFeedback.ROUTE_VETO -> R.string.discovery_address_route_veto
+                }), style = v.captionTextStyle, color = v.colors.error)
+            }
             Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvText(stringResource(R.string.flow_discoveryscreen_0), style = v.titleTextStyle)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -362,13 +444,15 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
                 style = v.captionTextStyle, color = v.colors.muted)
             if (state.status?.state == DiscoveryState.CAPACITY_REACHED) EsvText(
                 stringResource(R.string.discovery_copy_4), style = v.captionTextStyle)
-            state.notice?.let { EsvText(it, style = v.captionTextStyle) }
+            state.notice?.let { EsvText(DiscoveryPresentationPolicy.noticeText(it, presentationCopy), style = v.captionTextStyle) }
             if (cardOpenRejected) EsvText(stringResource(R.string.discovery_open_unavailable),
                 style = v.captionTextStyle, color = v.colors.error)
             if (state.needsExplicitSearch) EsvText(stringResource(R.string.flow_discoveryscreen_9), style = v.captionTextStyle)
-            EsvText(stringResource(R.string.discovery_copy_5, state.localSourceAdmission), style = v.captionTextStyle)
+            EsvText(stringResource(R.string.discovery_copy_5, stringResource(discoverySourceAdmissionLabel(state.localSourceAdmission))), style = v.captionTextStyle)
             state.verificationSummary?.let { summary ->
-                EsvText(stringResource(R.string.discovery_copy_6, summary.outcome, summary.evidence), style = v.captionTextStyle)
+                EsvText(stringResource(R.string.discovery_copy_6,
+                    stringResource(discoveryVerificationOutcomeLabel(summary.outcome)),
+                    stringResource(discoveryVerificationEvidenceLabel(summary.evidence))), style = v.captionTextStyle)
             }
             if (state.pendingCandidates.isNotEmpty()) FlowRow(horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvButton(stringResource(R.string.discovery_copy_7, state.results.size), onClick = { showPending = false })
@@ -408,25 +492,43 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
                 } else LazyVerticalGrid(GridCells.Fixed(columns), state = grid, modifier = Modifier.weight(1f).fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                     items(state.results, key = { it.resultId }) { result ->
+                        val openRequest = discoveryCardOpenRequest(state, result, cardNavigationLifecycle)
+                        val openEnabled = active && openRequest != null && !controller.filterControlsBusy && !optionsIsModal &&
+                            localControlConfirm == null && safeDisableConfirm == null && rightsDetails == null
+                        val openCard: () -> Unit = {
+                            if (currentQueryClearInteractive() && !controller.filterControlsBusy && openRequest != null)
+                                cardOpenRejected = !onOpen(openRequest)
+                        }
+                        val openLabel = stringResource(R.string.flow_discoveryscreen_16)
                         Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.cardCorner))
                             .background(v.colors.surface, RoundedCornerShape(v.cardCorner)).padding(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                            Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(v.backdrop, RoundedCornerShape(v.corner)), contentAlignment = Alignment.Center) {
-                                EsvThemeIcon(stringResource(R.string.discovery_copy_14), Modifier.size(v.iconSize))
+                            // One primary action region; secondary actions remain outside its click semantics.
+                            Column(Modifier.fillMaxWidth().clickable(enabled = openEnabled, onClickLabel = openLabel,
+                                role = Role.Button, onClick = openCard), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                                Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(v.backdrop, RoundedCornerShape(v.corner)), contentAlignment = Alignment.Center) {
+                                    val thumbnail = controller.thumbnailImage(page, result)
+                                    val pixels = thumbnail.image
+                                    if (pixels != null) Image(pixels, stringResource(R.string.discovery_thumbnail_image),
+                                        Modifier.fillMaxSize(), contentScale = ContentScale.Fit)
+                                    else {
+                                        val label = when (thumbnail.status) {
+                                            DiscoveryThumbnailStatus.WAITING -> R.string.discovery_thumbnail_loading
+                                            DiscoveryThumbnailStatus.UNAVAILABLE, DiscoveryThumbnailStatus.BUSY,
+                                            DiscoveryThumbnailStatus.FENCED, DiscoveryThumbnailStatus.QUEUE_FULL -> R.string.discovery_thumbnail_failed
+                                            else -> R.string.discovery_copy_14
+                                        }
+                                        EsvThemeIcon(stringResource(label), Modifier.size(v.iconSize))
+                                    }
+                                }
+                                EsvText(result.title ?: stringResource(R.string.flow_title_unknown), style = v.bodyTextStyle)
+                                EsvText(result.sourceName, style = v.captionTextStyle, color = v.colors.muted)
+                                if (result.provenance.any { it.startsWith("searxng-") }) EsvText(
+                                    stringResource(R.string.discovery_copy_15), style = v.captionTextStyle, color = v.colors.muted)
+                                EsvText(result.durationMs?.let { DiscoveryPresentationPolicy.durationText(it, presentationCopy) } ?: stringResource(R.string.flow_duration_unknown), style = v.captionTextStyle)
                             }
-                            EsvText(result.title ?: stringResource(R.string.flow_title_unknown), style = v.bodyTextStyle)
-                            EsvText(result.sourceName, style = v.captionTextStyle, color = v.colors.muted)
-                            if (result.provenance.any { it.startsWith("searxng-") }) EsvText(
-                                stringResource(R.string.discovery_copy_15), style = v.captionTextStyle, color = v.colors.muted)
-                            EsvText(result.durationMs?.let { "${it / 60_000}:${(it / 1_000 % 60).toString().padStart(2, '0')}" } ?: stringResource(R.string.flow_duration_unknown), style = v.captionTextStyle)
-                            RightsPresentationPolicy.summary(result.rights).forEach { EsvText(it, style = v.captionTextStyle) }
+                            RightsPresentationPolicy.summary(result.rights, rightsCopy).forEach { EsvText(it, style = v.captionTextStyle) }
                             EsvButton(stringResource(R.string.flow_discoveryscreen_15), onClick = { rightsDetails = result }, modifier = Modifier.fillMaxWidth())
-                            val openRequest = discoveryCardOpenRequest(state, result, cardNavigationLifecycle)
-                            EsvButton(stringResource(R.string.flow_discoveryscreen_16),
-                                onClick = { if (currentQueryClearInteractive() && !controller.filterControlsBusy && openRequest != null)
-                                    cardOpenRejected = !onOpen(openRequest) },
-                                enabled = active && openRequest != null && !controller.filterControlsBusy && !optionsIsModal &&
-                                    localControlConfirm == null && safeDisableConfirm == null && rightsDetails == null,
-                                modifier = Modifier.fillMaxWidth())
+                            EsvButton(openLabel, onClick = openCard, enabled = openEnabled, modifier = Modifier.fillMaxWidth())
                         }
                     }
                 }
@@ -480,7 +582,7 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
             if (result.rights.snapshots.isEmpty()) EsvText(stringResource(R.string.discovery_copy_63))
             if (result.rights.warnings.isNotEmpty()) EsvText(stringResource(R.string.discovery_copy_64, result.rights.warnings.joinToString { it.name }), style = v.captionTextStyle)
             result.rights.snapshots.forEach { snapshot ->
-                RightsPresentationPolicy.details(snapshot).forEach { EsvText(it, style = v.captionTextStyle) }
+                RightsPresentationPolicy.details(snapshot, rightsCopy).forEach { EsvText(it, style = v.captionTextStyle) }
                 listOf(stringResource(R.string.discovery_copy_65) to snapshot.sourcePageUrl, stringResource(R.string.discovery_copy_66) to snapshot.licenseUrl,
                     stringResource(R.string.discovery_copy_67) to snapshot.metadataTermsUrl).forEach { (label, url) ->
                     RightsPresentationPolicy.safeLink(url)?.let { safe ->

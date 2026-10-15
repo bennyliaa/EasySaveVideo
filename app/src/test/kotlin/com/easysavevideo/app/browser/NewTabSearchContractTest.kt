@@ -28,7 +28,9 @@ class NewTabSearchContractTest {
         val ui = source("ui/BrowserScreen")
         assertTrue(ui.contains("videoInput by remember(selected?.context?.tabId)"))
         assertFalse(ui.contains("videoInput by rememberSaveable"))
-        assertTrue(ui.contains("NewTabInputMode.entries.forEach"))
+        assertTrue(ui.contains("NewTabInputMode.entries.filter { !privateMode || it != NewTabInputMode.VIDEO }.forEach"))
+        // Ordinary mode retains all choices; private queries cannot enter persistent Discovery.
+        assertTrue(ui.contains("if (privateMode && input is NewTabInput.Query) { browser.showNotice(privateQueryNotice); return }"))
         assertTrue(ui.contains("new_tab_video_input"))
         assertTrue(ui.contains("keyboardActions = KeyboardActions(onGo = { submitVideoInput() })"))
     }
@@ -56,7 +58,15 @@ class NewTabSearchContractTest {
     @Test fun pendingDraftIsRetiredOnLeavingBackgroundAndClose() {
         val controller = source("discovery/AndroidDiscoveryController")
         val visibility = controller.substringAfter("fun setVisibility").substringBefore("fun setTaskPriority")
-        assertTrue(visibility.contains("if (!isForeground || !discoveryVisible) {\n            pendingBrowserQuery = null"))
+        assertTrue(visibility.contains("if (!isForeground || !discoveryVisible) {"))
+        assertTrue(visibility.contains("foreground = isForeground; visible = discoveryVisible"))
+        val leaving = visibility.substringAfter("if (!isForeground || !discoveryVisible) {")
+            .substringBefore("foreground = isForeground; visible = discoveryVisible")
+        assertTrue(leaving.contains("thumbnails.withdraw()"))
+        assertTrue(leaving.contains("pendingBrowserQuery = null"))
+        assertTrue(leaving.indexOf("thumbnails.withdraw()") < leaving.indexOf("pendingBrowserQuery = null"))
+        assertTrue(leaving.contains("pageLifecycle.incrementAndGet()"))
+        assertTrue(leaving.indexOf("pendingBrowserQuery = null") < leaving.indexOf("pageLifecycle.incrementAndGet()"))
         val close = controller.substringAfter("override fun close()")
         assertTrue(close.contains("pendingBrowserQuery = null"))
         assertTrue(source("ui/DiscoveryScreen").contains("if (pendingBrowserQuery != null) controller.applyBrowserQuery(pendingBrowserQuery)"))
@@ -72,7 +82,11 @@ class NewTabSearchContractTest {
     }
     @Test fun disposedVisitsAndPreBackgroundCallbacksAreRetired() {
         assertTrue(source("ui/BrowserScreen").contains("onDispose { videoSubmission.retire() }"))
-        assertTrue(source("MainActivity").contains("override fun onPause() { newTabInputGeneration++"))
+        val pause = source("MainActivity").substringAfter("override fun onPause() {").substringBefore("override fun onDestroy()")
+        val retire = pause.indexOf("newTabInputGeneration++")
+        assertTrue(retire >= 0)
+        assertTrue(pause.indexOf("isForeground = false") > retire)
+        assertTrue(pause.indexOf("browser.pause()") > retire)
         assertTrue(source("MainActivity").contains("onLeaving = {\n            newTabInputGeneration++"))
     }
 }

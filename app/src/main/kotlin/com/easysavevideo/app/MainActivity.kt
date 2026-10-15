@@ -1,5 +1,10 @@
 package com.easysavevideo.app
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import com.easysavevideo.app.ui.RecordingSessionControls
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -12,11 +17,22 @@ import android.view.WindowInsetsController
 import androidx.core.view.WindowCompat
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import android.view.ViewGroup
+import com.easysavevideo.app.browser.privacy.*
+import com.easysavevideo.app.recording.PrivateRecordingBridge
+import com.easysavevideo.app.recording.OwnedPrivateRecordingPresentationPort
+import com.easysavevideo.app.ui.LocalPrivateAppDialogEnvironment
+import com.easysavevideo.app.ui.LocalPrivatePresentation
+import com.easysavevideo.app.ui.LocalPrivateInputAdmission
+import com.easysavevideo.app.ui.CapturedPrivateActions
+import com.easysavevideo.app.ui.PrivateInputBoundary
+import com.easysavevideo.app.ui.PrivateRecordingStage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.easysavevideo.app.browser.SystemBrowserHost
@@ -31,6 +47,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import com.easysavevideo.app.ui.BrowserScreen
 import com.easysavevideo.app.ui.DiscoveryScreen
+import com.easysavevideo.app.ui.canClearBrowserDraft
 import com.easysavevideo.app.ui.ProviderManagementScreen
 import com.easysavevideo.app.save.saveRuntimeNoticeText
 import com.easysavevideo.app.save.AndroidSaveRuntime
@@ -77,12 +94,76 @@ import com.easysavevideo.app.entitlements.BuildEntitlements
 
 @OptIn(androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi::class)
 class MainActivity : ComponentActivity() {
+    private lateinit var appComposeView: ComposeView
+    private lateinit var privateWindowGuard: PrivateWindowGuard
+    private lateinit var privatePresentationOwner: PrivateMainPresentationOwner
+    private lateinit var privateRecording: PrivateRecordingBridge
+    private var continuousRecordingSubscription: AutoCloseable? = null
+    private lateinit var privateRecordingSurface: OwnedPrivateRecordingPresentationPort
+    // Process-local route/override identity, never saved in an Activity or navigation checkpoint.
+    private var privateRouteIdentity by mutableStateOf(Any())
+    private var privateBackStackEntry: androidx.navigation.NavBackStackEntry? = null
+    private fun actualBrowserPresentation() = activeDestination == EsvDestination.BROWSER &&
+        previewReceipt == null && libraryPreviewReference == null && saves.segmentRecording?.previewActive != true
+    private fun captureSourcesDrained() = ::privateRecording.isInitialized &&
+        privateRecording.captureSourceDrained && saves.recordingSourceObligationsDrained()
+    private fun captureAudioDisposition(view: android.webkit.WebView): PrivateBrowsingAudioDisposition = when {
+        !::privateRecording.isInitialized -> PrivateBrowsingAudioDisposition.OWNED_OR_UNCERTAIN
+        saves.continuousRecordingAuthorization != null -> PrivateBrowsingAudioDisposition.AUTHORIZED_CONTINUOUS_CAPTURE
+        !privateRecording.hasSetupOwner && captureSourcesDrained() && !recordingConsent.requestInFlight ->
+            PrivateBrowsingAudioDisposition.NO_CAPTURE_OWNER
+        else -> PrivateBrowsingAudioDisposition.OWNED_OR_UNCERTAIN
+    }
+    private fun protectPrivateTransition(): Boolean {
+        if (!::privatePresentationOwner.isInitialized || !::privateRecording.isInitialized) return false
+        val reserved = privatePresentationOwner.reserveProtectedTransition()
+        val protected = privateRecording.protectForPresentationTransition()
+        return reserved && protected
+    }
+    private fun protectBeforePresentationMove(): Boolean {
+        if (!::browser.isInitialized || !::privateRecording.isInitialized ||
+            (!browser.isPrivateMode && !privateRecording.hasPresentationOwner)) return true
+        return protectPrivateTransition()
+    }
+    private fun canRetainPrivateRoute(destination: EsvDestination) =
+        destination in setOf(EsvDestination.BROWSER, EsvDestination.TASKS) &&
+            previewReceipt == null && libraryPreviewReference == null && saves.segmentRecording?.previewActive != true
+    private fun privateSelectionPending() = saves.scanning || saves.selection != null ||
+        saves.preparingStream || saves.hlsPreparation != null || saves.destinations?.asking == true ||
+        saves.destinations?.admitting == true || saves.destinations?.notice != null
+    /**
+     * Only Browser/Tasks have complete private dialog coverage. Other routes use an ordinary
+     * shell after exact protected departure. Keep the private session and active Save sources;
+     * an outstanding selection stays in its protected dialog rather than being cancelled here.
+     */
+    private fun prepareRouteMode(destination: EsvDestination, previewOverride: Boolean = false): Boolean {
+        if (!::browser.isInitialized || !browser.isPrivateMode ||
+            (!previewOverride && canRetainPrivateRoute(destination))) return true
+        if (privateSelectionPending()) return false
+        return browser.returnToOrdinaryMode()
+    }
+    private fun protectForPrivateModal(): Boolean {
+        val reserved = privatePresentationOwner.reserveProtectedTransition()
+        // Unsubmitted configuration may remain behind its destination picker. Submitted
+        // continuous capture has independent runtime authorization and survives normal modals.
+        val configureOnly = privateRecording.presentation?.stage == PrivateRecordingStage.CONFIGURE &&
+            captureSourcesDrained() && privateRecording.captureExceptionInactive && !recordingConsent.requestInFlight
+        val protected = if (configureOnly) {
+            // Protection failures must not skip the independent audio stop attempt.
+            val barrier = try { privateRecordingSurface.installProtectionBarrier() } catch (_: Exception) { false }
+            val muted = try { browser.mutePrivateCaptureAudio() } catch (_: Exception) { false }
+            barrier && muted
+        } else privateRecording.protectForPresentationTransition()
+        return reserved && protected
+    }
     private var navController: androidx.navigation.NavHostController? = null
     private var initialDestination = EsvDestination.DISCOVER
     private var activeDestination by mutableStateOf(EsvDestination.DISCOVER)
     private var newTabInputGeneration by mutableLongStateOf(0L)
     private fun navigate(destination: EsvDestination) {
         val controller = navController ?: return
+        if (controller.currentDestination?.route != destination.route && !protectBeforePresentationMove()) return
+        if (!prepareRouteMode(destination)) return
         dispatchEsvNavigation(controller.currentDestination?.route, destination, onLeaving = {
             newTabInputGeneration++
             if (::browser.isInitialized) { browser.setJsDialogUiVisible(false); browser.setVideoPresenceUiVisible(false) }
@@ -106,6 +187,7 @@ class MainActivity : ComponentActivity() {
         })
     }
     private fun backTo(destination: EsvDestination = EsvDestination.DISCOVER) {
+        if (!protectBeforePresentationMove()) return
         if (navController?.popBackStack() != true) navigate(destination)
     }
     private lateinit var browser: SystemBrowserHost
@@ -121,14 +203,28 @@ class MainActivity : ComponentActivity() {
     private val showingSaveTasks get() = activeDestination == EsvDestination.TASKS
     private val showingLibrary get() = activeDestination == EsvDestination.LIBRARY || activeDestination == EsvDestination.EDITOR
     private val showingEditor get() = activeDestination == EsvDestination.EDITOR
-    private var libraryPreviewReference by mutableStateOf<MediaReadRef?>(null)
+    private var libraryPreviewState by mutableStateOf<MediaReadRef?>(null)
+    private var libraryPreviewReference: MediaReadRef?
+        get() = libraryPreviewState
+        set(value) {
+            if (libraryPreviewState === value || !protectBeforePresentationMove()) return
+            if (value != null && !prepareRouteMode(activeDestination, previewOverride = true)) return
+            privateRouteIdentity = Any(); libraryPreviewState = value
+        }
     private var libraryExportReference by mutableStateOf<MediaReadRef?>(null)
     private var libraryBatchExportSelection by mutableStateOf<LibraryBatchSelection?>(null)
     private var pendingLibraryDocumentResult: Pair<Int, Intent?>? = null
     private var pendingEditorCheckpoint by mutableStateOf<String?>(null)
     private val showingRecording get() = activeDestination == EsvDestination.RECORD
     private var recordingSelectionMode by mutableStateOf(RecordingSelectionMode.BASIC)
-    private var previewReceipt by mutableStateOf<MediaCommitReceipt?>(null)
+    private var previewReceiptState by mutableStateOf<MediaCommitReceipt?>(null)
+    private var previewReceipt: MediaCommitReceipt?
+        get() = previewReceiptState
+        set(value) {
+            if (previewReceiptState === value || !protectBeforePresentationMove()) return
+            if (value != null && !prepareRouteMode(activeDestination, previewOverride = true)) return
+            privateRouteIdentity = Any(); previewReceiptState = value
+        }
     private lateinit var recordingConsent: RecordingConsentController
     private lateinit var discovery: AndroidDiscoveryController
     private val showingDiscovery get() = activeDestination == EsvDestination.DISCOVER
@@ -151,6 +247,8 @@ class MainActivity : ComponentActivity() {
             data?.data?.let(::add)
             data?.clipData?.let { clip -> repeat(clip.itemCount.coerceAtMost(8)) { add(clip.getItemAt(it).uri) } }
         }.distinct() else null
+        // File callbacks can execute the current page; re-cover before returning to it.
+        if (!protectBeforePresentationMove()) { browser.finishFiles(choice, null); return@registerForActivityResult }
         browser.finishFiles(choice, uris)
     }
     private var discoverySettingsChanged = false
@@ -185,8 +283,18 @@ class MainActivity : ComponentActivity() {
         if (savedInstanceState == null && saves.currentRecordingId != null) {
             initialDestination = EsvDestination.RECORD; activeDestination = initialDestination
         }
-        recordingConsent = RecordingConsentController(this, saves::receiveProjectionGrant, saves::abandonRecordingRequest,
-            saves::isRecordingRequestAllowed, saves::recordingAudioPermissionDenied, saves::requiresDefaultDisplayRecording)
+        recordingConsent = RecordingConsentController(this,
+            onGrant = { id, resultCode, data ->
+                saves.receiveProjectionGrant(id, resultCode, data)
+                if (::privateRecording.isInitialized) privateRecording.grantOffered(id)
+            }, onDenied = { id ->
+                saves.abandonRecordingRequest(id)
+                if (::privateRecording.isInitialized) privateRecording.requestAbandoned(id)
+            }, isRequestAllowed = saves::isRecordingRequestAllowed,
+            onAudioDenied = { id ->
+                saves.recordingAudioPermissionDenied(id)
+                if (::privateRecording.isInitialized) privateRecording.requestAbandoned(id)
+            }, requiresDefaultDisplay = saves::requiresDefaultDisplayRecording)
         persistence = BrowserPersistence(applicationContext, errorSink) {
             settingsWriteFailed = true
             if (::browser.isInitialized) browser.showNotice("设置或标签地址保存未完成，下次启动可能仍为旧状态。请检查存储空间。")
@@ -196,18 +304,137 @@ class MainActivity : ComponentActivity() {
         browser = SystemBrowserHost(this, errorSink,
             browserCommandAllowed = { gate.evaluate(FeatureRequest(Feature.BROWSER), entitlements.snapshot(),
                 PlatformCapabilities(setOf(Feature.BROWSER)), BuildFeaturePolicy(), System.currentTimeMillis()).allowed },
-            browserSurfaceAllowed = { activeDestination == EsvDestination.BROWSER && saves.segmentRecording?.previewActive != true },
+            browserSurfaceAllowed = ::actualBrowserPresentation,
             onCheckpoint = { checkpoint -> if (::browser.isInitialized && browser.hasUserInteracted) persistence.checkpoint(checkpoint, settings.browser.restoreTabs) },
-            onChooseFiles = { choice -> filePrompt = choice },
+            onChooseFiles = { choice ->
+                if (protectBeforePresentationMove()) filePrompt = choice else browser.finishFiles(choice, null)
+            },
             onDiscoverySaveCompleted = discovery::completeOriginSave, ordinaryHistory = ordinaryHistory)
-        setContent {
+        val privateContentRoot = PrivateContentRoot(this)
+        appComposeView = ComposeView(this).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        }
+        privateContentRoot.addView(appComposeView, ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        // ComponentActivity installs the existing ViewTree owners. ComposeView keeps its normal
+        // window recomposer and insets handling; there is no second navigation/composition owner.
+        setContentView(privateContentRoot)
+        privateWindowGuard = PrivateWindowGuard(this, privateContentRoot, ordinaryContentCaptureOptIn = true) {
+            newTabInputGeneration++
+            if (::privatePresentationOwner.isInitialized) privatePresentationOwner.inputRevoked()
+        }
+        // Wiring alone cannot clear platform acceptance. API31/32 secure browsing does not use
+        // recording's separately authorized continuous projection capability.
+        privateWindowGuard.setPendingGates(setOf(
+            PrivateWindowPendingGate.RETAINED_INPUT_CONNECTION,
+            PrivateWindowPendingGate.NATIVE_PRESENTATIONS,
+            PrivateWindowPendingGate.ANDROID_DEVICE_VALIDATION,
+        ))
+        privateRecordingSurface = OwnedPrivateRecordingPresentationPort(
+            this, privateContentRoot, privateWindowGuard, browser,
+            browserRouteCurrent = ::actualBrowserPresentation,
+            routeIdentity = { privateRouteIdentity },
+            readOwner = { target, presentationId, identity ->
+                if (::privateRecording.isInitialized)
+                    privateRecording.readCaptureWindowOwner(target, presentationId, identity) else null
+            }, invalidateOwner = { identity ->
+                if (::privateRecording.isInitialized) privateRecording.invalidateCaptureWindowOwner(identity)
+            }, isContinuousAuthorized = saves::isContinuousRecordingAuthorized)
+        privateRecording = PrivateRecordingBridge(this, browser, saves, recordingConsent,
+            privateRecordingSurface, ::actualBrowserPresentation)
+        privatePresentationOwner = PrivateMainPresentationOwner(this, privateContentRoot, privateWindowGuard, browser,
+            routeIdentity = { privateRouteIdentity }, isBrowserRoute = ::actualBrowserPresentation,
+            foreground = { isForeground }, captureDrained = ::captureSourcesDrained,
+            captureExceptionInactive = { !privateRecordingSurface.ownsCapturePresentation },
+            protectForPresentationTransition = ::protectForPrivateModal, audioDisposition = ::captureAudioDisposition,
+            continuousCaptureAuthorized = { saves.continuousRecordingAuthorization != null },
+            independentRecordingOwner = { saves.hasIndependentSubmittedRecordingOwner })
+        privateWindowGuard.onOwnedHierarchyChanged = privatePresentationOwner::hierarchyChanged
+        browser.installPrivatePresentationBinding(privatePresentationOwner)
+        browser.installPrivateIntegration(object : PrivateBrowserIntegration {
+            override fun ready() = saves.ready && privatePresentationOwner.ready()
+            override fun canEnterPrivateMode() = saves.ready && !recordingConsent.requestInFlight &&
+                !privateRecording.hasSetupOwner &&
+                (saves.hasIndependentSubmittedRecordingOwner || captureSourcesDrained())
+            override fun protectForPresentationTransition() = protectPrivateTransition()
+            override fun protectForLifecycle(reason: PrivateBrowserLifecycleTransition): Boolean {
+                val reserved = privatePresentationOwner.reserveProtectedTransition()
+                val protected = privateRecording.protectForLifecycle()
+                return reserved && protected
+            }
+            override fun allowVisibleAudio(view: android.webkit.WebView): Boolean = when (captureAudioDisposition(view)) {
+                PrivateBrowsingAudioDisposition.NO_CAPTURE_OWNER -> isForeground && hasFocusedWindow && actualBrowserPresentation()
+                PrivateBrowsingAudioDisposition.AUTHORIZED_CONTINUOUS_CAPTURE ->
+                    isForeground && hasFocusedWindow && actualBrowserPresentation()
+                PrivateBrowsingAudioDisposition.OWNED_OR_UNCERTAIN -> false
+            }
+        })
+        continuousRecordingSubscription = saves.addContinuousRecordingListener {
+            val authorization = saves.continuousRecordingAuthorization
+            if (authorization != null) privateRecordingSurface.attachContinuous(authorization)
+            else privateRecordingSurface.detachContinuous()
+            browser.refreshPrivateCaptureAudio()
+            if (!privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.retryPresentation()
+        }
+        appComposeView.setContent {
+            // These Host reads subscribe this owning composition to tab/document/fullscreen changes.
+            val privateMode = browser.state.selectedTab?.incognito == true || browser.isPrivateMode
+            val presentedFullscreen = browser.fullScreenView
+            // An asynchronous opening failure may only publish Runtime status, not BrowserState.
+            // Observe it here so recovery receives a real fresh owning-composition SideEffect.
+            val privateStatus = browser.privateStatus
+            val recordingUi = privateRecording.presentation
+            val presentation = privatePresentationOwner.prepareComposition()
+            val childApplyTicket = privatePresentationOwner.captureChildApply(presentation)
+            val inputEpoch = privatePresentationOwner.inputEpoch
+            val dialogs = privatePresentationOwner.dialogEnvironment(presentation)
+            val routeContentReady = if (privateMode) canRetainPrivateRoute(activeDestination)
+                else privatePresentationOwner.canComposeOrdinaryContent(presentation)
+            // A system pop has already changed the NavController. Until a pending selection
+            // settles, compose only the protected shell/global dialogs, not an unwrapped route.
+            LaunchedEffect(activeDestination, previewReceipt, libraryPreviewReference,
+                saves.segmentRecording?.previewActive, privateMode, saves.scanning, saves.selection,
+                saves.preparingStream, saves.hlsPreparation, saves.destinations?.asking,
+                saves.destinations?.admitting, saves.destinations?.notice) {
+                prepareRouteMode(activeDestination)
+            }
+            CompositionLocalProvider(LocalPrivatePresentation provides privateMode,
+                LocalPrivateAppDialogEnvironment provides dialogs) {
+            PrivateInputBoundary(privateMode, privatePresentationOwner.inputLifetime, inputEpoch) {
+            // Capture this root publication and exact route occurrence, never the next reveal.
+            val rootInputAdmission = LocalPrivateInputAdmission.current
+            val actionRouteIdentity = privateRouteIdentity
+            val chromeActions = remember(privateMode, rootInputAdmission, actionRouteIdentity, inputEpoch) {
+                CapturedPrivateActions(privateMode, rootInputAdmission) {
+                    privateRouteIdentity === actionRouteIdentity && privatePresentationOwner.inputEpoch == inputEpoch &&
+                        privateMode == (browser.state.selectedTab?.incognito == true || browser.isPrivateMode)
+                }
+            }
+            DisposableEffect(chromeActions) { onDispose { chromeActions.close() } }
+            SideEffect {
+                // Host tab/document cancellation may retire a prompt without a new chooser.
+                // Retire Main's shell as well; never let stale dismissal target a replacement.
+                if (filePrompt != null && !browser.hasPendingFileChoice) filePrompt = null
+            }
+            LaunchedEffect(saves.mediaTaskActivity, recordingUi, presentedFullscreen, privateStatus) {
+                if (!privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.retryPresentation()
+            }
             EsvLocaleHost(settings.appearance.language) {
             EsvThemeHost(darkTheme = settings.appearance.themeMode.useDark(isSystemInDarkTheme())) {
                 val controller = rememberNavController()
                 val windowSize = calculateWindowSizeClass(this@MainActivity)
                 DisposableEffect(controller) {
                     navController = controller
-                    val listener = androidx.navigation.NavController.OnDestinationChangedListener { _, destination, _ ->
+                    val listener = androidx.navigation.NavController.OnDestinationChangedListener { navigation, destination, _ ->
+                        val exactEntry = navigation.currentBackStackEntry
+                        if (privateBackStackEntry !== exactEntry) {
+                            // System back/pop does not pass navigate(). Cover before publishing the
+                            // route which lets NavHost replace the old sensitive hierarchy.
+                            protectBeforePresentationMove()
+                            prepareRouteMode(EsvDestination.fromRoute(destination.route))
+                            privateBackStackEntry = exactEntry
+                            privateRouteIdentity = Any()
+                        }
                         val nextDestination = EsvDestination.fromRoute(destination.route)
                         dispatchLibraryBatchRouteExit(activeDestination, nextDestination) {
                             if (::saves.isInitialized) saves.libraryExports?.cancelBatchForLeavingLibrary()
@@ -216,7 +443,7 @@ class MainActivity : ComponentActivity() {
                         if (activeDestination != EsvDestination.BROWSER) { browser.setJsDialogUiVisible(false); browser.setVideoPresenceUiVisible(false) }
                     }
                     controller.addOnDestinationChangedListener(listener)
-                    onDispose { controller.removeOnDestinationChangedListener(listener); navController = null }
+                    onDispose { controller.removeOnDestinationChangedListener(listener); navController = null; privateBackStackEntry = null }
                 }
                 val destinations = saves.destinations
                 DisposableEffect(destinations) {
@@ -262,9 +489,9 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 RecordingPreviewHostDraw(window.decorView, previewRuntime?.previewHostRequest,
-                    enabled = previewHost && isForeground && hasFocusedWindow && authorizedPreviewFrame == null,
+                    enabled = routeContentReady && !privateMode && previewHost && isForeground && hasFocusedWindow && authorizedPreviewFrame == null,
                     onDrawn = { request ->
-                        if (previewRuntime != null && isForeground && hasFocusedWindow && previewRuntime.previewActive && previewRuntime.previewFrame == null) {
+                        if (routeContentReady && !browser.isPrivateMode && previewRuntime != null && isForeground && hasFocusedWindow && previewRuntime.previewActive && previewRuntime.previewFrame == null) {
                             previewRuntime.previewHostDrawn(request)?.let { choice ->
                                 recordingConsent.begin(request.sessionId, choice == com.easysavevideo.recording.RecordingAudioChoice.INTERNAL)
                             }
@@ -348,17 +575,41 @@ class MainActivity : ComponentActivity() {
                 }
                 val libraryReference = libraryPreviewReference
                 val receipt = previewReceipt
+                Column(Modifier.fillMaxSize()) {
+                Box(Modifier.weight(1f)) {
                 EsvAppShell(controller, initialDestination, windowSize,
                     chromeVisible = !previewHost && receipt == null && libraryReference == null && !fullscreen,
                     navigationEnabled = editor?.state?.busy != true && filePrompt == null &&
+                        routeContentReady &&
                         saves.selection == null && saves.hlsPreparation == null && !saves.preparingStream &&
                         libraryExportReference == null && destinations?.asking != true && destinations?.admitting != true,
-                    onNavigate = ::navigate) { route ->
-                if (previewHost) BrowserScreen(browser, settings,
+                    onNavigate = { destination -> chromeActions.run { navigate(destination) } }) { route, routeEntry ->
+                // NavHost can retain an outgoing subcomposition. Its route text alone is not
+                // proof of the current owner, including same-route Back/forward replacement.
+                val routeOwnsPresentation = { routeEntry === privateBackStackEntry &&
+                    controller.currentBackStackEntry === routeEntry && route == activeDestination }
+                val childApplied = {
+                    if (routeOwnsPresentation()) {
+                        if (privateRecordingSurface.ownsCapturePresentation)
+                            privateRecordingSurface.compositionApplied(recordingUi)
+                        else privatePresentationOwner.compositionApplied(presentation, childApplyTicket)
+                    }
+                }
+                val childLaidOut = {
+                    if (routeOwnsPresentation() && !privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.childLaidOut(presentation, childApplyTicket)
+                }
+                val browserChild = routeContentReady && (previewHost ||
+                    (receipt == null && libraryReference == null && route == EsvDestination.BROWSER))
+                if (!routeContentReady || (privateMode && !canRetainPrivateRoute(route))) {
+                    // Empty, non-sensitive applied shell. The owner still waits for Host detach,
+                    // registered-dialog teardown, capture drain and this root's actual draw.
+                }
+                else if (previewHost) BrowserScreen(browser, settings,
                     onSettings = { /* The bounded preview transition keeps the current browser host. */ },
                     filePrompt = null, onFileCancel = {}, onFileConfirm = {}, openExternal = {},
                     onDiscovery = {}, onManageProviders = {}, onSave = {}, onSaveTasks = {}, onLibrary = {},
-                    saveScanning = false, saveNotice = null, onDismissSaveNotice = {}, interactiveJsDialogs = false)
+                    saveScanning = false, saveNotice = null, onDismissSaveNotice = {}, interactiveJsDialogs = false,
+                    onPresentationApplied = childApplied, onPresentationLayout = childLaidOut)
                 else if (receipt != null) VerifiedMediaPreview(receipt, isForeground, saves::openPublishedMedia,
                     onBack = { previewReceipt = null }, onReleaseUnconfirmed = saves::previewReleaseUnconfirmed)
                 else if (libraryReference != null) LibraryMediaPreview(libraryReference, isForeground, saves::openLibraryMedia,
@@ -456,13 +707,13 @@ class MainActivity : ComponentActivity() {
                     onSelectionModeChange = { recordingSelectionMode = it },
                     onCreationSelectionChanged = { saves.destinations?.cancelSelection() },
                     effectiveDurationUs = saves.recordingSnapshot?.effectiveDurationUs,
-                    consent = recordingConsent, canStart = saves.ready && saves.canSave(TaskMethod.RECORD) && saves.currentRecordingId == null,
+                    consent = recordingConsent, canStart = !privateMode && saves.ready && saves.canSave(TaskMethod.RECORD) && saves.currentRecordingId == null,
                     canPauseResume = saves.canPauseRecording(),
                     onStart = { choice ->
                         recordedEditorNotice = null
                         val bounds = windowManager.maximumWindowMetrics.bounds
                         val density = resources.configuration.densityDpi
-                        saves.destinations?.select(isCurrent = { isForeground && showingRecording && !isDestroyed && !isFinishing &&
+                        saves.destinations?.select(isCurrent = { !browser.isPrivateMode && isForeground && showingRecording && !isDestroyed && !isFinishing &&
                             recordingSelectionMode == RecordingSelectionMode.BASIC && saves.currentRecordingId == null &&
                             windowManager.maximumWindowMetrics.bounds == bounds && resources.configuration.densityDpi == density }) { admission ->
                             saves.prepareRecording(choice, bounds.width(), bounds.height(), density, admission)?.let {
@@ -480,12 +731,12 @@ class MainActivity : ComponentActivity() {
                         navigate(EsvDestination.TASKS)
                     }, notice = recordedEditorNotice ?: saves.notice?.let { saveRuntimeNoticeText(it) },
                     regionSetup = RecordingRegionSetup(regionGeometry, DefaultDisplayCaptureGeometry.scopeEvidence(),
-                        canStart = saves.ready && saves.segmentRecording?.ready == true && saves.canRegionRecording() && saves.currentRecordingId == null,
+                        canStart = !privateMode && saves.ready && saves.segmentRecording?.ready == true && saves.canRegionRecording() && saves.currentRecordingId == null,
                         unavailableReason = if (regionGeometry == null) "当前默认显示屏几何不可用，请返回前台后重新选择。"
                             else if (saves.segmentRecording?.ready != true) "高级录制存储与恢复检查尚未就绪。" else null),
                     onStartRegion = { choice, recipe ->
                         recordedEditorNotice = null
-                        saves.destinations?.select(isCurrent = { isForeground && showingRecording && !isDestroyed && !isFinishing &&
+                        saves.destinations?.select(isCurrent = { !browser.isPrivateMode && isForeground && showingRecording && !isDestroyed && !isFinishing &&
                             recordingSelectionMode == RecordingSelectionMode.PROPORTIONAL && saves.currentRecordingId == null &&
                             DefaultDisplayCaptureGeometry.read(this@MainActivity) == recipe.source &&
                             DefaultDisplayCaptureGeometry.scopeEvidence() == recipe.scopeEvidence }) { admission ->
@@ -500,7 +751,7 @@ class MainActivity : ComponentActivity() {
                         val geometry = DefaultDisplayCaptureGeometry.read(this@MainActivity)
                         val tab = browser.state.selectedTab
                         val pageRevision = browser.saveInspectionRevision
-                        saves.destinations?.select(isCurrent = { isForeground && showingRecording && !isDestroyed && !isFinishing &&
+                        saves.destinations?.select(isCurrent = { !browser.isPrivateMode && isForeground && showingRecording && !isDestroyed && !isFinishing &&
                             recordingSelectionMode == RecordingSelectionMode.AUTHORIZED_FRAME && saves.currentRecordingId == null &&
                             DefaultDisplayCaptureGeometry.read(this@MainActivity) == geometry && browser.state.selectedTab == tab &&
                             browser.saveInspectionRevision == pageRevision }) { admission ->
@@ -526,6 +777,9 @@ class MainActivity : ComponentActivity() {
                         }
                     })
                 else if (route == EsvDestination.TASKS) SaveTaskScreen(saves, browser,
+                    canAct = remember(chromeActions, routeEntry) {
+                        { chromeActions.isCurrent() && routeOwnsPresentation() }
+                    },
                     recoveryIsCurrent = { expected ->
                         isForeground && hasFocusedWindow && activeDestination == EsvDestination.TASKS &&
                             navController?.currentDestination?.route == EsvDestination.TASKS.route && saves === expected &&
@@ -555,7 +809,40 @@ class MainActivity : ComponentActivity() {
                     onAutoRefresh = providerManagement::refreshAutomatically,
                     onRejectCandidate = providerManagement::rejectCandidate, onRollback = providerManagement::rollback,
                     onBack = { providerManagement.setActive(false); backTo(EsvDestination.SETTINGS) })
-                else if (route == EsvDestination.DISCOVER) DiscoveryScreen(discovery, settings.discovery, isForeground,
+                else if (route == EsvDestination.DISCOVER) {
+                    // No browser text crosses into Discovery's unsaved address draft.
+                    val addressTab = if (!browser.isPrivateMode) browser.state.selectedTab?.takeIf { !it.incognito } else null
+                    val addressRevision = browser.saveInspectionRevision
+                    val addressGeneration = newTabInputGeneration
+                    val addressVisit = remember(chromeActions, routeEntry, addressGeneration, addressTab?.context) { Any() }
+                    val addressAction = remember(addressVisit, addressTab?.epoch, addressRevision) { Any() }
+                    val addressPresentationCurrent = {
+                        chromeActions.isCurrent() && routeOwnsPresentation() && navController === controller &&
+                            addressGeneration == newTabInputGeneration && isForeground && hasFocusedWindow && !isDestroyed && !isFinishing &&
+                            activeDestination == EsvDestination.DISCOVER && !browser.isPrivateMode &&
+                            addressTab != null && browser.state.selectedTab?.incognito == false &&
+                            browser.state.selectedTab?.context == addressTab.context &&
+                            filePrompt == null && !browser.pickerInFlight && !browser.hasPendingFileChoice &&
+                            browser.jsDialog == null && browser.fullScreenView == null &&
+                            !saves.scanning && saves.selection == null && !saves.preparingStream && saves.hlsPreparation == null &&
+                            saves.destinations?.asking != true && saves.destinations?.admitting != true && saves.destinations?.notice == null &&
+                            saves.segmentRecording?.previewActive != true && previewReceipt == null && libraryPreviewReference == null
+                    }
+                    DiscoveryScreen(discovery, settings.discovery, isForeground,
+                    addressVisit = addressVisit, addressAction = addressAction, canOpenAddress = addressPresentationCurrent,
+                    canEditAddress = { canClearBrowserDraft(addressTab, browser.state.selectedTab, addressRevision,
+                        browser.saveInspectionRevision, addressPresentationCurrent()) },
+                    onOpenAddress = { input, draftCurrent ->
+                        if (!canClearBrowserDraft(addressTab, browser.state.selectedTab, addressRevision,
+                                browser.saveInspectionRevision, addressPresentationCurrent() && draftCurrent())) false
+                        else {
+                            val sourceCurrent = { addressPresentationCurrent() && draftCurrent() }
+                            val accepted = browser.openOrdinaryAddress(input, checkNotNull(addressTab).context,
+                                addressTab.epoch, addressRevision, sourceCurrent)
+                            if (accepted && sourceCurrent()) navigate(EsvDestination.BROWSER)
+                            accepted
+                        }
+                    },
                     settingsEditable = settingsReady && persistence.settingsLoaded && isForeground,
                     canClearQuery = {
                         isForeground && activeDestination == EsvDestination.DISCOVER &&
@@ -586,6 +873,7 @@ class MainActivity : ComponentActivity() {
                     }, onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) }, onLink = { url ->
                         discovery.setVisibility(isForeground, false); navigate(EsvDestination.BROWSER); browser.navigate(url)
                     })
+                }
                 else if (route == EsvDestination.SETTINGS) EsvSettingsScreen(settings,
                     onChange = { edit ->
                         val value = if (edit is SettingsEdit.DiscoveryEdit)
@@ -658,8 +946,12 @@ class MainActivity : ComponentActivity() {
                     }
                 }, settingsEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.BROWSER,
                     filePrompt = filePrompt,
-                    onFileCancel = { filePrompt = null; browser.cancelFiles() },
-                    onFileConfirm = { choice -> filePrompt = null; chooseFile(choice) },
+                    onFileCancel = { choice ->
+                        if (filePrompt === choice) { filePrompt = null; browser.finishFiles(choice, null) }
+                    },
+                    onFileConfirm = ::chooseFile,
+                    isFilePromptCurrent = { choice -> filePrompt === choice && isForeground && actualBrowserPresentation() &&
+                        !browser.pickerInFlight && browser.hasPendingFileChoice },
                     openExternal = ::openSystemBrowser,
                     onDiscovery = { navigate(EsvDestination.DISCOVER); discovery.setVisibility(isForeground, true) },
                     newTabInputGeneration = newTabInputGeneration,
@@ -673,26 +965,37 @@ class MainActivity : ComponentActivity() {
                     },
                     onManageProviders = ::openProviderManagement,
                     onSave = { saves.inspectFromUserClick(browser) },
-                    onRecording = { navigate(EsvDestination.RECORD) },
+                    onRecording = {
+                        if (browser.isPrivateMode) privateRecording.configure() else navigate(EsvDestination.RECORD)
+                    },
                     onSaveTasks = { navigate(EsvDestination.TASKS) },
                     onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) },
                     saveScanning = saves.scanning,
                     saveNotice = saves.notice?.let { saveRuntimeNoticeText(it) },
-                    onDismissSaveNotice = saves::dismissNotice, destinations = saves.destinations, bookmarks = bookmarks, ordinaryHistory = ordinaryHistory, saveRuntime = saves)
+                    onDismissSaveNotice = saves::dismissNotice, destinations = saves.destinations, bookmarks = bookmarks, ordinaryHistory = ordinaryHistory, saveRuntime = saves,
+                    onPresentationApplied = childApplied, onPresentationLayout = childLaidOut)
+                // Shell/application/ordinary override apply belongs to this exact NavHost child.
+                // Browser instead acknowledges from its deeper BoxWithConstraints composition.
+                if (!browserChild) SideEffect { childApplied() }
+                }
+                } // Route viewport; controls stay reachable on every ordinary/private route.
+                if (recordingUi != null) RecordingSessionControls(recordingUi)
                 }
                 BackHandler(enabled = previewHost) {
                     recordingConsent.cancel(); previewRuntime?.cancelPreview(); navigate(EsvDestination.RECORD)
                 }
-                if (!previewHost) {
+                if (!previewHost && (privateMode || routeContentReady)) {
                     if (activeDestination != EsvDestination.BROWSER) SaveSelectionDialog(saves, browser)
                     if (isForeground) saves.destinations?.let { OrdinaryDestinationDialog(it) }
                 }
-                if (authorizedPreviewFrame != null && isForeground) {
+                if (authorizedPreviewFrame != null && isForeground && routeContentReady && !privateMode) {
                     AuthorizedRecordingRegionDialog(authorizedPreviewFrame, enabled = previewRuntime.previewActive,
                         onConfirm = previewRuntime::confirmPreview,
                         onCancel = { previewRuntime.cancelPreview(); navigate(EsvDestination.RECORD) },
                         onRetired = previewRuntime::previewUiRetired)
                 }
+            }
+            }
             }
             }
         }
@@ -733,7 +1036,9 @@ class MainActivity : ComponentActivity() {
         navigate(EsvDestination.SOURCES)
     }
     private fun chooseFile(choice: SystemBrowserHost.FileChoice) {
-        if (!browser.beginFilePicker(choice)) return
+        if (filePrompt !== choice || !isForeground || !actualBrowserPresentation() ||
+            !protectBeforePresentationMove() || !browser.beginFilePicker(choice)) return
+        filePrompt = null
         choosing = choice
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
@@ -748,6 +1053,7 @@ class MainActivity : ComponentActivity() {
     }
     private fun openSystemBrowser() {
         val address = browser.state.selectedTab?.address ?: return
+        if (!protectBeforePresentationMove()) return
         try { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(address.value)).addCategory(Intent.CATEGORY_BROWSABLE)) }
         catch (_: ActivityNotFoundException) { browser.showNotice("未找到可打开该网页的系统浏览器。") }
     }
@@ -761,12 +1067,39 @@ class MainActivity : ComponentActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         hasFocusedWindow = hasFocus
+        if (::privateRecording.isInitialized && browser.isPrivateMode) {
+            if (!hasFocus) {
+                if (privateWindowGuard.hasRegisteredPrivateDialogs) {
+                    privateWindowGuard.installProtectionBarrier(); browser.mutePrivateCaptureAudio()
+                } else privateRecording.protectForLifecycle()
+            }
+            privateRecording.refreshPresentation()
+            if (hasFocus && !privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.retryPresentation()
+            browser.refreshPrivateCaptureAudio()
+        }
         if (::saves.isInitialized) saves.segmentRecording?.setPreviewHostFocused(hasFocus)
     }
     override fun onResume() { super.onResume(); libraryResumeSequence++; isForeground = true; if (::saves.isInitialized) saves.setForeground(true); if (::browser.isInitialized) browser.resume(); if (::discovery.isInitialized) discovery.setVisibility(true, showingDiscovery && !showingProviderManagement && !showingLibrary && !showingSaveTasks && !showingRecording) }
-    override fun onPostResume() { super.onPostResume(); if (::diagnostics.isInitialized) diagnostics.onPostResume() }
-    override fun onPause() { newTabInputGeneration++; if (::diagnostics.isInitialized) diagnostics.onPause(); if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
+    override fun onPostResume() {
+        super.onPostResume()
+        if (::diagnostics.isInitialized) diagnostics.onPostResume()
+        if (::privateRecording.isInitialized) privateRecording.refreshPresentation()
+        if (::privatePresentationOwner.isInitialized && !privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.retryPresentation()
+    }
+    override fun onPause() {
+        // Synchronous protection precedes the Activity/Host foreground and route updates.
+        if (::privateRecording.isInitialized && (browser.isPrivateMode || privateRecording.hasPresentationOwner))
+            privateRecording.protectForLifecycle()
+        filePrompt = null // Host.pause retires only non-picker choices; picker identity stays in choosing.
+        newTabInputGeneration++; if (::diagnostics.isInitialized) diagnostics.onPause(); if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
     override fun onDestroy() {
+        continuousRecordingSubscription?.close(); continuousRecordingSubscription = null
+        if (::privateRecording.isInitialized) privateRecording.close()
+        if (::browser.isInitialized) browser.close()
+        if (::privateRecordingSurface.isInitialized) privateRecordingSurface.close()
+        if (::privatePresentationOwner.isInitialized) privatePresentationOwner.close()
+        if (::privateWindowGuard.isInitialized) privateWindowGuard.close()
+        if (::appComposeView.isInitialized) appComposeView.disposeComposition()
         if (::diagnostics.isInitialized) diagnostics.close()
         discoveryPrioritySubscription?.close(); discoveryPrioritySubscription = null
         if (::folderPickerHost.isInitialized) {
@@ -776,7 +1109,6 @@ class MainActivity : ComponentActivity() {
         }
         if (::saves.isInitialized) saves.segmentRecording?.previewHostDestroyed()
         if (::recordingConsent.isInitialized) { if (isFinishing) recordingConsent.cancel(); recordingConsent.close() }
-        if (::browser.isInitialized) browser.close()
         if (::persistence.isInitialized) persistence.close()
         if (::providerManagement.isInitialized) providerManagement.close()
         if (::discovery.isInitialized) discovery.close()

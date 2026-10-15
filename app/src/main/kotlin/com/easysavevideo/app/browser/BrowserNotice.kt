@@ -5,6 +5,7 @@ internal sealed interface BrowserNotice {
     data class Text(val value: String) : BrowserNotice {
         override fun toString(): String = "BrowserNotice.Text"
     }
+    data class CookieClear(val result: BrowserCookieClearResult) : BrowserNotice
     data class PermissionDenied(val kind: BrowserPermissionKind, val origin: String?) : BrowserNotice {
         override fun toString(): String = "BrowserNotice.PermissionDenied($kind)"
     }

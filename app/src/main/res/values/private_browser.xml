@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="private_browser_title">Private browsing</string>
+    <string name="private_browser_enter">Private mode</string>
+    <string name="private_browser_return_ordinary">Ordinary tabs</string>
+    <string name="private_browser_exit">Close private session</string>
+    <string name="private_browser_tab">Private tab</string>
+    <string name="private_browser_session_note">Private tabs stay in this session. Files you explicitly save remain in your library. Websites, network services and keyboards may still record activity.</string>
+    <string name="private_browser_cleaning">Preparing or clearing private data. Private mode remains unavailable until this finishes.</string>
+    <string name="private_browser_unsupported">This WebView does not provide all required isolation, cleanup and audio controls.</string>
+    <string name="private_browser_blocked">Private cleanup or protection could not be confirmed. Private mode is unavailable for this app run.</string>
+    <string name="private_browser_not_ready">Private mode is not ready. All save and capture protections must be connected first.</string>
+    <string name="private_browser_exit_title">Close all private tabs?</string>
+    <string name="private_browser_exit_body">Private downloads will stop and recording will stop with valid output retained. Session cleanup will wait for actual resource release. Files already saved remain in your library.</string>
+    <string name="private_browser_query_unavailable">Private search is not connected. Enter a web address; this text will not be sent to ordinary Discovery.</string>
+    <string name="private_browser_busy">Finish the current recording or permission flow before entering private mode.</string>
+</resources>

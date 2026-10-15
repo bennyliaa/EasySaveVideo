@@ -51,27 +51,40 @@ internal class DirectNormalizedAndroidVerifier(
                 directNativeCall { selected.setDataSource(descriptor, 0, captured.size) }
                 checkpoint(); fixed.checkIdentity()
                 val trackCount = directNativeCall { selected.trackCount }
-                if (trackCount != 1) throw SaveFailure(SaveError.INVALID_MEDIA)
-                val format = directNativeCall { selected.getTrackFormat(0) }
+                if (trackCount != (if (profile.audio == null) 1 else 2)) throw SaveFailure(SaveError.INVALID_MEDIA)
+                val formats = (0 until trackCount).map { directNativeCall { selected.getTrackFormat(it) } }
+                val bindings = bindDirectNativeTracks(formats.map {
+                    directNativeCall { it.getString(MediaFormat.KEY_MIME).orEmpty() }
+                }, profile.audio != null)
+                val videoTrack = bindings.video
+                val format = formats[videoTrack]
                 val facts = directNativeCall { nativeTrackFormat(selected, format) }
+                val audioConfiguration = bindings.audio?.let { track ->
+                    inspectDirectAudioFormat(directNativeCall { nativeAudioFormat(selected, formats[track]) }, profile, checkpoint)
+                }
                 val configuration = inspectDirectFormat(facts, profile, checkpoint)
                 val source = AndroidDirectSampleSource(selected, fixed, checkpoint)
-                directNativeCall { selected.selectTrack(0) }
+                directNativeCall { selected.selectTrack(videoTrack) }
                 val samples: DirectInspectedSamples
                 var samplePrimary: Throwable? = null
-                try { samples = inspectDirectSamples(source, 0, fixed, profile, configuration, checkpoint) }
+                try { samples = inspectDirectSamples(source, videoTrack, fixed, profile, configuration, checkpoint) }
                 catch (failure: Throwable) { samplePrimary = failure; throw failure }
-                finally { finishDirectCleanup(samplePrimary, {}, releases = emptyList(), after = { selected.unselectTrack(0) }) }
-                val positions = decodePositions(selected, source, format, profile, checkpoint, lease)
-                val tail = decodeTail(selected, source, format, samples, checkpoint, lease)
-                if (!tail.matches(samples.conservation) || !tail.matches(output.normalizationProof.conservation))
+                finally { finishDirectCleanup(samplePrimary, {}, releases = emptyList(), after = { selected.unselectTrack(videoTrack) }) }
+                val positions = decodePositions(selected, source, videoTrack, format, profile, checkpoint, lease)
+                val tail = decodeTail(selected, source, videoTrack, format, samples, checkpoint, lease)
+                val audio = bindings.audio?.let { track ->
+                    decodeAudio(selected, source, fixed, track, profile,
+                        audioConfiguration ?: throw SaveFailure(SaveError.INVALID_MEDIA), checkpoint, lease)
+                }
+                val conservation = assembleDirectConservation(profile, samples, audio)
+                if (!tail.matches(conservation) || !tail.matches(output.normalizationProof.conservation))
                     throw SaveFailure(SaveError.INVALID_MEDIA)
                 val metadata = directNativeCall { MediaMetadataRetriever() }.also { retriever = it }
                 directNativeCall { metadata.setDataSource(descriptor, 0, captured.size) }
                 checkpoint(); fixed.checkIdentity()
                 val mime = directNativeCall { metadata.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE) }
                 if (mime != "video/mp4" && mime != "application/mp4") throw SaveFailure(SaveError.INVALID_MEDIA)
-                val durationMillis = profile.clock.endpoint.minimumUs / 1000
+                val durationMillis = conservation.endpoint.minimumUs / 1000
                 val metadataMillis = directNativeCall {
                     metadata.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull()
                 } ?: throw SaveFailure(SaveError.INVALID_MEDIA)
@@ -87,7 +100,7 @@ internal class DirectNormalizedAndroidVerifier(
                         checkpoint()
                     } finally { directNativeCall { frame.recycle() } }
                 }
-                nativeResult = NativeResult(samples.conservation, tail, positions, durationMillis)
+                nativeResult = NativeResult(conservation, tail, positions, audio)
             } catch (failure: Throwable) { nativePrimary = failure; throw failure }
             finally {
                 finishDirectCleanup(nativePrimary, { latch(lease) }, releases = listOf(
@@ -100,15 +113,9 @@ internal class DirectNormalizedAndroidVerifier(
             if (lease.readOnlyInput !== input || input.fd !== descriptor) throw SaveFailure(SaveError.RECOVERY_REQUIRED)
             DirectNormalizedPreflight.checkLease(lease, artifact, output)
             checkpoint()
-            val proof = output.normalizationProof
-            val verification = DirectNormalizationVerificationProof(proof.normalizationId, proof.taskId,
-                proof.sourceIdentity, artifact.artifactId, artifact.commitId, proof.digest(),
-                nativeResult.conservation, nativeResult.tail)
-            if (!verification.matches(proof)) throw SaveFailure(SaveError.INVALID_MEDIA)
-            // The owning caller must still pass its real expectedAudio to typed isValidFor.
-            return VerificationEvidence(artifact.artifactId, captured.size, before, true,
-                1, 0, nativeResult.durationMillis, profile.width, profile.height, false,
-                nativeResult.positions, true, directNormalizationProof = verification)
+            // The owning caller still applies expectedAudio through typed isValidFor before commit.
+            return assembleDirectVerificationEvidence(artifact, output, captured.size, before,
+                nativeResult.conservation, nativeResult.tail, nativeResult.positions, nativeResult.audio)
         } catch (failure: Throwable) { primary = failure; throw failure }
         finally {
             finishDirectCleanup(primary, markReleaseUnconfirmed, releases = listOf({
@@ -124,19 +131,19 @@ internal class DirectNormalizedAndroidVerifier(
     }
 
     private data class NativeResult(val conservation: DirectRemuxConservation, val tail: DirectVideoTailProof,
-        val positions: Set<DecodePosition>, val durationMillis: Long)
+        val positions: Set<DecodePosition>, val audio: DirectInspectedAudio?)
 
-    private fun decodeTail(extractor: MediaExtractor, source: DirectNativeSampleSource, format: MediaFormat,
+    private fun decodeTail(extractor: MediaExtractor, source: DirectNativeSampleSource, track: Int, format: MediaFormat,
         samples: DirectInspectedSamples, checkpoint: () -> Unit, lease: DirectNormalizedOutputLease): DirectVideoTailProof {
         val plan = samples.tail
         val state = DirectVideoTailState(plan, checkpoint)
-        return withDecoder(extractor, format, checkpoint, lease) { codec ->
+        return withDecoder(extractor, track, format, checkpoint, lease) { codec ->
             val sync = plan.samples.first().identity
             source.seekPreviousSync(sync.presentationTimeUs)
-            if (source.trackIndex != 0 || source.timeUs != sync.presentationTimeUs || source.flags != MediaExtractor.SAMPLE_FLAG_SYNC)
+            if (source.trackIndex != track || source.timeUs != sync.presentationTimeUs || source.flags != MediaExtractor.SAMPLE_FLAG_SYNC)
                 throw SaveFailure(SaveError.INVALID_MEDIA)
             var inputEnded = false
-            val outputFormat = DirectVideoFormatState(samples.conservation.width, samples.conservation.height, checkpoint)
+            val outputFormat = DirectVideoFormatState(plan.conservation.width, plan.conservation.height, checkpoint)
             val progress = DirectDecodeProgress(System.nanoTime(), checkpoint = checkpoint)
             val info = MediaCodec.BufferInfo()
             while (!state.complete) {
@@ -155,7 +162,7 @@ internal class DirectNormalizedAndroidVerifier(
                             inputEnded = true
                         } else {
                             val expected = plan.samples[state.queuedSamples]
-                            val observed = readDirectNativeSample(source, 0, expected.identity.index, plan.clock, input, checkpoint)
+                            val observed = readDirectNativeSample(source, track, expected.identity.index, plan.clock, input, checkpoint)
                             val native = DirectNativeSample(observed.identity, observed.nativeBytes)
                             state.requireNextInput(native)
                             directNativeCall { codec.queueInputBuffer(index, 0, observed.nativeBytes,
@@ -183,9 +190,9 @@ internal class DirectNormalizedAndroidVerifier(
     }
 
     /** Genuine existing beginning/middle/end range checks, with normalized-only strict input policy. */
-    private fun decodePositions(extractor: MediaExtractor, source: DirectNativeSampleSource, format: MediaFormat,
+    private fun decodePositions(extractor: MediaExtractor, source: DirectNativeSampleSource, track: Int, format: MediaFormat,
         profile: MovProfile, checkpoint: () -> Unit, lease: DirectNormalizedOutputLease): Set<DecodePosition> =
-        withDecoder(extractor, format, checkpoint, lease) { codec ->
+        withDecoder(extractor, track, format, checkpoint, lease) { codec ->
             val proven = linkedSetOf<DecodePosition>()
             val duration = profile.clock.endpoint.minimumUs
             for ((position, target) in DecodePosition.entries.zip(directSampleTimes(duration).asIterable())) {
@@ -193,7 +200,7 @@ internal class DirectNormalizedAndroidVerifier(
                 if (proven.isNotEmpty()) directNativeCall { codec.flush() }
                 source.seekPreviousSync(target)
                 val firstIndex = profile.samples.binarySearchBy(source.timeUs) { it.presentationTimeUs }
-                if (firstIndex < 0 || source.trackIndex != 0 || source.flags != MediaExtractor.SAMPLE_FLAG_SYNC ||
+                if (firstIndex < 0 || source.trackIndex != track || source.flags != MediaExtractor.SAMPLE_FLAG_SYNC ||
                     !profile.samples[firstIndex].sync) throw SaveFailure(SaveError.INVALID_MEDIA)
                 val tolerance = minOf(1_000_000L, maxOf(100_000L, duration / 10))
                 val outputFormat = DirectVideoFormatState(profile.width, profile.height, checkpoint)
@@ -219,7 +226,7 @@ internal class DirectNormalizedAndroidVerifier(
                                 inputEnded = true
                             } else {
                                 if (queued >= 4096) throw SaveFailure(SaveError.VERIFICATION_UNAVAILABLE)
-                                val observed = readDirectNativeSample(source, 0, next.toLong(), profile.clock, input, checkpoint)
+                                val observed = readDirectNativeSample(source, track, next.toLong(), profile.clock, input, checkpoint)
                                 if (observed.nativeBytes > DIRECT_TAIL_BYTES - queuedBytes)
                                     throw SaveFailure(SaveError.VERIFICATION_UNAVAILABLE)
                                 directNativeCall { codec.queueInputBuffer(index, 0, observed.nativeBytes,
@@ -256,7 +263,112 @@ internal class DirectNormalizedAndroidVerifier(
             proven
         }
 
-    private fun <T> withDecoder(extractor: MediaExtractor, format: MediaFormat, checkpoint: () -> Unit,
+    /**
+     * One fresh synchronous AAC session on the existing native owner and fixed FD. Complete PCM is
+     * measured under trusted platform elementary interpretation; no per-AU attribution is claimed.
+     */
+    private fun decodeAudio(extractor: MediaExtractor, source: DirectNativeSampleSource,
+        input: FixedDirectOutputInput, track: Int, profile: MovProfile,
+        configuration: DirectMovAacConfiguration, checkpoint: () -> Unit,
+        lease: DirectNormalizedOutputLease): DirectInspectedAudio {
+        val raw = profile.audio ?: throw SaveFailure(SaveError.INVALID_MEDIA)
+        val expected = profile.conservation.audio ?: throw SaveFailure(SaveError.INVALID_MEDIA)
+        val accounting = DirectAudioPcmAccounting(expected, raw.clock, configuration.channelCount, checkpoint)
+        val accumulator = DirectMovSampleAccumulator(raw.clock, configuration.sha256, checkpoint)
+        var decoder: MediaCodec? = null
+        var started = false
+        var selected = false
+        var primary: Throwable? = null
+        try {
+            checkpoint(); input.checkIdentity()
+            directNativeCall { extractor.selectTrack(track) }; selected = true
+            source.seekPreviousSync(0)
+            if (source.trackIndex != track || source.timeUs != 0L || source.flags != MediaExtractor.SAMPLE_FLAG_SYNC)
+                throw SaveFailure(SaveError.INVALID_MEDIA)
+            val codec = directNativeCall { MediaCodec.createDecoderByType("audio/mp4a-latm") }.also { decoder = it }
+            val format = directNativeCall {
+                MediaFormat.createAudioFormat("audio/mp4a-latm", configuration.sampleRate, configuration.channelCount).apply {
+                    setByteBuffer("csd-0", ByteBuffer.wrap(configuration.asc))
+                    setInteger(MediaFormat.KEY_AAC_PROFILE, 2)
+                    setInteger(MediaFormat.KEY_PCM_ENCODING, 2) // Request PCM16; output must independently prove it.
+                }
+            }
+            directNativeCall { codec.configure(format, null, null, 0) }
+            directNativeCall { codec.start() }; started = true
+            val progress = DirectDecodeProgress(System.nanoTime(), checkpoint = checkpoint)
+            val info = MediaCodec.BufferInfo()
+            var next = 0
+            var inputEnded = false
+            var outputEnded = false
+            var observedTrack: DirectTrackConservation? = null
+            while (!outputEnded) {
+                checkpoint(); input.checkIdentity(); progress.check(System.nanoTime())
+                if (!inputEnded) {
+                    val index = directNativeCall { codec.dequeueInputBuffer(10_000) }
+                    if (index >= 0) {
+                        checkpoint()
+                        val buffer = directNativeCall { codec.getInputBuffer(index) }
+                            ?: throw SaveFailure(SaveError.VERIFICATION_UNAVAILABLE)
+                        if (next == raw.samples.size) {
+                            requireDirectEof(source, buffer, checkpoint)
+                            val observed = directRawScan { accumulator.finish() }
+                            if (observed.track != expected || observed.precedingVideoSync != null)
+                                throw SaveFailure(SaveError.INVALID_MEDIA)
+                            observedTrack = observed.track
+                            directNativeCall { codec.queueInputBuffer(index, 0, 0, raw.clock.endpoint.minimumUs,
+                                MediaCodec.BUFFER_FLAG_END_OF_STREAM) }
+                            accounting.inputEndOfStream()
+                            inputEnded = true
+                        } else {
+                            val observed = readDirectNativeAacSample(source, track, next.toLong(), input,
+                                profile, buffer, checkpoint)
+                            val identity = directRawScan { accumulator.append(observed.canonical,
+                                observed.identity.presentationTimeUs, observed.identity.flags) }
+                            if (identity != observed.identity) throw SaveFailure(SaveError.INVALID_MEDIA)
+                            val native = DirectNativeSample(identity, observed.nativeBytes)
+                            queueDirectAudioInput(native, accounting) {
+                                codec.queueInputBuffer(index, 0, observed.nativeBytes, identity.presentationTimeUs, 0)
+                            }
+                            next++
+                            source.advance()
+                        }
+                        progress.madeProgress(System.nanoTime())
+                    } else if (index != MediaCodec.INFO_TRY_AGAIN_LATER) {
+                        throw SaveFailure(SaveError.VERIFICATION_UNAVAILABLE)
+                    }
+                }
+                val index = directNativeCall { codec.dequeueOutputBuffer(info, 10_000) }
+                when {
+                    index == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED -> {
+                        val actual = directNativeCall { directDecodedAudioFormat(codec.outputFormat) }
+                        requireDirectPcmFormat(actual, configuration.sampleRate, configuration.channelCount)
+                    }
+                    index == MediaCodec.INFO_TRY_AGAIN_LATER || index == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED -> Unit
+                    index >= 0 -> withDirectReturnedOutputBuffer({ codec.releaseOutputBuffer(index, false) }) {
+                        checkpoint()
+                        val flags = directAudioOutputFlags(info.flags)
+                        val actual = directNativeCall { directDecodedAudioFormat(codec.getOutputFormat(index)) }
+                        requireDirectPcmFormat(actual, configuration.sampleRate, configuration.channelCount)
+                        val buffer = directNativeCall { codec.getOutputBuffer(index) }
+                        if (accounting.output(buffer, info.offset, info.size, info.presentationTimeUs,
+                                actual.mime, actual.sampleRate, actual.channelCount, actual.signedPcm16,
+                                flags.codecConfig, flags.endOfStream)) progress.madeProgress(System.nanoTime())
+                        if (flags.endOfStream) outputEnded = true
+                    }
+                    else -> throw SaveFailure(SaveError.VERIFICATION_UNAVAILABLE)
+                }
+            }
+            checkpoint(); input.checkIdentity()
+            return DirectInspectedAudio(observedTrack ?: throw SaveFailure(SaveError.INVALID_MEDIA),
+                configuration, accounting.finish())
+        } catch (failure: Throwable) { primary = failure; throw failure }
+        finally {
+            finishDirectCleanup(primary, { latch(lease) }, stop = { if (started) decoder?.stop() },
+                releases = listOf({ decoder?.release() }), after = { if (selected) extractor.unselectTrack(track) })
+        }
+    }
+
+    private fun <T> withDecoder(extractor: MediaExtractor, track: Int, format: MediaFormat, checkpoint: () -> Unit,
         lease: DirectNormalizedOutputLease, action: (MediaCodec) -> T): T {
         var decoder: MediaCodec? = null
         var started = false
@@ -264,7 +376,7 @@ internal class DirectNormalizedAndroidVerifier(
         var primary: Throwable? = null
         try {
             checkpoint()
-            directNativeCall { extractor.selectTrack(0) }; selected = true
+            directNativeCall { extractor.selectTrack(track) }; selected = true
             val codec = directNativeCall { MediaCodec.createDecoderByType("video/avc") }.also { decoder = it }
             directNativeCall { codec.configure(format, null, null, 0) }
             directNativeCall { codec.start() }; started = true
@@ -273,7 +385,7 @@ internal class DirectNormalizedAndroidVerifier(
         } catch (failure: Throwable) { primary = failure; throw failure }
         finally {
             finishDirectCleanup(primary, { latch(lease) }, stop = { if (started) decoder?.stop() },
-                releases = listOf({ decoder?.release() }), after = { if (selected) extractor.unselectTrack(0) })
+                releases = listOf({ decoder?.release() }), after = { if (selected) extractor.unselectTrack(track) })
         }
     }
 
@@ -354,3 +466,24 @@ private fun directDecodedFormat(actual: MediaFormat): DirectDecodedVideoFormat {
 
 private fun directSampleTimes(durationUs: Long): LongArray = longArrayOf(0, durationUs / 2,
     (durationUs - minOf(1_000_000, durationUs / 10)).coerceAtLeast(0))
+
+/** CSD and optional native hints are checked before constructing a minimal no-trim decoder format. */
+private fun nativeAudioFormat(extractor: MediaExtractor, format: MediaFormat): DirectNativeAudioFormat {
+    fun optional(key: String): Int? = if (format.containsKey(key)) format.getInteger(key) else null
+    val keys = format.keys
+    val buffer = format.getByteBuffer("csd-0") ?: throw SaveFailure(SaveError.VERIFICATION_UNAVAILABLE)
+    return DirectNativeAudioFormat(format.getString(MediaFormat.KEY_MIME).orEmpty(),
+        format.getInteger(MediaFormat.KEY_SAMPLE_RATE), format.getInteger(MediaFormat.KEY_CHANNEL_COUNT),
+        if (format.containsKey(MediaFormat.KEY_DURATION)) format.getLong(MediaFormat.KEY_DURATION) else 0,
+        directAudioInitializationData(listOf(buffer)), keys.filter { it.startsWith("csd-") }.toSet() != setOf("csd-0"),
+        optional(MediaFormat.KEY_AAC_PROFILE), optional(MediaFormat.KEY_PROFILE), optional(MediaFormat.KEY_IS_ADTS),
+        optional(MediaFormat.KEY_ENCODER_DELAY), optional(MediaFormat.KEY_ENCODER_PADDING),
+        !extractor.psshInfo.isNullOrEmpty() || keys.any { it.startsWith("crypto-") } ||
+            directExplicitEncryptionFlag(format.containsKey("is-encrypted")) { format.getInteger("is-encrypted") })
+}
+
+private fun directDecodedAudioFormat(actual: MediaFormat): DirectDecodedAudioFormat = DirectDecodedAudioFormat(
+    actual.getString(MediaFormat.KEY_MIME).orEmpty(), actual.getInteger(MediaFormat.KEY_SAMPLE_RATE),
+    actual.getInteger(MediaFormat.KEY_CHANNEL_COUNT),
+    directSignedPcm16(actual.containsKey(MediaFormat.KEY_PCM_ENCODING)) { actual.getInteger(MediaFormat.KEY_PCM_ENCODING) },
+)

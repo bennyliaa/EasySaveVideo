@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.SystemClock
+import com.easysavevideo.app.browser.privacy.PrivateCaptureDisposition
 import com.easysavevideo.app.save.storage.AndroidSaveStorage
 import com.easysavevideo.core.model.OperationContext
 import com.easysavevideo.recording.*
@@ -31,6 +32,7 @@ internal class AndroidRecordSavePort(
     @Volatile private var session: AndroidRecordingSession? = null
     @Volatile private var request: RecordingRequest? = null
     @Volatile private var serviceRequestId: String? = null
+    @Volatile private var privateBinding: PrivateRecordingNativeBinding? = null
     val isDraining: Boolean get() = lease.releaseUnconfirmed
     val nativeOccupied: Boolean get() = lease.occupied
     override fun availability() = SaveMethodAvailability(true, null)
@@ -39,19 +41,25 @@ internal class AndroidRecordSavePort(
     private fun now() = SystemClock.elapsedRealtimeNanos() / 1_000
     private fun publish() = controller.snapshot().also(changed)
 
-    @Synchronized fun prepare(descriptor: CaptureDescriptor, audioPermissionGranted: Boolean): Boolean {
-        if (lease.occupied) return false
+    @Synchronized fun prepare(descriptor: CaptureDescriptor, audioPermissionGranted: Boolean,
+        privateBinding: PrivateRecordingNativeBinding? = null): Boolean {
+        if (lease.occupied || this.privateBinding?.hasUndrainedOwner == true || (privateBinding != null &&
+                (privateBinding.descriptor != descriptor || !privateBinding.isReservationOpen))) return false
+        // Controller duplicates cannot replace an already-frozen private/ordinary owner binding.
+        if (request?.descriptor == descriptor && this.privateBinding !== privateBinding &&
+            (this.privateBinding != null || privateBinding != null)) return false
         val next = RecordingRequest(descriptor.sessionId, descriptor.sessionId, descriptor)
         val result = control { controller.start(next, now(), canRecord()) }
         if (!result.accepted) return false
         request = next
+        this.privateBinding = privateBinding
         control { controller.userConfirmed(descriptor.session, now(), audioPermissionGranted) }
         publish()
         return true
     }
     @Synchronized fun admitForeground(requestId: String): Boolean {
         val owned = request?.takeIf { it.requestId == requestId } ?: return false
-        if (!canRecord() || !ProjectionGrantHandoff.contains(requestId)) return false
+        if (!canRecord() || privateBinding?.isStopRequested == true || !ProjectionGrantHandoff.contains(requestId)) return false
         if (controller.snapshot().state == RecordingState.AWAITING_AUDIO_PERMISSION)
             control { controller.audioPermissionResult(owned.descriptor.session, now(), true) }
         val result = control { controller.consentResult(owned.descriptor.session, now(), true, canRecord()) }
@@ -60,16 +68,21 @@ internal class AndroidRecordSavePort(
         publish()
         return true
     }
-    @Synchronized fun denied(requestId: String, error: RecordingError = RecordingError.CONSENT_DENIED) {
-        val owned = request?.takeIf { it.requestId == requestId } ?: return
-        ProjectionGrantHandoff.discard(requestId)
-        if (serviceRequestId == requestId) serviceRequestId = null
-        if (error == RecordingError.AUDIO_PERMISSION_DENIED && controller.snapshot().state == RecordingState.AWAITING_AUDIO_PERMISSION)
-            control { controller.audioPermissionResult(owned.descriptor.session, now(), false) }
-        else control { controller.failed(owned.descriptor.session, now(), error) }
-        session?.cancel()
-        if (!lease.occupied) control { controller.releaseConfirmed(owned.descriptor.session, now()) }
-        publish()
+    fun denied(requestId: String, error: RecordingError = RecordingError.CONSENT_DENIED) {
+        val binding = synchronized(this) {
+            val owned = request?.takeIf { it.requestId == requestId } ?: return
+            privateBinding?.requestStop(PrivateCaptureDisposition.DISCARD_UNPUBLISHED_OUTPUT)
+            ProjectionGrantHandoff.discard(requestId)
+            if (serviceRequestId == requestId) serviceRequestId = null
+            if (error == RecordingError.AUDIO_PERMISSION_DENIED && controller.snapshot().state == RecordingState.AWAITING_AUDIO_PERMISSION)
+                control { controller.audioPermissionResult(owned.descriptor.session, now(), false) }
+            else control { controller.failed(owned.descriptor.session, now(), error) }
+            session?.cancel()
+            if (!lease.occupied) control { controller.releaseConfirmed(owned.descriptor.session, now()) }
+            publish()
+            privateBinding
+        }
+        binding?.closeNeverQueued()
     }
     fun foregroundLost(requestId: String) {
         if (serviceRequestId == requestId) serviceRequestId = null
@@ -91,26 +104,43 @@ internal class AndroidRecordSavePort(
         return publish()
     }
     override fun stopAndSave(requestId: String) = stop(requestId, RecordingStopReason.USER_STOP)
-    @Synchronized fun stop(requestId: String, reason: RecordingStopReason): RecordingSnapshot? {
-        val owned = request?.takeIf { it.requestId == requestId } ?: return null
-        control { controller.stop(owned.descriptor.session, now(), reason) }
-        session?.stop(reason)
-        return publish()
+    fun stop(requestId: String, reason: RecordingStopReason): RecordingSnapshot? {
+        val result = synchronized(this) {
+            val owned = request?.takeIf { it.requestId == requestId } ?: return null
+            privateBinding?.requestStop(PrivateCaptureDisposition.KEEP_VALID_OUTPUT)
+            control { controller.stop(owned.descriptor.session, now(), reason) }
+            session?.stop(reason)
+            publish() to privateBinding
+        }
+        // A never-queued proof is atomic against registration; callbacks are outside this monitor.
+        result.second?.closeNeverQueued()
+        return result.first
     }
-    @Synchronized override fun cancel(requestId: String): RecordingSnapshot? {
-        val owned = request?.takeIf { it.requestId == requestId } ?: return null
-        control { controller.cancel(owned.descriptor.session, now()) }
-        ProjectionGrantHandoff.discard(requestId)
-        session?.cancel()
-        if (!lease.occupied) control { controller.releaseConfirmed(owned.descriptor.session, now()) }
-        return publish()
+    override fun cancel(requestId: String): RecordingSnapshot? {
+        val result = synchronized(this) {
+            val owned = request?.takeIf { it.requestId == requestId } ?: return null
+            privateBinding?.requestStop(PrivateCaptureDisposition.DISCARD_UNPUBLISHED_OUTPUT)
+            control { controller.cancel(owned.descriptor.session, now()) }
+            ProjectionGrantHandoff.discard(requestId)
+            session?.cancel()
+            if (!lease.occupied) control { controller.releaseConfirmed(owned.descriptor.session, now()) }
+            publish() to privateBinding
+        }
+        result.second?.closeNeverQueued()
+        return result.first
     }
     override fun record(requestId: String, descriptor: CaptureDescriptor, artifact: StagingArtifact,
         context: OperationContext, limits: SaveLimits): TransferResult {
         val owned = request?.takeIf { it.requestId == requestId && it.descriptor == descriptor }
             ?: throw SaveFailure(SaveError.INVALID_REQUEST)
         if (serviceRequestId != requestId || !canRecord()) { denied(requestId, RecordingError.CAPTURE_UNAVAILABLE); throw SaveFailure(SaveError.CAPTURE_UNAVAILABLE) }
-        if (!lease.tryAcquire()) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+        val privateCapture = privateBinding
+        if (privateCapture != null && privateCapture.descriptor != descriptor) throw SaveFailure(SaveError.INVALID_REQUEST)
+        val acquired = if (privateCapture == null) lease.tryAcquire() else privateCapture.registerQueued(lease)
+        if (!acquired) {
+            privateCapture?.closeNeverQueued()
+            throw SaveFailure(if (privateCapture != null) SaveError.CAPTURE_UNAVAILABLE else SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+        }
         val resultFence = RecordingResultFence(lease,
             markUnconfirmed = { control { controller.releaseUnconfirmed(descriptor.session, now()) }; publish() },
             markReleased = { control { controller.releaseConfirmed(descriptor.session, now()) }; publish() })
@@ -120,21 +150,39 @@ internal class AndroidRecordSavePort(
             native.submit<RecordingOutcome> {
                 var projection: MediaProjection? = null
                 var delegated = false
+                var projectionAcquisitionUnconfirmed = false
                 try {
                     if (!lease.started()) throw RecordingFailure(RecordingError.CANCELLED)
+                    privateCapture?.ownerStarted()
+                    privateCapture?.requireStartAllowed(descriptor)
                     if (resultFence.isAbandoned || context.cancelToken.isCancelled) throw RecordingFailure(RecordingError.CANCELLED)
                     if (serviceRequestId != requestId || !canRecord() || controller.snapshot().state in
                         setOf(RecordingState.CANCELLED, RecordingState.CANCELLING, RecordingState.FAILED, RecordingState.RECOVERY_REQUIRED))
                         throw RecordingFailure(RecordingError.CANCELLED)
+                    privateCapture?.requireStartAllowed(descriptor)
                     val grant = ProjectionGrantHandoff.take(requestId) ?: throw RecordingFailure(RecordingError.CONSENT_DENIED)
-                    projection = this.context.getSystemService(MediaProjectionManager::class.java)
-                        .getMediaProjection(grant.resultCode, grant.data)
-                        ?: throw RecordingFailure(RecordingError.CAPTURE_UNAVAILABLE)
+                    val manager = this.context.getSystemService(MediaProjectionManager::class.java)
+                    privateCapture?.requireStartAllowed(descriptor)
+                    projectionAcquisitionUnconfirmed = privateCapture != null
+                    projection = manager.getMediaProjection(grant.resultCode, grant.data)
+                    projectionAcquisitionUnconfirmed = false
+                    if (projection == null) throw RecordingFailure(RecordingError.CAPTURE_UNAVAILABLE)
+                    privateCapture?.requireStartAllowed(descriptor)
                     val capture = AndroidRecordingSession(this.context, projection, descriptor,
                         recordingLimits.copy(maxFileBytes = minOf(recordingLimits.maxFileBytes, limits.maxArtifactBytes)), lease,
                         openWriter = { storage.openStaging(artifact, false) },
                         retainNativeWriter = { storage.retainNativeWriter(artifact) },
                         availableBytes = { storage.availableBytes(artifact) },
+                        privateCapture = privateCapture,
+                        onStopRequested = { reason ->
+                            // Immediate metadata only, including native system/resource stops.
+                            // Cleanup/lease release remains exclusively with the native owner.
+                            control {
+                                if (reason == RecordingStopReason.USER_CANCELLED) controller.cancel(descriptor.session, now())
+                                else controller.stop(descriptor.session, now(), reason)
+                            }
+                            publish()
+                        },
                         onProgress = { progress ->
                             if (!resultFence.isAbandoned) {
                                 control { controller.progress(descriptor.session, now(), progress.state, progress.audioStatus,
@@ -147,21 +195,25 @@ internal class AndroidRecordSavePort(
                     if (resultFence.isAbandoned || context.cancelToken.isCancelled || current.state == RecordingState.CANCELLING ||
                         current.state == RecordingState.CANCELLED) capture.cancel()
                     else if (current.state == RecordingState.STOPPING) capture.stop(current.stopReason ?: RecordingStopReason.USER_STOP)
+                    privateCapture?.requireStartAllowed(descriptor)
                     delegated = true
                     capture.run()
                 } finally {
                     if (!delegated) {
-                        var released = true
+                        var released = !projectionAcquisitionUnconfirmed
                         try { projection?.stop() } catch (_: RuntimeException) { released = false }
-                        if (!released) projection?.let(lease::keepAlive)
+                        if (!released) lease.keepAlive(projection ?: privateCapture ?: this)
                         lease.released(released)
                     }
+                    // Actual cleanup has returned. Future/session/service state is not release evidence.
+                    privateCapture?.ownerReleased(!lease.occupied)
                     session = null
                     resultFence.ownerFinished()
                 }
             }
         } catch (_: java.util.concurrent.RejectedExecutionException) {
-            lease.rejectQueued(); denied(requestId, RecordingError.CAPTURE_UNAVAILABLE)
+            if (privateCapture == null) lease.rejectQueued() else privateCapture.queueRejected()
+            denied(requestId, RecordingError.CAPTURE_UNAVAILABLE)
             throw SaveFailure(SaveError.CAPTURE_UNAVAILABLE)
         }
         try {

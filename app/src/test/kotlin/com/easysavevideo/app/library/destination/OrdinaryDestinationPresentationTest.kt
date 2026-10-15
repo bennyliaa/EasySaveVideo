@@ -243,7 +243,8 @@ class OrdinaryDestinationPresentationTest {
         val reusedKinds = emitted.groupingBy { it }.eachCount().filterValues { it > 1 }
         assertEquals(mapOf("LOCATION_UNAVAILABLE" to 3, "REMEMBERED_FOLDER_REQUIRED" to 2), reusedKinds)
         assertEquals(OrdinaryDestinationNoticeCode.entries.map { it.name }.toSet(), emitted.toSet())
-        assertTrue(runtime.contains("var notice by mutableStateOf<OrdinaryDestinationNoticeCode?>(null); private set"))
+        assertTrue(runtime.contains("private var noticePresentation by mutableStateOf<NoticePresentation?>(null)"))
+        assertTrue(runtime.contains("private set(value) { noticePresentation = value?.let(::NoticePresentation) }"))
         assertEquals(4, Regex("notice = null").findAll(runtime).count())
         assertTrue(runtime.contains("fun clearNotice() { requireMain(); notice = null }"))
         assertFalse(Regex("[\\u4e00-\\u9fff]").containsMatchIn(runtime + policy + mapper + ui))
@@ -260,7 +261,7 @@ class OrdinaryDestinationPresentationTest {
             .forEach { assertFalse(it, (runtime + policy + mapper + ui).contains(it)) }
         // The central entry remembers only callback authority, never localized display text.
         assertEquals(1, Regex("remember\\(").findAll(ui).count())
-        val remembered = ui.substringAfter("remember(runtime, actionScopeKey) {").substringBefore("DisposableEffect")
+        val remembered = ui.substringAfter("remember(runtime, actionScopeKey, canAct) {").substringBefore("DisposableEffect")
         assertTrue(remembered.contains("DestinationSettingsActions("))
         assertFalse(remembered.contains("stringResource"))
         assertTrue(ui.contains("onDispose { actions.close() }"))

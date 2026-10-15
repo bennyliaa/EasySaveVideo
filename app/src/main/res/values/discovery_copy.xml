@@ -100,4 +100,7 @@
     <string name="discovery_page_waiting">Looking for the next page. Your current page stays visible.</string>
     <string name="discovery_page_cancel">Stay on this page</string>
     <string name="discovery_pages_exhausted">No more results from the current sources. Try another query or source.</string>
+    <string name="discovery_thumbnail_image">Video preview</string>
+    <string name="discovery_thumbnail_loading">Loading preview</string>
+    <string name="discovery_thumbnail_failed">Preview unavailable</string>
 </resources>

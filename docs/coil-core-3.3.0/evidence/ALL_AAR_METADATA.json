@@ -1,0 +1,416 @@
+[
+  {
+    "coordinate": "androidx.activity:activity-compose:1.10.1",
+    "sha256": "f89af1b26ccc834634387c857c2dd4f4654d37650890039c527c2fed07db6a61",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.activity.compose\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.activity:activity-ktx:1.10.1",
+    "sha256": "f396f58dbd772c065b873696b74a3d4d087554b3766280e63b49b25dbb53ab16",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.activity.ktx\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.activity:activity:1.10.1",
+    "sha256": "b62b528c917de9be497eb6f88830197c20e9d21267c3916c613492e5ee837d4d",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright 2018 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.activity\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.annotation:annotation-experimental:1.4.1",
+    "sha256": "6bd4c7c7476f8260cd3bdbb81183583e93fc9f790c27dea7dc314181cbf87aa0",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.annotation.experimental\" >\n\n    <uses-sdk android:minSdkVersion=\"19\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.appcompat:appcompat-resources:1.7.1",
+    "sha256": "8e2db31224ca53b108c784da2b361959062716d416b210cfef3d5a3828306df0",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.appcompat.resources\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.arch.core:core-runtime:2.2.0",
+    "sha256": "a1be5e0caa2b07623862af6ae21b3ab0718123245184d0e30dea81b53f990a47",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=33\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  ~ Copyright (C) 2017 The Android Open Source Project\n  ~\n  ~ Licensed under the Apache License, Version 2.0 (the \"License\");\n  ~ you may not use this file except in compliance with the License.\n  ~ You may obtain a copy of the License at\n  ~\n  ~      http://www.apache.org/licenses/LICENSE-2.0\n  ~\n  ~ Unless required by applicable law or agreed to in writing, software\n  ~ distributed under the License is distributed on an \"AS IS\" BASIS,\n  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  ~ See the License for the specific language governing permissions and\n  ~ limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.arch.core\" >\n\n    <uses-sdk android:minSdkVersion=\"14\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.autofill:autofill:1.0.0",
+    "sha256": "c9468f56e05006ea151a426c54957cd0799b8b83a579d2846dd22061f33e5ecd",
+    "aar_metadata": null,
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright 2019 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.autofill\" >\n\n    <uses-sdk\n        android:minSdkVersion=\"14\"\n        android:targetSdkVersion=\"28\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.animation:animation-android:1.8.3",
+    "sha256": "01c7ccea4579bd2096f3a01dea58a7891900e96db8c80e127be1c44c78a8f7f9",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.animation\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.animation:animation-core-android:1.8.3",
+    "sha256": "24a964ca12d87a5e0cb15a084ec80a7da5588e49ed2a7195c4a640916bc08917",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.animation.core\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.foundation:foundation-android:1.8.3",
+    "sha256": "ddc815d857480c018c960ee73f1ee5bbebd012b2562864672c3a1ac7304278e5",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.foundation\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.foundation:foundation-layout-android:1.8.3",
+    "sha256": "053fc28015c454bf68a2ebf298c031ad6329b5628ae4a8d2370831be1dc4320d",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.foundation.layout\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.material3:material3-android:1.3.2",
+    "sha256": "847666d9fc2d4348b6ec76a6a6094f14fb60de631ee4f6992004ec71a4f44336",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  Copyright 2021 The Android Open Source Project\n\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.material3\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.material3:material3-window-size-class-android:1.3.2",
+    "sha256": "f4f44a2841318b6cef325d16ad6522f0dd489f50f4f4cfc0faf4cd0ddc06c523",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.material3.windowsizeclass\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.material:material-icons-core-android:1.7.8",
+    "sha256": "332c06b25e662cc417fb087e76b8faa5cb249f4992ffa3360084a3d4ab882284",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.material.icons\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.material:material-ripple-android:1.8.3",
+    "sha256": "5709ee08c1236f0a0575bf015cf18c302c2b55ba2bf3e0cbdd157cee7cb076bb",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.material.ripple\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.runtime:runtime-android:1.8.3",
+    "sha256": "038732e3ef283b8a974b7d79e2eafd91e2d0dd8e123644ecc5096c06ccb515ef",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.runtime\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.runtime:runtime-saveable-android:1.8.3",
+    "sha256": "ef81bbff631ffc2903df746bca008f1dee9e32ef923472d46be3e50384b02ea7",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.runtime.saveable\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.ui:ui-android:1.8.3",
+    "sha256": "b4ac5be52e40d0c58003eea027f544264cada8ac94b17e8cf5b0acd2666fcd35",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.ui\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.ui:ui-geometry-android:1.8.3",
+    "sha256": "3b6b6a3871ce3a31565db6e6832556a0d1da555f5c8449ff937df4f509e06edb",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.ui.geometry\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.ui:ui-graphics-android:1.8.3",
+    "sha256": "f247cdeda5e98865b9d9465fda28ae44418191cb62a82678e2df3e48615ccf18",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.ui.graphics\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.ui:ui-text-android:1.8.3",
+    "sha256": "3d8191b48686e48a843b4902143bd339e6bfa6a037c485cf281b83c4c4c72a93",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.ui.text\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.ui:ui-unit-android:1.8.3",
+    "sha256": "1bc7011b35339e016b61787e6ef854817b11d35ea3a70b47142d7d3336e6f386",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.ui.unit\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.compose.ui:ui-util-android:1.8.3",
+    "sha256": "123818b76aa874db83cc9e842dd9fa14eae4c5f82bec1d7336bd354d98651dfe",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.compose.ui.util\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.core:core-ktx:1.15.0",
+    "sha256": "c72c97ff4a32308bcaf3061eea5ddf33455ce413cee4aa1d5c82440c5759d4bc",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.core.ktx\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.core:core-viewtree:1.0.0",
+    "sha256": "dc1b678d58ebcf2bfa1587be68ff826694ce3d221251b9ef30d4d4b36297e6de",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.core.viewtree\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.core:core:1.15.0",
+    "sha256": "432b85a1974076e14b487ece4a28c59a84f1b9efc3fc8be72cd7f05d32055e51",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=35\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2014 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.core\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n    <permission\n        android:name=\"${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\"\n        android:protectionLevel=\"signature\" />\n\n    <uses-permission android:name=\"${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\" />\n\n    <application android:appComponentFactory=\"androidx.core.app.CoreComponentFactory\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.customview:customview-poolingcontainer:1.0.0",
+    "sha256": "3584102fc49bf399c56e3b7be4bfe12000c46112320cd8cf85cc0a8f93f3e752",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=32\nminAndroidGradlePluginVersion=1.0.0\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  Copyright 2021 The Android Open Source Project\n\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.customview.poolingcontainer\" >\n\n    <uses-sdk\n        android:minSdkVersion=\"14\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.emoji2:emoji2:1.4.0",
+    "sha256": "433febd3434a45667176c76a64f3f205ca6335a6b544c5b5d57f25a38a375242",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  Copyright 2021 The Android Open Source Project\n\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    package=\"androidx.emoji2\" >\n\n    <uses-sdk android:minSdkVersion=\"14\" />\n\n    <application>\n        <provider\n            android:name=\"androidx.startup.InitializationProvider\"\n            android:authorities=\"${applicationId}.androidx-startup\"\n            android:exported=\"false\"\n            tools:node=\"merge\" >\n            <meta-data\n                android:name=\"androidx.emoji2.text.EmojiCompatInitializer\"\n                android:value=\"androidx.startup\" />\n        </provider>\n    </application>\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.exifinterface:exifinterface:1.4.1",
+    "sha256": "17e17a6b86bb54074d3a7ecfa695ab920eaff4cf667a8371ed82e377580cfcf6",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.exifinterface\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.graphics:graphics-path:1.0.1",
+    "sha256": "8ca4032b6d79b351f0b59ad4b580eddbb9423e1652f7c958830687f1eee2ec03",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.graphics.path\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.interpolator:interpolator:1.0.0",
+    "sha256": "33193135a64fe21fa2c35eec6688f1a76e512606c0fc83dc1b689e37add7732a",
+    "aar_metadata": null,
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2014 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.interpolator\" >\n\n    <uses-sdk android:minSdkVersion=\"14\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.lifecycle:lifecycle-livedata-core:2.8.7",
+    "sha256": "d786e5e6f79b8fab026f09a2d4ae3de1d72875f7645a6b7be48f1d9ab384734b",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  ~ Copyright 2017 The Android Open Source Project\n  ~\n  ~ Licensed under the Apache License, Version 2.0 (the \"License\");\n  ~ you may not use this file except in compliance with the License.\n  ~ You may obtain a copy of the License at\n  ~\n  ~      http://www.apache.org/licenses/LICENSE-2.0\n  ~\n  ~ Unless required by applicable law or agreed to in writing, software\n  ~ distributed under the License is distributed on an \"AS IS\" BASIS,\n  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  ~ See the License for the specific language governing permissions and\n  ~ limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.lifecycle.livedata.core\" >\n\n    <uses-sdk android:minSdkVersion=\"19\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.lifecycle:lifecycle-process:2.8.7",
+    "sha256": "62e076a2de2d650a23bf79495419f8a4357ad8e9b28d801318d0fcdd6e35fa87",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  ~ Copyright 2018 The Android Open Source Project\n  ~\n  ~ Licensed under the Apache License, Version 2.0 (the \"License\");\n  ~ you may not use this file except in compliance with the License.\n  ~ You may obtain a copy of the License at\n  ~\n  ~      http://www.apache.org/licenses/LICENSE-2.0\n  ~\n  ~ Unless required by applicable law or agreed to in writing, software\n  ~ distributed under the License is distributed on an \"AS IS\" BASIS,\n  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  ~ See the License for the specific language governing permissions and\n  ~ limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    package=\"androidx.lifecycle.process\" >\n\n    <uses-sdk android:minSdkVersion=\"19\" />\n\n    <application>\n        <provider\n            android:name=\"androidx.startup.InitializationProvider\"\n            android:authorities=\"${applicationId}.androidx-startup\"\n            android:exported=\"false\"\n            tools:node=\"merge\" >\n            <meta-data\n                android:name=\"androidx.lifecycle.ProcessLifecycleInitializer\"\n                android:value=\"androidx.startup\" />\n        </provider>\n    </application>\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.lifecycle:lifecycle-runtime-android:2.8.7",
+    "sha256": "b8eb997dd434d70eb97cbd6d1395b6337c6771717c7acd59f11c0853f3860284",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  Copyright 2019 The Android Open Source Project\n\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.lifecycle.runtime\" >\n\n    <uses-sdk android:minSdkVersion=\"19\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7",
+    "sha256": "80bf0a8fe9a79b93a318832bc36900f3ab8bd5931ff9ca0ecd3087100e1f07d8",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.lifecycle.runtime.compose\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.7",
+    "sha256": "b3d39c5dba5e207ef4c79d491a76500194c5ea6874157f05a15f01792c0cc4e7",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.lifecycle.ktx\" >\n\n    <uses-sdk android:minSdkVersion=\"19\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.lifecycle:lifecycle-viewmodel-android:2.8.7",
+    "sha256": "e7e7043f66b077637563ff564a7fc6cee461d284a0f2485c050a2143abbd8920",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  ~ Copyright 2017 The Android Open Source Project\n  ~\n  ~ Licensed under the Apache License, Version 2.0 (the \"License\");\n  ~ you may not use this file except in compliance with the License.\n  ~ You may obtain a copy of the License at\n  ~\n  ~      http://www.apache.org/licenses/LICENSE-2.0\n  ~\n  ~ Unless required by applicable law or agreed to in writing, software\n  ~ distributed under the License is distributed on an \"AS IS\" BASIS,\n  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  ~ See the License for the specific language governing permissions and\n  ~ limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.lifecycle.viewmodel\" >\n\n    <uses-sdk android:minSdkVersion=\"19\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7",
+    "sha256": "072532de580b03628c212388c9ce2ff066731f28031fb75ebd8505446455e5d1",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.lifecycle.viewmodel.compose\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7",
+    "sha256": "1acebb50df2f0c07f379d5e23a28f7794f70efb2b6c834acebe8c394784ee6d4",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.lifecycle.viewmodel.ktx\" >\n\n    <uses-sdk android:minSdkVersion=\"19\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7",
+    "sha256": "646f2a42d2884b02308fb19837089e2669835fe21ca6a5b60666d5eb94d081dd",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  ~ Copyright 2018 The Android Open Source Project\n  ~\n  ~ Licensed under the Apache License, Version 2.0 (the \"License\");\n  ~ you may not use this file except in compliance with the License.\n  ~ You may obtain a copy of the License at\n  ~\n  ~      http://www.apache.org/licenses/LICENSE-2.0\n  ~\n  ~ Unless required by applicable law or agreed to in writing, software\n  ~ distributed under the License is distributed on an \"AS IS\" BASIS,\n  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  ~ See the License for the specific language governing permissions and\n  ~ limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.lifecycle.viewmodel.savedstate\" >\n\n    <uses-sdk android:minSdkVersion=\"19\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-common:1.11.1",
+    "sha256": "50813cf219c7c93ed8a32a750891ca6d1280729ecf7a90c49567adacd67ef31b",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2020 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.common\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n    <uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-container:1.11.1",
+    "sha256": "930fca2f018f06f1d08c12599f8c97f31eddbd728edee5de06eb53a882f8fc54",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright 2023 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.container\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-database:1.11.1",
+    "sha256": "520e6f814e42a7d428db187ac073b453c0fcba0f4f5f4edd1cf33fafd2cfb740",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2021 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.database\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-datasource:1.11.1",
+    "sha256": "490fd23c7562a6a1183d63bf854b291ae3a77dce5a151450aa1937148c80c60b",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2021 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.datasource\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-decoder:1.11.1",
+    "sha256": "c3bcd704959026e0d644b0260f9e682a2e26e7357c2cf82d990bcb323f800d49",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2021 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.decoder\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-effect:1.11.1",
+    "sha256": "aacaf7d4cc410ee0e4fe731a1d1b156d22ce263a45bc6bf17a6dbd6f2182f0ab",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright 2022 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.effect\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-exoplayer-hls:1.11.1",
+    "sha256": "bd7aeac8dc60b3ee926eddbe05e29f27dc53c81514cae3271b2edab693f34262",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2017 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.exoplayer.hls\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-exoplayer:1.11.1",
+    "sha256": "588592baec110837c33ce0c82bb76464203e6b0621177bbe5d88779001a6f1ed",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2016 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.exoplayer\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n    <uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />\n    <uses-permission android:name=\"android.permission.WAKE_LOCK\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-extractor:1.11.1",
+    "sha256": "6b2d58d23a0c53425249d8b7c945600019d61a8b404c8fb8cd9ca860c5738508",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2020 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.extractor\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-muxer:1.11.1",
+    "sha256": "f68fa5996882a5f08ea0925463bc56e1c2b20ead3f556dadba24686fc4c979f1",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright 2022 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.muxer\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.media3:media3-transformer:1.11.1",
+    "sha256": "86cef51c2b7602a1bacd0c172e24fdd562b4601b616b56f3a39bb85ae1b46218",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=36\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright 2020 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.media3.transformer\" >\n\n    <uses-sdk android:minSdkVersion=\"23\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.navigation:navigation-common-ktx:2.8.9",
+    "sha256": "aaa35fa240544d1d2ff459c5c31c147637105370a8ef403071ec5ca060029cf4",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.navigation.common.ktx\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.navigation:navigation-common:2.8.9",
+    "sha256": "3541faa3a231c5834149648870e57e3385ce5be31ba659b70ab278319f65b9ff",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  ~ Copyright (C) 2017 The Android Open Source Project\n  ~\n  ~ Licensed under the Apache License, Version 2.0 (the \"License\");\n  ~ you may not use this file except in compliance with the License.\n  ~ You may obtain a copy of the License at\n  ~\n  ~      http://www.apache.org/licenses/LICENSE-2.0\n  ~\n  ~ Unless required by applicable law or agreed to in writing, software\n  ~ distributed under the License is distributed on an \"AS IS\" BASIS,\n  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  ~ See the License for the specific language governing permissions and\n  ~ limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.navigation.common\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.navigation:navigation-compose:2.8.9",
+    "sha256": "d805b7340a2c1794a8baa93d0623ae502e22921679a3aa8422a1a6b855bad4c2",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.navigation.compose\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.navigation:navigation-runtime-ktx:2.8.9",
+    "sha256": "62a9f256528e8505f276f06e5a7bea3ae4b3c56a13aabf54ff69e410750aa3cb",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.navigation.ktx\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.navigation:navigation-runtime:2.8.9",
+    "sha256": "3f24fb9da8786c6c5e356a86d77f63e2ce3473851cfc28d931f15157a0c35a5c",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  ~ Copyright (C) 2017 The Android Open Source Project\n  ~\n  ~ Licensed under the Apache License, Version 2.0 (the \"License\");\n  ~ you may not use this file except in compliance with the License.\n  ~ You may obtain a copy of the License at\n  ~\n  ~      http://www.apache.org/licenses/LICENSE-2.0\n  ~\n  ~ Unless required by applicable law or agreed to in writing, software\n  ~ distributed under the License is distributed on an \"AS IS\" BASIS,\n  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  ~ See the License for the specific language governing permissions and\n  ~ limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.navigation\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.profileinstaller:profileinstaller:1.4.1",
+    "sha256": "b519f9317ded1e2c1c2993038c0692e30da326ca99097d9331ff2d3a5861a428",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  Copyright 2021 The Android Open Source Project\n\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    package=\"androidx.profileinstaller\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n    <application>\n        <provider\n            android:name=\"androidx.startup.InitializationProvider\"\n            android:authorities=\"${applicationId}.androidx-startup\"\n            android:exported=\"false\"\n            tools:node=\"merge\" >\n            <meta-data\n                android:name=\"androidx.profileinstaller.ProfileInstallerInitializer\"\n                android:value=\"androidx.startup\" />\n        </provider>\n\n        <receiver\n            android:name=\"androidx.profileinstaller.ProfileInstallReceiver\"\n            android:directBootAware=\"false\"\n            android:enabled=\"true\"\n            android:exported=\"true\"\n            android:permission=\"android.permission.DUMP\" >\n            <intent-filter>\n                <action android:name=\"androidx.profileinstaller.action.INSTALL_PROFILE\" />\n            </intent-filter>\n            <intent-filter>\n                <action android:name=\"androidx.profileinstaller.action.SKIP_FILE\" />\n            </intent-filter>\n            <intent-filter>\n                <action android:name=\"androidx.profileinstaller.action.SAVE_PROFILE\" />\n            </intent-filter>\n            <intent-filter>\n                <action android:name=\"androidx.profileinstaller.action.BENCHMARK_OPERATION\" />\n            </intent-filter>\n        </receiver>\n    </application>\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.savedstate:savedstate-ktx:1.2.1",
+    "sha256": "8553f87e7136c24ec5243560f48f1c32cba56daa77722f89589a5cafcb8f7894",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=33\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2020 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.savedstate.ktx\" >\n\n    <uses-sdk android:minSdkVersion=\"14\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.savedstate:savedstate:1.2.1",
+    "sha256": "21a7d4bcf6bdb94ad7b9283801529300b4fbb8808ca4f191e0cdce6fd8e4705a",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=33\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright 2018 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.savedstate\" >\n\n    <uses-sdk android:minSdkVersion=\"14\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.startup:startup-runtime:1.1.1",
+    "sha256": "e0a6329a371262fe4c450372b70fdaf33b769ef6917094723787cfce896b1dd3",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=31\nminAndroidGradlePluginVersion=1.0.0\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  ~ Copyright (C) 2020 The Android Open Source Project\n  ~\n  ~ Licensed under the Apache License, Version 2.0 (the \"License\");\n  ~ you may not use this file except in compliance with the License.\n  ~ You may obtain a copy of the License at\n  ~\n  ~      http://www.apache.org/licenses/LICENSE-2.0\n  ~\n  ~ Unless required by applicable law or agreed to in writing, software\n  ~ distributed under the License is distributed on an \"AS IS\" BASIS,\n  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  ~ See the License for the specific language governing permissions and\n  ~ limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    package=\"androidx.startup\" >\n\n    <uses-sdk\n        android:minSdkVersion=\"14\"\n        android:targetSdkVersion=\"31\" />\n\n    <application>\n        <provider\n            android:name=\"androidx.startup.InitializationProvider\"\n            android:authorities=\"${applicationId}.androidx-startup\"\n            android:exported=\"false\"\n            tools:node=\"merge\" />\n    </application>\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.tracing:tracing:1.2.0",
+    "sha256": "6faa90390d1fdbf0adb9a99bf99de67b94c6c6f35aea9510593a9d17973736a2",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=33\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  ~ Copyright (C) 2020 The Android Open Source Project\n  ~\n  ~ Licensed under the Apache License, Version 2.0 (the \"License\");\n  ~ you may not use this file except in compliance with the License.\n  ~ You may obtain a copy of the License at\n  ~\n  ~      http://www.apache.org/licenses/LICENSE-2.0\n  ~\n  ~ Unless required by applicable law or agreed to in writing, software\n  ~ distributed under the License is distributed on an \"AS IS\" BASIS,\n  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  ~ See the License for the specific language governing permissions and\n  ~ limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.tracing\" >\n\n    <uses-sdk android:minSdkVersion=\"14\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.vectordrawable:vectordrawable-animated:1.1.0",
+    "sha256": "76da2c502371d9c38054df5e2b248d00da87809ed058f3363eae87ce5e2403f8",
+    "aar_metadata": null,
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n   Copyright (C) 2015 The Android Open Source Project\n\n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n\n        http://www.apache.org/licenses/LICENSE-2.0\n\n   Unless required by applicable law or agreed to in writing, software\n   distributed under the License is distributed on an \"AS IS\" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n   See the License for the specific language governing permissions and\n   limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.vectordrawable.animated\" >\n\n    <uses-sdk\n        android:minSdkVersion=\"14\"\n        android:targetSdkVersion=\"28\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.vectordrawable:vectordrawable:1.1.0",
+    "sha256": "46fd633ac01b49b7fcabc263bf098c5a8b9e9a69774d234edcca04fb02df8e26",
+    "aar_metadata": null,
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n   Copyright (C) 2015 The Android Open Source Project\n\n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n\n        http://www.apache.org/licenses/LICENSE-2.0\n\n   Unless required by applicable law or agreed to in writing, software\n   distributed under the License is distributed on an \"AS IS\" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n   See the License for the specific language governing permissions and\n   limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.vectordrawable\" >\n\n    <uses-sdk\n        android:minSdkVersion=\"14\"\n        android:targetSdkVersion=\"28\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.versionedparcelable:versionedparcelable:1.1.1",
+    "sha256": "57e8d93260d18d5b9007c9eed3c64ad159de90c8609ebfc74a347cbd514535a4",
+    "aar_metadata": null,
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2018 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.versionedparcelable\" >\n\n    <uses-sdk\n        android:minSdkVersion=\"14\"\n        android:targetSdkVersion=\"28\" />\n\n    <application>\n    </application>\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.webkit:webkit:1.17.1",
+    "sha256": "29dc7a9a32614828c97cf85951eb43c9e455157ab411e5e77d2ca4e72da28a36",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=33\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=7.2.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.webkit\" >\n\n    <uses-sdk android:minSdkVersion=\"24\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.window:window:1.0.0",
+    "sha256": "3212985be4127373ca4d0ea7f8b81a250ae2105e924f7940105d067a0f9ac130",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=31\nminAndroidGradlePluginVersion=1.0.0\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n  Copyright 2020 The Android Open Source Project\n\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.window\" >\n\n    <uses-sdk\n        android:minSdkVersion=\"14\"\n        android:targetSdkVersion=\"31\" />\n\n    <application>\n        <uses-library\n            android:name=\"androidx.window.extensions\"\n            android:required=\"false\" />\n        <uses-library\n            android:name=\"androidx.window.sidecar\"\n            android:required=\"false\" />\n    </application>\n\n</manifest>"
+  },
+  {
+    "coordinate": "io.coil-kt.coil3:coil-core-android:3.3.0",
+    "sha256": "b57fcf001178db5ff84683e7d11818bcda6c115d9d530443d382b3a8b3f6806b",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=1\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"coil3.core\" >\n\n    <uses-sdk android:minSdkVersion=\"21\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.core:core-ktx:1.13.0",
+    "sha256": "59c54e6129e9261c6d810f8eea4a6ee2f4994d8162b1cd9fc88c9c84c92accfc",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.core.ktx\" >\n\n    <uses-sdk android:minSdkVersion=\"19\" />\n\n</manifest>"
+  },
+  {
+    "coordinate": "androidx.core:core:1.13.0",
+    "sha256": "1b96c8eb10c4b40283fdd6e9aa74ffff05fae4f15d54f61ba69d517fcd144695",
+    "aar_metadata": "aarFormatVersion=1.0\naarMetadataVersion=1.0\nminCompileSdk=34\nminCompileSdkExtension=0\nminAndroidGradlePluginVersion=1.0.0\ncoreLibraryDesugaringEnabled=false\n",
+    "manifest_text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!--\n Copyright (C) 2014 The Android Open Source Project\n\n     Licensed under the Apache License, Version 2.0 (the \"License\");\n     you may not use this file except in compliance with the License.\n     You may obtain a copy of the License at\n\n          http://www.apache.org/licenses/LICENSE-2.0\n\n     Unless required by applicable law or agreed to in writing, software\n     distributed under the License is distributed on an \"AS IS\" BASIS,\n     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n     See the License for the specific language governing permissions and\n     limitations under the License.\n-->\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"androidx.core\" >\n\n    <uses-sdk android:minSdkVersion=\"19\" />\n\n    <permission\n        android:name=\"${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\"\n        android:protectionLevel=\"signature\" />\n\n    <uses-permission android:name=\"${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION\" />\n\n    <application android:appComponentFactory=\"androidx.core.app.CoreComponentFactory\" />\n\n</manifest>"
+  }
+]

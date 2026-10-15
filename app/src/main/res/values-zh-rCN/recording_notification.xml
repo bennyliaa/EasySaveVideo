@@ -10,4 +10,5 @@
     <string name="recording_notification_cancelling">正在放弃录制</string>
     <string name="recording_notification_recovery_required">系统资源仍未退出，请在系统中结束应用</string>
     <string name="recording_notification_preparing_or_verifying">正在准备或验证录制</string>
+    <string name="recording_notification_discard">放弃本次录制</string>
 </resources>
