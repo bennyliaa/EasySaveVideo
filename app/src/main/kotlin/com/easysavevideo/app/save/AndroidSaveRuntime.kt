@@ -72,6 +72,20 @@ class AndroidSaveRuntime private constructor(context: Context) {
     private val entitlements = EntitlementManager(BuildEntitlements.source)
     private val leases = RequestContextLeaseStore()
     private lateinit var storage: AndroidSaveStorage
+    private val vaultSourceFactoryLock = Any()
+    private var vaultSourceBridge: com.easysavevideo.app.vault.VaultMediaSourcePort? = null
+    private var vaultSourceStore: com.easysavevideo.app.vault.VaultStorePort? = null
+    @Volatile private var vaultRetirePresentation: ((MediaReadRef, () -> Unit) -> Unit)? = null
+    internal fun vaultMediaSource(store: com.easysavevideo.app.vault.VaultStorePort,
+        retirePresentation: (MediaReadRef, () -> Unit) -> Unit): com.easysavevideo.app.vault.VaultMediaSourcePort = synchronized(vaultSourceFactoryLock) {
+        vaultRetirePresentation = retirePresentation
+        vaultSourceBridge?.also { require(vaultSourceStore === store) }
+            ?: com.easysavevideo.app.save.storage.DeferredVaultLibrarySource {
+                if (!::storage.isInitialized) throw com.easysavevideo.app.vault.VaultOperationException(com.easysavevideo.app.vault.VaultFailure.UNAVAILABLE)
+                storage.vaultMediaSource(store) { ref, acknowledged -> requireNotNull(vaultRetirePresentation)(ref, acknowledged) }
+            }.also { vaultSourceBridge = it; vaultSourceStore = store }
+    }
+
     private lateinit var coordinator: SaveCoordinator
     private lateinit var recorder: AndroidRecordSavePort
     @Volatile private var pendingRecording: CaptureDescriptor? = null

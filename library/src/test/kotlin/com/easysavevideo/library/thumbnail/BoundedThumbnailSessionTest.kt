@@ -201,10 +201,98 @@ class BoundedThumbnailSessionTest {
         assertTrue(h.session.state(item) is ThumbnailState.Ready)
         assertEquals(1,h.work.maxPending)
     }
-    private class Frame(override val width: Int = 256, override val height: Int = 144, private val bytes: Long = 147_456) : ThumbnailFrame {
+    @Test fun sourceRetirementPurgesCachedOlderLogicalRevisionBeforeAck() {
+        val h = Harness(); val item = media("one")
+        h.session.updatePage(listOf(item), true); h.session.request(item); h.drain()
+        var ack = false
+        h.session.retireExact(item.copy(revision = 2).readRef()) {
+            assertTrue(h.decoder.frames.single().closed)
+            assertEquals(0, h.session.retainedBytes)
+            ack = true
+        }
+        assertTrue(ack)
+        h.session.updatePage(listOf(item), true); h.session.request(item)
+        assertTrue(h.work.pending.isEmpty())
+    }
+    @Test fun sourceRetirementWaitsForLateFrameCloseAndActualCompletion() {
+        val h = Harness(); val item = media("one")
+        h.session.updatePage(listOf(item), true); h.session.request(item); h.work.runNext()
+        var ack = false
+        h.session.retireExact(item.readRef()) {
+            assertTrue(h.decoder.frames.single().closed)
+            ack = true
+        }
+        assertFalse(ack)
+        h.ui.timeouts(); assertFalse(ack)
+        h.ui.posts(); assertTrue(ack)
+    }
+    @Test fun sourceRetirementNeverAcknowledgesUnconfirmedNativeRelease() {
+        val h = Harness(); val item = media("one"); h.decoder.uncertain = true
+        h.session.updatePage(listOf(item), true); h.session.request(item)
+        var acknowledgements = 0
+        h.session.retireExact(item.readRef()) { acknowledgements++ }
+        h.session.close(); h.drain()
+        assertFalse(h.session.hasActiveJob)
+        assertTrue(h.session.hasUnconfirmedResources)
+        assertEquals(0, acknowledgements)
+    }
+    @Test fun alreadyUnconfirmedOldSessionCannotClaimRetiredLater() {
+        val h = Harness(); val item = media("one"); h.decoder.uncertain = true
+        h.session.updatePage(listOf(item), true); h.session.request(item); h.drain()
+        h.session.close()
+        var ack = false
+        h.session.retireExact(item.copy(revision = 4).readRef()) { ack = true }
+        assertFalse(ack)
+    }
+    @Test fun retirementDoesNotPurgeDifferentRepresentationGeneration() {
+        val h = Harness(); val item = media("one")
+        h.session.updatePage(listOf(item), true); h.session.request(item); h.drain()
+        var ack = false
+        h.session.retireExact(item.copy(representationGeneration = 2).readRef()) { ack = true }
+        assertTrue(ack); assertFalse(h.decoder.frames.single().closed)
+    }
+    @Test fun retirementDropsExactQueuedWorkWithoutWaitingForOtherSource() {
+        val h = Harness(); val one = media("one"); val two = media("two")
+        h.session.updatePage(listOf(one, two), true); h.session.request(one); h.session.request(two)
+        var ack = false
+        h.session.retireExact(two.readRef()) { ack = true }
+        assertTrue(ack); assertTrue(h.session.hasActiveJob); assertEquals(0, h.session.queuedCount)
+        h.drain(); assertEquals(1, h.decoder.calls)
+    }
+    @Test fun cachedFrameCloseFailureIsStronglyRetainedAndNeverAcknowledged() {
+        val h = Harness(); val item = media("one")
+        h.decoder.nextFrame = { Frame(throwOnClose = true) }
+        h.session.updatePage(listOf(item), true); h.session.request(item); h.drain()
+        var ack = false
+        try { h.session.retireExact(item.readRef()) { ack = true }; fail("Expected close failure") } catch (_: IllegalStateException) { }
+        assertTrue(h.session.hasUnconfirmedResources); assertEquals(1, h.session.retainedCount)
+        try { h.session.close() } catch (_: IllegalStateException) { }
+        assertFalse(ack); assertEquals(1, h.decoder.frames.single().closeCalls)
+    }
+    @Test fun lateFrameCloseFailureIsHeldAfterActualDecoderReleaseWithoutAck() {
+        val h = Harness(); val item = media("one")
+        h.decoder.nextFrame = { Frame(throwOnClose = true) }
+        h.session.updatePage(listOf(item), true); h.session.request(item); h.work.runNext()
+        var ack = false
+        h.session.retireExact(item.readRef()) { ack = true }
+        h.ui.posts(); h.session.close()
+        assertFalse(h.session.hasActiveJob); assertTrue(h.session.hasUnconfirmedResources)
+        assertEquals(1, h.session.retainedCount); assertFalse(ack)
+        assertEquals(1, h.decoder.frames.single().closeCalls)
+    }
+    @Test fun replacementRetirementObserverWaitsForSameActualCompletion() {
+        val h = Harness(); val item = media("one")
+        h.session.updatePage(listOf(item), true); h.session.request(item)
+        var oldAck = false; var newAck = false
+        h.session.retireExact(item.readRef()) { oldAck = true }
+        h.session.retireExact(item.copy(revision = 2).readRef()) { newAck = true }
+        assertFalse(newAck); h.drain()
+        assertFalse(oldAck); assertTrue(newAck)
+    }
+    private class Frame(override val width: Int = 256, override val height: Int = 144, private val bytes: Long = 147_456, private val throwOnClose: Boolean = false) : ThumbnailFrame {
         override val allocationBytes get() = bytes
-        var closed = false
-        override fun close() { closed = true }
+        var closed = false; var closeCalls = 0
+        override fun close() { closeCalls++; if (throwOnClose) error("fixed close failure"); closed = true }
     }
     private class Decoder : ThumbnailDecoder<Frame> {
         var calls = 0; var fail = false; var uncertain = false; var cancellationObserved = false

@@ -6,6 +6,8 @@ import android.os.Looper
 import android.os.SystemClock
 import com.easysavevideo.app.vault.crypto.AndroidVaultAuthentication
 import com.easysavevideo.app.vault.storage.AndroidVaultStore
+import com.easysavevideo.app.vault.storage.AndroidVaultPhoneFiles
+import com.easysavevideo.app.save.AndroidSaveRuntime
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -22,7 +24,10 @@ internal object AndroidVaultRuntimeEntry {
         owner?.let { return it }
         val presentation = AndroidVaultPresentationOwner()
         val authentication = AndroidVaultAuthentication()
-        val store = AndroidVaultStore(context.applicationContext, authentication)
+        var source: VaultMediaSourcePort? = null
+        val store = AndroidVaultStore(context.applicationContext, authentication) { source }
+        source = AndroidSaveRuntime.get(context.applicationContext).vaultMediaSource(store, presentation::retireOrdinarySource)
+        val files = AndroidVaultPhoneFiles(context.applicationContext, store)
         val lane = ThreadPoolExecutor(1, 1, 0, TimeUnit.MILLISECONDS, ArrayBlockingQueue(16),
             ThreadPoolExecutor.AbortPolicy())
         val timers = Executors.newSingleThreadScheduledExecutor()
@@ -35,10 +40,14 @@ internal object AndroidVaultRuntimeEntry {
         }
         // The singleton is deliberately retained after release failure; replacement cannot bypass a fence.
         return VaultRuntime(store, authentication, clock, lane, ui, scheduler, presentation,
-            SystemClock.elapsedRealtimeNanos().coerceAtLeast(1)).let { runtime ->
-                AndroidVaultRuntimeBinding(runtime, presentation).also { owner = it }
+            SystemClock.elapsedRealtimeNanos().coerceAtLeast(1), source, files).let { runtime ->
+                AndroidVaultRuntimeBinding(runtime, presentation, files).also { owner = it }
             }
     }
 }
 
-internal class AndroidVaultRuntimeBinding(val runtime: VaultRuntime, val presentation: AndroidVaultPresentationOwner)
+internal class AndroidVaultRuntimeBinding(val runtime: VaultRuntime, val presentation: AndroidVaultPresentationOwner,
+    val phoneFiles: AndroidVaultPhoneFiles? = null) {
+    // Exact app-owner request survives Activity replacement, but is never reconstructed from a URI.
+    var pendingPhoneFileRequest: VaultPhoneFileRequest? = null
+}

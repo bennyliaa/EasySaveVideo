@@ -20,6 +20,9 @@ internal object VaultCredentialMutationValidation {
         // Even the activation proof retains these exact old bytes. Only the separately validated
         // existing RESET write may change them when the store freezes the final whole record.
         require(data.retryLedger == old.retryLedger && data.retryLedgerEnvelope == old.retryLedgerEnvelope)
+        // Media progress is independently AEAD-authenticated and included in whole-snapshot CAS.
+        // Credential work preserves it byte-for-byte and can never retire a target pin.
+        require(data.mediaJournalEnvelope == old.mediaJournalEnvelope && data.mediaJournalRevision == old.mediaJournalRevision)
         require(proposal.operationId.length in 1..128 && proposal.operationId.all {
             it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9' || it == '-' || it == '_'
         })

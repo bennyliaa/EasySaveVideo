@@ -48,4 +48,37 @@ class ScopeTest(unittest.TestCase):
         self.put(self.entry, 'const val ENABLED: Boolean = true\nif (!ENABLED) return null\nval authentication = AndroidVaultAuthentication()')
         with self.assertRaises(ValueError): module.verify(self.root)
 
+class StreamingScopeTest(ScopeTest):
+    def setUp(self):
+        super().setUp()
+        self.leaf = 'app/src/main/kotlin/StreamingLeaf.kt'
+        self.leaf_text = ('import com.google.crypto.tink.StreamingAead\n'
+            'PredefinedStreamingAeadParameters.AES256_GCM_HKDF_1MB\n'
+            'handle.size() == 1; entry.status == KeyStatus.ENABLED\n'
+            'entry.isPrimary; handle.primary.id == entry.id\n'
+            'bytes.contentEquals(canonicalEncrypted(bytes))\n')
+        self.put(self.leaf, self.leaf_text)
+        path = self.root / 'docs/vault/VAULT_RUNTIME_SOURCE_SCOPE.json'
+        scope = json.loads(path.read_text())
+        scope['tink_references'][self.leaf] = ['com.google.crypto.tink.StreamingAead']
+        scope['streaming_leaf'] = self.leaf
+        scope['streaming_profile'] = 'AES256_GCM_HKDF_1MB'
+        path.write_text(json.dumps(scope))
+    def test_other_streaming_profile_rejected(self):
+        self.put(self.leaf, self.leaf_text.replace('AES256_GCM_HKDF_1MB', 'AES128_GCM_HKDF_4KB'))
+        with self.assertRaises(AssertionError): module.verify(self.root)
+    def test_extra_profile_rejected(self):
+        self.put(self.leaf, self.leaf_text + 'PredefinedStreamingAeadParameters.AES256_GCM_HKDF_4KB')
+        with self.assertRaises(AssertionError): module.verify(self.root)
+    def test_no_key_count_check_rejected(self):
+        self.put(self.leaf, self.leaf_text.replace('handle.size() == 1', 'handle.size() > 0'))
+        with self.assertRaises(AssertionError): module.verify(self.root)
+    def test_no_canonical_envelope_check_rejected(self):
+        self.put(self.leaf, self.leaf_text.replace('bytes.contentEquals(canonicalEncrypted(bytes))', 'true'))
+        with self.assertRaises(AssertionError): module.verify(self.root)
+    def test_secret_export_rejected(self):
+        self.put(self.leaf, self.leaf_text + 'val leak = InsecureSecretKeyAccess.get()')
+        with self.assertRaises(AssertionError): module.verify(self.root)
+
 if __name__ == '__main__': unittest.main()
+

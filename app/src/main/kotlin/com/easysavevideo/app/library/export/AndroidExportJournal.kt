@@ -11,11 +11,13 @@ internal class AndroidExportJournal(
     private val database: () -> SQLiteDatabase,
     private val lock: Any,
     private val closed: () -> Boolean,
+    private val requireSourceAdmission: (com.easysavevideo.library.MediaReadRef) -> Unit = {},
 ) : ExportJournal {
     data class Target(val operationId: String, val kind: ExportKind, val grantId: String, val nonce: String, val uri: String?, val flags: Int) {
         override fun toString() = "ExportTarget(kind=$kind, [redacted])"
     }
     override fun create(request: ExportRequest): ExportRecord = guard { transaction { db ->
+        requireSourceAdmission(request.source)
         get(request.operationId)?.let {
             if (it.request != request) throw ExportFailure(ExportError.IDEMPOTENCY_CONFLICT)
             return@transaction it

@@ -38,7 +38,7 @@ import java.nio.ByteBuffer
  * proves release. Recipients may retain already delivered bytes independently and indefinitely.
  */
 internal class LibraryShareOwner private constructor(private val context: Context, private val initialization:InitializationProbe) {
-    private class Copy(val operationId: String, val token: String, val bytes: Long, val expires: Long) {
+    private class Copy(val source: MediaReadRef, val operationId: String, val token: String, val bytes: Long, val expires: Long) {
         var ready = false
         var revoked = false
         var staging = true
@@ -95,7 +95,7 @@ internal class LibraryShareOwner private constructor(private val context: Contex
                 if (proxyIssuances >= SharePolicy.MAX_PROXY_ISSUANCES) throw ShareFailure(ShareError.PROCESS_CAPACITY)
                 if (source.sizeBytes > SharePolicy.MAX_COPY_BYTES) throw ShareFailure(ShareError.SOURCE_TOO_LARGE)
                 if (!SharePolicy.admit(copies.size, copies.values.sumOf { it.bytes }, source.sizeBytes)) throw ShareFailure(ShareError.COPY_CAPACITY)
-                Copy(operationId, UUID.randomUUID().toString(), source.sizeBytes, SystemClock.elapsedRealtime() + SharePolicy.TTL_MILLIS).also { copies[it.token] = it }
+                Copy(ref, operationId, UUID.randomUUID().toString(), source.sizeBytes, SystemClock.elapsedRealtime() + SharePolicy.TTL_MILLIS).also { copies[it.token] = it }
             }
             val selected = copy
             // Durable source/destination intent precedes creating any copy bytes.
@@ -197,6 +197,17 @@ internal class LibraryShareOwner private constructor(private val context: Contex
     internal fun expiryOf(uris:List<Uri>):Long = synchronized(lock) {
         uris.map { value -> resolve(value)?.takeIf { it.ready && !it.revoked && !it.staging && !it.uncertain }?.expires ?: 0L }.minOrNull() ?: 0L
     }
+    /**
+     * Revoke app-owned temporary copies for one exact source. This never touches recipient
+     * copies. False preserves the source-move fence until proxy release and owned cleanup.
+     */
+    fun revokeSourceExact(reference: MediaReadRef): Boolean = synchronized(lock) {
+        val owned = copies.values.filter { it.source.itemId == reference.itemId && it.source.representationGeneration == reference.representationGeneration }
+        revokeShareGroup(owned, deny = { it.revoked = true; it.transfers.forEach { transfer -> transfer.stop = true } },
+            revoke = ::stopLocked, cleanup = ::cleanupLocked)
+        copies.values.none { it.source.itemId == reference.itemId && it.source.representationGeneration == reference.representationGeneration } && !cleanupBlocked
+    }
+
     fun revokeOperation(operationId: String): Boolean = synchronized(lock) {
         val owned=copies.values.filter { it.operationId==operationId }
         revokeShareGroup(owned,deny={ it.revoked=true;it.transfers.forEach { transfer -> transfer.stop=true } },

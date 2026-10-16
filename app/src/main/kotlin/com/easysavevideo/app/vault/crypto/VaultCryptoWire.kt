@@ -107,6 +107,17 @@ internal object VaultCryptoWire {
         }
     }
 
+    /** Canonical credential prefix shared by V3 media catalogs and credential-only reseals. */
+    fun mediaCatalogPrefix(identity: VaultPersistentIdentity, data: VaultStagedData): ByteArray {
+        requireIdentity(identity); requireCredentialShape(data)
+        return encoded {
+            writeInt(0x45534331); writeInt(3); identity(identity); writeInt(1); writeLong(data.catalogRevision)
+            val slots = data.slots.sortedBy { it.kind.ordinal }
+            writeInt(slots.size); slots.forEach { slotDigest(it) }
+            writeInt(data.recoveryState.ordinal); pendingPassword(data.pendingPassword, digestEnvelope = true)
+        }
+    }
+
     /** Stale creating metadata remains valid shape: only reset activation compares current ledger. */
     fun requireCredentialShape(data: VaultStagedData) {
         require(data.catalogRevision in 1 until Long.MAX_VALUE) { "catalog-profile" }
@@ -168,6 +179,11 @@ internal object VaultCryptoWire {
             writeLong(data.catalogRevision); blob(data.installationMarker.copyBytes())
             blob(ledger(data.retryLedger)); blob(data.retryLedgerEnvelope.copyBytes())
             writeInt(data.recoveryState.ordinal); pendingPassword(data.pendingPassword, digestEnvelope = false)
+            // Legacy fingerprints retain their original bytes when no media journal exists.
+            if (data.mediaJournalEnvelope != null) {
+                writeInt(0x45534a31); writeLong(data.mediaJournalRevision)
+                blob(data.mediaJournalEnvelope.copyBytes())
+            } else require(data.mediaJournalRevision == 0L) { "journal-profile" }
         })
     }
     fun catalogFingerprint(snapshot: VaultStoredSnapshot): ByteArray {

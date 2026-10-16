@@ -34,7 +34,7 @@ internal class AndroidExportPort(
     private val collection = MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
     private val lock = Any()
     private val liveSaf = linkedMapOf<String, Uri>()
-    private val handles = mutableMapOf<String, MutableSet<Any>>()
+    private val destinationHandles = AndroidExportHandles(resolver)
     private val uncertainSources = mutableMapOf<String, Any>()
     private val relativePath = Environment.DIRECTORY_MOVIES + "/EasySaveVideo/"
 
@@ -147,30 +147,9 @@ internal class AndroidExportPort(
             val found = media(target)
             require(found is MediaLookup.Owned && found.pending); found.uri
         } else requireSaf(target)
-        val descriptor = resolver.openFileDescriptor(uri, "wt") ?: throw IOException("EXPORT_OPEN_FAILED")
-        val outputStream = try { FileOutputStream(descriptor.fileDescriptor) } catch (failure: Exception) {
-            retainOnFailedClose(record.operationId, descriptor); throw failure
-        }
-        val owner = object : ExportWrite {
-            override val stream = outputStream
-            override fun close(): ExportRelease {
-                var syncFailed = false
-                try {
-                    outputStream.flush()
-                    // Pipes/providers need not support fsync. Full readback is separate proof.
-                    if (OsConstants.S_ISREG(Os.fstat(outputStream.fd).st_mode)) outputStream.fd.sync()
-                } catch (_: Exception) { syncFailed = true }
-                try { outputStream.close() } catch (_: Exception) { }
-                try { descriptor.close() } catch (_: Exception) { }
-                val released = try { !outputStream.fd.valid() && !descriptor.fileDescriptor.valid() } catch (_: Exception) { false }
-                if (released) release(record.operationId, this)
-                if (syncFailed) throw IOException("EXPORT_FLUSH_FAILED")
-                return if (released) ExportRelease.RELEASED else ExportRelease.UNCONFIRMED
-            }
-        }
-        retain(record.operationId, owner)
-        return owner
+        return destinationHandles.openWrite(record.operationId, uri)
     }
+
     override fun openReadback(record: ExportRecord, output: ExportOutput): ExportReadback {
         val target = target(record, output)
         val uri = if (target.kind == ExportKind.MEDIA_STORE) {
@@ -182,26 +161,12 @@ internal class AndroidExportPort(
                 return ExportReadback.Unsupported
             selected
         }
-        val descriptor = try { resolver.openFileDescriptor(uri, "r") }
-        catch (unsupported: UnsupportedOperationException) { if (target.kind == ExportKind.SAF) return ExportReadback.Unsupported else throw unsupported }
-        // File-not-found, permission loss, transient IO or corrupt bytes are failures, not Unsupported.
-            ?: throw IOException("EXPORT_READBACK_FAILED")
-        val input = try { FileInputStream(descriptor.fileDescriptor) } catch (failure: Exception) {
-            retainOnFailedClose(record.operationId, descriptor); throw failure
+        return try { ExportReadback.Opened(destinationHandles.openReadback(record.operationId, uri)) }
+        catch (unsupported: UnsupportedOperationException) {
+            if (target.kind == ExportKind.SAF) ExportReadback.Unsupported else throw unsupported
         }
-        val owner = object : ExportInput {
-            override val stream = input
-            override fun close(): ExportRelease {
-                try { input.close() } catch (_: Exception) { }
-                try { descriptor.close() } catch (_: Exception) { }
-                val released = try { !input.fd.valid() && !descriptor.fileDescriptor.valid() } catch (_: Exception) { false }
-                if (released) release(record.operationId, this)
-                return if (released) ExportRelease.RELEASED else ExportRelease.UNCONFIRMED
-            }
-        }
-        retain(record.operationId, owner)
-        return ExportReadback.Opened(owner)
     }
+
     override fun publish(record: ExportRecord, output: ExportOutput) {
         require(record.phase == ExportPhase.PUBLISH_INTENT && record.verification == ExportVerification.DESTINATION_VERIFIED && !record.cancelRequested)
         require(released(record.operationId))
@@ -323,11 +288,5 @@ internal class AndroidExportPort(
         uri.scheme == "content" && uri.authority == MediaStore.AUTHORITY && uri.query == null && uri.fragment == null &&
             ContentUris.parseId(uri) > 0 && ContentUris.withAppendedId(collection, ContentUris.parseId(uri)) == uri
     } catch (_: Exception) { false }
-    private fun retain(id: String, value: Any) { synchronized(lock) { handles.getOrPut(id) { mutableSetOf() }.add(value) } }
-    private fun release(id: String, value: Any) { synchronized(lock) { handles[id]?.let { it.remove(value); if (it.isEmpty()) handles.remove(id) } } }
-    private fun released(id: String): Boolean = synchronized(lock) { handles[id].isNullOrEmpty() && id !in uncertainSources }
-    private fun retainOnFailedClose(id: String, descriptor: ParcelFileDescriptor) {
-        try { descriptor.close() } catch (_: Exception) { }
-        if (try { descriptor.fileDescriptor.valid() } catch (_: Exception) { true }) retain(id, descriptor)
-    }
+    private fun released(id: String): Boolean = destinationHandles.released(id) && synchronized(lock) { id !in uncertainSources }
 }

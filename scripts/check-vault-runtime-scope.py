@@ -25,6 +25,17 @@ def verify(root=ROOT):
             assert sorted(set(names)) == scope['tink_references'][relative], f'Tink imports changed: {relative}'
             imports[relative] = sorted(set(names))
     assert imports == scope['tink_references'], 'Missing reviewed Tink integration file'
+    if 'streaming_leaf' in scope:
+        leaf = scope['streaming_leaf']
+        assert leaf in scope['tink_references'], 'Streaming leaf outside exact source scope'
+        assert scope.get('streaming_profile') == 'AES256_GCM_HKDF_1MB', 'Unexpected streaming profile'
+        text = (root / leaf).read_text()
+        profiles = re.findall(r'PredefinedStreamingAeadParameters\.([A-Z0-9_]+)', text)
+        assert profiles and set(profiles) == {'AES256_GCM_HKDF_1MB'}, 'Unreviewed streaming profile'
+        assert 'handle.size() == 1' in text and 'entry.status == KeyStatus.ENABLED' in text, 'Streaming key multiplicity/status'
+        assert 'entry.isPrimary' in text and 'handle.primary.id == entry.id' in text, 'Streaming primary mismatch'
+        assert 'bytes.contentEquals(canonicalEncrypted(bytes))' in text, 'Streaming canonical envelope missing'
+        assert not re.search(r'\b(?:CleartextKeysetHandle|InsecureSecretKeyAccess|SecretKeyAccess)\b|import[^\n]*AndroidKeysetManager', text), 'Secret export/fallback'
     entry = (root / scope['entry']).read_text()
     disabled = entry.index('const val ENABLED: Boolean = false')
     reject = entry.index('if (!ENABLED) return null')

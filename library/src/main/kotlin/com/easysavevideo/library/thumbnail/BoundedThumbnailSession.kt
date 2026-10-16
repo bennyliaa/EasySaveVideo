@@ -77,6 +77,13 @@ class BoundedThumbnailSession<F : ThumbnailFrame>(
     private val cache = LinkedHashMap<MediaReadRef, F>(16, 0.75f, true)
     private val states = mutableMapOf<MediaReadRef, ThumbnailState<F>>()
     private val queue = ArrayDeque<Job>()
+    // Exact source retirement is stronger than offscreen cancellation. A single media workflow
+    // can fence one exact reference for this session; caller owns any future refreshed session.
+    private var retiredReference: MediaReadRef? = null
+    private var retirement: (() -> Unit)? = null
+    private var unconfirmedReference: MediaReadRef? = null
+    private val unconfirmedFrames = linkedSetOf<MediaReadRef>()
+    private val retainedUnconfirmedFrames = mutableListOf<Pair<MediaReadRef, F>>()
     private var generation = 0L
     private var enabled = false
     private var disposed = false
@@ -84,15 +91,16 @@ class BoundedThumbnailSession<F : ThumbnailFrame>(
     private var active: Job? = null
     private var changed: (() -> Unit)? = onChanged
     var retainedBytes: Long = 0; private set
-    val retainedCount: Int get() = cache.size
+    val retainedCount: Int get() = cache.size + retainedUnconfirmedFrames.size
     val queuedCount: Int get() = queue.size
     val hasActiveJob: Boolean get() = active != null
+    val hasUnconfirmedResources: Boolean get() = unconfirmedReference != null || unconfirmedFrames.isNotEmpty()
 
     fun updatePage(items: List<MediaItem>, enabled: Boolean) {
         ui.requireCurrentThread()
         if (disposed) return
         require(items.size <= LibraryLimits.MAX_PAGE_SIZE)
-        val next = items.filter { it.lifecycle == MediaLifecycle.READY }.associateBy { it.readRef() }
+        val next = items.filter { it.lifecycle == MediaLifecycle.READY && !isRetired(it.readRef()) }.associateBy { it.readRef() }
         if (this.enabled == enabled && page == next) return
         generation++
         this.enabled = enabled
@@ -143,6 +151,43 @@ class BoundedThumbnailSession<F : ThumbnailFrame>(
         if (removed || stateRemoved || cancelled) changed?.invoke()
     }
 
+    /**
+     * Purges this exact page/cache authority immediately. ACK means the app-owned frame was
+     * closed and the exact native worker reported Released, never that GPU memory was erased.
+     * A native ReleaseUnconfirmed result keeps the callback pending even after disposal.
+     */
+    fun retireExact(reference: MediaReadRef, onActuallyRetired: () -> Unit) {
+        ui.requireCurrentThread()
+        if (retirement != null) {
+            require(isRetired(reference))
+            retirement = onActuallyRetired // Same exact source, replacement host observer.
+            acknowledgeRetirement()
+            return
+        }
+        retiredReference = reference
+        retirement = onActuallyRetired
+        page.keys.filter(::isRetired).forEach(page::remove)
+        queue.removeAll { isRetired(it.reference) }
+        states.keys.filter(::isRetired).forEach(states::remove)
+        cache.keys.filter(::isRetired).forEach(::removeCached)
+        active?.takeIf { isRetired(it.reference) }?.cancelled?.set(true)
+        changed?.invoke()
+        acknowledgeRetirement()
+    }
+
+    private fun isRetired(reference: MediaReadRef): Boolean = retiredReference?.let {
+        it.itemId == reference.itemId && it.representationGeneration == reference.representationGeneration
+    } == true
+
+    private fun acknowledgeRetirement() {
+        if (retiredReference == null) return
+        if (unconfirmedReference?.let(::isRetired) == true || unconfirmedFrames.any(::isRetired) || active?.reference?.let(::isRetired) == true ||
+            cache.keys.any(::isRetired) || page.keys.any(::isRetired) || queue.any { isRetired(it.reference) }) return
+        val callback = retirement ?: return
+        retirement = null
+        callback()
+    }
+
     private fun pump() {
         if (disposed || !enabled || fenced || active != null) return
         val job = queue.removeFirstOrNull() ?: return
@@ -176,6 +221,7 @@ class BoundedThumbnailSession<F : ThumbnailFrame>(
     private fun complete(job: Job, result: ThumbnailDecodeResult<F>) {
         ui.requireCurrentThread()
         job.timeout?.let(ui::remove)
+        if (result == ThumbnailDecodeResult.ReleaseUnconfirmed) unconfirmedReference = job.reference
         if (result == ThumbnailDecodeResult.ReleaseUnconfirmed && !fenced) {
             fenced = true
             queue.clear(); states.clear()
@@ -185,18 +231,32 @@ class BoundedThumbnailSession<F : ThumbnailFrame>(
         val current = !disposed && enabled && !fenced && active === job && generation == job.generation &&
             !job.cancelled.get() && job.reference in page
         if (frame != null) {
-            if (current && valid(frame)) cache(job.reference, frame)
-            else {
-                frame.close()
-                if (current) states[job.reference] = ThumbnailState.Unavailable(ThumbnailUnavailable.DECODE_FAILED)
+            if (current && valid(frame)) {
+                try { cache(job.reference, frame) } catch (_: Exception) {
+                    // Eviction can fail before this new frame was inserted. Keep or really
+                    // close this incoming owner too; the failed old frame stays in cache.
+                    discardFrame(job.reference, frame)
+                }
+            } else {
+                discardFrame(job.reference, frame)
+                if (current && !fenced) states[job.reference] = ThumbnailState.Unavailable(ThumbnailUnavailable.DECODE_FAILED)
             }
         } else if (current) {
             val failure = (result as? ThumbnailDecodeResult.Released<F>)?.failure ?: ThumbnailUnavailable.RELEASE_UNCONFIRMED
             states[job.reference] = ThumbnailState.Unavailable(failure)
         }
         if (active === job) active = null
+        acknowledgeRetirement()
         changed?.invoke()
         pump()
+    }
+
+    private fun discardFrame(reference: MediaReadRef, frame: F) {
+        try { frame.close() } catch (_: Exception) {
+            retainedUnconfirmedFrames.add(reference to frame)
+            unconfirmedFrames.add(reference); fenced = true
+            queue.clear(); states.clear(); onStalled()
+        }
     }
 
     private fun valid(frame: F): Boolean = frame.width in 1..limits.width && frame.height in 1..limits.height &&
@@ -214,7 +274,14 @@ class BoundedThumbnailSession<F : ThumbnailFrame>(
     }
 
     private fun removeCached(ref: MediaReadRef) {
-        cache.remove(ref)?.let { retainedBytes -= it.allocationBytes; it.close() }
+        cache[ref]?.let {
+            check(ref !in unconfirmedFrames) { "THUMBNAIL_RELEASE_UNCONFIRMED" }
+            try { it.close() } catch (failure: Exception) {
+                unconfirmedFrames.add(ref); fenced = true; onStalled()
+                throw failure
+            }
+            cache.remove(ref); retainedBytes -= it.allocationBytes
+        }
     }
 
     override fun close() {
@@ -225,6 +292,7 @@ class BoundedThumbnailSession<F : ThumbnailFrame>(
         // Keep its watchdog: a hung job after disposal still needs a process-wide admission fence.
         queue.clear(); states.clear(); page.clear()
         cache.keys.toList().forEach(::removeCached)
+        acknowledgeRetirement()
         changed = null
     }
 }

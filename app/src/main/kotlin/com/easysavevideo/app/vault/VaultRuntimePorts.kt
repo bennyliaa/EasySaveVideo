@@ -97,8 +97,12 @@ internal class VaultStagedData(
     val retryLedgerEnvelope: VaultCiphertext,
     val recoveryState: VaultRecoveryState = VaultRecoveryState.NONE,
     val pendingPassword: VaultPendingPassword? = null,
+    val mediaJournalEnvelope: VaultCiphertext? = null,
+    val mediaJournalRevision: Long = 0,
 ) {
     init {
+        require((mediaJournalEnvelope == null) == (mediaJournalRevision == 0L) && mediaJournalRevision >= 0)
+        require(mediaJournalEnvelope == null || mediaJournalEnvelope.size <= VaultMediaLimits.MAX_JOURNAL_BYTES)
         require(slots.size in 1..4 && slots.map { it.slotId }.distinct().size == slots.size)
         require(slots.all { it.slotId.length in 1..128 && it.generation > 0 && it.envelope.size <= VaultRuntimeLimits.ENVELOPE_BYTES })
         require(catalogRevision > 0 && catalogKeysetEnvelope.size <= VaultRuntimeLimits.ENVELOPE_BYTES &&
@@ -115,15 +119,17 @@ internal class VaultStagedData(
         retryLedger: VaultRetryLedger = this.retryLedger,
         retryLedgerEnvelope: VaultCiphertext = this.retryLedgerEnvelope,
         recoveryState: VaultRecoveryState = this.recoveryState,
-        pendingPassword: VaultPendingPassword? = this.pendingPassword) = VaultStagedData(
-        slots, catalogKeysetEnvelope, catalogEnvelope, catalogRevision, installationMarker, retryLedger, retryLedgerEnvelope, recoveryState, pendingPassword)
+        pendingPassword: VaultPendingPassword? = this.pendingPassword,
+        mediaJournalEnvelope: VaultCiphertext? = this.mediaJournalEnvelope, mediaJournalRevision: Long = this.mediaJournalRevision) = VaultStagedData(
+        slots, catalogKeysetEnvelope, catalogEnvelope, catalogRevision, installationMarker, retryLedger, retryLedgerEnvelope, recoveryState, pendingPassword, mediaJournalEnvelope, mediaJournalRevision)
     override fun equals(other: Any?): Boolean = other is VaultStagedData && slotValues == other.slotValues &&
         catalogKeysetEnvelope == other.catalogKeysetEnvelope && catalogEnvelope == other.catalogEnvelope &&
         catalogRevision == other.catalogRevision && installationMarker == other.installationMarker &&
         retryLedger == other.retryLedger && retryLedgerEnvelope == other.retryLedgerEnvelope &&
-        recoveryState == other.recoveryState && pendingPassword == other.pendingPassword
+        recoveryState == other.recoveryState && pendingPassword == other.pendingPassword &&
+        mediaJournalEnvelope == other.mediaJournalEnvelope && mediaJournalRevision == other.mediaJournalRevision
     override fun hashCode(): Int = listOf(slotValues, catalogKeysetEnvelope, catalogEnvelope, catalogRevision,
-        installationMarker, retryLedger, retryLedgerEnvelope, recoveryState, pendingPassword).hashCode()
+        installationMarker, retryLedger, retryLedgerEnvelope, recoveryState, pendingPassword, mediaJournalEnvelope, mediaJournalRevision).hashCode()
     override fun toString(): String = "VaultStagedData(REDACTED)"
 }
 internal data class VaultStoredSnapshot(
@@ -176,6 +182,34 @@ internal class VaultRecoveryEnrollment(val mutation: VaultCredentialMutation, di
 }
 
 internal interface VaultStorePort : AutoCloseable {
+    /** Pure nonblocking ledger snapshot, including factories which failed before returning a handle. */
+    fun observeMediaDrain(): com.easysavevideo.library.export.ExportRelease = com.easysavevideo.library.export.ExportRelease.RELEASED
+    fun compareAndSwapMedia(expected: VaultStoredSnapshot, mutation: VaultMediaMutation,
+        context: VaultOperationContext): VaultStoredSnapshot = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun createMediaFile(operation: VaultMediaOperation, identity: VaultMediaObjectIdentity,
+        context: VaultOperationContext): VaultOwnedCiphertext = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun openMediaFile(identity: VaultMediaObjectIdentity,
+        context: VaultOperationContext): VaultOwnedCiphertext = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun commitMedia(expected: VaultStoredSnapshot, mutation: VaultMediaMutation, file: VaultOwnedCiphertext,
+        proof: VaultFinalizedMediaProof, context: VaultOperationContext): VaultCommittedMedia = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun abandonUncommittedMedia(expected: VaultStoredSnapshot, cancelledMutation: VaultMediaMutation,
+        file: VaultOwnedCiphertext?, context: VaultOperationContext): VaultUncommittedMoveReceipt = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun recoverCommittedMove(expected: VaultStoredSnapshot, operation: VaultMediaOperation, source: com.easysavevideo.library.MediaReadRef,
+        file: VaultOwnedCiphertext, proof: VaultFinalizedMediaProof, context: VaultOperationContext): CommittedMoveReceipt = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun validateCommittedMove(receipt: CommittedMoveReceipt, source: com.easysavevideo.library.MediaReadRef,
+        operation: VaultMediaOperation): Boolean = false
+    fun validateUncommittedMove(receipt: VaultUncommittedMoveReceipt, source: com.easysavevideo.library.MediaReadRef,
+        operation: VaultMediaOperation): Boolean = false
+    /** Fixed source issuer is injected at store construction; caller cannot select a verifier. */
+    fun sourceDeleted(receipt: CommittedMoveReceipt, proof: VaultSourceDeletedReceipt): Unit = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+
+    /** Fixed-owner registered target state: UNKNOWN/final publication decisions always reject deletion. */
+    fun canCleanupPhoneTarget(record: VaultMediaTargetRecord): Boolean = false
+    fun validateBoundPhoneTarget(record: VaultMediaTargetRecord, use: VaultPhoneTargetUse = VaultPhoneTargetUse.CLEANUP): Boolean = false
+    fun validateBoundPhoneTree(record: VaultPhoneTreeRecord): Boolean = false
+    fun validateBatchChildCreate(tree: VaultPhoneTreeRecord, reservation: VaultMediaTargetRecord,
+        operation: VaultMediaOperation): Boolean = false
+    fun validatePhoneTargetRetirement(operationId: String, target: VaultMediaTargetRecord, batchId: String? = null): Boolean = false
     fun compareAndSwapCredentials(expected: VaultStoredSnapshot, mutation: VaultCredentialMutation,
         context: VaultOperationContext): VaultStoredSnapshot = throw VaultOperationException(VaultFailure.UNSUPPORTED)
     fun compareAndSwapCredentialReset(expected: VaultStoredSnapshot, write: VaultRetryWrite,
@@ -189,6 +223,38 @@ internal interface VaultStorePort : AutoCloseable {
         authenticatedLedger: VaultCiphertext, context: VaultOperationContext): VaultStoredSnapshot
 }
 internal interface VaultAuthenticationPort : AutoCloseable {
+    /** Same-owner media factories can retain failed readers. No IO: reports only real registry release. */
+    fun observeMediaDrain(): com.easysavevideo.library.export.ExportRelease = com.easysavevideo.library.export.ExportRelease.RELEASED
+
+    fun authenticateCatalog(root: VaultRootCapability, snapshot: VaultStoredSnapshot,
+        context: VaultOperationContext): VaultAuthenticatedCatalog = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun authenticateMediaJournal(root: VaultRootCapability, snapshot: VaultStoredSnapshot,
+        context: VaultOperationContext): VaultMediaJournal? = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun prepareMediaImport(root: VaultRootCapability, snapshot: VaultStoredSnapshot, source: VaultMediaSourceEvidence,
+        operation: VaultMediaOperation, identity: VaultMediaObjectIdentity,
+        context: VaultOperationContext): VaultPreparedMediaImport = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun encryptMedia(prepared: VaultPreparedMediaImport, source: VaultMoveSourceCapability,
+        target: VaultOwnedCiphertext, gate: VaultMediaPublicationGate, context: VaultOperationContext): Unit = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun verifyFinalMedia(prepared: VaultPreparedMediaImport, file: VaultOwnedCiphertext,
+        gate: VaultMediaPublicationGate, context: VaultOperationContext): VaultFinalizedMediaProof = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun verifyCommittedMedia(root: VaultRootCapability, snapshot: VaultStoredSnapshot, ref: VaultMediaReadRef,
+        file: VaultOwnedCiphertext, gate: VaultMediaPublicationGate, context: VaultOperationContext): VaultFinalizedMediaProof = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun validateCommittedMedia(expected: VaultStoredSnapshot, operation: VaultMediaOperation,
+        source: com.easysavevideo.library.MediaReadRef, file: VaultOwnedCiphertext,
+        proof: VaultFinalizedMediaProof, context: VaultOperationContext): VaultMediaEntry = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun finishMediaImport(root: VaultRootCapability, expected: VaultStoredSnapshot, prepared: VaultPreparedMediaImport,
+        proof: VaultFinalizedMediaProof, nextJournal: VaultMediaJournal,
+        context: VaultOperationContext): VaultMediaMutation = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun sealMediaJournal(root: VaultRootCapability, expected: VaultStoredSnapshot, next: VaultMediaJournal,
+        context: VaultOperationContext): VaultMediaMutation = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun validateMediaMutation(expected: VaultStoredSnapshot, mutation: VaultMediaMutation,
+        context: VaultOperationContext): VaultMediaProposal = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun validateFinalizedMedia(proof: VaultFinalizedMediaProof, file: VaultOwnedCiphertext,
+        context: VaultOperationContext): VaultMediaFinalizedEvidence = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun openMediaRead(root: VaultRootCapability, snapshot: VaultStoredSnapshot, ref: VaultMediaReadRef,
+        file: VaultOwnedCiphertext, gate: VaultMediaPublicationGate,
+        context: VaultOperationContext): VaultMediaReadCapability = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+
     fun prepareRecoveryEnrollment(root: VaultRootCapability, snapshot: VaultStoredSnapshot,
         context: VaultOperationContext): VaultRecoveryEnrollment = throw VaultOperationException(VaultFailure.UNSUPPORTED)
     fun verifyPendingRecovery(snapshot: VaultStoredSnapshot, input: VaultRecoveryInput,

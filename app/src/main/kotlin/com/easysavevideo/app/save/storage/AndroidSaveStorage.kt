@@ -67,10 +67,20 @@ class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMed
     private val libraryStorage: AndroidLibraryRepository
     /** The catalog shares this storage owner's database, lock and directory lifetime. */
     val library: LibraryRepository get() = libraryStorage
-    internal val exportJournal: AndroidExportJournal by lazy { AndroidExportJournal({ helper.writableDatabase }, fileLock, { closed }) }
+    internal val exportJournal: AndroidExportJournal by lazy { AndroidExportJournal({ helper.writableDatabase }, fileLock, { closed }, libraryStorage::requireOrdinaryAdmission) }
     internal val directoryExportBatches: AndroidDirectoryBatchJournal by lazy { AndroidDirectoryBatchJournal({ helper.writableDatabase }, fileLock, { closed }) }
     internal val folderGrants: AndroidFolderGrantJournal by lazy { AndroidFolderGrantJournal({ helper.writableDatabase }, fileLock, { closed }) }
     internal val destinations: AndroidOrdinaryDestinationJournal by lazy { AndroidOrdinaryDestinationJournal({ helper.writableDatabase }, fileLock, { closed }) }
+    private var vaultSource: AndroidVaultLibrarySource? = null
+    private var vaultSourceStore: com.easysavevideo.app.vault.VaultStorePort? = null
+    internal fun vaultMediaSource(store: com.easysavevideo.app.vault.VaultStorePort,
+        retirePresentation: (MediaReadRef, () -> Unit) -> Unit): com.easysavevideo.app.vault.VaultMediaSourcePort = synchronized(fileLock) {
+        vaultSource?.also { require(vaultSourceStore === store) } ?: AndroidVaultLibrarySource(libraryStorage, store,
+            open = { authority -> fileCall { LibraryMediaInput(openAuthority(authority), authority.sizeBytes, authority.sha256) } },
+            retireUi = retirePresentation,
+            retireShares = { ref -> com.easysavevideo.app.library.share.LibraryShareOwner.get(applicationContext).revokeSourceExact(ref) })
+            .also { vaultSource = it; vaultSourceStore = store }
+    }
     private var segmentStorage: AndroidRecordedSegmentStorage? = null
     internal val recordedSegments: AndroidRecordedSegmentStorage get() = synchronized(fileLock) {
         segmentStorage ?: AndroidRecordedSegmentStorage({ helper.writableDatabase }, fileLock, directory, { closed }, AndroidFileOps::syncDirectory)
@@ -255,7 +265,8 @@ class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMed
             JOIN library_item i ON i.origin_commit_id=m.commit_id
             JOIN media_representation r ON r.representation_id=i.representation_id AND r.item_id=i.item_id AND r.generation=i.generation
             WHERE m.visible=1 AND t.state='SUCCEEDED' AND i.lifecycle='READY' AND i.privacy_class='ORDINARY'
-            AND r.state='READY' AND r.kind='ORDINARY_FILE_V1' ORDER BY m.rowid DESC LIMIT ?""", arrayOf(limit.toString())).use { c ->
+            AND r.state='READY' AND r.kind='ORDINARY_FILE_V1'
+            AND NOT EXISTS(SELECT 1 FROM library_vault_move vm WHERE vm.item_id=i.item_id AND vm.generation=i.generation AND vm.phase<>'CANCELLED') ORDER BY m.rowid DESC LIMIT ?""", arrayOf(limit.toString())).use { c ->
             buildList { while (c.moveToNext()) add(MediaCommitReceipt(c.getString(0), c.getString(1), c.getString(2), c.getLong(3), c.getString(4))) }
         }
     }
@@ -374,6 +385,8 @@ class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMed
     }
     fun syncStaging(artifact: StagingArtifact) = fileCall { ensureLegacyNormalizationArtifact(artifact); protocol.syncStaging(artifact) }
     override fun close() = synchronized(fileLock) {
+        if (vaultSource?.observeMediaDrain() == com.easysavevideo.library.export.ExportRelease.UNCONFIRMED)
+            throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
         synchronized(failedOwnerLock) {
             if (failedStorageOwner?.second === ownerLease) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
         }
@@ -937,7 +950,7 @@ class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMed
             put("record", NormalizationWorkspaceCodec.encode(row))
         }
     }
-    private class Database(context: Context, private val file: File) : SQLiteOpenHelper(context, file.absolutePath, null, 9,
+    private class Database(context: Context, private val file: File) : SQLiteOpenHelper(context, file.absolutePath, null, 10,
         DatabaseErrorHandler { throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE) }) {
         override fun onConfigure(db: SQLiteDatabase) {
             // Legacy parent-table migration requires this before the version transaction.
@@ -973,7 +986,7 @@ class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMed
             }
         }
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-            if (oldVersion !in 1..8 || newVersion != 9) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
+            if (oldVersion !in 1..9 || newVersion != 10) throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE)
             // SQLiteOpenHelper rolls DDL, every backfilled row and user_version back together on failure.
             try {
                 if (oldVersion == 1) {
@@ -989,7 +1002,8 @@ class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMed
                 if (oldVersion < 6) OrdinaryDestinationSchema.create(db)
                 if(oldVersion<7)FolderDestinationSchema.migrate(db)
                 if (oldVersion < 8) DirectoryBatchSchema.create(db)
-                NormalizationWorkspaceSchema.create(db)
+                if (oldVersion < 9) NormalizationWorkspaceSchema.create(db)
+                if (oldVersion > 1) LibrarySchema.createVaultMoveDisposition(db)
                 EditSchema.requireForeignKeysValid(db)
             }
             catch (_: Exception) { throw SaveFailure(SaveError.JOURNAL_UNAVAILABLE) }

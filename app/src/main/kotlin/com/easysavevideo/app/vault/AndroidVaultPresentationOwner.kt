@@ -44,7 +44,7 @@ internal class AndroidVaultPresentationOwner : VaultPresentationPort {
     override fun cover(generation: Long, onActuallyHidden: () -> Unit) {
         val value = synchronized(gate) {
             if (generation < latest.coverGeneration) return
-            latest = VaultRenderedState(VaultRuntimeStatus.LOCKED, null, generation)
+            latest = VaultRenderedState(VaultRuntimeStatus.LOCKED, null, generation, media = latest.media.copy(batch = null, actionToken = null, canKeepOutput = false))
             pending = generation to onActuallyHidden
             host?.invalidateActionsFromAnyThread()
             latest
@@ -58,13 +58,34 @@ internal class AndroidVaultPresentationOwner : VaultPresentationPort {
             // No host is not evidence that a previously attached host/native input was released.
         }
     }
+    fun retireOrdinarySource(ref: com.easysavevideo.library.MediaReadRef, retired: () -> Unit) = main {
+        synchronized(gate) { host }?.retireOrdinarySource(ref, retired)
+    }
+    override fun presentMedia(view: VaultMediaView) = main {
+        synchronized(gate) { latest = latest.copy(media = if (latest.status in setOf(VaultRuntimeStatus.CATALOG, VaultRuntimeStatus.EMPTY)) view
+                else view.copy(batch = null, actionToken = null, canKeepOutput = false)); rendered = latest }
+    }
+    override fun requestPhoneFileSelection(request: VaultPhoneFileRequest) = main {
+        synchronized(gate) { host }?.requestPhoneFileSelection(request)
+    }
+    override fun presentCatalog(revision: Long, items: List<VaultMediaRow>) {
+        check(Looper.myLooper() == Looper.getMainLooper())
+        val target = synchronized(gate) { host } ?: return
+        if (!target.publicationAllowed()) return
+        synchronized(gate) {
+            if (host !== target || !target.publicationAllowed()) return
+            latest = latest.copy(status = VaultRuntimeStatus.CATALOG, revision = revision, items = items.toList())
+            rendered = latest
+        }
+        target.presentationChanged()
+    }
     override fun presentEmpty(catalogRevision: Long) {
         check(Looper.myLooper() == Looper.getMainLooper())
         val target = synchronized(gate) { host } ?: return
         if (!target.publicationAllowed()) return
         synchronized(gate) {
             if (host !== target || !target.publicationAllowed()) return
-            latest = latest.copy(status = VaultRuntimeStatus.EMPTY, revision = catalogRevision)
+            latest = latest.copy(status = VaultRuntimeStatus.EMPTY, revision = catalogRevision, items = emptyList())
             rendered = latest
         }
         target.presentationChanged()
@@ -77,7 +98,7 @@ internal class AndroidVaultPresentationOwner : VaultPresentationPort {
     }
     override fun presentStatus(status: VaultRuntimeStatus) = main {
         val target = synchronized(gate) {
-            latest = latest.copy(status = status, revision = null)
+            latest = latest.copy(status = status, revision = null, items = emptyList())
             rendered = latest; host
         }
         target?.presentationChanged()

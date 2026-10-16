@@ -32,6 +32,21 @@
     ],
     "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/VaultRecoverySlot.kt": [
       "com.google.crypto.tink.KeysetHandle"
+    ],
+    "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/VaultTinkStreamingKeysets.kt": [
+      "com.google.crypto.tink.Aead",
+      "com.google.crypto.tink.BinaryKeysetReader",
+      "com.google.crypto.tink.Configuration",
+      "com.google.crypto.tink.KeyStatus",
+      "com.google.crypto.tink.KeysetHandle",
+      "com.google.crypto.tink.RegistryConfiguration",
+      "com.google.crypto.tink.StreamingAead",
+      "com.google.crypto.tink.TinkProtoKeysetFormat",
+      "com.google.crypto.tink.proto.EncryptedKeyset",
+      "com.google.crypto.tink.streamingaead.PredefinedStreamingAeadParameters",
+      "com.google.crypto.tink.streamingaead.StreamingAeadConfig"
     ]
-  }
+  },
+  "streaming_leaf": "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/VaultTinkStreamingKeysets.kt",
+  "streaming_profile": "AES256_GCM_HKDF_1MB"
 }

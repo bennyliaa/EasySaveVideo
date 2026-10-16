@@ -36,6 +36,15 @@ internal object LibrarySchema {
             expected_revision INTEGER NOT NULL,argument_fingerprint TEXT NOT NULL CHECK(length(argument_fingerprint)=64),
             result_revision INTEGER NOT NULL CHECK(result_revision>0),phase TEXT NOT NULL CHECK(phase IN ('DELETE_PENDING','COMPLETE')))""")
         db.execSQL("CREATE INDEX library_delete_recovery ON library_operation(phase,operation_id)")
+        createVaultMoveDisposition(db)
+    }
+
+    /** Additive v9 -> v10. Durable ordinary admission fence survives every process restart. */
+    fun createVaultMoveDisposition(db: SQLiteDatabase) {
+        db.execSQL("""CREATE TABLE library_vault_move(operation_id TEXT PRIMARY KEY NOT NULL CHECK(length(operation_id) BETWEEN 1 AND 64),
+            item_id TEXT NOT NULL REFERENCES library_item(item_id),source_revision INTEGER NOT NULL CHECK(source_revision>0),
+            generation INTEGER NOT NULL CHECK(generation>0),phase TEXT NOT NULL CHECK(phase IN ('RESERVED','DELETE_PENDING','DELETED','CANCELLED')))""")
+        db.execSQL("CREATE UNIQUE INDEX library_vault_move_active ON library_vault_move(item_id,generation) WHERE phase<>'CANCELLED'")
     }
 
     fun backfill(db: SQLiteDatabase, importedAtMillis: Long, mediaFiles: OrdinaryMediaFiles) {
@@ -100,6 +109,9 @@ internal object LibrarySchema {
     fun publish(db: SQLiteDatabase, record: SaveRecord, atMillis: Long, imported: Boolean) {
         val receipt = requireNotNull(record.receipt)
         val evidence = requireNotNull(record.verification)
+        // Historical Save receipts never recreate a moved/deleted representation.
+        require(db.rawQuery("SELECT 1 FROM library_vault_move WHERE item_id=? AND phase<>'CANCELLED' LIMIT 1",
+            arrayOf(receipt.mediaId)).use { !it.moveToFirst() })
         require(atMillis >= 0 && UUID.fromString(receipt.mediaId).toString() == receipt.mediaId)
         val representationId = UUID.nameUUIDFromBytes(("ordinary-file-v1:" + receipt.mediaId).toByteArray(Charsets.UTF_8)).toString()
         val name = publicationName(db, receipt.mediaId)

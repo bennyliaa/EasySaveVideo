@@ -9,11 +9,14 @@ import java.util.concurrent.Executor
 /** The owner, not UI, acknowledges this exact covered presentation after actual composition/retirement. */
 internal interface VaultPresentationPort {
     fun cover(generation: Long, onActuallyHidden: () -> Unit)
+    fun presentMedia(view: VaultMediaView) = Unit
+    fun presentCatalog(revision: Long, items: List<VaultMediaRow>) = Unit
+    fun requestPhoneFileSelection(request: VaultPhoneFileRequest) = Unit
     fun presentEmpty(catalogRevision: Long)
     fun presentStatus(status: VaultRuntimeStatus)
     fun presentRecoveryState(state: VaultRecoveryState, pendingPassword: Boolean, notice: VaultRecoveryNotice) = Unit
 }
-internal enum class VaultRuntimeStatus { LOADING, SETUP_REQUIRED, LOCKED, WORKING, READY_TO_REVEAL, EMPTY, RECOVERY_CODE_READY, RECOVERY_REQUIRED, UNAVAILABLE, DISABLED }
+internal enum class VaultRuntimeStatus { LOADING, SETUP_REQUIRED, LOCKED, WORKING, READY_TO_REVEAL, EMPTY, CATALOG, RECOVERY_CODE_READY, RECOVERY_REQUIRED, UNAVAILABLE, DISABLED }
 internal fun interface VaultWakeCancellation { fun cancel() }
 internal fun interface VaultWakeScheduler {
     fun schedule(delayMillis: Long, task: () -> Unit): VaultWakeCancellation
@@ -32,6 +35,8 @@ internal class VaultRuntime(
     private val scheduler: VaultWakeScheduler,
     private val presentation: VaultPresentationPort,
     private val processInstance: Long,
+    mediaSource: VaultMediaSourcePort? = null,
+    phoneFiles: VaultPhoneFilesPort? = null,
 ) : AutoCloseable {
     private val gate = Any()
     private val reducer = VaultSessionReducer(VaultRuntimeLimits.retryPolicy())
@@ -74,6 +79,49 @@ internal class VaultRuntime(
     private class ReadLease(val generation: Long, val authEpoch: Long, val presentationEpoch: Long,
         val revision: Long, val root: VaultRootCapability)
 
+    private val media: VaultMediaRuntime? = if (mediaSource != null && phoneFiles != null) VaultMediaRuntime(gate, authentication,
+        store, mediaSource, phoneFiles, clock, ::mediaSession,
+        { operation, failed, task -> submit(operation, failed, task) },
+        { before, after -> synchronized(gate) {
+            if (snapshot != before) throw VaultOperationException(VaultFailure.CONFLICT)
+            snapshot = after
+        } }, ::lock,
+        { view -> ui.execute { presentation.presentMedia(view) } },
+        ::dispatchMediaPicker, ::tryAcknowledgeCleanup) else null
+    private fun dispatchMediaPicker(request: VaultPhoneFileRequest) = ui.execute {
+        if (media?.admitPicker(request) == true) presentation.requestPhoneFileSelection(request)
+        else media?.retireUndispatchedPicker(request)
+    }
+
+    private fun mediaSession(): VaultMediaSession? = synchronized(gate) {
+        val current = state ?: return null
+        val durable = snapshot ?: return null
+        val root = activeRoot ?: return null
+        if (closed || failureSticky || recoveryWorkflow != null || pendingReset != null || jobs != 0 ||
+            !route || !foreground || activeRootEpoch != current.authEpoch ||
+            !current.permitsPresentation(tick(), current.authEpoch, current.presentationEpoch)) return null
+        val generation = presentationGeneration
+        val auth = current.authEpoch; val epoch = current.presentationEpoch
+        VaultMediaSession(root, durable) { synchronized(gate) {
+            !closed && !failureSticky && route && foreground && recoveryWorkflow == null && pendingReset == null &&
+                activeRoot === root && activeRootEpoch == auth && presentationGeneration == generation &&
+                state?.permitsPresentation(tick(), auth, epoch) == true
+        } }
+    }
+    fun queueMoveToVault(ref: com.easysavevideo.library.MediaReadRef): Boolean = media?.queueMove(ref) == true
+    fun confirmMoveToVault() { media?.confirmMove() }
+    fun copyMediaToPhone(ref: VaultMediaReadRef) { media?.beginCopy(ref) }
+    fun retirePhoneSelection(request: VaultPhoneFileRequest): Boolean = media?.retireUndispatchedPicker(request) == true
+    fun acceptPhoneFile(request: VaultPhoneFileRequest, target: VaultPhoneFileTarget?) { media?.acceptTarget(request, target) }
+    fun confirmCopyToPhone() { media?.confirmCopy() }
+    fun copyMediaBatchToPhone(refs: List<VaultMediaReadRef>) { media?.beginBatchCopy(refs) }
+    fun acceptPhoneSelection(request: VaultPhoneFileRequest, selection: VaultPhoneSelection?) { media?.acceptSelection(request, selection) }
+    fun confirmBatchCopy(token: Any? = null) { media?.confirmBatchCopy(token) }
+    fun continueBatchCopy(token: Any? = null) { media?.continueBatchCopy(token) }
+    fun keepCurrentBatchOutputAndContinue(token: Any? = null) { media?.keepCurrentBatchOutputAndContinue(token) }
+    fun keepCurrentSingleOutput(token: Any? = null) { media?.keepCurrentSingleOutput(token) }
+    fun reconcileMedia() { media?.recover() }
+    fun cancelMedia() { media?.cancel() }
     init { require(processInstance > 0) }
     private fun tick() = VaultTick(processInstance, clock.elapsedMillis())
     private fun context(budget: Long, deadline: Long? = null): VaultOperationContext {
@@ -177,7 +225,7 @@ internal class VaultRuntime(
         val value = synchronized(gate) {
             val current = state
             val data = snapshot?.data ?: return null
-            if (closed || failureSticky || recoveryWorkflow != null || jobs != 0 || credential != null ||
+            if (closed || failureSticky || recoveryWorkflow != null || media?.blocksCredentialRecovery() == true || jobs != 0 || credential != null ||
                 current?.mode != VaultMode.LOCKED || current.cleanupStatus != VaultCleanupStatus.COMPLETE ||
                 current.retryStatus != VaultRetryStatus.READY || !route || !foreground ||
                 (kind == VaultRecoveryWorkflowKind.ENROLL && data.recoveryState == VaultRecoveryState.ACTIVE) ||
@@ -325,7 +373,11 @@ internal class VaultRuntime(
                 ?: throw VaultOperationException(VaultFailure.CORRUPT)
             if (observed.snapshot != captured.second) throw VaultOperationException(VaultFailure.CONFLICT)
             requireCurrentRead(captured.first, operation)
-            val decoded = authentication.readEmptyCatalog(captured.first.root, observed.snapshot, operation)
+            val catalog = if (media != null) authentication.authenticateCatalog(captured.first.root, observed.snapshot, operation) else null
+            val decoded = if (catalog == null) authentication.readEmptyCatalog(captured.first.root, observed.snapshot, operation) else null
+            val revision = catalog?.catalogRevision ?: checkNotNull(decoded).catalogRevision
+            val rows = catalog?.entries?.map { entry -> VaultMediaRow(VaultMediaReadRef(observed.snapshot.identity.vaultId,
+                entry.identity.objectId, entry.identity.generation, revision), entry.displayName, entry.plaintext.bytes) } ?: emptyList()
             operation.checkActive()
             ui.execute {
                 synchronized(gate) {
@@ -333,8 +385,9 @@ internal class VaultRuntime(
                     if (!closed && !failureSticky && readLease === captured.first &&
                         presentationGeneration == captured.first.generation && activeRoot === captured.first.root &&
                         current?.permitsPresentation(tick(), captured.first.authEpoch, captured.first.presentationEpoch) == true &&
-                        decoded.catalogRevision == captured.first.revision) {
-                        presentation.presentEmpty(decoded.catalogRevision)
+                        revision == captured.first.revision) {
+                        if (rows.isEmpty()) presentation.presentEmpty(revision) else presentation.presentCatalog(revision, rows)
+                        media?.refreshPresentation()
                     }
                 }
             }
@@ -374,7 +427,7 @@ internal class VaultRuntime(
     private fun executeEffects(effects: List<VaultEffect>, preserveRecovery: VaultRecoveryWorkflow? = null) {
         try { effects.forEach { effect -> when (effect) {
             VaultEffect.MaskPrivatePresentation -> protectPresentation(preserveRecovery = preserveRecovery)
-            VaultEffect.StopPrivatePlaybackAndReaders -> Unit // V1 has no media reader; jobs remain registered below.
+            VaultEffect.StopPrivatePlaybackAndReaders -> media?.revoke() ?: Unit
             VaultEffect.ClearPrivateMemory -> synchronized(gate) { credential?.close(); credential = null; recoveryInput?.close(); recoveryInput = null }
             is VaultEffect.RevokeExternalSession -> retireRoots()
             is VaultEffect.DiscardAttemptResult -> retirePending(effect.identity)
@@ -612,6 +665,7 @@ internal class VaultRuntime(
             if (presentationGeneration == Long.MAX_VALUE) { failureSticky = true } else presentationGeneration++
             presentationGeneration
         }
+        media?.revoke()
         presentation.cover(generation) {
             synchronized(gate) { if (generation == presentationGeneration) hiddenGeneration = generation }
             tryAcknowledgeCleanup()
@@ -657,7 +711,7 @@ internal class VaultRuntime(
         val binding = synchronized(gate) {
             val current = state
             if (closed || failureSticky || jobs != 0 || effectsInFlight != 0 || retiringRoots.isNotEmpty() || retiringMutations.isNotEmpty() || credential != null || recoveryInput != null || pendingReset != null || pendingRoot != null ||
-                readLease != null || (activeRoot != null && activeRootEpoch != current?.authEpoch) ||
+                readLease != null || media?.cleanupComplete() == false || (activeRoot != null && activeRootEpoch != current?.authEpoch) ||
                 hiddenGeneration != presentationGeneration ||
                 current?.cleanupStatus != VaultCleanupStatus.PENDING) return
             current.currentCleanup ?: return
@@ -726,7 +780,7 @@ internal class VaultRuntime(
     /** Read-only host release check. It never grants authentication or presentation authority. */
     fun hostCleanupComplete(): Boolean = synchronized(gate) {
         !closed && !failureSticky && jobs == 0 && effectsInFlight == 0 && retiringRoots.isEmpty() && retiringMutations.isEmpty() &&
-            credential == null && recoveryInput == null && pendingReset == null && pendingRoot == null && readLease == null && state?.cleanupStatus == VaultCleanupStatus.COMPLETE
+            credential == null && recoveryInput == null && pendingReset == null && pendingRoot == null && readLease == null && media?.cleanupComplete() != false && state?.cleanupStatus == VaultCleanupStatus.COMPLETE
     }
     override fun close() {
         synchronized(gate) {

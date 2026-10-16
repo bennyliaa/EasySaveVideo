@@ -45,7 +45,14 @@ class VaultRecoveryStoreWiringTest {
         assertTrue(accept.contains("val actual = database.readExisting()"))
         assertTrue(accept.contains("!actual.sameBytes(mutation.proposed)"))
         assertTrue(accept.contains("original.checkActive()"))
-        assertTrue(accept.contains("return decode(actual)"))
+        // Decode the actual readback before clearing the pending proof. A decode failure
+        // must retain the same pending operation rather than making an unknown write vanish.
+        val decode = accept.indexOf("val decoded = decode(actual)")
+        val clear = accept.indexOf("pending = null; pendingContext = null")
+        val returned = accept.indexOf("return decoded")
+        assertTrue(decode > accept.indexOf("original.checkActive()"))
+        assertTrue(clear > decode)
+        assertTrue(returned > clear)
     }
     @Test fun lastProofRetirementAndSqlBudgetRemainBoundedAndProductionStaysOff() {
         val store = source("storage/AndroidVaultStore")

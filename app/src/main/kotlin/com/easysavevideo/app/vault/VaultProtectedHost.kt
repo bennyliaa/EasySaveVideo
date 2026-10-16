@@ -40,6 +40,8 @@ internal class VaultProtectedHost(
     private val inVaultRoute: () -> Boolean,
     private val foreground: () -> Boolean,
     private val captureDrained: () -> Boolean,
+    private val selectPhoneFile: (VaultPhoneFileRequest) -> Unit = {},
+    private val retireOrdinary: (com.easysavevideo.library.MediaReadRef, () -> Unit) -> Unit = { _, _ -> },
 ) {
     val runtime get() = binding.runtime
     val presentation get() = binding.presentation
@@ -139,6 +141,27 @@ internal class VaultProtectedHost(
         return owns(current) && mainOwner.vaultActionsCurrent(current) && !guard.hasContinuousCaptureAuthorization
     }
     fun revealCatalog() { if (captureAction()()) runtime.revealEmptyCatalog() }
+    fun confirmMoveToVault() { if (captureAction()()) runtime.confirmMoveToVault() }
+    fun copyMediaToPhone(ref: VaultMediaReadRef) { if (captureAction()()) runtime.copyMediaToPhone(ref) }
+    fun confirmCopyToPhone() { if (captureAction()()) runtime.confirmCopyToPhone() }
+    fun copyMediaBatchToPhone(refs: List<VaultMediaReadRef>) { if (captureAction()()) runtime.copyMediaBatchToPhone(refs) }
+    fun confirmBatchCopy(token: Any) { if (captureAction()()) runtime.confirmBatchCopy(token) }
+    fun continueBatchCopy(token: Any) { if (captureAction()()) runtime.continueBatchCopy(token) }
+    fun keepCurrentBatchOutputAndContinue(token: Any) { if (captureAction()()) runtime.keepCurrentBatchOutputAndContinue(token) }
+    fun keepCurrentSingleOutput(token: Any) { if (captureAction()()) runtime.keepCurrentSingleOutput(token) }
+    fun reconcileMedia() { if (captureAction()()) runtime.reconcileMedia() }
+    fun cancelMedia() { if (captureAction()()) runtime.cancelMedia() }
+    fun retireOrdinarySource(ref: com.easysavevideo.library.MediaReadRef, retired: () -> Unit) {
+        requireMain()
+        if (!attached || detaching) return
+        retireOrdinary(ref, retired)
+    }
+    fun requestPhoneFileSelection(request: VaultPhoneFileRequest) {
+        requireMain()
+        if (!publicationAllowed()) { runtime.retirePhoneSelection(request); return }
+        // No private content is handed to the chooser; route/focus loss revokes actual readers.
+        selectPhoneFile(request)
+    }
     fun lock() { if (captureAction()()) { retireRequest(true); runtime.lock() } }
     fun beginCredential(mode: VaultCredentialMode) {
         requireMain()

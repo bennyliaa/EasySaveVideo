@@ -1,0 +1,11 @@
+{
+  "source_archive": "source-vault-batch-export-20261016.tar.gz",
+  "evidence_archive": "evidence-vault-batch-export-20261016.tar.gz",
+  "source_files_verified": 2746,
+  "source_bytes": 28500285,
+  "source_sha256": "9178cbbd743887ff72df3c499435522456417f1fba62db6ef083b0a5c5905fbc",
+  "evidence_bytes": 1561080,
+  "evidence_sha256": "823d1d4a3f5b7cc3de5e9bf814a9b8a43ac95b2f72d3119d13a196be5249e540",
+  "production_enabled": false,
+  "device": "NOT_RUN"
+}

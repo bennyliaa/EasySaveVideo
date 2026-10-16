@@ -35,7 +35,13 @@ class LibraryRepresentationLookupSourceContractTest {
             "boundItemId = if (c.isNull(14)) null else c.getString(14)",
             "boundGeneration = if (c.isNull(15)) null else c.getLong(15)")) assertTrue(lookup.contains(argument))
         assertFalse(lookup.contains("catch"))
-        assertTrue(repository.contains("override fun item(itemId: String): MediaItem? = guard { LibraryIds.requireValid(itemId); readItem(itemId) }"))
+        // The underlying exact lookup must still validate bad bindings before the public
+        // disposition filter hides a source durably reserved for a Vault move.
+        val visibleItem = section(repository, "override fun item(itemId: String)", "override fun folder(")
+        ordered(visibleItem, "MediaItem? = guard {", "LibraryIds.requireValid(itemId)", "readItem(itemId)",
+            "?.takeUnless { moveFenced(it.itemId, it.representationGeneration) }")
+        assertFalse(visibleItem.contains("catch"))
+        assertEquals(1, "readItem(itemId)".toRegex(RegexOption.LITERAL).findAll(visibleItem).count())
     }
 
     @Test fun exactLeftJoinRetainsBadBindingsForValidationWithNoLifecycleFilter() {

@@ -39,6 +39,19 @@ internal class AndroidVaultDatabase(context: Context) {
         owners[ownershipKey] = this
     } }
 
+    /** Subordinate file access shares this exact database owner's lifetime lock. */
+    @Synchronized fun mediaDirectory(): File {
+        rejectQuarantine()
+        openExisting()
+        require(lifetimeLock?.isValid == true)
+        return directory.absoluteFile
+    }
+
+    fun syncMediaDirectory(value: File) {
+        require(value.absoluteFile == directory.absoluteFile)
+        syncDirectory(value)
+    }
+
     /** An existing directory, even empty, is evidence. It is never a first-use success. */
     @Synchronized fun hasFilesystemEvidence(): Boolean = Files.exists(directory.toPath(), LinkOption.NOFOLLOW_LINKS)
 

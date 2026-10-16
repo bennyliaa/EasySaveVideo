@@ -5,6 +5,8 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import com.easysavevideo.library.*
+import com.easysavevideo.library.export.*
+import com.easysavevideo.app.library.export.ExportRecordCodec
 import com.easysavevideo.save.MediaCommitReceipt
 import java.io.File
 import java.io.IOException
@@ -44,7 +46,8 @@ internal class AndroidLibraryRepository(
         val direction = if (query.direction == SortDirection.ASCENDING) "ASC" else "DESC"
         val nullOrder = if (query.sort == LibrarySort.DURATION) "i.duration_millis IS NULL ASC," else ""
         val rows = db.rawQuery("""$ITEM_SELECT WHERE $selection AND i.lifecycle='READY' AND r.state='READY'
-            AND i.privacy_class='ORDINARY' AND r.kind='ORDINARY_FILE_V1' AND instr(i.name_key,?)>0
+            AND i.privacy_class='ORDINARY' AND r.kind='ORDINARY_FILE_V1'
+            AND NOT EXISTS(SELECT 1 FROM library_vault_move vm WHERE vm.item_id=i.item_id AND vm.generation=i.generation AND vm.phase<>'CANCELLED') AND instr(i.name_key,?)>0
             ORDER BY $nullOrder $column $direction,i.item_id ASC LIMIT ? OFFSET ?""", args.toTypedArray()).use { c ->
             buildList { while (c.moveToNext()) add(readItem(c)) }
         }
@@ -57,7 +60,7 @@ internal class AndroidLibraryRepository(
             if (hasMore) LibraryCursor(version, query.queryKey(), nextOffset.toInt()) else null)
     }
 
-    override fun item(itemId: String): MediaItem? = guard { LibraryIds.requireValid(itemId); readItem(itemId) }
+    override fun item(itemId: String): MediaItem? = guard { LibraryIds.requireValid(itemId); readItem(itemId)?.takeUnless { moveFenced(it.itemId, it.representationGeneration) } }
     override fun folder(folderId: String): LibraryFolder? = guard { LibraryIds.requireValid(folderId); readFolder(folderId) }
     override fun folders(parentId: String?): List<LibraryFolder> = guard {
         parentId?.let { requireFolder(it) }
@@ -178,7 +181,7 @@ internal class AndroidLibraryRepository(
             DeleteAttempt.WAITING -> Unit
             DeleteAttempt.FAILED -> failed++
         }
-        val remaining = database().rawQuery("SELECT COUNT(*) FROM library_operation WHERE phase='DELETE_PENDING'", null).use {
+        val remaining = database().rawQuery("SELECT COUNT(*) FROM library_operation WHERE phase='DELETE_PENDING' AND kind='DELETE_ITEM'", null).use {
             it.moveToFirst(); it.getLong(0).coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
         }
         PendingDeleteReport(completed, remaining, failed)
@@ -207,6 +210,7 @@ internal class AndroidLibraryRepository(
     /** Historic receipts are provenance. Resolve the current disposition rather than their old file name. */
     fun resolveReceipt(receipt: MediaCommitReceipt): MediaReadRef = guard {
         val item = readItem(receipt.mediaId) ?: throw LibraryFailure(LibraryError.NOT_FOUND)
+        requireNoMove(item.itemId, item.representationGeneration)
         if (item.lifecycle != MediaLifecycle.READY) throw LibraryFailure(LibraryError.NOT_FOUND)
         val representation = representation(item.itemId)
         if (representation.state != "READY" || representation.commitId != receipt.commitId ||
@@ -221,6 +225,143 @@ internal class AndroidLibraryRepository(
 
     fun hasActiveReaders(): Boolean = synchronized(lock) { activeReaders != 0 }
     internal data class ReadAuthority(val file: File, val sizeBytes: Long, val sha256: String, val lease: AutoCloseable)
+
+    /** Immutable technical intent. It is identity checked by the outer source owner. */
+    internal data class VaultMoveIntent(val source: MediaReadRef, val operationId: String)
+
+    fun reserveVaultMove(ref: MediaReadRef, operationId: String): VaultMoveIntent = guard {
+        LibraryIds.requireValid(operationId)
+        transaction { db ->
+            val prior = moveIntent(operationId)
+            if (prior != null) {
+                if (prior.first != VaultMoveIntent(ref, operationId))
+                    throw LibraryFailure(LibraryError.IDEMPOTENCY_CONFLICT)
+                return@transaction prior.first
+            }
+            requireReady(ref)
+            requireNoActiveOrdinaryOperation(ref)
+            db.insertOrThrow("library_vault_move", null, ContentValues().apply {
+                put("operation_id", operationId); put("item_id", ref.itemId); put("source_revision", ref.revision)
+                put("generation", ref.representationGeneration); put("phase", "RESERVED")
+            })
+            LibrarySchema.bumpVersion(db)
+            VaultMoveIntent(ref, operationId)
+        }
+    }
+
+    /** Recovery-only fact: an absent operation creates no ordinary authority or source mutation. */
+    fun reconcileVaultMove(ref: MediaReadRef, operationId: String): Pair<VaultMoveIntent, Boolean> = guard {
+        LibraryIds.requireValid(operationId)
+        val expected = VaultMoveIntent(ref, operationId)
+        val prior = moveIntent(operationId)
+        if (prior != null && prior.first != expected) throw LibraryFailure(LibraryError.IDEMPOTENCY_CONFLICT)
+        expected to (prior == null)
+    }
+    fun cancelAbsentVaultMove(intent: VaultMoveIntent): Boolean = guard {
+        if (moveIntent(intent.operationId) != null) return@guard false
+        // No exact operation intent ever admitted a source reader or writer. Do not touch
+        // a newer revision, somebody else's writer, or a legitimately deleted source.
+        true
+    }
+
+    /** Called only after the real presentation ACK; obtains writer exclusion, never a read lease. */
+    fun acquireVaultMove(intent: VaultMoveIntent): Pair<MediaItem, ReadAuthority> = guard {
+        requireMoveIntent(intent, "RESERVED")
+        val ref = intent.source
+        val item = readItem(ref.itemId) ?: throw LibraryFailure(LibraryError.NOT_FOUND)
+        if (item.lifecycle != MediaLifecycle.READY || item.readRef() != ref) throw LibraryFailure(LibraryError.STALE_REVISION)
+        requireNoActiveOrdinaryOperation(ref)
+        val exclusive = leases.tryAcquireWrite(ref.itemId, intent.operationId) ?: throw LibraryFailure(LibraryError.BUSY)
+        try {
+            val representation = representation(ref.itemId)
+            if (representation.state != "READY" || representation.generation != ref.representationGeneration)
+                throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
+            val file = files.readable(requireNotNull(representation.locator), representation.sizeBytes)
+            activeReaders++
+            item to ReadAuthority(file, representation.sizeBytes, requireNotNull(representation.sha256), object : AutoCloseable {
+                private var released = false
+                override fun close() = synchronized(lock) {
+                    if (!released) { released = true; activeReaders--; exclusive.close() }
+                    Unit
+                }
+            })
+        } catch (failure: Exception) { exclusive.close(); throw failure }
+    }
+
+    /** Outer owner must validate its injected Vault receipt before entering this storage lock. */
+    fun cleanupVaultMove(intent: VaultMoveIntent): DeleteOutcome = guard {
+        val phase = moveIntent(intent.operationId)?.also { require(it.first == intent) }?.second
+            ?: throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
+        if (phase == "DELETED") return@guard DeleteOutcome.DELETED
+        if (phase == "RESERVED") transaction { db ->
+            val ref = intent.source
+            val item = readItem(ref.itemId) ?: throw LibraryFailure(LibraryError.NOT_FOUND)
+            if (item.readRef() != ref || item.lifecycle != MediaLifecycle.READY || ref.revision > Long.MAX_VALUE - 2)
+                throw LibraryFailure(LibraryError.STALE_REVISION)
+            require(db.update("library_item", ContentValues().apply {
+                put("lifecycle", "DELETE_PENDING"); put("revision", ref.revision + 1)
+            }, "item_id=? AND revision=? AND generation=? AND lifecycle='READY'",
+                arrayOf(ref.itemId, ref.revision.toString(), ref.representationGeneration.toString())) == 1)
+            require(db.update("media_representation", ContentValues().apply { put("state", "DELETE_PENDING") },
+                "item_id=? AND generation=? AND state='READY'", arrayOf(ref.itemId, ref.representationGeneration.toString())) == 1)
+            require(db.update("library_vault_move", ContentValues().apply { put("phase", "DELETE_PENDING") },
+                "operation_id=? AND phase='RESERVED'", arrayOf(intent.operationId)) == 1)
+            recordOperation(db, intent.operationId, "VAULT_MOVE", ref.itemId, ref.revision,
+                fingerprint("VAULT_MOVE", ref.itemId, ref.revision, ref.representationGeneration.toString()), ref.revision + 1, "DELETE_PENDING")
+            LibrarySchema.bumpVersion(db)
+        } else if (phase != "DELETE_PENDING") throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
+        finishDelete(intent.source.itemId, intent.operationId)
+        if (moveIntent(intent.operationId)?.second == "DELETED") DeleteOutcome.DELETED else DeleteOutcome.DELETE_PENDING
+    }
+
+    fun cancelVaultMove(intent: VaultMoveIntent): Boolean = guard {
+        if (moveIntent(intent.operationId) == (intent to "CANCELLED")) {
+            if (!leases.snapshot(intent.source.itemId).let { !it.writerActive && it.readers == 0 }) return@guard false
+            leases.cancelWriteIntent(intent.source.itemId, intent.operationId)
+            return@guard true
+        }
+        requireMoveIntent(intent, "RESERVED")
+        if (!leases.snapshot(intent.source.itemId).let { !it.writerActive && it.readers == 0 }) return@guard false
+        transaction { db ->
+            require(db.update("library_vault_move", ContentValues().apply { put("phase", "CANCELLED") },
+                "operation_id=? AND phase='RESERVED'", arrayOf(intent.operationId)) == 1)
+            LibrarySchema.bumpVersion(db)
+        }
+        leases.cancelWriteIntent(intent.source.itemId, intent.operationId)
+        true
+    }
+
+    fun requireOrdinaryAdmission(ref: MediaReadRef): Unit = guard { requireReady(ref); Unit }
+    private fun moveFenced(itemId: String, generation: Long): Boolean = database().rawQuery(
+        "SELECT 1 FROM library_vault_move WHERE item_id=? AND generation=? AND phase<>'CANCELLED' LIMIT 1",
+        arrayOf(itemId, generation.toString())).use { it.moveToFirst() }
+    private fun requireNoMove(itemId: String, generation: Long) {
+        if (moveFenced(itemId, generation)) throw LibraryFailure(LibraryError.BUSY)
+    }
+    private fun moveIntent(operationId: String): Pair<VaultMoveIntent, String>? = database().rawQuery(
+        "SELECT item_id,source_revision,generation,phase FROM library_vault_move WHERE operation_id=?", arrayOf(operationId)).use {
+        if (!it.moveToFirst()) null else VaultMoveIntent(MediaReadRef(it.getString(0), it.getLong(1), it.getLong(2)), operationId) to it.getString(3)
+    }
+    private fun requireMoveIntent(intent: VaultMoveIntent, phase: String) {
+        if (moveIntent(intent.operationId) != (intent to phase)) throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
+    }
+    private fun requireNoActiveOrdinaryOperation(ref: MediaReadRef) {
+        if (database().rawQuery("""SELECT 1 FROM edit_source s JOIN edit_job j ON j.operation_id=s.operation_id
+            WHERE s.source_kind='CATALOG' AND s.item_id=? AND s.generation=?
+            AND j.phase NOT IN ('SUCCEEDED','FAILED','CANCELLED','INTERRUPTED') LIMIT 1""",
+            arrayOf(ref.itemId, ref.representationGeneration.toString())).use { it.moveToFirst() })
+            throw LibraryFailure(LibraryError.BUSY)
+        database().rawQuery("""SELECT length(record),record FROM library_export WHERE phase IN
+            ('PREPARED','CREATE_INTENT','COPYING','VERIFYING','PUBLISH_INTENT') LIMIT 33""", null).use { c ->
+            var count = 0
+            while (c.moveToNext()) {
+                if (++count > ExportLimits.MAX_ACTIVE || c.getLong(0) !in 8..4096) throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
+                val source = ExportRecordCodec.decode(c.getBlob(1)).request.source
+                if (source.itemId == ref.itemId && source.representationGeneration == ref.representationGeneration)
+                    throw LibraryFailure(LibraryError.BUSY)
+            }
+        }
+    }
 
     private fun mutateFolder(id: String, expected: Long, operationId: String, kind: String, argument: String?, values: (LibraryFolder) -> ContentValues): LibraryFolder {
         LibraryIds.requireValid(id)
@@ -241,10 +382,15 @@ internal class AndroidLibraryRepository(
         LibraryIds.requireValid(id)
         val fingerprint = fingerprint(kind, id, expected, argument)
         return transaction { db ->
-            replay(operationId, fingerprint)?.let { return@transaction readItem(it.targetId) ?: throw LibraryFailure(LibraryError.NOT_FOUND) }
+            replay(operationId, fingerprint)?.let {
+                val item = readItem(it.targetId) ?: throw LibraryFailure(LibraryError.NOT_FOUND)
+                requireNoMove(item.itemId, item.representationGeneration)
+                return@transaction item
+            }
             val current = readItem(id) ?: throw LibraryFailure(LibraryError.NOT_FOUND)
             if (current.lifecycle != MediaLifecycle.READY) throw LibraryFailure(LibraryError.NOT_FOUND)
             checkRevision(current.revision, expected)
+            requireNoMove(current.itemId, current.representationGeneration)
             val exclusive = leases.tryAcquireWrite(id, operationId) ?: run {
                 leases.cancelWriteIntent(id, operationId)
                 throw LibraryFailure(LibraryError.BUSY)
@@ -268,7 +414,7 @@ internal class AndroidLibraryRepository(
     }
     private fun finishDeleteOwned(itemId: String, operationId: String): DeleteAttempt {
         val operation = operation(operationId) ?: throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
-        if (operation.targetId != itemId || operation.kind != "DELETE_ITEM") throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
+        if (operation.targetId != itemId || operation.kind !in setOf("DELETE_ITEM", "VAULT_MOVE")) throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
         if (operation.phase == "COMPLETE") return DeleteAttempt.COMPLETE
         val current = readItem(itemId) ?: throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
         if (current.lifecycle != MediaLifecycle.DELETE_PENDING) throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
@@ -293,6 +439,9 @@ internal class AndroidLibraryRepository(
                         put("phase", "COMPLETE"); put("result_revision", current.revision + 1)
                     }, "operation_id=? AND phase='DELETE_PENDING'", arrayOf(operationId)) != 1)
                     throw LibraryFailure(LibraryError.RECOVERY_REQUIRED)
+                if (operation.kind == "VAULT_MOVE") require(db.update("library_vault_move", ContentValues().apply {
+                    put("phase", "DELETED")
+                }, "operation_id=? AND phase='DELETE_PENDING'", arrayOf(operationId)) == 1)
                 LibrarySchema.bumpVersion(db)
             }
             return DeleteAttempt.COMPLETE
@@ -305,13 +454,14 @@ internal class AndroidLibraryRepository(
     private fun recoverAfterRelease(itemId: String) = synchronized(lock) {
         if (isClosed()) return@synchronized
         try {
-            val operationId = database().rawQuery("SELECT operation_id FROM library_operation WHERE target_id=? AND phase='DELETE_PENDING' LIMIT 1",
+            val operationId = database().rawQuery("SELECT operation_id FROM library_operation WHERE target_id=? AND phase='DELETE_PENDING' AND kind='DELETE_ITEM' LIMIT 1",
                 arrayOf(itemId)).use { c -> if (c.moveToFirst()) c.getString(0) else null }
             if (operationId != null) finishDelete(itemId, operationId)
         } catch (_: Exception) { /* Durable intent remains pending; explicit recovery exposes the failure count. */ }
     }
 
     private fun requireReady(ref: MediaReadRef): MediaItem {
+        requireNoMove(ref.itemId, ref.representationGeneration)
         val item = readItem(ref.itemId) ?: throw LibraryFailure(LibraryError.NOT_FOUND)
         if (item.lifecycle != MediaLifecycle.READY) throw LibraryFailure(LibraryError.NOT_FOUND)
         if (item.revision != ref.revision || item.representationGeneration != ref.representationGeneration)
@@ -417,7 +567,7 @@ internal class AndroidLibraryRepository(
     private fun ContentValues.nullable(key: String, value: String?) { if (value == null) putNull(key) else put(key, value) }
 
     companion object {
-        internal const val DELETE_BATCH_SQL = "SELECT target_id,operation_id FROM library_operation WHERE phase='DELETE_PENDING' AND operation_id>? ORDER BY operation_id LIMIT ?"
+        internal const val DELETE_BATCH_SQL = "SELECT target_id,operation_id FROM library_operation WHERE phase='DELETE_PENDING' AND kind='DELETE_ITEM' AND operation_id>? ORDER BY operation_id LIMIT ?"
         private const val ITEM_COLUMNS = """SELECT i.item_id,i.revision,i.generation,i.folder_id,i.display_name,i.created_at,
             i.date_kind,r.size_bytes,i.duration_millis,i.width,i.height,i.lifecycle"""
         private const val ITEM_SELECT = """$ITEM_COLUMNS FROM library_item i

@@ -124,4 +124,26 @@ class VaultCredentialUiContractTest {
         assertTrue(page.contains("VaultCredentialMode.RECOVERY_RESET"))
     }
 
+    @Test fun directoryIdsAreBoundedBeforeOneUtf8Allocation() {
+        val adapter = source("storage/AndroidVaultPhoneFiles")
+        val start = adapter.indexOf("override fun children(tree: String): List<String>")
+        val end = adapter.indexOf("override fun isChild(tree: String, child: String)", start)
+        assertTrue(start >= 0 && end > start)
+        val body = adapter.substring(start, end)
+        val bound = body.indexOf("require(id.length <= VaultPhoneFilesProfile.MAX_ID_BYTES)")
+        val encode = body.indexOf("val idBytes = id.toByteArray(Charsets.UTF_8).size")
+        val byteBound = body.indexOf("require(idBytes <= VaultPhoneFilesProfile.MAX_ID_BYTES)")
+        val accumulate = body.indexOf("bytes += idBytes")
+        val totalBound = body.indexOf("require(bytes <= VaultCopyBatchLimits.MAX_DIRECTORY_ID_BYTES)")
+        assertTrue(bound >= 0 && encode > bound && byteBound > encode && accumulate > byteBound && totalBound > accumulate)
+        assertEquals(1, "id.toByteArray".toRegex(RegexOption.LITERAL).findAll(body).count())
+    }
+    @Test fun batchFolderLabelIsQuantityNeutralForOneOrMany() {
+        val template = resources("values").getValue("vault_batch_choose_folder")
+        assertEquals("Choose one folder (selected: 1)", String.format(java.util.Locale.ROOT, template, 1))
+        assertEquals("Choose one folder (selected: 8)", String.format(java.util.Locale.ROOT, template, 8))
+        assertEquals("为 1 项选择一个文件夹", String.format(java.util.Locale.ROOT,
+            resources("values-zh-rCN").getValue("vault_batch_choose_folder"), 1))
+    }
+
 }

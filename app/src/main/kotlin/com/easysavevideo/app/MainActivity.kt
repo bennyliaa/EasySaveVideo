@@ -102,6 +102,18 @@ class MainActivity : ComponentActivity() {
     private lateinit var privateWindowGuard: PrivateWindowGuard
     private lateinit var privatePresentationOwner: PrivateMainPresentationOwner
     private var vaultHost: VaultProtectedHost? = null
+    private var vaultBinding: AndroidVaultRuntimeBinding? = null
+    private var ordinaryLibraryCompositions = 0
+    private val ordinaryVaultRetirements = VaultOrdinaryRetirementQueue(
+        presentationAbsent = { ordinaryLibraryCompositions == 0 && activeDestination == EsvDestination.VAULT &&
+            libraryPreviewReference == null && previewReceipt == null && saves.editor?.state?.busy != true &&
+            saves.segmentRecording?.previewActive != true && !isDestroyed && !isFinishing },
+        retireCaches = { ref, done -> AndroidLibraryThumbnails.retireExactSource(ref, done) })
+    private fun retireOrdinaryForVault(ref: MediaReadRef, retired: () -> Unit) {
+        check(Looper.myLooper() == Looper.getMainLooper())
+        ordinaryVaultRetirements.request(ref, retired)
+    }
+    private fun drainOrdinaryVaultRetirements() = ordinaryVaultRetirements.progress()
     private var vaultLockObserver: android.content.BroadcastReceiver? = null
     private lateinit var privateRecording: PrivateRecordingBridge
     private var continuousRecordingSubscription: AutoCloseable? = null
@@ -274,6 +286,15 @@ class MainActivity : ComponentActivity() {
         if (exports == null) pendingLibraryDocumentResult = result.resultCode to result.data
         else exports.onCreateDocumentResult(result.resultCode, result.data)
     }
+    private val vaultDocumentPicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val binding = vaultBinding
+        val request = binding?.pendingPhoneFileRequest
+        if (binding != null) binding.pendingPhoneFileRequest = null
+        if (request != null && binding != null) {
+            val target = try { binding.phoneFiles?.acceptResult(request, result.resultCode, result.data) } catch (_: Exception) { null }
+            binding.runtime.acceptPhoneSelection(request, target)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initialDestination = EsvDestination.fromRoute(savedInstanceState?.getString("esv_destination"))
@@ -366,9 +387,22 @@ class MainActivity : ComponentActivity() {
             independentRecordingOwner = { saves.hasIndependentSubmittedRecordingOwner }, vault = { vaultHost })
         // One app singleton and the existing root. The compile-time gate prevents construction.
         if (AndroidVaultRuntimeEntry.ENABLED) AndroidVaultRuntimeEntry.getOrCreate(applicationContext)?.let { binding ->
+            vaultBinding = binding
             VaultProtectedHost(this, privateContentRoot, privateWindowGuard, privatePresentationOwner, binding,
                 routeNow = { privateRouteIdentity }, inVaultRoute = { activeDestination == EsvDestination.VAULT && !browser.isPrivateMode },
-                foreground = { isForeground }, captureDrained = ::captureSourcesDrained).also { host ->
+                foreground = { isForeground }, captureDrained = ::captureSourcesDrained,
+                retireOrdinary = ::retireOrdinaryForVault,
+                selectPhoneFile = { request ->
+                    if (binding.pendingPhoneFileRequest == null && isForeground && activeDestination == EsvDestination.VAULT) {
+                        binding.pendingPhoneFileRequest = request
+                        try { vaultDocumentPicker.launch(checkNotNull(binding.phoneFiles).createIntent(request)) }
+                        catch (_: Exception) {
+                            // A platform launch exception does not prove the chooser never accepted it.
+                            // Keep an already-launched exact request for a late callback; no synthetic cancellation.
+                            if (binding.runtime.retirePhoneSelection(request)) binding.pendingPhoneFileRequest = null
+                        }
+                    } else binding.runtime.retirePhoneSelection(request)
+                }).also { host ->
                 vaultHost = host
                 host.attach()
             }
@@ -488,7 +522,7 @@ class MainActivity : ComponentActivity() {
                             if (::saves.isInitialized) saves.libraryExports?.cancelBatchForLeavingLibrary()
                         }
                         activeDestination = nextDestination
-                        vaultHost?.observePresence()
+                        vaultHost?.observePresence(); drainOrdinaryVaultRetirements()
                         if (activeDestination != EsvDestination.BROWSER) { browser.setJsDialogUiVisible(false); browser.setVideoPresenceUiVisible(false) }
                     }
                     controller.addOnDestinationChangedListener(listener)
@@ -690,10 +724,21 @@ class MainActivity : ComponentActivity() {
                 }
                 else if (route == EsvDestination.LIBRARY && library != null) {
                     val thumbnails = remember(library) { AndroidLibraryThumbnails(saves::openLibraryMedia, saves::retainLibraryNativeReader) }
-                    DisposableEffect(thumbnails) { onDispose { thumbnails.close() } }
+                    DisposableEffect(thumbnails) {
+                        ordinaryLibraryCompositions++
+                        onDispose { thumbnails.close(); ordinaryLibraryCompositions--; drainOrdinaryVaultRetirements() }
+                    }
                     LibraryScreen(library,
                         onBack = { libraryExportReference = null; libraryBatchExportSelection=null; backTo() },
                         onPreview = { libraryPreviewReference = it },
+                        onMoveToVault = if (!AndroidVaultRuntimeEntry.ENABLED || vaultHost == null) null else { ref ->
+                            if (isForeground && activeDestination == EsvDestination.LIBRARY && libraryPreviewReference == null &&
+                                previewReceipt == null && editor?.state?.busy != true && exports?.state?.busy != true &&
+                                !isDestroyed && !isFinishing && vaultHost?.runtime?.queueMoveToVault(ref) == true) {
+                                library.dismissSelection(); libraryExportReference = null; libraryBatchExportSelection = null
+                                navigate(EsvDestination.VAULT)
+                            }
+                        },
                         onEdit = if (editor == null || !settingsReady) null else { item ->
                             editor.open(item, library.state.items, settings.editor); navigate(EsvDestination.EDITOR); libraryExportReference = null
                         },

@@ -55,17 +55,18 @@ class AndroidLibraryThumbnails(
     retainNativeReader: (MediaReadRef) -> AutoCloseable,
 ) : AutoCloseable {
     private val backend = AndroidThumbnailBackend(openPublishedMedia, retainNativeReader)
-    private val ui = AndroidThumbnailUiDispatcher(backend::captureCompletionRelease)
+    private val ui = AndroidThumbnailUiDispatcher(backend::captureCompletionRelease, ::forgetReleasedSession)
     private var version by mutableStateOf(0L)
     private var disposed = false
     private val session = BoundedThumbnailSession(backend, backend, ui,
         onStalled = OrdinaryMediaNativeResources::unconfirmed,
-        onChanged = { version++ })
+        onChanged = { version++; forgetReleasedSession() })
 
     init {
         ui.requireCurrentThread()
         currentSession?.close()
         currentSession = this
+        retainedSessions.add(this)
     }
 
     fun updatePage(items: List<MediaItem>, enabled: Boolean) = session.updatePage(items, enabled)
@@ -75,22 +76,46 @@ class AndroidLibraryThumbnails(
         @Suppress("UNUSED_VARIABLE") val observed = version
         return session.state(item)
     }
+    /** Main-thread exact purge; completion observes real backend release through the session. */
+    private fun retireExact(reference: MediaReadRef, onActuallyRetired: () -> Unit) =
+        session.retireExact(reference, onActuallyRetired)
+
+    private fun forgetReleasedSession() {
+        if (disposed && !session.hasActiveJob && !session.hasUnconfirmedResources && session.retainedCount == 0) retainedSessions.remove(this)
+    }
+
     override fun close() {
         ui.requireCurrentThread()
         if (disposed) return
         disposed = true
         session.close()
         if (currentSession === this) currentSession = null
+        forgetReleasedSession()
     }
-    private companion object { var currentSession: AndroidLibraryThumbnails? = null }
+    companion object {
+        private var currentSession: AndroidLibraryThumbnails? = null
+        private val retainedSessions = linkedSetOf<AndroidLibraryThumbnails>()
+
+        /** Includes disposed sessions whose native completion has not returned yet. */
+        fun retireExactSource(reference: MediaReadRef, onActuallyRetired: () -> Unit) {
+            check(Looper.myLooper() == Looper.getMainLooper())
+            val owners = retainedSessions.toList()
+            if (owners.isEmpty()) { onActuallyRetired(); return }
+            var remaining = owners.size
+            owners.forEach { owner -> owner.retireExact(reference) {
+                remaining--
+                if (remaining == 0) onActuallyRetired()
+            } }
+        }
+    }
 }
 
-private class AndroidThumbnailUiDispatcher(private val captureCompletionRelease: () -> (() -> Unit)) : ThumbnailUiDispatcher {
+private class AndroidThumbnailUiDispatcher(private val captureCompletionRelease: () -> (() -> Unit), private val afterCompletion: () -> Unit) : ThumbnailUiDispatcher {
     private val main = Handler(Looper.getMainLooper())
     override fun requireCurrentThread() { check(Looper.myLooper() == Looper.getMainLooper()) }
     override fun post(task: Runnable) {
         val release = captureCompletionRelease()
-        main.post { release(); task.run() }
+        main.post { release(); task.run(); afterCompletion() }
     }
     override fun later(task: Runnable, delayMillis: Long) { main.postDelayed(task, delayMillis) }
     override fun remove(task: Runnable) { main.removeCallbacks(task) }

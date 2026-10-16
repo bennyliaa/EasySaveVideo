@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.easysavevideo.app.R
@@ -14,10 +18,13 @@ import com.easysavevideo.app.theme.EsvText
 import com.easysavevideo.app.theme.LocalEsvVisuals
 import com.easysavevideo.app.ui.LocalPrivateInputAdmission
 
-/** Status/revision only. No credential, plaintext key, path or authenticated capability enters UI state. */
+internal data class VaultMediaRow(val ref: VaultMediaReadRef, val name: String, val bytes: Long)
+
+/** Bounded authenticated display metadata only. No credential, plaintext key, path or authenticated capability enters UI state. */
 internal data class VaultRenderedState(val status: VaultRuntimeStatus, val revision: Long? = null, val coverGeneration: Long = 0,
     val recoveryState: VaultRecoveryState = VaultRecoveryState.NONE, val pendingPassword: Boolean = false,
-    val recoveryNotice: VaultRecoveryNotice = VaultRecoveryNotice.NONE)
+    val recoveryNotice: VaultRecoveryNotice = VaultRecoveryNotice.NONE,
+    val items: List<VaultMediaRow> = emptyList(), val media: VaultMediaView = VaultMediaView())
 
 /** Current settings consumer of the single disabled gate; never constructs an auth/store owner. */
 @Composable internal fun VaultRuntimeAvailability(onOpen: (() -> Unit)? = null) {
@@ -37,9 +44,12 @@ internal data class VaultRenderedState(val status: VaultRuntimeStatus, val revis
     val inputAdmission = LocalPrivateInputAdmission.current
     val capturedAction = host.captureAction()
     val accepts = { inputAdmission() && capturedAction() }
+    // Process-local protected selection; never persisted through cover, rotation, or saved state.
+    var selected by remember(state.coverGeneration, state.revision, state.status) { mutableStateOf(emptyList<VaultMediaReadRef>()) }
     Column(Modifier.fillMaxSize().background(visuals.colors.surface).padding(visuals.spacingMedium),
         verticalArrangement = Arrangement.spacedBy(visuals.spacingSmall)) {
         EsvText(stringResource(when (state.status) {
+            VaultRuntimeStatus.CATALOG -> R.string.vault_media_catalog
             VaultRuntimeStatus.EMPTY -> R.string.vault_runtime_empty
             VaultRuntimeStatus.READY_TO_REVEAL -> R.string.vault_runtime_ready
             VaultRuntimeStatus.SETUP_REQUIRED -> R.string.vault_runtime_setup_pending
@@ -79,7 +89,7 @@ internal data class VaultRenderedState(val status: VaultRuntimeStatus, val revis
                 R.string.vault_recovery_reset_title else R.string.vault_recovery_enable), onClick = {
                 if (accepts()) host.beginCredential(if (state.recoveryState == VaultRecoveryState.ACTIVE)
                     VaultCredentialMode.RECOVERY_RESET else VaultCredentialMode.RECOVERY_ENROLL)
-            }, enabled = host.credentialRequest == null)
+            }, enabled = host.credentialRequest == null && !state.media.busy)
         }
         if (state.status == VaultRuntimeStatus.RECOVERY_CODE_READY) {
             EsvButton(stringResource(R.string.vault_recovery_show), onClick = {
@@ -91,7 +101,86 @@ internal data class VaultRenderedState(val status: VaultRuntimeStatus, val revis
                 if (accepts()) host.revealCatalog()
             })
         }
-        if (state.status == VaultRuntimeStatus.EMPTY || state.status == VaultRuntimeStatus.READY_TO_REVEAL) {
+        if (state.media.notice != VaultMediaNotice.NONE) {
+            EsvText(stringResource(when (state.media.notice) {
+                VaultMediaNotice.MOVE_CONFIRM -> R.string.vault_media_move_explanation
+                VaultMediaNotice.COPYING_CONFIRM, VaultMediaNotice.AUTHENTICATE_TO_CONTINUE -> R.string.vault_media_continue
+                VaultMediaNotice.WORKING -> R.string.vault_runtime_working
+                VaultMediaNotice.PICKING -> R.string.vault_media_picking
+                VaultMediaNotice.MOVED -> R.string.vault_media_moved
+                VaultMediaNotice.COPIED -> R.string.vault_media_copied
+                VaultMediaNotice.CANCELLED -> R.string.vault_media_cancelled
+                VaultMediaNotice.TARGET_PERMISSION_REQUIRED -> R.string.vault_media_permission
+                VaultMediaNotice.RELEASE_UNKNOWN -> R.string.vault_media_release_unknown
+                VaultMediaNotice.BATCH_CONFIRM -> R.string.vault_batch_explanation
+                VaultMediaNotice.BATCH_RESULT -> R.string.vault_batch_results
+                VaultMediaNotice.OUTPUT_RETAINED -> R.string.vault_media_output_retained
+                VaultMediaNotice.BUDGET_EXHAUSTED -> R.string.vault_batch_budget
+                else -> R.string.vault_media_reconcile
+            }), style = visuals.captionTextStyle)
+        }
+        if (state.status in setOf(VaultRuntimeStatus.EMPTY, VaultRuntimeStatus.CATALOG)) {
+            if (state.media.hasMove) EsvButton(stringResource(R.string.vault_media_move), onClick = {
+                if (accepts()) host.confirmMoveToVault()
+            }, enabled = !state.media.busy)
+            if (state.media.hasCopy) EsvButton(stringResource(if (state.media.notice == VaultMediaNotice.CANCELLED)
+                R.string.vault_media_recover else R.string.vault_media_copy_confirm), onClick = {
+                if (accepts()) host.confirmCopyToPhone()
+            }, enabled = !state.media.busy)
+            val batch = state.media.batch
+            if (batch != null) {
+                EsvText(stringResource(R.string.vault_batch_progress, batch.verified, batch.total, batch.activeIndex + 1), style = visuals.captionTextStyle)
+                batch.outcomes.forEachIndexed { index, outcome ->
+                    EsvText(stringResource(R.string.vault_batch_row, index + 1, stringResource(when (outcome) {
+                        VaultCopyBatchOutcome.VERIFIED_COPY -> R.string.vault_batch_verified
+                        VaultCopyBatchOutcome.WAITING, VaultCopyBatchOutcome.PAUSED_NOT_STARTED -> R.string.vault_batch_not_started
+                        VaultCopyBatchOutcome.ACTIVE -> R.string.vault_runtime_working
+                        VaultCopyBatchOutcome.FINAL_DECISION_PENDING -> R.string.vault_media_reconcile
+                        VaultCopyBatchOutcome.CLEANUP_REQUIRED -> R.string.vault_batch_manual
+                        VaultCopyBatchOutcome.UNRESOLVED_RETAINED -> R.string.vault_media_output_retained
+                        VaultCopyBatchOutcome.CANCELLED_BEFORE_START, VaultCopyBatchOutcome.CANCELLED_CLEANED -> R.string.vault_media_cancelled
+                        else -> R.string.vault_batch_failed
+                    })), style = visuals.captionTextStyle)
+                }
+                state.media.actionToken?.let { token ->
+                    if (batch.status !in setOf(VaultCopyBatchStatus.FINISHED, VaultCopyBatchStatus.BUDGET_EXHAUSTED))
+                        EsvButton(stringResource(R.string.vault_batch_confirm), onClick = {
+                            if (accepts()) host.confirmBatchCopy(token)
+                        }, enabled = !state.media.busy && !state.media.canKeepOutput)
+                }
+            }
+            if (state.media.canKeepOutput) state.media.actionToken?.let { token ->
+                EsvText(stringResource(R.string.vault_batch_keep_warning), style = visuals.captionTextStyle)
+                EsvButton(stringResource(R.string.vault_batch_keep), onClick = {
+                    if (accepts()) {
+                        if (batch != null) host.keepCurrentBatchOutputAndContinue(token) else host.keepCurrentSingleOutput(token)
+                    }
+                }, enabled = !state.media.busy)
+            }
+            state.items.forEach { item ->
+                EsvText(item.name)
+                EsvButton(stringResource(if (item.ref in selected) R.string.vault_batch_deselect else R.string.vault_batch_select), onClick = {
+                    if (accepts()) selected = if (item.ref in selected) selected - item.ref else (selected + item.ref).take(VaultCopyBatchLimits.MAX_ITEMS)
+                }, enabled = !state.media.busy && !state.media.hasMove && !state.media.hasCopy &&
+                    (batch == null || batch.status in setOf(VaultCopyBatchStatus.FINISHED, VaultCopyBatchStatus.BUDGET_EXHAUSTED)) &&
+                    (item.ref in selected || selected.size < VaultCopyBatchLimits.MAX_ITEMS))
+                EsvButton(stringResource(R.string.vault_media_copy), onClick = {
+                    if (accepts()) host.copyMediaToPhone(item.ref)
+                }, enabled = !state.media.busy && !state.media.hasMove && !state.media.hasCopy &&
+                    (batch == null || batch.status in setOf(VaultCopyBatchStatus.FINISHED, VaultCopyBatchStatus.BUDGET_EXHAUSTED)))
+            }
+            if (selected.isNotEmpty()) EsvButton(stringResource(R.string.vault_batch_choose_folder, selected.size), onClick = {
+                if (accepts()) { val plan = selected.toList(); selected = emptyList(); host.copyMediaBatchToPhone(plan) }
+            }, enabled = !state.media.busy && !state.media.hasCopy && !state.media.hasMove)
+            EsvButton(stringResource(R.string.vault_media_recover), onClick = {
+                if (accepts()) host.reconcileMedia()
+            }, enabled = !state.media.busy)
+        }
+        if (state.media.hasMove || state.media.hasCopy || state.media.busy || state.media.batch?.status?.let {
+                it !in setOf(VaultCopyBatchStatus.FINISHED, VaultCopyBatchStatus.BUDGET_EXHAUSTED) } == true) {
+            EsvButton(stringResource(R.string.vault_media_cancel), onClick = { if (accepts()) host.cancelMedia() })
+        }
+        if (state.status in setOf(VaultRuntimeStatus.EMPTY, VaultRuntimeStatus.CATALOG, VaultRuntimeStatus.READY_TO_REVEAL)) {
             EsvButton(stringResource(R.string.vault_runtime_lock), onClick = { if (accepts()) host.lock() })
         }
     }

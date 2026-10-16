@@ -1,5 +1,6 @@
 package com.easysavevideo.app.vault.storage
 
+import com.easysavevideo.app.vault.VaultMediaLimits
 import com.easysavevideo.app.vault.VaultCiphertext
 import com.easysavevideo.app.vault.VaultPendingPassword
 import com.easysavevideo.app.vault.VaultRecoveryState
@@ -22,6 +23,7 @@ internal object VaultSnapshotCodec {
     private const val MAGIC = 0x45535631
     private const val LEGACY_WIRE_VERSION = 1
     private const val RECOVERY_WIRE_VERSION = 2
+    private const val MEDIA_WIRE_VERSION = 3
     private const val ID_MAX = 64
     private const val ALIAS_MAX = 160
     private const val SLOT_MAX = 3
@@ -48,7 +50,7 @@ internal object VaultSnapshotCodec {
                 writeCiphertext(out, data.installationMarker)
                 writeLedger(out, data.retryLedger)
                 writeCiphertext(out, data.retryLedgerEnvelope)
-                if (version == RECOVERY_WIRE_VERSION) {
+                if (version >= RECOVERY_WIRE_VERSION) {
                     out.writeInt(data.recoveryState.ordinal)
                     out.writeBoolean(data.pendingPassword != null)
                     data.pendingPassword?.let { pending ->
@@ -58,6 +60,10 @@ internal object VaultSnapshotCodec {
                         out.writeLong(pending.attempt.authEpoch)
                         writeLedger(out, pending.reservation)
                     }
+                }
+                if (version == MEDIA_WIRE_VERSION) {
+                    out.writeLong(data.mediaJournalRevision)
+                    writeCiphertext(out, requireNotNull(data.mediaJournalEnvelope))
                 }
             }
         }
@@ -69,7 +75,7 @@ internal object VaultSnapshotCodec {
         val input = DataInputStream(ByteArrayInputStream(bytes))
         require(input.readInt() == MAGIC)
         val version = input.readInt()
-        require(version == LEGACY_WIRE_VERSION || version == RECOVERY_WIRE_VERSION)
+        require(version in LEGACY_WIRE_VERSION..MEDIA_WIRE_VERSION)
         val identity = VaultPersistentIdentity(
             readText(input, ID_MAX), readText(input, ID_MAX), readText(input, ID_MAX),
             readText(input, ALIAS_MAX), readText(input, ALIAS_MAX), input.readInt(), input.readInt(),
@@ -92,7 +98,12 @@ internal object VaultSnapshotCodec {
                 val pending = if (readBoolean(input)) VaultPendingPassword(
                     readSlot(input), VaultAttemptIdentity(input.readLong(), input.readLong(), input.readLong()), readLedger(input),
                 ) else null
-                legacy.copy(recoveryState = recoveryState, pendingPassword = pending)
+                val recovered = legacy.copy(recoveryState = recoveryState, pendingPassword = pending)
+                if (version == MEDIA_WIRE_VERSION) {
+                    val journalRevision = input.readLong()
+                    recovered.copy(mediaJournalEnvelope = readCiphertext(input, VaultMediaLimits.MAX_JOURNAL_BYTES),
+                        mediaJournalRevision = journalRevision)
+                } else recovered
             }
         } else null
         require(input.available() == 0)
@@ -145,9 +156,13 @@ internal object VaultSnapshotCodec {
         require(data.catalogEnvelope.size in 1..VaultRuntimeLimits.EMPTY_CATALOG_BYTES)
         require(data.installationMarker.size in 1..VaultRuntimeLimits.ENVELOPE_BYTES)
         require(data.retryLedgerEnvelope.size in 1..VaultRuntimeLimits.ENVELOPE_BYTES)
+        require((data.mediaJournalEnvelope == null) == (data.mediaJournalRevision == 0L))
+        require(data.mediaJournalRevision in 0 until Long.MAX_VALUE)
+        data.mediaJournalEnvelope?.let { require(it.size in 1..VaultMediaLimits.MAX_JOURNAL_BYTES) }
         validateLedger(data.retryLedger)
         if (snapshot.phase == VaultStorePhase.STAGED) {
             require(snapshot.storeRevision == 2L)
+            require(data.mediaJournalEnvelope == null && data.mediaJournalRevision == 0L)
             require(data.catalogRevision == 1L && data.recoveryState == VaultRecoveryState.NONE && data.pendingPassword == null)
             require(data.retryLedger == VaultRetryLedger(0, 0, -1, null))
         } else require(snapshot.storeRevision >= 3)
@@ -156,6 +171,7 @@ internal object VaultSnapshotCodec {
     /** V1 has no extension trailer; its original password-only representation stays exact. */
     private fun wireVersion(snapshot: VaultStoredSnapshot): Int {
         val data = snapshot.data ?: return LEGACY_WIRE_VERSION
+        if (data.mediaJournalEnvelope != null) return MEDIA_WIRE_VERSION
         return if (data.recoveryState == VaultRecoveryState.NONE && data.pendingPassword == null &&
             data.catalogRevision == 1L && data.slots.all { it.generation == 1L }) LEGACY_WIRE_VERSION else RECOVERY_WIRE_VERSION
     }
