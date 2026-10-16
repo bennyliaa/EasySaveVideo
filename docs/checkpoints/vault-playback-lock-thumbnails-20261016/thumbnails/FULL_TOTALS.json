@@ -1,0 +1,117 @@
+{
+  "modules": {
+    "core-model": {
+      "suites": 4,
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core-domain": {
+      "suites": 13,
+      "tests": 120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ui-theme": {
+      "suites": 2,
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "discovery": {
+      "suites": 25,
+      "tests": 338,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "save": {
+      "suites": 27,
+      "tests": 467,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "recording": {
+      "suites": 6,
+      "tests": 127,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "library": {
+      "suites": 25,
+      "tests": 300,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "hls": {
+      "suites": 1,
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "commons-provider": {
+      "suites": 26,
+      "tests": 416,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "searxng-provider": {
+      "suites": 2,
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "verification-client": {
+      "suites": 2,
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "verification-local": {
+      "suites": 6,
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    "app": {
+      "suites": 452,
+      "tests": 4625,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "junit": {
+    "suites": 591,
+    "tests": 6563,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "passed": 6561
+  },
+  "device": "NOT_RUN",
+  "production_enabled": false,
+  "exit_code": 0,
+  "lint": {
+    "debug": {
+      "warning": 86,
+      "note": 10
+    },
+    "release": {
+      "warning": 86,
+      "note": 10
+    }
+  },
+  "source_files": 2788
+}

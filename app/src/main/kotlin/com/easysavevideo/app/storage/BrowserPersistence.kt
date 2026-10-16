@@ -11,8 +11,12 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 
 /** Bounded startup IO; one coalesced write job rather than one queued job per callback. */
-class BrowserPersistence(context: Context, private val errors: ErrorSink, private val onWriteFailure: () -> Unit) : AutoCloseable {
-    private val settingsStore = AndroidSettingsStore(context)
+class BrowserPersistence(context: Context, private val errors: ErrorSink,
+    acceptedVaultPolicy: () -> VaultAutoLockPolicy? = { null }, private val onWriteFailure: () -> Unit) : AutoCloseable {
+    constructor(context: Context, errors: ErrorSink, onWriteFailure: () -> Unit) :
+        this(context, errors, { null }, onWriteFailure)
+
+    private val settingsStore = AndroidSettingsStore(context, acceptedVaultPolicy)
     private val sessionStore = AndroidBrowserSessionStore(context)
     private val io = Executors.newSingleThreadExecutor()
     private val main = Handler(Looper.getMainLooper())
@@ -23,7 +27,7 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
     private val preserveSession = AtomicBoolean(false)
     private val sessionResetRequested = AtomicBoolean(false)
     val sessionWritesPaused: Boolean get() = preserveSession.get()
-    private data class PendingSettings(val value: AppSettings, val includeNetwork: Boolean, val includeConcurrency: Boolean)
+    private data class PendingSettings(val value: AppSettings, val includeNetwork: Boolean, val includeConcurrency: Boolean, val includeVaultPolicy: Boolean)
     private val settingsPending = AtomicReference<PendingSettings?>(null)
     private val networkPreferenceConfirmed = AtomicBoolean(false)
     var settingsLoaded: Boolean = false; private set
@@ -86,7 +90,7 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
     fun saveSettings(settings: AppSettings, confirmNetworkPreference: Boolean = false) {
         if (closed.get()) return
         if (confirmNetworkPreference) networkPreferenceConfirmed.set(true)
-        settingsPending.set(PendingSettings(settings, settingsLoaded || networkPreferenceConfirmed.get(), settingsLoaded))
+        settingsPending.set(PendingSettings(settings, settingsLoaded || networkPreferenceConfirmed.get(), settingsLoaded, settingsLoaded))
         if (!settings.browser.restoreTabs) {
             // The settings toggle explicitly explains that disabling clears saved addresses.
             sessionResetRequested.set(true); preserveSession.set(false); sessionPending.set(empty)
@@ -96,7 +100,7 @@ class BrowserPersistence(context: Context, private val errors: ErrorSink, privat
     private fun scheduleWrite() {
         if (writing.compareAndSet(false, true)) io.execute {
             do {
-                settingsPending.getAndSet(null)?.let { value -> runCatching { settingsStore.save(value.value, value.includeNetwork, value.includeConcurrency) }.onFailure { writeFailure(ErrorCode.SETTINGS_UNAVAILABLE) } }
+                settingsPending.getAndSet(null)?.let { value -> runCatching { settingsStore.save(value.value, value.includeNetwork, value.includeConcurrency, value.includeVaultPolicy) }.onFailure { writeFailure(ErrorCode.SETTINGS_UNAVAILABLE) } }
                 sessionPending.getAndSet(null)?.takeUnless { preserveSession.get() }?.let { value -> runCatching { sessionStore.save(value) }.onFailure { writeFailure(ErrorCode.RECOVERY_FAILED) } }
                 writing.set(false)
             } while ((settingsPending.get() != null || sessionPending.get() != null) && writing.compareAndSet(false, true))

@@ -1,8 +1,12 @@
 package com.easysavevideo.core.model
 
 /** Pure metadata only. No value in this file is a credential, unlock handle or decryption authority. */
-enum class VaultAutoLockPolicy(val durationMillis: Long) {
-    IMMEDIATE(0), AFTER_1_MINUTE(60_000), AFTER_5_MINUTES(300_000), AFTER_15_MINUTES(900_000),
+enum class VaultAutoLockPolicy(val durationMillis: Long, val key: String) {
+    IMMEDIATE(0, "immediate"), AFTER_1_MINUTE(60_000, "after_1_minute"),
+    AFTER_5_MINUTES(300_000, "after_5_minutes"), AFTER_15_MINUTES(900_000, "after_15_minutes");
+    companion object {
+        fun fromKey(key: String?): VaultAutoLockPolicy = entries.firstOrNull { it.key == key } ?: IMMEDIATE
+    }
 }
 data class VaultTick(val processInstance: Long, val elapsedMillis: Long)
 enum class VaultMode { LOCKED, RESERVING_ATTEMPT, AUTHENTICATING, ACCEPTED_PENDING_RETRY_RESET, SESSION_OPEN, RECOVERY_REQUIRED, UNAVAILABLE }

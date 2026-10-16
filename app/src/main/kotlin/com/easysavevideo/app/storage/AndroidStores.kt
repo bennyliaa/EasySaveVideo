@@ -16,10 +16,15 @@ internal fun readDirectConcurrencyPreference(read: () -> Int): Int = try {
 } catch (_: ClassCastException) { 1 }
 
 /** Primitive settings only. All calls are made on the bounded single IO executor. */
-class AndroidSettingsStore(context: Context) : SettingsStore {
+class AndroidSettingsStore(context: Context,
+    private val acceptedVaultPolicy: () -> VaultAutoLockPolicy? = { null },
+) : SettingsStore {
     private val application = context.applicationContext
     private val prefs = context.getSharedPreferences("browser_settings_v1", Context.MODE_PRIVATE)
-    override fun load(): AppSettings = AppSettings(browser = BrowserSettings(
+    @Volatile private var loadedSuccessfully = false
+    override fun load(): AppSettings {
+        loadedSuccessfully = false
+        return AppSettings(browser = BrowserSettings(
         restoreTabs = prefs.getBoolean("restore_tabs", true),
         maxActiveWebViews = prefs.getInt("active_views", 3).coerceIn(1, 4),
         javaScriptEnabled = prefs.getBoolean("javascript", true),
@@ -32,20 +37,27 @@ class AndroidSettingsStore(context: Context) : SettingsStore {
     ), save = SaveSettings(
         wifiOnly = prefs.getBoolean("save_wifi_only", false),
         maxConcurrentDirectTasks = readDirectConcurrencyPreference { prefs.getInt("save_direct_concurrency", 1) },
-    ), editor = EditorSettings(EditorCompressionMode.fromKey(prefs.getString("editor_default_compression", null))),
+    ), vaultAutoLockPolicy = readVaultAutoLockPreference { prefs.getString("vault_auto_lock_policy", null) },
+    editor = EditorSettings(EditorCompressionMode.fromKey(prefs.getString("editor_default_compression", null))),
     appearance = AppearanceSettings(
         ThemeMode.fromKey(prefs.getString("ui_theme_mode", null)),
         if (Build.VERSION.SDK_INT >= 33) {
             val locales = application.getSystemService(android.app.LocaleManager::class.java).applicationLocales
             AppLanguage.fromTag(if (locales.isEmpty) "" else locales[0].toLanguageTag())
         } else AppLanguage.fromTag(prefs.getString("ui_language", null)),
-    ))
-    override fun save(settings: AppSettings) = save(settings, includeSaveNetworkPreference = true, includeSaveConcurrencyPreference = true)
+    )).also { loadedSuccessfully = true }
+    }
+    override fun save(settings: AppSettings) = save(settings, includeSaveNetworkPreference = true,
+        includeSaveConcurrencyPreference = true, includeVaultPolicy = loadedSuccessfully)
     /** Failed/unfinished loads cannot replace unknown save fields; explicit Wi-Fi edits are independent. */
-    fun save(settings: AppSettings, includeSaveNetworkPreference: Boolean, includeSaveConcurrencyPreference: Boolean) {
-        check(prefs.edit().putBoolean("restore_tabs", settings.browser.restoreTabs)
+    fun save(settings: AppSettings, includeSaveNetworkPreference: Boolean, includeSaveConcurrencyPreference: Boolean,
+        includeVaultPolicy: Boolean = false) {
+        SettingsWriteBoundary.commit(includeVaultPolicy,
+            { if (loadedSuccessfully) acceptedVaultPolicy() else null }) { livePolicy ->
+            prefs.edit().putBoolean("restore_tabs", settings.browser.restoreTabs)
             .apply { if (includeSaveNetworkPreference) putBoolean("save_wifi_only", settings.save.wifiOnly) }
             .apply { if (includeSaveConcurrencyPreference) putInt("save_direct_concurrency", settings.save.maxConcurrentDirectTasks) }
+            .apply { if (livePolicy != null) putString("vault_auto_lock_policy", livePolicy.key) }
             .putInt("active_views", settings.browser.maxActiveWebViews)
             .putBoolean("javascript", settings.browser.javaScriptEnabled)
             .putBoolean("third_party_cookies", settings.browser.acceptThirdPartyCookies)
@@ -53,7 +65,8 @@ class AndroidSettingsStore(context: Context) : SettingsStore {
             .putString("discovery_repeat", settings.discovery.repeatPolicy.name).putString("discovery_mode", settings.discovery.mode.name)
             .putString("editor_default_compression", settings.editor.defaultCompression.key)
             .putString("ui_theme_mode", settings.appearance.themeMode.key)
-            .apply { if (Build.VERSION.SDK_INT < 33) putString("ui_language", settings.appearance.language.tag) }.commit())
+            .apply { if (Build.VERSION.SDK_INT < 33) putString("ui_language", settings.appearance.language.tag) }.commit()
+        }
         if (Build.VERSION.SDK_INT >= 33) {
             // The platform is the sole locale persistence owner on API33+.
             val manager = application.getSystemService(android.app.LocaleManager::class.java)

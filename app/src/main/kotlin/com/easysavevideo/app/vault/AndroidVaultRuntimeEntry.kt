@@ -19,6 +19,9 @@ internal object AndroidVaultRuntimeEntry {
     const val ENABLED: Boolean = false
     private var owner: AndroidVaultRuntimeBinding? = null
 
+    /** Read-only binding lookup; settings composition and persistence cannot create a Vault. */
+    @Synchronized fun currentBinding(): AndroidVaultRuntimeBinding? = if (ENABLED) owner else null
+
     @Synchronized fun getOrCreate(context: Context): AndroidVaultRuntimeBinding? {
         if (!ENABLED) return null
         owner?.let { return it }
@@ -40,7 +43,9 @@ internal object AndroidVaultRuntimeEntry {
         }
         // The singleton is deliberately retained after release failure; replacement cannot bypass a fence.
         return VaultRuntime(store, authentication, clock, lane, ui, scheduler, presentation,
-            SystemClock.elapsedRealtimeNanos().coerceAtLeast(1), source, files).let { runtime ->
+            SystemClock.elapsedRealtimeNanos().coerceAtLeast(1), source, files,
+            com.easysavevideo.app.vault.playback.AndroidVaultPlaybackFactory(context.applicationContext), presentation,
+            com.easysavevideo.app.vault.thumbnail.AndroidVaultThumbnailFactory()).let { runtime ->
                 AndroidVaultRuntimeBinding(runtime, presentation, files).also { owner = it }
             }
     }

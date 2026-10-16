@@ -1,0 +1,17 @@
+<resources>
+  <string name="vault_playback_open">打开播放</string>
+  <string name="vault_playback_preparing">正在准备私密播放…</string>
+  <string name="vault_playback_playing">正在私密播放</string>
+  <string name="vault_playback_ended">播放已结束。再次播放需手动点击。</string>
+  <string name="vault_playback_retiring">正在关闭私密播放…</string>
+  <string name="vault_playback_unavailable">播放不可用。如果无法确认资源已释放，受保护画面将保持遮盖。</string>
+  <string name="vault_playback_ready">已准备好。点击“播放”后才开始。</string>
+  <string name="vault_playback_play">播放</string>
+  <string name="vault_playback_pause">暂停</string>
+  <string name="vault_playback_back">后退15秒</string>
+  <string name="vault_playback_forward">前进15秒</string>
+  <string name="vault_playback_restart">回到开头</string>
+  <string name="vault_playback_close">关闭播放</string>
+  <string name="vault_playback_position">%1$d / %2$d 秒</string>
+    <string name="vault_playback_release_warning">无法确认播放已关闭，保险箱暂不可用。</string>
+</resources>

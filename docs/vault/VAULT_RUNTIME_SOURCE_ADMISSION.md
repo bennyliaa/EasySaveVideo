@@ -1,5 +1,7 @@
 # Vault R2 runtime source scope (entry disabled)
 
+> Historical R2 scope record. Subsequent protected-host, optional recovery-code, media move/copy-export and controlled-playback source work is tracked in [CURRENT_IMPLEMENTATION_STATUS.md](CURRENT_IMPLEMENTATION_STATUS.md). The earlier limited scope below is preserved; it is not a current statement that those later code paths are absent. Production remains disabled and native/device acceptance remains pending.
+
 This is a new source-integration scope. It does not replace the historical dependency-only Tink admission or claim that its no-production-import condition remains applicable to the new runtime. `scripts/check-tink-admission.py` is preserved byte for byte and is not executed by the new check.
 
 The fixed dependency graph, notices and licenses remain subject to the existing Gradle runtime admission. The new `scripts/check-vault-runtime-scope.py` checks the exact listed Tink source/FQN references, rejects wildcard imports, checks the historical gate hash, and checks the disabled construction entry. It is a finite text boundary check, not AST security analysis or proof of cryptographic safety.

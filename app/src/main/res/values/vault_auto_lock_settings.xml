@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vault_auto_lock_title">Vault auto-lock</string>
+    <string name="vault_auto_lock_immediate">Immediately</string>
+    <string name="vault_auto_lock_one_minute">1 minute</string>
+    <string name="vault_auto_lock_five_minutes">5 minutes</string>
+    <string name="vault_auto_lock_fifteen_minutes">15 minutes</string>
+    <string name="vault_auto_lock_scope">The timer starts when you leave Vault or put the app in the background. Return to Vault in the foreground before it ends to cancel it. Restarting the app always requires unlocking.</string>
+    <string name="vault_auto_lock_wait">Wait for settings to load and keep this page in the foreground to change Vault auto-lock.</string>
+    <string name="vault_auto_lock_load_failed">Saved Vault auto-lock settings could not be read. Editing is unavailable to protect the saved value. Reopen the app to retry loading.</string>
+</resources>

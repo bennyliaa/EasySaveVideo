@@ -31,6 +31,31 @@ internal class PrivateContentRoot(context: Context) : FrameLayout(context), Auto
     private var lastTouch: MotionEvent? = null
     private var discardGestureRemainder = false
     private var barrierFailed = false
+    private var vaultPlaybackReleaseWarning = false
+    /** Fixed non-sensitive safety copy only; never a title, error, path or caller-supplied text. */
+    fun showVaultPlaybackReleaseWarning(show: Boolean) {
+        requireMain()
+        if (vaultPlaybackReleaseWarning == show) return
+        vaultPlaybackReleaseWarning = show
+        invalidate()
+    }
+    private fun drawVaultPlaybackReleaseWarning(canvas: Canvas) {
+        if (!vaultPlaybackReleaseWarning || !protection.covered || width <= 0 || height <= 0) return
+        val margin = (24f * resources.displayMetrics.density).toInt()
+        val lineWidth = (width - margin * 2).coerceAtLeast(1)
+        val paint = android.text.TextPaint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.WHITE
+            textSize = 16f * resources.displayMetrics.scaledDensity
+        }
+        val text = context.getString(com.easysavevideo.app.R.string.vault_playback_release_warning)
+        val layout = android.text.StaticLayout.Builder.obtain(text, 0, text.length, paint, lineWidth)
+            .setAlignment(android.text.Layout.Alignment.ALIGN_CENTER).setMaxLines(4).build()
+        val save = canvas.save()
+        try {
+            canvas.translate(margin.toFloat(), ((height - layout.height) / 2f).coerceAtLeast(0f))
+            layout.draw(canvas)
+        } finally { canvas.restoreToCount(save) }
+    }
     private val ordinaryDescendantFocusability = descendantFocusability
     private val heldKeys = mutableSetOf<Int>()
     private val blockedKeys = mutableSetOf<Int>()
@@ -175,6 +200,8 @@ internal class PrivateContentRoot(context: Context) : FrameLayout(context), Auto
         try { canvas.drawColor(Color.BLACK, PorterDuff.Mode.SRC) }
         catch (_: Exception) { barrierFailed = true; hideContentAfterFailure(); return }
         if (barrierFailed) { hideContentAfterFailure(); return }
+        // Draw fixed safe guidance above the opaque cover without revealing children or accepting input.
+        try { drawVaultPlaybackReleaseWarning(canvas) } catch (_: Exception) { /* Keep the opaque safety cover. */ }
         val turn = protection.current ?: return
         val identity = try { identityNow?.invoke() } catch (_: Exception) { null } ?: return
         val draw = protection.drawn(turn, identity, isAttachedToWindow,

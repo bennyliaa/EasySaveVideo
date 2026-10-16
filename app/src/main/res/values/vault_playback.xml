@@ -1,0 +1,17 @@
+<resources>
+  <string name="vault_playback_open">Open playback</string>
+  <string name="vault_playback_preparing">Preparing private playback…</string>
+  <string name="vault_playback_playing">Playing privately</string>
+  <string name="vault_playback_ended">Playback ended. Play again only when ready.</string>
+  <string name="vault_playback_retiring">Closing private playback…</string>
+  <string name="vault_playback_unavailable">Playback is unavailable. If resource release cannot be confirmed, this protected view will remain covered.</string>
+  <string name="vault_playback_ready">Ready. Playback starts only when you tap Play.</string>
+  <string name="vault_playback_play">Play</string>
+  <string name="vault_playback_pause">Pause</string>
+  <string name="vault_playback_back">Back 15 seconds</string>
+  <string name="vault_playback_forward">Forward 15 seconds</string>
+  <string name="vault_playback_restart">Go to start</string>
+  <string name="vault_playback_close">Close playback</string>
+  <string name="vault_playback_position">%1$d / %2$d seconds</string>
+    <string name="vault_playback_release_warning">Playback closure could not be confirmed. Vault is temporarily unavailable.</string>
+</resources>

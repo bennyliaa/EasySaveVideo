@@ -1,0 +1,11 @@
+{
+  "source_archive": "source-vault-private-thumbnails-20261016.tar.gz",
+  "evidence_archive": "evidence-vault-private-thumbnails-20261016.tar.gz",
+  "source_files_verified": 2788,
+  "source_bytes": 28578391,
+  "source_sha256": "d037d92cb22c138fd041fa2a22f807b07e8cd1c5a0dfa45bf010d485af3685d9",
+  "evidence_bytes": 1052984,
+  "evidence_sha256": "1c155009e2adc78e47333b91f391a362f094ed3a3e75c52733a87c56e6e08752",
+  "production_enabled": false,
+  "device": "NOT_RUN"
+}

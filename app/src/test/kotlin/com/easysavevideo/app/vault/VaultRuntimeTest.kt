@@ -43,8 +43,11 @@ class VaultRuntimeTest {
     private fun identity() = VaultPersistentIdentity("vault", "install", "operation", "esv.vault.v1.operation.device", "esv.vault.v1.operation.biometric")
     private inner class Store(initial: Boolean) : VaultStorePort {
         var value: VaultStoredSnapshot? = if (initial) VaultStoredSnapshot(identity(), VaultStorePhase.READY, 3, data()) else null
-        var begins = 0; var retryWrites = 0; var failReset = false
-        override fun inspect(context: VaultOperationContext): VaultStoreObservation = value?.let(VaultStoreObservation::Present) ?: VaultStoreObservation.Absent
+        var begins = 0; var retryWrites = 0; var failReset = false; var inspections = 0; var onInspect: (() -> Unit)? = null
+        override fun inspect(context: VaultOperationContext): VaultStoreObservation {
+            inspections++; onInspect?.invoke()
+            return value?.let(VaultStoreObservation::Present) ?: VaultStoreObservation.Absent
+        }
         override fun beginInitialization(identity: VaultPersistentIdentity, context: VaultOperationContext): VaultStoredSnapshot {
             check(value == null); begins++
             return VaultStoredSnapshot(identity, VaultStorePhase.INITIALIZING, 1, null).also { value = it }
@@ -68,14 +71,14 @@ class VaultRuntimeTest {
         override fun close() = Unit
     }
     private inner class Auth : VaultAuthenticationPort {
-        var aliases = false; var unlocks = 0; var closes = 0; var reads = 0; var prepared = 0
+        var aliases = false; var unlocks = 0; var closes = 0; var reads = 0; var prepared = 0; var aliasQueries = 0; var ledgerReads = 0
         var reject = false; var ledgerCorrupt = false; var onRead: (() -> Unit)? = null
         private inner class Root : VaultRootCapability { var live = true; override fun close() { if (live) { live = false; closes++ } } }
         override fun validatePasswordInput(input: VaultCredentialInput) {
             val chars = input.copyCharacters()
             try { if (chars.size < 15) throw VaultOperationException(VaultFailure.REJECTED) } finally { chars.fill('\u0000') }
         }
-        override fun hasExistingVaultAliases(context: VaultOperationContext) = aliases
+        override fun hasExistingVaultAliases(context: VaultOperationContext): Boolean { aliasQueries++; return aliases }
         override fun preparePasswordSetup(identity: VaultPersistentIdentity, input: VaultCredentialInput, context: VaultOperationContext): VaultStagedData {
             prepared++; return data()
         }
@@ -83,6 +86,7 @@ class VaultRuntimeTest {
             object : VaultStagedVerification { override fun requireMatches(snapshot: VaultStoredSnapshot) = Unit; override fun close() = Unit }
         override fun validateStagedVerification(snapshot: VaultStoredSnapshot, verification: VaultStagedVerification) = verification.requireMatches(snapshot)
         override fun authenticateLedger(snapshot: VaultStoredSnapshot, context: VaultOperationContext): VaultRetryLedger {
+            ledgerReads++
             if (ledgerCorrupt) throw VaultOperationException(VaultFailure.CORRUPT)
             return snapshot.data!!.retryLedger
         }
@@ -209,5 +213,116 @@ class VaultRuntimeTest {
         assertThrows(IllegalArgumentException::class.java) { VaultCredentialInput(VaultCredentialKind.PIN, CharArray(13)) }
         assertThrows(IllegalArgumentException::class.java) { VaultCredentialInput(VaultCredentialKind.PASSWORD, CharArray(257)) }
         assertThrows(IllegalArgumentException::class.java) { VaultCiphertext(byteArrayOf(1), Int.MAX_VALUE) }
+    }
+
+    @Test fun policySelectionBeforeStartDoesNoStoreOrAuthenticationWork() {
+        val f = Fixture(false)
+        assertNull(f.runtime.acceptedAutoLockPolicy())
+        f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_5_MINUTES)
+        f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_15_MINUTES)
+        assertEquals(VaultAutoLockPolicy.AFTER_15_MINUTES, f.runtime.acceptedAutoLockPolicy())
+        assertEquals(0, f.store.inspections); assertEquals(0, f.store.begins); assertEquals(0, f.store.retryWrites)
+        assertEquals(0, f.auth.aliasQueries); assertEquals(0, f.auth.ledgerReads)
+        assertEquals(0, f.auth.prepared); assertEquals(0, f.auth.unlocks); assertEquals(0, f.timers.entries.size)
+    }
+    @Test fun successfulLoadBeforeStartRetainsPolicyAndStartupStaysLocked() {
+        val f = Fixture()
+        assertEquals(VaultAutoLockPolicy.AFTER_5_MINUTES,
+            f.runtime.initializeAutoLockPolicy(VaultAutoLockPolicy.AFTER_5_MINUTES))
+        f.start(); assertEquals(VaultRuntimeStatus.LOCKED, f.view.status)
+        assertEquals(VaultAutoLockPolicy.AFTER_5_MINUTES, f.runtime.acceptedAutoLockPolicy())
+        assertEquals(0, f.auth.unlocks); assertEquals(0, f.auth.reads); assertEquals(0, f.store.retryWrites)
+        f.unlock(); f.runtime.observePresence(false, true); f.pump()
+        f.clock.now += 60_000; f.runtime.observePresence(false, true); f.pump(); assertEquals(0, f.auth.closes)
+        f.clock.now += 240_000; f.runtime.observePresence(true, true); f.pump(); assertEquals(1, f.auth.closes)
+    }
+    @Test fun loadDuringPendingInspectAndEditDuringStartupUseLatestAcceptedPolicy() {
+        val f = Fixture(); f.runtime.start()
+        f.store.onInspect = {
+            f.runtime.initializeAutoLockPolicy(VaultAutoLockPolicy.AFTER_1_MINUTE)
+            f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_15_MINUTES)
+        }
+        f.runtime.observePresence(true, true); f.pump(); f.store.onInspect = null
+        assertEquals(VaultAutoLockPolicy.AFTER_15_MINUTES, f.runtime.acceptedAutoLockPolicy())
+        assertEquals(VaultRuntimeStatus.LOCKED, f.view.status)
+        f.unlock(); f.runtime.observePresence(false, true); f.pump()
+        f.clock.now += 300_000; f.runtime.observePresence(false, true); f.pump(); assertEquals(0, f.auth.closes)
+    }
+    @Test fun editBeforeStartAndReplayedActivityLoadCannotRollBack() {
+        val f = Fixture(); f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_15_MINUTES)
+        assertEquals(VaultAutoLockPolicy.AFTER_15_MINUTES,
+            f.runtime.initializeAutoLockPolicy(VaultAutoLockPolicy.IMMEDIATE))
+        f.start(); f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_5_MINUTES)
+        assertEquals(VaultAutoLockPolicy.AFTER_5_MINUTES,
+            f.runtime.initializeAutoLockPolicy(VaultAutoLockPolicy.AFTER_1_MINUTE))
+    }
+    @Test fun lateSuccessfulLoadInitializesExistingStateWithoutUnlocking() {
+        val f = Fixture(); f.start(); assertNull(f.runtime.acceptedAutoLockPolicy())
+        f.runtime.initializeAutoLockPolicy(VaultAutoLockPolicy.AFTER_1_MINUTE); f.pump()
+        assertEquals(VaultRuntimeStatus.LOCKED, f.view.status); assertEquals(0, f.auth.unlocks)
+        assertEquals(1, f.store.inspections); assertEquals(1, f.auth.ledgerReads); assertEquals(0, f.store.retryWrites)
+    }
+    @Test fun lateLoadCannotReviveSessionLockedByUninitializedImmediateDefault() {
+        val f = Fixture(); f.start(); f.unlock(); f.runtime.observePresence(false, true); f.pump()
+        assertEquals(1, f.auth.closes)
+        f.runtime.initializeAutoLockPolicy(VaultAutoLockPolicy.AFTER_15_MINUTES)
+        f.runtime.observePresence(true, true); f.runtime.revealEmptyCatalog(); f.pump()
+        assertEquals(VaultRuntimeStatus.LOCKED, f.view.status); assertEquals(0, f.auth.reads)
+    }
+    @Test fun processRestartRestoresOnlyEnumAndRequiresNewUnlock() {
+        val old = Fixture(); old.start(); old.unlock(); old.runtime.changePolicy(VaultAutoLockPolicy.AFTER_15_MINUTES)
+        val restored = checkNotNull(old.runtime.acceptedAutoLockPolicy())
+        val fresh = Fixture(); fresh.runtime.initializeAutoLockPolicy(restored); fresh.start()
+        fresh.runtime.revealEmptyCatalog(); fresh.pump()
+        assertEquals(VaultRuntimeStatus.LOCKED, fresh.view.status)
+        assertEquals(0, fresh.auth.unlocks); assertEquals(0, fresh.auth.reads); assertEquals(0, fresh.store.retryWrites)
+    }
+    @Test fun repeatedSelectionWhilePresentDoesNotInspectAuthenticateOrStartAbsentTimer() {
+        val f = Fixture(); f.start(); f.unlock()
+        val inspections = f.store.inspections; val writes = f.store.retryWrites
+        val aliases = f.auth.aliasQueries; val ledgers = f.auth.ledgerReads; val timers = f.timers.entries.size
+        repeat(3) { f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_5_MINUTES) }; f.pump()
+        assertEquals(inspections, f.store.inspections); assertEquals(writes, f.store.retryWrites)
+        assertEquals(aliases, f.auth.aliasQueries); assertEquals(ledgers, f.auth.ledgerReads)
+        assertEquals(1, f.auth.unlocks); assertEquals(0, f.auth.prepared); assertEquals(0, f.store.begins)
+        assertEquals(timers, f.timers.entries.size)
+    }
+    @Test fun shorteningRunningWindowPastOriginalDeadlineLocksImmediately() {
+        val f = Fixture(); f.start(); f.unlock(); f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_15_MINUTES)
+        f.runtime.observePresence(false, true); f.pump(); f.clock.now += 60_001
+        f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_1_MINUTE); f.pump()
+        assertEquals(1, f.auth.closes); assertEquals(VaultRuntimeStatus.LOCKED, f.view.status)
+    }
+    @Test fun relaxationAtOrAfterOldExpiryNeverRevivesSession() {
+        for (elapsed in listOf(60_000L, 60_001L)) {
+            val f = Fixture(); f.start(); f.unlock(); f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_1_MINUTE)
+            f.runtime.observePresence(false, true); f.pump(); f.clock.now += elapsed
+            f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_15_MINUTES); f.pump()
+            assertEquals(1, f.auth.closes); assertEquals(VaultRuntimeStatus.LOCKED, f.view.status)
+        }
+    }
+    @Test fun selectedGraceCancelsOnlyBeforeExactDeadlineReturn() {
+        for (elapsed in listOf(59_999L, 60_000L)) {
+            val f = Fixture(); f.runtime.initializeAutoLockPolicy(VaultAutoLockPolicy.AFTER_1_MINUTE)
+            f.start(); f.unlock(); f.runtime.observePresence(true, false); f.pump(); f.clock.now += elapsed
+            f.runtime.observePresence(true, true); f.pump()
+            assertEquals(if (elapsed < 60_000) 0 else 1, f.auth.closes)
+            if (elapsed < 60_000) {
+                f.clock.now += 900_000; f.runtime.observePresence(true, true); f.pump(); assertEquals(0, f.auth.closes)
+            }
+        }
+    }
+    @Test fun closedOwnerCannotAuthorizePersistenceOrAcceptSelection() {
+        val f = Fixture(); f.runtime.initializeAutoLockPolicy(VaultAutoLockPolicy.AFTER_1_MINUTE)
+        f.runtime.close(); f.pump(); f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_15_MINUTES)
+        assertNull(f.runtime.acceptedAutoLockPolicy()); assertNull(f.runtime.initializeAutoLockPolicy(VaultAutoLockPolicy.IMMEDIATE))
+    }
+
+    @Test fun relaxingBeforeExpiryKeepsOriginalDepartureAnchor() {
+        val f = Fixture(); f.start(); f.unlock(); f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_1_MINUTE)
+        f.runtime.observePresence(false, true); f.pump(); f.clock.now += 30_000
+        f.runtime.changePolicy(VaultAutoLockPolicy.AFTER_5_MINUTES); f.pump()
+        f.clock.now += 269_999; f.runtime.observePresence(false, true); f.pump(); assertEquals(0, f.auth.closes)
+        f.clock.now += 1; f.runtime.observePresence(true, true); f.pump(); assertEquals(1, f.auth.closes)
     }
 }

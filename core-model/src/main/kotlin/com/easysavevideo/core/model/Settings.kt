@@ -26,6 +26,7 @@ data class AppSettings(
     val appearance: AppearanceSettings = AppearanceSettings(),
     val editor: EditorSettings = EditorSettings(),
     val save: SaveSettings = SaveSettings(),
+    val vaultAutoLockPolicy: VaultAutoLockPolicy = VaultAutoLockPolicy.IMMEDIATE,
 ) { init { require(schemaVersion == 1) } }
 
 /** Stable values are additive; existing v1 browser/discovery preferences remain readable. */

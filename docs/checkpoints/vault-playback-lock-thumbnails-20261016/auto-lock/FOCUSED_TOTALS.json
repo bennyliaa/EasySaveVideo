@@ -1,0 +1,43 @@
+{
+  "modules": {
+    "core-model": {
+      "suites": 4,
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core-domain": {
+      "suites": 13,
+      "tests": 120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "library": {
+      "suites": 24,
+      "tests": 289,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "suites": 445,
+      "tests": 4550,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "junit": {
+    "suites": 486,
+    "tests": 4969,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 4969
+  },
+  "device": "NOT_RUN",
+  "production_enabled": false,
+  "exit_code": 0
+}

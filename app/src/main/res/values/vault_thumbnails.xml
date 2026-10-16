@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vault_thumbnail_description">Private thumbnail</string>
+    <string name="vault_thumbnail_ready">Private thumbnail ready</string>
+    <string name="vault_thumbnail_loading">Loading private thumbnail…</string>
+    <string name="vault_thumbnail_inactive">Private thumbnails are off</string>
+    <string name="vault_thumbnail_unavailable">Private thumbnail unavailable</string>
+    <string name="vault_thumbnail_cleanup">Private thumbnail cleanup is unconfirmed</string>
+    <string name="vault_thumbnail_load_visible">Load visible private thumbnails</string>
+    <string name="vault_thumbnail_stop">Stop private thumbnails</string>
+</resources>

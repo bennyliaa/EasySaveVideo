@@ -18,7 +18,7 @@ class SaveWifiWiringContractTest {
         assertTrue(store.contains("if (includeSaveNetworkPreference) putBoolean(\"save_wifi_only\", settings.save.wifiOnly)"))
         val persistence = source("kotlin/com/easysavevideo/app/storage/BrowserPersistence.kt")
         assertTrue(persistence.contains("settingsLoaded || networkPreferenceConfirmed.get()"))
-        assertTrue(persistence.contains("settingsStore.save(value.value, value.includeNetwork, value.includeConcurrency)"))
+        assertTrue(persistence.contains("settingsStore.save(value.value, value.includeNetwork, value.includeConcurrency, value.includeVaultPolicy)"))
         val activity = source("kotlin/com/easysavevideo/app/MainActivity.kt")
         assertTrue(activity.contains("if (persistence.settingsLoaded) {"))
         assertFalse(activity.contains("!saveSettingsChanged && persistence.settingsLoaded"))

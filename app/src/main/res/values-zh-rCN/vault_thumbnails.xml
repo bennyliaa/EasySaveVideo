@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vault_thumbnail_description">私密缩略图</string>
+    <string name="vault_thumbnail_ready">私密缩略图已就绪</string>
+    <string name="vault_thumbnail_loading">正在加载私密缩略图…</string>
+    <string name="vault_thumbnail_inactive">私密缩略图已关闭</string>
+    <string name="vault_thumbnail_unavailable">私密缩略图暂不可用</string>
+    <string name="vault_thumbnail_cleanup">私密缩略图清理尚未确认</string>
+    <string name="vault_thumbnail_load_visible">加载可见的私密缩略图</string>
+    <string name="vault_thumbnail_stop">停止私密缩略图</string>
+</resources>

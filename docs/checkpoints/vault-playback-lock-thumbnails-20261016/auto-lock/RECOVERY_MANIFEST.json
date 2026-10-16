@@ -1,0 +1,11 @@
+{
+  "source_archive": "source-vault-auto-lock-settings-20261016.tar.gz",
+  "evidence_archive": "evidence-vault-auto-lock-settings-20261016.tar.gz",
+  "source_files_verified": 2772,
+  "source_bytes": 28548508,
+  "source_sha256": "cf4872f72b761ff12fc0400dc30b003f3fc2d8e694481e8887d8bc7d66b7c80a",
+  "evidence_bytes": 984642,
+  "evidence_sha256": "1a71d5f315658e2335b0417b1e682f74b263fdb89b53e761d31b73f3804470b9",
+  "production_enabled": false,
+  "device": "NOT_RUN"
+}

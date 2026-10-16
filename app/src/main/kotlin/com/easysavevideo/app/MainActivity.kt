@@ -331,7 +331,8 @@ class MainActivity : ComponentActivity() {
                 saves.recordingAudioPermissionDenied(id)
                 if (::privateRecording.isInitialized) privateRecording.requestAbandoned(id)
             }, requiresDefaultDisplay = saves::requiresDefaultDisplayRecording)
-        persistence = BrowserPersistence(applicationContext, errorSink) {
+        persistence = BrowserPersistence(applicationContext, errorSink,
+            acceptedVaultPolicy = { AndroidVaultRuntimeEntry.currentBinding()?.runtime?.acceptedAutoLockPolicy() }) {
             settingsWriteFailed = true
             if (::browser.isInitialized) browser.showNotice(runtimeText.get(RuntimeMessageCopy.MAIN_PERSISTENCE_INCOMPLETE))
         }
@@ -358,6 +359,7 @@ class MainActivity : ComponentActivity() {
         privateWindowGuard = PrivateWindowGuard(this, privateContentRoot, ordinaryContentCaptureOptIn = true) {
             newTabInputGeneration++
             if (::privatePresentationOwner.isInitialized) privatePresentationOwner.inputRevoked()
+            vaultHost?.playbackProtectionLost()
         }
         // Wiring alone cannot clear platform acceptance. API31/32 secure browsing does not use
         // recording's separately authorized continuous projection capability.
@@ -1062,6 +1064,33 @@ class MainActivity : ComponentActivity() {
                         PrivacySettingsDetail(ordinaryHistory, generation, canAct = canUsePrivacy,
                             clearCache = browser::clearCacheWithResult)
                         DiscoveryPrivacySettingsDetail(discovery, generation, canAct = canUsePrivacy)
+                        // This lifetime belongs to the composed Privacy section, not the whole Settings route.
+                        val policyBinding = vaultBinding
+                        val policyActions = remember(privateMode, presentation, rootInputAdmission,
+                            actionRouteIdentity, inputEpoch, generation, policyBinding) {
+                            CapturedPrivateActions(privateMode, rootInputAdmission) {
+                                AndroidVaultRuntimeEntry.ENABLED && policyBinding != null &&
+                                    vaultBinding === policyBinding && AndroidVaultRuntimeEntry.currentBinding() === policyBinding &&
+                                    privateRouteIdentity === actionRouteIdentity && privatePresentationOwner.inputEpoch == inputEpoch &&
+                                    privatePresentationOwner.isCurrentSource(presentation) && canUsePrivacy() &&
+                                    settingsReady && persistence.settingsLoaded
+                            }
+                        }
+                        DisposableEffect(policyActions) { onDispose { policyActions.close() } }
+                        VaultAutoLockSettingsDetail(settings.vaultAutoLockPolicy,
+                            enabled = policyActions.isCurrent(),
+                            available = AndroidVaultRuntimeEntry.ENABLED && policyBinding != null,
+                            loadFailed = settingsReadFailed,
+                            onSelect = { policy -> policyActions.run {
+                                policyBinding?.runtime?.let { runtime ->
+                                    runtime.changePolicy(policy)
+                                    runtime.acceptedAutoLockPolicy()?.let { accepted ->
+                                        settingsChanged = true
+                                        settings = settings.copy(vaultAutoLockPolicy = accepted)
+                                        persistence.saveSettings(settings)
+                                    }
+                                }
+                            } })
                     },
                     onSources = ::openProviderManagement, onBack = { backTo() },
                     diagnostics = { DiagnosticSettings(diagnosticState, diagnostics.controller::begin, diagnostics.controller::cancel) })
@@ -1106,6 +1135,8 @@ class MainActivity : ComponentActivity() {
                 // Browser instead acknowledges from its deeper BoxWithConstraints composition.
                 if (!browserChild) SideEffect { childApplied() }
                 }
+                // This exact native slot is outside NavHost; route/status disposal cannot destroy a live Surface.
+                vaultHost?.let { VaultPlaybackSurfaceHost(it) }
                 } // Route viewport; controls stay reachable on every ordinary/private route.
                 if (recordingUi != null) RecordingSessionControls(recordingUi)
                 }
@@ -1136,7 +1167,9 @@ class MainActivity : ComponentActivity() {
             settings = mergeLoadedDiscoverySettings(settings, loaded, discoverySettingsChanged, persistence.settingsLoaded)
             // Merge each save field with the application owner, including after early Wi-Fi edits or recreation.
             if (persistence.settingsLoaded) {
-                settings = settings.copy(save = saves.initializeSaveSettings(loaded.save))
+                settings = settings.copy(save = saves.initializeSaveSettings(loaded.save),
+                    vaultAutoLockPolicy = vaultBinding?.runtime?.initializeAutoLockPolicy(loaded.vaultAutoLockPolicy)
+                        ?: loaded.vaultAutoLockPolicy)
             }
             if (settingsChanged && persistence.settingsLoaded) persistence.saveSettings(settings)
             saves.updateRecordingNotificationLanguage(settings.appearance.language)

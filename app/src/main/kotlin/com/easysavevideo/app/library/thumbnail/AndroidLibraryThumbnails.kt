@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
-import android.media.MediaMetadataRetriever
 import android.os.Handler
 import android.os.Looper
 import androidx.compose.runtime.getValue
@@ -14,10 +13,7 @@ import com.easysavevideo.library.MediaItem
 import com.easysavevideo.library.MediaReadRef
 import com.easysavevideo.library.thumbnail.*
 import java.io.FileInputStream
-import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.RejectedExecutionException
-import java.util.concurrent.ThreadPoolExecutor
-import java.util.concurrent.TimeUnit
 
 /**
  * No Bitmap/ImageBitmap escapes this handle. Cache eviction and a late Compose draw synchronize
@@ -126,7 +122,10 @@ private class AndroidThumbnailBackend(
     private val retainNativeReader: (MediaReadRef) -> AutoCloseable,
 ) : ThumbnailDecoder<AndroidThumbnailFrame>, ThumbnailWorkLane {
     /** The process gate keeps every surviving Java/native/read authority strongly reachable. */
-    private class NativeOwner { val resources = ThumbnailReadResources() }
+    private class NativeOwner {
+        val resources = ThumbnailReadResources()
+        val extraction = SharedThumbnailExtraction() // Separate frame owner survives later input/fence close failure.
+    }
     private val limits = ThumbnailLimits()
 
     override fun submit(task: Runnable): Boolean {
@@ -135,7 +134,7 @@ private class AndroidThumbnailBackend(
         // This MAIN-thread claim serializes with recording's main-thread check-and-admit step.
         if (!OrdinaryMediaNativeResources.claim(owner)) return false
         return try {
-            nativeLane.execute {
+            SharedThumbnailNativeLane.execute {
                 workerOwner.set(owner)
                 try { task.run() }
                 finally { workerOwner.remove() }
@@ -156,51 +155,34 @@ private class AndroidThumbnailBackend(
 
     override fun decode(reference: MediaReadRef, cancelled: () -> Boolean): ThumbnailDecodeResult<AndroidThumbnailFrame> {
         val owner = workerOwner.get() ?: return ThumbnailDecodeResult.ReleaseUnconfirmed
-        var bitmap: Bitmap? = null
+        val extraction = owner.extraction
         var released = false
         try {
             if (!cancelled()) {
-                // Both storage calls validate exact READY item/revision/generation. The independent
-                // lease fences a native duplicate even if the ordinary descriptor closes elsewhere.
                 owner.resources.catalogFence = retainNativeReader(reference)
                 val input = if (!cancelled()) openPublishedMedia(reference).also { owner.resources.input = it } else null
                 if (!cancelled() && input != null) {
-                    val media = MediaMetadataRetriever()
-                    owner.resources.nativeReader = AutoCloseable { media.release() }
-                    media.setDataSource(input.fd, 0L, input.channel.size())
-                    if (!cancelled()) {
-                        val params = MediaMetadataRetriever.BitmapParams().apply { preferredConfig = Bitmap.Config.ARGB_8888 }
-                        bitmap = media.getScaledFrameAtTime(0L, MediaMetadataRetriever.OPTION_CLOSEST_SYNC, limits.width, limits.height, params)
-                    }
+                    owner.resources.nativeReader = extraction // Own before native construction.
+                    extraction.decode(cancelled) { it.publishedInput(input) }
                 }
             }
         } catch (_: Exception) {
-            // Technical unavailable state only. No media name/path/URI or exception text is logged.
+            // Fixed unavailable state only; no media path, title, URI or exception text is logged.
         } finally {
-            // release may hang or throw. In that case do NOT close subsequent authorities and
-            // do NOT clear process ownership; watchdog timeout does not imply thread exit.
             released = owner.resources.releaseConfirmed()
             if (!released) OrdinaryMediaNativeResources.unconfirmed()
-            // Confirmed resources stay admitted until main consumes or discards this one result.
         }
-        if (!released) {
-            bitmap?.recycle()
-            return ThumbnailDecodeResult.ReleaseUnconfirmed
-        }
-        val frame = bitmap
+        if (!released) return ThumbnailDecodeResult.ReleaseUnconfirmed
+        val frame = if (extraction.released) extraction.takeFrame() else null
         if (frame == null) return ThumbnailDecodeResult.Released(null)
-        if (cancelled() || frame.width !in 1..limits.width || frame.height !in 1..limits.height ||
-            frame.width.toLong() * frame.height > limits.maxPixels || frame.allocationByteCount.toLong() !in 1..limits.maxFrameBytes) {
-            frame.recycle()
+        if (cancelled()) {
+            frame.close()
             return ThumbnailDecodeResult.Released(null)
         }
-        return ThumbnailDecodeResult.Released(AndroidThumbnailFrame(frame))
+        return ThumbnailDecodeResult.Released(frame as AndroidThumbnailFrame)
     }
 
     private companion object {
         val workerOwner = ThreadLocal<NativeOwner>()
-        // A blocked native call cannot be interrupted reliably. Never replace this process lane.
-        val nativeLane = ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, ArrayBlockingQueue<Runnable>(1),
-            { task -> Thread(task, "esv-library-thumbnail").apply { isDaemon = true } }, ThreadPoolExecutor.AbortPolicy())
     }
 }

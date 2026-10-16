@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vault_auto_lock_title">保险箱自动锁定</string>
+    <string name="vault_auto_lock_immediate">立即</string>
+    <string name="vault_auto_lock_one_minute">1 分钟</string>
+    <string name="vault_auto_lock_five_minutes">5 分钟</string>
+    <string name="vault_auto_lock_fifteen_minutes">15 分钟</string>
+    <string name="vault_auto_lock_scope">离开保险箱或将应用置于后台时开始计时。在期限结束前返回前台的保险箱可取消计时。重启应用后始终需要重新解锁。</string>
+    <string name="vault_auto_lock_wait">请等待设置加载完成，并保持此页面在前台，再修改保险箱自动锁定时间。</string>
+    <string name="vault_auto_lock_load_failed">无法读取已保存的保险箱自动锁定设置。为保护已保存的值，暂时无法修改。请重新打开应用以重试加载。</string>
+</resources>

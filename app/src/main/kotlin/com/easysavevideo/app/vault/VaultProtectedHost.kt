@@ -4,6 +4,8 @@ import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.view.View
+import android.widget.FrameLayout
+import com.easysavevideo.app.vault.playback.AndroidVaultPlaybackSurfaceSlot
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -12,6 +14,8 @@ import androidx.compose.runtime.setValue
 import com.easysavevideo.app.browser.privacy.*
 import com.easysavevideo.core.model.VaultRecoveryChoice
 import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.atomic.AtomicBoolean
+import com.easysavevideo.library.thumbnail.*
 
 /** Host-only reference identities. They never establish authentication. */
 internal class VaultHostClaim internal constructor(val host: VaultProtectedHost, val route: Any, val generation: Long) {
@@ -52,6 +56,71 @@ internal class VaultProtectedHost(
     private var started = false
     private var generation = 0L
     private var claim: VaultHostClaim? = null
+    /** Always mounted by Main outside NavHost route/status branches, under the existing root. */
+    val playbackContainer = FrameLayout(activity)
+    private var playbackToken: VaultPlaybackHostToken? = null
+    private var playbackTicket: VaultPlaybackTicket? = null
+    private var playbackSlot: AndroidVaultPlaybackSurfaceSlot? = null
+    private var playbackAcquisitionUnconfirmed = false
+    private val thumbnailIntent = AtomicBoolean(false)
+    private var thumbnailHost: VaultThumbnailHostToken? = null
+    private val thumbnailHosts = linkedSetOf<VaultThumbnailHostToken>()
+    private var thumbnailCatalogRevision: Long? = null
+    private var thumbnailViewport = emptyList<VaultMediaReadRef>()
+    private class ThumbnailAdmission(val ref: VaultMediaReadRef) { var ticket: VaultThumbnailTicket? = null }
+    private var thumbnailAdmission: ThumbnailAdmission? = null
+    private var thumbnailProgressPending = false
+    private var thumbnailCleanupUnconfirmed by mutableStateOf(false)
+    private val thumbnailHostFailure = AtomicBoolean(false)
+    private var thumbnailSessionFenced = false
+    private var thumbnailSessionGeneration = generation
+    var thumbnailsRequested by mutableStateOf(false); private set
+    private var thumbnailSession: TypedBoundedThumbnailSession<VaultMediaReadRef, VaultMediaReadRef, VaultThumbnailFrame> = createThumbnailSession()
+    private fun createThumbnailSession(): TypedBoundedThumbnailSession<VaultMediaReadRef, VaultMediaReadRef, VaultThumbnailFrame> = TypedBoundedThumbnailSession(
+        decoder = AsyncThumbnailDecoder { ref, cancelled, complete ->
+            requireMain()
+            val token = thumbnailHost
+            if (cancelled() || !thumbnailDemandCurrent() || token == null || ref !in thumbnailViewport) {
+                ThumbnailStartResult.REJECTED
+            } else {
+                val admission = ThumbnailAdmission(ref)
+                thumbnailAdmission = admission
+                val ticket = runtime.openThumbnail(ref, token) { result, settled ->
+                    complete(result) {
+                        settled()
+                        if (thumbnailAdmission === admission) thumbnailAdmission = null
+                        thumbnailProgressed()
+                    }
+                }
+                admission.ticket = ticket
+                if (ticket == null) {
+                    if (thumbnailAdmission === admission) thumbnailAdmission = null
+                    ThumbnailStartResult.REJECTED
+                } else ThumbnailStartResult.ACCEPTED
+            }
+        },
+        // Inline admission only. All read preparation and native decoding remain on existing owners' lanes.
+        worker = ThumbnailWorkLane { task -> requireMain(); task.run(); true },
+        ui = object : ThumbnailUiDispatcher {
+            override fun requireCurrentThread() = requireMain()
+            override fun post(task: Runnable) { check(main.post(task)) }
+            override fun later(task: Runnable, delayMillis: Long) { check(main.postDelayed(task, delayMillis)) }
+            override fun remove(task: Runnable) { main.removeCallbacks(task) }
+        },
+        onStalled = {
+            thumbnailCleanupUnconfirmed = true; thumbnailSessionFenced = true
+            thumbnailIntent.set(false); thumbnailsRequested = false
+            runtime.revokeThumbnails(thumbnailHost)
+            thumbnailProgressed()
+        },
+        adapter = object : ThumbnailItemAdapter<VaultMediaReadRef, VaultMediaReadRef> {
+            override val maxPageSize = VaultThumbnailLimits.MAX_FRAMES
+            override fun key(item: VaultMediaReadRef) = item
+            override fun isEligible(item: VaultMediaReadRef) = item in thumbnailViewport
+        },
+        onChanged = { thumbnailProgressed() },
+    )
+    var playbackSlotRetained by mutableStateOf(false); private set
     private var rootTicket: PrivateInputRetirement? = null
     private var rootTicketRetiring = false
     private var coverReceipt: Pair<Long, () -> Unit>? = null
@@ -65,7 +134,11 @@ internal class VaultProtectedHost(
     var credentialRequest by mutableStateOf<VaultCredentialRequest?>(null); private set
     private val rootAttachment = object : View.OnAttachStateChangeListener {
         override fun onViewAttachedToWindow(v: View) = hierarchyChanged()
-        override fun onViewDetachedFromWindow(v: View) { main.post { hierarchyChanged() } }
+        override fun onViewDetachedFromWindow(v: View) {
+            // Actual detach invalidates draw/read authority before any queued Main observation.
+            invalidateActionsFromAnyThread()
+            if (!main.post { stopThumbnails(clearViewport = true); hierarchyChanged() }) thumbnailHostFailure.set(true)
+        }
     }
 
     private fun requireMain() = check(Looper.myLooper() == Looper.getMainLooper())
@@ -78,8 +151,16 @@ internal class VaultProtectedHost(
         observePresence()
         return true
     }
-    fun invalidateActionsFromAnyThread() { actionEpoch.incrementAndGet() }
-    fun presentationChanged() { requireMain(); revision++; hierarchyChanged(); mainOwner.vaultProgressed() }
+    fun invalidateActionsFromAnyThread() {
+        actionEpoch.incrementAndGet()
+        thumbnailIntent.set(false) // Draw guards lose authority before the Main cover/handoff.
+    }
+    fun presentationChanged() {
+        requireMain()
+        if (presentation.rendered.status != VaultRuntimeStatus.CATALOG ||
+            thumbnailCatalogRevision != presentation.rendered.revision) stopThumbnails(clearViewport = true)
+        revision++; hierarchyChanged(); mainOwner.vaultProgressed()
+    }
     fun observePresence() {
         requireMain()
         if (!attached || detaching) return
@@ -92,19 +173,19 @@ internal class VaultProtectedHost(
         }
         if (!present) invalidateActionsFromAnyThread()
         runtime.observePresence(inVaultRoute(), foreground())
-        if (!present) retireRequest(dropSubmission = true)
+        if (!present) { stopThumbnails(clearViewport = true); retireRequest(dropSubmission = true) }
         revision++
     }
     fun protectBeforeDeparture() {
         requireMain()
         if (!attached) return
-        invalidateActionsFromAnyThread(); retireRequest(dropSubmission = true)
+        invalidateActionsFromAnyThread(); guard.installProtectionBarrier()
+        stopThumbnails(clearViewport = true); retireRequest(dropSubmission = true)
         if (started) runtime.observePresence(false, foreground())
-        guard.installProtectionBarrier()
     }
-    fun deviceLocked() { requireMain(); invalidateActionsFromAnyThread(); retireRequest(true); if (started) runtime.deviceLocked() }
-    fun surfaceCovered() { requireMain(); invalidateActionsFromAnyThread(); retireRequest(true); if (started) runtime.surfaceCovered() }
-    fun background() { requireMain(); invalidateActionsFromAnyThread(); retireRequest(true); if (started) runtime.observePresence(inVaultRoute(), false) }
+    fun deviceLocked() { requireMain(); invalidateActionsFromAnyThread(); stopThumbnails(clearViewport = true); retireRequest(true); if (started) runtime.deviceLocked() }
+    fun surfaceCovered() { requireMain(); invalidateActionsFromAnyThread(); stopThumbnails(clearViewport = true); retireRequest(true); if (started) runtime.surfaceCovered() }
+    fun background() { requireMain(); invalidateActionsFromAnyThread(); stopThumbnails(clearViewport = true); retireRequest(true); if (started) runtime.observePresence(inVaultRoute(), false) }
     private fun retireRootInput() {
         val ticket = rootTicket ?: return
         rootTicketRetiring = true
@@ -140,16 +221,214 @@ internal class VaultProtectedHost(
         val current = claim ?: return false
         return owns(current) && mainOwner.vaultActionsCurrent(current) && !guard.hasContinuousCaptureAuthorization
     }
+    private fun thumbnailDemandCurrent(): Boolean = thumbnailIntent.get() && thumbnailsRequested &&
+        thumbnailHost?.isCurrent() == true && publicationAllowed() &&
+        presentation.rendered.status == VaultRuntimeStatus.CATALOG &&
+        thumbnailCatalogRevision == presentation.rendered.revision
+
+    fun toggleThumbnails() {
+        requireMain()
+        if (!captureAction()() || !publicationAllowed()) return
+        if (thumbnailsRequested) { stopThumbnails(); return }
+        val state = presentation.rendered
+        if (thumbnailSessionGeneration != generation && thumbnailResourcesRetired()) {
+            // Fresh protected reveal only; stop/start and scrolling never reset the attempt/session fence.
+            thumbnailSession.close()
+            thumbnailSession = createThumbnailSession()
+            thumbnailSessionGeneration = generation
+            thumbnailSessionFenced = false; thumbnailCleanupUnconfirmed = false
+        }
+        if (state.status != VaultRuntimeStatus.CATALOG || state.playback.occupied || state.media.busy ||
+            state.media.hasMove || state.media.hasCopy || thumbnailSessionFenced || thumbnailHostFailure.get() || !runtime.thumbnailWorkComplete() ||
+            state.media.batch?.status?.let { it !in setOf(VaultCopyBatchStatus.FINISHED, VaultCopyBatchStatus.BUDGET_EXHAUSTED) } == true) return
+        val previous = thumbnailHost
+        if (previous == null || !previous.isCurrent() || thumbnailCatalogRevision != state.revision) {
+            previous?.revoke()
+            val epoch = actionEpoch.get()
+            thumbnailHost = VaultThumbnailHostToken(generation) { actionEpoch.get() == epoch }
+            thumbnailHosts += checkNotNull(thumbnailHost)
+        }
+        thumbnailCatalogRevision = state.revision
+        thumbnailIntent.set(true); thumbnailsRequested = true
+        thumbnailSession.updatePage(thumbnailViewport, enabled = true)
+        thumbnailViewport.forEach(thumbnailSession::request)
+    }
+    fun updateThumbnailViewport(visible: List<VaultMediaReadRef>) {
+        requireMain()
+        val state = presentation.rendered
+        val exact = if (publicationAllowed() && state.status == VaultRuntimeStatus.CATALOG)
+            visible.asSequence().filter { ref -> state.items.any { it.ref == ref } }.distinct()
+                .take(VaultThumbnailLimits.MAX_FRAMES).toList() else emptyList()
+        if (thumbnailViewport == exact) return
+        thumbnailViewport = exact
+        // The shared bounded algorithm invalidates an active job on every page change.
+        thumbnailAdmission?.ticket?.let(runtime::closeThumbnail)
+        val enabled = thumbnailDemandCurrent()
+        thumbnailSession.updatePage(exact, enabled)
+        if (enabled) exact.forEach(thumbnailSession::request)
+    }
+    fun thumbnailState(ref: VaultMediaReadRef): ThumbnailState<VaultThumbnailFrame> {
+        requireMain(); revision
+        if (!publicationAllowed() || ref !in thumbnailViewport)
+            return ThumbnailState.Unavailable(ThumbnailUnavailable.INACTIVE)
+        if (thumbnailCleanupUnconfirmed)
+            return ThumbnailState.Unavailable(ThumbnailUnavailable.RELEASE_UNCONFIRMED)
+        if (!thumbnailDemandCurrent()) return ThumbnailState.Unavailable(ThumbnailUnavailable.INACTIVE)
+        return thumbnailSession.state(ref)
+    }
+    private fun stopThumbnails(clearViewport: Boolean = false) {
+        requireMain()
+        thumbnailIntent.set(false); thumbnailsRequested = false
+        // Revoke exact runtime read/display tokens before removing app-owned frames.
+        try { thumbnailHost?.let(runtime::revokeThumbnails) }
+        catch (_: Exception) { thumbnailHostFailure.set(true); thumbnailCleanupUnconfirmed = true }
+        if (clearViewport) thumbnailViewport = emptyList()
+        try { thumbnailSession.updatePage(emptyList(), enabled = false) }
+        catch (_: Exception) { thumbnailHostFailure.set(true); thumbnailCleanupUnconfirmed = true }
+        thumbnailProgressed()
+    }
+    fun thumbnailCompositionRemoved() { requireMain(); stopThumbnails(clearViewport = true) }
+    private fun retireThumbnailsBeforeOperation(): Boolean {
+        stopThumbnails()
+        // Unknown native/read/Main cleanup is never silently queued behind a chosen operation.
+        return runtime.thumbnailWorkComplete() && !thumbnailSession.hasActiveJob && !thumbnailSession.hasUnconfirmedResources
+    }
+    private fun thumbnailResourcesRetired(): Boolean = !thumbnailHostFailure.get() && !thumbnailProgressPending && runtime.thumbnailCleanupComplete() &&
+        !thumbnailSession.hasActiveJob && !thumbnailSession.hasUnconfirmedResources && thumbnailSession.retainedCount == 0
+    private fun thumbnailProgressed() {
+        requireMain(); revision++
+        // Coalesce the existing Main queue, avoiding reentry from frame.close/runtime.gate.
+        if (thumbnailProgressPending) return
+        thumbnailProgressPending = true
+        if (!main.post {
+                try {
+                    runtime.thumbnailHostProgressed()
+                    if (!thumbnailHostFailure.get() && runtime.thumbnailWorkComplete() &&
+                        !thumbnailSession.hasActiveJob && !thumbnailSession.hasUnconfirmedResources)
+                        thumbnailCleanupUnconfirmed = false
+                } catch (_: Exception) {
+                    thumbnailHostFailure.set(true); thumbnailCleanupUnconfirmed = true
+                }
+                thumbnailProgressPending = false
+                hierarchyChanged(); mainOwner.vaultProgressed()
+            }) {
+            // Failed delivery is no release receipt; keep this Host attached and its owners live.
+            thumbnailProgressPending = true
+            thumbnailHostFailure.set(true); thumbnailCleanupUnconfirmed = true
+        }
+    }
+    fun openPlayback(ref: VaultMediaReadRef) {
+        requireMain()
+        if (!captureAction()() || !publicationAllowed() || playbackToken != null || playbackSlot != null || playbackAcquisitionUnconfirmed) return
+        if (!retireThumbnailsBeforeOperation()) return
+        val epoch = actionEpoch.get()
+        // Background code reads only atomic epoch; all View/Compose facts were checked on Main.
+        val token = VaultPlaybackHostToken(generation) { actionEpoch.get() == epoch }
+        playbackToken = token
+        if (!runtime.openPlayback(ref, token)) playbackToken = null
+    }
+    fun playPlayback(ticket: VaultPlaybackTicket) { if (playbackActionCurrent(ticket)) runtime.playPlayback(ticket) }
+    fun pausePlayback(ticket: VaultPlaybackTicket) { if (playbackActionCurrent(ticket)) runtime.pausePlayback(ticket) }
+    fun seekPlayback(ticket: VaultPlaybackTicket, targetMillis: Long) {
+        if (playbackActionCurrent(ticket)) runtime.seekPlayback(ticket, targetMillis)
+    }
+    fun closePlayback(ticket: VaultPlaybackTicket) {
+        requireMain()
+        if (playbackToken === ticket.host) runtime.closePlayback(ticket)
+    }
+    private fun playbackActionCurrent(ticket: VaultPlaybackTicket): Boolean {
+        requireMain()
+        return playbackToken === ticket.host && ticket.host.isCurrent() && captureAction()() && publicationAllowed()
+    }
+    /** Native resources remain in this stable slot until exact detach/destroy is observed. */
+    fun offerPreparedPlayback(ticket: VaultPlaybackTicket, prepared: VaultPreparedPlayback): Boolean {
+        requireMain()
+        if (!playbackActionCurrent(ticket) || ticket.host.generation != generation || playbackSlot != null) return false
+        playbackTicket = ticket
+        playbackAcquisitionUnconfirmed = true
+        val slot = try { AndroidVaultPlaybackSurfaceSlot(activity, ticket, prepared,
+            current = { playbackTicket === ticket && playbackActionCurrent(ticket) },
+            changed = { main.post { playbackProgressed() } }) } catch (_: Exception) {
+            presentation.playbackRetired(ticket, VaultPlaybackDrain.UNCONFIRMED)
+            prepared.revoke()
+            return true // The attempted acquisition remains owned and cannot be replaced.
+        }
+        playbackAcquisitionUnconfirmed = false
+        playbackSlot = slot; playbackSlotRetained = true
+        playbackContainer.addView(slot.view, FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+        playbackProgressed()
+        return true
+    }
+    fun revokePlaybackPresentation(ticket: VaultPlaybackTicket) {
+        requireMain()
+        if (playbackTicket !== ticket) {
+            if (playbackToken === ticket.host) playbackProgressed()
+            return
+        }
+        playbackSlot?.cover()
+        // Do not wait for hostResourcesRetired/ordinaryReleaseAllowed: they include this slot.
+        playbackSlot?.requestRetirement()
+        playbackProgressed()
+    }
+    /** Called by guard/input/lifecycle revocation; does not alter account auto-lock policy. */
+    fun playbackProtectionLost() {
+        requireMain()
+        invalidateActionsFromAnyThread()
+        stopThumbnails(clearViewport = true)
+        if (playbackToken == null && playbackSlot == null && !playbackAcquisitionUnconfirmed) return
+        playbackSlot?.cover()
+        runtime.revokePlayback()
+        playbackSlot?.requestRetirement()
+        playbackProgressed()
+    }
+    fun playbackCompositionRemoved() {
+        requireMain()
+        playbackProtectionLost() // Activity/root removal is an observation, never a release receipt.
+    }
+    fun playbackReservation(): VaultPlaybackHostToken? { requireMain(); return playbackToken }
+    fun playbackStateChanged(view: VaultPlaybackView) {
+        requireMain()
+        if (view.status == VaultPlaybackStatus.UNAVAILABLE && !runtime.playbackCleanupComplete())
+            root.showVaultPlaybackReleaseWarning(true)
+        if (runtime.playbackCleanupComplete() && !playbackAcquisitionUnconfirmed)
+            root.showVaultPlaybackReleaseWarning(false)
+        if (view.status == VaultPlaybackStatus.IDLE && playbackSlot == null && !playbackAcquisitionUnconfirmed &&
+            runtime.playbackCleanupComplete()) playbackToken = null
+        if (view.status in setOf(VaultPlaybackStatus.IDLE, VaultPlaybackStatus.RETIRING, VaultPlaybackStatus.UNAVAILABLE)) {
+            revision++; hierarchyChanged(); mainOwner.vaultProgressed()
+        }
+    }
+    fun playbackProgressed() {
+        requireMain()
+        val ticket = playbackTicket
+        val slot = playbackSlot
+        if (ticket != null && slot != null) {
+            val drain = slot.observeDrain()
+            presentation.playbackRetired(ticket, drain)
+            if (drain == VaultPlaybackDrain.RELEASED) {
+                // Only the slot's actual detach/destroy proof permits removing its stable container child.
+                playbackContainer.removeView(slot.view)
+                playbackSlot = null; playbackTicket = null; playbackSlotRetained = false
+            }
+        }
+        runtime.playbackHostProgressed()
+        if (runtime.playbackCleanupComplete() && !playbackAcquisitionUnconfirmed) root.showVaultPlaybackReleaseWarning(false)
+        if (playbackSlot == null && !playbackAcquisitionUnconfirmed && runtime.playbackCleanupComplete()) playbackToken = null
+        revision++; hierarchyChanged(); mainOwner.vaultProgressed()
+    }
+    fun playbackCompositionCurrent(): Boolean = playbackContainer.isAttachedToWindow &&
+        playbackContainer.parent != null && (playbackSlot == null || playbackSlot?.view?.parent === playbackContainer)
     fun revealCatalog() { if (captureAction()()) runtime.revealEmptyCatalog() }
-    fun confirmMoveToVault() { if (captureAction()()) runtime.confirmMoveToVault() }
-    fun copyMediaToPhone(ref: VaultMediaReadRef) { if (captureAction()()) runtime.copyMediaToPhone(ref) }
-    fun confirmCopyToPhone() { if (captureAction()()) runtime.confirmCopyToPhone() }
-    fun copyMediaBatchToPhone(refs: List<VaultMediaReadRef>) { if (captureAction()()) runtime.copyMediaBatchToPhone(refs) }
-    fun confirmBatchCopy(token: Any) { if (captureAction()()) runtime.confirmBatchCopy(token) }
-    fun continueBatchCopy(token: Any) { if (captureAction()()) runtime.continueBatchCopy(token) }
-    fun keepCurrentBatchOutputAndContinue(token: Any) { if (captureAction()()) runtime.keepCurrentBatchOutputAndContinue(token) }
-    fun keepCurrentSingleOutput(token: Any) { if (captureAction()()) runtime.keepCurrentSingleOutput(token) }
-    fun reconcileMedia() { if (captureAction()()) runtime.reconcileMedia() }
+    fun confirmMoveToVault() { if (captureAction()() && retireThumbnailsBeforeOperation()) runtime.confirmMoveToVault() }
+    fun copyMediaToPhone(ref: VaultMediaReadRef) { if (captureAction()() && retireThumbnailsBeforeOperation()) runtime.copyMediaToPhone(ref) }
+    fun confirmCopyToPhone() { if (captureAction()() && retireThumbnailsBeforeOperation()) runtime.confirmCopyToPhone() }
+    fun copyMediaBatchToPhone(refs: List<VaultMediaReadRef>) { if (captureAction()() && retireThumbnailsBeforeOperation()) runtime.copyMediaBatchToPhone(refs) }
+    fun confirmBatchCopy(token: Any) { if (captureAction()() && retireThumbnailsBeforeOperation()) runtime.confirmBatchCopy(token) }
+    fun continueBatchCopy(token: Any) { if (captureAction()() && retireThumbnailsBeforeOperation()) runtime.continueBatchCopy(token) }
+    fun keepCurrentBatchOutputAndContinue(token: Any) { if (captureAction()() && retireThumbnailsBeforeOperation()) runtime.keepCurrentBatchOutputAndContinue(token) }
+    fun keepCurrentSingleOutput(token: Any) { if (captureAction()() && retireThumbnailsBeforeOperation()) runtime.keepCurrentSingleOutput(token) }
+    fun reconcileMedia() { if (captureAction()() && retireThumbnailsBeforeOperation()) runtime.reconcileMedia() }
     fun cancelMedia() { if (captureAction()()) runtime.cancelMedia() }
     fun retireOrdinarySource(ref: com.easysavevideo.library.MediaReadRef, retired: () -> Unit) {
         requireMain()
@@ -162,10 +441,11 @@ internal class VaultProtectedHost(
         // No private content is handed to the chooser; route/focus loss revokes actual readers.
         selectPhoneFile(request)
     }
-    fun lock() { if (captureAction()()) { retireRequest(true); runtime.lock() } }
+    fun lock() { if (captureAction()()) { stopThumbnails(clearViewport = true); retireRequest(true); runtime.lock() } }
     fun beginCredential(mode: VaultCredentialMode) {
         requireMain()
         if (!captureAction()() || credentialRequest != null || pendingSubmission != null || pendingOpen != null) return
+        stopThumbnails(clearViewport = true)
         val workflow = when (mode) {
             VaultCredentialMode.RECOVERY_ENROLL -> runtime.beginRecoveryWorkflow(VaultRecoveryWorkflowKind.ENROLL) ?: return
             VaultCredentialMode.RECOVERY_RESET -> runtime.beginRecoveryWorkflow(VaultRecoveryWorkflowKind.RESET_PASSWORD) ?: return
@@ -260,8 +540,9 @@ internal class VaultProtectedHost(
         check(Looper.myLooper() == Looper.getMainLooper())
         if (value < generation) return
         generation = value; coveredGeneration = null; coverReceipt = value to receipt
-        invalidateActionsFromAnyThread(); retireRequest(dropSubmission = true)
-        guard.installProtectionBarrier()
+        invalidateActionsFromAnyThread(); guard.installProtectionBarrier()
+        stopThumbnails(clearViewport = true); retireRequest(dropSubmission = true)
+        playbackSlot?.cover(); runtime.revokePlayback(); playbackSlot?.requestRetirement()
         retireRootInput()
         revision++; hierarchyChanged()
     }
@@ -272,12 +553,25 @@ internal class VaultProtectedHost(
         hierarchyChanged()
     }
     fun pendingCoverGeneration(): Long? = coverReceipt?.first
-    fun hostResourcesRetired(): Boolean = !guard.hasRegisteredPrivateDialogs &&
+    fun hostResourcesRetired(): Boolean = thumbnailResourcesRetired() && !playbackAcquisitionUnconfirmed && playbackSlot == null && runtime.playbackCleanupComplete() && !guard.hasRegisteredPrivateDialogs &&
         (rootTicket == null || rootTicket?.isRetired == true) && retiredRequests.all { it.retiredCleanly() }
     fun hierarchyChanged() {
         requireMain()
         if (!attached) return
-        if (!root.isAttachedToWindow && root.windowToken == null) coveredGeneration = generation
+        if (!root.isAttachedToWindow && root.windowToken == null) {
+            invalidateActionsFromAnyThread()
+            if (thumbnailsRequested || thumbnailViewport.isNotEmpty()) stopThumbnails(clearViewport = true)
+            coveredGeneration = generation
+        }
+        // The observed cover/root-detach fact retires visual markers BEFORE aggregate resources.
+        // Waiting for the aggregate cover receipt here would create a circular cleanup wait.
+        if (coveredGeneration == generation) {
+            thumbnailHosts.filter { !it.isCurrent() }.toList().forEach { token ->
+                runtime.thumbnailHostCovered(token)
+                thumbnailHosts.remove(token)
+                if (thumbnailHost === token) thumbnailHost = null
+            }
+        }
         if (coveredGeneration == generation && hostResourcesRetired()) {
             val exact = coverReceipt
             if (exact?.first == generation) { coverReceipt = null; exact.second() }
@@ -324,9 +618,9 @@ internal class VaultProtectedHost(
     fun detach() {
         requireMain()
         if (!attached || detaching) return
-        detaching = true; invalidateActionsFromAnyThread(); retireRequest(true)
+        detaching = true; invalidateActionsFromAnyThread(); guard.installProtectionBarrier()
+        stopThumbnails(clearViewport = true); retireRequest(true)
         if (started) runtime.observePresence(false, false)
-        guard.installProtectionBarrier()
         retireRootInput()
         hierarchyChanged()
         // The app singleton is deliberately not closed/replaced by Activity destruction.

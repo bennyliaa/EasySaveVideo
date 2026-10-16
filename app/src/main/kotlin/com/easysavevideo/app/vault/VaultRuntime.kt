@@ -10,6 +10,7 @@ import java.util.concurrent.Executor
 internal interface VaultPresentationPort {
     fun cover(generation: Long, onActuallyHidden: () -> Unit)
     fun presentMedia(view: VaultMediaView) = Unit
+    fun presentPlayback(view: VaultPlaybackView) = Unit
     fun presentCatalog(revision: Long, items: List<VaultMediaRow>) = Unit
     fun requestPhoneFileSelection(request: VaultPhoneFileRequest) = Unit
     fun presentEmpty(catalogRevision: Long)
@@ -37,10 +38,15 @@ internal class VaultRuntime(
     private val processInstance: Long,
     mediaSource: VaultMediaSourcePort? = null,
     phoneFiles: VaultPhoneFilesPort? = null,
+    playbackFactory: VaultPlaybackPlatformFactory? = null,
+    playbackHost: VaultPlaybackHostPort? = null,
+    thumbnailFactory: VaultThumbnailPlatformFactory? = null,
 ) : AutoCloseable {
     private val gate = Any()
     private val reducer = VaultSessionReducer(VaultRuntimeLimits.retryPolicy())
     private var state: VaultState? = null
+    private var configuredAutoLockPolicy = VaultAutoLockPolicy.IMMEDIATE
+    private var autoLockPolicyInitialized = false
     private var snapshot: VaultStoredSnapshot? = null
     private var trustedAbsent = false
     private var closed = false
@@ -57,6 +63,7 @@ internal class VaultRuntime(
     private var presentationGeneration = 0L
     private var hiddenGeneration = -1L
     private var readLease: ReadLease? = null
+    private var revealedPlaybackRefs: List<VaultMediaReadRef> = emptyList()
     private var wake: VaultWakeCancellation? = null
     private var wakeGeneration = 0L
     private var failureSticky = false
@@ -88,6 +95,52 @@ internal class VaultRuntime(
         } }, ::lock,
         { view -> ui.execute { presentation.presentMedia(view) } },
         ::dispatchMediaPicker, ::tryAcknowledgeCleanup) else null
+    private val playback: VaultPlaybackRuntime? = if (playbackFactory != null && playbackHost != null)
+        VaultPlaybackRuntime(gate, authentication, store, clock, work, ui, scheduler,
+            playbackFactory, playbackHost, ::playbackSession,
+            { view -> presentation.presentPlayback(view) }, ::tryAcknowledgeCleanup, thumbnailFactory) else null
+
+    /** Called by the playback leaf while holding this same gate, before its reservation escapes. */
+    private fun playbackSession(ref: VaultMediaReadRef, host: VaultPlaybackHostToken): VaultPlaybackSession? = synchronized(gate) {
+        val current = state ?: return null
+        val durable = snapshot ?: return null
+        val lease = readLease ?: return null
+        val root = activeRoot ?: return null
+        if (closed || failureSticky || !route || !foreground || !host.isCurrent() || jobs != 0 || effectsInFlight != 0 ||
+            recoveryWorkflow != null || pendingReset != null || credential != null || setupRunning ||
+            media?.pending() == true || media?.active() == true || media?.cleanupComplete() == false ||
+            retiringRoots.isNotEmpty() || retiringMutations.isNotEmpty() ||
+            authentication.observeMediaDrain() != com.easysavevideo.library.export.ExportRelease.RELEASED ||
+            store.observeMediaDrain() != com.easysavevideo.library.export.ExportRelease.RELEASED ||
+            root !== lease.root || activeRootEpoch != lease.authEpoch || presentationGeneration != lease.generation ||
+            ref !in revealedPlaybackRefs || ref.vaultId != durable.identity.vaultId || ref.catalogRevision != lease.revision ||
+            !current.permitsPresentation(tick(), lease.authEpoch, lease.presentationEpoch)) return null
+        VaultPlaybackSession(root, durable, ref) { synchronized(gate) {
+            !closed && !failureSticky && route && foreground && host.isCurrent() &&
+                readLease === lease && activeRoot === root && activeRootEpoch == lease.authEpoch &&
+                snapshot == durable && presentationGeneration == lease.generation &&
+                recoveryWorkflow == null && pendingReset == null &&
+                state?.permitsPresentation(tick(), lease.authEpoch, lease.presentationEpoch) == true
+        } }.also { it.revealIdentity = lease }
+    }
+    fun openPlayback(ref: VaultMediaReadRef, host: VaultPlaybackHostToken): Boolean = playback?.open(ref, host) == true
+    fun openThumbnail(ref: VaultMediaReadRef, host: VaultThumbnailHostToken,
+        completed: VaultThumbnailCompletion): VaultThumbnailTicket? = playback?.openThumbnail(ref, host, completed)
+    fun closeThumbnail(ticket: VaultThumbnailTicket) { playback?.closeThumbnail(ticket) }
+    fun revokeThumbnails(host: VaultThumbnailHostToken? = null) { playback?.revokeThumbnails(host) }
+    fun thumbnailHostCovered(host: VaultThumbnailHostToken) { playback?.thumbnailHostCovered(host) }
+    fun thumbnailCleanupComplete(): Boolean = playback?.thumbnailCleanupComplete() != false
+    fun thumbnailWorkComplete(): Boolean = playback?.thumbnailWorkComplete() != false
+    fun thumbnailHostProgressed() { playback?.hostProgressed(); tryAcknowledgeCleanup() }
+    fun playPlayback(ticket: VaultPlaybackTicket) { playback?.play(ticket) }
+    fun pausePlayback(ticket: VaultPlaybackTicket) { playback?.pause(ticket) }
+    fun seekPlayback(ticket: VaultPlaybackTicket, targetMillis: Long) { playback?.seek(ticket, targetMillis) }
+    fun closePlayback(ticket: VaultPlaybackTicket) { playback?.close(ticket) }
+    /** Output revocation is independent from the existing account auto-lock reducer. */
+    fun revokePlayback() { playback?.revokeAll() }
+    fun playbackHostProgressed() { playback?.hostProgressed(); tryAcknowledgeCleanup() }
+    fun playbackCleanupComplete(): Boolean = playback?.playbackCleanupComplete() != false
+
     private fun dispatchMediaPicker(request: VaultPhoneFileRequest) = ui.execute {
         if (media?.admitPicker(request) == true) presentation.requestPhoneFileSelection(request)
         else media?.retireUndispatchedPicker(request)
@@ -97,30 +150,32 @@ internal class VaultRuntime(
         val current = state ?: return null
         val durable = snapshot ?: return null
         val root = activeRoot ?: return null
-        if (closed || failureSticky || recoveryWorkflow != null || pendingReset != null || jobs != 0 ||
+        if (closed || failureSticky || playback?.occupied() == true || recoveryWorkflow != null || pendingReset != null || jobs != 0 ||
             !route || !foreground || activeRootEpoch != current.authEpoch ||
             !current.permitsPresentation(tick(), current.authEpoch, current.presentationEpoch)) return null
         val generation = presentationGeneration
         val auth = current.authEpoch; val epoch = current.presentationEpoch
         VaultMediaSession(root, durable) { synchronized(gate) {
-            !closed && !failureSticky && route && foreground && recoveryWorkflow == null && pendingReset == null &&
+            !closed && !failureSticky && playback?.occupied() != true && route && foreground && recoveryWorkflow == null && pendingReset == null &&
                 activeRoot === root && activeRootEpoch == auth && presentationGeneration == generation &&
                 state?.permitsPresentation(tick(), auth, epoch) == true
         } }
     }
-    fun queueMoveToVault(ref: com.easysavevideo.library.MediaReadRef): Boolean = media?.queueMove(ref) == true
-    fun confirmMoveToVault() { media?.confirmMove() }
-    fun copyMediaToPhone(ref: VaultMediaReadRef) { media?.beginCopy(ref) }
+    fun queueMoveToVault(ref: com.easysavevideo.library.MediaReadRef): Boolean = synchronized(gate) {
+        playback?.occupied() != true && media?.queueMove(ref) == true
+    }
+    fun confirmMoveToVault() { synchronized(gate) { if (playback?.occupied() != true) media?.confirmMove() } }
+    fun copyMediaToPhone(ref: VaultMediaReadRef) { synchronized(gate) { if (playback?.occupied() != true) media?.beginCopy(ref) } }
     fun retirePhoneSelection(request: VaultPhoneFileRequest): Boolean = media?.retireUndispatchedPicker(request) == true
     fun acceptPhoneFile(request: VaultPhoneFileRequest, target: VaultPhoneFileTarget?) { media?.acceptTarget(request, target) }
-    fun confirmCopyToPhone() { media?.confirmCopy() }
-    fun copyMediaBatchToPhone(refs: List<VaultMediaReadRef>) { media?.beginBatchCopy(refs) }
+    fun confirmCopyToPhone() { synchronized(gate) { if (playback?.occupied() != true) media?.confirmCopy() } }
+    fun copyMediaBatchToPhone(refs: List<VaultMediaReadRef>) { synchronized(gate) { if (playback?.occupied() != true) media?.beginBatchCopy(refs) } }
     fun acceptPhoneSelection(request: VaultPhoneFileRequest, selection: VaultPhoneSelection?) { media?.acceptSelection(request, selection) }
-    fun confirmBatchCopy(token: Any? = null) { media?.confirmBatchCopy(token) }
-    fun continueBatchCopy(token: Any? = null) { media?.continueBatchCopy(token) }
-    fun keepCurrentBatchOutputAndContinue(token: Any? = null) { media?.keepCurrentBatchOutputAndContinue(token) }
-    fun keepCurrentSingleOutput(token: Any? = null) { media?.keepCurrentSingleOutput(token) }
-    fun reconcileMedia() { media?.recover() }
+    fun confirmBatchCopy(token: Any? = null) { synchronized(gate) { if (playback?.occupied() != true) media?.confirmBatchCopy(token) } }
+    fun continueBatchCopy(token: Any? = null) { synchronized(gate) { if (playback?.occupied() != true) media?.continueBatchCopy(token) } }
+    fun keepCurrentBatchOutputAndContinue(token: Any? = null) { synchronized(gate) { if (playback?.occupied() != true) media?.keepCurrentBatchOutputAndContinue(token) } }
+    fun keepCurrentSingleOutput(token: Any? = null) { synchronized(gate) { if (playback?.occupied() != true) media?.keepCurrentSingleOutput(token) } }
+    fun reconcileMedia() { synchronized(gate) { if (playback?.occupied() != true) media?.recover() } }
     fun cancelMedia() { media?.cancel() }
     init { require(processInstance > 0) }
     private fun tick() = VaultTick(processInstance, clock.elapsedMillis())
@@ -152,7 +207,10 @@ internal class VaultRuntime(
             operation.checkActive()
             val transition = synchronized(gate) {
                 if (closed) return@submit
-                reducer.start(processInstance, tick(), loaded).also { state = it.state; effectsInFlight++ }
+                val initial = reducer.start(processInstance, tick(), loaded)
+                val configured = reducer.reduce(initial.state, VaultEvent.PolicyChanged(configuredAutoLockPolicy), tick())
+                VaultTransition(configured.state, initial.effects + configured.effects, configured.outcome)
+                    .also { state = it.state; effectsInFlight++ }
             }
             executeEffects(transition.effects)
             transition(VaultEvent.LifecycleObserved(route, foreground))
@@ -165,7 +223,7 @@ internal class VaultRuntime(
         try { authentication.validatePasswordInput(input) }
         catch (_: Exception) { input.close(); return }
         val allowed = synchronized(gate) {
-            val permitted = !closed && !failureSticky && trustedAbsent && !setupRunning && jobs == 0 &&
+            val permitted = !closed && !failureSticky && playback?.occupied() != true && trustedAbsent && !setupRunning && jobs == 0 &&
                 state?.cleanupStatus == VaultCleanupStatus.COMPLETE && route && foreground &&
                 recoveryChoice in setOf(VaultRecoveryChoice.DECLINED, VaultRecoveryChoice.OPTED_IN)
             if (permitted) { setupRunning = true; trustedAbsent = false }
@@ -205,7 +263,7 @@ internal class VaultRuntime(
     private fun requestPasswordUnlock(input: VaultCredentialInput, workflow: VaultRecoveryWorkflow?) {
         val accepted = synchronized(gate) {
             val current = state
-            if (closed || failureSticky || credential != null || jobs != 0 || snapshot?.phase != VaultStorePhase.READY ||
+            if (closed || failureSticky || playback?.occupied() == true || credential != null || jobs != 0 || snapshot?.phase != VaultStorePhase.READY ||
                 (workflow == null && recoveryWorkflow != null || workflow != null &&
                     (!workflowCurrentLocked(workflow) || recoveryPhase != RecoveryPhase.PASSWORD_PROMPT)) ||
                 current?.mode != VaultMode.LOCKED || current.cleanupStatus != VaultCleanupStatus.COMPLETE ||
@@ -225,7 +283,7 @@ internal class VaultRuntime(
         val value = synchronized(gate) {
             val current = state
             val data = snapshot?.data ?: return null
-            if (closed || failureSticky || recoveryWorkflow != null || media?.blocksCredentialRecovery() == true || jobs != 0 || credential != null ||
+            if (closed || failureSticky || recoveryWorkflow != null || playback?.occupied() == true || media?.blocksCredentialRecovery() == true || jobs != 0 || credential != null ||
                 current?.mode != VaultMode.LOCKED || current.cleanupStatus != VaultCleanupStatus.COMPLETE ||
                 current.retryStatus != VaultRetryStatus.READY || !route || !foreground ||
                 (kind == VaultRecoveryWorkflowKind.ENROLL && data.recoveryState == VaultRecoveryState.ACTIVE) ||
@@ -350,16 +408,42 @@ internal class VaultRuntime(
     fun surfaceCovered() { transition(VaultEvent.SurfaceCovered, externalProtection = true) }
     fun lock() { transition(VaultEvent.ExplicitLock, externalProtection = true) }
     fun deviceLocked() { transition(VaultEvent.DeviceLocked, externalProtection = true) }
-    fun changePolicy(policy: VaultAutoLockPolicy) { transition(VaultEvent.PolicyChanged(policy)) }
+    /** Activity reloads cannot overwrite an already accepted application-owner choice. */
+    fun initializeAutoLockPolicy(loaded: VaultAutoLockPolicy): VaultAutoLockPolicy? =
+        acceptAutoLockPolicy(loaded, initializeOnly = true)
+
+    /** Null is intentional: an unknown/closed owner must never authorize a preference write. */
+    fun acceptedAutoLockPolicy(): VaultAutoLockPolicy? = synchronized(gate) {
+        configuredAutoLockPolicy.takeIf { !closed && autoLockPolicyInitialized }
+    }
+
+    fun changePolicy(policy: VaultAutoLockPolicy) { acceptAutoLockPolicy(policy, initializeOnly = false) }
+
+    private fun acceptAutoLockPolicy(policy: VaultAutoLockPolicy, initializeOnly: Boolean): VaultAutoLockPolicy? {
+        val result = synchronized(gate) {
+            if (closed) return null
+            if (initializeOnly && autoLockPolicyInitialized) return configuredAutoLockPolicy
+            configuredAutoLockPolicy = policy
+            autoLockPolicyInitialized = true
+            // Recording the choice and reducing it are one ordered operation, including startup races.
+            state?.let { current -> reducer.reduce(current, VaultEvent.PolicyChanged(policy), tick())
+                .also { state = it.state; effectsInFlight++ } }
+        }
+        if (result != null) {
+            executeEffects(result.effects)
+            showStatus()
+        }
+        return acceptedAutoLockPolicy()
+    }
     /** Explicit foreground reveal intent. Returning to a route does not invoke this automatically. */
     fun revealEmptyCatalog() {
-        if (synchronized(gate) { recoveryWorkflow != null || pendingReset != null }) return
+        if (synchronized(gate) { readLease != null || recoveryWorkflow != null || pendingReset != null || playback?.occupied() == true }) return
         transition(VaultEvent.SurfaceVisible)
         val captured = synchronized(gate) {
             val current = state ?: return
             val durable = snapshot ?: return
             val root = activeRoot ?: return
-            if (closed || failureSticky || recoveryWorkflow != null || pendingReset != null || jobs != 0 || activeRootEpoch != current.authEpoch ||
+            if (closed || failureSticky || playback?.occupied() == true || recoveryWorkflow != null || pendingReset != null || jobs != 0 || activeRootEpoch != current.authEpoch ||
                 !current.permitsPresentation(tick(), current.authEpoch, current.presentationEpoch)) return
             val lease = ReadLease(presentationGeneration, current.authEpoch, current.presentationEpoch,
                 durable.data?.catalogRevision ?: return, root)
@@ -373,7 +457,7 @@ internal class VaultRuntime(
                 ?: throw VaultOperationException(VaultFailure.CORRUPT)
             if (observed.snapshot != captured.second) throw VaultOperationException(VaultFailure.CONFLICT)
             requireCurrentRead(captured.first, operation)
-            val catalog = if (media != null) authentication.authenticateCatalog(captured.first.root, observed.snapshot, operation) else null
+            val catalog = if (media != null || playback != null) authentication.authenticateCatalog(captured.first.root, observed.snapshot, operation) else null
             val decoded = if (catalog == null) authentication.readEmptyCatalog(captured.first.root, observed.snapshot, operation) else null
             val revision = catalog?.catalogRevision ?: checkNotNull(decoded).catalogRevision
             val rows = catalog?.entries?.map { entry -> VaultMediaRow(VaultMediaReadRef(observed.snapshot.identity.vaultId,
@@ -386,6 +470,7 @@ internal class VaultRuntime(
                         presentationGeneration == captured.first.generation && activeRoot === captured.first.root &&
                         current?.permitsPresentation(tick(), captured.first.authEpoch, captured.first.presentationEpoch) == true &&
                         revision == captured.first.revision) {
+                        revealedPlaybackRefs = rows.map { it.ref }
                         if (rows.isEmpty()) presentation.presentEmpty(revision) else presentation.presentCatalog(revision, rows)
                         media?.refreshPresentation()
                     }
@@ -427,7 +512,7 @@ internal class VaultRuntime(
     private fun executeEffects(effects: List<VaultEffect>, preserveRecovery: VaultRecoveryWorkflow? = null) {
         try { effects.forEach { effect -> when (effect) {
             VaultEffect.MaskPrivatePresentation -> protectPresentation(preserveRecovery = preserveRecovery)
-            VaultEffect.StopPrivatePlaybackAndReaders -> media?.revoke() ?: Unit
+            VaultEffect.StopPrivatePlaybackAndReaders -> { playback?.revokeAll(); media?.revoke() }
             VaultEffect.ClearPrivateMemory -> synchronized(gate) { credential?.close(); credential = null; recoveryInput?.close(); recoveryInput = null }
             is VaultEffect.RevokeExternalSession -> retireRoots()
             is VaultEffect.DiscardAttemptResult -> retirePending(effect.identity)
@@ -659,12 +744,13 @@ internal class VaultRuntime(
         val generation = synchronized(gate) {
             if (expectedWake != null && (closed || expectedWake != wakeGeneration)) return false
             if (expectedOperation != null && (closed || expectedOperation !in contexts)) return false
-            readLease = null
+            readLease = null; revealedPlaybackRefs = emptyList()
             if (preserveRecovery == null || recoveryWorkflow !== preserveRecovery) clearRecoveryWorkflowLocked()
             contexts.forEach { it.cancel() }
             if (presentationGeneration == Long.MAX_VALUE) { failureSticky = true } else presentationGeneration++
             presentationGeneration
         }
+        playback?.revokeAll()
         media?.revoke()
         presentation.cover(generation) {
             synchronized(gate) { if (generation == presentationGeneration) hiddenGeneration = generation }
@@ -711,7 +797,7 @@ internal class VaultRuntime(
         val binding = synchronized(gate) {
             val current = state
             if (closed || failureSticky || jobs != 0 || effectsInFlight != 0 || retiringRoots.isNotEmpty() || retiringMutations.isNotEmpty() || credential != null || recoveryInput != null || pendingReset != null || pendingRoot != null ||
-                readLease != null || media?.cleanupComplete() == false || (activeRoot != null && activeRootEpoch != current?.authEpoch) ||
+                readLease != null || playback?.cleanupComplete() == false || media?.cleanupComplete() == false || (activeRoot != null && activeRootEpoch != current?.authEpoch) ||
                 hiddenGeneration != presentationGeneration ||
                 current?.cleanupStatus != VaultCleanupStatus.PENDING) return
             current.currentCleanup ?: return
@@ -780,7 +866,7 @@ internal class VaultRuntime(
     /** Read-only host release check. It never grants authentication or presentation authority. */
     fun hostCleanupComplete(): Boolean = synchronized(gate) {
         !closed && !failureSticky && jobs == 0 && effectsInFlight == 0 && retiringRoots.isEmpty() && retiringMutations.isEmpty() &&
-            credential == null && recoveryInput == null && pendingReset == null && pendingRoot == null && readLease == null && media?.cleanupComplete() != false && state?.cleanupStatus == VaultCleanupStatus.COMPLETE
+            credential == null && recoveryInput == null && pendingReset == null && pendingRoot == null && readLease == null && playback?.cleanupComplete() != false && media?.cleanupComplete() != false && state?.cleanupStatus == VaultCleanupStatus.COMPLETE
     }
     override fun close() {
         synchronized(gate) {

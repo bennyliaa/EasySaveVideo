@@ -238,10 +238,15 @@ internal class PrivateMainPresentationOwner(
         if (vaultClaim != null) {
             if (!value.prepared || !vaultClaim.host.owns(vaultClaim) || !vaultClaim.host.prepareInput(vaultClaim)) return false
             val turn = guard.currentProtectionTurn ?: return false
+            val content = vaultClaim.host.playbackContainer
+            val actualParent = content.parent as? ViewGroup ?: return false
+            if (!vaultClaim.host.playbackCompositionCurrent() || !ownsContent(content)) return false
+            if (value.windowClaim?.expectedParent !== actualParent) value.windowClaim = null
             val windowClaim = value.windowClaim ?: PrivateWindowPresentation(
-                vaultClaim.target, vaultClaim.presentation, null, null,
+                vaultClaim.target, vaultClaim.presentation, content, actualParent,
                 isCurrent = { current === value && vaultClaim.host.owns(vaultClaim) },
-                compositionIsCurrent = { appliedCurrent(value) && vaultClaim.host.owns(vaultClaim) },
+                compositionIsCurrent = { appliedCurrent(value) && vaultClaim.host.owns(vaultClaim) &&
+                    vaultClaim.host.playbackCompositionCurrent() && ownsContent(content) },
                 captureExceptionInactive = { !guard.hasContinuousCaptureAuthorization && captureDrained() },
                 capturePolicy = PrivateCapturePolicy.FORBIDDEN,
             ).also { value.windowClaim = it }
@@ -305,7 +310,7 @@ internal class PrivateMainPresentationOwner(
         val host = browser.readPrivateOrdinaryDeparture()
         PrivateOrdinaryDepartureReadback(
             ordinaryCurrent = appliedCurrent(value) && !browser.isPrivateMode && host.ordinaryCurrent,
-            privateViewsDetached = host.privateViewsDetached,
+            privateViewsDetached = host.privateViewsDetached && (vault()?.playbackSlotRetained != true),
             privateDialogsAbsent = !guard.hasRegisteredPrivateDialogs,
             privateCallbacksRetired = host.privateCallbacksRetired && (vault()?.ordinaryReleaseAllowed() != false),
             captureDrained = captureDrained(),

@@ -1,0 +1,11 @@
+{
+  "source_archive": "source-vault-playback-20261016.tar.gz",
+  "evidence_archive": "evidence-vault-playback-20261016.tar.gz",
+  "source_files_verified": 2764,
+  "source_bytes": 28541012,
+  "source_sha256": "7386a9d1532082a2ef99b6941773dbad647d502981cab3cbb96ee861c3889ad1",
+  "evidence_bytes": 1368141,
+  "evidence_sha256": "10bd7cd791aacd5c63a8f22a4d185739f667aca060e1bfb673fd16ee16fc7ef7",
+  "production_enabled": false,
+  "device": "NOT_RUN"
+}

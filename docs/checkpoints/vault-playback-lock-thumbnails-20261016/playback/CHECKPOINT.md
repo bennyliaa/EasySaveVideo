@@ -1,0 +1,21 @@
+# Controlled Vault playback implementation checkpoint (verified cloud checkpoint)
+
+The build source for this slice is `esv-runtime-copy-20261015/playback-build-source`, copied byte-for-byte from the 2,746-file verified batch-export baseline, then overlaid with the reviewed playback implementation. The original `source` directory remains the separately synced batch-export baseline. It does not contain this new playback slice.
+
+`INITIAL_SOURCE_MANIFEST.json` binds 25 source/resource/test targets plus the Gradle source-contract resource input update. The host R2 owns the final shared contract (API V3, SHA-256 `0890ddc80c89b8efdbb9a534cdc838560aacb1a33e39e4eb3ef6fb529ac0d382`). Platform R2's original isolated compile used the prior shared display-helper bytes; the central combined compile is the evidence for the final shared API. Runtime freeze-2 records its own exact compiler inputs.
+
+The current implementation adds a manually requested, same-owner read leaf, fixed Media3 DataSource, actual Media3 player adapter and stable protected Surface host. It does not create a plaintext temporary file or new dependency. Publication and command authority are revoked immediately; real resource returns are accounted independently from cancellation signals. Reader/file close may proceed after their actual accepted operations drain, while unknown native resources remain retained and prevent complete retirement.
+
+Cloud tests use public deterministic bytes, fake platform ports and actual production state machines. They do not execute real user credentials, Keystore authentication, Android native codecs/Surface/AudioTrack, device privacy checks, or user media. The production entry remains false. Test counts are not a substitute for these pending acceptance checks.
+
+Builds use the single existing Gradle lock, offline admitted artifacts, one worker and a temporary 3 GiB heap. Logs and exit files are kept per run, including unsuccessful attempts. No APK or device operation is part of this checkpoint.
+
+The independent batch-export GitHub sync completed on 2026-10-16 at commit `a9228c20ad4eaa86c6caae38323fef2a98bf9669`, with 83 exact changed/added files, 9,379 unchanged remote leaf records preserved, main unchanged and one non-force ref update. Playback changes are not in that commit. Its 2,746-file source remains the verified baseline.
+
+The first full run executed all 13 modules (6,440 PASS and two old skipped cases) but failed debug lint on 158 missing AndroidX Media3 opt-in annotations. Release lint did not run. The reviewed fix adds only five standard opt-in annotations across two files, with no logic, dependency, suppression or baseline changes. `OPTIN_SOURCE_MANIFEST.json` binds the corrected bytes; the second full run preserved the same test pass counts but retained one ExperimentalApi lint error on the existing prewarming-disabled call. Its release lint did not run. A sixth standard opt-in, scoped to TrackingRenderers, resolved that final declaration without changing behavior.
+
+Final third run: `full-third.log` / `.exit` reports BUILD SUCCESSFUL in 10m 9s and exit 0. Frozen XML contains 579 suites, 6,442 cases: 6,440 PASS, two existing verification-local SKIP, zero failures/errors. Both Kotlin variants and both lint tasks actually executed. Effective SARIF levels are 86 warnings and 10 notes per variant, zero errors. The 76 playback-specific tests comprise runtime/transport31, Host20 and platform25, not an Android native playback run.
+
+`EXPERIMENTAL_OPTIN_SOURCE_MANIFEST.json` SHA-256 `27584d1eefa5dac1baefed35958ff59d7cf6c015a9bb89e5268ea6d6bd78e5d7` binds the 26 actually compiled/tested targets. Two independently reviewed documentation-only files were applied after terminal; `FINAL_SOURCE_MANIFEST.json` SHA-256 `431f709588b28e89896085b360321bfafd282631d20ca517f8720aa738d22b80` binds all 28 targets. The full recoverable source manifest has 2,764 files. No post-test production-code change occurred.
+
+Remaining product work includes the approved auto-lock Settings/persistence connection, private thumbnail implementation and biometric production adapter. True Android/Tink/SQLite/native decoder/Surface/AudioTrack privacy and release acceptance remain outstanding. The next auto-lock implementation uses an independent overlay; this playback checkpoint stays frozen.

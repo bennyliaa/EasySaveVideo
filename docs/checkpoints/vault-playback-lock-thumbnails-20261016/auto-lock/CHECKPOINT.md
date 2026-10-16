@@ -1,0 +1,16 @@
+# Vault auto-lock Settings and persistence checkpoint
+
+The source is `auto-lock-build-source`, copied from the verified 2,764-file playback checkpoint and overlaid with 17 reviewed implementation/resource/build/test files, two reviewed compatibility updates to existing source tests, and one reviewed documentation status update. Playback source/recovery archives remain unchanged. The complete final source manifest contains 2,772 files. The final 20-target manifest SHA-256 is `d8faf40ed5e59cfcbd118ff2379b711e9f2add4f53d4c0b23154e8312cfa57ce`; its source_root identifies the actual integrated source, not the external partial overlay.
+
+The existing Privacy settings now connect exactly Immediately/1/5/15 minutes to the retained VaultRuntime and existing settings persistence. Keys are explicit stable strings; old/invalid primitive values use the established immediate default. Missing/failed load or absent/uninitialized owner omits the field from writes. Existing settings writers resolve the live accepted policy under one cross-instance checked-commit boundary; preferences IO is not performed under the runtime gate. A stale Activity's queued settings cannot restore its old policy. Startup always stays locked, and original departure/background, return and expiry semantics are unchanged. The selector remains disabled while the production Vault gate is false.
+
+Actual verification:
+- External narrow run: 86 behavioral + 6 source/resource tests passed, including pre-existing regressions. This is not 92 newly added tests.
+- First central run: both production Kotlin variants actually compiled. 4,965 of 4,969 tests passed; four existing source-string contracts failed after the additive write argument/merge/check-boundary shapes changed. Those failures are preserved.
+- The reviewed two-test-file correction retained all Wi-Fi/concurrency admission, owner merge, checked commit and visible warning assertions. Its separate 13-test run passed.
+- Second central run: 486 suites/4,969 cases all passed. App tests actually reran; production compile and unchanged non-app tests were up-to-date from the first run.
+- Final 13-module run: 583 suites/6,477 items = 6,475 PASS + two existing verification-local SKIP, zero failure/error. BUILD SUCCESSFUL in 8m 28s, exit 0. Both lint variants actually ran: each 86 warnings + 10 notes and zero errors. The source increment adds 35 tests overall.
+
+Tests exercise actual pure/runtime/check-commit/captured-action mechanisms with public fixed inputs and fake ports, plus source/resource wiring. Android SharedPreferences lifecycle, mounted Compose/real timer timing, Tink/Keystore/user authentication/SQL/media/native playback and device privacy acceptance remain NOT_RUN. No real user credential/key creation or user-data mutation occurred. No production gate, dependency, device, APK delivery, or account security setting changed. Failed writes retain the existing visible warning and never promise persistence merely from an accepted in-memory choice.
+
+The last remote baseline is `a9228c20ad4eaa86c6caae38323fef2a98bf9669`; playback and this auto-lock slice have not yet been synced. They are kept for the next approved combined development batch with private in-memory thumbnails.

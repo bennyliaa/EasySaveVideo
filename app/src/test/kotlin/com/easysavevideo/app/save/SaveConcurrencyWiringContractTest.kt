@@ -15,14 +15,16 @@ class SaveConcurrencyWiringContractTest {
         assertTrue(store.contains("if (includeSaveConcurrencyPreference) putInt(\"save_direct_concurrency\", settings.save.maxConcurrentDirectTasks)"))
         assertTrue(store.contains("if (includeSaveNetworkPreference) putBoolean(\"save_wifi_only\", settings.save.wifiOnly)"))
         val persistence = source("kotlin/com/easysavevideo/app/storage/BrowserPersistence.kt")
-        assertTrue(persistence.contains("PendingSettings(settings, settingsLoaded || networkPreferenceConfirmed.get(), settingsLoaded)"))
-        assertTrue(persistence.contains("settingsStore.save(value.value, value.includeNetwork, value.includeConcurrency)"))
+        assertTrue(persistence.contains("PendingSettings(settings, settingsLoaded || networkPreferenceConfirmed.get(), settingsLoaded, settingsLoaded)"))
+        assertTrue(persistence.contains("settingsStore.save(value.value, value.includeNetwork, value.includeConcurrency, value.includeVaultPolicy)"))
     }
     @Test fun allSuccessfulLoadsMergeWithApplicationOwnerEvenAfterEarlyWifiEdit() {
         val activity = source("kotlin/com/easysavevideo/app/MainActivity.kt")
         val startup = activity.substringAfter("persistence.start { loaded, checkpoint, failed ->")
-        assertTrue(startup.contains("if (persistence.settingsLoaded) {\n                settings = settings.copy(save = saves.initializeSaveSettings(loaded.save))"))
+        assertTrue(startup.contains("if (persistence.settingsLoaded) {\n                settings = settings.copy(save = saves.initializeSaveSettings(loaded.save),"))
         assertFalse(startup.contains("!saveSettingsChanged"))
+        assertTrue(startup.contains("persistence.saveSettings(settings)"))
+        assertTrue(startup.contains("settingsReady = true"))
         assertTrue(startup.indexOf("saves.initializeSaveSettings(loaded.save)") < startup.indexOf("persistence.saveSettings(settings)"))
         assertTrue(startup.indexOf("saves.initializeSaveSettings(loaded.save)") < startup.indexOf("settingsReady = true"))
     }
@@ -67,7 +69,16 @@ class SaveConcurrencyWiringContractTest {
     }
     @Test fun failedWritesKeepVisibleWarningAndNeverClaimSuccessfulPersistence() {
         val store = source("kotlin/com/easysavevideo/app/storage/AndroidStores.kt")
-        assertTrue(store.contains("check(prefs.edit()")); assertTrue(store.contains(".commit())"))
+        val save = store.substringAfter("fun save(settings: AppSettings, includeSaveNetworkPreference: Boolean")
+            .substringBefore("if (Build.VERSION.SDK_INT >= 33)")
+        assertTrue(save.contains("SettingsWriteBoundary.commit(includeVaultPolicy,"))
+        assertTrue(save.contains("}) { livePolicy ->\n            prefs.edit().putBoolean"))
+        // The lambda returns the real commit Boolean; the shared boundary still checks that result.
+        assertTrue(save.trimEnd().endsWith(".commit()\n        }"))
+        assertFalse(save.contains(".apply()"))
+        val boundary = source("kotlin/com/easysavevideo/app/storage/SettingsWriteBoundary.kt")
+        assertTrue(boundary.contains("synchronized(gate)"))
+        assertTrue(boundary.contains("check(write(policy))"))
         val persistence = source("kotlin/com/easysavevideo/app/storage/BrowserPersistence.kt")
         assertTrue(persistence.contains("onFailure { writeFailure(ErrorCode.SETTINGS_UNAVAILABLE) }"))
         assertTrue(persistence.contains("main.post { if (!closed.get()) onWriteFailure() }"))
