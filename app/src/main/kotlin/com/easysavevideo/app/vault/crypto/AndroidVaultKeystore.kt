@@ -1,10 +1,13 @@
 package com.easysavevideo.app.vault.crypto
 
 import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyInfo
 import android.security.keystore.KeyProperties
 import com.easysavevideo.app.vault.VaultFailure
 import com.easysavevideo.app.vault.VaultOperationException
+import com.easysavevideo.app.vault.VaultPersistentIdentity
+import com.easysavevideo.app.vault.VaultBiometricAliasRetirement
 import com.google.crypto.tink.Aead
 import java.security.KeyStore
 import javax.crypto.Cipher
@@ -14,7 +17,46 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.GCMParameterSpec
 
 /** No load, generation or authentication is performed by construction. No get-or-create path. */
-internal class AndroidVaultKeystore {
+internal class AndroidVaultKeystore(
+    private val biometricAliases: BiometricAliasAccess = PlatformBiometricAliasAccess,
+) {
+    enum class AliasRetirementResult { ABSENT, UNKNOWN }
+    /** Narrow fake boundary: no enumerate, prefix delete, create, or get-or-create operation. */
+    internal interface BiometricAliasAccess {
+        fun containsExact(alias: String): Boolean
+        fun deleteExact(alias: String)
+    }
+    private object PlatformBiometricAliasAccess : BiometricAliasAccess {
+        private fun store(): KeyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+        override fun containsExact(alias: String): Boolean = store().containsAlias(alias)
+        override fun deleteExact(alias: String) = store().deleteEntry(alias)
+    }
+
+    /** Read-only absence check never authorizes retirement or automatic recreation. */
+    fun hasBiometricAlias(identity: VaultPersistentIdentity): Boolean {
+        VaultCryptoWire.requireIdentity(identity)
+        requireAlias(identity.biometricKeyAlias, biometric = true)
+        return biometricAliases.containsExact(identity.biometricKeyAlias)
+    }
+
+    /** The existing Authentication registry issues AND consumes the exact opaque capability.
+     * Its validator checks fresh root, whole current snapshot, original deadline and actual drain.
+     * ORPHAN_NONE has no invented slot/generation; that distinction stays in the same owner.
+     * UNKNOWN must retain the original intent and prohibit recreation; never retry by create.
+     */
+    fun deleteBiometricKey(permission: VaultBiometricAliasRetirement,
+        validate: (VaultBiometricAliasRetirement) -> VaultPersistentIdentity): AliasRetirementResult {
+        val identity = validate(permission) // Immediate same-owner, exact single-use consumption.
+        VaultCryptoWire.requireIdentity(identity)
+        val alias = identity.biometricKeyAlias
+        requireAlias(alias, biometric = true)
+        require(alias != identity.deviceKeyAlias) { "biometric-alias" }
+        return try {
+            biometricAliases.deleteExact(alias)
+            if (biometricAliases.containsExact(alias)) AliasRetirementResult.UNKNOWN else AliasRetirementResult.ABSENT
+        } catch (_: Exception) { AliasRetirementResult.UNKNOWN }
+    }
+
     enum class SecurityLevel { TEE, STRONGBOX, SOFTWARE, UNKNOWN }
     private fun store(): KeyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
 
@@ -66,23 +108,23 @@ internal class AndroidVaultKeystore {
         }
     }
 
-    fun deviceAead(alias: String, requireHardware: Boolean = false): Aead {
+    fun deviceAead(alias: String, requireHardware: Boolean = false): Aead = deviceKeyOperation {
         val key = existing(alias, biometric = false)
         if (requireHardware && securityLevel(alias) !in listOf(SecurityLevel.TEE, SecurityLevel.STRONGBOX))
             throw VaultOperationException(VaultFailure.UNSUPPORTED)
-        return object : Aead {
-            override fun encrypt(plaintext: ByteArray, associatedData: ByteArray): ByteArray {
+        object : Aead {
+            override fun encrypt(plaintext: ByteArray, associatedData: ByteArray): ByteArray = deviceKeyOperation {
                 require(plaintext.size <= 16_384 - 28 && associatedData.size <= 16_384) { "envelope-size" }
                 val cipher = freshEncryptionCipher(key)
                 cipher.updateAAD(associatedData)
-                return cipher.iv + cipher.doFinal(plaintext)
+                cipher.iv + cipher.doFinal(plaintext)
             }
-            override fun decrypt(ciphertext: ByteArray, associatedData: ByteArray): ByteArray {
+            override fun decrypt(ciphertext: ByteArray, associatedData: ByteArray): ByteArray = deviceKeyOperation {
                 require(ciphertext.size in 28..16_384 && associatedData.size <= 16_384) { "envelope-size" }
                 val cipher = Cipher.getInstance("AES/GCM/NoPadding")
                 cipher.init(Cipher.DECRYPT_MODE, key, GCMParameterSpec(128, ciphertext, 0, 12))
                 cipher.updateAAD(associatedData)
-                return cipher.doFinal(ciphertext, 12, ciphertext.size - 12)
+                cipher.doFinal(ciphertext, 12, ciphertext.size - 12)
             }
         }
     }
@@ -98,8 +140,9 @@ internal class AndroidVaultKeystore {
 
     private fun existing(alias: String, biometric: Boolean): SecretKey {
         requireAlias(alias, biometric)
-        val entry = store().getEntry(alias, null) as? KeyStore.SecretKeyEntry
-            ?: throw VaultOperationException(VaultFailure.UNAVAILABLE)
+        val rawEntry = store().getEntry(alias, null)
+            ?: throw VaultOperationException(if (biometric) VaultFailure.UNAVAILABLE else VaultFailure.DEVICE_KEY_UNAVAILABLE)
+        val entry = rawEntry as? KeyStore.SecretKeyEntry ?: throw VaultOperationException(VaultFailure.UNSUPPORTED)
         val key = entry.secretKey
         val info = keyInfo(key)
         if (key.algorithm != "AES" || info.keySize != 256 || info.keystoreAlias != alias ||
@@ -113,6 +156,10 @@ internal class AndroidVaultKeystore {
             throw VaultOperationException(VaultFailure.UNSUPPORTED)
         return key
     }
+    /** Scoped to the primary device key. Optional biometric invalidation must stay local. */
+    private inline fun <T> deviceKeyOperation(block: () -> T): T = try { block() }
+        catch (_: KeyPermanentlyInvalidatedException) { throw VaultOperationException(VaultFailure.DEVICE_KEY_UNAVAILABLE) }
+
     private fun keyInfo(key: SecretKey): KeyInfo = SecretKeyFactory.getInstance(key.algorithm, "AndroidKeyStore")
         .getKeySpec(key, KeyInfo::class.java) as KeyInfo
     private fun freshEncryptionCipher(key: SecretKey): Cipher = Cipher.getInstance("AES/GCM/NoPadding").apply {

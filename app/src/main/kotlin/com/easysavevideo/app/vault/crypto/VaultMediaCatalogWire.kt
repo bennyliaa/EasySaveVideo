@@ -42,7 +42,7 @@ internal object VaultMediaCatalogWire {
                 finally { expected.fill(0) }
                 return VaultAuthenticatedCatalog(data.catalogRevision, emptyList())
             }
-            3 -> Unit
+            3, 4 -> Unit
             else -> throw IllegalArgumentException("media-catalog-version")
         }
         val prefix = VaultCryptoWire.mediaCatalogPrefix(identity, data)
@@ -69,7 +69,7 @@ internal object VaultMediaCatalogWire {
         val catalog = decode(identity, before, authenticatedBefore)
         require(proposed.mediaJournalEnvelope == before.mediaJournalEnvelope &&
             proposed.mediaJournalRevision == before.mediaJournalRevision) { "credential-journal-preservation" }
-        return if (ByteBuffer.wrap(authenticatedBefore).getInt(4) == 3)
+        return if (ByteBuffer.wrap(authenticatedBefore).getInt(4) in 3..4)
             encode(identity, proposed, catalog.entries) else VaultCryptoWire.emptyCatalog(identity, proposed)
     }
 

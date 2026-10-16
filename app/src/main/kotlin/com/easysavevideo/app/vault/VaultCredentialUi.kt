@@ -68,12 +68,17 @@ internal fun VaultCredentialDialog(host: VaultProtectedHost, request: VaultCrede
                     EsvText(stringResource(when (request.mode) {
                         VaultCredentialMode.SETUP -> R.string.vault_credential_setup_title
                         VaultCredentialMode.UNLOCK -> R.string.vault_credential_unlock_title
+                        VaultCredentialMode.BIOMETRIC_UNLOCK -> R.string.vault_biometric_unlock
+                        VaultCredentialMode.BIOMETRIC_ENROLL -> R.string.vault_biometric_enroll_password
+                        VaultCredentialMode.BIOMETRIC_REVOKE -> R.string.vault_biometric_revoke_password
                         VaultCredentialMode.RECOVERY_ENROLL -> R.string.vault_recovery_auth_title
                         VaultCredentialMode.RECOVERY_DISPLAY -> R.string.vault_recovery_display_title
                         VaultCredentialMode.RECOVERY_CONFIRM -> R.string.vault_recovery_confirm_title
                         VaultCredentialMode.RECOVERY_RESET -> R.string.vault_recovery_reset_title
                     }), style = visuals.titleTextStyle)
                     EsvText(stringResource(R.string.vault_credential_private), style = visuals.captionTextStyle)
+                    if (request.mode in setOf(VaultCredentialMode.BIOMETRIC_ENROLL, VaultCredentialMode.BIOMETRIC_REVOKE))
+                        EsvText(stringResource(R.string.vault_biometric_limits), style = visuals.captionTextStyle)
                     if (!draft.retired) {
                         if (showingCode) {
                             EsvText(stringResource(R.string.vault_recovery_keep_offline), style = visuals.bodyTextStyle)
@@ -131,6 +136,8 @@ internal fun VaultCredentialDialog(host: VaultProtectedHost, request: VaultCrede
                                 confirmation -> R.string.vault_recovery_verify
                                 reset -> R.string.vault_recovery_reset_submit
                                 request.mode == VaultCredentialMode.RECOVERY_ENROLL -> R.string.vault_recovery_enable
+                                request.mode == VaultCredentialMode.BIOMETRIC_ENROLL -> R.string.vault_biometric_enable
+                                request.mode == VaultCredentialMode.BIOMETRIC_REVOKE -> R.string.vault_biometric_disable
                                 else -> R.string.vault_runtime_unlock
                             }), onClick = {
                                 if (accepts()) {

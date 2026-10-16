@@ -1,0 +1,310 @@
+{
+  "manifests": {
+    "FINAL_SOURCE_MANIFEST.json": {
+      "sha256": "57e9c5fc0c1d6ccdcbc7e7ccce873e9386438b6d83c4846ea696fa97275e016c",
+      "files": 32,
+      "mismatches": []
+    },
+    "LOCAL_SOURCE_MANIFEST.json": {
+      "sha256": "83ce6116b0ec42164d01b624d11e19311af6e0ea8fe427c31c9b4b0f57cff30b",
+      "files": 2801,
+      "mismatches": []
+    }
+  },
+  "summary": {
+    "suites": 602,
+    "tests": 6675,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "passed": 6673
+  },
+  "testcase_count": 6675,
+  "modules": {
+    "library": {
+      "suites": 25,
+      "tests": 300,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core-domain": {
+      "suites": 13,
+      "tests": 120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "searxng-provider": {
+      "suites": 2,
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "suites": 463,
+      "tests": 4737,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "verification-client": {
+      "suites": 2,
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "save": {
+      "suites": 27,
+      "tests": 467,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core-model": {
+      "suites": 4,
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "discovery": {
+      "suites": 25,
+      "tests": 338,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ui-theme": {
+      "suites": 2,
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "verification-local": {
+      "suites": 6,
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    "recording": {
+      "suites": 6,
+      "tests": 127,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "hls": {
+      "suites": 1,
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "commons-provider": {
+      "suites": 26,
+      "tests": 416,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "skipped": [
+    {
+      "suite": "com.easysavevideo.verification.local.FrozenRecoveryComponentTest",
+      "case": "authored80MutationsActualJsoupComponent"
+    },
+    {
+      "suite": "com.easysavevideo.verification.local.FrozenCorpusHostTest",
+      "case": "same100FrozenBodiesActualStaticB"
+    }
+  ],
+  "biometric_suites": [
+    {
+      "name": "com.easysavevideo.app.vault.VaultBiometricRuntimeTest",
+      "tests": "21",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T12:33:45.385Z",
+      "hostname": "b5f39a690d03",
+      "time": "0.04"
+    },
+    {
+      "name": "com.easysavevideo.app.vault.crypto.VaultBiometricCipherBindingTest",
+      "tests": "5",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T12:33:45.690Z",
+      "hostname": "b5f39a690d03",
+      "time": "0.067"
+    },
+    {
+      "name": "com.easysavevideo.app.vault.crypto.VaultBiometricExactAliasTest",
+      "tests": "5",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T12:33:45.781Z",
+      "hostname": "b5f39a690d03",
+      "time": "0.002"
+    },
+    {
+      "name": "com.easysavevideo.app.vault.VaultBiometricHostSourceContractTest",
+      "tests": "7",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T12:33:45.382Z",
+      "hostname": "b5f39a690d03",
+      "time": "0.002"
+    },
+    {
+      "name": "com.easysavevideo.app.vault.crypto.VaultBiometricPromptLifecycleTest",
+      "tests": "27",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T12:33:45.901Z",
+      "hostname": "b5f39a690d03",
+      "time": "0.014"
+    },
+    {
+      "name": "com.easysavevideo.app.vault.crypto.VaultBiometricCredentialContractTest",
+      "tests": "10",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T12:33:45.761Z",
+      "hostname": "b5f39a690d03",
+      "time": "0.019"
+    },
+    {
+      "name": "com.easysavevideo.app.vault.crypto.VaultBiometricOwnerConnectionTest",
+      "tests": "9",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T12:33:45.785Z",
+      "hostname": "b5f39a690d03",
+      "time": "0.114"
+    }
+  ],
+  "lint": {
+    "lint-results-debug.sarif": {
+      "counts": {
+        "warning": 86,
+        "note": 10
+      },
+      "sha256": "7030dd70a526c3a3a7d929bfd6b240c345b83d8db13194982cc42e70d9abc2f1",
+      "rule_counts": {
+        "OldTargetApi": 1,
+        "AppBundleLocaleChanges": 1,
+        "MissingOnRenderProcessGone": 5,
+        "GradleDependency": 1,
+        "PluralsCandidate": 6,
+        "SetJavaScriptEnabled": 1,
+        "ObsoleteSdkInt": 2,
+        "StaticFieldLeak": 2,
+        "AutoboxingStateCreation": 10,
+        "UnusedResources": 39,
+        "UsableSpace": 4,
+        "ViewConstructor": 2,
+        "UseKtx": 22
+      }
+    },
+    "lint-results-release.sarif": {
+      "counts": {
+        "warning": 86,
+        "note": 10
+      },
+      "sha256": "7030dd70a526c3a3a7d929bfd6b240c345b83d8db13194982cc42e70d9abc2f1",
+      "rule_counts": {
+        "OldTargetApi": 1,
+        "AppBundleLocaleChanges": 1,
+        "MissingOnRenderProcessGone": 5,
+        "GradleDependency": 1,
+        "PluralsCandidate": 6,
+        "SetJavaScriptEnabled": 1,
+        "ObsoleteSdkInt": 2,
+        "StaticFieldLeak": 2,
+        "AutoboxingStateCreation": 10,
+        "UnusedResources": 39,
+        "UsableSpace": 4,
+        "ViewConstructor": 2,
+        "UseKtx": 22
+      }
+    }
+  },
+  "exit": "0",
+  "task_lines": [
+    "> Task :core-model:test",
+    "> Task :core-domain:test",
+    "> Task :ui-theme:test",
+    "> Task :discovery:test",
+    "> Task :save:test",
+    "> Task :recording:test",
+    "> Task :library:test",
+    "> Task :hls:test",
+    "> Task :commons-provider:test",
+    "> Task :searxng-provider:test",
+    "> Task :verification-client:test",
+    "> Task :verification-local:test",
+    "> Task :app:compileDebugKotlin UP-TO-DATE",
+    "> Task :app:testDebugUnitTest",
+    "> Task :app:compileReleaseKotlin UP-TO-DATE",
+    "> Task :app:lintDebug",
+    "> Task :app:lintRelease"
+  ],
+  "build_lines": [
+    "BUILD SUCCESSFUL in 8m 36s",
+    "101 actionable tasks: 42 executed, 59 up-to-date"
+  ],
+  "review": "Independent read-only whole-source hashing, frozen XML and SARIF recomputation. Reviewer executed no product code/test/crypto/device action.",
+  "baseline_delta": {
+    "baseline": 2792,
+    "final": 2801,
+    "new": [
+      "app/src/main/kotlin/com/easysavevideo/app/vault/VaultBiometricWorkflow.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/VaultBiometricCryptoLeaf.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/vault/VaultBiometricHostSourceContractTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/vault/VaultBiometricRuntimeTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/vault/crypto/VaultBiometricCipherBindingTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/vault/crypto/VaultBiometricCredentialContractTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/vault/crypto/VaultBiometricExactAliasTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/vault/crypto/VaultBiometricOwnerConnectionTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/vault/crypto/VaultBiometricPromptLifecycleTest.kt"
+    ],
+    "modified": [
+      "app/src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/browser/privacy/PrivateMainPresentationOwner.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/AndroidVaultPresentationOwner.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/AndroidVaultRuntimeEntry.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/VaultCredentialRequest.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/VaultCredentialUi.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/VaultProtectedHost.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/VaultRuntime.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/VaultRuntimePorts.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/VaultRuntimeUi.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/AndroidVaultAuthentication.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/AndroidVaultBiometric.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/AndroidVaultKeystore.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/VaultCryptoWire.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/VaultMediaCatalogWire.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/storage/VaultCredentialMutationValidation.kt",
+      "app/src/main/kotlin/com/easysavevideo/app/vault/storage/VaultSnapshotCodec.kt",
+      "app/src/main/res/values-zh-rCN/vault_runtime.xml",
+      "app/src/main/res/values/vault_runtime.xml",
+      "app/src/test/kotlin/com/easysavevideo/app/recording/PrivateOwnedCaptureMainContractTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/vault/crypto/VaultCredentialResealConnectionTest.kt",
+      "app/src/test/kotlin/com/easysavevideo/app/vault/storage/VaultCredentialMutationValidationTest.kt",
+      "docs/vault/CURRENT_IMPLEMENTATION_STATUS.md"
+    ],
+    "deleted": []
+  }
+}

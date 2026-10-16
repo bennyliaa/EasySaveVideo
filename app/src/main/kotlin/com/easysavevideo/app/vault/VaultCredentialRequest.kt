@@ -1,11 +1,12 @@
 package com.easysavevideo.app.vault
 
 
-internal enum class VaultCredentialMode { SETUP, UNLOCK, RECOVERY_ENROLL, RECOVERY_DISPLAY, RECOVERY_CONFIRM, RECOVERY_RESET }
+internal enum class VaultCredentialMode { SETUP, UNLOCK, RECOVERY_ENROLL, RECOVERY_DISPLAY, RECOVERY_CONFIRM, RECOVERY_RESET, BIOMETRIC_UNLOCK, BIOMETRIC_ENROLL, BIOMETRIC_REVOKE }
 
 /** Exact request lifetime, not authentication authority. Only its host accepts submission. */
 internal class VaultCredentialRequest internal constructor(val mode: VaultCredentialMode,
-    val workflow: VaultRecoveryWorkflow? = null, display: VaultRecoveryInput? = null) {
+    val workflow: VaultRecoveryWorkflow? = null, display: VaultRecoveryInput? = null,
+    val biometricWorkflow: VaultBiometricWorkflow? = null) {
     private var displayInput: VaultRecoveryInput? = display
     internal fun copyDisplayCharacters(): CharArray? { requireMain(); return if (live) displayInput?.copyCharacters() else null }
     internal fun clearDisplayInput() { requireMain(); displayInput?.close(); displayInput = null }

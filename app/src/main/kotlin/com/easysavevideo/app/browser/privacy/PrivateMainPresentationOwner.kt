@@ -236,6 +236,9 @@ internal class PrivateMainPresentationOwner(
         }
         val vaultClaim = value.vaultClaim
         if (vaultClaim != null) {
+            // A submitted credential workflow keeps the existing cover through native authentication.
+            // Password input dialogs are excluded; no private frame/input epoch is revived beneath a system prompt.
+            if (vaultClaim.host.holdsBiometricCover()) return false
             if (!value.prepared || !vaultClaim.host.owns(vaultClaim) || !vaultClaim.host.prepareInput(vaultClaim)) return false
             val turn = guard.currentProtectionTurn ?: return false
             val content = vaultClaim.host.playbackContainer
@@ -300,7 +303,7 @@ internal class PrivateMainPresentationOwner(
         return false
     }
     private fun reveal(value: Applied, turn: PrivateProtectionTurn, claim: PrivateWindowPresentation) {
-        if (current !== value || value.acknowledgedTurn !== turn) return
+        if (current !== value || value.acknowledgedTurn !== turn || value.vaultClaim?.host?.holdsBiometricCover() == true) return
         if (guard.revealProtectedPrivate(turn, claim) == PrivateRevealResult.REVEALED) {
             inputEpoch++
             if (value.claim != null) browser.refreshPrivateCaptureAudio()

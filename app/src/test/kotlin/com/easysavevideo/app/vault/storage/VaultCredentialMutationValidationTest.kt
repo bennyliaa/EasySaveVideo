@@ -36,8 +36,10 @@ class VaultCredentialMutationValidationTest {
                 slot(VaultSlotKind.PASSWORD, revision, 9), attempt, reserved))
             VaultCredentialMutationKind.ACTIVATE_PASSWORD_RESET -> old.copy(slots = listOf(old.pendingPassword!!.slot),
                 recoveryState = VaultRecoveryState.NONE, pendingPassword = null)
+            else -> error("recovery-fixture-kind")
         }
-        return VaultCredentialMutationProposal(kind, replacement ?: changed.copy(catalogRevision = revision, catalogEnvelope = blob(10 + revision.toInt())),
+        return VaultCredentialMutationProposal(kind, replacement ?: changed.copy(catalogRevision = revision,
+            catalogKeysetEnvelope = blob(30 + revision.toInt()), catalogEnvelope = blob(10 + revision.toInt())),
             if (kind == VaultCredentialMutationKind.STAGE_PASSWORD_RESET || kind == VaultCredentialMutationKind.ACTIVATE_PASSWORD_RESET) attempt else null,
             "fixed-operation-${kind.ordinal}")
     }
@@ -102,7 +104,7 @@ class VaultCredentialMutationValidationTest {
         val changed = valid.data.copy(slots = listOf(valid.data.slots.single().copy(envelope = blob(12))))
         rejected { VaultCredentialMutationValidation.requireValid(old, proposal(old, valid.kind, changed), reservation) }
     }
-    @Test fun everyStageRejectsLedgerKeysetMarkerAndRevisionMutation() {
+    @Test fun everyStageRejectsLedgerMarkerJournalAndRevisionMutation() {
         val cases = listOf(before() to VaultCredentialMutationKind.STAGE_RECOVERY,
             before(VaultRecoveryState.PENDING) to VaultCredentialMutationKind.ACTIVATE_RECOVERY,
             before(VaultRecoveryState.ACTIVE) to VaultCredentialMutationKind.STAGE_PASSWORD_RESET,
@@ -110,7 +112,8 @@ class VaultCredentialMutationValidationTest {
         cases.forEach { (old, kind) ->
             val valid = proposal(old, kind)
             listOf(valid.data.copy(retryLedger = reset.proposedLedger), valid.data.copy(retryLedgerEnvelope = blob(13)),
-                valid.data.copy(catalogKeysetEnvelope = blob(14)), valid.data.copy(installationMarker = blob(15)),
+                valid.data.copy(installationMarker = blob(15)),
+                valid.data.copy(mediaJournalEnvelope = blob(14), mediaJournalRevision = 1),
                 valid.data.copy(catalogRevision = valid.data.catalogRevision + 1), valid.data.copy(catalogEnvelope = old.data!!.catalogEnvelope)).forEach {
                 rejected { VaultCredentialMutationValidation.requireValid(old, proposal(old, kind, it), reservation) }
             }

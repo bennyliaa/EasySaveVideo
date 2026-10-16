@@ -128,6 +128,7 @@ internal class VaultProtectedHost(
     private var promptDeadline = 0L
     private var pendingOpen: VaultCredentialOpening? = null
     private var pendingWorkflow: VaultRecoveryWorkflow? = null
+    private var pendingBiometricWorkflow: VaultBiometricWorkflow? = null
     private var pendingSubmission: Pair<VaultCredentialRequest, VaultHostSubmission>? = null
     private val retiredRequests = mutableListOf<VaultCredentialRequest>()
     var revision by mutableLongStateOf(0); private set
@@ -185,6 +186,16 @@ internal class VaultProtectedHost(
     }
     fun deviceLocked() { requireMain(); invalidateActionsFromAnyThread(); stopThumbnails(clearViewport = true); retireRequest(true); if (started) runtime.deviceLocked() }
     fun surfaceCovered() { requireMain(); invalidateActionsFromAnyThread(); stopThumbnails(clearViewport = true); retireRequest(true); if (started) runtime.surfaceCovered() }
+    /** System prompt focus is expected only after its exact platform call has entered. */
+    fun windowFocusLost() {
+        requireMain()
+        val current = claim
+        if (current != null && root.isCovered && owns(current) &&
+            runtime.systemPromptOwnsFocus(current, activity, generation)) return // Existing barrier remains installed.
+        surfaceCovered()
+    }
+    fun canRetryPresentationAfterFocus(): Boolean = !holdsBiometricCover() && runtime.biometricCleanupComplete()
+    fun holdsBiometricCover(): Boolean = runtime.biometricPrivateCoverRequired()
     fun background() { requireMain(); invalidateActionsFromAnyThread(); stopThumbnails(clearViewport = true); retireRequest(true); if (started) runtime.observePresence(inVaultRoute(), false) }
     private fun retireRootInput() {
         val ticket = rootTicket ?: return
@@ -453,26 +464,40 @@ internal class VaultProtectedHost(
             VaultCredentialMode.RECOVERY_CONFIRM -> return // Only actual display retirement can reach confirmation.
             else -> null
         }
+        val biometricWorkflow = when (mode) {
+            VaultCredentialMode.BIOMETRIC_ENROLL -> runtime.beginBiometricWorkflow(VaultBiometricWorkflowKind.ENROLL) ?: return
+            VaultCredentialMode.BIOMETRIC_REVOKE -> runtime.beginBiometricWorkflow(VaultBiometricWorkflowKind.REVOKE) ?: return
+            else -> null
+        }
         // Finish old native/input cleanup before a new dialog exists. Controlled recovery handoff grants no auth.
         if (workflow != null) {
             if (!runtime.coverForRecoveryHandoff(workflow)) { runtime.cancelRecoveryWorkflow(workflow); return }
+        } else if (biometricWorkflow != null) {
+            if (!runtime.coverForBiometricHandoff(biometricWorkflow)) { runtime.cancelBiometricWorkflow(biometricWorkflow); return }
         } else runtime.surfaceCovered()
-        pendingOpen = VaultCredentialOpening(mode, generation); pendingWorkflow = workflow
+        pendingOpen = VaultCredentialOpening(mode, generation); pendingWorkflow = workflow; pendingBiometricWorkflow = biometricWorkflow
         hierarchyChanged()
     }
-    private fun publishCredential(mode: VaultCredentialMode, workflow: VaultRecoveryWorkflow?) {
+    private fun publishCredential(mode: VaultCredentialMode, workflow: VaultRecoveryWorkflow?, biometricWorkflow: VaultBiometricWorkflow?) {
+        if (biometricWorkflow != null && !runtime.biometricWorkflowCurrent(biometricWorkflow)) return
+        if (mode == VaultCredentialMode.BIOMETRIC_UNLOCK) {
+            val factory = biometricHostBinding() ?: return
+            runtime.unlockBiometric(factory(VaultBiometricPurpose.UNLOCK, null))
+            return
+        }
         if (workflow != null && !runtime.recoveryWorkflowCurrent(workflow)) return
         val display = if (mode == VaultCredentialMode.RECOVERY_DISPLAY)
             runtime.takeRecoveryDisplay(checkNotNull(workflow)) ?: return else null
-        val request = VaultCredentialRequest(mode, workflow, display)
+        val request = VaultCredentialRequest(mode, workflow, display, biometricWorkflow)
         credentialRequest = request
         promptDeadline = minOf(SystemClock.elapsedRealtime() + VaultRuntimeLimits.PROMPT_MILLIS,
-            workflow?.let(runtime::recoveryPromptDeadline) ?: Long.MAX_VALUE)
+            workflow?.let(runtime::recoveryPromptDeadline) ?: biometricWorkflow?.deadlineElapsedMillis ?: Long.MAX_VALUE)
         main.postDelayed({
             if (credentialRequest === request) cancelCredential(request)
             if (pendingSubmission?.first === request) {
                 pendingSubmission?.second?.close(); pendingSubmission = null
                 request.workflow?.let(runtime::cancelRecoveryWorkflow)
+                request.biometricWorkflow?.let(runtime::cancelBiometricWorkflow)
                 runtime.surfaceCovered()
             }
         }, (promptDeadline - SystemClock.elapsedRealtime()).coerceAtLeast(0))
@@ -480,11 +505,13 @@ internal class VaultProtectedHost(
     fun requestCurrent(request: VaultCredentialRequest): Boolean = credentialRequest === request && request.isLive() &&
         attached && !detaching && inVaultRoute() && foreground() && SystemClock.elapsedRealtime() < promptDeadline &&
         !guard.hasContinuousCaptureAuthorization && captureDrained() && !activity.isDestroyed && !activity.isFinishing &&
-        (request.workflow == null || runtime.recoveryWorkflowCurrent(request.workflow))
+        (request.workflow == null || runtime.recoveryWorkflowCurrent(request.workflow)) &&
+        (request.biometricWorkflow == null || runtime.biometricWorkflowCurrent(request.biometricWorkflow))
     fun protectForModal(request: Any): Boolean = request is VaultCredentialRequest && requestCurrent(request) &&
         !guard.hasContinuousCaptureAuthorization && guard.installProtectionBarrier()
     fun submitCredential(request: VaultCredentialRequest, input: VaultCredentialInput, recoveryChoice: VaultRecoveryChoice) {
-        val supported = request.mode in setOf(VaultCredentialMode.SETUP, VaultCredentialMode.UNLOCK, VaultCredentialMode.RECOVERY_ENROLL)
+        val supported = request.mode in setOf(VaultCredentialMode.SETUP, VaultCredentialMode.UNLOCK, VaultCredentialMode.RECOVERY_ENROLL,
+            VaultCredentialMode.BIOMETRIC_ENROLL, VaultCredentialMode.BIOMETRIC_REVOKE)
         if (!supported || request.mode == VaultCredentialMode.SETUP &&
             recoveryChoice !in setOf(VaultRecoveryChoice.DECLINED, VaultRecoveryChoice.OPTED_IN)) { input.close(); return }
         submit(request, VaultHostSubmission.Password(input, recoveryChoice))
@@ -504,6 +531,10 @@ internal class VaultProtectedHost(
         val workflow = request.workflow
         if (workflow != null) {
             if (!runtime.coverForRecoveryHandoff(workflow)) { submission.close(); runtime.cancelRecoveryWorkflow(workflow); return }
+        } else if (request.biometricWorkflow != null) {
+            if (!runtime.coverForBiometricHandoff(request.biometricWorkflow)) {
+                submission.close(); runtime.cancelBiometricWorkflow(request.biometricWorkflow); return
+            }
         } else runtime.surfaceCovered()
         pendingSubmission = request to submission
         invalidateActionsFromAnyThread()
@@ -528,10 +559,11 @@ internal class VaultProtectedHost(
     fun cancelCredential(request: VaultCredentialRequest) {
         requireMain()
         if (credentialRequest !== request) return
-        retireRequest(true); request.workflow?.let(runtime::cancelRecoveryWorkflow); runtime.surfaceCovered()
+        retireRequest(true); request.workflow?.let(runtime::cancelRecoveryWorkflow)
+        request.biometricWorkflow?.let(runtime::cancelBiometricWorkflow); runtime.surfaceCovered()
     }
     private fun retireRequest(dropSubmission: Boolean) {
-        pendingOpen = null; pendingWorkflow = null
+        pendingOpen = null; pendingWorkflow = null; pendingBiometricWorkflow = null
         credentialRequest?.let { it.retire(); retiredRequests += it }; credentialRequest = null
         if (dropSubmission) { pendingSubmission?.second?.close(); pendingSubmission = null }
     }
@@ -553,7 +585,7 @@ internal class VaultProtectedHost(
         hierarchyChanged()
     }
     fun pendingCoverGeneration(): Long? = coverReceipt?.first
-    fun hostResourcesRetired(): Boolean = thumbnailResourcesRetired() && !playbackAcquisitionUnconfirmed && playbackSlot == null && runtime.playbackCleanupComplete() && !guard.hasRegisteredPrivateDialogs &&
+    fun hostResourcesRetired(): Boolean = runtime.biometricCleanupComplete() && thumbnailResourcesRetired() && !playbackAcquisitionUnconfirmed && playbackSlot == null && runtime.playbackCleanupComplete() && !guard.hasRegisteredPrivateDialogs &&
         (rootTicket == null || rootTicket?.isRetired == true) && retiredRequests.all { it.retiredCleanly() }
     fun hierarchyChanged() {
         requireMain()
@@ -584,7 +616,8 @@ internal class VaultProtectedHost(
                 !detaching && inVaultRoute() && foreground() && !guard.hasContinuousCaptureAuthorization && captureDrained())
             if (mode != null && pendingOpen === opening) {
                 val workflow = pendingWorkflow
-                pendingOpen = null; pendingWorkflow = null; publishCredential(mode, workflow)
+                val biometric = pendingBiometricWorkflow
+                pendingOpen = null; pendingWorkflow = null; pendingBiometricWorkflow = null; publishCredential(mode, workflow, biometric)
             }
             val pending = pendingSubmission
             if (pending != null && runtime.hostCleanupComplete() && inVaultRoute() && foreground() && !detaching &&
@@ -593,14 +626,22 @@ internal class VaultProtectedHost(
                 val request = pending.first
                 val workflow = request.workflow
                 if (SystemClock.elapsedRealtime() >= promptDeadline ||
-                    workflow != null && !runtime.recoveryWorkflowCurrent(workflow)) {
+                    workflow != null && !runtime.recoveryWorkflowCurrent(workflow) ||
+                    request.biometricWorkflow != null && !runtime.biometricWorkflowCurrent(request.biometricWorkflow)) {
                     pending.second.close()
                     workflow?.let(runtime::cancelRecoveryWorkflow)
+                    request.biometricWorkflow?.let(runtime::cancelBiometricWorkflow)
                 } else when (val submission = pending.second) {
                     is VaultHostSubmission.Password -> when (request.mode) {
                         VaultCredentialMode.SETUP -> runtime.setupPassword(submission.input, submission.choice)
                         VaultCredentialMode.UNLOCK -> runtime.unlockPassword(submission.input)
                         VaultCredentialMode.RECOVERY_ENROLL -> runtime.unlockForRecovery(submission.input, checkNotNull(workflow))
+                        VaultCredentialMode.BIOMETRIC_ENROLL, VaultCredentialMode.BIOMETRIC_REVOKE -> {
+                            val biometric = checkNotNull(request.biometricWorkflow)
+                            val factory = biometricHostBinding()
+                            if (factory == null) { submission.close(); runtime.cancelBiometricWorkflow(biometric) }
+                            else runtime.unlockForBiometric(submission.input, biometric, factory)
+                        }
                         else -> submission.close()
                     }
                     is VaultHostSubmission.Confirmation -> runtime.confirmRecovery(checkNotNull(workflow), submission.input)
@@ -612,6 +653,29 @@ internal class VaultProtectedHost(
                 presentation.detachAfterActualRetirement(this); attached = false
             }
         }
+    }
+    private fun biometricHostBinding(): VaultBiometricBindingFactory? {
+        requireMain()
+        val exact = claimFor(routeNow()) ?: return null
+        if (!owns(exact) || !hostResourcesRetired() || !runtime.hostCleanupComplete()) return null
+        val epoch = actionEpoch.get()
+        val inputEpoch = mainOwner.inputEpoch
+        val presentationIdentity = exact.presentation
+        val attachment = activity
+        val hostGeneration = generation
+        val valid = AtomicBoolean(true)
+        return { purpose, workflow -> VaultBiometricBinding(purpose, exact, attachment, hostGeneration, workflow) {
+            // Background/crypto callbacks read only revocation atomics. The platform dispatcher is Main,
+            // where the exact Activity/claim/input/window facts are rechecked immediately before submit.
+            if (!valid.get() || actionEpoch.get() != epoch) false
+            else if (Looper.myLooper() != Looper.getMainLooper()) true
+            else {
+                val current = mainOwner.inputEpoch == inputEpoch && exact.presentation === presentationIdentity &&
+                    claim === exact && generation == hostGeneration && owns(exact) && root.isAttachedToWindow && root.windowToken != null
+                if (!current) valid.set(false)
+                current
+            }
+        } }
     }
     fun ordinaryReleaseAllowed(): Boolean = hostResourcesRetired() && coverReceipt == null && (!started || runtime.hostCleanupComplete())
     fun actualHostRetired(): Boolean = detaching && !root.isAttachedToWindow && root.windowToken == null && hostResourcesRetired()

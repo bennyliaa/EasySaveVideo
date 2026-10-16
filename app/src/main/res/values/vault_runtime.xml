@@ -8,7 +8,7 @@
     <string name="vault_runtime_lock">Lock vault</string>
     <string name="vault_runtime_setup">Set vault password</string>
     <string name="vault_runtime_unlock">Unlock vault</string>
-    <string name="vault_runtime_recovery_required">The vault cannot safely use its current device key or stored state. Offline-code password reset cannot repair this condition.</string>
+    <string name="vault_runtime_recovery_required">Vault safety checks failed. The vault remains locked.</string>
     <string name="vault_runtime_unavailable">The vault is unavailable. No vault content can be shown.</string>
     <string name="vault_credential_setup_title">Create vault password</string>
     <string name="vault_credential_unlock_title">Enter vault password</string>
@@ -81,4 +81,35 @@
     <string name="vault_batch_select">Select for batch</string>
     <string name="vault_batch_deselect">Remove from batch</string>
     <string name="vault_batch_choose_folder">Choose one folder (selected: %1$d)</string>
+    <string name="vault_failure_device_key">The device key needed by this vault is missing or invalidated.</string>
+    <string name="vault_failure_installation">The installation record could not be authenticated or does not match this vault.</string>
+    <string name="vault_failure_retry_ledger">The retry record could not be authenticated or does not match its stored values.</string>
+    <string name="vault_failure_store_unreadable">The stored vault state could not be read safely.</string>
+    <string name="vault_failure_store_incomplete">Vault initialization or a required stored state is incomplete.</string>
+    <string name="vault_failure_unknown">A vault safety check could not be completed. The specific cause is unknown.</string>
+    <string name="vault_failure_ciphertext_preserved">Vault stays locked. Encrypted vault data is preserved; this error does not trigger deletion, a replacement vault, or a new device key.</string>
+    <string name="vault_failure_recovery_limits">Recovery-code password reset requires this installation’s working device key and intact installation and retry records. This build has no supported repair for a missing key or damaged records. A recovery code cannot bypass these checks. Recovery after uninstalling or moving to another device is not supported.</string>
+
+    <!-- Optional biometrics: explicit protected requests only; no recovery guarantee. -->
+    <string name="vault_biometric_unlock">Unlock with biometrics</string>
+    <string name="vault_biometric_enable">Enable biometrics</string>
+    <string name="vault_biometric_disable">Disable biometrics</string>
+    <string name="vault_biometric_enroll_password">Confirm your password to enable biometrics</string>
+    <string name="vault_biometric_revoke_password">Confirm your password to disable biometrics</string>
+    <string name="vault_biometric_limits">Biometrics are optional. Your password remains a separate unlock method. Enabling requires two separate biometric confirmations and leaves Vault locked. It cannot restore Vault after reinstalling, moving devices, or losing the device key. A recovery code also requires the original healthy installation and retry ledger.</string>
+    <string name="vault_biometric_not_enabled">Biometrics are not enabled.</string>
+    <string name="vault_biometric_pending">Biometric enrollment is unfinished. Disable it with your password before enrolling again.</string>
+    <string name="vault_biometric_active">Biometric unlock is enabled.</string>
+    <string name="vault_biometric_enabled">Biometrics enabled and independently verified. Vault remains locked.</string>
+    <string name="vault_biometric_revoked">Biometrics are disabled. The old biometric key is checked and retired before your next explicit enrollment.</string>
+    <string name="vault_biometric_unfinished">Biometric authentication did not finish. No access was granted. Use your password after the system prompt and its work have finished closing.</string>
+    <string name="vault_biometric_unavailable">Biometric unlock is unavailable for this attempt. Your password and any healthy active recovery code remain available after the prompt finishes closing.</string>
+    <string name="vault_biometric_retirement_pending">The old biometric key could not be confirmed retired. Re-enrollment is blocked; your password remains available.</string>
+    <string name="vault_biometric_prompt_enable">Enable Vault biometrics</string>
+    <string name="vault_biometric_prompt_verify">Verify saved Vault biometrics</string>
+    <string name="vault_biometric_prompt_unlock">Unlock Vault</string>
+    <string name="vault_biometric_cancel">Cancel</string>
+    <string name="vault_biometric_key_unavailable">The biometric key is missing or no longer valid, which can happen after biometric enrollment changes. Use your password, then explicitly disable and re-enable biometrics.</string>
+    <string name="vault_biometric_temporary_lockout">The system has temporarily locked biometric authentication. Use your password after this prompt closes; the app cannot predict when the system will allow biometrics again.</string>
+    <string name="vault_biometric_permanent_lockout">The system is not allowing biometric authentication. Use your Vault password. The app will not open device-credential fallback or change system enrollment.</string>
 </resources>

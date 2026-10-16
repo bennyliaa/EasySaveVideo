@@ -19,6 +19,7 @@ internal object VaultCryptoWire {
     private val idPattern = Regex("[A-Za-z0-9_-]{1,64}")
     private val aliasPattern = Regex("esv\\.vault\\.v1\\.[A-Za-z0-9_.-]{1,144}")
     const val PASSWORD_SLOT = "password-v1"
+    const val BIOMETRIC_SLOT = "biometric-v1"
     const val RECOVERY_SLOT = "recovery-v1"
     const val SLOT_GENERATION = 1L
     const val CATALOG_REVISION = 1L
@@ -94,8 +95,9 @@ internal object VaultCryptoWire {
         requireCredentialShape(data)
         val primary = data.slots.single { it.kind == VaultSlotKind.PASSWORD || it.kind == VaultSlotKind.PIN }
         if (data.catalogRevision == CATALOG_REVISION && primary.generation == SLOT_GENERATION &&
-            data.recoveryState == VaultRecoveryState.NONE && data.pendingPassword == null)
+            data.recoveryState == VaultRecoveryState.NONE && data.pendingPassword == null && data.biometricState == VaultBiometricState.NONE)
             return emptyCatalog(identity, primary, data.catalogRevision)
+        if (data.biometricState != VaultBiometricState.NONE) return mediaCatalogPrefix(identity, data) + java.nio.ByteBuffer.allocate(4).putInt(0).array()
         return encoded {
             writeInt(0x45534331); writeInt(2); identity(identity); writeInt(1); writeLong(data.catalogRevision)
             val slots = data.slots.sortedBy { it.kind.ordinal }
@@ -111,23 +113,30 @@ internal object VaultCryptoWire {
     fun mediaCatalogPrefix(identity: VaultPersistentIdentity, data: VaultStagedData): ByteArray {
         requireIdentity(identity); requireCredentialShape(data)
         return encoded {
-            writeInt(0x45534331); writeInt(3); identity(identity); writeInt(1); writeLong(data.catalogRevision)
+            writeInt(0x45534331); writeInt(if (data.biometricState == VaultBiometricState.NONE) 3 else 4); identity(identity); writeInt(1); writeLong(data.catalogRevision)
             val slots = data.slots.sortedBy { it.kind.ordinal }
             writeInt(slots.size); slots.forEach { slotDigest(it) }
             writeInt(data.recoveryState.ordinal); pendingPassword(data.pendingPassword, digestEnvelope = true)
+            if (data.biometricState != VaultBiometricState.NONE) writeInt(data.biometricState.ordinal)
         }
     }
 
     /** Stale creating metadata remains valid shape: only reset activation compares current ledger. */
     fun requireCredentialShape(data: VaultStagedData) {
         require(data.catalogRevision in 1 until Long.MAX_VALUE) { "catalog-profile" }
-        require(data.slots.size in 1..2 && data.slots.map { it.kind }.distinct().size == data.slots.size &&
+        require(data.slots.size in 1..3 && data.slots.map { it.kind }.distinct().size == data.slots.size &&
             data.slots.map { it.slotId }.distinct().size == data.slots.size) { "slot-profile" }
         val primary = data.slots.singleOrNull { it.kind == VaultSlotKind.PASSWORD || it.kind == VaultSlotKind.PIN }
             ?: throw IllegalArgumentException("slot-profile")
         requirePrimarySlot(primary, data.catalogRevision)
         val recovery = data.slots.singleOrNull { it.kind == VaultSlotKind.RECOVERY }
-        require(data.slots.all { it === primary || it === recovery }) { "slot-profile" }
+        val biometric = data.slots.singleOrNull { it.kind == VaultSlotKind.BIOMETRIC }
+        require((data.biometricState == VaultBiometricState.NONE) == (biometric == null)) { "biometric-profile" }
+        biometric?.let {
+            require(it.required && it.slotId == BIOMETRIC_SLOT && it.generation in 1..data.catalogRevision &&
+                it.envelope.size <= VaultRuntimeLimits.ENVELOPE_BYTES) { "biometric-profile" }
+        }
+        require(data.slots.all { it === primary || it === recovery || it === biometric }) { "slot-profile" }
         require((data.recoveryState == VaultRecoveryState.NONE) == (recovery == null)) { "recovery-profile" }
         recovery?.let {
             require(it.required && idPattern.matches(it.slotId) && it.slotId != primary.slotId &&
@@ -179,6 +188,7 @@ internal object VaultCryptoWire {
             writeLong(data.catalogRevision); blob(data.installationMarker.copyBytes())
             blob(ledger(data.retryLedger)); blob(data.retryLedgerEnvelope.copyBytes())
             writeInt(data.recoveryState.ordinal); pendingPassword(data.pendingPassword, digestEnvelope = false)
+            if (data.biometricState != VaultBiometricState.NONE) { writeInt(0x45534231); writeInt(data.biometricState.ordinal) }
             // Legacy fingerprints retain their original bytes when no media journal exists.
             if (data.mediaJournalEnvelope != null) {
                 writeInt(0x45534a31); writeLong(data.mediaJournalRevision)
@@ -196,6 +206,7 @@ internal object VaultCryptoWire {
             for (slot in data.slots.sortedBy { it.kind.ordinal }) { text(slot.slotId); writeLong(slot.generation); writeInt(slot.kind.ordinal)
                 writeBoolean(slot.required); blob(slot.envelope.copyBytes()) }
             writeInt(data.recoveryState.ordinal); pendingPassword(data.pendingPassword, digestEnvelope = false)
+            if (data.biometricState != VaultBiometricState.NONE) { writeInt(0x45534231); writeInt(data.biometricState.ordinal) }
         })
     }
     fun digest(bytes: ByteArray): ByteArray = MessageDigest.getInstance("SHA-256").digest(bytes)

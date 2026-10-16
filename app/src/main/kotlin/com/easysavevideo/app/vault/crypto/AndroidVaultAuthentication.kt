@@ -22,6 +22,11 @@ import com.easysavevideo.library.export.ExportRelease
  */
 internal class AndroidVaultAuthentication(
     private val keystore: AndroidVaultKeystore = AndroidVaultKeystore(),
+    // Internal platform seam: production always uses the existing exact-alias KeyStore leaf.
+    private val deviceAead: (String, Boolean) -> Aead = keystore::deviceAead,
+    private val biometric: (VaultBiometricBinding) -> VaultBiometricCryptoLeaf = { throw VaultOperationException(VaultFailure.UNSUPPORTED) },
+    private val createBiometricKey: (String) -> Unit = { keystore.createBiometricKey(it); Unit },
+    private val biometricText: (VaultBiometricBinding) -> Pair<CharSequence, CharSequence> = { throw VaultOperationException(VaultFailure.UNSUPPORTED) },
 ) : VaultAuthenticationPort {
     private val operationLock = Any()
     private val registryLock = Any()
@@ -29,6 +34,356 @@ internal class AndroidVaultAuthentication(
     private val roots = IdentityHashMap<VaultRootCapability, Root>()
     private val proofs = IdentityHashMap<VaultStagedVerification, Proof>()
     private val mutations = IdentityHashMap<VaultCredentialMutation, Mutation>()
+
+    private val biometricOperations = IdentityHashMap<VaultBiometricOperation, BiometricOperation>()
+    private val aliasRetirements = IdentityHashMap<VaultBiometricAliasRetirement, AliasRetirement>()
+
+    private inner class BiometricOperation(
+        val snapshot: VaultStoredSnapshot, val attempt: VaultAttemptIdentity?, val binding: VaultBiometricBinding,
+        val workflowContext: VaultOperationContext, override val context: VaultOperationContext,
+        val root: VaultRootCapability? = null,
+    ) : VaultBiometricOperation {
+        var pending: VaultBiometricPending? = null
+        var started = false
+        var revoked = false
+        var continuation = false
+        var resultSent = false
+        var completed: ((VaultBiometricResult) -> Unit)? = null
+        var stageProposal: VaultStagedData? = null
+        var activationClaimed = false
+        private val listeners = mutableListOf<() -> Unit>()
+        override fun ownsSystemPromptFocus(): Boolean {
+            val leaf = synchronized(registryLock) {
+                if (closed || revoked || biometricOperations[this] !== this) null else pending
+            }
+            return leaf?.ownsSystemPromptFocus() == true
+        }
+        override fun onDrain(listener: () -> Unit) {
+            synchronized(registryLock) { listeners += listener }
+            pending?.onDrain { listener() }
+        }
+        override fun observeDrain(): ExportRelease = synchronized(registryLock) {
+            if (continuation || pending?.observeDrain()?.let { it != ExportRelease.RELEASED } == true) ExportRelease.UNCONFIRMED
+            else ExportRelease.RELEASED
+        }
+        override fun close() {
+            val leaf = synchronized(registryLock) { revoked = true; pending }
+            leaf?.close()
+            if (observeDrain() == ExportRelease.RELEASED) synchronized(registryLock) {
+                biometricOperations.remove(this); stageProposal = null; completed = null
+            }
+        }
+        fun current() {
+            // Host/runtime callbacks may take their own gate. Never invoke them under registryLock.
+            context.checkActive(); binding.requireCurrent()
+            synchronized(registryLock) { requireRegistered() }
+        }
+        fun requireRegistered() {
+            requireOpen(); context.checkActive()
+            if (biometricOperations[this] !== this || revoked) throw VaultOperationException(VaultFailure.CANCELLED)
+        }
+        fun deliver(result: VaultBiometricResult) {
+            val consumer = synchronized(registryLock) {
+                if (resultSent) null else { resultSent = true; completed }
+            }
+            if (consumer == null) { retireBiometricResult(result); return }
+            try { consumer(result) } catch (_: Exception) { retireBiometricResult(result) }
+        }
+        override fun toString() = "VaultBiometricOperation(REDACTED)"
+    }
+    private inner class AliasRetirement(val root: VaultRootCapability, val fingerprint: ByteArray,
+        val snapshot: VaultStoredSnapshot, val binding: VaultBiometricBinding,
+        val context: VaultOperationContext, val kind: VaultBiometricAliasRetirementKind,
+        val generation: Long?) : VaultBiometricAliasRetirement {
+        var consumed = false
+        var unknown = false
+        override fun close() = synchronized(registryLock) {
+            // Unknown deletion is an unresolved exact intent; closing cannot refresh its budget.
+            if (!unknown) { aliasRetirements.remove(this); fingerprint.fill(0) }
+        }
+        override fun toString() = "VaultBiometricAliasRetirement(REDACTED)"
+    }
+    override fun observeBiometricDrain(): ExportRelease = synchronized(registryLock) {
+        if (biometricOperations.values.any { it.observeDrain() != ExportRelease.RELEASED }) ExportRelease.UNCONFIRMED
+        else ExportRelease.RELEASED
+    }
+    override fun biometricAvailability(snapshot: VaultStoredSnapshot, context: VaultOperationContext): VaultBiometricAvailability = serial(context) {
+        requireReadyData(snapshot)
+        // Availability is only an observation. It grants neither alias creation nor a Root.
+        if (snapshot.data?.biometricState != VaultBiometricState.ACTIVE) VaultBiometricAvailability.UNAVAILABLE
+        else if (!keystore.hasBiometricAlias(snapshot.identity)) VaultBiometricAvailability.KEY_UNAVAILABLE
+        else VaultBiometricAvailability.AVAILABLE
+    }
+    private fun freshPasswordRoot(root: VaultRootCapability, snapshot: VaultStoredSnapshot,
+        attempt: VaultAttemptIdentity, context: VaultOperationContext): KeysetHandle {
+        val handle = ownedRoot(root, snapshot)
+        synchronized(registryLock) {
+            val owned = roots[root] ?: throw VaultOperationException(VaultFailure.REJECTED)
+            if (!owned.passwordAuthenticated || owned.attempt != attempt || !owned.operation.sharesOperation(context))
+                throw VaultOperationException(VaultFailure.REJECTED)
+        }
+        context.checkActive()
+        val data = requireReadyData(snapshot)
+        if (data.pendingPassword != null || data.retryLedger.reservedAttemptCount != 0L ||
+            data.retryLedger.outstandingReservationId != null) throw VaultOperationException(VaultFailure.REJECTED)
+        authenticateLedger(snapshot, context); verifyCatalog(handle, snapshot, context)
+        return handle
+    }
+    private fun requireBiometricIdle() {
+        if (observeBiometricDrain() != ExportRelease.RELEASED || observeMediaDrain() != ExportRelease.RELEASED)
+            throw VaultOperationException(VaultFailure.RELEASE_UNKNOWN)
+        synchronized(registryLock) {
+            if (aliasRetirements.values.any { it.unknown } || mediaPrepared.isNotEmpty() || mediaMutations.isNotEmpty())
+                throw VaultOperationException(VaultFailure.INCOMPLETE)
+        }
+    }
+    private fun biometricOperation(snapshot: VaultStoredSnapshot, attempt: VaultAttemptIdentity?,
+        binding: VaultBiometricBinding, context: VaultOperationContext, root: VaultRootCapability? = null): BiometricOperation {
+        context.checkActive(); binding.requireCurrent()
+        val operation = BiometricOperation(snapshot, attempt, binding, context,
+            context.bounded(VaultRuntimeLimits.PROMPT_MILLIS), root)
+        synchronized(registryLock) { requireOpen(); biometricOperations[operation] = operation }
+        return operation
+    }
+    override fun prepareBiometricUnlock(snapshot: VaultStoredSnapshot, attempt: VaultAttemptIdentity,
+        binding: VaultBiometricBinding, context: VaultOperationContext): VaultBiometricOperation = serial(context) {
+        require(binding.purpose == VaultBiometricPurpose.UNLOCK)
+        requireBiometricIdle()
+        val data = requireReadyData(snapshot)
+        requireReservedAttempt(data, attempt)
+        if (data.biometricState != VaultBiometricState.ACTIVE) throw VaultOperationException(VaultFailure.REJECTED)
+        authenticateLedger(snapshot, context)
+        val operation = biometricOperation(snapshot, attempt, binding, context)
+        prepareBiometricDecrypt(operation, activate = false)
+    }
+    override fun prepareBiometricEnrollment(root: VaultRootCapability, snapshot: VaultStoredSnapshot, attempt: VaultAttemptIdentity,
+        binding: VaultBiometricBinding, context: VaultOperationContext): VaultBiometricOperation = serial(context) {
+        require(binding.purpose == VaultBiometricPurpose.ENROLL_WRAP && binding.workflowIdentity != null)
+        requireBiometricIdle(); binding.requireCurrent()
+        val handle = freshPasswordRoot(root, snapshot, attempt, context)
+        val data = requireReadyData(snapshot)
+        if (data.biometricState !in setOf(VaultBiometricState.NONE, VaultBiometricState.REVOKED))
+            throw VaultOperationException(VaultFailure.REJECTED)
+        val generation = nextCatalogRevision(snapshot)
+        if (data.slots.any { it.kind == VaultSlotKind.BIOMETRIC && it.generation >= generation })
+            throw VaultOperationException(VaultFailure.REJECTED)
+        val leaf = biometric(binding)
+        val text = biometricText(binding)
+        if (leaf.availability() != VaultBiometricAvailability.AVAILABLE) throw VaultOperationException(VaultFailure.UNAVAILABLE)
+        // Existing aliases, including NONE orphans, require a separate exact retirement permit.
+        if (keystore.hasBiometricAlias(snapshot.identity)) throw VaultOperationException(VaultFailure.INCOMPLETE)
+        context.checkActive(); binding.requireCurrent(); requireRootCurrent(root, handle, context)
+        createBiometricKey(snapshot.identity.biometricKeyAlias)
+        context.checkActive(); binding.requireCurrent()
+        val operation = biometricOperation(snapshot, attempt, binding, context, root)
+        try {
+            operation.pending = leaf.prepareWrapRoot(snapshot.identity, VaultCryptoWire.BIOMETRIC_SLOT, generation, handle,
+                text.first, text.second, operation.context, binding) { outcome ->
+                finishBiometric(operation) {
+                    when (outcome) {
+                        is AndroidVaultBiometric.Outcome.Failed -> biometricFailure(outcome.failure)
+                        is AndroidVaultBiometric.Outcome.Completed -> {
+                            requireRootCurrent(root, handle, operation.context)
+                            val slot = VaultSlotRecord(VaultCryptoWire.BIOMETRIC_SLOT, generation, VaultSlotKind.BIOMETRIC, outcome.value, true)
+                            val proposed = resealCatalog(handle, snapshot, data.copy(
+                                slots = (data.slots.filter { it.kind != VaultSlotKind.BIOMETRIC } + slot).sortedBy { it.kind.ordinal },
+                                catalogRevision = generation, biometricState = VaultBiometricState.PENDING), operation.context)
+                            operation.current(); requireRootCurrent(root, handle, operation.context)
+                            val mutation = registerMutation(snapshot, proposed, VaultCredentialMutationKind.STAGE_BIOMETRIC, null, operation.context)
+                            operation.stageProposal = proposed
+                            VaultBiometricResult.Mutation(mutation)
+                        }
+                    }
+                }
+            }
+            operation
+        } catch (failure: Exception) { operation.close(); throw failure }
+    }
+    override fun prepareBiometricActivation(snapshot: VaultStoredSnapshot, enrollment: VaultBiometricOperation,
+        binding: VaultBiometricBinding, context: VaultOperationContext): VaultBiometricOperation = serial(context) {
+        require(binding.purpose == VaultBiometricPurpose.ENROLL_VERIFY && binding.workflowIdentity != null)
+        requireBiometricIdle()
+        val previous = synchronized(registryLock) { biometricOperations[enrollment] }
+            ?: throw VaultOperationException(VaultFailure.REJECTED)
+        requireLineage(previous.workflowContext, context)
+        if (previous.revoked || previous.activationClaimed || previous.binding.purpose != VaultBiometricPurpose.ENROLL_WRAP ||
+            !previous.binding.sameWorkflow(binding) || !previous.resultSent || previous.stageProposal == null ||
+            snapshot != previous.snapshot.copy(storeRevision = previous.snapshot.storeRevision + 1, data = previous.stageProposal))
+            throw VaultOperationException(VaultFailure.CONFLICT)
+        val data = requireReadyData(snapshot)
+        if (data.biometricState != VaultBiometricState.PENDING || data.pendingPassword != null)
+            throw VaultOperationException(VaultFailure.REJECTED)
+        authenticateLedger(snapshot, context)
+        // Ledger verification may execute provider work. Recheck and consume the original
+        // enrollment capability atomically with registration of its one successor operation.
+        context.checkActive(); binding.requireCurrent()
+        val operation = BiometricOperation(snapshot, previous.attempt, binding, context,
+            context.bounded(VaultRuntimeLimits.PROMPT_MILLIS))
+        synchronized(registryLock) {
+            requireOpen(); context.checkActive()
+            if (biometricOperations[enrollment] !== previous || previous.revoked || previous.activationClaimed ||
+                previous.binding.purpose != VaultBiometricPurpose.ENROLL_WRAP || !previous.binding.sameWorkflow(binding) ||
+                !previous.resultSent || previous.stageProposal == null || snapshot != previous.snapshot.copy(
+                    storeRevision = previous.snapshot.storeRevision + 1, data = previous.stageProposal))
+                throw VaultOperationException(VaultFailure.REJECTED)
+            previous.activationClaimed = true
+            biometricOperations[operation] = operation
+        }
+        prepareBiometricDecrypt(operation, activate = true)
+    }
+    private fun prepareBiometricDecrypt(operation: BiometricOperation, activate: Boolean): BiometricOperation {
+        val snapshot = operation.snapshot
+        val data = requireReadyData(snapshot)
+        val slot = data.slots.single { it.kind == VaultSlotKind.BIOMETRIC }
+        try {
+            val text = biometricText(operation.binding)
+            operation.pending = biometric(operation.binding).prepareUnwrapRoot(snapshot.identity, slot.slotId, slot.generation,
+                slot.envelope, text.first, text.second, operation.context, operation.binding) { outcome ->
+                finishBiometric(operation) {
+                    when (outcome) {
+                        is AndroidVaultBiometric.Outcome.Failed -> biometricFailure(outcome.failure)
+                        is AndroidVaultBiometric.Outcome.Completed -> {
+                            val handle = outcome.value
+                            verifyCatalog(handle, snapshot, operation.context)
+                            operation.current()
+                            if (activate) {
+                                val proposed = resealCatalog(handle, snapshot, data.copy(catalogRevision = nextCatalogRevision(snapshot),
+                                    biometricState = VaultBiometricState.ACTIVE), operation.context)
+                                operation.current()
+                                VaultBiometricResult.Mutation(registerMutation(snapshot, proposed,
+                                    VaultCredentialMutationKind.ACTIVATE_BIOMETRIC, null, operation.context))
+                            } else {
+                                val fingerprint = VaultCryptoWire.catalogFingerprint(snapshot)
+                                val root = synchronized(registryLock) {
+                                    operation.requireRegistered()
+                                    Root(handle, snapshot.identity, checkNotNull(operation.attempt), fingerprint,
+                                        operation.context, passwordAuthenticated = false).also { roots[it] = it }
+                                }
+                                VaultBiometricResult.Unlocked(root)
+                            }
+                        }
+                    }
+                }
+            }
+            return operation
+        } catch (failure: Exception) { operation.close(); throw failure }
+    }
+    override fun startBiometric(operation: VaultBiometricOperation, completed: (VaultBiometricResult) -> Unit) {
+        val owned = synchronized(registryLock) { biometricOperations[operation] }
+            ?: throw VaultOperationException(VaultFailure.REJECTED)
+        owned.current()
+        synchronized(registryLock) {
+            owned.requireRegistered()
+            if (owned.started) throw VaultOperationException(VaultFailure.REJECTED)
+            owned.started = true; owned.completed = completed
+        }
+        checkNotNull(owned.pending).start()
+    }
+    private fun finishBiometric(operation: BiometricOperation, block: () -> VaultBiometricResult) {
+        synchronized(registryLock) { operation.continuation = true }
+        var result: VaultBiometricResult? = null
+        try {
+            result = serial(operation.context) { operation.current(); block() }
+            if (result !is VaultBiometricResult.Failed) operation.current()
+            operation.deliver(result)
+            result = null // Ownership transfers only after the exact callback returns normally.
+        } catch (failure: Exception) {
+            result?.let(::retireBiometricResult)
+            operation.deliver(VaultBiometricResult.Failed((failure as? VaultOperationException)?.category ?: VaultFailure.REJECTED))
+        } finally { synchronized(registryLock) { operation.continuation = false } }
+    }
+    private fun retireBiometricResult(result: VaultBiometricResult) {
+        when (result) {
+            is VaultBiometricResult.Unlocked -> result.root.close()
+            is VaultBiometricResult.Mutation -> result.mutation.close()
+            is VaultBiometricResult.Failed -> Unit
+        }
+    }
+    private fun biometricFailure(failure: AndroidVaultBiometric.Failure): VaultBiometricResult.Failed = when (failure) {
+        AndroidVaultBiometric.Failure.CANCELLED -> VaultBiometricResult.Failed(VaultFailure.CANCELLED)
+        AndroidVaultBiometric.Failure.TIMEOUT -> VaultBiometricResult.Failed(VaultFailure.DEADLINE)
+        AndroidVaultBiometric.Failure.TEMPORARY_LOCKOUT -> VaultBiometricResult.Failed(VaultFailure.UNAVAILABLE, VaultBiometricAvailability.TEMPORARY_LOCKOUT)
+        AndroidVaultBiometric.Failure.PERMANENT_LOCKOUT -> VaultBiometricResult.Failed(VaultFailure.UNAVAILABLE, VaultBiometricAvailability.PERMANENT_LOCKOUT)
+        AndroidVaultBiometric.Failure.SLOT_UNAVAILABLE -> VaultBiometricResult.Failed(VaultFailure.UNAVAILABLE, VaultBiometricAvailability.KEY_UNAVAILABLE)
+        else -> VaultBiometricResult.Failed(VaultFailure.REJECTED)
+    }
+    override fun prepareBiometricRevocation(root: VaultRootCapability, snapshot: VaultStoredSnapshot, attempt: VaultAttemptIdentity,
+        binding: VaultBiometricBinding, context: VaultOperationContext): VaultCredentialMutation = serial(context) {
+        require(binding.purpose == VaultBiometricPurpose.RETIRE_ALIAS && binding.workflowIdentity != null)
+        requireBiometricIdle(); binding.requireCurrent()
+        val handle = freshPasswordRoot(root, snapshot, attempt, context)
+        val data = requireReadyData(snapshot)
+        if (data.biometricState !in setOf(VaultBiometricState.PENDING, VaultBiometricState.ACTIVE))
+            throw VaultOperationException(VaultFailure.REJECTED)
+        val proposed = resealCatalog(handle, snapshot, data.copy(catalogRevision = nextCatalogRevision(snapshot),
+            biometricState = VaultBiometricState.REVOKED), context)
+        binding.requireCurrent(); requireRootCurrent(root, handle, context)
+        registerMutation(snapshot, proposed, VaultCredentialMutationKind.REVOKE_BIOMETRIC, null, context)
+    }
+    override fun prepareBiometricAliasRetirement(root: VaultRootCapability, snapshot: VaultStoredSnapshot, attempt: VaultAttemptIdentity,
+        binding: VaultBiometricBinding, context: VaultOperationContext): VaultBiometricAliasRetirement = serial(context) {
+        require(binding.purpose == VaultBiometricPurpose.RETIRE_ALIAS && binding.workflowIdentity != null)
+        requireBiometricIdle(); binding.requireCurrent()
+        freshPasswordRoot(root, snapshot, attempt, context)
+        val data = requireReadyData(snapshot)
+        val kind = when (data.biometricState) {
+            VaultBiometricState.NONE -> VaultBiometricAliasRetirementKind.ORPHAN_NONE
+            VaultBiometricState.REVOKED -> VaultBiometricAliasRetirementKind.REVOKED_SLOT
+            else -> throw VaultOperationException(VaultFailure.REJECTED)
+        }
+        val generation = data.slots.singleOrNull { it.kind == VaultSlotKind.BIOMETRIC }?.generation
+        if ((kind == VaultBiometricAliasRetirementKind.ORPHAN_NONE) != (generation == null))
+            throw VaultOperationException(VaultFailure.REJECTED)
+        synchronized(registryLock) {
+            if (aliasRetirements.isNotEmpty()) throw VaultOperationException(VaultFailure.INCOMPLETE)
+            AliasRetirement(root, VaultCryptoWire.snapshotFingerprint(snapshot), snapshot, binding, context, kind, generation)
+                .also { aliasRetirements[it] = it }
+        }
+    }
+    override fun retireBiometricAlias(snapshot: VaultStoredSnapshot, permission: VaultBiometricAliasRetirement,
+        context: VaultOperationContext): VaultBiometricAliasRetirementResult = serial(context) {
+        val owned = synchronized(registryLock) { aliasRetirements[permission] }
+            ?: throw VaultOperationException(VaultFailure.REJECTED)
+        requireLineage(owned.context, context); owned.binding.requireCurrent()
+        if (owned.consumed) {
+            // Unknown intent can be reconciled only by exact read-only absence under its original budget.
+            if (!owned.unknown) throw VaultOperationException(VaultFailure.REJECTED)
+            validateAliasRetirement(owned, snapshot, context)
+            if (keystore.hasBiometricAlias(snapshot.identity)) return@serial VaultBiometricAliasRetirementResult.UNKNOWN
+            owned.unknown = false; owned.close(); return@serial VaultBiometricAliasRetirementResult.ABSENT
+        }
+        validateAliasRetirement(owned, snapshot, context)
+        val result = keystore.deleteBiometricKey(permission) { candidate ->
+            if (candidate !== owned) throw VaultOperationException(VaultFailure.REJECTED)
+            validateAliasRetirement(owned, snapshot, context)
+            synchronized(registryLock) {
+                if (aliasRetirements[owned] !== owned || owned.consumed)
+                    throw VaultOperationException(VaultFailure.REJECTED)
+                owned.consumed = true
+            }
+            owned.snapshot.identity
+        }
+        when (result) {
+            AndroidVaultKeystore.AliasRetirementResult.ABSENT -> { owned.close(); VaultBiometricAliasRetirementResult.ABSENT }
+            AndroidVaultKeystore.AliasRetirementResult.UNKNOWN -> { owned.unknown = true; VaultBiometricAliasRetirementResult.UNKNOWN }
+        }
+    }
+    private fun validateAliasRetirement(owned: AliasRetirement, snapshot: VaultStoredSnapshot, context: VaultOperationContext) {
+        requireLineage(owned.context, context); owned.binding.requireCurrent()
+        synchronized(registryLock) {
+            if (aliasRetirements[owned] !== owned) throw VaultOperationException(VaultFailure.REJECTED)
+        }
+        val actual = VaultCryptoWire.snapshotFingerprint(snapshot)
+        try { if (!MessageDigest.isEqual(owned.fingerprint, actual)) throw VaultOperationException(VaultFailure.CONFLICT) }
+        finally { actual.fill(0) }
+        ownedRoot(owned.root, snapshot)
+        if (observeBiometricDrain() != ExportRelease.RELEASED || observeMediaDrain() != ExportRelease.RELEASED)
+            throw VaultOperationException(VaultFailure.RELEASE_UNKNOWN)
+        synchronized(registryLock) {
+            if (mediaPrepared.isNotEmpty() || mediaMutations.isNotEmpty() || mutations.isNotEmpty())
+                throw VaultOperationException(VaultFailure.INCOMPLETE)
+        }
+    }
 
     private val mediaPrepared = IdentityHashMap<VaultPreparedMediaImport, PreparedMedia>()
     private val mediaMutations = IdentityHashMap<VaultMediaMutation, MediaMutation>()
@@ -70,6 +425,7 @@ internal class AndroidVaultAuthentication(
     private inner class Root(
         var keyset: KeysetHandle?, val identity: VaultPersistentIdentity,
         val attempt: VaultAttemptIdentity, val catalogBinding: ByteArray,
+        val operation: VaultOperationContext, val passwordAuthenticated: Boolean = true,
     ) : VaultRootCapability {
         var revoked = false
         override fun close() {
@@ -122,7 +478,7 @@ internal class AndroidVaultAuthentication(
             context.checkActive()
             keystore.createDeviceKey(identity.deviceKeyAlias, requireHardware = input.kind == VaultCredentialKind.PIN)
             context.checkActive()
-            val device = keystore.deviceAead(identity.deviceKeyAlias, requireHardware = input.kind == VaultCredentialKind.PIN)
+            val device = deviceAead(identity.deviceKeyAlias, input.kind == VaultCredentialKind.PIN)
             val root = VaultTinkKeysets.freshAes256Gcm()
             context.checkActive()
             val catalog = VaultTinkKeysets.freshAes256Gcm()
@@ -173,24 +529,49 @@ internal class AndroidVaultAuthentication(
 
     override fun authenticateLedger(snapshot: VaultStoredSnapshot, context: VaultOperationContext): VaultRetryLedger = serial(context) {
         val data = requireData(snapshot)
-        val device = keystore.deviceAead(snapshot.identity.deviceKeyAlias)
-        val marker = device.decrypt(data.installationMarker.copyBytes(),
-            VaultCryptoWire.aad(snapshot.identity, VaultAadPurpose.INSTALLATION_MARKER))
-        try { require(MessageDigest.isEqual(marker, VaultCryptoWire.marker(snapshot.identity))) { "marker-integrity" } }
-        finally { marker.fill(0) }
+        // Preserve the trusted stage; a provider/permission failure is not evidence of corrupt bytes.
+        val device = ledgerCheck { deviceAead(snapshot.identity.deviceKeyAlias, false) }
+        val marker = authenticatedRecord(device, data.installationMarker,
+            VaultCryptoWire.aad(snapshot.identity, VaultAadPurpose.INSTALLATION_MARKER),
+            VaultFailure.INSTALLATION_MISMATCH_OR_CORRUPT)
+        try {
+            if (!MessageDigest.isEqual(marker, VaultCryptoWire.marker(snapshot.identity)))
+                throw VaultOperationException(VaultFailure.INSTALLATION_MISMATCH_OR_CORRUPT)
+        } finally { marker.fill(0) }
         val expected = VaultCryptoWire.ledger(data.retryLedger)
-        val actual = device.decrypt(data.retryLedgerEnvelope.copyBytes(),
-            VaultCryptoWire.aad(snapshot.identity, VaultAadPurpose.RETRY_LEDGER, revision = data.retryLedger.ledgerRevision))
-        try { require(MessageDigest.isEqual(actual, expected)) { "ledger-integrity" } }
-        finally { expected.fill(0); actual.fill(0) }
+        try {
+            val actual = authenticatedRecord(device, data.retryLedgerEnvelope,
+                VaultCryptoWire.aad(snapshot.identity, VaultAadPurpose.RETRY_LEDGER, revision = data.retryLedger.ledgerRevision),
+                VaultFailure.RETRY_LEDGER_UNAVAILABLE_OR_CORRUPT)
+            try {
+                if (!MessageDigest.isEqual(actual, expected))
+                    throw VaultOperationException(VaultFailure.RETRY_LEDGER_UNAVAILABLE_OR_CORRUPT)
+            } finally { actual.fill(0) }
+        } finally { expected.fill(0) }
         context.checkActive()
         data.retryLedger
     }
 
+    private fun authenticatedRecord(device: Aead, envelope: VaultCiphertext, aad: ByteArray,
+        mismatch: VaultFailure): ByteArray = ledgerCheck {
+        // These device envelopes have the existing fixed 12-byte IV / 16-byte GCM tag format.
+        if (envelope.size !in 28..VaultRuntimeLimits.ENVELOPE_BYTES) throw VaultOperationException(mismatch)
+        try { device.decrypt(envelope.copyBytes(), aad) }
+        catch (_: javax.crypto.AEADBadTagException) { throw VaultOperationException(mismatch) }
+    }
+
+    private inline fun <T> ledgerCheck(block: () -> T): T = try { block() }
+        catch (failure: VaultOperationException) { throw failure }
+        catch (_: android.security.keystore.KeyPermanentlyInvalidatedException) {
+            // Also retained for an invalidation observed while using an already looked-up device key.
+            throw VaultOperationException(VaultFailure.DEVICE_KEY_UNAVAILABLE)
+        }
+        catch (_: Exception) { throw VaultOperationException(VaultFailure.UNAVAILABLE) }
+
     override fun sealLedger(identity: VaultPersistentIdentity, ledger: VaultRetryLedger,
         context: VaultOperationContext): VaultCiphertext = serial(context) {
         val plain = VaultCryptoWire.ledger(ledger)
-        try { VaultCiphertext(keystore.deviceAead(identity.deviceKeyAlias).encrypt(plain,
+        try { VaultCiphertext(deviceAead(identity.deviceKeyAlias, false).encrypt(plain,
             VaultCryptoWire.aad(identity, VaultAadPurpose.RETRY_LEDGER, revision = ledger.ledgerRevision))) }
         finally { plain.fill(0); context.checkActive() }
     }
@@ -207,7 +588,7 @@ internal class AndroidVaultAuthentication(
         val binding = VaultCryptoWire.catalogFingerprint(snapshot)
         synchronized(registryLock) {
             requireOpen(); context.checkActive()
-            Root(root, snapshot.identity, attempt, binding).also { roots[it] = it }
+            Root(root, snapshot.identity, attempt, binding, context).also { roots[it] = it }
         }
     }
 
@@ -686,7 +1067,7 @@ internal class AndroidVaultAuthentication(
         try {
             val recovery = VaultSlotRecord(VaultCryptoWire.RECOVERY_SLOT, revision, VaultSlotKind.RECOVERY,
                 VaultRecoverySlot.wrap(handle, snapshot.identity, VaultCryptoWire.RECOVERY_SLOT, revision, generated, context), true)
-            val proposed = resealCatalog(handle, snapshot, data.copy(slots = listOf(passwordSlot(data), recovery),
+            val proposed = resealCatalog(handle, snapshot, data.copy(slots = (data.slots.filter { it.kind != VaultSlotKind.RECOVERY } + recovery).sortedBy { it.kind.ordinal },
                 catalogRevision = revision, recoveryState = VaultRecoveryState.PENDING), context)
             // Revocation may race with work but never waits on entropy, encryption or KDF.
             mutation = synchronized(registryLock) {
@@ -744,7 +1125,7 @@ internal class AndroidVaultAuthentication(
         // Uses the actual persisted pending slot. Ordinary unlock never selects this slot.
         val handle = unwrapPasswordSlot(snapshot, pending.slot, password, context)
         verifyCatalog(handle, snapshot, context)
-        val proposed = resealCatalog(handle, snapshot, data.copy(slots = listOf(pending.slot),
+        val proposed = resealCatalog(handle, snapshot, data.copy(slots = (data.slots.filter { it.kind != VaultSlotKind.PASSWORD && it.kind != VaultSlotKind.PIN && it.kind != VaultSlotKind.RECOVERY } + pending.slot).sortedBy { it.kind.ordinal },
             catalogRevision = nextCatalogRevision(snapshot), recoveryState = VaultRecoveryState.NONE,
             pendingPassword = null), context)
         // Keep the original ledger/envelope: store authenticates RESET and freezes the final
@@ -837,7 +1218,7 @@ internal class AndroidVaultAuthentication(
         val salt = ByteArray(VaultCryptoProfile.SALT_BYTES).also { SecureRandom().nextBytes(it) }
         try {
             val kind = slotKind(input.kind)
-            val device = keystore.deviceAead(identity.deviceKeyAlias, requireHardware = kind == VaultSlotKind.PIN)
+            val device = deviceAead(identity.deviceKeyAlias, kind == VaultSlotKind.PIN)
             return passwordAead(input, salt, context).use { password ->
                 val encrypted = VaultTinkKeysets.wrap(root,
                     nestedPassword(password, device, passwordAad(identity, kind, salt, VaultAadPurpose.DEVICE_PASSWORD_OUTER, generation)),
@@ -880,7 +1261,7 @@ internal class AndroidVaultAuthentication(
         VaultTinkKeysets.requireCanonicalEncrypted(parsed.encryptedKeyset)
         // A bad/missing ledger forbids KDF and password authentication even when ciphertext remains.
         authenticateLedger(snapshot, context)
-        val device = keystore.deviceAead(snapshot.identity.deviceKeyAlias, requireHardware = slot.kind == VaultSlotKind.PIN)
+        val device = deviceAead(snapshot.identity.deviceKeyAlias, slot.kind == VaultSlotKind.PIN)
         return passwordAead(input, parsed.salt, context).use { password ->
             try {
                 val root = VaultTinkKeysets.unwrap(parsed.encryptedKeyset,
@@ -955,6 +1336,8 @@ internal class AndroidVaultAuthentication(
         catch (_: SecurityException) { throw VaultOperationException(VaultFailure.UNAVAILABLE) }
     }
     override fun close() {
+        val pendingBiometric = synchronized(registryLock) { biometricOperations.values.toList() }
+        pendingBiometric.forEach { it.close() }
         val ownedRoots = synchronized(registryLock) {
             closed = true
             proofs.values.toList().forEach { it.close() }
@@ -970,7 +1353,7 @@ internal class AndroidVaultAuthentication(
         // late reader too, even when the root registry has already completed its own retirement.
         val remaining = synchronized(registryLock) { mediaReaders.values.map { it.reader } }
         remaining.forEach { if (it.closeAndObserve() != ExportRelease.RELEASED) unknown = true }
-        if (unknown || synchronized(registryLock) { mediaReaders.isNotEmpty() })
+        if (unknown || observeBiometricDrain() != ExportRelease.RELEASED || synchronized(registryLock) { mediaReaders.isNotEmpty() })
             throw VaultOperationException(VaultFailure.RELEASE_UNKNOWN)
     }
 }
@@ -979,6 +1362,8 @@ internal class AndroidVaultAuthentication(
 internal fun <T> finishVaultCryptoResult(result: T, context: VaultOperationContext, requireOpen: () -> Unit): T {
     try { requireOpen(); context.checkActive(); return result }
     catch (failure: Exception) {
+        if (result is VaultBiometricResult.Unlocked) result.root.close()
+        if (result is VaultBiometricResult.Mutation) result.mutation.close()
         if (result is VaultMediaReadCapability) {
             result.revoke()
             if (result.closeAndObserve() != ExportRelease.RELEASED) throw VaultOperationException(VaultFailure.RELEASE_UNKNOWN)
@@ -986,7 +1371,7 @@ internal fun <T> finishVaultCryptoResult(result: T, context: VaultOperationConte
         if (result is VaultPreparedMediaImport || result is VaultMediaMutation || result is VaultFinalizedMediaProof)
             (result as AutoCloseable).close()
         if (result is VaultRootCapability || result is VaultStagedVerification || result is VaultCredentialMutation ||
-            result is VaultRecoveryEnrollment || result is VaultRecoveryInput) (result as AutoCloseable).close()
+            result is VaultRecoveryEnrollment || result is VaultRecoveryInput || result is VaultBiometricOperation || result is VaultBiometricAliasRetirement) (result as AutoCloseable).close()
         throw failure
     }
 }

@@ -1,0 +1,11 @@
+{
+  "source_archive": "source-vault-credential-repair-20261016.tar.gz",
+  "evidence_archive": "evidence-vault-credential-repair-20261016.tar.gz",
+  "source_files_verified": 2792,
+  "source_bytes": 28594270,
+  "source_sha256": "af061afb207f879327b7d0b846440aeba9e934cb851dd897b83562b2de67b2bf",
+  "evidence_bytes": 905703,
+  "evidence_sha256": "919a8ad4013bb03259521f1b5f8ed802cc7ac382110bd1062fc71bd88e2b2af1",
+  "production_enabled": false,
+  "device": "NOT_RUN"
+}

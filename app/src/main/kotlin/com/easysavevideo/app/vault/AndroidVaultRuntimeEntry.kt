@@ -5,6 +5,10 @@ import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import com.easysavevideo.app.vault.crypto.AndroidVaultAuthentication
+import com.easysavevideo.app.vault.crypto.AndroidVaultBiometric
+import com.easysavevideo.app.vault.crypto.AndroidVaultKeystore
+import com.easysavevideo.app.R
+import android.app.Activity
 import com.easysavevideo.app.vault.storage.AndroidVaultStore
 import com.easysavevideo.app.vault.storage.AndroidVaultPhoneFiles
 import com.easysavevideo.app.save.AndroidSaveRuntime
@@ -26,17 +30,34 @@ internal object AndroidVaultRuntimeEntry {
         if (!ENABLED) return null
         owner?.let { return it }
         val presentation = AndroidVaultPresentationOwner()
-        val authentication = AndroidVaultAuthentication()
-        var source: VaultMediaSourcePort? = null
-        val store = AndroidVaultStore(context.applicationContext, authentication) { source }
-        source = AndroidSaveRuntime.get(context.applicationContext).vaultMediaSource(store, presentation::retireOrdinarySource)
-        val files = AndroidVaultPhoneFiles(context.applicationContext, store)
         val lane = ThreadPoolExecutor(1, 1, 0, TimeUnit.MILLISECONDS, ArrayBlockingQueue(16),
             ThreadPoolExecutor.AbortPolicy())
         val timers = Executors.newSingleThreadScheduledExecutor()
         val main = Handler(Looper.getMainLooper())
         val ui = Executor { command -> check(main.post(command)) }
         val clock = VaultMonotonicClock(SystemClock::elapsedRealtime)
+        val keystore = AndroidVaultKeystore()
+        val authentication = AndroidVaultAuthentication(keystore = keystore,
+            biometric = { binding ->
+                binding.requireCurrent()
+                val activity = binding.platformHost as? Activity ?: throw VaultOperationException(VaultFailure.REJECTED)
+                AndroidVaultBiometric(activity, keystore, lane, timers, clock, platformExecutor = ui)
+            },
+            biometricText = { binding ->
+                binding.requireCurrent()
+                val activity = binding.platformHost as? Activity ?: throw VaultOperationException(VaultFailure.REJECTED)
+                val title = when (binding.purpose) {
+                    VaultBiometricPurpose.ENROLL_WRAP -> R.string.vault_biometric_prompt_enable
+                    VaultBiometricPurpose.ENROLL_VERIFY -> R.string.vault_biometric_prompt_verify
+                    VaultBiometricPurpose.UNLOCK -> R.string.vault_biometric_prompt_unlock
+                    VaultBiometricPurpose.RETIRE_ALIAS -> throw VaultOperationException(VaultFailure.REJECTED)
+                }
+                activity.getText(title) to activity.getText(R.string.vault_biometric_cancel)
+            })
+        var source: VaultMediaSourcePort? = null
+        val store = AndroidVaultStore(context.applicationContext, authentication) { source }
+        source = AndroidSaveRuntime.get(context.applicationContext).vaultMediaSource(store, presentation::retireOrdinarySource)
+        val files = AndroidVaultPhoneFiles(context.applicationContext, store)
         val scheduler = VaultWakeScheduler { delay, task ->
             val future = timers.schedule(Runnable { task() }, delay, TimeUnit.MILLISECONDS)
             VaultWakeCancellation { future.cancel(false) }

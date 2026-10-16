@@ -32,7 +32,10 @@ class PrivateOwnedCaptureMainContractTest {
         val lifecycle = main.substringAfter("override fun onWindowFocusChanged")
         val vaultFocus = lifecycle.substringAfter("if (activeDestination == EsvDestination.VAULT)")
             .substringBefore("if (::privateRecording.isInitialized")
-        assertTrue(vaultFocus.contains("if (hasFocus && !privateRecordingSurface.ownsCapturePresentation)"))
+        val normalizedVaultFocus = vaultFocus.replace(Regex("\\s+"), " ")
+        assertTrue(normalizedVaultFocus.contains("if (hasFocus && vaultHost?.canRetryPresentationAfterFocus() != false && " +
+            "!privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.retryPresentation()"))
+        assertTrue(vaultFocus.contains("if (!hasFocus && !privateWindowGuard.hasRegisteredPrivateDialogs) vaultHost?.windowFocusLost()"))
         assertFalse(lifecycle.contains("compositionApplied("))
         assertTrue(main.contains("captureExceptionInactive = { !privateRecordingSurface.ownsCapturePresentation }"))
     }

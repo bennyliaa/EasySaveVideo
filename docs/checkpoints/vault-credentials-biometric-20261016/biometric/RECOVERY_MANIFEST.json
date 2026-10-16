@@ -1,0 +1,11 @@
+{
+  "source_archive": "source-vault-biometric-20261016.tar.gz",
+  "evidence_archive": "evidence-vault-biometric-20261016.tar.gz",
+  "source_files_verified": 2801,
+  "source_bytes": 28630557,
+  "source_sha256": "e859878636985f6ee6fac4160f49d0e9c98c0cf9b604ab8868e79a81110ca451",
+  "evidence_bytes": 1267457,
+  "evidence_sha256": "bf2e215ba2cce09651bac8e543102454072f61bece525b1a570ec4c1bc1b98f1",
+  "production_enabled": false,
+  "device": "NOT_RUN"
+}

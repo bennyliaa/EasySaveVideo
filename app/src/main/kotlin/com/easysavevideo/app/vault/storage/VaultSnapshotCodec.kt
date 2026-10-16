@@ -1,5 +1,6 @@
 package com.easysavevideo.app.vault.storage
 
+import com.easysavevideo.app.vault.VaultBiometricState
 import com.easysavevideo.app.vault.VaultMediaLimits
 import com.easysavevideo.app.vault.VaultCiphertext
 import com.easysavevideo.app.vault.VaultPendingPassword
@@ -24,6 +25,7 @@ internal object VaultSnapshotCodec {
     private const val LEGACY_WIRE_VERSION = 1
     private const val RECOVERY_WIRE_VERSION = 2
     private const val MEDIA_WIRE_VERSION = 3
+    private const val BIOMETRIC_WIRE_VERSION = 4
     private const val ID_MAX = 64
     private const val ALIAS_MAX = 160
     private const val SLOT_MAX = 3
@@ -61,7 +63,11 @@ internal object VaultSnapshotCodec {
                         writeLedger(out, pending.reservation)
                     }
                 }
-                if (version == MEDIA_WIRE_VERSION) {
+                if (version == BIOMETRIC_WIRE_VERSION) {
+                    out.writeInt(data.biometricState.ordinal)
+                    out.writeBoolean(data.mediaJournalEnvelope != null)
+                }
+                if (version == MEDIA_WIRE_VERSION || version == BIOMETRIC_WIRE_VERSION && data.mediaJournalEnvelope != null) {
                     out.writeLong(data.mediaJournalRevision)
                     writeCiphertext(out, requireNotNull(data.mediaJournalEnvelope))
                 }
@@ -75,7 +81,7 @@ internal object VaultSnapshotCodec {
         val input = DataInputStream(ByteArrayInputStream(bytes))
         require(input.readInt() == MAGIC)
         val version = input.readInt()
-        require(version in LEGACY_WIRE_VERSION..MEDIA_WIRE_VERSION)
+        require(version in LEGACY_WIRE_VERSION..BIOMETRIC_WIRE_VERSION)
         val identity = VaultPersistentIdentity(
             readText(input, ID_MAX), readText(input, ID_MAX), readText(input, ID_MAX),
             readText(input, ALIAS_MAX), readText(input, ALIAS_MAX), input.readInt(), input.readInt(),
@@ -98,8 +104,11 @@ internal object VaultSnapshotCodec {
                 val pending = if (readBoolean(input)) VaultPendingPassword(
                     readSlot(input), VaultAttemptIdentity(input.readLong(), input.readLong(), input.readLong()), readLedger(input),
                 ) else null
-                val recovered = legacy.copy(recoveryState = recoveryState, pendingPassword = pending)
-                if (version == MEDIA_WIRE_VERSION) {
+                val biometric = if (version == BIOMETRIC_WIRE_VERSION)
+                    VaultBiometricState.entries.getOrNull(input.readInt()) ?: throw VaultStoreFault() else VaultBiometricState.NONE
+                val recovered = legacy.copy(recoveryState = recoveryState, pendingPassword = pending, biometricState = biometric)
+                val hasJournal = version == MEDIA_WIRE_VERSION || version == BIOMETRIC_WIRE_VERSION && readBoolean(input)
+                if (hasJournal) {
                     val journalRevision = input.readLong()
                     recovered.copy(mediaJournalEnvelope = readCiphertext(input, VaultMediaLimits.MAX_JOURNAL_BYTES),
                         mediaJournalRevision = journalRevision)
@@ -136,6 +145,9 @@ internal object VaultSnapshotCodec {
             VaultRecoveryState.NONE -> require(recovery == null)
             VaultRecoveryState.PENDING, VaultRecoveryState.ACTIVE -> require(recovery != null)
         }
+        val biometric = data.slots.singleOrNull { it.kind == VaultSlotKind.BIOMETRIC }
+        require((data.biometricState == VaultBiometricState.NONE) == (biometric == null))
+        biometric?.let { require(it.slotId == "biometric-v1") }
         require(data.catalogRevision in 1 until Long.MAX_VALUE)
         require(data.slots.all { it.generation <= data.catalogRevision })
         data.pendingPassword?.let { pending ->
@@ -163,6 +175,7 @@ internal object VaultSnapshotCodec {
         if (snapshot.phase == VaultStorePhase.STAGED) {
             require(snapshot.storeRevision == 2L)
             require(data.mediaJournalEnvelope == null && data.mediaJournalRevision == 0L)
+            require(data.biometricState == VaultBiometricState.NONE)
             require(data.catalogRevision == 1L && data.recoveryState == VaultRecoveryState.NONE && data.pendingPassword == null)
             require(data.retryLedger == VaultRetryLedger(0, 0, -1, null))
         } else require(snapshot.storeRevision >= 3)
@@ -171,6 +184,7 @@ internal object VaultSnapshotCodec {
     /** V1 has no extension trailer; its original password-only representation stays exact. */
     private fun wireVersion(snapshot: VaultStoredSnapshot): Int {
         val data = snapshot.data ?: return LEGACY_WIRE_VERSION
+        if (data.biometricState != VaultBiometricState.NONE) return BIOMETRIC_WIRE_VERSION
         if (data.mediaJournalEnvelope != null) return MEDIA_WIRE_VERSION
         return if (data.recoveryState == VaultRecoveryState.NONE && data.pendingPassword == null &&
             data.catalogRevision == 1L && data.slots.all { it.generation == 1L }) LEGACY_WIRE_VERSION else RECOVERY_WIRE_VERSION

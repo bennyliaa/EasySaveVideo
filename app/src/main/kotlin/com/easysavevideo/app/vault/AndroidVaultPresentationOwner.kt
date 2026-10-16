@@ -47,18 +47,17 @@ internal class AndroidVaultPresentationOwner : VaultPresentationPort, VaultPlayb
         }
     }
     override fun cover(generation: Long, onActuallyHidden: () -> Unit) {
-        val value = synchronized(gate) {
+        synchronized(gate) {
             if (generation < latest.coverGeneration) return
             latest = VaultRenderedState(VaultRuntimeStatus.LOCKED, null, generation, media = latest.media.copy(batch = null, actionToken = null, canKeepOutput = false),
                 playback = latest.playback.copy(positionMillis = 0, durationMillis = null, seekable = false))
             pending = generation to onActuallyHidden
             host?.invalidateActionsFromAnyThread()
-            latest
         }
         main {
             val target = synchronized(gate) {
                 if (latest.coverGeneration != generation) return@main
-                rendered = value; host
+                rendered = latest; host
             }
             if (target != null) requestCover(target, generation)
             // No host is not evidence that a previously attached host/native input was released.
@@ -137,15 +136,29 @@ internal class AndroidVaultPresentationOwner : VaultPresentationPort, VaultPlayb
         }
         target.presentationChanged()
     }
+    override fun presentBiometricState(state: VaultBiometricState, notice: VaultBiometricNotice,
+        availability: VaultBiometricAvailability?) = main {
+        synchronized(gate) {
+            latest = latest.copy(biometricState = state, biometricNotice = notice, biometricAvailability = availability)
+            rendered = latest
+        }
+    }
     override fun presentRecoveryState(state: VaultRecoveryState, pendingPassword: Boolean, notice: VaultRecoveryNotice) = main {
         synchronized(gate) {
             latest = latest.copy(recoveryState = state, pendingPassword = pendingPassword, recoveryNotice = notice)
             rendered = latest
         }
     }
+    override fun presentFailure(reason: VaultFailureReason) = main {
+        val target = synchronized(gate) {
+            latest = latest.copy(status = VaultRuntimeStatus.UNAVAILABLE, revision = null, items = emptyList(), failureReason = reason)
+            rendered = latest; host
+        }
+        target?.presentationChanged()
+    }
     override fun presentStatus(status: VaultRuntimeStatus) = main {
         val target = synchronized(gate) {
-            latest = latest.copy(status = status, revision = null, items = emptyList())
+            latest = latest.copy(status = status, revision = null, items = emptyList(), failureReason = null)
             rendered = latest; host
         }
         target?.presentationChanged()

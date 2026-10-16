@@ -8,7 +8,7 @@
     <string name="vault_runtime_lock">锁定保险箱</string>
     <string name="vault_runtime_setup">设置保险箱密码</string>
     <string name="vault_runtime_unlock">解锁保险箱</string>
-    <string name="vault_runtime_recovery_required">当前设备密钥或存储状态无法安全使用。离线恢复码重设主密码不能修复此情况。</string>
+    <string name="vault_runtime_recovery_required">保险箱安全检查未通过，保险箱保持锁定。</string>
     <string name="vault_runtime_unavailable">保险箱暂不可用，无法显示其中的内容。</string>
     <string name="vault_credential_setup_title">创建保险箱密码</string>
     <string name="vault_credential_unlock_title">输入保险箱密码</string>
@@ -81,4 +81,35 @@
     <string name="vault_batch_select">加入批量选择</string>
     <string name="vault_batch_deselect">移出批量选择</string>
     <string name="vault_batch_choose_folder">为 %1$d 项选择一个文件夹</string>
+    <string name="vault_failure_device_key">此保险箱所需的设备密钥缺失或已失效。</string>
+    <string name="vault_failure_installation">无法验证安装记录，或该记录与此保险箱不匹配。</string>
+    <string name="vault_failure_retry_ledger">无法验证重试记录，或该记录与已存储的数值不匹配。</string>
+    <string name="vault_failure_store_unreadable">无法安全读取保险箱的存储状态。</string>
+    <string name="vault_failure_store_incomplete">保险箱初始化或必要的存储状态尚未完成。</string>
+    <string name="vault_failure_unknown">无法完成保险箱安全检查，目前无法确认具体原因。</string>
+    <string name="vault_failure_ciphertext_preserved">保险箱保持锁定并保留加密数据；此错误不会触发删除、重建空保险箱或创建新设备密钥。</string>
+    <string name="vault_failure_recovery_limits">恢复码重设密码依赖当前安装中可用的设备密钥，以及完整的安装和重试记录。此版本不支持修复缺失的密钥或损坏的记录，恢复码不能绕过这些检查；卸载后或换设备恢复也不受支持。</string>
+
+    <!-- Optional biometrics: explicit protected requests only; no recovery guarantee. -->
+    <string name="vault_biometric_unlock">使用生物识别解锁</string>
+    <string name="vault_biometric_enable">启用生物识别</string>
+    <string name="vault_biometric_disable">停用生物识别</string>
+    <string name="vault_biometric_enroll_password">确认主密码以启用生物识别</string>
+    <string name="vault_biometric_revoke_password">确认主密码以停用生物识别</string>
+    <string name="vault_biometric_limits">生物识别为可选功能，主密码仍可独立解锁。启用需要两次独立生物识别确认，完成后保密柜保持锁定。生物识别无法在重新安装、更换设备或设备密钥丢失后恢复保密柜；恢复码也需要原安装环境和重试账本保持完好。</string>
+    <string name="vault_biometric_not_enabled">尚未启用生物识别。</string>
+    <string name="vault_biometric_pending">生物识别注册尚未完成。请先使用主密码停用，再重新启用。</string>
+    <string name="vault_biometric_active">已启用生物识别解锁。</string>
+    <string name="vault_biometric_enabled">生物识别已启用并通过独立验证。保密柜仍保持锁定。</string>
+    <string name="vault_biometric_revoked">生物识别已停用。下次明确启用前，将核验并清理旧的设备生物识别密钥。</string>
+    <string name="vault_biometric_unfinished">生物识别认证未完成，未授予访问权限。请等待系统认证窗口及相关操作完成关闭后使用主密码。</string>
+    <string name="vault_biometric_unavailable">本次无法使用生物识别解锁。认证窗口完成关闭后，仍可使用主密码或完好的已启用恢复码。</string>
+    <string name="vault_biometric_retirement_pending">尚未确认旧生物识别密钥已清理，因此暂不能重新启用。主密码仍可使用。</string>
+    <string name="vault_biometric_prompt_enable">启用保密柜生物识别</string>
+    <string name="vault_biometric_prompt_verify">验证已保存的保密柜生物识别</string>
+    <string name="vault_biometric_prompt_unlock">解锁保密柜</string>
+    <string name="vault_biometric_cancel">取消</string>
+    <string name="vault_biometric_key_unavailable">生物识别密钥不存在或已失效，生物识别录入变更可能导致此情况。请使用主密码，然后明确停用并重新启用生物识别。</string>
+    <string name="vault_biometric_temporary_lockout">系统暂时锁定了生物识别认证。请在本次认证窗口关闭后使用主密码；应用无法预知系统何时恢复生物识别。</string>
+    <string name="vault_biometric_permanent_lockout">系统当前不允许生物识别认证，请使用保密柜主密码。应用不会自动转入设备凭据认证或修改系统录入。</string>
 </resources>

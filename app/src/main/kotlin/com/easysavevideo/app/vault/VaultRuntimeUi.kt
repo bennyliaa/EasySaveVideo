@@ -32,7 +32,10 @@ internal data class VaultRenderedState(val status: VaultRuntimeStatus, val revis
     val recoveryState: VaultRecoveryState = VaultRecoveryState.NONE, val pendingPassword: Boolean = false,
     val recoveryNotice: VaultRecoveryNotice = VaultRecoveryNotice.NONE,
     val items: List<VaultMediaRow> = emptyList(), val media: VaultMediaView = VaultMediaView(),
-    val playback: VaultPlaybackView = VaultPlaybackView())
+    val playback: VaultPlaybackView = VaultPlaybackView(), val failureReason: VaultFailureReason? = null,
+    val biometricState: VaultBiometricState = VaultBiometricState.NONE,
+    val biometricNotice: VaultBiometricNotice = VaultBiometricNotice.NONE,
+    val biometricAvailability: VaultBiometricAvailability? = null)
 
 /** Current settings consumer of the single disabled gate; never constructs an auth/store owner. */
 @Composable internal fun VaultRuntimeAvailability(onOpen: (() -> Unit)? = null) {
@@ -85,6 +88,11 @@ internal data class VaultRenderedState(val status: VaultRuntimeStatus, val revis
                     VaultRuntimeStatus.UNAVAILABLE -> R.string.vault_runtime_unavailable
                     VaultRuntimeStatus.DISABLED -> R.string.ui_vault_disabled
                 }))
+                if (state.status in setOf(VaultRuntimeStatus.UNAVAILABLE, VaultRuntimeStatus.RECOVERY_REQUIRED)) {
+                    EsvText(stringResource(vaultFailureMessage(state.failureReason ?: VaultFailureReason.UNKNOWN)))
+                    EsvText(stringResource(R.string.vault_failure_ciphertext_preserved), style = visuals.captionTextStyle)
+                    EsvText(stringResource(R.string.vault_failure_recovery_limits), style = visuals.captionTextStyle)
+                }
                 VaultPlaybackControls(host, state.playback, accepts)
                 if (state.status == VaultRuntimeStatus.CATALOG) {
                     EsvButton(stringResource(if (host.thumbnailsRequested) R.string.vault_thumbnail_stop else R.string.vault_thumbnail_load_visible),
@@ -110,7 +118,43 @@ internal data class VaultRenderedState(val status: VaultRuntimeStatus, val revis
                         if (accepts()) host.beginCredential(VaultCredentialMode.UNLOCK)
                     }, enabled = host.credentialRequest == null && !state.playback.occupied)
                 }
+                if (state.biometricAvailability != null && state.biometricAvailability != VaultBiometricAvailability.AVAILABLE) {
+                    EsvText(stringResource(when (state.biometricAvailability) {
+                        VaultBiometricAvailability.KEY_UNAVAILABLE -> R.string.vault_biometric_key_unavailable
+                        VaultBiometricAvailability.TEMPORARY_LOCKOUT -> R.string.vault_biometric_temporary_lockout
+                        VaultBiometricAvailability.PERMANENT_LOCKOUT -> R.string.vault_biometric_permanent_lockout
+                        else -> R.string.vault_biometric_unavailable
+                    }), style = visuals.captionTextStyle)
+                }
+                if (state.biometricNotice != VaultBiometricNotice.NONE) {
+                    EsvText(stringResource(when (state.biometricNotice) {
+                        VaultBiometricNotice.ENABLED -> R.string.vault_biometric_enabled
+                        VaultBiometricNotice.REVOKED -> R.string.vault_biometric_revoked
+                        VaultBiometricNotice.UNFINISHED -> R.string.vault_biometric_unfinished
+                        VaultBiometricNotice.UNAVAILABLE -> R.string.vault_biometric_unavailable
+                        VaultBiometricNotice.RETIREMENT_PENDING -> R.string.vault_biometric_retirement_pending
+                        VaultBiometricNotice.NONE -> R.string.vault_runtime_locked
+                    }), style = visuals.captionTextStyle)
+                }
                 if (state.status == VaultRuntimeStatus.LOCKED) {
+                    EsvText(stringResource(when (state.biometricState) {
+                        VaultBiometricState.NONE -> R.string.vault_biometric_not_enabled
+                        VaultBiometricState.PENDING -> R.string.vault_biometric_pending
+                        VaultBiometricState.ACTIVE -> R.string.vault_biometric_active
+                        VaultBiometricState.REVOKED -> R.string.vault_biometric_revoked
+                    }), style = visuals.captionTextStyle)
+                    if (state.biometricState == VaultBiometricState.ACTIVE) {
+                        EsvButton(stringResource(R.string.vault_biometric_unlock), onClick = {
+                            if (accepts()) host.beginCredential(VaultCredentialMode.BIOMETRIC_UNLOCK)
+                        }, enabled = host.credentialRequest == null && !state.playback.occupied && !state.media.busy && host.runtime.biometricCleanupComplete())
+                    }
+                    EsvText(stringResource(R.string.vault_biometric_limits), style = visuals.captionTextStyle)
+                    EsvButton(stringResource(if (state.biometricState in setOf(VaultBiometricState.ACTIVE, VaultBiometricState.PENDING))
+                        R.string.vault_biometric_disable else R.string.vault_biometric_enable), onClick = {
+                        if (accepts()) host.beginCredential(if (state.biometricState in setOf(VaultBiometricState.ACTIVE, VaultBiometricState.PENDING))
+                            VaultCredentialMode.BIOMETRIC_REVOKE else VaultCredentialMode.BIOMETRIC_ENROLL)
+                    }, enabled = host.credentialRequest == null && !state.pendingPassword && !state.playback.occupied && !state.media.busy &&
+                        state.biometricNotice != VaultBiometricNotice.RETIREMENT_PENDING && host.runtime.biometricCleanupComplete())
                     EsvText(stringResource(when (state.recoveryState) {
                         VaultRecoveryState.NONE -> R.string.vault_recovery_not_enabled
                         VaultRecoveryState.PENDING -> R.string.vault_recovery_unfinished
@@ -228,6 +272,9 @@ internal data class VaultRenderedState(val status: VaultRuntimeStatus, val revis
                         it !in setOf(VaultCopyBatchStatus.FINISHED, VaultCopyBatchStatus.BUDGET_EXHAUSTED) } == true) {
                     EsvButton(stringResource(R.string.vault_media_cancel), onClick = { if (accepts()) host.cancelMedia() })
                 }
+                if (state.status == VaultRuntimeStatus.WORKING) {
+                    EsvButton(stringResource(R.string.vault_biometric_cancel), onClick = { if (accepts()) host.lock() })
+                }
                 if (state.status in setOf(VaultRuntimeStatus.EMPTY, VaultRuntimeStatus.CATALOG, VaultRuntimeStatus.READY_TO_REVEAL)) {
                     EsvButton(stringResource(R.string.vault_runtime_lock), onClick = { if (accepts()) host.lock() })
                 }
@@ -235,4 +282,14 @@ internal data class VaultRenderedState(val status: VaultRuntimeStatus, val revis
         }
     }
     host.credentialRequest?.let { request -> VaultCredentialDialog(host, request) }
+}
+
+/** An exhaustive finite mapping; no platform exception, alias or path reaches presentation. */
+internal fun vaultFailureMessage(reason: VaultFailureReason): Int = when (reason) {
+    VaultFailureReason.DEVICE_KEY_UNAVAILABLE -> R.string.vault_failure_device_key
+    VaultFailureReason.INSTALLATION_MISMATCH_OR_CORRUPT -> R.string.vault_failure_installation
+    VaultFailureReason.RETRY_LEDGER_UNAVAILABLE_OR_CORRUPT -> R.string.vault_failure_retry_ledger
+    VaultFailureReason.STORE_UNREADABLE -> R.string.vault_failure_store_unreadable
+    VaultFailureReason.STORE_INCOMPLETE -> R.string.vault_failure_store_incomplete
+    VaultFailureReason.UNKNOWN -> R.string.vault_failure_unknown
 }

@@ -524,7 +524,10 @@ internal object VaultMediaJournalWire {
         2 -> VaultCopyBatchStatus.RUNNING; 3 -> VaultCopyBatchStatus.PAUSED; 4 -> VaultCopyBatchStatus.FINISHED; 5 -> VaultCopyBatchStatus.BUDGET_EXHAUSTED; else -> badCode() }
     private fun failureCode(value: VaultFailure?) = when (value) { null -> -1; VaultFailure.CANCELLED -> 0; VaultFailure.DEADLINE -> 1
         VaultFailure.REJECTED -> 2; VaultFailure.UNAVAILABLE -> 3; VaultFailure.CORRUPT -> 4; VaultFailure.CONFLICT -> 5
-        VaultFailure.INCOMPLETE -> 6; VaultFailure.UNSUPPORTED -> 7; VaultFailure.RELEASE_UNKNOWN -> 8 }
+        VaultFailure.INCOMPLETE -> 6; VaultFailure.UNSUPPORTED -> 7; VaultFailure.RELEASE_UNKNOWN -> 8
+        // Detailed primary diagnostics are process-local. Reuse only the established coarse wire codes.
+        VaultFailure.DEVICE_KEY_UNAVAILABLE, VaultFailure.STORE_UNREADABLE -> 3
+        VaultFailure.INSTALLATION_MISMATCH_OR_CORRUPT, VaultFailure.RETRY_LEDGER_UNAVAILABLE_OR_CORRUPT -> 4 }
     private fun failure(value: Int) = when (value) { -1 -> null; 0 -> VaultFailure.CANCELLED; 1 -> VaultFailure.DEADLINE
         2 -> VaultFailure.REJECTED; 3 -> VaultFailure.UNAVAILABLE; 4 -> VaultFailure.CORRUPT; 5 -> VaultFailure.CONFLICT
         6 -> VaultFailure.INCOMPLETE; 7 -> VaultFailure.UNSUPPORTED; 8 -> VaultFailure.RELEASE_UNKNOWN; else -> badCode() }

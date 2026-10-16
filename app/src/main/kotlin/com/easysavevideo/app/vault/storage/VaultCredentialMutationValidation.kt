@@ -15,7 +15,10 @@ internal object VaultCredentialMutationValidation {
         val after = VaultSnapshotCodec.freeze(before.copy(storeRevision = before.storeRevision + 1, data = proposal.data))
         val data = requireNotNull(after.data)
         require(data.catalogRevision == old.catalogRevision + 1)
-        require(data.catalogKeysetEnvelope == old.catalogKeysetEnvelope && data.installationMarker == old.installationMarker)
+        // The same catalog key is rewrapped under the next catalog revision's AAD.
+        // Ciphertext equality cannot authorize it; the injected auth owner validates the
+        // opaque mutation, exact before fingerprint and original operation before this check.
+        require(data.installationMarker == old.installationMarker)
         require(data.catalogEnvelope != old.catalogEnvelope)
         // Even the activation proof retains these exact old bytes. Only the separately validated
         // existing RESET write may change them when the store freezes the final whole record.
@@ -26,7 +29,27 @@ internal object VaultCredentialMutationValidation {
         require(proposal.operationId.length in 1..128 && proposal.operationId.all {
             it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9' || it == '-' || it == '_'
         })
+        if (proposal.kind !in setOf(VaultCredentialMutationKind.STAGE_BIOMETRIC,
+                VaultCredentialMutationKind.ACTIVATE_BIOMETRIC, VaultCredentialMutationKind.REVOKE_BIOMETRIC))
+            require(data.biometricState == old.biometricState)
         when (proposal.kind) {
+            VaultCredentialMutationKind.STAGE_BIOMETRIC -> {
+                require(proposal.attempt == null && old.pendingPassword == null && data.pendingPassword == null)
+                require(old.biometricState == VaultBiometricState.NONE || old.biometricState == VaultBiometricState.REVOKED)
+                require(data.biometricState == VaultBiometricState.PENDING)
+                require(old.recoveryState == data.recoveryState && nonBiometric(old) == nonBiometric(data))
+                val slot = data.slots.single { it.kind == VaultSlotKind.BIOMETRIC }
+                require(slot.generation == data.catalogRevision)
+                require(old.slots.filter { it.kind == VaultSlotKind.BIOMETRIC }.all { it.generation < slot.generation })
+            }
+            VaultCredentialMutationKind.ACTIVATE_BIOMETRIC, VaultCredentialMutationKind.REVOKE_BIOMETRIC -> {
+                require(proposal.attempt == null && old.pendingPassword == null && data.pendingPassword == null)
+                require(old.recoveryState == data.recoveryState && old.slots == data.slots)
+                if (proposal.kind == VaultCredentialMutationKind.ACTIVATE_BIOMETRIC)
+                    require(old.biometricState == VaultBiometricState.PENDING && data.biometricState == VaultBiometricState.ACTIVE)
+                else require(old.biometricState in setOf(VaultBiometricState.PENDING, VaultBiometricState.ACTIVE) &&
+                    data.biometricState == VaultBiometricState.REVOKED)
+            }
             VaultCredentialMutationKind.STAGE_RECOVERY -> {
                 require(proposal.attempt == null)
                 require(old.recoveryState == VaultRecoveryState.NONE || old.recoveryState == VaultRecoveryState.PENDING)
@@ -66,6 +89,7 @@ internal object VaultCredentialMutationValidation {
         return after
     }
 
+    private fun nonBiometric(data: VaultStagedData) = data.slots.filter { it.kind != VaultSlotKind.BIOMETRIC }
     private fun nonRecovery(data: VaultStagedData) = data.slots.filter { it.kind != VaultSlotKind.RECOVERY }
     private fun requireReservation(data: VaultStagedData, proposal: VaultCredentialMutationProposal,
                                    confirmedReservation: VaultRetryWrite?): VaultRetryWrite {

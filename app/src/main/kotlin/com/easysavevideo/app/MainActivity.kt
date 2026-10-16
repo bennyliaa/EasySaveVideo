@@ -1229,8 +1229,9 @@ class MainActivity : ComponentActivity() {
         super.onWindowFocusChanged(hasFocus)
         hasFocusedWindow = hasFocus
         if (activeDestination == EsvDestination.VAULT) {
-            if (!hasFocus && !privateWindowGuard.hasRegisteredPrivateDialogs) vaultHost?.surfaceCovered()
-            if (hasFocus && !privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.retryPresentation()
+            if (!hasFocus && !privateWindowGuard.hasRegisteredPrivateDialogs) vaultHost?.windowFocusLost()
+            if (hasFocus && vaultHost?.canRetryPresentationAfterFocus() != false &&
+                !privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.retryPresentation()
         }
         if (::privateRecording.isInitialized && browser.isPrivateMode) {
             if (!hasFocus) {

@@ -5,6 +5,7 @@ import com.easysavevideo.core.model.*
 import java.util.UUID
 import java.util.IdentityHashMap
 import java.util.concurrent.Executor
+import com.easysavevideo.library.export.ExportRelease
 
 /** The owner, not UI, acknowledges this exact covered presentation after actual composition/retirement. */
 internal interface VaultPresentationPort {
@@ -15,6 +16,8 @@ internal interface VaultPresentationPort {
     fun requestPhoneFileSelection(request: VaultPhoneFileRequest) = Unit
     fun presentEmpty(catalogRevision: Long)
     fun presentStatus(status: VaultRuntimeStatus)
+    fun presentFailure(reason: VaultFailureReason) = presentStatus(VaultRuntimeStatus.UNAVAILABLE)
+    fun presentBiometricState(state: VaultBiometricState, notice: VaultBiometricNotice, availability: VaultBiometricAvailability?) = Unit
     fun presentRecoveryState(state: VaultRecoveryState, pendingPassword: Boolean, notice: VaultRecoveryNotice) = Unit
 }
 internal enum class VaultRuntimeStatus { LOADING, SETUP_REQUIRED, LOCKED, WORKING, READY_TO_REVEAL, EMPTY, CATALOG, RECOVERY_CODE_READY, RECOVERY_REQUIRED, UNAVAILABLE, DISABLED }
@@ -67,6 +70,7 @@ internal class VaultRuntime(
     private var wake: VaultWakeCancellation? = null
     private var wakeGeneration = 0L
     private var failureSticky = false
+    private var failureReason: VaultFailureReason? = null
     private var setupRunning = false
     private var route = false
     private var foreground = false
@@ -79,6 +83,26 @@ internal class VaultRuntime(
     private var recoveryPendingSnapshot: VaultStoredSnapshot? = null
     private var recoveryInput: VaultRecoveryInput? = null
     private var recoveryNotice = VaultRecoveryNotice.NONE
+    private enum class BiometricPhase { PASSWORD_PROMPT, AUTHENTICATING, PREPARING, WRAPPING, VERIFYING, REVOKING }
+    private var biometricWorkflow: VaultBiometricWorkflow? = null
+    private var biometricPhase: BiometricPhase? = null
+    private var biometricWake: VaultWakeCancellation? = null
+    private var biometricBindingFactory: VaultBiometricBindingFactory? = null
+    private var biometricAttempt: VaultAttemptIdentity? = null
+    private var biometricUnlockBinding: VaultBiometricBinding? = null
+    private var biometricNotice = VaultBiometricNotice.NONE
+    private var biometricAvailability: VaultBiometricAvailability? = null
+    private val biometricOperations = IdentityHashMap<VaultBiometricOperation, BiometricPending>()
+    private class BiometricPending(val operation: VaultOperationContext, val binding: VaultBiometricBinding,
+        val before: VaultStoredSnapshot, val consume: (VaultBiometricResult) -> Unit) {
+        var startedReturned = false
+        var result: VaultBiometricResult? = null
+        var resultReceived = false
+        var continuationQueued = false
+        var retainedEnrollment = false
+        var deadlineWake: VaultWakeCancellation? = null
+    }
+    private val retainedBiometricPermissions = IdentityHashMap<VaultBiometricAliasRetirement, Unit>()
     private data class PendingReset(val attempt: VaultAttemptIdentity, val mutation: VaultCredentialMutation,
         val operation: VaultOperationContext)
     private var pendingReset: PendingReset? = null
@@ -107,7 +131,7 @@ internal class VaultRuntime(
         val lease = readLease ?: return null
         val root = activeRoot ?: return null
         if (closed || failureSticky || !route || !foreground || !host.isCurrent() || jobs != 0 || effectsInFlight != 0 ||
-            recoveryWorkflow != null || pendingReset != null || credential != null || setupRunning ||
+            recoveryWorkflow != null || biometricWorkflow != null || biometricOperations.isNotEmpty() || pendingReset != null || credential != null || setupRunning ||
             media?.pending() == true || media?.active() == true || media?.cleanupComplete() == false ||
             retiringRoots.isNotEmpty() || retiringMutations.isNotEmpty() ||
             authentication.observeMediaDrain() != com.easysavevideo.library.export.ExportRelease.RELEASED ||
@@ -119,7 +143,7 @@ internal class VaultRuntime(
             !closed && !failureSticky && route && foreground && host.isCurrent() &&
                 readLease === lease && activeRoot === root && activeRootEpoch == lease.authEpoch &&
                 snapshot == durable && presentationGeneration == lease.generation &&
-                recoveryWorkflow == null && pendingReset == null &&
+                recoveryWorkflow == null && biometricWorkflow == null && biometricOperations.isEmpty() && pendingReset == null &&
                 state?.permitsPresentation(tick(), lease.authEpoch, lease.presentationEpoch) == true
         } }.also { it.revealIdentity = lease }
     }
@@ -150,13 +174,13 @@ internal class VaultRuntime(
         val current = state ?: return null
         val durable = snapshot ?: return null
         val root = activeRoot ?: return null
-        if (closed || failureSticky || playback?.occupied() == true || recoveryWorkflow != null || pendingReset != null || jobs != 0 ||
+        if (closed || failureSticky || playback?.occupied() == true || recoveryWorkflow != null || biometricWorkflow != null || biometricOperations.isNotEmpty() || pendingReset != null || jobs != 0 ||
             !route || !foreground || activeRootEpoch != current.authEpoch ||
             !current.permitsPresentation(tick(), current.authEpoch, current.presentationEpoch)) return null
         val generation = presentationGeneration
         val auth = current.authEpoch; val epoch = current.presentationEpoch
         VaultMediaSession(root, durable) { synchronized(gate) {
-            !closed && !failureSticky && playback?.occupied() != true && route && foreground && recoveryWorkflow == null && pendingReset == null &&
+            !closed && !failureSticky && playback?.occupied() != true && route && foreground && recoveryWorkflow == null && biometricWorkflow == null && biometricOperations.isEmpty() && pendingReset == null &&
                 activeRoot === root && activeRootEpoch == auth && presentationGeneration == generation &&
                 state?.permitsPresentation(tick(), auth, epoch) == true
         } }
@@ -202,7 +226,10 @@ internal class VaultRuntime(
                     if (observed.snapshot.phase != VaultStorePhase.READY) throw VaultOperationException(VaultFailure.INCOMPLETE)
                     VaultLedgerLoad.Restored(authentication.authenticateLedger(observed.snapshot, operation))
                 }
-                is VaultStoreObservation.Unavailable -> throw VaultOperationException(observed.category)
+                is VaultStoreObservation.Unavailable -> throw VaultOperationException(when (observed.category) {
+                    VaultFailure.CORRUPT, VaultFailure.UNAVAILABLE -> VaultFailure.STORE_UNREADABLE
+                    else -> observed.category
+                })
             }
             operation.checkActive()
             val transition = synchronized(gate) {
@@ -258,20 +285,373 @@ internal class VaultRuntime(
         showStatus()
     }
 
-    fun unlockPassword(input: VaultCredentialInput) = requestPasswordUnlock(input, null)
+    fun unlockPassword(input: VaultCredentialInput) = requestPasswordUnlock(input, null, null)
 
-    private fun requestPasswordUnlock(input: VaultCredentialInput, workflow: VaultRecoveryWorkflow?) {
+    private fun requestPasswordUnlock(input: VaultCredentialInput, workflow: VaultRecoveryWorkflow?, biometric: VaultBiometricWorkflow?) {
         val accepted = synchronized(gate) {
             val current = state
             if (closed || failureSticky || playback?.occupied() == true || credential != null || jobs != 0 || snapshot?.phase != VaultStorePhase.READY ||
+                biometricOperations.isNotEmpty() || authentication.observeBiometricDrain() != ExportRelease.RELEASED ||
+                (biometric == null && biometricWorkflow != null || biometric != null &&
+                    (!biometricCurrentLocked(biometric) || biometricPhase != BiometricPhase.PASSWORD_PROMPT)) ||
                 (workflow == null && recoveryWorkflow != null || workflow != null &&
                     (!workflowCurrentLocked(workflow) || recoveryPhase != RecoveryPhase.PASSWORD_PROMPT)) ||
                 current?.mode != VaultMode.LOCKED || current.cleanupStatus != VaultCleanupStatus.COMPLETE ||
                 current.retryStatus != VaultRetryStatus.READY || !route || !foreground) false
-            else { credential = input; if (workflow != null) recoveryPhase = RecoveryPhase.AUTHENTICATING; true }
+            else { credential = input
+                if (workflow != null) recoveryPhase = RecoveryPhase.AUTHENTICATING
+                if (biometric != null) biometricPhase = BiometricPhase.AUTHENTICATING
+                true }
         }
         if (!accepted) { input.close(); return }
         transition(VaultEvent.UnlockRequested)
+    }
+
+    private fun biometricCurrentLocked(value: VaultBiometricWorkflow): Boolean = !closed && !failureSticky &&
+        biometricWorkflow === value && route && foreground && clock.elapsedMillis().let { it >= 0 && it < value.deadlineElapsedMillis }
+    fun biometricWorkflowCurrent(value: VaultBiometricWorkflow): Boolean = synchronized(gate) { biometricCurrentLocked(value) }
+    fun beginBiometricWorkflow(kind: VaultBiometricWorkflowKind): VaultBiometricWorkflow? {
+        val value = synchronized(gate) {
+            val current = state ?: return null
+            val data = snapshot?.data ?: return null
+            if (closed || failureSticky || !route || !foreground || biometricWorkflow != null || recoveryWorkflow != null ||
+                biometricOperations.isNotEmpty() || authentication.observeBiometricDrain() != ExportRelease.RELEASED ||
+                retainedBiometricPermissions.isNotEmpty() || playback?.occupied() == true || media?.blocksCredentialRecovery() == true ||
+                jobs != 0 || effectsInFlight != 0 || credential != null || data.pendingPassword != null ||
+                current.mode != VaultMode.LOCKED || current.cleanupStatus != VaultCleanupStatus.COMPLETE || current.retryStatus != VaultRetryStatus.READY ||
+                (kind == VaultBiometricWorkflowKind.ENROLL && data.biometricState !in setOf(VaultBiometricState.NONE, VaultBiometricState.REVOKED)) ||
+                (kind == VaultBiometricWorkflowKind.REVOKE && data.biometricState !in setOf(VaultBiometricState.PENDING, VaultBiometricState.ACTIVE))) return null
+            val operation = try { context(VaultRuntimeLimits.RECOVERY_WORKFLOW_MILLIS) } catch (_: Exception) { return null }
+            VaultBiometricWorkflow(kind, operation).also {
+                biometricWorkflow = it; biometricPhase = BiometricPhase.PASSWORD_PROMPT; biometricNotice = VaultBiometricNotice.NONE
+            }
+        }
+        try {
+            val timer = scheduler.schedule((value.deadlineElapsedMillis - clock.elapsedMillis()).coerceAtLeast(0)) {
+                cancelBiometricWorkflow(value)
+            }
+            synchronized(gate) { if (biometricWorkflow === value) biometricWake = timer else timer.cancel() }
+        } catch (_: Exception) { cancelBiometricWorkflow(value); return null }
+        return value
+    }
+    fun coverForBiometricHandoff(value: VaultBiometricWorkflow): Boolean {
+        if (!synchronized(gate) { biometricCurrentLocked(value) && jobs == 0 && biometricPhase == BiometricPhase.PASSWORD_PROMPT }) return false
+        transition(VaultEvent.SurfaceCovered, preserveBiometric = value, expectedBiometric = value)
+        return biometricWorkflowCurrent(value)
+    }
+    fun unlockForBiometric(input: VaultCredentialInput, value: VaultBiometricWorkflow, binding: VaultBiometricBindingFactory) {
+        val valid = synchronized(gate) {
+            if (!biometricCurrentLocked(value) || biometricPhase != BiometricPhase.PASSWORD_PROMPT) false
+            else { biometricBindingFactory = binding; true }
+        }
+        if (!valid) { input.close(); return }
+        requestPasswordUnlock(input, null, value)
+    }
+    fun cancelBiometricWorkflow(value: VaultBiometricWorkflow) {
+        transition(VaultEvent.ExplicitLock, expectedBiometric = value)
+    }
+    private fun clearBiometricWorkflowLocked() {
+        biometricWake?.cancel(); biometricWake = null
+        biometricWorkflow?.context?.cancel()
+        biometricWorkflow = null; biometricPhase = null; biometricBindingFactory = null; biometricAttempt = null
+    }
+    private fun requireBiometricCurrent(value: VaultBiometricWorkflow, operation: VaultOperationContext) {
+        synchronized(gate) {
+            operation.checkActive()
+            if (!biometricCurrentLocked(value) || !value.context.sharesOperation(operation))
+                throw VaultOperationException(VaultFailure.CANCELLED)
+        }
+    }
+    private fun bindBiometric(host: VaultBiometricBinding, before: VaultStoredSnapshot,
+        workflow: VaultBiometricWorkflow?, attempt: VaultAttemptIdentity?): VaultBiometricBinding = VaultBiometricBinding(
+        host.purpose, host.hostIdentity, host.platformHost, host.hostGeneration, host.workflowIdentity) {
+        try {
+            host.requireCurrent()
+            synchronized(gate) {
+                !closed && !failureSticky && route && foreground && snapshot == before &&
+                    (workflow == null || biometricCurrentLocked(workflow)) &&
+                    (attempt == null || state?.activeAttempt?.identity == attempt && state?.mode == VaultMode.AUTHENTICATING)
+            }
+        } catch (_: Exception) { false }
+    }
+    /** Explicit protected-host choice only. This goes through the same reservation and RESET reducer. */
+    fun unlockBiometric(host: VaultBiometricBinding) {
+        val admitted = synchronized(gate) {
+            val current = state
+            val data = snapshot?.data
+            try { host.requireCurrent() } catch (_: Exception) { return }
+            if (host.purpose != VaultBiometricPurpose.UNLOCK || host.workflowIdentity != null || closed || failureSticky ||
+                !route || !foreground || jobs != 0 || effectsInFlight != 0 || credential != null || biometricUnlockBinding != null ||
+                recoveryWorkflow != null || biometricWorkflow != null || biometricOperations.isNotEmpty() ||
+                authentication.observeBiometricDrain() != ExportRelease.RELEASED || playback?.occupied() == true ||
+                media?.blocksCredentialRecovery() == true || data?.biometricState != VaultBiometricState.ACTIVE ||
+                current?.mode != VaultMode.LOCKED || current.cleanupStatus != VaultCleanupStatus.COMPLETE || current.retryStatus != VaultRetryStatus.READY) false
+            else { biometricUnlockBinding = host; biometricNotice = VaultBiometricNotice.NONE; true }
+        }
+        if (admitted) transition(VaultEvent.UnlockRequested)
+    }
+    private fun authenticateBiometric(attempt: VaultAttempt) {
+        val captured = synchronized(gate) {
+            val host = biometricUnlockBinding ?: return
+            val before = snapshot ?: return
+            val reservation = confirmedReservation ?: return
+            if (attempt.purpose != VaultAttemptPurpose.UNLOCK || reservation.identity.attempt != attempt.identity ||
+                reservation.proposedLedger != before.data?.retryLedger || state?.activeAttempt?.identity != attempt.identity ||
+                state?.mode != VaultMode.AUTHENTICATING) return
+            // Keep this exact intent as the cover hold until registered pending atomically replaces it.
+            before to bindBiometric(host, before, null, attempt.identity)
+        }
+        val operation = try { context(VaultRuntimeLimits.PROMPT_MILLIS, attempt.deadline.elapsedMillis) }
+            catch (_: Exception) { transition(VaultEvent.AuthenticationResult(attempt.identity, VaultAuthenticationOutcome.CANCELLED)); return }
+        submit(operation, onFailure = { category -> biometricAttemptFailed(attempt.identity, category) }) {
+            captured.second.requireCurrent()
+            val actual = inspectExact(captured.first, operation)
+            val pending = authentication.prepareBiometricUnlock(actual, attempt.identity, captured.second, operation)
+            beginBiometricOperation(pending, captured.second, actual) { result ->
+                when (result) {
+                    is VaultBiometricResult.Unlocked -> {
+                        var accepted = false
+                        try {
+                            pending.context.checkActive(); captured.second.requireCurrent(); inspectExact(actual, pending.context)
+                            accepted = synchronized(gate) {
+                                if (closed || failureSticky || state?.activeAttempt?.identity != attempt.identity ||
+                                    state?.mode != VaultMode.AUTHENTICATING || snapshot != actual || !route || !foreground) false
+                                else { pendingRoot = attempt.identity to result.root; true }
+                            }
+                            if (!accepted) throw VaultOperationException(VaultFailure.CANCELLED)
+                            transition(VaultEvent.AuthenticationResult(attempt.identity, VaultAuthenticationOutcome.SESSION_ESTABLISHED))
+                        } finally { if (!accepted) releaseRoot(result.root) }
+                    }
+                    is VaultBiometricResult.Failed -> {
+                        synchronized(gate) { biometricAvailability = result.availability; biometricNotice = VaultBiometricNotice.UNAVAILABLE }
+                        biometricAttemptFailed(attempt.identity, result.failure)
+                    }
+                    is VaultBiometricResult.Mutation -> { releaseMutation(result.mutation); biometricAttemptFailed(attempt.identity, VaultFailure.REJECTED) }
+                }
+            }
+        }
+    }
+    private fun biometricAttemptFailed(attempt: VaultAttemptIdentity, category: VaultFailure) {
+        if (category.confirmedPrimaryFailure()) failure(category)
+        else transition(VaultEvent.AuthenticationResult(attempt, if (category == VaultFailure.REJECTED)
+            VaultAuthenticationOutcome.REJECTED else VaultAuthenticationOutcome.CANCELLED))
+    }
+    private fun inspectExact(before: VaultStoredSnapshot, operation: VaultOperationContext): VaultStoredSnapshot {
+        val actual = (store.inspect(operation.bounded(VaultRuntimeLimits.DATABASE_MILLIS)) as? VaultStoreObservation.Present)?.snapshot
+            ?: throw VaultOperationException(VaultFailure.INCOMPLETE)
+        if (actual != before || synchronized(gate) { snapshot != before }) throw VaultOperationException(VaultFailure.CONFLICT)
+        operation.checkActive()
+        return actual
+    }
+    private fun prepareBiometricWorkflow(value: VaultBiometricWorkflow) {
+        data class Captured(val root: VaultRootCapability, val before: VaultStoredSnapshot, val attempt: VaultAttemptIdentity,
+            val factory: VaultBiometricBindingFactory)
+        val captured = synchronized(gate) {
+            if (!biometricCurrentLocked(value) || biometricPhase != BiometricPhase.AUTHENTICATING) return
+            Captured(activeRoot ?: return, snapshot ?: return, biometricAttempt ?: return, biometricBindingFactory ?: return).also {
+                biometricPhase = BiometricPhase.PREPARING
+            }
+        }
+        submit(value.context, onFailure = { category ->
+            if (category.confirmedPrimaryFailure()) failure(category) else {
+                synchronized(gate) { biometricNotice = VaultBiometricNotice.UNFINISHED }
+                cancelBiometricWorkflow(value)
+            }
+        }) {
+            requireBiometricCurrent(value, value.context)
+            inspectExact(captured.before, value.context)
+            if (value.kind == VaultBiometricWorkflowKind.REVOKE) {
+                synchronized(gate) { biometricPhase = BiometricPhase.REVOKING }
+                val binding = bindBiometric(captured.factory(VaultBiometricPurpose.RETIRE_ALIAS, value), captured.before, value, null)
+                binding.requireCurrent()
+                val mutation = authentication.prepareBiometricRevocation(captured.root, captured.before, captured.attempt, binding, value.context)
+                val committed = try { commitBiometricMutation(captured.before, mutation, value.context) } finally { mutation.close() }
+                requireBiometricCurrent(value, value.context)
+                synchronized(gate) { snapshot = committed; biometricNotice = VaultBiometricNotice.REVOKED }
+                // The durable block is sufficient. A later explicit enrollment with fresh password retires the exact alias.
+                transition(VaultEvent.ExplicitLock, expectedBiometric = value)
+                return@submit
+            }
+            val retirementBinding = bindBiometric(captured.factory(VaultBiometricPurpose.RETIRE_ALIAS, value), captured.before, value, null)
+            retirementBinding.requireCurrent()
+            val permission = authentication.prepareBiometricAliasRetirement(captured.root, captured.before, captured.attempt,
+                retirementBinding, value.context)
+            synchronized(gate) { retainedBiometricPermissions[permission] = Unit }
+            // No media, credential or alias writer can be admitted while this exact workflow holds the runtime gate.
+            val exact = inspectExact(captured.before, value.context)
+            val retired = authentication.retireBiometricAlias(exact, permission, value.context)
+            if (retired != VaultBiometricAliasRetirementResult.ABSENT) {
+                synchronized(gate) { biometricNotice = VaultBiometricNotice.RETIREMENT_PENDING }
+                cancelBiometricWorkflow(value)
+                return@submit // Retain this original permission; no blind new intent or create retry.
+            }
+            permission.close(); synchronized(gate) { retainedBiometricPermissions.remove(permission) }
+            requireBiometricCurrent(value, value.context)
+            val binding = bindBiometric(captured.factory(VaultBiometricPurpose.ENROLL_WRAP, value), captured.before, value, null)
+            val pending = authentication.prepareBiometricEnrollment(captured.root, captured.before, captured.attempt, binding, value.context)
+            synchronized(gate) { biometricPhase = BiometricPhase.WRAPPING }
+            beginBiometricOperation(pending, binding, captured.before) { result ->
+                when (result) {
+                    is VaultBiometricResult.Mutation -> {
+                        val staged = try {
+                            requireBiometricCurrent(value, pending.context)
+                            commitBiometricMutation(captured.before, result.mutation, pending.context)
+                        } finally { result.mutation.close() }
+                        // Catalog reseal retires the old root; it is never rebound to the new revision.
+                        retireRoots()
+                        requireBiometricCurrent(value, value.context)
+                        val verifyBinding = bindBiometric(captured.factory(VaultBiometricPurpose.ENROLL_VERIFY, value), staged, value, null)
+                        val verify = authentication.prepareBiometricActivation(staged, pending, verifyBinding, value.context)
+                        synchronized(gate) { biometricPhase = BiometricPhase.VERIFYING }
+                        beginBiometricOperation(verify, verifyBinding, staged) { verified ->
+                            when (verified) {
+                                is VaultBiometricResult.Mutation -> {
+                                    try {
+                                        requireBiometricCurrent(value, verify.context)
+                                        commitBiometricMutation(staged, verified.mutation, verify.context)
+                                        requireBiometricCurrent(value, value.context)
+                                        synchronized(gate) { biometricNotice = VaultBiometricNotice.ENABLED; biometricAvailability = VaultBiometricAvailability.AVAILABLE }
+                                        transition(VaultEvent.ExplicitLock, expectedBiometric = value)
+                                    } finally { verified.mutation.close() }
+                                }
+                                else -> failBiometricWorkflowResult(value, verified)
+                            }
+                        }
+                    }
+                    else -> failBiometricWorkflowResult(value, result)
+                }
+            }
+        }
+    }
+    private fun commitBiometricMutation(before: VaultStoredSnapshot, mutation: VaultCredentialMutation,
+        operation: VaultOperationContext): VaultStoredSnapshot {
+        inspectExact(before, operation)
+        val stored = try { store.compareAndSwapCredentials(before, mutation, operation.bounded(VaultRuntimeLimits.DATABASE_MILLIS)) }
+        catch (error: Exception) {
+            // Unknown credential publication is store-owner evidence, never a retry with a new proposal.
+            val category = (error as? VaultOperationException)?.category ?: VaultFailure.UNAVAILABLE
+            if (category !in setOf(VaultFailure.CANCELLED, VaultFailure.DEADLINE)) failure(category)
+            throw error
+        }
+        synchronized(gate) { snapshot = stored } // Durable evidence survives cancellation; no alternate proposal retry.
+        return inspectExact(stored, operation)
+    }
+    private fun failBiometricWorkflowResult(value: VaultBiometricWorkflow, result: VaultBiometricResult) {
+        if (result is VaultBiometricResult.Unlocked) releaseRoot(result.root)
+        if (result is VaultBiometricResult.Mutation) releaseMutation(result.mutation)
+        if (result is VaultBiometricResult.Failed && result.failure.confirmedPrimaryFailure()) { failure(result.failure); return }
+        synchronized(gate) {
+            biometricNotice = VaultBiometricNotice.UNFINISHED
+            if (result is VaultBiometricResult.Failed) biometricAvailability = result.availability
+        }
+        cancelBiometricWorkflow(value)
+    }
+    /** Registers before start so synchronous callbacks and submit-return races cannot escape cleanup. */
+    private fun beginBiometricOperation(pending: VaultBiometricOperation, binding: VaultBiometricBinding,
+        before: VaultStoredSnapshot, consume: (VaultBiometricResult) -> Unit) {
+        val record = BiometricPending(pending.context, binding, before, consume)
+        synchronized(gate) {
+            biometricOperations[pending] = record; contexts += pending.context; jobs++
+            if (binding.purpose == VaultBiometricPurpose.UNLOCK) biometricUnlockBinding = null
+        }
+        try {
+            record.deadlineWake = scheduler.schedule((pending.context.deadlineElapsedMillis - clock.elapsedMillis()).coerceAtLeast(0)) {
+                if (synchronized(gate) { biometricOperations[pending] === record }) {
+                    pending.context.cancel(); pending.close(); transition(VaultEvent.ExplicitLock, externalProtection = true)
+                    biometricProgressed(pending)
+                }
+            }
+            pending.onDrain { biometricProgressed(pending) }
+            authentication.startBiometric(pending) { result ->
+                val accepted = synchronized(gate) {
+                    if (biometricOperations[pending] !== record || record.resultReceived) false
+                    else { record.resultReceived = true; record.result = result; true }
+                }
+                if (!accepted) retireBiometricResult(result)
+                biometricProgressed(pending)
+            }
+        } catch (error: Exception) {
+            synchronized(gate) {
+                if (!record.resultReceived) {
+                    record.resultReceived = true
+                    record.result = VaultBiometricResult.Failed((error as? VaultOperationException)?.category ?: VaultFailure.UNAVAILABLE)
+                }
+            }
+            try { pending.close() } catch (_: Exception) { /* Retain unconfirmed start until actual drain. */ }
+        } finally {
+            synchronized(gate) { record.startedReturned = true }
+            biometricProgressed(pending)
+        }
+    }
+    private fun retireBiometricResult(result: VaultBiometricResult) {
+        when (result) {
+            is VaultBiometricResult.Unlocked -> releaseRoot(result.root)
+            is VaultBiometricResult.Mutation -> releaseMutation(result.mutation)
+            is VaultBiometricResult.Failed -> Unit
+        }
+    }
+    private fun biometricProgressed(pending: VaultBiometricOperation) {
+        // Cross-owner observation is outside the runtime gate; exact record identity is checked again below.
+        val observed = synchronized(gate) { biometricOperations[pending] } ?: return
+        if (pending.observeDrain() != ExportRelease.RELEASED) return
+        val record = synchronized(gate) {
+            val current = biometricOperations[pending] ?: return
+            if (current !== observed || !current.startedReturned || current.continuationQueued) return
+            current.continuationQueued = true
+            current
+        }
+        try {
+            work.execute {
+                var consumed = false
+                val result = synchronized(gate) { record.result ?: VaultBiometricResult.Failed(VaultFailure.CANCELLED) }
+                try {
+                    record.operation.checkActive(); record.binding.requireCurrent()
+                    consumed = true
+                    record.consume(result)
+                } catch (error: Exception) {
+                    if (!consumed) retireBiometricResult(result)
+                    val category = (error as? VaultOperationException)?.category ?: VaultFailure.UNAVAILABLE
+                    if (category.confirmedPrimaryFailure()) failure(category)
+                    else {
+                        synchronized(gate) { biometricNotice = VaultBiometricNotice.UNFINISHED }
+                        transition(VaultEvent.ExplicitLock, externalProtection = true)
+                    }
+                } finally {
+                    record.deadlineWake?.cancel()
+                    try { pending.close() } catch (_: Exception) { /* Auth drain still gates future work. */ }
+                    synchronized(gate) {
+                        if (biometricOperations.remove(pending) != null) { jobs--; contexts -= record.operation }
+                    }
+                    tryAcknowledgeCleanup(); showStatus()
+                }
+            }
+        } catch (_: Exception) {
+            // Queue rejection does not establish result retirement. Keep exact pending/result and block new owner admission.
+            synchronized(gate) { biometricNotice = VaultBiometricNotice.UNAVAILABLE }
+            record.operation.cancel()
+            try { pending.close() } catch (_: Exception) { }
+            showStatus()
+        }
+    }
+    fun biometricPrivateCoverRequired(): Boolean = synchronized(gate) {
+        biometricUnlockBinding != null || biometricOperations.isNotEmpty() ||
+            biometricWorkflow != null && biometricPhase != BiometricPhase.PASSWORD_PROMPT
+    }
+    /** Does not authorize display. PREPARED, unknown submission and terminal/drain-only work cannot explain focus loss. */
+    fun systemPromptOwnsFocus(host: Any, activity: Any, generation: Long): Boolean {
+        val records = synchronized(gate) { biometricOperations.entries.map { it.key to it.value } }
+        return records.any { (pending, record) ->
+            if (record.binding.hostIdentity !== host || record.binding.platformHost !== activity ||
+                record.binding.hostGeneration != generation || !pending.ownsSystemPromptFocus()) false
+            else try {
+                record.operation.checkActive(); record.binding.requireCurrent()
+                synchronized(gate) { !closed && route && foreground && biometricOperations[pending] === record }
+            } catch (_: Exception) { false }
+        }
+    }
+    fun biometricCleanupComplete(): Boolean {
+        if (authentication.observeBiometricDrain() != ExportRelease.RELEASED) return false
+        return synchronized(gate) { biometricOperations.isEmpty() }
     }
 
     private fun workflowCurrentLocked(value: VaultRecoveryWorkflow): Boolean = !closed && !failureSticky &&
@@ -283,7 +663,8 @@ internal class VaultRuntime(
         val value = synchronized(gate) {
             val current = state
             val data = snapshot?.data ?: return null
-            if (closed || failureSticky || recoveryWorkflow != null || playback?.occupied() == true || media?.blocksCredentialRecovery() == true || jobs != 0 || credential != null ||
+            if (closed || failureSticky || recoveryWorkflow != null || biometricWorkflow != null || biometricOperations.isNotEmpty() ||
+                authentication.observeBiometricDrain() != ExportRelease.RELEASED || playback?.occupied() == true || media?.blocksCredentialRecovery() == true || jobs != 0 || credential != null ||
                 current?.mode != VaultMode.LOCKED || current.cleanupStatus != VaultCleanupStatus.COMPLETE ||
                 current.retryStatus != VaultRetryStatus.READY || !route || !foreground ||
                 (kind == VaultRecoveryWorkflowKind.ENROLL && data.recoveryState == VaultRecoveryState.ACTIVE) ||
@@ -313,7 +694,7 @@ internal class VaultRuntime(
         transition(VaultEvent.SurfaceCovered, value, expectedRecovery = value)
         return recoveryWorkflowCurrent(value)
     }
-    fun unlockForRecovery(input: VaultCredentialInput, value: VaultRecoveryWorkflow) = requestPasswordUnlock(input, value)
+    fun unlockForRecovery(input: VaultCredentialInput, value: VaultRecoveryWorkflow) = requestPasswordUnlock(input, value, null)
     fun takeRecoveryDisplay(value: VaultRecoveryWorkflow): VaultRecoveryInput? = synchronized(gate) {
         if (!workflowCurrentLocked(value) || recoveryPhase != RecoveryPhase.DISPLAY_READY || jobs != 0 ||
             state?.cleanupStatus != VaultCleanupStatus.COMPLETE || clock.elapsedMillis() >= recoveryDisplayDeadline) return null
@@ -437,13 +818,13 @@ internal class VaultRuntime(
     }
     /** Explicit foreground reveal intent. Returning to a route does not invoke this automatically. */
     fun revealEmptyCatalog() {
-        if (synchronized(gate) { readLease != null || recoveryWorkflow != null || pendingReset != null || playback?.occupied() == true }) return
+        if (synchronized(gate) { readLease != null || recoveryWorkflow != null || biometricWorkflow != null || biometricOperations.isNotEmpty() || pendingReset != null || playback?.occupied() == true }) return
         transition(VaultEvent.SurfaceVisible)
         val captured = synchronized(gate) {
             val current = state ?: return
             val durable = snapshot ?: return
             val root = activeRoot ?: return
-            if (closed || failureSticky || playback?.occupied() == true || recoveryWorkflow != null || pendingReset != null || jobs != 0 || activeRootEpoch != current.authEpoch ||
+            if (closed || failureSticky || playback?.occupied() == true || recoveryWorkflow != null || biometricWorkflow != null || biometricOperations.isNotEmpty() || pendingReset != null || jobs != 0 || activeRootEpoch != current.authEpoch ||
                 !current.permitsPresentation(tick(), current.authEpoch, current.presentationEpoch)) return
             val lease = ReadLease(presentationGeneration, current.authEpoch, current.presentationEpoch,
                 durable.data?.catalogRevision ?: return, root)
@@ -492,26 +873,33 @@ internal class VaultRuntime(
     }
 
     private fun transition(event: VaultEvent, preserveRecovery: VaultRecoveryWorkflow? = null,
-        expectedRecovery: VaultRecoveryWorkflow? = null, externalProtection: Boolean = false) {
+        expectedRecovery: VaultRecoveryWorkflow? = null, externalProtection: Boolean = false,
+        preserveBiometric: VaultBiometricWorkflow? = null, expectedBiometric: VaultBiometricWorkflow? = null) {
         val result = synchronized(gate) {
-            if (closed || expectedRecovery != null && recoveryWorkflow !== expectedRecovery) return
+            if (closed || expectedRecovery != null && recoveryWorkflow !== expectedRecovery ||
+                expectedBiometric != null && biometricWorkflow !== expectedBiometric) return
             if (state == null) return@synchronized null
             // External loss of a recovery modal must revoke its root, not leave ordinary grace authority.
             // The exact workflow check and core cleanup fence precede releasing this gate.
-            val first = if (externalProtection && recoveryWorkflow != null)
+            val first = if (externalProtection && (recoveryWorkflow != null || biometricWorkflow != null))
                 reducer.reduce(requireNotNull(state), VaultEvent.ExplicitLock, tick()) else null
             val next = reducer.reduce(first?.state ?: requireNotNull(state), event, tick())
             VaultTransition(next.state, first?.effects.orEmpty() + next.effects, next.outcome)
                 .also { state = it.state; effectsInFlight++ }
         }
         if (externalProtection) protectPresentation()
-        if (result == null) return
-        executeEffects(result.effects, preserveRecovery)
+        if (result == null) {
+            // Startup can fail before reducer state exists. A later cover must not erase its explanation.
+            if (synchronized(gate) { failureSticky }) showStatus()
+            return
+        }
+        executeEffects(result.effects, preserveRecovery, preserveBiometric)
         showStatus()
     }
-    private fun executeEffects(effects: List<VaultEffect>, preserveRecovery: VaultRecoveryWorkflow? = null) {
+    private fun executeEffects(effects: List<VaultEffect>, preserveRecovery: VaultRecoveryWorkflow? = null,
+        preserveBiometric: VaultBiometricWorkflow? = null) {
         try { effects.forEach { effect -> when (effect) {
-            VaultEffect.MaskPrivatePresentation -> protectPresentation(preserveRecovery = preserveRecovery)
+            VaultEffect.MaskPrivatePresentation -> protectPresentation(preserveRecovery = preserveRecovery, preserveBiometric = preserveBiometric)
             VaultEffect.StopPrivatePlaybackAndReaders -> { playback?.revokeAll(); media?.revoke() }
             VaultEffect.ClearPrivateMemory -> synchronized(gate) { credential?.close(); credential = null; recoveryInput?.close(); recoveryInput = null }
             is VaultEffect.RevokeExternalSession -> retireRoots()
@@ -537,7 +925,7 @@ internal class VaultRuntime(
     }
     private fun persistRetry(write: VaultRetryWrite) {
         data class WriteAdmission(val before: VaultStoredSnapshot, val workflow: VaultRecoveryWorkflow?,
-            val reset: PendingReset?, val purpose: VaultAttemptPurpose)
+            val reset: PendingReset?, val purpose: VaultAttemptPurpose, val biometric: VaultBiometricWorkflow?)
         val admission = synchronized(gate) {
             val current = state
             val attempt = current?.activeAttempt
@@ -548,16 +936,21 @@ internal class VaultRuntime(
                 val reset = pendingReset?.takeIf { it.attempt == write.identity.attempt && write.kind == VaultRetryWriteKind.RESET }
                 if (write.kind == VaultRetryWriteKind.RESET &&
                     ((attempt.purpose == VaultAttemptPurpose.RECOVERY_RESET) != (reset != null))) null
-                else WriteAdmission(before, recoveryWorkflow, reset, attempt.purpose)
+                else WriteAdmission(before, recoveryWorkflow, reset, attempt.purpose, biometricWorkflow)
             }
         } ?: run { transition(VaultEvent.RetryWriteFailed(write.identity)); return }
         val before = admission.before; val workflow = admission.workflow; val reset = admission.reset
         val operation = try {
             reset?.operation?.bounded(VaultRuntimeLimits.DATABASE_MILLIS, write.deadline.elapsedMillis)
+                ?: admission.biometric?.context?.bounded(VaultRuntimeLimits.DATABASE_MILLIS, write.deadline.elapsedMillis)
                 ?: context(VaultRuntimeLimits.DATABASE_MILLIS,
                     minOf(write.deadline.elapsedMillis, workflow?.deadlineElapsedMillis ?: Long.MAX_VALUE))
         } catch (_: Exception) { transition(VaultEvent.RetryWriteFailed(write.identity)); return }
-        submit(operation, onFailure = { transition(VaultEvent.RetryWriteFailed(write.identity)) }) {
+        submit(operation, onFailure = { category ->
+            if (category.confirmedPrimaryFailure()) failure(category)
+            else transition(VaultEvent.RetryWriteFailed(write.identity))
+        }) {
+            admission.biometric?.let { requireBiometricCurrent(it, operation) }
             if (workflow != null) requireWorkflowOperation(workflow, operation,
                 if (workflow.kind == VaultRecoveryWorkflowKind.RESET_PASSWORD) RecoveryPhase.RESETTING else RecoveryPhase.AUTHENTICATING,
                 write.identity.attempt)
@@ -600,6 +993,8 @@ internal class VaultRuntime(
                 val workflow = synchronized(gate) { recoveryWorkflow?.takeIf { workflowCurrentLocked(it) &&
                     it.kind == VaultRecoveryWorkflowKind.ENROLL && recoveryPhase == RecoveryPhase.AUTHENTICATING && activeRoot != null } }
                 if (workflow != null) prepareRecoveryEnrollment(workflow)
+                synchronized(gate) { biometricWorkflow?.takeIf { biometricCurrentLocked(it) &&
+                    biometricPhase == BiometricPhase.AUTHENTICATING && activeRoot != null } }?.let(::prepareBiometricWorkflow)
             }
         }
     }
@@ -644,8 +1039,9 @@ internal class VaultRuntime(
         }
     }
     private fun authenticate(attempt: VaultAttempt) {
+        if (synchronized(gate) { biometricUnlockBinding != null }) { authenticateBiometric(attempt); return }
         if (attempt.purpose == VaultAttemptPurpose.RECOVERY_RESET) { authenticateRecoveryReset(attempt); return }
-        data class PasswordInput(val input: VaultCredentialInput, val durable: VaultStoredSnapshot, val workflow: VaultRecoveryWorkflow?)
+        data class PasswordInput(val input: VaultCredentialInput, val durable: VaultStoredSnapshot, val workflow: VaultRecoveryWorkflow?, val biometric: VaultBiometricWorkflow?)
         val values = synchronized(gate) {
             val input = credential ?: return@synchronized null
             val durable = snapshot ?: return@synchronized null
@@ -653,9 +1049,11 @@ internal class VaultRuntime(
             if (reservation.identity.attempt != attempt.identity || reservation.proposedLedger != durable.data?.retryLedger ||
                 state?.activeAttempt?.identity != attempt.identity || state?.mode != VaultMode.AUTHENTICATING) return@synchronized null
             credential = null
-            PasswordInput(input, durable, recoveryWorkflow)
+            PasswordInput(input, durable, recoveryWorkflow, biometricWorkflow)
         } ?: run { transition(VaultEvent.AuthenticationResult(attempt.identity, VaultAuthenticationOutcome.CANCELLED)); return }
-        val operation = try { if (values.workflow != null)
+        val operation = try { if (values.biometric != null)
+            values.biometric.context.bounded(VaultRuntimeLimits.KDF_MILLIS, attempt.deadline.elapsedMillis)
+            else if (values.workflow != null)
             workflowContext(values.workflow, VaultRuntimeLimits.KDF_MILLIS, attempt.deadline.elapsedMillis)
             else context(VaultRuntimeLimits.KDF_MILLIS, attempt.deadline.elapsedMillis) }
         catch (_: Exception) {
@@ -663,7 +1061,8 @@ internal class VaultRuntime(
         }
         submit(operation, onFailure = { category ->
             values.input.close()
-            transition(VaultEvent.AuthenticationResult(attempt.identity, if (category == VaultFailure.REJECTED)
+            if (category.confirmedPrimaryFailure()) failure(category)
+            else transition(VaultEvent.AuthenticationResult(attempt.identity, if (category == VaultFailure.REJECTED)
                 VaultAuthenticationOutcome.REJECTED else VaultAuthenticationOutcome.CANCELLED))
         }) {
             if (values.workflow != null) requireWorkflowOperation(values.workflow, operation, RecoveryPhase.AUTHENTICATING, attempt.identity)
@@ -679,8 +1078,9 @@ internal class VaultRuntime(
                 val current = state
                 if (closed || failureSticky || current?.activeAttempt?.identity != attempt.identity ||
                     current.mode != VaultMode.AUTHENTICATING || !route || !foreground ||
-                    values.workflow != null && !workflowCurrentLocked(values.workflow)) false
-                else { pendingRoot = attempt.identity to root; true }
+                    values.workflow != null && !workflowCurrentLocked(values.workflow) ||
+                    values.biometric != null && !biometricCurrentLocked(values.biometric)) false
+                else { pendingRoot = attempt.identity to root; if (values.biometric != null) biometricAttempt = attempt.identity; true }
             }
             if (!accepted) { root.close(); return@submit }
             try { operation.checkActive() }
@@ -712,7 +1112,8 @@ internal class VaultRuntime(
             }
         submit(operation, onFailure = { category ->
             values.password.close(); values.code.close()
-            transition(VaultEvent.AuthenticationResult(attempt.identity, if (category == VaultFailure.REJECTED)
+            if (category.confirmedPrimaryFailure()) failure(category)
+            else transition(VaultEvent.AuthenticationResult(attempt.identity, if (category == VaultFailure.REJECTED)
                 VaultAuthenticationOutcome.REJECTED else VaultAuthenticationOutcome.CANCELLED))
         }) {
             var activation: VaultCredentialMutation? = null
@@ -740,15 +1141,22 @@ internal class VaultRuntime(
     }
 
     private fun protectPresentation(expectedWake: Long? = null, expectedOperation: VaultOperationContext? = null,
-        preserveRecovery: VaultRecoveryWorkflow? = null): Boolean {
+        preserveRecovery: VaultRecoveryWorkflow? = null, preserveBiometric: VaultBiometricWorkflow? = null): Boolean {
         val generation = synchronized(gate) {
             if (expectedWake != null && (closed || expectedWake != wakeGeneration)) return false
             if (expectedOperation != null && (closed || expectedOperation !in contexts)) return false
             readLease = null; revealedPlaybackRefs = emptyList()
             if (preserveRecovery == null || recoveryWorkflow !== preserveRecovery) clearRecoveryWorkflowLocked()
+            if (preserveBiometric == null || biometricWorkflow !== preserveBiometric) clearBiometricWorkflowLocked()
+            biometricUnlockBinding = null
             contexts.forEach { it.cancel() }
             if (presentationGeneration == Long.MAX_VALUE) { failureSticky = true } else presentationGeneration++
             presentationGeneration
+        }
+        // Fast acceptance revocation precedes cancellation; close never claims platform drain.
+        synchronized(gate) { biometricOperations.keys.toList() }.forEach { operation ->
+            try { operation.close() } catch (_: Exception) { /* Retained until an actual drain receipt. */ }
+            biometricProgressed(operation)
         }
         playback?.revokeAll()
         media?.revoke()
@@ -796,7 +1204,8 @@ internal class VaultRuntime(
     private fun tryAcknowledgeCleanup() {
         val binding = synchronized(gate) {
             val current = state
-            if (closed || failureSticky || jobs != 0 || effectsInFlight != 0 || retiringRoots.isNotEmpty() || retiringMutations.isNotEmpty() || credential != null || recoveryInput != null || pendingReset != null || pendingRoot != null ||
+            if (closed || failureSticky || jobs != 0 || effectsInFlight != 0 || biometricOperations.isNotEmpty() ||
+                authentication.observeBiometricDrain() != ExportRelease.RELEASED || retiringRoots.isNotEmpty() || retiringMutations.isNotEmpty() || credential != null || recoveryInput != null || pendingReset != null || pendingRoot != null ||
                 readLease != null || playback?.cleanupComplete() == false || media?.cleanupComplete() == false || (activeRoot != null && activeRootEpoch != current?.authEpoch) ||
                 hiddenGeneration != presentationGeneration ||
                 current?.cleanupStatus != VaultCleanupStatus.PENDING) return
@@ -835,7 +1244,14 @@ internal class VaultRuntime(
         }
     }
     private fun failure(category: VaultFailure) {
-        synchronized(gate) { failureSticky = true; credential?.close(); credential = null }
+        synchronized(gate) {
+            // Diagnostic refinement only: a late trusted leaf may explain an earlier unknown failure.
+            // The first confirmed reason wins; cancellation/cleanup outcomes and authority never change.
+            val reason = category.safeReason()
+            if (failureReason == null || failureReason == VaultFailureReason.UNKNOWN && reason != VaultFailureReason.UNKNOWN)
+                failureReason = reason
+            failureSticky = true; credential?.close(); credential = null
+        }
         protectPresentation()
         retireRoots()
         transition(VaultEvent.IntegrityFailureObserved)
@@ -846,6 +1262,8 @@ internal class VaultRuntime(
         ui.execute {
             synchronized(gate) {
                 if (generation != presentationGeneration || readLease != null) return@execute
+                presentation.presentBiometricState(snapshot?.data?.biometricState ?: VaultBiometricState.NONE,
+                    biometricNotice, biometricAvailability)
                 presentation.presentRecoveryState(snapshot?.data?.recoveryState ?: VaultRecoveryState.NONE,
                     snapshot?.data?.pendingPassword != null, recoveryNotice)
                 val status = when {
@@ -855,17 +1273,19 @@ internal class VaultRuntime(
                     state?.mode == VaultMode.RECOVERY_REQUIRED -> VaultRuntimeStatus.RECOVERY_REQUIRED
                     state?.mode == VaultMode.UNAVAILABLE -> VaultRuntimeStatus.UNAVAILABLE
                     recoveryPhase == RecoveryPhase.DISPLAY_READY && jobs == 0 && state?.cleanupStatus == VaultCleanupStatus.COMPLETE -> VaultRuntimeStatus.RECOVERY_CODE_READY
-                    setupRunning || state?.activeAttempt != null || recoveryWorkflow != null -> VaultRuntimeStatus.WORKING
+                    setupRunning || state?.activeAttempt != null || recoveryWorkflow != null || biometricWorkflow != null || biometricOperations.isNotEmpty() -> VaultRuntimeStatus.WORKING
                     state?.mode == VaultMode.SESSION_OPEN && state?.cleanupStatus == VaultCleanupStatus.COMPLETE && activeRoot != null && jobs == 0 -> VaultRuntimeStatus.READY_TO_REVEAL
                     else -> VaultRuntimeStatus.LOCKED
                 }
-                presentation.presentStatus(status)
+                if (failureSticky) presentation.presentFailure(failureReason ?: VaultFailureReason.UNKNOWN)
+                else presentation.presentStatus(status)
             }
         }
     }
     /** Read-only host release check. It never grants authentication or presentation authority. */
     fun hostCleanupComplete(): Boolean = synchronized(gate) {
-        !closed && !failureSticky && jobs == 0 && effectsInFlight == 0 && retiringRoots.isEmpty() && retiringMutations.isEmpty() &&
+        !closed && !failureSticky && jobs == 0 && effectsInFlight == 0 && biometricOperations.isEmpty() &&
+            authentication.observeBiometricDrain() == ExportRelease.RELEASED && retiringRoots.isEmpty() && retiringMutations.isEmpty() &&
             credential == null && recoveryInput == null && pendingReset == null && pendingRoot == null && readLease == null && playback?.cleanupComplete() != false && media?.cleanupComplete() != false && state?.cleanupStatus == VaultCleanupStatus.COMPLETE
     }
     override fun close() {

@@ -14,6 +14,7 @@ internal object VaultRuntimeLimits {
     const val CLEANUP_MILLIS = 5_000L
     const val AUTHENTICATION_MILLIS = 135_000L
     const val RECOVERY_WORKFLOW_MILLIS = PROMPT_MILLIS + AUTHENTICATION_MILLIS + PROMPT_MILLIS + 2 * DATABASE_MILLIS
+    const val BIOMETRIC_WORKFLOW_MILLIS = AUTHENTICATION_MILLIS + 2 * PROMPT_MILLIS + 2 * DATABASE_MILLIS
     const val ENVELOPE_BYTES = 16 * 1024
     const val EMPTY_CATALOG_BYTES = 64 * 1024
     fun retryPolicy() = VaultRetryPolicy(
@@ -45,7 +46,29 @@ internal class VaultOperationContext(
         return VaultOperationContext(minOf(this.deadlineElapsedMillis, deadlineElapsedMillis, end), clock, cancelled)
     }
 }
-internal enum class VaultFailure { CANCELLED, DEADLINE, REJECTED, UNAVAILABLE, CORRUPT, CONFLICT, INCOMPLETE, UNSUPPORTED, RELEASE_UNKNOWN }
+internal enum class VaultFailure {
+    CANCELLED, DEADLINE, REJECTED, UNAVAILABLE, CORRUPT, CONFLICT, INCOMPLETE, UNSUPPORTED, RELEASE_UNKNOWN,
+    // Only the corresponding trusted leaf may report these primary-Vault failures.
+    DEVICE_KEY_UNAVAILABLE, INSTALLATION_MISMATCH_OR_CORRUPT, RETRY_LEDGER_UNAVAILABLE_OR_CORRUPT, STORE_UNREADABLE,
+}
+/** Public, bounded explanation only. It is never authentication or repair authority. */
+internal enum class VaultFailureReason {
+    DEVICE_KEY_UNAVAILABLE, INSTALLATION_MISMATCH_OR_CORRUPT, RETRY_LEDGER_UNAVAILABLE_OR_CORRUPT,
+    STORE_UNREADABLE, STORE_INCOMPLETE, UNKNOWN,
+}
+internal fun VaultFailure.confirmedPrimaryFailure(): Boolean = when (this) {
+    VaultFailure.DEVICE_KEY_UNAVAILABLE, VaultFailure.INSTALLATION_MISMATCH_OR_CORRUPT,
+    VaultFailure.RETRY_LEDGER_UNAVAILABLE_OR_CORRUPT, VaultFailure.STORE_UNREADABLE -> true
+    else -> false
+}
+internal fun VaultFailure.safeReason(): VaultFailureReason = when (this) {
+    VaultFailure.DEVICE_KEY_UNAVAILABLE -> VaultFailureReason.DEVICE_KEY_UNAVAILABLE
+    VaultFailure.INSTALLATION_MISMATCH_OR_CORRUPT -> VaultFailureReason.INSTALLATION_MISMATCH_OR_CORRUPT
+    VaultFailure.RETRY_LEDGER_UNAVAILABLE_OR_CORRUPT -> VaultFailureReason.RETRY_LEDGER_UNAVAILABLE_OR_CORRUPT
+    VaultFailure.STORE_UNREADABLE -> VaultFailureReason.STORE_UNREADABLE
+    VaultFailure.INCOMPLETE -> VaultFailureReason.STORE_INCOMPLETE
+    else -> VaultFailureReason.UNKNOWN
+}
 internal class VaultOperationException(val category: VaultFailure) : Exception(category.name)
 internal enum class VaultCredentialKind { PIN, PASSWORD }
 internal class VaultCredentialInput(val kind: VaultCredentialKind, chars: CharArray) : AutoCloseable {
@@ -99,11 +122,12 @@ internal class VaultStagedData(
     val pendingPassword: VaultPendingPassword? = null,
     val mediaJournalEnvelope: VaultCiphertext? = null,
     val mediaJournalRevision: Long = 0,
+    val biometricState: VaultBiometricState = VaultBiometricState.NONE,
 ) {
     init {
         require((mediaJournalEnvelope == null) == (mediaJournalRevision == 0L) && mediaJournalRevision >= 0)
         require(mediaJournalEnvelope == null || mediaJournalEnvelope.size <= VaultMediaLimits.MAX_JOURNAL_BYTES)
-        require(slots.size in 1..4 && slots.map { it.slotId }.distinct().size == slots.size)
+        require(slots.size in 1..3 && slots.map { it.slotId }.distinct().size == slots.size)
         require(slots.all { it.slotId.length in 1..128 && it.generation > 0 && it.envelope.size <= VaultRuntimeLimits.ENVELOPE_BYTES })
         require(catalogRevision > 0 && catalogKeysetEnvelope.size <= VaultRuntimeLimits.ENVELOPE_BYTES &&
             catalogEnvelope.size <= VaultRuntimeLimits.EMPTY_CATALOG_BYTES && installationMarker.size <= VaultRuntimeLimits.ENVELOPE_BYTES &&
@@ -120,16 +144,17 @@ internal class VaultStagedData(
         retryLedgerEnvelope: VaultCiphertext = this.retryLedgerEnvelope,
         recoveryState: VaultRecoveryState = this.recoveryState,
         pendingPassword: VaultPendingPassword? = this.pendingPassword,
-        mediaJournalEnvelope: VaultCiphertext? = this.mediaJournalEnvelope, mediaJournalRevision: Long = this.mediaJournalRevision) = VaultStagedData(
-        slots, catalogKeysetEnvelope, catalogEnvelope, catalogRevision, installationMarker, retryLedger, retryLedgerEnvelope, recoveryState, pendingPassword, mediaJournalEnvelope, mediaJournalRevision)
+        mediaJournalEnvelope: VaultCiphertext? = this.mediaJournalEnvelope, mediaJournalRevision: Long = this.mediaJournalRevision,
+        biometricState: VaultBiometricState = this.biometricState) = VaultStagedData(
+        slots, catalogKeysetEnvelope, catalogEnvelope, catalogRevision, installationMarker, retryLedger, retryLedgerEnvelope, recoveryState, pendingPassword, mediaJournalEnvelope, mediaJournalRevision, biometricState)
     override fun equals(other: Any?): Boolean = other is VaultStagedData && slotValues == other.slotValues &&
         catalogKeysetEnvelope == other.catalogKeysetEnvelope && catalogEnvelope == other.catalogEnvelope &&
         catalogRevision == other.catalogRevision && installationMarker == other.installationMarker &&
         retryLedger == other.retryLedger && retryLedgerEnvelope == other.retryLedgerEnvelope &&
         recoveryState == other.recoveryState && pendingPassword == other.pendingPassword &&
-        mediaJournalEnvelope == other.mediaJournalEnvelope && mediaJournalRevision == other.mediaJournalRevision
+        mediaJournalEnvelope == other.mediaJournalEnvelope && mediaJournalRevision == other.mediaJournalRevision && biometricState == other.biometricState
     override fun hashCode(): Int = listOf(slotValues, catalogKeysetEnvelope, catalogEnvelope, catalogRevision,
-        installationMarker, retryLedger, retryLedgerEnvelope, recoveryState, pendingPassword, mediaJournalEnvelope, mediaJournalRevision).hashCode()
+        installationMarker, retryLedger, retryLedgerEnvelope, recoveryState, pendingPassword, mediaJournalEnvelope, mediaJournalRevision, biometricState).hashCode()
     override fun toString(): String = "VaultStagedData(REDACTED)"
 }
 internal data class VaultStoredSnapshot(
@@ -158,7 +183,8 @@ internal data class VaultPendingPassword(val slot: VaultSlotRecord, val attempt:
     val reservation: VaultRetryLedger) {
     override fun toString(): String = "VaultPendingPassword(REDACTED)"
 }
-internal enum class VaultCredentialMutationKind { STAGE_RECOVERY, ACTIVATE_RECOVERY, STAGE_PASSWORD_RESET, ACTIVATE_PASSWORD_RESET }
+internal enum class VaultCredentialMutationKind { STAGE_RECOVERY, ACTIVATE_RECOVERY, STAGE_PASSWORD_RESET, ACTIVATE_PASSWORD_RESET,
+    STAGE_BIOMETRIC, ACTIVATE_BIOMETRIC, REVOKE_BIOMETRIC }
 /** Only the injected authentication owner's registry can authorize this opaque object. */
 internal interface VaultCredentialMutation : AutoCloseable
 internal class VaultCredentialMutationProposal(val kind: VaultCredentialMutationKind, val data: VaultStagedData,
@@ -180,6 +206,43 @@ internal class VaultRecoveryEnrollment(val mutation: VaultCredentialMutation, di
     @Synchronized override fun close() { try { mutation.close() } finally { ownedDisplay?.close(); ownedDisplay = null } }
     override fun toString(): String = "VaultRecoveryEnrollment(REDACTED)"
 }
+
+
+/** State is authenticated by the catalog; availability observations never change it. */
+internal enum class VaultBiometricState { NONE, PENDING, ACTIVE, REVOKED }
+internal enum class VaultBiometricPurpose { ENROLL_WRAP, ENROLL_VERIFY, UNLOCK, RETIRE_ALIAS }
+internal enum class VaultBiometricAvailability { AVAILABLE, UNAVAILABLE, KEY_UNAVAILABLE, TEMPORARY_LOCKOUT, PERMANENT_LOCKOUT }
+/** Exact runtime/host references. The predicate only revokes; it cannot grant crypto authority. */
+internal class VaultBiometricBinding(
+    val purpose: VaultBiometricPurpose,
+    val hostIdentity: Any,
+    val platformHost: Any,
+    val hostGeneration: Long,
+    val workflowIdentity: Any?,
+    private val current: () -> Boolean,
+) {
+    init { require(hostGeneration >= 0) }
+    fun requireCurrent() { if (!current()) throw VaultOperationException(VaultFailure.CANCELLED) }
+    fun sameWorkflow(other: VaultBiometricBinding): Boolean = hostIdentity === other.hostIdentity && platformHost === other.platformHost &&
+        hostGeneration == other.hostGeneration && workflowIdentity === other.workflowIdentity
+    override fun toString() = "VaultBiometricBinding(REDACTED)"
+}
+/** Prepared and registered before start. Closing revokes acceptance, not actual platform drain. */
+internal interface VaultBiometricOperation : AutoCloseable {
+    val context: VaultOperationContext
+    fun ownsSystemPromptFocus(): Boolean = false
+    fun onDrain(listener: () -> Unit)
+    fun observeDrain(): com.easysavevideo.library.export.ExportRelease
+}
+internal sealed interface VaultBiometricResult {
+    class Unlocked(val root: VaultRootCapability) : VaultBiometricResult
+    class Mutation(val mutation: VaultCredentialMutation) : VaultBiometricResult
+    class Failed(val failure: VaultFailure, val availability: VaultBiometricAvailability? = null) : VaultBiometricResult
+}
+internal enum class VaultBiometricAliasRetirementKind { REVOKED_SLOT, ORPHAN_NONE }
+/** Authentication owner registry identity only; never an alias string or caller-authored proof. */
+internal interface VaultBiometricAliasRetirement : AutoCloseable
+internal enum class VaultBiometricAliasRetirementResult { ABSENT, UNKNOWN }
 
 internal interface VaultStorePort : AutoCloseable {
     /** Pure nonblocking ledger snapshot, including factories which failed before returning a handle. */
@@ -223,6 +286,25 @@ internal interface VaultStorePort : AutoCloseable {
         authenticatedLedger: VaultCiphertext, context: VaultOperationContext): VaultStoredSnapshot
 }
 internal interface VaultAuthenticationPort : AutoCloseable {
+
+    fun observeBiometricDrain(): com.easysavevideo.library.export.ExportRelease = com.easysavevideo.library.export.ExportRelease.RELEASED
+    fun biometricAvailability(snapshot: VaultStoredSnapshot, context: VaultOperationContext): VaultBiometricAvailability = VaultBiometricAvailability.UNAVAILABLE
+    fun prepareBiometricUnlock(snapshot: VaultStoredSnapshot, attempt: VaultAttemptIdentity,
+        binding: VaultBiometricBinding, context: VaultOperationContext): VaultBiometricOperation = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun prepareBiometricEnrollment(root: VaultRootCapability, snapshot: VaultStoredSnapshot, attempt: VaultAttemptIdentity,
+        binding: VaultBiometricBinding, context: VaultOperationContext): VaultBiometricOperation = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    /** Prior operation must own the exact confirmed STAGE proposal and original workflow. */
+    fun prepareBiometricActivation(snapshot: VaultStoredSnapshot, enrollment: VaultBiometricOperation,
+        binding: VaultBiometricBinding, context: VaultOperationContext): VaultBiometricOperation = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun startBiometric(operation: VaultBiometricOperation, completed: (VaultBiometricResult) -> Unit): Unit = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun prepareBiometricRevocation(root: VaultRootCapability, snapshot: VaultStoredSnapshot, attempt: VaultAttemptIdentity,
+        binding: VaultBiometricBinding, context: VaultOperationContext): VaultCredentialMutation = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    fun prepareBiometricAliasRetirement(root: VaultRootCapability, snapshot: VaultStoredSnapshot, attempt: VaultAttemptIdentity,
+        binding: VaultBiometricBinding, context: VaultOperationContext): VaultBiometricAliasRetirement = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+    /** Caller must inspect the store immediately before this call, under the existing exclusive workflow gate. */
+    fun retireBiometricAlias(snapshot: VaultStoredSnapshot, permission: VaultBiometricAliasRetirement,
+        context: VaultOperationContext): VaultBiometricAliasRetirementResult = throw VaultOperationException(VaultFailure.UNSUPPORTED)
+
     /** Same-owner media factories can retain failed readers. No IO: reports only real registry release. */
     fun observeMediaDrain(): com.easysavevideo.library.export.ExportRelease = com.easysavevideo.library.export.ExportRelease.RELEASED
 
