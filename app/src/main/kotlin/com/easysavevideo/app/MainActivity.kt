@@ -810,13 +810,42 @@ class MainActivity : ComponentActivity() {
                     onRecord = { navigate(EsvDestination.RECORD) },
                     onLibrary = { navigate(EsvDestination.LIBRARY); discovery.setVisibility(false, false) },
                     onPreview = { record -> previewReceipt = record.receipt })
-                else if (route == EsvDestination.SOURCES) ProviderManagementScreen(providerManagementState,
-                    CommonsSourceRegistration.managementConfiguration, discovery.state.commonsEnabled,
-                    canToggleCommons = discovery.state.ready && !discovery.state.storageUnavailable,
-                    onEnableCommons = discovery::enableCommons, onRefresh = providerManagement::inspect,
-                    onAutoRefresh = providerManagement::refreshAutomatically,
-                    onRejectCandidate = providerManagement::rejectCandidate, onRollback = providerManagement::rollback,
-                    onBack = { providerManagement.setActive(false); backTo(EsvDestination.SETTINGS) })
+                else if (route == EsvDestination.SOURCES) {
+                    val sourceGeneration = newTabInputGeneration
+                    val sourcePresentationCurrent = remember(chromeActions, routeEntry, sourceGeneration) {
+                        {
+                            chromeActions.isCurrent() && routeOwnsPresentation() && navController === controller &&
+                                sourceGeneration == newTabInputGeneration && isForeground && !isDestroyed && !isFinishing &&
+                                activeDestination == EsvDestination.SOURCES && !browser.isPrivateMode &&
+                                browser.state.selectedTab?.incognito != true &&
+                                filePrompt == null && !browser.pickerInFlight && !browser.hasPendingFileChoice &&
+                                browser.jsDialog == null && browser.fullScreenView == null &&
+                                !saves.scanning && saves.selection == null && !saves.preparingStream && saves.hlsPreparation == null &&
+                                saves.destinations?.asking != true && saves.destinations?.admitting != true && saves.destinations?.notice == null &&
+                                saves.segmentRecording?.previewActive != true && previewReceipt == null && libraryPreviewReference == null
+                        }
+                    }
+                    // Dialogs own their own window focus. The captured foreground/route generation
+                    // retires old callbacks without treating our own dialog as a background event.
+                    val managementSnapshot = providerManagementState.snapshot
+                    val managementCurrent = {
+                        sourcePresentationCurrent() && providerManagement.state.active && !providerManagement.state.busy &&
+                            providerManagement.state.snapshot == managementSnapshot
+                    }
+                    ProviderManagementScreen(providerManagementState,
+                        CommonsSourceRegistration.managementConfiguration, discovery.state.commonsEnabled,
+                        sourceSettings = discovery.sourceSettings, canAct = sourcePresentationCurrent,
+                        canToggleCommons = discovery.state.ready && !discovery.state.storageUnavailable && !discovery.filterControlsBusy,
+                        onEnableCommons = { enabled ->
+                            if (sourcePresentationCurrent() && discovery.state.ready && !discovery.state.storageUnavailable &&
+                                !discovery.filterControlsBusy && discovery.state.commonsEnabled != enabled) discovery.enableCommons(enabled)
+                        },
+                        onRefresh = { if (sourcePresentationCurrent()) providerManagement.inspect() },
+                        onAutoRefresh = { if (sourcePresentationCurrent()) providerManagement.refreshAutomatically() },
+                        onRejectCandidate = { if (managementCurrent()) providerManagement.rejectCandidate() },
+                        onRollback = { if (managementCurrent()) providerManagement.rollback() },
+                        onBack = { if (sourcePresentationCurrent()) { providerManagement.setActive(false); backTo(EsvDestination.SETTINGS) } })
+                }
                 else if (route == EsvDestination.DISCOVER) {
                     // No browser text crosses into Discovery's unsaved address draft.
                     val addressTab = if (!browser.isPrivateMode) browser.state.selectedTab?.takeIf { !it.incognito } else null

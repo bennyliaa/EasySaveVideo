@@ -100,6 +100,7 @@ val contractResourceInputs = fileTree("src/main/res") {
 }
 val contractSourceInputs = files(
     "build.gradle.kts",
+    "src/main/kotlin/com/easysavevideo/app/library/storage/AndroidLibraryRepository.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/RuntimeMessageCopy.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/RuntimeMessageResources.kt",
     "src/main/kotlin/com/easysavevideo/app/discovery/CommonsSourceRegistration.kt",
@@ -255,6 +256,7 @@ val contractSourceInputs = files(
     "src/main/kotlin/com/easysavevideo/app/editor/ui/EditorScreen.kt",
     "src/main/kotlin/com/easysavevideo/app/recording/ui/RecordingSegmentsCard.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/ProviderManagementScreen.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/SearxngSourceSettings.kt",
     "src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationUi.kt",
     "src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationResources.kt",
     "src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationPresentation.kt",

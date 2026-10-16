@@ -318,8 +318,16 @@ internal class AndroidLibraryRepository(
             throw LibraryFailure(LibraryError.STALE_REVISION)
         return item
     }
-    private fun readItem(id: String): MediaItem? = database().rawQuery("$ITEM_SELECT WHERE i.item_id=?", arrayOf(id)).use { c ->
-        if (c.moveToFirst()) readItem(c) else null
+    private fun readItem(id: String): MediaItem? = database().rawQuery("$ITEM_LOOKUP_SELECT WHERE i.item_id=?", arrayOf(id)).use { c ->
+        if (!c.moveToFirst()) return@use null
+        // A retained item with a missing or mismatched representation needs recovery, not absence.
+        requireLibraryRepresentationBinding(
+            itemId = c.getString(0), representationId = c.getString(12), generation = c.getLong(2),
+            boundRepresentationId = if (c.isNull(13)) null else c.getString(13),
+            boundItemId = if (c.isNull(14)) null else c.getString(14),
+            boundGeneration = if (c.isNull(15)) null else c.getLong(15),
+        )
+        readItem(c)
     }
     private fun readItem(c: Cursor): MediaItem = MediaItem(c.getString(0), c.getLong(1), c.getLong(2),
         if (c.isNull(3)) null else c.getString(3), if (c.isNull(4)) "Deleted item" else c.getString(4),
@@ -410,9 +418,12 @@ internal class AndroidLibraryRepository(
 
     companion object {
         internal const val DELETE_BATCH_SQL = "SELECT target_id,operation_id FROM library_operation WHERE phase='DELETE_PENDING' AND operation_id>? ORDER BY operation_id LIMIT ?"
-        private const val ITEM_SELECT = """SELECT i.item_id,i.revision,i.generation,i.folder_id,i.display_name,i.created_at,
-            i.date_kind,r.size_bytes,i.duration_millis,i.width,i.height,i.lifecycle FROM library_item i
+        private const val ITEM_COLUMNS = """SELECT i.item_id,i.revision,i.generation,i.folder_id,i.display_name,i.created_at,
+            i.date_kind,r.size_bytes,i.duration_millis,i.width,i.height,i.lifecycle"""
+        private const val ITEM_SELECT = """$ITEM_COLUMNS FROM library_item i
             JOIN media_representation r ON r.representation_id=i.representation_id AND r.item_id=i.item_id AND r.generation=i.generation"""
+        private const val ITEM_LOOKUP_SELECT = """$ITEM_COLUMNS,i.representation_id,r.representation_id,r.item_id,r.generation
+            FROM library_item i LEFT JOIN media_representation r ON r.representation_id=i.representation_id"""
         private const val FOLDER_SELECT = """SELECT f.folder_id,f.revision,f.parent_id,f.display_name,
             (SELECT COUNT(*) FROM library_item i WHERE i.folder_id=f.folder_id AND i.lifecycle<>'DELETED'),
             (SELECT COUNT(*) FROM library_folder c WHERE c.parent_id=f.folder_id) FROM library_folder f"""

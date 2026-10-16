@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="provider_dialog_0">Provider management</string>
+    <string name="provider_dialog_0">Sources</string>
     <string name="provider_dialog_1">Back</string>
-    <string name="provider_dialog_2">Wikimedia Commons · only bundled source</string>
+    <string name="provider_dialog_2">Wikimedia Commons · bundled source</string>
     <string name="provider_dialog_3">In the foreground, only the local snapshot refreshes every 5 seconds. No remote check occurs. Values reflect the last read; recovery revalidates them.</string>
     <string name="provider_dialog_4">Reject candidate v%1$s?</string>
     <string name="provider_dialog_5">Run the currently authorized local rollback?</string>

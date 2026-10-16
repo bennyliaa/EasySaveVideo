@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="provider_dialog_0">Provider 管理</string>
+    <string name="provider_dialog_0">来源管理</string>
     <string name="provider_dialog_1">返回</string>
-    <string name="provider_dialog_2">Wikimedia Commons · 唯一内置来源</string>
+    <string name="provider_dialog_2">Wikimedia Commons · 内置来源</string>
     <string name="provider_dialog_3">前台每 5 秒只刷新本地快照；无远程检查。显示值是上次读取状态，执行恢复时会重新校验。</string>
     <string name="provider_dialog_4">拒绝候选 v%1$s？</string>
     <string name="provider_dialog_5">执行当前获准的本地回滚？</string>

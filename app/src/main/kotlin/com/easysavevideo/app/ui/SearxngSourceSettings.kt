@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,14 +42,27 @@ import com.easysavevideo.app.theme.LocalEsvVisuals
 
 /** Insert inside the existing options column. No provider, SafeSearch control, or network access. */
 @Composable
-fun SearxngSourceSettings(controller: SearxngConfigurationController, modifier: Modifier = Modifier) {
+fun SearxngSourceSettings(controller: SearxngConfigurationController, modifier: Modifier = Modifier,
+    canAct: () -> Boolean = { true }, canStart: () -> Boolean = { true },
+    onDialogChanged: (Boolean) -> Unit = {}) {
     val v = LocalEsvVisuals.current
     val state = controller.state
-    var edit by remember(controller) { mutableStateOf<SearxngConfigurationClaim?>(null) }
-    var reset by remember(controller) { mutableStateOf<SearxngConfigurationClaim?>(null) }
-    LaunchedEffect(state.config?.generation, state.busy, state.status) {
-        if (edit?.let(controller::isCurrent) == false) edit = null
-        if (reset?.let(controller::isCurrent) == false) reset = null
+    val actions = remember(controller, canAct) { CapturedPrivateActions(false, { true }, canAct) }
+    DisposableEffect(actions) { onDispose { actions.close(); onDialogChanged(false) } }
+    var edit by remember(actions) { mutableStateOf<SearxngConfigurationClaim?>(null) }
+    var reset by remember(actions) { mutableStateOf<SearxngConfigurationClaim?>(null) }
+    fun idle() = actions.isCurrent() && canStart() && edit == null && reset == null
+    fun editCurrent(claim: SearxngConfigurationClaim) = actions.isCurrent() && edit === claim && controller.isCurrent(claim)
+    fun resetCurrent(claim: SearxngConfigurationClaim) = actions.isCurrent() && reset === claim && controller.isCurrent(claim)
+    fun dismissEdit(claim: SearxngConfigurationClaim) {
+        if (edit === claim) { edit = null; onDialogChanged(false) }
+    }
+    fun dismissReset(claim: SearxngConfigurationClaim) {
+        if (reset === claim) { reset = null; onDialogChanged(false) }
+    }
+    LaunchedEffect(actions, state.config?.generation, state.busy, state.status) {
+        edit?.takeIf { !editCurrent(it) }?.let(::dismissEdit)
+        reset?.takeIf { !resetCurrent(it) }?.let(::dismissReset)
     }
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
         EsvText("SearXNG 搜索来源", style = v.titleTextStyle)
@@ -69,25 +83,30 @@ fun SearxngSourceSettings(controller: SearxngConfigurationController, modifier: 
                 .padding(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvText("来源 ${index + 1} · ${slot.id}", style = v.bodyTextStyle)
                 EsvText(slot.hostname?.let { "$it · ${if (slot.enabled) "已启用" else "已关闭"}" } ?: "未配置", style = v.captionTextStyle)
-                EsvButton(if (slot.searchUrl == null) "配置来源" else "编辑、启停或移除", enabled = state.editable,
-                    onClick = { edit = controller.beginEdit(slot.id) })
+                EsvButton(if (slot.searchUrl == null) "配置来源" else "编辑、启停或移除", enabled = state.editable && idle(),
+                    onClick = { if (idle()) controller.beginEdit(slot.id)?.let { claim ->
+                        edit = claim; onDialogChanged(true)
+                    } })
             }
         }
-        EsvButton("重新读取配置", onClick = { controller.reload() }, enabled = !state.busy && state.status != SearxngConfigurationStatus.CLOSED)
-        EsvButton("清空 SearXNG 来源配置", onClick = { reset = controller.beginReset() }, enabled = state.editable)
+        EsvButton("重新读取配置", onClick = { if (idle()) controller.reload() }, enabled = idle() && !state.busy && state.status != SearxngConfigurationStatus.CLOSED)
+        EsvButton("清空 SearXNG 来源配置", onClick = { if (idle()) controller.beginReset()?.let { claim ->
+            reset = claim; onDialogChanged(true)
+        } }, enabled = state.editable && idle())
     }
     edit?.let { claim ->
-        SearxngEndpointEditor(controller, claim, onDismiss = { edit = null })
+        SearxngEndpointEditor(controller, claim, canAct = { editCurrent(claim) },
+            onDismiss = { dismissEdit(claim) })
     }
     reset?.let { claim ->
-        Dialog(onDismissRequest = { reset = null }) {
+        Dialog(onDismissRequest = { dismissReset(claim) }) {
             Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingLarge),
                 verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
                 EsvText("清空全部 SearXNG 来源？", style = v.titleTextStyle)
                 EsvText("会移除三个端点并停用它们，使旧候选和来源进度失效。不会自动查找。", style = v.bodyTextStyle)
-                EsvButton("取消", onClick = { reset = null })
-                EsvButton("确认清空", enabled = controller.isCurrent(claim), onClick = {
-                    if (controller.reset(claim)) reset = null
+                EsvButton("取消", onClick = { dismissReset(claim) })
+                EsvButton("确认清空", enabled = resetCurrent(claim), onClick = {
+                    if (resetCurrent(claim) && controller.reset(claim)) dismissReset(claim)
                 })
             }
         }
@@ -96,7 +115,7 @@ fun SearxngSourceSettings(controller: SearxngConfigurationController, modifier: 
 
 @Composable
 private fun SearxngEndpointEditor(controller: SearxngConfigurationController, claim: SearxngConfigurationClaim,
-    onDismiss: () -> Unit) {
+    canAct: () -> Boolean, onDismiss: () -> Unit) {
     val v = LocalEsvVisuals.current
     val config = controller.state.config ?: return
     val original = config.slots.firstOrNull { it.id == claim.slotId } ?: return
@@ -104,7 +123,8 @@ private fun SearxngEndpointEditor(controller: SearxngConfigurationController, cl
     var enabled by remember(claim) { mutableStateOf(original.enabled) }
     var acknowledged by remember(claim) { mutableStateOf(false) }
     val validation = SearxngConfigurationPolicy.replace(config, original.id, url, enabled, acknowledged)
-    val current = controller.isCurrent(claim)
+    fun isCurrent() = canAct() && controller.isCurrent(claim)
+    val current = isCurrent()
     val needsAcknowledgement = SearxngConfigurationPolicy.acknowledgementRequired(original, url, enabled)
     Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
@@ -112,7 +132,7 @@ private fun SearxngEndpointEditor(controller: SearxngConfigurationController, cl
             EsvText("配置 ${original.id}", style = v.titleTextStyle)
             EsvText("输入完整的公共 HTTPS /search 地址。仅允许公共域名，不允许账号、密码、查询参数、片段、端口、IP 或本地地址。", style = v.captionTextStyle)
             BasicTextField(url, onValueChange = { text ->
-                if (text.length <= SearxngConfigurationPolicy.MAX_URL_BYTES &&
+                if (isCurrent() && text.length <= SearxngConfigurationPolicy.MAX_URL_BYTES &&
                     text.toByteArray(Charsets.UTF_8).size <= SearxngConfigurationPolicy.MAX_URL_BYTES) {
                     url = text; acknowledged = false
                     if (text.isEmpty()) enabled = false
@@ -123,10 +143,10 @@ private fun SearxngEndpointEditor(controller: SearxngConfigurationController, cl
                 modifier = Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.corner))
                     .padding(v.spacingMedium).semantics { contentDescription = "SearXNG HTTPS 搜索端点" },
                 decorationBox = { input -> Column { if (url.isEmpty()) EsvText("端点地址；留空可移除", color = v.colors.muted); input() } })
-            SourceCheckbox("启用这个来源", enabled, current && url.isNotEmpty()) { enabled = it; acknowledged = false }
+            SourceCheckbox("启用这个来源", enabled, current && url.isNotEmpty()) { if (isCurrent()) { enabled = it; acknowledged = false } }
             EsvText("主动查找时，输入的查询会发送给这个端点及其上游搜索引擎。端点地址只作为本地功能配置保存。", style = v.captionTextStyle)
             SourceCheckbox("我理解并同意向此端点及其上游搜索引擎发送查询", acknowledged,
-                current && url.isNotEmpty()) { acknowledged = it }
+                current && url.isNotEmpty()) { if (isCurrent()) acknowledged = it }
             EsvText("安全搜索能力未知；安全搜索开启的请求会被拒绝。保存不会修改安全搜索，也不会发送或重新发送查询。", style = v.captionTextStyle, color = v.colors.error)
             if (validation is SearxngConfigurationEdit.Rejected &&
                 (!needsAcknowledgement || validation.issue != com.easysavevideo.app.discovery.SearxngConfigurationIssue.ACKNOWLEDGEMENT_REQUIRED))
@@ -134,9 +154,9 @@ private fun SearxngEndpointEditor(controller: SearxngConfigurationController, cl
             if (!current) EsvText("配置已改变，请关闭后重新打开。", style = v.captionTextStyle, color = v.colors.error)
             EsvButton("取消", onClick = onDismiss)
             EsvButton("保存本地配置", enabled = current && validation is SearxngConfigurationEdit.Accepted,
-                onClick = { if (controller.replace(claim, url, enabled, acknowledged)) onDismiss() })
+                onClick = { if (isCurrent() && controller.replace(claim, url, enabled, acknowledged)) onDismiss() })
             if (original.searchUrl != null) EsvButton("移除此端点", enabled = current,
-                onClick = { if (controller.replace(claim, "", enabled = false, acknowledged = false)) onDismiss() })
+                onClick = { if (isCurrent() && controller.replace(claim, "", enabled = false, acknowledged = false)) onDismiss() })
         }
     }
 }

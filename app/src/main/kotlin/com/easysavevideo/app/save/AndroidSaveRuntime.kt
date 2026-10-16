@@ -1501,9 +1501,8 @@ class AndroidSaveRuntime private constructor(context: Context) {
         return ids.mapNotNull(byId::get) to SaveTaskCapacity.activeCount(unfinished.map { it.task.state })
     }
 
-    private fun readMediaDispositions(items: List<SaveRecord>): Map<String, MediaLifecycle> = items.mapNotNull { record ->
-        record.receipt?.let { receipt -> storage.library.item(receipt.mediaId)?.let { receipt.mediaId to it.lifecycle } }
-    }.toMap()
+    private fun readMediaDispositions(items: List<SaveRecord>): Map<String, MediaLifecycle> =
+        readSaveMediaDispositions(items.mapNotNull { it.receipt?.mediaId }, storage.library::item)
 
     private fun canResumeFinalized(record: SaveRecord): Boolean =
         (record.request.method == TaskMethod.RECORD && record.transfer?.recordingExpectation != null) || canSave(record.request.method)
