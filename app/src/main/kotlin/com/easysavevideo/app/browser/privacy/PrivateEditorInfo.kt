@@ -66,12 +66,26 @@ internal fun createPrivateInputConnection(
         sanitizePrivateEditorInfo(editorInfo)
         return null
     }
+    val creation = if (token.hasRetirementTracking) token.beginConnectionCreation() else null
+    if (token.hasRetirementTracking && creation == null) {
+        token.revoke()
+        sanitizePrivateEditorInfo(editorInfo)
+        return null
+    }
+    val connectionToken = creation?.let { token.forConnection(it.connection) } ?: token
     var published = false
     try {
         // Never request a provider when the root's publication has already been revoked.
-        if (!token.isCurrent()) return null
-        val delegate = createDelegate() ?: return null
-        val connection = RevocableInputConnection.create(delegate, token, ownerHandler) ?: return null
+        if (!token.isCurrent()) {
+            // The provider factory has not run, so there is no native connection to retire.
+            creation?.connection?.confirmClosed()
+            return null
+        }
+        val delegate = createDelegate() ?: run {
+            creation?.connection?.confirmClosed()
+            return null
+        }
+        val connection = RevocableInputConnection.create(delegate, connectionToken, ownerHandler) ?: return null
         editorInfo.imeOptions = editorInfo.imeOptions or EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING
         if (!token.isCurrent()) {
             connection.closeConnection()
@@ -84,5 +98,8 @@ internal fun createPrivateInputConnection(
             token.revoke()
             sanitizePrivateEditorInfo(editorInfo)
         }
+        // Includes factory, wrapper/getHandler and unsuccessful construction. A thrown factory or
+        // an unowned returned delegate keeps its connection debt even after invocation return.
+        creation?.invocation?.returned()
     }
 }

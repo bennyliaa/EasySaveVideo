@@ -193,12 +193,16 @@ class PrivateMainPresentationSourceContractTest {
     }
     @Test fun unsafeOrdinaryRoutesAndRawPreviewDialogsWaitForExactDepartureShell() {
         val admission = owner.substringAfter("fun canComposeOrdinaryContent(").substringBefore("private fun ownsContent(")
-        for (part in listOf("current === value", "value.claim == null", "routeIdentity() === value.route", "!browser.isPrivateMode",
+        for (part in listOf("current === value", "!value.sensitive", "routeIdentity() === value.route", "!browser.isPrivateMode",
             "!reservedPrivateTransition", "!root.isCovered", "PrivateRootPresentationState.ORDINARY_VISIBLE"))
             assertTrue(part, admission.contains(part))
         assertTrue(activity.contains("privatePresentationOwner.canComposeOrdinaryContent(presentation)"))
         ordered(activity.substringAfter(") { route, routeEntry ->"),
-            "if (!routeContentReady || (privateMode && !canRetainPrivateRoute(route)))", "else if (previewHost) BrowserScreen")
+            "if (!routeContentReady || (vaultPresentation && route != EsvDestination.VAULT)",
+            "(presentation?.claim != null && !canRetainPrivateRoute(route))", "else if (previewHost) BrowserScreen")
+        assertTrue(owner.contains("val sensitive get() = claim != null || vaultClaim != null"))
+        assertTrue(activity.contains("setOf(EsvDestination.BROWSER, EsvDestination.TASKS)"))
+        assertFalse(activity.contains("setOf(EsvDestination.BROWSER, EsvDestination.TASKS, EsvDestination.VAULT)"))
         assertTrue(activity.contains("if (!previewHost && (privateMode || routeContentReady))"))
         assertTrue(activity.contains("authorizedPreviewFrame != null && isForeground && routeContentReady && !privateMode"))
         assertTrue(activity.contains("enabled = routeContentReady && !privateMode && previewHost"))

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import com.easysavevideo.app.vault.*
 import com.easysavevideo.app.ui.RecordingSessionControls
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -100,6 +101,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var appComposeView: ComposeView
     private lateinit var privateWindowGuard: PrivateWindowGuard
     private lateinit var privatePresentationOwner: PrivateMainPresentationOwner
+    private var vaultHost: VaultProtectedHost? = null
+    private var vaultLockObserver: android.content.BroadcastReceiver? = null
     private lateinit var privateRecording: PrivateRecordingBridge
     private var continuousRecordingSubscription: AutoCloseable? = null
     private lateinit var privateRecordingSurface: OwnedPrivateRecordingPresentationPort
@@ -124,6 +127,7 @@ class MainActivity : ComponentActivity() {
         return reserved && protected
     }
     private fun protectBeforePresentationMove(): Boolean {
+        if (activeDestination == EsvDestination.VAULT) vaultHost?.protectBeforeDeparture()
         if (!::browser.isInitialized || !::privateRecording.isInitialized ||
             (!browser.isPrivateMode && !privateRecording.hasPresentationOwner)) return true
         return protectPrivateTransition()
@@ -164,6 +168,9 @@ class MainActivity : ComponentActivity() {
     private var activeDestination by mutableStateOf(EsvDestination.DISCOVER)
     private var newTabInputGeneration by mutableLongStateOf(0L)
     private fun navigate(destination: EsvDestination) {
+        if (destination == EsvDestination.VAULT && (!AndroidVaultRuntimeEntry.ENABLED || vaultHost == null ||
+                browser.isPrivateMode || privateWindowGuard.hasContinuousCaptureAuthorization || !captureSourcesDrained())) return
+        if (destination == EsvDestination.VAULT && vaultHost?.attach() != true) return
         val controller = navController ?: return
         if (controller.currentDestination?.route != destination.route && !protectBeforePresentationMove()) return
         if (!prepareRouteMode(destination)) return
@@ -356,12 +363,37 @@ class MainActivity : ComponentActivity() {
             captureExceptionInactive = { !privateRecordingSurface.ownsCapturePresentation },
             protectForPresentationTransition = ::protectForPrivateModal, audioDisposition = ::captureAudioDisposition,
             continuousCaptureAuthorized = { saves.continuousRecordingAuthorization != null },
-            independentRecordingOwner = { saves.hasIndependentSubmittedRecordingOwner })
-        privateWindowGuard.onOwnedHierarchyChanged = privatePresentationOwner::hierarchyChanged
+            independentRecordingOwner = { saves.hasIndependentSubmittedRecordingOwner }, vault = { vaultHost })
+        // One app singleton and the existing root. The compile-time gate prevents construction.
+        if (AndroidVaultRuntimeEntry.ENABLED) AndroidVaultRuntimeEntry.getOrCreate(applicationContext)?.let { binding ->
+            VaultProtectedHost(this, privateContentRoot, privateWindowGuard, privatePresentationOwner, binding,
+                routeNow = { privateRouteIdentity }, inVaultRoute = { activeDestination == EsvDestination.VAULT && !browser.isPrivateMode },
+                foreground = { isForeground }, captureDrained = ::captureSourcesDrained).also { host ->
+                vaultHost = host
+                host.attach()
+            }
+            // Screen-off is only an observation opportunity, never fabricated lock evidence.
+            val observer = object : android.content.BroadcastReceiver() {
+                override fun onReceive(context: android.content.Context?, intent: Intent?) {
+                    if (intent?.action == Intent.ACTION_SCREEN_OFF &&
+                        getSystemService(android.app.KeyguardManager::class.java)?.isDeviceLocked == true)
+                        vaultHost?.deviceLocked()
+                }
+            }
+            val filter = android.content.IntentFilter(Intent.ACTION_SCREEN_OFF)
+            if (android.os.Build.VERSION.SDK_INT >= 33) registerReceiver(observer, filter, RECEIVER_NOT_EXPORTED)
+            else registerReceiver(observer, filter)
+            vaultLockObserver = observer
+        }
+        privateWindowGuard.onOwnedHierarchyChanged = {
+            privatePresentationOwner.hierarchyChanged()
+            vaultHost?.hierarchyChanged()
+        }
         browser.installPrivatePresentationBinding(privatePresentationOwner)
         browser.installPrivateIntegration(object : PrivateBrowserIntegration {
             override fun ready() = saves.ready && privatePresentationOwner.ready()
-            override fun canEnterPrivateMode() = saves.ready && !recordingConsent.requestInFlight &&
+            override fun canEnterPrivateMode() = activeDestination != EsvDestination.VAULT &&
+                saves.ready && !recordingConsent.requestInFlight &&
                 !privateRecording.hasSetupOwner &&
                 (saves.hasIndependentSubmittedRecordingOwner || captureSourcesDrained())
             override fun protectForPresentationTransition() = protectPrivateTransition()
@@ -381,23 +413,31 @@ class MainActivity : ComponentActivity() {
             val authorization = saves.continuousRecordingAuthorization
             if (authorization != null) privateRecordingSurface.attachContinuous(authorization)
             else privateRecordingSurface.detachContinuous()
+            if (activeDestination == EsvDestination.VAULT && authorization != null) vaultHost?.protectBeforeDeparture()
             browser.refreshPrivateCaptureAudio()
             if (!privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.retryPresentation()
         }
         appComposeView.setContent {
             // These Host reads subscribe this owning composition to tab/document/fullscreen changes.
-            val privateMode = browser.state.selectedTab?.incognito == true || browser.isPrivateMode
+            val browserPrivate = browser.state.selectedTab?.incognito == true || browser.isPrivateMode
             val presentedFullscreen = browser.fullScreenView
             // An asynchronous opening failure may only publish Runtime status, not BrowserState.
             // Observe it here so recovery receives a real fresh owning-composition SideEffect.
             val privateStatus = browser.privateStatus
             val recordingUi = privateRecording.presentation
             val presentation = privatePresentationOwner.prepareComposition()
+            val privateMode = presentation?.sensitive ?: (browserPrivate || activeDestination == EsvDestination.VAULT)
+            val vaultPresentation = presentation?.vaultClaim != null
             val childApplyTicket = privatePresentationOwner.captureChildApply(presentation)
             val inputEpoch = privatePresentationOwner.inputEpoch
             val dialogs = privatePresentationOwner.dialogEnvironment(presentation)
-            val routeContentReady = if (privateMode) canRetainPrivateRoute(activeDestination)
-                else privatePresentationOwner.canComposeOrdinaryContent(presentation)
+            val routeContentReady = when {
+                presentation == null -> false
+                vaultPresentation -> activeDestination == EsvDestination.VAULT && !browserPrivate
+                privateMode -> canRetainPrivateRoute(activeDestination)
+                activeDestination == EsvDestination.VAULT -> false
+                else -> privatePresentationOwner.canComposeOrdinaryContent(presentation)
+            }
             // A system pop has already changed the NavController. Until a pending selection
             // settles, compose only the protected shell/global dialogs, not an unwrapped route.
             LaunchedEffect(activeDestination, previewReceipt, libraryPreviewReference,
@@ -412,10 +452,10 @@ class MainActivity : ComponentActivity() {
             // Capture this root publication and exact route occurrence, never the next reveal.
             val rootInputAdmission = LocalPrivateInputAdmission.current
             val actionRouteIdentity = privateRouteIdentity
-            val chromeActions = remember(privateMode, rootInputAdmission, actionRouteIdentity, inputEpoch) {
+            val chromeActions = remember(privateMode, presentation, rootInputAdmission, actionRouteIdentity, inputEpoch) {
                 CapturedPrivateActions(privateMode, rootInputAdmission) {
                     privateRouteIdentity === actionRouteIdentity && privatePresentationOwner.inputEpoch == inputEpoch &&
-                        privateMode == (browser.state.selectedTab?.incognito == true || browser.isPrivateMode)
+                        privatePresentationOwner.isCurrentSource(presentation)
                 }
             }
             DisposableEffect(chromeActions) { onDispose { chromeActions.close() } }
@@ -448,6 +488,7 @@ class MainActivity : ComponentActivity() {
                             if (::saves.isInitialized) saves.libraryExports?.cancelBatchForLeavingLibrary()
                         }
                         activeDestination = nextDestination
+                        vaultHost?.observePresence()
                         if (activeDestination != EsvDestination.BROWSER) { browser.setJsDialogUiVisible(false); browser.setVideoPresenceUiVisible(false) }
                     }
                     controller.addOnDestinationChangedListener(listener)
@@ -608,7 +649,8 @@ class MainActivity : ComponentActivity() {
                 }
                 val browserChild = routeContentReady && (previewHost ||
                     (receipt == null && libraryReference == null && route == EsvDestination.BROWSER))
-                if (!routeContentReady || (privateMode && !canRetainPrivateRoute(route))) {
+                if (!routeContentReady || (vaultPresentation && route != EsvDestination.VAULT) ||
+                        (presentation?.claim != null && !canRetainPrivateRoute(route))) {
                     // Empty, non-sensitive applied shell. The owner still waits for Host detach,
                     // registered-dialog teardown, capture drain and this root's actual draw.
                 }
@@ -911,7 +953,11 @@ class MainActivity : ComponentActivity() {
                         discovery.setVisibility(isForeground, false); navigate(EsvDestination.BROWSER); browser.navigate(url)
                     })
                 }
+                else if (route == EsvDestination.VAULT) {
+                    if (AndroidVaultRuntimeEntry.ENABLED && vaultPresentation) vaultHost?.let { VaultRuntimePage(it) }
+                }
                 else if (route == EsvDestination.SETTINGS) EsvSettingsScreen(settings,
+                    onVault = { navigate(EsvDestination.VAULT) },
                     onChange = { edit ->
                         val value = if (edit is SettingsEdit.DiscoveryEdit)
                             applyDiscoverySettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded, isForeground, !isDestroyed && !isFinishing,
@@ -1104,6 +1150,10 @@ class MainActivity : ComponentActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         hasFocusedWindow = hasFocus
+        if (activeDestination == EsvDestination.VAULT) {
+            if (!hasFocus && !privateWindowGuard.hasRegisteredPrivateDialogs) vaultHost?.surfaceCovered()
+            if (hasFocus && !privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.retryPresentation()
+        }
         if (::privateRecording.isInitialized && browser.isPrivateMode) {
             if (!hasFocus) {
                 if (privateWindowGuard.hasRegisteredPrivateDialogs) {
@@ -1116,7 +1166,12 @@ class MainActivity : ComponentActivity() {
         }
         if (::saves.isInitialized) saves.segmentRecording?.setPreviewHostFocused(hasFocus)
     }
-    override fun onResume() { super.onResume(); libraryResumeSequence++; isForeground = true; if (::saves.isInitialized) saves.setForeground(true); if (::browser.isInitialized) browser.resume(); if (::discovery.isInitialized) discovery.setVisibility(true, showingDiscovery && !showingProviderManagement && !showingLibrary && !showingSaveTasks && !showingRecording) }
+    override fun onResume() { super.onResume(); libraryResumeSequence++; isForeground = true;
+        vaultHost?.let { host ->
+            host.attach()
+            if (getSystemService(android.app.KeyguardManager::class.java)?.isDeviceLocked == true) host.deviceLocked()
+            host.observePresence()
+        }; if (::saves.isInitialized) saves.setForeground(true); if (::browser.isInitialized) browser.resume(); if (::discovery.isInitialized) discovery.setVisibility(true, showingDiscovery && !showingProviderManagement && !showingLibrary && !showingSaveTasks && !showingRecording) }
     override fun onPostResume() {
         super.onPostResume()
         if (::diagnostics.isInitialized) diagnostics.onPostResume()
@@ -1125,11 +1180,14 @@ class MainActivity : ComponentActivity() {
     }
     override fun onPause() {
         // Synchronous protection precedes the Activity/Host foreground and route updates.
+        vaultHost?.background()
         if (::privateRecording.isInitialized && (browser.isPrivateMode || privateRecording.hasPresentationOwner))
             privateRecording.protectForLifecycle()
         filePrompt = null // Host.pause retires only non-picker choices; picker identity stays in choosing.
         newTabInputGeneration++; if (::diagnostics.isInitialized) diagnostics.onPause(); if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
     override fun onDestroy() {
+        vaultLockObserver?.let { unregisterReceiver(it) }; vaultLockObserver = null
+        vaultHost?.detach() // Only the Activity host; the app-scoped runtime remains owned.
         continuousRecordingSubscription?.close(); continuousRecordingSubscription = null
         if (::privateRecording.isInitialized) privateRecording.close()
         if (::browser.isInitialized) browser.close()

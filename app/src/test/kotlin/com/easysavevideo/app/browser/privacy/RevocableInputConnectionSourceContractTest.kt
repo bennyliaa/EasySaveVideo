@@ -162,4 +162,44 @@ class RevocableInputConnectionSourceContractTest {
         assertTrue(java.contains("does NOT establish a true-null"))
         assertFalse(java.contains("new InputConnectionWrapper"))
     }
+    @Test fun vaultFactoryReservesBeforeProviderAndReturnsAfterWrapperHandling() {
+        val helper = source("PrivateEditorInfo.kt")
+        val reserve = helper.indexOf("token.beginConnectionCreation()")
+        val provider = helper.indexOf("val delegate = createDelegate()")
+        val wrapper = helper.indexOf("val connection = RevocableInputConnection.create")
+        val returned = helper.indexOf("creation?.invocation?.returned()")
+        assertTrue(reserve > 0 && provider > reserve && wrapper > provider && returned > wrapper)
+        assertTrue(helper.contains("token.forConnection(it.connection)"))
+        assertTrue(helper.contains("creation?.connection?.confirmClosed()"))
+        assertTrue(source("RevocableInputConnection.kt").contains(
+            "if (token.hasRetirementTracking && token.connectionRetirement == null) return null"))
+    }
+
+    @Test fun vaultDeniesProviderAsynchronousPayloadPathsWithoutChangingDefaultAdmission() {
+        val base = source("RevocableInputConnection.kt")
+        listOf("commitContent(inputContentInfo, flags, opts)", "sendKeyEvent(event)",
+            "performPrivateCommand(action, data)").forEach {
+            assertTrue(base.contains("!token.hasRetirementTracking && token.mutate { delegate.$it }"))
+        }
+        val api = source("RevocableInputConnectionApi34.kt")
+        assertEquals(2, Regex("if \\(token.hasRetirementTracking \\|\\| !token.isCurrent\\(\\)\\)").findAll(api).count())
+        assertTrue(api.contains("!token.hasRetirementTracking && token.isCurrent()"))
+        assertTrue(base.contains("commitText(text, newCursorPosition)"))
+        assertTrue(base.contains("deleteSurroundingText(beforeLength, afterLength)"))
+    }
+
+    @Test fun vaultCloseReceiptComesAfterExactOwnedSuccessfulCleanupReturn() {
+        val base = source("RevocableInputConnection.kt")
+        assertTrue(base.contains("onCleanupReturned = {"))
+        assertTrue(base.contains("if (cleanupConfirmed) token.connectionRetirement?.confirmClosed()"))
+        assertTrue(base.contains("cleanupConfirmed = owned && successful"))
+        assertEquals(2, Regex("catch \\(_:[^}]*successful = false").findAll(base).count())
+        val state = source("RevocableInputConnectionState.kt")
+        assertTrue(state.contains("schedule.get() == Schedule.ACCEPTED && cleanupReturned.get()"))
+        assertTrue(state.contains("if (calls == 0L) connections.mapNotNull"))
+        assertTrue(base.contains("retirement.requestClose()"))
+        assertTrue(source("RevocableInputConnectionApi34.kt").contains(
+            "!token.hasRetirementTracking && token.mutate { delegate.previewHandwritingGesture(gesture, cancellationSignal) }"))
+    }
+
 }

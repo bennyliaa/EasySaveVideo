@@ -21,12 +21,18 @@ class PrivateTaskActionsSourceContractTest {
         ordered(main, "PrivateInputBoundary(privateMode, privatePresentationOwner.inputLifetime, inputEpoch) {",
             "val rootInputAdmission = LocalPrivateInputAdmission.current",
             "val actionRouteIdentity = privateRouteIdentity",
-            "remember(privateMode, rootInputAdmission, actionRouteIdentity, inputEpoch)",
+            "remember(privateMode, presentation, rootInputAdmission, actionRouteIdentity, inputEpoch)",
             "CapturedPrivateActions(privateMode, rootInputAdmission)",
             "privateRouteIdentity === actionRouteIdentity",
             "privatePresentationOwner.inputEpoch == inputEpoch",
-            "privateMode == (browser.state.selectedTab?.incognito == true || browser.isPrivateMode)",
+            "privatePresentationOwner.isCurrentSource(presentation)",
             "onDispose { chromeActions.close() }")
+        assertTrue(main.contains("val privateMode = presentation?.sensitive"))
+        val owner = source("browser/privacy/PrivateMainPresentationOwner.kt")
+        val sourceCheck = owner.substringAfter("fun isCurrentSource(").substringBefore("fun vaultActionsCurrent(")
+        for (part in listOf("current === value", "routeIdentity() === value.route", "value.vaultClaim.host.owns(value.vaultClaim)",
+            "browser.isPrivateBrowsingPresentationCurrent(value.claim)", "!browser.isPrivateMode && vault()?.claimFor(value.route) == null"))
+            assertTrue(part, sourceCheck.contains(part))
         assertTrue(main.contains("onNavigate = { destination -> chromeActions.run { navigate(destination) } })"))
         assertFalse(main.contains("onNavigate = ::navigate)"))
         assertTrue(main.contains("privateBackStackEntry = exactEntry\n                            privateRouteIdentity = Any()"))

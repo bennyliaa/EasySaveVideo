@@ -17,13 +17,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.easysavevideo.app.R
+import com.easysavevideo.app.vault.VaultRuntimeAvailability
 import com.easysavevideo.core.model.*
 import com.easysavevideo.app.theme.*
 import com.easysavevideo.app.licenses.ThirdPartyNotices
 import com.easysavevideo.app.ui.responsivePaneLayout
 
 @Composable
-fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}, discoveryEditable: Boolean = true, persistenceWarning: Boolean = false, loadWarning: Boolean = false, privacy: @Composable () -> Unit = {}, entitlements: @Composable () -> Unit = {}, saveDestination: @Composable () -> Unit = {}, browserEditable: Boolean = false, saveConcurrencyEditable: Boolean = false) {
+fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSources:()->Unit,onBack:()->Unit, diagnostics: @Composable () -> Unit = {}, discoveryEditable: Boolean = true, persistenceWarning: Boolean = false, loadWarning: Boolean = false, privacy: @Composable () -> Unit = {}, entitlements: @Composable () -> Unit = {}, saveDestination: @Composable () -> Unit = {}, browserEditable: Boolean = false, saveConcurrencyEditable: Boolean = false, onVault: (() -> Unit)? = null) {
     var categoryKey by rememberSaveable { mutableStateOf<String?>(null) }
     var notices by rememberSaveable { mutableStateOf(false) }
     val noticesListState = rememberLazyListState()
@@ -48,7 +49,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
                         SettingsCategories(presentation.active){categoryKey=it.key}
                     }
                     Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
-                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,browserEditable,saveConcurrencyEditable,privacy,entitlements,saveDestination){notices=true}
+                        SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,browserEditable,saveConcurrencyEditable,privacy,entitlements,saveDestination,onVault){notices=true}
                     }
                 }
             }
@@ -58,7 +59,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
                 verticalArrangement=Arrangement.spacedBy(v.spacingSmall)) {
                 SettingsHeading(onBack={goBack()}, persistenceWarning=persistenceWarning,loadWarning=loadWarning)
                 if(presentation.categories)SettingsCategories(null){categoryKey=it.key}
-                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,browserEditable,saveConcurrencyEditable,privacy,entitlements,saveDestination){notices=true}
+                if(presentation.detail)SettingsDetail(requireNotNull(presentation.active),settings,onChange,onSources,diagnostics,discoveryEditable,browserEditable,saveConcurrencyEditable,privacy,entitlements,saveDestination,onVault){notices=true}
             }
         }
     }
@@ -95,7 +96,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
     }
 }
 @Composable private fun SettingsDetail(category:SettingsCategory,settings:AppSettings,onChange:(SettingsEdit)->Unit,
-    onSources:()->Unit,diagnostics: @Composable () -> Unit,discoveryEditable:Boolean,browserEditable:Boolean,saveConcurrencyEditable:Boolean,privacy: @Composable () -> Unit,entitlements: @Composable () -> Unit,saveDestination: @Composable () -> Unit,onNotices:()->Unit) {
+    onSources:()->Unit,diagnostics: @Composable () -> Unit,discoveryEditable:Boolean,browserEditable:Boolean,saveConcurrencyEditable:Boolean,privacy: @Composable () -> Unit,entitlements: @Composable () -> Unit,saveDestination: @Composable () -> Unit,onVault:(()->Unit)?,onNotices:()->Unit) {
     val v=LocalEsvVisuals.current
     EsvText(categoryLabel(category),style=v.sectionTextStyle)
     when(category) {
@@ -151,7 +152,7 @@ fun EsvSettingsScreen(settings:AppSettings,onChange:(SettingsEdit)->Unit,onSourc
         SettingsCategory.DIAGNOSTICS -> diagnostics()
         SettingsCategory.ABOUT -> {
             EsvButton(stringResource(R.string.ui_licenses),onNotices)
-            EsvText(stringResource(R.string.ui_vault_disabled),style=v.captionTextStyle)
+            VaultRuntimeAvailability(onVault)
             EsvText(stringResource(R.string.ui_store_unavailable),style=v.captionTextStyle)
         }
     }

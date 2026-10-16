@@ -232,7 +232,8 @@ class VaultSessionReducer(private val retryPolicy: VaultRetryPolicy) {
                     (state.inVaultRoute == null || state.inVaultRoute == true && state.foreground)) {
                     state = state.copy(lockWindowId = null, lockWindowStartedAt = null, lockDeadline = null)
                 } else ignore()
-                VaultEvent.UnlockRequested -> requestUnlock()
+                VaultEvent.UnlockRequested -> requestUnlock(VaultAttemptPurpose.UNLOCK)
+                VaultEvent.RecoveryResetRequested -> requestUnlock(VaultAttemptPurpose.RECOVERY_RESET)
                 is VaultEvent.RetryWriteStored -> stored(event)
                 is VaultEvent.RetryWriteFailed -> if (event.identity == state.pendingRetryWrite?.identity) {
                     protect(true, VaultReason.RETRY_STORE_UNAVAILABLE, VaultMode.UNAVAILABLE)
@@ -255,7 +256,7 @@ class VaultSessionReducer(private val retryPolicy: VaultRetryPolicy) {
             }
         }
 
-        private fun requestUnlock() {
+        private fun requestUnlock(purpose: VaultAttemptPurpose) {
             if (state.mode != VaultMode.LOCKED || !state.foreground || state.inVaultRoute == false || state.cleanupStatus != VaultCleanupStatus.COMPLETE ||
                 state.retryStatus != VaultRetryStatus.READY || state.pendingRetryWrite != null) { block(); return }
             if (state.retryLedger.reservedAttemptCount == Long.MAX_VALUE || state.retryLedger.ledgerRevision == Long.MAX_VALUE) {
@@ -269,7 +270,7 @@ class VaultSessionReducer(private val retryPolicy: VaultRetryPolicy) {
             val write = VaultRetryWrite(VaultRetryWriteKind.RESERVATION, VaultRetryWriteIdentity(identity, writeId),
                 state.retryLedger.ledgerRevision, proposed, expiry)
             state = state.copy(mode = VaultMode.RESERVING_ATTEMPT, reason = VaultReason.NONE,
-                activeAttempt = VaultAttempt(identity, expiry), pendingRetryWrite = write, retryStatus = VaultRetryStatus.PERSISTENCE_PENDING)
+                activeAttempt = VaultAttempt(identity, expiry, purpose), pendingRetryWrite = write, retryStatus = VaultRetryStatus.PERSISTENCE_PENDING)
             effects += VaultEffect.PersistRetryWrite(write)
         }
 
@@ -277,6 +278,7 @@ class VaultSessionReducer(private val retryPolicy: VaultRetryPolicy) {
             val write = state.pendingRetryWrite
             if (write == null || write.identity != event.identity || write.expectedLedgerRevision != event.expectedLedgerRevision ||
                 write.proposedLedger.ledgerRevision != event.storedLedgerRevision) { ignore(); return }
+            val purpose = state.activeAttempt?.purpose
             val current = matches(write.identity.attempt) && !due(write.deadline) && state.foreground && state.inVaultRoute != false &&
                 state.cleanupStatus == VaultCleanupStatus.COMPLETE && state.retryStatus != VaultRetryStatus.UNAVAILABLE
             state = state.copy(retryLedger = write.proposedLedger, pendingRetryWrite = null)
@@ -288,9 +290,12 @@ class VaultSessionReducer(private val retryPolicy: VaultRetryPolicy) {
             if (write.kind == VaultRetryWriteKind.RESERVATION) {
                 val expiry = deadline(retryPolicy.authenticationTimeoutMillis)
                 if (expiry == null) { failClosed(VaultReason.CLOCK_INVALID); return }
-                val attempt = VaultAttempt(write.identity.attempt, expiry)
+                val attempt = VaultAttempt(write.identity.attempt, expiry, purpose ?: VaultAttemptPurpose.UNLOCK)
                 state = state.copy(mode = VaultMode.AUTHENTICATING, activeAttempt = attempt, retryStatus = VaultRetryStatus.READY)
                 effects += VaultEffect.BeginExternalAuthentication(attempt)
+            } else if (purpose == VaultAttemptPurpose.RECOVERY_RESET) {
+                state = state.copy(retryStatus = VaultRetryStatus.READY, retryDeadline = null)
+                protect(true, VaultReason.USER_LOCK, VaultMode.LOCKED)
             } else {
                 state = state.copy(mode = VaultMode.SESSION_OPEN, activeAttempt = null, retryStatus = VaultRetryStatus.READY,
                     retryDeadline = null, visibility = VaultVisibility.COVERED)
@@ -302,7 +307,13 @@ class VaultSessionReducer(private val retryPolicy: VaultRetryPolicy) {
                 effects += VaultEffect.DiscardAttemptResult(event.identity); ignore(); return
             }
             when (event.outcome) {
-                VaultAuthenticationOutcome.SESSION_ESTABLISHED -> {
+                VaultAuthenticationOutcome.SESSION_ESTABLISHED, VaultAuthenticationOutcome.RECOVERY_RESET_VERIFIED -> {
+                    val expectedPurpose = if (event.outcome == VaultAuthenticationOutcome.RECOVERY_RESET_VERIFIED)
+                        VaultAttemptPurpose.RECOVERY_RESET else VaultAttemptPurpose.UNLOCK
+                    if (state.activeAttempt?.purpose != expectedPurpose) {
+                        effects += VaultEffect.DiscardAttemptResult(event.identity)
+                        protect(true, VaultReason.ATTEMPT_CANCELLED); cooldown(); return
+                    }
                     if (state.retryLedger.ledgerRevision == Long.MAX_VALUE) { failClosed(VaultReason.COUNTER_EXHAUSTED); return }
                     val id = allocate(); val expiry = deadline(retryPolicy.persistenceTimeoutMillis)
                     if (id == null || expiry == null) { failClosed(VaultReason.COUNTER_EXHAUSTED); return }

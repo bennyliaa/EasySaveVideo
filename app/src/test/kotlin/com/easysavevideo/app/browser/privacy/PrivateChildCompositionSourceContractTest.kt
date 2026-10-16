@@ -53,6 +53,15 @@ class PrivateChildCompositionSourceContractTest {
             "registration.guard.close()", "val removed = dialogs.remove(registration)",
             "if (removed) attempt { onOwnedHierarchyChanged?.invoke() }", "return removed")
         assertFalse(unregister.contains("acknowledge"))
-        assertTrue(source("MainActivity.kt").contains("privateWindowGuard.onOwnedHierarchyChanged = privatePresentationOwner::hierarchyChanged"))
+        val main = source("MainActivity.kt")
+        val startMarker = "privateWindowGuard.onOwnedHierarchyChanged = {"
+        val endMarker = "browser.installPrivatePresentationBinding"
+        val start = main.indexOf(startMarker)
+        val end = main.indexOf(endMarker, (start + startMarker.length).coerceAtLeast(0))
+        assertTrue("Missing callback start", start >= 0)
+        assertTrue("Missing or out-of-order callback boundary", end > start)
+        val callback = main.substring(start + startMarker.length, end)
+        ordered(callback, "privatePresentationOwner.hierarchyChanged()", "vaultHost?.hierarchyChanged()")
+        assertFalse(callback.contains("compositionApplied("))
     }
 }

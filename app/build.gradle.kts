@@ -58,7 +58,7 @@ dependencies {
     implementation(project(":recording"))
     implementation(project(":library"))
     implementation(project(":hls"))
-    // Exact reviewed dependency admission only. Vault remains unimplemented and disabled.
+    // Exact reviewed dependency graph. New Vault runtime source has an independent scope gate; entry remains disabled.
     implementation("com.google.crypto.tink:tink-android:1.23.0")
     implementation("androidx.media3:media3-transformer:1.11.1")
     implementation("androidx.media3:media3-exoplayer-hls:1.11.1")
@@ -94,11 +94,13 @@ val contractResourceInputs = fileTree("src/main/res") {
             "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "bookmark_panel.xml", "history_panel.xml", "browser_permission_notice.xml", "browser_cookie_clear.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
             "discovery_presentation.xml", "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
             "library_batch_export.xml", "export_recovery.xml", "save_recovery.xml", "library_multi.xml", "library_display.xml", "provider_copy.xml",
-            "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "runtime_messages.xml", "final_*.xml"
+            "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "runtime_messages.xml", "vault_runtime.xml", "final_*.xml"
         )) include("$locale/$resource")
     }
 }
 val contractSourceInputs = files(
+    fileTree("src/main/kotlin/com/easysavevideo/app/vault") { include("**/*.kt") },
+    "src/main/AndroidManifest.xml",
     "build.gradle.kts",
     "src/main/kotlin/com/easysavevideo/app/library/storage/AndroidLibraryRepository.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/RuntimeMessageCopy.kt",
@@ -295,6 +297,8 @@ val contractSourceInputs = files(
     "src/main/res/values-zh-rCN/save_method_alternative.xml",
     "src/main/kotlin/com/easysavevideo/app/MainActivity.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/EsvSettingsScreen.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/shell/EsvDestination.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/shell/navigation/RootNavigation.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/DiscoverySettingsDetail.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/PrivacySettingsDetail.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/shell/DiscoveryPrivacySettingsDetail.kt",

@@ -22,18 +22,20 @@ internal class RevocableInputConnectionApi34(
     delegateLease: PrivateInputDelegateLease,
 ) : RevocableInputConnectionApi33(delegate, token, ownerHandler, delegateLease) {
     override fun previewHandwritingGesture(gesture: PreviewableHandwritingGesture, cancellationSignal: CancellationSignal?) =
-        token.mutate { delegate.previewHandwritingGesture(gesture, cancellationSignal) }
+        !token.hasRetirementTracking && token.mutate { delegate.previewHandwritingGesture(gesture, cancellationSignal) }
     override fun replaceText(start: Int, end: Int, text: CharSequence, newCursorPosition: Int, textAttribute: TextAttribute?) =
         token.mutate { delegate.replaceText(start, end, text, newCursorPosition, textAttribute) }
 
     override fun performHandwritingGesture(gesture: HandwritingGesture, executor: Executor?, consumer: IntConsumer?) {
         if (consumer == null) {
-            if (token.isCurrent()) delegate.performHandwritingGesture(gesture, executor, null)
+            if (!token.hasRetirementTracking && token.isCurrent()) delegate.performHandwritingGesture(gesture, executor, null)
             return
         }
         val completion = PrivateInputCompletion(token, executor ?: directExecutor,
             { InputConnection.HANDWRITING_GESTURE_RESULT_CANCELLED }, consumer::accept)
-        if (!token.isCurrent()) {
+        // Vault password input does not admit provider-owned asynchronous payload work. Its
+        // method return is not evidence that handwriting/bounds work has actually retired.
+        if (token.hasRetirementTracking || !token.isCurrent()) {
             completion.complete(InputConnection.HANDWRITING_GESTURE_RESULT_CANCELLED)
             return
         }
@@ -45,7 +47,9 @@ internal class RevocableInputConnectionApi34(
     override fun requestTextBoundsInfo(bounds: RectF, executor: Executor, consumer: Consumer<TextBoundsInfoResult>) {
         val completion = PrivateInputCompletion(token, executor,
             { TextBoundsInfoResult(TextBoundsInfoResult.CODE_CANCELLED) }, consumer::accept)
-        if (!token.isCurrent()) {
+        // Vault password input does not admit provider-owned asynchronous payload work. Its
+        // method return is not evidence that handwriting/bounds work has actually retired.
+        if (token.hasRetirementTracking || !token.isCurrent()) {
             completion.complete(TextBoundsInfoResult(TextBoundsInfoResult.CODE_CANCELLED))
             return
         }

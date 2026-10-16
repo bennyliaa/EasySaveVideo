@@ -5,7 +5,7 @@ package com.easysavevideo.app.ui.shell.navigation
  */
 object RootNavigation {
     val roots: Set<String> = setOf("discover", "tasks", "record", "library")
-    private val auxiliaries = setOf("settings", "sources", "browser", "editor")
+    private val auxiliaries = setOf("settings", "sources", "browser", "editor", "vault")
     private const val MAX_AUXILIARY_POPS = 32
 
     fun navigate(target: String, current: () -> String?, pop: () -> Boolean,

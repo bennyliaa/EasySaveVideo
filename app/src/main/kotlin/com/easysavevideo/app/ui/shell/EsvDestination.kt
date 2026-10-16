@@ -3,11 +3,11 @@ package com.easysavevideo.app.ui.shell
 /** Finite compile-time destinations. Arguments never contain page addresses or media. */
 enum class EsvDestination(val route: String) {
     DISCOVER("discover"), TASKS("tasks"), RECORD("record"), LIBRARY("library"),
-    SETTINGS("settings"), BROWSER("browser"), SOURCES("sources"), EDITOR("editor");
+    SETTINGS("settings"), BROWSER("browser"), SOURCES("sources"), EDITOR("editor"), VAULT("vault");
 
     val root: EsvDestination get() = when (this) {
         BROWSER -> DISCOVER
-        EDITOR -> LIBRARY
+        EDITOR, VAULT -> LIBRARY
         SETTINGS, SOURCES -> DISCOVER
         else -> this
     }

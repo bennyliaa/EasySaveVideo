@@ -45,6 +45,8 @@ internal data class PrivateWindowReadiness(
         recents != PrivateRecentsCapability.UNAVAILABLE
 }
 
+internal enum class PrivateCapturePolicy { BROWSER_COMPATIBLE, FORBIDDEN }
+
 /** Main-owner claim. All callbacks are short, read-only and evaluated on the main thread. */
 internal class PrivateWindowPresentation(
     val target: Any,
@@ -54,6 +56,7 @@ internal class PrivateWindowPresentation(
     val isCurrent: () -> Boolean,
     val compositionIsCurrent: () -> Boolean,
     val captureExceptionInactive: () -> Boolean,
+    val capturePolicy: PrivateCapturePolicy = PrivateCapturePolicy.BROWSER_COMPATIBLE,
 ) {
     override fun toString() = "PrivateWindowPresentation([redacted])"
 }
@@ -553,6 +556,14 @@ internal class PrivateWindowGuard(
         return root.acknowledgeAppliedComposition(turn, identity)
     }
 
+    /** Covered host composition only. No ordinary release or private reveal is granted here. */
+    fun acknowledgeHostCover(turn: PrivateProtectionTurn, compositionIsCurrent: () -> Boolean): Boolean {
+        requireMain()
+        if (disposed || !root.isCovered || root.currentProtectionTurn !== turn || !safeCheck(compositionIsCurrent)) return false
+        val identity = ownedIdentity() ?: return false
+        return root.acknowledgeAppliedComposition(turn, identity)
+    }
+
     fun acknowledgeOrdinaryComposition(turn: PrivateProtectionTurn, proof: PrivateOrdinaryPresentationProof): Boolean {
         requireMain()
         if (disposed || ownedDialogWindow != null || hasRegisteredPrivateDialogs || targetIdentity !== proof.target ||
@@ -568,6 +579,8 @@ internal class PrivateWindowGuard(
         val identity = ownedIdentity() ?: return PrivateRevealResult.STALE
         if (!privateContentReserved || disposed || targetIdentity !== claim.target ||
             presentationIdentity !== claim.presentation || !safeCheck(claim.isCurrent)) return PrivateRevealResult.STALE
+        if (claim.capturePolicy == PrivateCapturePolicy.FORBIDDEN && hasContinuousCaptureAuthorization)
+            return PrivateRevealResult.BLOCKED
         if (hasRegisteredPrivateDialogs) return PrivateRevealResult.PENDING
         val readiness = lifecycleReadiness()
         val readback = PrivateRevealReadback(
@@ -615,7 +628,9 @@ internal class PrivateWindowGuard(
     fun hasVisiblePrivatePresentation(target: Any, presentation: Any): Boolean {
         requireMain()
         val claim = visibleClaim ?: return false
-        return claim.target === target && claim.presentation === presentation &&
+        return (claim.capturePolicy != PrivateCapturePolicy.FORBIDDEN ||
+            (!hasContinuousCaptureAuthorization && secureRequested() && root.presentationState == PrivateRootPresentationState.PRIVATE_VISIBLE)) &&
+            claim.target === target && claim.presentation === presentation &&
             root.presentationState in setOf(PrivateRootPresentationState.PRIVATE_VISIBLE,
                 PrivateRootPresentationState.PRIVATE_CAPTURE_VISIBLE) &&
             ownedIdentity()?.let { root.visibleIdentity?.sameAs(it) } == true &&

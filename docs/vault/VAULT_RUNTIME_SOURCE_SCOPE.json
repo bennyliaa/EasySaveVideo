@@ -1,0 +1,37 @@
+{
+  "status": "disabled source integration scope; static check only, no platform acceptance",
+  "historical_gate_sha256": "fd058beaccd8af92928d5678d7bdf1f7c2ca9c74399d7f9ee0a4f381b189616b",
+  "entry": "app/src/main/kotlin/com/easysavevideo/app/vault/AndroidVaultRuntimeEntry.kt",
+  "tink_references": {
+    "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/VaultTinkKeysets.kt": [
+      "com.google.crypto.tink.Aead",
+      "com.google.crypto.tink.BinaryKeysetReader",
+      "com.google.crypto.tink.Configuration",
+      "com.google.crypto.tink.KeyStatus",
+      "com.google.crypto.tink.KeysetHandle",
+      "com.google.crypto.tink.RegistryConfiguration",
+      "com.google.crypto.tink.TinkProtoKeysetFormat",
+      "com.google.crypto.tink.aead.AeadConfig",
+      "com.google.crypto.tink.aead.PredefinedAeadParameters",
+      "com.google.crypto.tink.proto.EncryptedKeyset"
+    ],
+    "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/AndroidVaultBiometric.kt": [
+      "com.google.crypto.tink.Aead",
+      "com.google.crypto.tink.BinaryKeysetReader",
+      "com.google.crypto.tink.KeysetHandle"
+    ],
+    "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/VaultJcaAead.kt": [
+      "com.google.crypto.tink.Aead"
+    ],
+    "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/AndroidVaultAuthentication.kt": [
+      "com.google.crypto.tink.Aead",
+      "com.google.crypto.tink.KeysetHandle"
+    ],
+    "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/AndroidVaultKeystore.kt": [
+      "com.google.crypto.tink.Aead"
+    ],
+    "app/src/main/kotlin/com/easysavevideo/app/vault/crypto/VaultRecoverySlot.kt": [
+      "com.google.crypto.tink.KeysetHandle"
+    ]
+  }
+}

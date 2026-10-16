@@ -27,28 +27,42 @@ internal open class RevocableInputConnection protected constructor(
     // Preserve WebView's dedicated InputConnection thread, including the meaning of null.
     private val capturedHandler = delegate.handler
     private val cleanupHandler = capturedHandler ?: ownerHandler
+    private var cleanupConfirmed = false
     private val cleanup = PrivateInputCleanup(token, { action ->
         if (Looper.myLooper() === cleanupHandler.looper) {
             action.run()
             true
         } else cleanupHandler.post(action)
+    }, onCleanupReturned = {
+        if (cleanupConfirmed) token.connectionRetirement?.confirmClosed()
     }) {
         // Object identity alone is insufficient: WebView providers can reuse this delegate.
         // Once claimed, no replacement wrapper for it can publish until this cleanup returns.
-        delegateLease.cleanupIfOwned {
-            try { delegate.requestCursorUpdates(0) } catch (_: RuntimeException) { /* no sensitive logs */ }
-            try { delegate.closeConnection() } catch (_: RuntimeException) { /* no sensitive logs */ }
+        var successful = true
+        val owned = delegateLease.cleanupIfOwned {
+            // false means unsupported/no cursor report, not a failed close. Exceptions stay unknown.
+            try { delegate.requestCursorUpdates(0) } catch (_: RuntimeException) { successful = false }
+            try { delegate.closeConnection() } catch (_: RuntimeException) { successful = false }
         }
+        cleanupConfirmed = owned && successful
     }
+    init { token.connectionRetirement?.bindClose(cleanup::close) }
 
     final override fun getHandler(): Handler? = capturedHandler
-    final override fun closeConnection() = cleanup.close()
+    final override fun closeConnection() {
+        val retirement = token.connectionRetirement
+        if (retirement == null) cleanup.close() else {
+            token.revoke()
+            // A platform-initiated close obeys the same return-before-close order as host teardown.
+            retirement.requestClose()
+        }
+    }
     override fun beginBatchEdit() = token.mutate { delegate.beginBatchEdit() }
     override fun endBatchEdit() = token.mutate { delegate.endBatchEdit() }
     override fun clearMetaKeyStates(states: Int) = token.mutate { delegate.clearMetaKeyStates(states) }
     override fun commitCompletion(text: CompletionInfo?) = token.mutate { delegate.commitCompletion(text) }
     override fun commitContent(inputContentInfo: InputContentInfo, flags: Int, opts: Bundle?) =
-        token.mutate { delegate.commitContent(inputContentInfo, flags, opts) }
+        !token.hasRetirementTracking && token.mutate { delegate.commitContent(inputContentInfo, flags, opts) }
     override fun commitCorrection(correctionInfo: CorrectionInfo?) =
         token.mutate { delegate.commitCorrection(correctionInfo) }
     override fun commitText(text: CharSequence, newCursorPosition: Int) =
@@ -61,12 +75,13 @@ internal open class RevocableInputConnection protected constructor(
     override fun performContextMenuAction(id: Int) = token.mutate { delegate.performContextMenuAction(id) }
     override fun performEditorAction(editorAction: Int) = token.mutate { delegate.performEditorAction(editorAction) }
     override fun performPrivateCommand(action: String?, data: Bundle?) =
-        token.mutate { delegate.performPrivateCommand(action, data) }
+        !token.hasRetirementTracking && token.mutate { delegate.performPrivateCommand(action, data) }
     override fun performSpellCheck() = token.mutate { delegate.performSpellCheck() }
     override fun reportFullscreenMode(enabled: Boolean) = token.mutate { delegate.reportFullscreenMode(enabled) }
     override fun requestCursorUpdates(cursorUpdateMode: Int) =
         token.mutate { delegate.requestCursorUpdates(cursorUpdateMode) }
-    override fun sendKeyEvent(event: KeyEvent) = token.mutate { delegate.sendKeyEvent(event) }
+    override fun sendKeyEvent(event: KeyEvent) =
+        !token.hasRetirementTracking && token.mutate { delegate.sendKeyEvent(event) }
     override fun setComposingRegion(start: Int, end: Int) = token.mutate { delegate.setComposingRegion(start, end) }
     override fun setComposingText(text: CharSequence, newCursorPosition: Int) =
         token.mutate { delegate.setComposingText(text, newCursorPosition) }
@@ -88,6 +103,8 @@ internal open class RevocableInputConnection protected constructor(
     companion object {
         /** Owner Handler is captured at editor creation; never substitute the current focus/root. */
         fun create(delegate: InputConnection, token: PrivateInputToken, ownerHandler: Handler): InputConnection? {
+            // Tracked factories must reserve the possible resource before calling the provider.
+            if (token.hasRetirementTracking && token.connectionRetirement == null) return null
             val lease = privateInputDelegateLeases.acquire(delegate, token) ?: return null
             val leasedToken = token.fork(lease::isCurrent)
             if (leasedToken == null) { lease.abandon(); return null }

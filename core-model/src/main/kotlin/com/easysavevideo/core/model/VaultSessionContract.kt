@@ -49,7 +49,9 @@ sealed interface VaultLedgerLoad {
     data object Corrupt : VaultLedgerLoad
 }
 data class VaultAttemptIdentity(val processInstance: Long, val attemptId: Long, val authEpoch: Long)
-data class VaultAttempt(val identity: VaultAttemptIdentity, val deadline: VaultTick)
+enum class VaultAttemptPurpose { UNLOCK, RECOVERY_RESET }
+data class VaultAttempt(val identity: VaultAttemptIdentity, val deadline: VaultTick,
+    val purpose: VaultAttemptPurpose = VaultAttemptPurpose.UNLOCK)
 enum class VaultRetryWriteKind { RESERVATION, RESET }
 data class VaultRetryWriteIdentity(val attempt: VaultAttemptIdentity, val writeId: Long)
 data class VaultRetryWrite(
@@ -110,7 +112,7 @@ data class VaultState(
     override fun toString(): String = "VaultState(mode=$mode, reason=$reason, visibility=$visibility)"
 }
 
-enum class VaultAuthenticationOutcome { SESSION_ESTABLISHED, REJECTED, CANCELLED, TEMPORARILY_UNAVAILABLE, KEY_INVALIDATED }
+enum class VaultAuthenticationOutcome { SESSION_ESTABLISHED, RECOVERY_RESET_VERIFIED, REJECTED, CANCELLED, TEMPORARILY_UNAVAILABLE, KEY_INVALIDATED }
 sealed interface VaultEvent {
     /** Complete current route/app observation; an occluding surface is not a route departure. */
     data class LifecycleObserved(val inVaultRoute: Boolean, val foreground: Boolean) : VaultEvent
@@ -125,6 +127,7 @@ sealed interface VaultEvent {
     data class AutoLockWindowStarted(val windowId: Long, val policyRevision: Long) : VaultEvent
     data class AutoLockWindowCancelled(val windowId: Long) : VaultEvent
     data object UnlockRequested : VaultEvent
+    data object RecoveryResetRequested : VaultEvent
     data class RetryWriteStored(val identity: VaultRetryWriteIdentity, val expectedLedgerRevision: Long, val storedLedgerRevision: Long) : VaultEvent
     data class RetryWriteFailed(val identity: VaultRetryWriteIdentity) : VaultEvent
     data class AuthenticationResult(

@@ -27,9 +27,12 @@ class PrivateOwnedCaptureMainContractTest {
     }
     @Test fun EveryNormalRetryRemainsOutsideOwnedCaptureAndNoLifecycleAckIsInvented() {
         val retries = main.lines().filter { it.contains("privatePresentationOwner.retryPresentation()") }
-        assertEquals(4, retries.size)
+        assertEquals(5, retries.size)
         retries.forEach { assertTrue(it, it.contains("!privateRecordingSurface.ownsCapturePresentation")) }
         val lifecycle = main.substringAfter("override fun onWindowFocusChanged")
+        val vaultFocus = lifecycle.substringAfter("if (activeDestination == EsvDestination.VAULT)")
+            .substringBefore("if (::privateRecording.isInitialized")
+        assertTrue(vaultFocus.contains("if (hasFocus && !privateRecordingSurface.ownsCapturePresentation)"))
         assertFalse(lifecycle.contains("compositionApplied("))
         assertTrue(main.contains("captureExceptionInactive = { !privateRecordingSurface.ownsCapturePresentation }"))
     }

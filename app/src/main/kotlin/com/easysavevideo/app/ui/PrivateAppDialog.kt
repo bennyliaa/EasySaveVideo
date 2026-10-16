@@ -55,6 +55,8 @@ import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.easysavevideo.app.browser.privacy.PrivateContentRoot
 import com.easysavevideo.app.browser.privacy.PrivateDialogRegistration
+import com.easysavevideo.app.browser.privacy.PrivateCapturePolicy
+import com.easysavevideo.app.browser.privacy.PrivateInputRetirement
 import com.easysavevideo.app.browser.privacy.PrivateInputLifetime
 import com.easysavevideo.app.browser.privacy.PrivateInputToken
 import com.easysavevideo.app.browser.privacy.PrivatePlatformTextInputMethodRequest
@@ -72,6 +74,9 @@ internal class PrivateAppDialogEnvironment(
     val isRequestCurrent: (Any) -> Boolean,
     val captureDrainedForModal: () -> Boolean,
     val independentRecordingOwner: () -> Boolean = { false },
+    val capturePolicy: PrivateCapturePolicy = PrivateCapturePolicy.BROWSER_COMPATIBLE,
+    val trackInputRetirement: Boolean = false,
+    val onInputRetired: (Any) -> Unit = {},
 )
 
 internal val LocalPrivateAppDialogEnvironment = staticCompositionLocalOf<PrivateAppDialogEnvironment?> { null }
@@ -224,6 +229,8 @@ private class OwnedPrivateDialog(
     private var composeView: ComposeView? = null
     private var registration: PrivateDialogRegistration? = null
     private var actionToken: PrivateInputToken? = null
+    private var inputRetirement: PrivateInputRetirement? = null
+    private var inputWasPublished = false
     private var compositionApplied = false
     private var prepared = false
     private var showing = false
@@ -241,6 +248,7 @@ private class OwnedPrivateDialog(
     private val teardown = PrivateDialogTeardown(lifetime,
         revoke = {
             actionToken?.revoke(); actionToken = null
+            inputRetirement?.retire { main.post { afterNativeTeardownEvent() } }
             root?.inputLifetime?.dispose()
             compositionApplied = false; prepared = false
         },
@@ -270,7 +278,9 @@ private class OwnedPrivateDialog(
         view.findViewTreeSavedStateRegistryOwner() === environment.activity
     private fun requestCurrent(): Boolean = !lifetime.isClosed && !environment.activity.isFinishing &&
         !environment.activity.isDestroyed && parent.isAttachedToWindow && ownersMatch(parent) &&
-        safe(localRequestIsCurrent) && safe { environment.isRequestCurrent(request) }
+        safe(localRequestIsCurrent) && safe { environment.isRequestCurrent(request) } &&
+        (environment.capturePolicy != PrivateCapturePolicy.FORBIDDEN ||
+            (!environment.parentGuard.hasContinuousCaptureAuthorization && registration?.guard?.hasContinuousCaptureAuthorization != true))
     private fun registered(): Boolean = registration?.let {
         environment.parentGuard.isRegisteredPrivateDialog(it)
     } == true
@@ -316,6 +326,8 @@ private class OwnedPrivateDialog(
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
             val ownedRoot = PrivateContentRoot(ownedDialog.context)
             root = ownedRoot
+            if (environment.trackInputRetirement)
+                inputRetirement = checkNotNull(ownedRoot.inputLifetime.beginRetirementTracking())
             ownedRoot.addOnAttachStateChangeListener(teardownAttachment)
             ownedDialog.setContentView(ownedRoot,
                 ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -330,6 +342,10 @@ private class OwnedPrivateDialog(
                     actionToken?.revoke(); actionToken = null
                     compositionApplied = false
                     inputGeneration.longValue = generation
+                    if (environment.trackInputRetirement && inputWasPublished) {
+                        environment.onInputRetired(request)
+                        main.post { close() }
+                    }
                 }))
             environment.activity.lifecycle.addObserver(lifecycleObserver)
             ownerObserverInstalled = true
@@ -378,7 +394,7 @@ private class OwnedPrivateDialog(
         val ownedDialog = dialog ?: return
         val window = checkNotNull(ownedDialog.window)
         // The exact registered guard owns pixel exposure. DialogProperties cannot grant it.
-        if (registration?.guard?.hasContinuousCaptureAuthorization != true)
+        if (environment.capturePolicy == PrivateCapturePolicy.FORBIDDEN || registration?.guard?.hasContinuousCaptureAuthorization != true)
             window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         window.setTitle("EasySaveVideo")
         WindowCompat.setDecorFitsSystemWindows(window, nextProperties.decorFitsSystemWindows)
@@ -402,7 +418,9 @@ private class OwnedPrivateDialog(
     private fun presentationClaim() = PrivateWindowPresentation(request, request, composeView, contentParent,
         isCurrent = { requestCurrent() && registered() },
         compositionIsCurrent = ::actualCompositionCurrent,
-        captureExceptionInactive = { safe(environment.captureDrainedForModal) || safe(environment.independentRecordingOwner) })
+        captureExceptionInactive = { safe(environment.captureDrainedForModal) ||
+            (environment.capturePolicy == PrivateCapturePolicy.BROWSER_COMPATIBLE && safe(environment.independentRecordingOwner)) },
+        capturePolicy = environment.capturePolicy)
 
     /** Only the applied dialog composition can acknowledge a new covered generation. */
     private fun acknowledgeAppliedComposition() {
@@ -429,7 +447,9 @@ private class OwnedPrivateDialog(
     private fun cover() {
         if (lifetime.isClosed) return
         actionToken?.revoke(); actionToken = null
+        if (environment.trackInputRetirement && inputWasPublished) environment.onInputRetired(request)
         registration?.guard?.installProtectionBarrier()
+        if (environment.trackInputRetirement && inputWasPublished) close()
     }
     private fun advance() {
         if (lifetime.isClosed || !prepared) return
@@ -437,6 +457,9 @@ private class OwnedPrivateDialog(
         val ownedDialog = dialog ?: return
         val ownedRoot = root ?: return
         val child = registration?.guard ?: return
+        if (environment.capturePolicy == PrivateCapturePolicy.FORBIDDEN &&
+            (environment.parentGuard.hasContinuousCaptureAuthorization || child.hasContinuousCaptureAuthorization ||
+                !safe(environment.captureDrainedForModal))) { close(); return }
         // Truthful drain and independently owned projection are separate compatibility cases.
         if ((!safe(environment.captureDrainedForModal) && !safe(environment.independentRecordingOwner) &&
                 !child.hasContinuousCaptureAuthorization) ||
@@ -456,6 +479,7 @@ private class OwnedPrivateDialog(
             PrivateRevealResult.REVEALED -> {
                 actionToken?.revoke()
                 actionToken = ownedRoot.inputLifetime.acquire(checkNotNull(composeView))
+                inputWasPublished = true
                 inputGeneration.longValue = ownedRoot.inputGeneration
             }
             PrivateRevealResult.PENDING -> if (!ownedRoot.hasCommittedCoverFrame) {
@@ -469,7 +493,8 @@ private class OwnedPrivateDialog(
     /** Read the originally captured Views, never whichever window/root a later request owns. */
     private fun teardownReadback(): Boolean {
         fun detached(view: View?) = view == null || (!view.isAttachedToWindow && view.windowToken == null)
-        return lifetime.isClosed && detached(ownedDecor) && detached(root) && detached(contentParent) && detached(composeView) &&
+        return (!environment.trackInputRetirement || inputRetirement?.isRetired == true || root == null) &&
+            lifetime.isClosed && detached(ownedDecor) && detached(root) && detached(contentParent) && detached(composeView) &&
             (root?.childCount ?: 0) == 0 && (contentParent?.childCount ?: 0) == 0 &&
             contentParent?.parent == null && composeView?.parent == null && composeView?.hasComposition != true
     }
