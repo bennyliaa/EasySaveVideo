@@ -6,6 +6,7 @@ import android.Manifest
 import com.easysavevideo.app.diagnostics.*
 import android.app.Activity
 import android.content.Context
+import com.easysavevideo.app.ui.androidRuntimeMessageText
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.SystemClock
@@ -348,15 +349,17 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 // support never turns an existing ordinary save into a false failure or removes it.
                 val exports = try { AndroidExportRuntime(application, storage) } catch (_: Exception) { null }
                 val destinationRuntime = AndroidOrdinaryDestinationRuntime(application, storage, exports)
+                // Display-only adapter reads the existing main-thread language mirror on each notice.
+                val runtimeText = androidRuntimeMessageText(application) { notificationLanguage.current }
                 val segmentRuntime = try { AndroidSegmentRecordingRuntime(application, storage, ::recordingFeatureAllowed,
                     otherMediaIdle = { ready && foreground && !executionBusy() && currentRecordingId == null && recordingService == null && !resourcesDraining() },
                     released = { id ->
                         if (currentRecordingId == id) { currentRecordingId = null; pendingRecording = null; setExecuting(false) }
                         command { publishRecords() }
-                    }, published = { command { publishRecords() } }, activityChanged = ::publishMediaTaskActivity) } catch (_: Exception) { null }
+                    }, published = { command { publishRecords() } }, runtimeText = runtimeText, activityChanged = ::publishMediaTaskActivity) } catch (_: Exception) { null }
                 val editorProbe = InitializationProbe()
                 val editInitialization = initializeEditor(editorProbe, storageProbe = { storage.initializeEditStorage(editorProbe); Unit }) {
-                    AndroidEditRuntime(application, storage, destinationRuntime) { ready && !executionBusy() &&
+                    AndroidEditRuntime(application, storage, destinationRuntime, runtimeText) { ready && !executionBusy() &&
                         pendingRecording == null && currentRecordingId == null && !resourcesDraining() }
                 }
                 initializationActivity.enqueue({ install -> main.post(install) }) {

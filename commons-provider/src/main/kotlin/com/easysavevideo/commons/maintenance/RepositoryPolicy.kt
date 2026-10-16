@@ -1,6 +1,5 @@
 package com.easysavevideo.commons.maintenance
 
-import com.easysavevideo.commons.CommonsIdentity
 import java.math.BigInteger
 import java.security.GeneralSecurityException
 import java.security.KeyFactory
@@ -22,7 +21,7 @@ class RepositoryRollbackAuthorization internal constructor(
 }
 
 /**
- * Declarative repository restrictions for the installed Commons implementation only.
+ * Declarative repository restrictions for one host-admitted installed target.
  * Revoked key IDs identify PACKAGE signing keys, not repository-policy roots. Policy trust-root
  * rotation/revocation is deliberately absent. Collections and rollback digest are detached.
  */
@@ -35,9 +34,10 @@ class RepositoryPolicy internal constructor(
     revokedPackageVersions: Set<Long>,
     revokedPackageKeyIds: Set<String>,
     val rollbackAuthorization: RepositoryRollbackAuthorization?,
+    val target: ProviderTarget = ProviderTarget.LEGACY,
 ) {
-    val providerId: String get() = CommonsIdentity.PROVIDER_ID
-    val providerVersion: String get() = CommonsIdentity.VERSION
+    val providerId: String get() = target.providerId
+    val providerVersion: String get() = target.providerVersion
     val revokedPackageVersions: Set<Long> = Collections.unmodifiableSet(LinkedHashSet(revokedPackageVersions))
     val revokedPackageKeyIds: Set<String> = Collections.unmodifiableSet(LinkedHashSet(revokedPackageKeyIds))
     override fun toString(): String = "RepositoryPolicy([redacted])"
@@ -87,12 +87,16 @@ sealed class RepositoryPolicyResult {
  * Counts are bounded before collection allocation. Tokens use [A-Za-z0-9._-], with unsigned ASCII
  * byte ordering (identical to String ordering for this alphabet); duplicate/unsorted lists fail
  * closed rather than being normalized. Nothing can encode code, URLs, roots or executable rules.
+ * Format2/schema2 use the same closed fields for an explicitly admitted non-legacy target;
+ * format1/schema1 remain legacy Commons only, with identical caps and wire bytes.
  * Keys are independently injected; no production root, signer, service or network is provided.
  */
 object RepositoryPolicyProtocol {
     const val MAGIC = 0x45535653 // ESVS, distinct from package ESVP and repository storage ESVR
     const val FORMAT = 1
     const val SCHEMA = 1
+    const val FORMAT_V2 = 2
+    const val SCHEMA_V2 = 2
     const val SIGNATURE_ALGORITHM = "SHA256withRSA"
     const val MAX_ENVELOPE_BYTES = 8_192
     const val MAX_PAYLOAD_BYTES = 4_096
@@ -114,7 +118,10 @@ object RepositoryPolicyProtocol {
  * cumulative revocations that cannot be removed. A rollback grant never bypasses package expiry,
  * signature verification, the safe-version floor, revocations or the local user's admission.
  */
-class RepositoryPolicyVerifier(trustedKeys: Map<String, PublicKey> = emptyMap()) {
+class RepositoryPolicyVerifier(
+    trustedKeys: Map<String, PublicKey> = emptyMap(),
+    val target: ProviderTarget = ProviderTarget.LEGACY,
+) {
     // Parameter snapshots prevent mutation of the input map or key from rotating trust later.
     private val trustedKeys: Map<String, RSAPublicKey?> = trustedKeys.entries
         .filter { isToken(it.key, RepositoryPolicyProtocol.MAX_KEY_ID_BYTES) }
@@ -144,15 +151,18 @@ class RepositoryPolicyVerifier(trustedKeys: Map<String, PublicKey> = emptyMap())
     ): RepositoryPolicyResult {
         return try {
             cancelled(checkCancelled)
-            if (input.size > RepositoryPolicyProtocol.MAX_ENVELOPE_BYTES) reject(RepositoryPolicyError.POLICY_TOO_LARGE)
+            if (input.size > target.maxPolicyBytes) reject(RepositoryPolicyError.POLICY_TOO_LARGE)
             if (nowMillis != null && nowMillis < 0) reject(RepositoryPolicyError.INVALID_TIME)
             // Bound the full-envelope allocation before any copy, decode or attacker-sized allocation.
             val bytes = input.copyOf()
             val envelope = Reader(bytes)
             if (envelope.int() != RepositoryPolicyProtocol.MAGIC) reject(RepositoryPolicyError.MALFORMED_POLICY)
-            if (envelope.int() != RepositoryPolicyProtocol.FORMAT) reject(RepositoryPolicyError.UNSUPPORTED_FORMAT)
+            val format = envelope.int()
+            val admittedFormat = if (target.kind == ProviderPackageKind.COMMONS_PARAMETERS_V1)
+                RepositoryPolicyProtocol.FORMAT else RepositoryPolicyProtocol.FORMAT_V2
+            if (format != admittedFormat) reject(RepositoryPolicyError.UNSUPPORTED_FORMAT)
             val keyId = envelope.token(RepositoryPolicyProtocol.MAX_KEY_ID_BYTES)
-            val payloadLength = envelope.length(RepositoryPolicyProtocol.MAX_PAYLOAD_BYTES)
+            val payloadLength = envelope.length(target.maxPolicyPayloadBytes)
             val payloadStart = envelope.position
             envelope.skip(payloadLength)
             val signedLength = envelope.position
@@ -175,7 +185,7 @@ class RepositoryPolicyVerifier(trustedKeys: Map<String, PublicKey> = emptyMap())
             }
             if (!valid) reject(RepositoryPolicyError.INVALID_SIGNATURE)
             cancelled(checkCancelled)
-            val policy = readPolicy(Reader(bytes, payloadStart, payloadStart + payloadLength))
+            val policy = readPolicy(Reader(bytes, payloadStart, payloadStart + payloadLength), format)
             if (nowMillis != null) {
                 // Only subtract ordered nonnegative values, so these comparisons cannot overflow.
                 if (policy.issuedAtEpochMillis > nowMillis &&
@@ -194,11 +204,13 @@ class RepositoryPolicyVerifier(trustedKeys: Map<String, PublicKey> = emptyMap())
         }
     }
 
-    private fun readPolicy(payload: Reader): RepositoryPolicy {
-        if (payload.int() != RepositoryPolicyProtocol.SCHEMA) reject(RepositoryPolicyError.UNSUPPORTED_SCHEMA)
+    private fun readPolicy(payload: Reader, format: Int): RepositoryPolicy {
+        val schema = if (format == RepositoryPolicyProtocol.FORMAT_V2) RepositoryPolicyProtocol.SCHEMA_V2
+            else RepositoryPolicyProtocol.SCHEMA
+        if (payload.int() != schema) reject(RepositoryPolicyError.UNSUPPORTED_SCHEMA)
         val providerId = payload.token(RepositoryPolicyProtocol.MAX_TARGET_ID_BYTES)
         val providerVersion = payload.token(RepositoryPolicyProtocol.MAX_TARGET_VERSION_BYTES)
-        if (providerId != CommonsIdentity.PROVIDER_ID || providerVersion != CommonsIdentity.VERSION)
+        if (providerId != target.providerId || providerVersion != target.providerVersion)
             reject(RepositoryPolicyError.TARGET_MISMATCH)
         val version = payload.long()
         val issued = payload.long()
@@ -234,7 +246,7 @@ class RepositoryPolicyVerifier(trustedKeys: Map<String, PublicKey> = emptyMap())
         if (issued < 0 || expires <= issued || expires - issued > RepositoryPolicyProtocol.MAX_LIFETIME_MILLIS)
             reject(RepositoryPolicyError.INVALID_TIME)
         return RepositoryPolicy(version, issued, expires, enabled, minimumSafePackageVersion,
-            revokedVersions, revokedKeys, rollback)
+            revokedVersions, revokedKeys, rollback, target)
     }
 
     private fun pinRsaKey(key: PublicKey): RSAPublicKey? = try {

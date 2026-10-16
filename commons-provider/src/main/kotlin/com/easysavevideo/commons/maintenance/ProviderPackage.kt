@@ -1,17 +1,22 @@
 package com.easysavevideo.commons.maintenance
 
-import com.easysavevideo.commons.CommonsIdentity
 import com.easysavevideo.commons.CommonsLimits
+import com.easysavevideo.commons.rules.DeclarativeJsonRule
+import com.easysavevideo.commons.rules.CandidateRulePlan
+import com.easysavevideo.commons.rules.BoundedHttpRule
+import com.easysavevideo.discovery.DiscoveryError
+import com.easysavevideo.discovery.DiscoveryFailure
 import java.math.BigInteger
 import java.security.GeneralSecurityException
 import java.security.KeyFactory
+import java.security.MessageDigest
 import java.security.PublicKey
 import java.security.Signature
 import java.security.SignatureException
 import java.security.interfaces.RSAPublicKey
 import java.security.spec.RSAPublicKeySpec
 
-/** Only declarative restrictions of the installed, built-in Commons provider are representable. */
+/** Declarative restrictions for one host-admitted installed target; this value is not authority. */
 @ConsistentCopyVisibility
 data class ProviderPolicy internal constructor(
     val packageVersion: Long,
@@ -19,9 +24,10 @@ data class ProviderPolicy internal constructor(
     val expiresAtEpochMillis: Long,
     val enabled: Boolean,
     val limits: CommonsLimits,
+    val target: ProviderTarget = ProviderTarget.LEGACY,
 ) {
-    val providerId: String get() = CommonsIdentity.PROVIDER_ID
-    val providerVersion: String get() = CommonsIdentity.VERSION
+    val providerId: String get() = target.providerId
+    val providerVersion: String get() = target.providerVersion
     override fun toString(): String = "ProviderPolicy([redacted])"
 }
 
@@ -30,7 +36,14 @@ class SignedProviderPackage internal constructor(
     val policy: ProviderPolicy,
     val keyId: String,
     encoded: ByteArray,
+    val candidatePlan: CandidateRulePlan? = null,
+    ruleDigest: ByteArray? = null,
 ) {
+    val kind: ProviderPackageKind get() = policy.target.kind
+    /** Compatibility view of kind1 only; HTTP JSON is intentionally not a legacy plan. */
+    val compiledRule: DeclarativeJsonRule? get() = candidatePlan as? DeclarativeJsonRule
+    private val digest = ruleDigest?.copyOf()
+    val ruleDigest: ByteArray? get() = digest?.copyOf()
     private val encoded = encoded.copyOf()
     fun encodedBytes(): ByteArray = encoded.copyOf()
     override fun toString(): String = "SignedProviderPackage([redacted])"
@@ -40,7 +53,7 @@ class SignedProviderPackage internal constructor(
 enum class ProviderPackageError {
     PACKAGE_TOO_LARGE, MALFORMED_PACKAGE, UNSUPPORTED_FORMAT, UNTRUSTED_KEY, UNSUPPORTED_KEY,
     INVALID_SIGNATURE, UNSUPPORTED_SCHEMA, TARGET_MISMATCH, INVALID_POLICY, INVALID_TIME,
-    NOT_YET_VALID, EXPIRED, CANCELLED, VERIFICATION_UNAVAILABLE,
+    NOT_YET_VALID, EXPIRED, CANCELLED, VERIFICATION_UNAVAILABLE, INCOMPATIBLE_RUNTIME, INVALID_RULES,
 }
 
 sealed class ProviderPackageResult {
@@ -60,6 +73,10 @@ sealed class ProviderPackageResult {
  * version, long issued/expiry epoch millis, one byte enabled (exactly 0/1), int pageSize,
  * long responseBytes/deadlineMillis/cacheTtlMillis, and int cacheEntries. No trailing data is legal.
  *
+ * V2 has explicit pure-JSON and bounded-HTTP candidate kinds and target-bound compatibility/limits followed by
+ * rule schema/version, complete SHA-256, length and original rule bytes. The legacy branch and
+ * limits are unchanged; see SIGNED_DECLARATIVE_JSON_CONNECTION.md for the closed v2 field order.
+ *
  * Keys are supplied by the application/operator. There are deliberately no shipped trust keys,
  * trust-on-first-use, key URLs, production signing helpers, executable fields, or network access.
  */
@@ -67,6 +84,14 @@ object ProviderPackageProtocol {
     const val MAGIC = 0x45535650 // ESVP
     const val FORMAT = 1
     const val SCHEMA = 1
+    const val FORMAT_V2 = 2
+    const val SCHEMA_V2 = 2
+    const val KIND_DECLARATIVE_JSON_CANDIDATES_V1 = 1
+    const val KIND_BOUNDED_HTTP_CANDIDATES_V1 = 2
+    const val MAX_V2_ENVELOPE_BYTES = 24_576
+    const val MAX_V2_PAYLOAD_BYTES = 20_480
+    const val MAX_RULE_BYTES = 16_384
+    const val RULE_DIGEST_BYTES = 32
     const val SIGNATURE_ALGORITHM = "SHA256withRSA"
     const val MAX_ENVELOPE_BYTES = 8_192
     const val MAX_PAYLOAD_BYTES = 4_096
@@ -80,7 +105,10 @@ object ProviderPackageProtocol {
 }
 
 /** Stateless authentication. The repository separately enforces monotonically increasing versions. */
-class ProviderPackageVerifier(trustedKeys: Map<String, PublicKey> = emptyMap()) {
+class ProviderPackageVerifier(
+    trustedKeys: Map<String, PublicKey> = emptyMap(),
+    val target: ProviderTarget = ProviderTarget.LEGACY,
+) {
     // Copy parameters into JCA-owned keys, so later map or supplied PublicKey mutation cannot rotate
     // trust. Invalid entries stay unavailable rather than turning initialization into a raw error.
     private val trustedKeys: Map<String, RSAPublicKey?> = trustedKeys.entries
@@ -111,15 +139,21 @@ class ProviderPackageVerifier(trustedKeys: Map<String, PublicKey> = emptyMap()) 
     ): ProviderPackageResult {
         return try {
             cancelled(checkCancelled)
-            if (input.size > ProviderPackageProtocol.MAX_ENVELOPE_BYTES) reject(ProviderPackageError.PACKAGE_TOO_LARGE)
+            if (input.size > target.maxPackageBytes) reject(ProviderPackageError.PACKAGE_TOO_LARGE)
             if (nowMillis != null && nowMillis < 0) reject(ProviderPackageError.INVALID_TIME)
             // Bound the one full-envelope allocation before copying or decoding any input.
             val bytes = input.copyOf()
             val envelope = Reader(bytes)
             if (envelope.int() != ProviderPackageProtocol.MAGIC) reject(ProviderPackageError.MALFORMED_PACKAGE)
-            if (envelope.int() != ProviderPackageProtocol.FORMAT) reject(ProviderPackageError.UNSUPPORTED_FORMAT)
+            val format = envelope.int()
+            val admittedFormat = when (target.kind) {
+                ProviderPackageKind.COMMONS_PARAMETERS_V1 -> ProviderPackageProtocol.FORMAT
+                ProviderPackageKind.DECLARATIVE_JSON_CANDIDATES_V1, ProviderPackageKind.BOUNDED_HTTP_CANDIDATES_V1 ->
+                    ProviderPackageProtocol.FORMAT_V2
+            }
+            if (format != admittedFormat) reject(ProviderPackageError.UNSUPPORTED_FORMAT)
             val keyId = envelope.token(ProviderPackageProtocol.MAX_KEY_ID_BYTES)
-            val payloadLength = envelope.length(ProviderPackageProtocol.MAX_PAYLOAD_BYTES)
+            val payloadLength = envelope.length(target.maxPackagePayloadBytes)
             val payloadStart = envelope.position
             envelope.skip(payloadLength)
             val signedLength = envelope.position
@@ -142,7 +176,8 @@ class ProviderPackageVerifier(trustedKeys: Map<String, PublicKey> = emptyMap()) 
             }
             if (!valid) reject(ProviderPackageError.INVALID_SIGNATURE)
             cancelled(checkCancelled)
-            val policy = readPolicy(Reader(bytes, payloadStart, payloadStart + payloadLength))
+            val decoded = readPolicy(Reader(bytes, payloadStart, payloadStart + payloadLength), format, checkCancelled)
+            val policy = decoded.policy
             if (nowMillis != null) {
                 // Subtract only ordered, nonnegative values: neither comparison can overflow.
                 if (policy.issuedAtEpochMillis > nowMillis &&
@@ -151,7 +186,7 @@ class ProviderPackageVerifier(trustedKeys: Map<String, PublicKey> = emptyMap()) 
                 if (nowMillis >= policy.expiresAtEpochMillis) reject(ProviderPackageError.EXPIRED)
             }
             cancelled(checkCancelled)
-            ProviderPackageResult.Verified(SignedProviderPackage(policy, keyId, bytes))
+            ProviderPackageResult.Verified(SignedProviderPackage(policy, keyId, bytes, decoded.rule, decoded.ruleDigest))
         } catch (failure: ParseFailure) {
             ProviderPackageResult.Rejected(failure.code)
         } catch (_: GeneralSecurityException) {
@@ -161,11 +196,23 @@ class ProviderPackageVerifier(trustedKeys: Map<String, PublicKey> = emptyMap()) 
         }
     }
 
-    private fun readPolicy(payload: Reader): ProviderPolicy {
-        if (payload.int() != ProviderPackageProtocol.SCHEMA) reject(ProviderPackageError.UNSUPPORTED_SCHEMA)
+    private class Decoded(val policy: ProviderPolicy, val rule: CandidateRulePlan?, val ruleDigest: ByteArray?)
+
+    private fun readPolicy(payload: Reader, format: Int, checkCancelled: () -> Unit): Decoded {
+        val rulesFormat = format == ProviderPackageProtocol.FORMAT_V2
+        val schema = if (rulesFormat) ProviderPackageProtocol.SCHEMA_V2 else ProviderPackageProtocol.SCHEMA
+        if (payload.int() != schema) reject(ProviderPackageError.UNSUPPORTED_SCHEMA)
+        if (rulesFormat) {
+            val expectedKind = when (target.kind) {
+                ProviderPackageKind.DECLARATIVE_JSON_CANDIDATES_V1 -> ProviderPackageProtocol.KIND_DECLARATIVE_JSON_CANDIDATES_V1
+                ProviderPackageKind.BOUNDED_HTTP_CANDIDATES_V1 -> ProviderPackageProtocol.KIND_BOUNDED_HTTP_CANDIDATES_V1
+                ProviderPackageKind.COMMONS_PARAMETERS_V1 -> reject(ProviderPackageError.UNSUPPORTED_SCHEMA)
+            }
+            if (payload.int() != expectedKind) reject(ProviderPackageError.UNSUPPORTED_SCHEMA)
+        }
         val providerId = payload.token(ProviderPackageProtocol.MAX_TARGET_ID_BYTES)
         val providerVersion = payload.token(ProviderPackageProtocol.MAX_TARGET_VERSION_BYTES)
-        if (providerId != CommonsIdentity.PROVIDER_ID || providerVersion != CommonsIdentity.VERSION)
+        if (providerId != target.providerId || providerVersion != target.providerVersion)
             reject(ProviderPackageError.TARGET_MISMATCH)
         val version = payload.long()
         val issued = payload.long()
@@ -180,16 +227,52 @@ class ProviderPackageVerifier(trustedKeys: Map<String, PublicKey> = emptyMap()) 
         val deadline = payload.long()
         val cacheTtl = payload.long()
         val cacheEntries = payload.int()
-        payload.finish()
+        if (!rulesFormat) payload.finish()
         if (version <= 0) reject(ProviderPackageError.INVALID_POLICY)
         if (issued < 0 || expires <= issued || expires - issued > ProviderPackageProtocol.MAX_LIFETIME_MILLIS)
             reject(ProviderPackageError.INVALID_TIME)
-        val defaults = CommonsLimits()
+        val defaults = target.localLimits
         if (pageSize !in 1..defaults.pageSize || responseBytes !in 1..defaults.maxResponseBytes ||
             deadline !in 1..defaults.deadlineMillis || cacheTtl !in 0..defaults.cacheTtlMillis ||
             cacheEntries !in 0..defaults.cacheEntries) reject(ProviderPackageError.INVALID_POLICY)
-        return ProviderPolicy(version, issued, expires, enabled,
-            CommonsLimits(pageSize, responseBytes, deadline, cacheTtl, cacheEntries))
+        val policy = ProviderPolicy(version, issued, expires, enabled,
+            CommonsLimits(pageSize, responseBytes, deadline, cacheTtl, cacheEntries), target)
+        if (!rulesFormat) return Decoded(policy, null, null)
+        val specVersion = payload.int()
+        val runtimeVersion = payload.int()
+        val minimumAppVersionCode = payload.int()
+        if (specVersion != target.specVersion || runtimeVersion != target.runtimeVersion ||
+            minimumAppVersionCode !in 1..target.appVersionCode) reject(ProviderPackageError.INCOMPATIBLE_RUNTIME)
+        val ruleSchema = payload.int()
+        val ruleVersion = payload.long()
+        val expectedRuleSchema = when (target.kind) {
+            ProviderPackageKind.DECLARATIVE_JSON_CANDIDATES_V1 -> DeclarativeJsonRule.SCHEMA_VERSION
+            ProviderPackageKind.BOUNDED_HTTP_CANDIDATES_V1 -> BoundedHttpRule.SCHEMA_VERSION
+            ProviderPackageKind.COMMONS_PARAMETERS_V1 -> reject(ProviderPackageError.UNSUPPORTED_SCHEMA)
+        }
+        if (ruleSchema != expectedRuleSchema) reject(ProviderPackageError.UNSUPPORTED_SCHEMA)
+        if (ruleVersion <= 0) reject(ProviderPackageError.INVALID_RULES)
+        val ruleDigest = payload.bytes(ProviderPackageProtocol.RULE_DIGEST_BYTES)
+        val ruleBytes = payload.bytes(payload.length(ProviderPackageProtocol.MAX_RULE_BYTES))
+        payload.finish()
+        cancelled(checkCancelled)
+        if (!MessageDigest.isEqual(ruleDigest, MessageDigest.getInstance("SHA-256").digest(ruleBytes)))
+            reject(ProviderPackageError.INVALID_RULES)
+        val rule = try {
+            when (target.kind) {
+                ProviderPackageKind.DECLARATIVE_JSON_CANDIDATES_V1 ->
+                    DeclarativeJsonRule.compile(ruleBytes) { cancelled(checkCancelled) }
+                ProviderPackageKind.BOUNDED_HTTP_CANDIDATES_V1 -> BoundedHttpRule.compile(ruleBytes,
+                    target.httpEndpoint ?: reject(ProviderPackageError.INVALID_RULES)) { cancelled(checkCancelled) }
+                ProviderPackageKind.COMMONS_PARAMETERS_V1 -> reject(ProviderPackageError.UNSUPPORTED_SCHEMA)
+            }
+        }
+        catch (failure: DiscoveryFailure) {
+            reject(if (failure.code == DiscoveryError.CANCELLED) ProviderPackageError.CANCELLED
+                else ProviderPackageError.INVALID_RULES)
+        }
+        if (rule.ruleVersion != ruleVersion) reject(ProviderPackageError.INVALID_RULES)
+        return Decoded(policy, rule, ruleDigest)
     }
 
     private fun pinRsaKey(key: PublicKey): RSAPublicKey? = try {
@@ -235,6 +318,10 @@ class ProviderPackageVerifier(trustedKeys: Map<String, PublicKey> = emptyMap()) 
                 if (!tokenByte(byte())) reject(ProviderPackageError.MALFORMED_PACKAGE)
             }
             return String(bytes, start, length, Charsets.US_ASCII)
+        }
+        fun bytes(count: Int): ByteArray {
+            need(count)
+            return bytes.copyOfRange(position, position + count).also { position += count }
         }
         fun skip(count: Int) { need(count); position += count }
         fun finish() { if (position != end) reject(ProviderPackageError.MALFORMED_PACKAGE) }

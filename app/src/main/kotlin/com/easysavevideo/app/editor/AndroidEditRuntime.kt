@@ -1,6 +1,8 @@
 package com.easysavevideo.app.editor
 
 import android.content.Context
+import com.easysavevideo.app.ui.RuntimeMessageCopy
+import com.easysavevideo.app.ui.RuntimeMessageText
 import android.os.Handler
 import android.os.Looper
 import androidx.compose.runtime.getValue
@@ -29,6 +31,7 @@ import java.util.concurrent.TimeUnit
 /** Application-scoped editor, foreground-only admission and one bounded worker. No paid stop gate. */
 class AndroidEditRuntime internal constructor(context: Context, private val storage: AndroidSaveStorage,
     private val destinations: AndroidOrdinaryDestinationRuntime,
+    private val text: RuntimeMessageText,
     private val otherMediaIdle: () -> Boolean) {
     private val main = Handler(Looper.getMainLooper())
     private val worker = ThreadPoolExecutor(1, 1, 0, TimeUnit.MILLISECONDS, ArrayBlockingQueue(1),
@@ -55,7 +58,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
         if (feedback != null) state = state.copy(
             phase = if (feedback == EditorStopFeedback.CHECKING_RESULT) EditorPhase.PUBLISHING else EditorPhase.WAITING_NATIVE_RELEASE,
             notice = if (feedback == EditorStopFeedback.CHECKING_RESULT) publicationCheckingNotice
-                else "已请求停止，但后台处理或文件资源仍未确认退出。相关文件保留，不能开始新编辑。可继续等待，或完全退出应用后重新打开进行恢复检查。",
+                else text.get(RuntimeMessageCopy.EDITOR_STOP_WAITING),
             stopFeedback = feedback)
     })
     private var recovered = false
@@ -72,8 +75,8 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
                 recovered = recovery.isSuccess
                 state = state.copy(phase = if (recovered) EditorPhase.IDLE else EditorPhase.BLOCKED,
                     notice = recovery.fold({ if (it.interrupted + it.cleanupPending > 0)
-                        "上次编辑被中断，原件保留。未验证的新文件不会自动入库；待清理项 ${it.cleanupPending} 个。" else null },
-                        { "编辑恢复检查未完成。原件保留，编辑暂不可用。" }))
+                        text.get(RuntimeMessageCopy.EDITOR_INTERRUPTED_RECOVERY, it.cleanupPending) else null },
+                        { text.get(RuntimeMessageCopy.EDITOR_RECOVERY_INCOMPLETE) }))
                 val checkpoint = pendingDraftCheckpoint; pendingDraftCheckpoint = null
                 if (checkpoint != null) restoreDraftCheckpoint(checkpoint)
                 else if (recovered && state.foreground) inspectMissingSources()
@@ -118,12 +121,12 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
             if (generation != admissionGeneration || !state.foreground || activeCancellation != null) return
             if (!otherMediaIdle() || OrdinaryMediaNativeResources.isOccupied) {
                 if (android.os.SystemClock.elapsedRealtime() < deadline && !OrdinaryMediaNativeResources.requiresRestart) main.postDelayed({ attempt() }, 50)
-                else state = state.copy(phase = EditorPhase.IDLE, notice = "请等待预览、缩略图或其他媒体任务退出，再调整选择或提交。原件保留。")
+                else state = state.copy(phase = EditorPhase.IDLE, notice = text.get(RuntimeMessageCopy.EDITOR_WAIT_MEDIA_TASKS))
                 return
             }
             val owner = Any()
             if (!OrdinaryMediaNativeResources.claim(owner)) {
-                state = state.copy(phase = EditorPhase.BLOCKED, notice = "媒体资源退出尚未确认，请完全退出应用后重试。")
+                state = state.copy(phase = EditorPhase.BLOCKED, notice = text.get(RuntimeMessageCopy.EDITOR_PROBE_RELEASE_UNCONFIRMED))
                 return
             }
             val cancellation = EditPublicationCancellation(); activeCancellation = cancellation
@@ -152,7 +155,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
                     })
                     state = state.copy(draft = corrected, displayGeometries = state.displayGeometries + geometry,
                         phase = if (unknown) EditorPhase.BLOCKED else if (cancellation.isCancelled) EditorPhase.CANCELLED else EditorPhase.IDLE,
-                        notice = if (unknown) releaseNotice else outcome.exceptionOrNull()?.let(::errorText))
+                        notice = if (unknown) releaseNotice else outcome.exceptionOrNull()?.let { errorText(it, text) })
                 }
             }
         }
@@ -192,17 +195,17 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
         requireMain()
         if (!recovered || !state.foreground || state.busy || activeCancellation != null || state.phase == EditorPhase.BLOCKED) return
         val request = try { draft.toEditRequest(admission.creationId) }
-        catch (_: Exception) { state = state.copy(notice = editorDraftError(draft, state.displayGeometries) ?: "编辑参数无效。"); return }
+        catch (_: Exception) { state = state.copy(notice = editorDraftError(draft, state.displayGeometries) ?: text.get(RuntimeMessageCopy.EDITOR_INVALID_PARAMETERS)); return }
         if (request.segments.any { it.source !in state.displayGeometries }) {
-            state = state.copy(notice = "请先等待来源格式检查完成，再提交编辑。")
+            state = state.copy(notice = text.get(RuntimeMessageCopy.EDITOR_WAIT_SOURCE_CHECK))
             inspectMissingSources(selectionAccepted = true); return
         }
         val required = editorFeatures(request, state.displayGeometries.mapValues { it.value.durationUs })
-        if (required.isEmpty()) { state = state.copy(notice = "参数未改变时间、画面或压缩方式，可直接预览原件，无需重复转码。"); return }
+        if (required.isEmpty()) { state = state.copy(notice = text.get(RuntimeMessageCopy.EDITOR_UNCHANGED_PARAMETERS)); return }
         if (!featuresAllowed(required)) { state = state.copy(notice = entitlementNotice); return }
-        if (!otherMediaIdle()) { state = state.copy(notice = "请等待现有保存、录制或预览资源实际退出后再提交。"); return }
+        if (!otherMediaIdle()) { state = state.copy(notice = text.get(RuntimeMessageCopy.EDITOR_WAIT_EXISTING_RESOURCES)); return }
         val owner = Any()
-        if (!OrdinaryMediaNativeResources.claim(owner)) { state = state.copy(notice = "媒体资源忙，请关闭预览并稍后重试。"); return }
+        if (!OrdinaryMediaNativeResources.claim(owner)) { state = state.copy(notice = text.get(RuntimeMessageCopy.EDITOR_MEDIA_BUSY)); return }
         val cancellation = EditPublicationCancellation(); activeCancellation = cancellation; activeOperation = request.operationId
         state = state.copy(draft = draft, phase = EditorPhase.PREPARING, notice = null, completedReference = null, executionRanges = emptyList())
         val context = operation(request.operationId, cancellation)
@@ -249,9 +252,9 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
                 activeCancellation = null; activeOperation = null
                 state = when (result) {
                     is EditRunResult.Published -> state.copy(phase = EditorPhase.SUCCEEDED, completedReference = result.reference,
-                        notice = "新视频已独立验证并入库。原件保留；压缩后的大小可能大于原件。")
+                        notice = text.get(RuntimeMessageCopy.EDITOR_PUBLISHED))
                     is EditRunResult.Stopped -> state.copy(phase = if (unknown) EditorPhase.BLOCKED else if (result.cancelled) EditorPhase.CANCELLED else EditorPhase.FAILED,
-                        notice = if (unknown) releaseNotice else if (gateRejected) entitlementNotice else errorText(EditFailure(result.error)))
+                        notice = if (unknown) releaseNotice else if (gateRejected) entitlementNotice else errorText(EditFailure(result.error), text))
                 }
             }
         }
@@ -342,7 +345,7 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
         if (state.phase != EditorPhase.WAITING_NATIVE_RELEASE) state = if (result == EditCancelResult.TOO_LATE)
             state.copy(phase = EditorPhase.PUBLISHING, notice = publicationCheckingNotice,
                 stopFeedback = EditorStopFeedback.CHECKING_RESULT)
-        else state.copy(phase = EditorPhase.CANCELLING, notice = "已请求安全停止，等待媒体资源实际退出；原件保留。",
+        else state.copy(phase = EditorPhase.CANCELLING, notice = text.get(RuntimeMessageCopy.EDITOR_STOP_REQUESTED),
             stopFeedback = EditorStopFeedback.REQUESTED)
         return result
     }
@@ -350,13 +353,13 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
         featureGate.evaluate(FeatureRequest(feature), entitlements.snapshot(), PlatformCapabilities(required),
             BuildFeaturePolicy(), System.currentTimeMillis()).allowed
     }
-    private val entitlementNotice = "此编辑需要 Video Tools Pro 对应能力。开发版可使用设置中的现有 Fake Entitlement；正式版未接入购买。"
+    private val entitlementNotice get() = text.get(RuntimeMessageCopy.EDITOR_ENTITLEMENT_REQUIRED)
     private fun enqueue(owner: Any, action: () -> Unit) {
         try { worker.execute(action) }
         catch (_: java.util.concurrent.RejectedExecutionException) {
             activeCancellation?.let(deadlines::completed)
             OrdinaryMediaNativeResources.released(owner); activeCancellation = null; activeOperation = null
-            state = state.copy(phase = EditorPhase.FAILED, notice = "编辑队列已满，请稍后重试。")
+            state = state.copy(phase = EditorPhase.FAILED, notice = text.get(RuntimeMessageCopy.EDITOR_QUEUE_FULL))
         }
     }
     private fun releaseGlobal(owner: Any, unknown: Boolean) {
@@ -366,8 +369,8 @@ class AndroidEditRuntime internal constructor(context: Context, private val stor
         System.currentTimeMillis() + EditLimits.EXECUTION_TIMEOUT_MILLIS + EditLimits.MAX_VERIFY_TIMEOUT_MILLIS,
         cancellation, resourceBudget = ResourceBudget(1, EditLimits.MAX_OUTPUT_BYTES))
     private fun requireMain() = check(Looper.myLooper() == Looper.getMainLooper())
-    private val releaseNotice = "媒体资源退出或提交状态尚未确认，已停止新编辑且保留相关文件。请完全退出应用后重新打开进行恢复检查。"
-    private val publicationCheckingNotice = "最终入库提交已开始，不能再确认取消。正在核对提交结果；原件保留。"
+    private val releaseNotice get() = text.get(RuntimeMessageCopy.EDITOR_RELEASE_UNCONFIRMED)
+    private val publicationCheckingNotice get() = text.get(RuntimeMessageCopy.EDITOR_PUBLICATION_CHECKING)
 }
 
 /** Existing independent capabilities; cancellation and original viewing never call this function. */
@@ -376,15 +379,18 @@ internal fun editorFeatures(request: EditRequest, durationUs: Map<out com.easysa
     if (request.segments.size > 1) add(Feature.VIDEO_MERGE)
     if (request.compression == EditCompression.SAVE_SPACE) add(Feature.VIDEO_COMPRESS)
 }
-internal fun errorText(failure: Throwable): String = when ((failure as? EditFailure)?.code) {
-    EditError.UNSUPPORTED_PROFILE -> "此来源不在 M6-A 支持范围：8 位 SDR、方形像素、整数恒定帧率 AVC，静音或一致的 AAC-LC 音轨。原件保留。"
-    EditError.INCOMPATIBLE_SEGMENTS -> "片段的裁后宽高比、帧率或音轨配置不一致，当前无法合并。原件保留。"
-    EditError.STALE_SOURCE, EditError.SOURCE_MISSING -> "来源已变化或不可读取，请返回媒体库重新选择。"
-    EditError.INSUFFICIENT_SPACE -> "空间不足，未覆盖原件。请释放空间后重试。"
-    EditError.CANCELLED -> "编辑已安全停止，原件保留。"
-    EditError.RELEASE_UNCONFIRMED -> "媒体资源尚未确认退出，请完全退出应用后重新打开。"
-    EditError.TIMEOUT -> "处理超过当前预算，已请求安全停止。原件保留。"
-    EditError.VERIFICATION_FAILED -> "新视频未通过独立验证，未作为成功视频入库。原件保留。"
-    EditError.SOURCE_LIMIT, EditError.DURATION_LIMIT, EditError.PIXEL_LIMIT -> "来源或输出超出 M6-A 的数量、时长、尺寸或大小限制。原件保留。"
-    else -> "此次编辑未完成，请检查来源与可用空间后重试。原件保留。"
+/** Error classification is unchanged; display never reads an exception message or changes its code. */
+internal fun errorText(failure: Throwable, text: RuntimeMessageText): String = text.get(editorErrorCopy(failure))
+
+internal fun editorErrorCopy(failure: Throwable): RuntimeMessageCopy = when ((failure as? EditFailure)?.code) {
+    EditError.UNSUPPORTED_PROFILE -> RuntimeMessageCopy.EDITOR_ERROR_UNSUPPORTED_PROFILE
+    EditError.INCOMPATIBLE_SEGMENTS -> RuntimeMessageCopy.EDITOR_ERROR_INCOMPATIBLE_SEGMENTS
+    EditError.STALE_SOURCE, EditError.SOURCE_MISSING -> RuntimeMessageCopy.EDITOR_ERROR_SOURCE_UNAVAILABLE
+    EditError.INSUFFICIENT_SPACE -> RuntimeMessageCopy.EDITOR_ERROR_INSUFFICIENT_SPACE
+    EditError.CANCELLED -> RuntimeMessageCopy.EDITOR_ERROR_CANCELLED
+    EditError.RELEASE_UNCONFIRMED -> RuntimeMessageCopy.EDITOR_ERROR_RELEASE_UNCONFIRMED
+    EditError.TIMEOUT -> RuntimeMessageCopy.EDITOR_ERROR_TIMEOUT
+    EditError.VERIFICATION_FAILED -> RuntimeMessageCopy.EDITOR_ERROR_VERIFICATION_FAILED
+    EditError.SOURCE_LIMIT, EditError.DURATION_LIMIT, EditError.PIXEL_LIMIT -> RuntimeMessageCopy.EDITOR_ERROR_LIMIT
+    else -> RuntimeMessageCopy.EDITOR_ERROR_INCOMPLETE
 }

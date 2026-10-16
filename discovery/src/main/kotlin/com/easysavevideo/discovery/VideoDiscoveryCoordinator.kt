@@ -35,6 +35,7 @@ class VideoDiscoveryCoordinator(
         var inFlight: Boolean = false,
         val explicitCandidateId: String? = null,
         val summaryGeneration: Long = 0,
+        val authority: ProviderAuthorityView? = null,
     )
     private val summaryFence = VerificationSummaryFence()
     private val lock = Any()
@@ -42,14 +43,19 @@ class VideoDiscoveryCoordinator(
     private var incognitoStore: InMemoryDiscoveryStore? = null
     private var cachedAvailable: Int? = null
     private var cachedProgress: Map<String, ProviderProgress?>? = null
+    private var cachedProgressDescriptors: Map<String, ProviderDescriptor>? = null
     private var current: DiscoveryCheckpoint? = null
         set(value) { field = value; cachedAvailable = null; cachedProgress = null }
     private var epoch = 0L
     private var operationSequence = 0L
     private val scheduler = DiscoveryScheduler(limits)
     private val pool = ResultPool(limits.poolCapacity)
-    private val pendingPool = PendingCandidatePool(limits.poolCapacity)
+    private var pendingPool = PendingCandidatePool(limits.poolCapacity)
     private val sessionProgress = mutableMapOf<String, ProviderProgress>()
+    // At most the registry's 32 sources. Views are never persisted or renewed for old candidates.
+    private val sourceAuthorities = mutableMapOf<String, ProviderAuthorityView>()
+    private val observedAuthorityDescriptors = mutableMapOf<String, ProviderDescriptor>()
+    private val retiredAuthoritySources = mutableSetOf<String>()
     init { require(sourceConfigurationKey == null || sourceConfigurationKey.matches(Regex("[a-f0-9]{64}"))) }
     private val active = ConcurrentHashMap<String, ActiveRequest>()
     private val lifecycleSuspensionGeneration = AtomicLong(0)
@@ -72,7 +78,7 @@ class VideoDiscoveryCoordinator(
 
     fun start(sessionId: String, profile: SearchProfile, incognito: Boolean = false): SessionStamp = synchronized(lock) {
         check(!closed)
-        cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear()
+        cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); clearAuthorityState()
         incognitoStore?.clear()
         incognitoStore = if (incognito) InMemoryDiscoveryStore() else null
         store = incognitoStore ?: durableStore
@@ -91,7 +97,7 @@ class VideoDiscoveryCoordinator(
 
     /** Resume only a complete committed checkpoint. In-flight operations are never restored. */
     fun restore(sessionId: String, requireExplicitSearch: Boolean = false): Boolean = synchronized(lock) {
-        check(!closed); cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); current = null; incognitoStore?.clear(); incognitoStore = null; store = durableStore
+        check(!closed); cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); clearAuthorityState(); current = null; incognitoStore?.clear(); incognitoStore = null; store = durableStore
         try {
             val previous = store.transaction { checkpoint(sessionId) } ?: return false
             epoch = maxOf(epoch, previous.stamp.epoch) + 1
@@ -146,6 +152,7 @@ class VideoDiscoveryCoordinator(
 
     fun currentCheckpoint(): DiscoveryCheckpoint? = synchronized(lock) { current?.detached() }
     fun pendingCandidates(): List<PendingVideoCandidate> = synchronized(lock) {
+        refreshAuthorityState()
         if (closed || current == null) emptyList() else pendingPool.snapshot()
     }
     /** Explicit demand uses the existing runtime/pipeline, scheduler budget and commit fences.
@@ -153,8 +160,11 @@ class VideoDiscoveryCoordinator(
     private val explicitlyAttempted = mutableSetOf<String>()
     fun invalidateVerificationSummary() { summaryFence.invalidate() }
     fun verificationGeneration(): Long = summaryFence.generation
-    fun verificationSummary(): VerificationSummary? = summaryFence.snapshot()
+    fun verificationSummary(): VerificationSummary? = synchronized(lock) {
+        refreshAuthorityState(); summaryFence.snapshot()
+    }
     fun verifyPending(stamp: SessionStamp, candidateId: String): Boolean = synchronized(lock) {
+        refreshAuthorityState()
         val checkpoint = current ?: return false
         if (closed || !gateOpen || checkpoint.stamp != stamp || !checkpoint.queryAuthorized ||
             candidateId in explicitlyAttempted || explicitlyAttempted.size >= limits.poolCapacity) return false
@@ -162,18 +172,34 @@ class VideoDiscoveryCoordinator(
         val source = registry.all().find { it.descriptor.id in candidate.provenance && !active.containsKey(it.descriptor.id) && it.refusal(checkpoint.profile) == null } ?: return false
         if (!scheduler.roundActive) scheduler.beginRound(availableCount())
         if (!scheduler.canLaunch(source.descriptor.id, availableCount())) return false
+        val descriptor = source.descriptor.detachedDescriptor()
+        val authority = sourceAuthorities[descriptor.id]
+        if (source.requiresAuthority && (authority == null || authority.descriptor != descriptor || !authority.isCurrent(clock.nowMillis()))) return false
+        val pendingDescriptor = descriptor
         val provider = object : VideoSearchProvider {
-            override val descriptor = source.descriptor
+            override val descriptor = pendingDescriptor
+            override val requiresAuthority = authority != null
             override fun refusal(profile: SearchProfile): DiscoveryError? = source.refusal(profile)
             override fun search(request: SearchRequest, operation: DiscoveryOperation): ProviderPage =
                 ProviderPage(candidates = listOf(CandidateUrl(candidate.canonicalPageUrl, candidate.sourceReported)), exhausted = true)
+            override fun acquire(request: SearchRequest, operation: DiscoveryOperation): ProviderRequestLease? {
+                val original = authority ?: return null
+                if (request.expectedDescriptor != descriptor || !original.isCurrent(clock.nowMillis()))
+                    throw DiscoveryFailure(DiscoveryError.CANCELLED)
+                return object : ProviderRequestLease {
+                    override val authority = original
+                    override fun search(request: SearchRequest, operation: DiscoveryOperation): ProviderPage =
+                        ProviderPage(candidates = listOf(CandidateUrl(candidate.canonicalPageUrl, candidate.sourceReported)), exhausted = true)
+                    override fun close() { /* Original request resources have already closed. */ }
+                }
+            }
         }
         val cancellation = DiscoveryCancellation()
         val operation = DiscoveryOperation(OperationContext("discovery-${++operationSequence}",
             clock.nowMillis() + minOf(4000L, limits.requestDeadlineMillis), cancellation, 0,
             resourceBudget = ResourceBudget(1, limits.maxResponseBytes)), cancellation)
-        val request = ActiveRequest(provider, provider.descriptor, SearchRequest(checkpoint.stamp, checkpoint.profile, null),
-            checkpoint.pool.viewRevision, operation, explicitCandidateId = candidateId, summaryGeneration = summaryFence.generation)
+        val request = ActiveRequest(provider, provider.descriptor, SearchRequest(checkpoint.stamp, checkpoint.profile, null, descriptor),
+            checkpoint.pool.viewRevision, operation, explicitCandidateId = candidateId, summaryGeneration = summaryFence.generation, authority = authority)
         explicitlyAttempted += candidateId
         pendingPool.mark(candidateId, true)
         active[provider.descriptor.id] = request
@@ -230,6 +256,7 @@ class VideoDiscoveryCoordinator(
     /** Explicit new demand, such as the next-page action. A exhausted six-request round is not auto-refilled. */
     fun requestMore() = synchronized(lock) {
         if (closed || current == null) return
+        refreshAuthorityState(); retiredAuthoritySources.clear()
         terminalState = null; beginRound(); pump()
     }
 
@@ -341,7 +368,8 @@ class VideoDiscoveryCoordinator(
                 resetProgress(profileId, providerId)
             }
             if (affectsCurrent) {
-                if (providerId == null) sessionProgress.clear() else sessionProgress.remove(providerId)
+                if (providerId == null) { sessionProgress.clear(); sourceAuthorities.clear() }
+                else { sessionProgress.remove(providerId); sourceAuthorities.remove(providerId) }
                 cachedProgress = null; terminalState = null
                 val resetIds = registry.all().map { it.descriptor.id }.filter { providerId == null || it == providerId }
                 resetIds.forEach { id ->
@@ -387,9 +415,21 @@ class VideoDiscoveryCoordinator(
     }
 
     private fun availableCount(): Int {
+        refreshAuthorityState()
         val checkpoint = current ?: return 0
         val providers = registry.all()
-        if (cachedProgress?.keys != providers.map { it.descriptor.id }.toSet()) cachedProgress = null
+        val descriptors = providers.associate { it.descriptor.id to it.descriptor.detachedDescriptor() }
+        val guardedIds = providers.filter { it.requiresAuthority }.map { it.descriptor.id }.toSet()
+        if (cachedProgressDescriptors?.keys != descriptors.keys || descriptors.any { (id, descriptor) ->
+                cachedProgressDescriptors?.get(id)?.progressScope != descriptor.progressScope }) cachedProgress = null
+        cachedProgressDescriptors = descriptors
+        val now = clock.nowMillis()
+        // Legacy progress is a cached presentation fact: status must still report incompatible or
+        // expired cursors without rereading/mutating the store. readProgress alone admits execution.
+        // Authority-backed facts additionally require the exact live view before presentation.
+        cachedProgress = cachedProgress?.mapValues { (id, progress) ->
+            progress?.takeIf { id !in guardedIds || usableProgress(it, checkpoint.profile, descriptors.getValue(id), now) }
+        }
         if (cachedAvailable != null && cachedProgress != null) return cachedAvailable!!
         return try {
             val snapshot = store.transaction {
@@ -398,13 +438,79 @@ class VideoDiscoveryCoordinator(
                     checkpoint.profile.sortOrder) { fingerprint ->
                     if (cache.containsKey(fingerprint)) cache[fingerprint] else seen(checkpoint.profile.profileId, fingerprint).also { cache[fingerprint] = it }
                 }.size
-                count to (cachedProgress ?: providers.associate { provider -> provider.descriptor.id to
-                    if (provider.descriptor.progressScope == ProviderProgressScope.SESSION) sessionProgress[provider.descriptor.id]
-                    else progress(checkpoint.profile.profileId, provider.descriptor.id, checkpoint.profile.queryKey) })
+                count to (cachedProgress ?: descriptors.mapValues { (id, descriptor) ->
+                    val progress = if (descriptor.progressScope == ProviderProgressScope.SESSION) sessionProgress[id]
+                    else progress(checkpoint.profile.profileId, id, checkpoint.profile.queryKey)
+                    progress?.takeIf { id !in guardedIds || usableProgress(it, checkpoint.profile, descriptor, now) }
+                })
             }
             cachedAvailable = snapshot.first; cachedProgress = snapshot.second; snapshot.first
         }
         catch (_: Exception) { failStorage(); 0 }
+    }
+
+    private fun clearAuthorityState() {
+        sourceAuthorities.clear(); observedAuthorityDescriptors.clear(); retiredAuthoritySources.clear()
+        cachedProgressDescriptors = null
+    }
+
+    /** C -> A only; invalidation does not refund attempts or create fresh automatic demand. */
+    private fun refreshAuthorityState() {
+        val sources = registry.all().map { it to it.descriptor.detachedDescriptor() }
+        val descriptors = sources.associate { (_, descriptor) -> descriptor.id to descriptor }
+        val now = clock.nowMillis()
+        val invalid = sourceAuthorities.filter { (id, authority) ->
+            descriptors[id] != authority.descriptor || !authority.isCurrent(now)
+        }.keys.toMutableSet()
+        for ((provider, descriptor) in sources) {
+            if (!provider.requiresAuthority) continue
+            val old = observedAuthorityDescriptors.put(descriptor.id, descriptor)
+            if (old != null && old != descriptor) invalid += descriptor.id
+        }
+        if (invalid.isNotEmpty()) {
+            invalid.forEach { id ->
+                pendingPool.removeProvider(id); sourceAuthorities.remove(id); sessionProgress.remove(id)
+                health.remove(id); noNewPages.remove(id); retiredAuthoritySources += id
+            }
+            cachedProgress = null; summaryFence.invalidate()
+            if (terminalState != DiscoveryState.FAILED && terminalState != DiscoveryState.CAPACITY_REACHED) terminalState = null
+            cancelRequests { it.descriptor.id in invalid }
+            lastError = health.values.mapNotNull { it.lastError }.firstOrNull()
+        }
+        observedAuthorityDescriptors.keys.retainAll(descriptors.keys)
+        retiredAuthoritySources.retainAll(descriptors.keys)
+        // Always retire the old identity and its pending candidates before obtaining any new view.
+        // All refresh callers hold C outside S; start/restore have already cleared pending bindings.
+        warmProgressAuthorities(sources)
+    }
+
+    private fun warmProgressAuthorities(sources: List<Pair<VideoSearchProvider, ProviderDescriptor>>) {
+        if (closed || current == null) return
+        for ((provider, descriptor) in sources) {
+            if (!provider.requiresAuthority || descriptor.progressScope != ProviderProgressScope.DURABLE ||
+                descriptor.id in retiredAuthoritySources || descriptor.id in sourceAuthorities) continue
+            // C -> A, outside S. This only restores permission to inspect the stored identity;
+            // it never acquires execution resources, observes health, or authorizes a query.
+            // Descriptor getters may advance the owner's observed clock. Sample immediately
+            // before this call, after all descriptor reads, rather than reuse refresh's old time.
+            val authority = try { provider.progressAuthority(descriptor, clock.nowMillis()) }
+                catch (_: Exception) { null } catch (_: LinkageError) { null }
+            if (authority != null && authority.descriptor == descriptor && authority.isCurrent(clock.nowMillis())) {
+                sourceAuthorities[descriptor.id] = authority
+                cachedProgress = null
+            }
+        }
+    }
+
+    private fun usableProgress(progress: ProviderProgress, profile: SearchProfile,
+        descriptor: ProviderDescriptor, nowMillis: Long): Boolean {
+        if (progress.profileId != profile.profileId || progress.queryKey != profile.queryKey ||
+            !progress.isCompatible(descriptor, nowMillis)) return false
+        if (registry.find(descriptor.id)?.requiresAuthority != true) return true
+        // Compatibility aliases are a legacy facility, never interchangeable rule authority.
+        if (progress.providerVersion != descriptor.version) return false
+        val authority = sourceAuthorities[descriptor.id] ?: return false
+        return authority.descriptor == descriptor && authority.isCurrent(nowMillis)
     }
 
     private fun beginRound() {
@@ -426,6 +532,7 @@ class VideoDiscoveryCoordinator(
     }
 
     private fun pump() {
+        refreshAuthorityState()
         if (pumping || closed || current == null || terminalState == DiscoveryState.FAILED || !gateOpen) return
         if (current?.profile?.query?.isBlank() == true) { scheduler.finishRound(); return }
         pumping = true
@@ -444,13 +551,18 @@ class VideoDiscoveryCoordinator(
                 }
                 val providers = registry.all()
                 if (providers.isEmpty()) { scheduler.finishRound(); break }
-                var chosen: Pair<VideoSearchProvider, ProviderProgress?>? = null
+                var chosen: Triple<VideoSearchProvider, ProviderDescriptor, ProviderProgress?>? = null
                 for (offset in providers.indices) {
                     val index = (roundRobin + offset) % providers.size
                     val provider = providers[index]
+                    val descriptor = provider.descriptor.detachedDescriptor()
+                    if (provider.requiresAuthority && observedAuthorityDescriptors[descriptor.id] != descriptor) {
+                        retiredAuthoritySources += descriptor.id
+                        continue
+                    }
                     val checkpoint = current ?: break
-                    val sourceHealth = relevantHealth(provider.descriptor)
-                    if (active.containsKey(provider.descriptor.id) || (sourceHealth?.cooldownUntilEpochMillis ?: 0) > clock.nowMillis() ||
+                    val sourceHealth = relevantHealth(descriptor)
+                    if (provider.descriptor.id in retiredAuthoritySources || active.containsKey(provider.descriptor.id) || (sourceHealth?.cooldownUntilEpochMillis ?: 0) > clock.nowMillis() ||
                         sourceHealth?.blockedQueryKey == checkpoint.profile.queryKey) continue
                     if (pendingPool.size >= limits.poolCapacity &&
                         pendingPool.snapshot().any { provider.descriptor.id in it.provenance }) continue
@@ -460,10 +572,10 @@ class VideoDiscoveryCoordinator(
                         lastError = refusal
                         continue
                     }
-                    val progress = readProgress(checkpoint.profile, provider.descriptor)
+                    val progress = readProgress(checkpoint.profile, descriptor)
                     if (terminalState == DiscoveryState.FAILED) return
                     if (progress?.exhausted == true) continue
-                    chosen = provider to progress; roundRobin = (index + 1) % providers.size; break
+                    chosen = Triple(provider, descriptor, progress); roundRobin = (index + 1) % providers.size; break
                 }
                 if (chosen == null) {
                     if (active.isEmpty()) {
@@ -476,14 +588,14 @@ class VideoDiscoveryCoordinator(
                     }
                     break
                 }
-                val (provider, progress) = chosen
+                val (provider, descriptor, progress) = chosen
                 val checkpoint = current ?: break
                 val cancellation = DiscoveryCancellation()
                 val operation = DiscoveryOperation(OperationContext("discovery-${++operationSequence}",
                     clock.nowMillis() + limits.requestDeadlineMillis, cancellation, limits.maxRetries,
                     resourceBudget = ResourceBudget(scheduler.powerPolicy.concurrency, limits.maxResponseBytes)), cancellation)
-                val request = ActiveRequest(provider, provider.descriptor, SearchRequest(checkpoint.stamp, checkpoint.profile, progress), checkpoint.pool.viewRevision, operation, summaryGeneration = summaryFence.generation)
-                active[provider.descriptor.id] = request
+                val request = ActiveRequest(provider, descriptor, SearchRequest(checkpoint.stamp, checkpoint.profile, progress, descriptor), checkpoint.pool.viewRevision, operation, summaryGeneration = summaryFence.generation)
+                active[descriptor.id] = request
                 launch(request, available)
             }
         } finally { pumping = false }
@@ -491,11 +603,10 @@ class VideoDiscoveryCoordinator(
 
     private fun readProgress(profile: SearchProfile, descriptor: ProviderDescriptor): ProviderProgress? = try {
         if (descriptor.progressScope == ProviderProgressScope.SESSION) {
-            sessionProgress[descriptor.id]?.takeIf { it.profileId == profile.profileId && it.queryKey == profile.queryKey &&
-                it.isCompatible(descriptor, clock.nowMillis()) }
+            sessionProgress[descriptor.id]?.takeIf { usableProgress(it, profile, descriptor, clock.nowMillis()) }
         } else store.transaction {
             val old = progress(profile.profileId, descriptor.id, profile.queryKey)
-            if (old != null && !old.isCompatible(descriptor, clock.nowMillis())) {
+            if (old != null && !usableProgress(old, profile, descriptor, clock.nowMillis())) {
                 resetProgress(profile.profileId, descriptor.id, profile.queryKey)
                 cachedProgress = cachedProgress?.plus(descriptor.id to null); null
             } else old
@@ -525,10 +636,18 @@ class VideoDiscoveryCoordinator(
         if (active[id] !== request || request.operation !== launchedOperation || !request.inFlight) return
         request.inFlight = false; request.handle = null; scheduler.release(id)
         val checkpoint = current
+        val descriptorChanged = registry.find(id)?.descriptor != request.descriptor
+        val authorityInvalid = outcome is ProviderOutcome.Success && (
+            request.provider.requiresAuthority && outcome.authority == null ||
+                outcome.authority != null && (outcome.authority.descriptor != request.descriptor ||
+                    !outcome.authority.isCurrent(clock.nowMillis())) ||
+                request.authority != null && outcome.authority !== request.authority)
         if (checkpoint == null || checkpoint.stamp != request.request.stamp || !gateOpen ||
-            (request.operation.cancellation.isCancelled && outcome is ProviderOutcome.Success) || registry.find(id)?.descriptor?.version != request.descriptor.version) {
+            (request.operation.cancellation.isCancelled && outcome is ProviderOutcome.Success) || descriptorChanged || authorityInvalid) {
             request.explicitCandidateId?.let { pendingPool.mark(it, false, VerificationSummary("scheduler", EngineOutcome.CANCELLED, EngineEvidence.NONE)) }
-            active.remove(id); pump(); return
+            active.remove(id)
+            if (request.provider.requiresAuthority && (descriptorChanged || authorityInvalid)) retiredAuthoritySources += id
+            refreshAuthorityState(); pump(); return
         }
         if (outcome is ProviderOutcome.Failure) outcome.retryAtEpochMillis?.let { retryAt ->
             val previous = health[id] ?: ProviderHealth()
@@ -541,7 +660,7 @@ class VideoDiscoveryCoordinator(
             finishFailure(request, DiscoveryError.DEADLINE_EXCEEDED); pump(); return
         }
         when (outcome) {
-            is ProviderOutcome.Success -> acceptPage(request, outcome.page)
+            is ProviderOutcome.Success -> acceptPage(request, outcome.page, outcome.authority)
             is ProviderOutcome.Failure -> {
                 val next = request.operation.context.nextAttempt(clock.nowMillis())
                 val now = clock.nowMillis()
@@ -571,7 +690,7 @@ class VideoDiscoveryCoordinator(
         pump()
     }
 
-    private fun acceptPage(request: ActiveRequest, page: ValidatedProviderPage) {
+    private fun acceptPage(request: ActiveRequest, page: ValidatedProviderPage, authority: ProviderAuthorityView?) {
         val id = request.descriptor.id
         val checkpoint = current ?: return
         try {
@@ -580,7 +699,10 @@ class VideoDiscoveryCoordinator(
                     if (!gateOpen || request.operation.cancellation.isCancelled) throw DiscoveryFailure(DiscoveryError.CANCELLED)
                     // Runtime delivery ends its I/O timer; persistence may still take time. The
                     // original absolute deadline also fences the final atomic publication.
-                    request.operation.check(clock.nowMillis())
+                    val now = clock.nowMillis()
+                    request.operation.check(now)
+                    if (authority != null && !authority.publishIfCurrent(now, request.operation) {})
+                        throw DiscoveryFailure(DiscoveryError.CANCELLED)
                 }
                 val persisted = checkpoint(checkpoint.stamp.sessionId) ?: return@transaction null
                 if (persisted.stamp != request.request.stamp || persisted.pool.viewRevision != request.viewRevision ||
@@ -609,34 +731,74 @@ class VideoDiscoveryCoordinator(
             }
             active.remove(id)
             if (accepted == null) { request.explicitCandidateId?.let { pendingPool.mark(it, false) }; return }
-            if (request.explicitCandidateId == null && request.descriptor.progressScope == ProviderProgressScope.SESSION)
-                sessionProgress[id] = ProviderProgress(checkpoint.profile.profileId, id, checkpoint.profile.queryKey, request.descriptor.version,
-                    request.descriptor.cursorSchemaVersion, page.nextCursor, page.cursorExpiresAtEpochMillis, page.exhausted, clock.nowMillis())
-            current = accepted.first
-            page.verificationReports.lastOrNull()?.let { summaryFence.publish(request.summaryGeneration, it.summary) }
-            val candidateAdds = pendingPool.add(page.pendingCandidates,
-                accepted.first.pool.entries.map { it.result.canonicalPageUrl }.toSet(),
-                accepted.first.pool.entries.flatMap { it.result.identityAliases }.toSet())
-            request.explicitCandidateId?.let { candidateId ->
-                pendingPool.mark(candidateId, false, page.verificationReports.find { it.candidateId == candidateId }?.summary
-                    ?: VerificationSummary("scheduler", EngineOutcome.UNKNOWN, EngineEvidence.NONE))
-                return
-            }
+            val now = clock.nowMillis()
+            val nextProgress = ProviderProgress(checkpoint.profile.profileId, id, checkpoint.profile.queryKey, request.descriptor.version,
+                request.descriptor.cursorSchemaVersion, page.nextCursor, page.cursorExpiresAtEpochMillis, page.exhausted, now)
+            val confirmedUrls = accepted.first.pool.entries.map { it.result.canonicalPageUrl }.toSet()
+            val confirmedAliases = accepted.first.pool.entries.flatMap { it.result.identityAliases }.toSet()
             val previousEmpty = noNewPages[id]?.takeIf {
                 it.queryKey == checkpoint.profile.queryKey && it.providerVersion == request.descriptor.version
             }?.count ?: 0
-            val noNew = if (accepted.second == 0 && candidateAdds == 0) minOf(previousEmpty + 1, 2) else 0
-            noNewPages[id] = NoNewPages(checkpoint.profile.queryKey, request.descriptor.version, noNew)
             val repeated = page.nextCursor != null && page.nextCursor == request.request.progress?.cursor && !page.exhausted
-            health[id] = if (!page.exhausted && (repeated || noNew >= 2)) ProviderHealth(0, clock.nowMillis() + limits.cooldownMillis,
+            // Prepare hashes, bounded merges and report lookup under C before entering A.
+            val stagedPending = PendingCandidatePool(limits.poolCapacity)
+            stagedPending.add(pendingPool.snapshot(), emptySet())
+            val candidateAdds = stagedPending.add(page.pendingCandidates, confirmedUrls, confirmedAliases)
+            request.explicitCandidateId?.let { candidateId ->
+                stagedPending.mark(candidateId, false, page.verificationReports.find { it.candidateId == candidateId }?.summary
+                    ?: VerificationSummary("scheduler", EngineOutcome.UNKNOWN, EngineEvidence.NONE))
+            }
+            val latestSummary = page.verificationReports.lastOrNull()?.summary
+            val noNew = if (accepted.second == 0 && candidateAdds == 0) minOf(previousEmpty + 1, 2) else 0
+            val stagedNoNew = NoNewPages(checkpoint.profile.queryKey, request.descriptor.version, noNew)
+            val stagedHealth = if (!page.exhausted && (repeated || noNew >= 2)) ProviderHealth(0, now + limits.cooldownMillis,
                 if (repeated) DiscoveryError.REPEATED_CURSOR else DiscoveryError.NO_NEW_RESULTS,
                 cooldownQueryKey = checkpoint.profile.queryKey, cooldownProviderVersion = request.descriptor.version) else ProviderHealth()
+            // C -> A: only reference/finite map updates and the existing atomic summary fence.
+            // No registry, clock, store, source, cancellation hook or listener is called here.
+            val publish: () -> Unit = {
+                if (request.explicitCandidateId == null && request.descriptor.progressScope == ProviderProgressScope.SESSION)
+                    sessionProgress[id] = nextProgress
+                if (authority != null) sourceAuthorities[id] = authority
+                current = accepted.first
+                pendingPool = stagedPending
+                if (latestSummary != null) summaryFence.publish(request.summaryGeneration, latestSummary)
+                if (request.explicitCandidateId == null) {
+                    noNewPages[id] = stagedNoNew
+                    health[id] = stagedHealth
+                }
+            }
+            val publicationTime = clock.nowMillis()
+            val published = if (!gateOpen || request.operation.cancellation.isCancelled || publicationTime >= request.operation.context.deadlineEpochMillis) false
+                else if (authority == null) { publish(); true }
+                else authority.publishIfCurrent(publicationTime, request.operation, publish)
+            if (!published) {
+                // The beforeCommit gate already admitted these independently validated facts.
+                // A successful DB commit preserves history even if authority was revoked during I/O.
+                if (page.results.isNotEmpty()) {
+                    current = accepted.first
+                    // Removing already-confirmed duplicates uses committed history, not renewed
+                    // source authority. No unverified candidate from this response is added.
+                    pendingPool.add(emptyList(), confirmedUrls, confirmedAliases)
+                }
+                if (authority != null) {
+                    retiredAuthoritySources += id
+                    if (!authority.isCurrent(publicationTime)) { pendingPool.removeProvider(id); sessionProgress.remove(id) }
+                }
+                cachedProgress = null
+                return
+            }
             lastError = health[id]?.lastError ?: registry.all().mapNotNull { relevantHealth(it.descriptor)?.lastError }.firstOrNull()
+
         } catch (failure: DiscoveryFailure) {
             active.remove(id)
             if (failure.code == DiscoveryError.CAPACITY_REACHED) {
                 terminalState = DiscoveryState.CAPACITY_REACHED; lastError = failure.code; cancelAll()
             } else if (failure.code != DiscoveryError.CANCELLED) finishFailure(request, failure.code)
+            else if (authority != null && !authority.isCurrent(clock.nowMillis())) {
+                retiredAuthoritySources += id; pendingPool.removeProvider(id); sessionProgress.remove(id)
+                sourceAuthorities.remove(id); cachedProgress = null; summaryFence.invalidate()
+            }
         } catch (_: Exception) { active.remove(id); failStorage() }
         finally {
             // The request may already have left active when a final commit guard throws.
@@ -692,6 +854,6 @@ class VideoDiscoveryCoordinator(
     }
     private fun failStorage() { terminalState = DiscoveryState.FAILED; lastError = DiscoveryError.STORAGE_UNAVAILABLE; cancelAll() }
     override fun close() = synchronized(lock) {
-        closed = true; cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); incognitoStore?.clear(); incognitoStore = null; current = null
+        closed = true; cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); clearAuthorityState(); incognitoStore?.clear(); incognitoStore = null; current = null
     }
 }

@@ -16,7 +16,8 @@ internal object RepositoryPolicyFixtures {
     val keyPair: KeyPair by lazy { newRsaKeyPair() }
 
     fun newRsaKeyPair(bits: Int = 2_048): KeyPair = KeyPairGenerator.getInstance("RSA").apply { initialize(bits) }.generateKeyPair()
-    fun verifier(): RepositoryPolicyVerifier = RepositoryPolicyVerifier(mapOf(KEY_ID to keyPair.public))
+    fun verifier(target: ProviderTarget = ProviderTarget.LEGACY): RepositoryPolicyVerifier =
+        RepositoryPolicyVerifier(mapOf(KEY_ID to keyPair.public), target)
     fun digest(packageBytes: ByteArray): ByteArray = MessageDigest.getInstance("SHA-256").digest(packageBytes)
 
     fun signed(
@@ -31,11 +32,18 @@ internal object RepositoryPolicyFixtures {
         rollbackTargetDigest: ByteArray = ByteArray(RepositoryPolicyProtocol.PACKAGE_DIGEST_BYTES),
         keyId: String = KEY_ID,
         signingKey: PrivateKey = keyPair.private,
-    ): ByteArray = envelope(payload(version = version, issued = issued, expires = expires,
+        target: ProviderTarget = ProviderTarget.LEGACY,
+    ): ByteArray = envelope(payload(
+        schema = if (target.kind == ProviderPackageKind.COMMONS_PARAMETERS_V1) RepositoryPolicyProtocol.SCHEMA
+            else RepositoryPolicyProtocol.SCHEMA_V2,
+        providerId = target.providerId, providerVersion = target.providerVersion,
+        version = version, issued = issued, expires = expires,
         enabledByte = if (enabled) 1 else 0, minimumSafePackageVersion = minimumSafePackageVersion,
         revokedPackageVersions = revokedPackageVersions, revokedPackageKeyIds = revokedPackageKeyIds,
         rollbackTargetVersion = rollbackTargetVersion, rollbackTargetDigest = rollbackTargetDigest),
-        keyId = keyId, signingKey = signingKey)
+        keyId = keyId, signingKey = signingKey,
+        format = if (target.kind == ProviderPackageKind.COMMONS_PARAMETERS_V1) RepositoryPolicyProtocol.FORMAT
+            else RepositoryPolicyProtocol.FORMAT_V2)
 
     /** Raw values and ordering intentionally permit malformed signed test cases. */
     fun payload(

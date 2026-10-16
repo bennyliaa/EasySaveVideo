@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="runtime_message_main_persistence_incomplete">Settings or tab addresses were not fully saved. The previous state may return at the next launch. Check available storage.</string>
+    <string name="runtime_message_main_recorded_result_changed">The recording result has changed. Select the saved video again.</string>
+    <string name="runtime_message_main_recorded_version_unavailable">This exact version of the saved video is not available for editing right now. Select it again in the library.</string>
+    <string name="runtime_message_main_editor_busy">The editor is still processing or waiting for recovery. Open the saved video from the library later.</string>
+    <string name="runtime_message_main_editor_draft_rejected">The editor draft could not add this video. Open the editor from the library and adjust the existing segments first.</string>
+    <string name="runtime_message_main_display_geometry_unavailable">The default display geometry is unavailable. Return to the foreground and select again.</string>
+    <string name="runtime_message_main_recording_recovery_not_ready">Advanced recording storage and recovery checks are not ready yet.</string>
+    <string name="runtime_message_main_tabs_recovery_incomplete">Tab recovery is incomplete. Saving tab addresses is paused and the original data is kept. You can still browse. To explicitly reset saved addresses, turn off saving tab addresses in Settings.</string>
+    <string name="runtime_message_main_settings_recovery_incomplete">Some settings were not fully restored. You can still use the address bar.</string>
+    <string name="runtime_message_main_file_picker_unavailable">The system file picker is unavailable.</string>
+    <string name="runtime_message_main_system_browser_unavailable">No system browser was found that can open this web page.</string>
+    <string name="runtime_message_editor_interrupted_recovery">The previous edit was interrupted. Originals are kept. Unverified new files will not be added to the library automatically. Items awaiting cleanup: %1$d.</string>
+    <string name="runtime_message_editor_recovery_incomplete">Editor recovery checks are incomplete. Originals are kept and editing is unavailable for now.</string>
+    <string name="runtime_message_editor_wait_media_tasks">Wait for preview, thumbnail, or other media tasks to exit before changing the selection or submitting. Originals are kept.</string>
+    <string name="runtime_message_editor_probe_release_unconfirmed">Media resources have not confirmed exit. Fully exit the app, then try again.</string>
+    <string name="runtime_message_editor_invalid_parameters">The editing parameters are invalid.</string>
+    <string name="runtime_message_editor_wait_source_check">Wait for source format checks to finish before submitting the edit.</string>
+    <string name="runtime_message_editor_unchanged_parameters">The parameters do not change timing, the image, or compression. Preview the original directly; no repeat transcoding is needed.</string>
+    <string name="runtime_message_editor_wait_existing_resources">Wait for resources used by the current save, recording, or preview to actually exit before submitting.</string>
+    <string name="runtime_message_editor_media_busy">Media resources are busy. Close the preview and try again later.</string>
+    <string name="runtime_message_editor_published">The new video was independently verified and added to the library. Originals are kept. The compressed file may be larger than the original.</string>
+    <string name="runtime_message_editor_stop_requested">A safe stop was requested. Waiting for media resources to actually exit; originals are kept.</string>
+    <string name="runtime_message_editor_entitlement_required">This edit requires the corresponding Video Tools Pro capability. Development builds can use the existing Fake Entitlement in Settings. Purchases are not integrated in release builds.</string>
+    <string name="runtime_message_editor_queue_full">The editing queue is full. Try again later.</string>
+    <string name="runtime_message_editor_release_unconfirmed">Media resource exit or publication status is not yet confirmed. New edits are blocked and related files are kept. Fully exit and reopen the app for recovery checks.</string>
+    <string name="runtime_message_editor_publication_checking">Final library publication has started, so cancellation can no longer be confirmed. Checking the publication result; originals are kept.</string>
+    <string name="runtime_message_editor_error_unsupported_profile">This source is outside the M6-A supported profile: 8-bit SDR, square pixels, integer constant-frame-rate AVC, and either no audio or consistent AAC-LC audio tracks. Originals are kept.</string>
+    <string name="runtime_message_editor_error_incompatible_segments">The segments have different post-crop aspect ratios, frame rates, or audio configurations and cannot be merged right now. Originals are kept.</string>
+    <string name="runtime_message_editor_error_source_unavailable">The source has changed or cannot be read. Return to the library and select it again.</string>
+    <string name="runtime_message_editor_error_insufficient_space">There is not enough space. Originals were not overwritten. Free up space and try again.</string>
+    <string name="runtime_message_editor_error_cancelled">Editing stopped safely. Originals are kept.</string>
+    <string name="runtime_message_editor_error_release_unconfirmed">Media resources have not confirmed exit. Fully exit and reopen the app.</string>
+    <string name="runtime_message_editor_error_timeout">Processing exceeded the current budget. A safe stop was requested. Originals are kept.</string>
+    <string name="runtime_message_editor_error_verification_failed">The new video failed independent verification and was not added to the library as a successful video. Originals are kept.</string>
+    <string name="runtime_message_editor_error_limit">The source or output exceeds the M6-A limits for count, duration, dimensions, or file size. Originals are kept.</string>
+    <string name="runtime_message_editor_error_incomplete">This edit did not finish. Check the source and available space, then try again. Originals are kept.</string>
+</resources>

@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.security.KeyPair
 import java.security.KeyPairGenerator
+import java.security.MessageDigest
 import java.security.PrivateKey
 import java.security.Signature
 
@@ -16,7 +17,8 @@ internal object ProviderPackageFixtures {
     val keyPair: KeyPair by lazy { newRsaKeyPair() }
 
     fun newRsaKeyPair(bits: Int = 2_048): KeyPair = KeyPairGenerator.getInstance("RSA").apply { initialize(bits) }.generateKeyPair()
-    fun verifier(): ProviderPackageVerifier = ProviderPackageVerifier(mapOf(KEY_ID to keyPair.public))
+    fun verifier(target: ProviderTarget = ProviderTarget.LEGACY): ProviderPackageVerifier =
+        ProviderPackageVerifier(mapOf(KEY_ID to keyPair.public), target)
 
     fun signed(
         version: Long = 1,
@@ -30,6 +32,88 @@ internal object ProviderPackageFixtures {
         enabledByte = if (enabled) 1 else 0, pageSize = limits.pageSize, responseBytes = limits.maxResponseBytes,
         deadline = limits.deadlineMillis, cacheTtl = limits.cacheTtlMillis, cacheEntries = limits.cacheEntries),
         keyId = keyId, signingKey = signingKey)
+
+    /** V2 test-only signer. Original v1 helpers and default bytes remain unchanged. */
+    fun signedRules(
+        target: ProviderTarget,
+        ruleBytes: ByteArray,
+        version: Long = 1,
+        enabled: Boolean = true,
+        issued: Long = NOW - 1_000,
+        expires: Long = NOW + 60_000,
+        limits: CommonsLimits = target.localLimits,
+        keyId: String = KEY_ID,
+        signingKey: PrivateKey = keyPair.private,
+    ): ByteArray = envelope(rulesPayload(target, ruleBytes, version = version, issued = issued, expires = expires,
+        enabledByte = if (enabled) 1 else 0, pageSize = limits.pageSize, responseBytes = limits.maxResponseBytes,
+        deadline = limits.deadlineMillis, cacheTtl = limits.cacheTtlMillis, cacheEntries = limits.cacheEntries),
+        keyId = keyId, signingKey = signingKey, format = ProviderPackageProtocol.FORMAT_V2)
+
+    /** Explicit kind2 signer; signedRules and rulesPayload retain their kind1 defaults. */
+    fun signedHttpRules(
+        target: ProviderTarget,
+        ruleBytes: ByteArray,
+        version: Long = 1,
+        enabled: Boolean = true,
+        issued: Long = NOW - 1_000,
+        expires: Long = NOW + 60_000,
+        limits: CommonsLimits = target.localLimits,
+        keyId: String = KEY_ID,
+        signingKey: PrivateKey = keyPair.private,
+    ): ByteArray = envelope(rulesPayload(target, ruleBytes,
+        kind = ProviderPackageProtocol.KIND_BOUNDED_HTTP_CANDIDATES_V1,
+        version = version, issued = issued, expires = expires,
+        enabledByte = if (enabled) 1 else 0, pageSize = limits.pageSize, responseBytes = limits.maxResponseBytes,
+        deadline = limits.deadlineMillis, cacheTtl = limits.cacheTtlMillis, cacheEntries = limits.cacheEntries),
+        keyId = keyId, signingKey = signingKey, format = ProviderPackageProtocol.FORMAT_V2)
+
+    /** All fields are overrideable so tests can sign incompatible, malformed or cross-target data. */
+    fun rulesPayload(
+        target: ProviderTarget,
+        ruleBytes: ByteArray,
+        schema: Int = ProviderPackageProtocol.SCHEMA_V2,
+        kind: Int = ProviderPackageProtocol.KIND_DECLARATIVE_JSON_CANDIDATES_V1,
+        providerId: String = target.providerId,
+        providerVersion: String = target.providerVersion,
+        version: Long = 1,
+        issued: Long = NOW - 1_000,
+        expires: Long = NOW + 60_000,
+        enabledByte: Int = 1,
+        pageSize: Int = target.localLimits.pageSize,
+        responseBytes: Long = target.localLimits.maxResponseBytes,
+        deadline: Long = target.localLimits.deadlineMillis,
+        cacheTtl: Long = target.localLimits.cacheTtlMillis,
+        cacheEntries: Int = target.localLimits.cacheEntries,
+        specVersion: Int = target.specVersion,
+        runtimeVersion: Int = target.runtimeVersion,
+        minimumAppVersionCode: Int = target.appVersionCode,
+        ruleSchemaVersion: Int = 1,
+        ruleVersion: Long = 1,
+        ruleDigest: ByteArray = MessageDigest.getInstance("SHA-256").digest(ruleBytes),
+        ruleByteLength: Int = ruleBytes.size,
+    ): ByteArray = write {
+        writeInt(schema)
+        writeInt(kind)
+        string(providerId)
+        string(providerVersion)
+        writeLong(version)
+        writeLong(issued)
+        writeLong(expires)
+        writeByte(enabledByte)
+        writeInt(pageSize)
+        writeLong(responseBytes)
+        writeLong(deadline)
+        writeLong(cacheTtl)
+        writeInt(cacheEntries)
+        writeInt(specVersion)
+        writeInt(runtimeVersion)
+        writeInt(minimumAppVersionCode)
+        writeInt(ruleSchemaVersion)
+        writeLong(ruleVersion)
+        write(ruleDigest)
+        writeInt(ruleByteLength)
+        write(ruleBytes)
+    }
 
     /** Raw fields permit adversarial signed values that CommonsLimits cannot construct. */
     fun payload(

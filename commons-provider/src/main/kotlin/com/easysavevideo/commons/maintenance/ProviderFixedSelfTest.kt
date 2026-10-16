@@ -5,11 +5,25 @@ import com.easysavevideo.commons.CommonsFailure
 import com.easysavevideo.commons.CommonsIdentity
 import com.easysavevideo.commons.CommonsResponseParser
 import com.easysavevideo.commons.CommonsRightsReview
+import com.easysavevideo.commons.rules.BoundedHttpRule
+import com.easysavevideo.commons.rules.DeclarativeJsonRule
+import com.easysavevideo.commons.rules.RuleHttpBinding
+import com.easysavevideo.commons.rules.RuleResponseFormat
+import com.easysavevideo.commons.rules.projectCandidateRule
+import com.easysavevideo.core.model.EpochClock
+import com.easysavevideo.core.model.OperationContext
+import com.easysavevideo.core.model.ResourceBudget
+import com.easysavevideo.discovery.DiscoveryCancellation
+import com.easysavevideo.discovery.DiscoveryError
+import com.easysavevideo.discovery.DiscoveryFailure
+import com.easysavevideo.discovery.DiscoveryLimits
+import com.easysavevideo.discovery.DiscoveryOperation
+import com.easysavevideo.discovery.ProviderDescriptor
 
 /**
- * Compiled synthetic vectors only: no requests, user data, downloaded rules or executable input.
- * This proves the admitted limits can accommodate a tiny known parser exercise, not compatibility
- * with a live site. The parser has its own depth/node bounds; these fixed inputs total < 4 KiB.
+ * Host-owned synthetic vectors only: no requests, user data or executable input.
+ * Legacy vectors exercise the built-in parser; candidate vectors exercise the exact authenticated
+ * finite plan and, for HTTP, the encoded request template without executing a response source. Neither proves compatibility with a live site. Each path has fixed input/check budgets.
  * Cancellation is propagated, never converted to an incompatibility/quarantine verdict.
  */
 internal object ProviderFixedSelfTest {
@@ -26,6 +40,70 @@ internal object ProviderFixedSelfTest {
         """{"batchcomplete":true,"batchcomplete":false}""",
         """{"query":{"pages":[{"pageid":1,"ns":6},{"pageid":1,"ns":6}]}}""",
     ).map { it.toByteArray() }
+
+    /** Runs the exact authenticated plan against host-owned vectors, never package-defined assertions. */
+    fun run(value: SignedProviderPackage, checkCancelled: () -> Unit): Boolean {
+        if (value.kind == ProviderPackageKind.COMMONS_PARAMETERS_V1) return run(value.policy, checkCancelled)
+        checkCancelled()
+        val plan = value.candidatePlan ?: return false
+        val target = value.policy.target
+        var checks = 0
+        // HTTP HTML uses bounded tree scans in addition to the original JSON checks. This is a
+        // finite self-test budget, not a promise of hard preemption during Jsoup's initial parse.
+        val maxChecks = if (plan is BoundedHttpRule) 2_000_000 else MAX_CHECKS * 8
+        fun check() {
+            checkCancelled()
+            if (++checks > maxChecks) throw DiscoveryFailure(DiscoveryError.INVALID_RESULT)
+        }
+        val cancellation = DiscoveryCancellation()
+        val operation = DiscoveryOperation(OperationContext("rule-fixed-self-test", NOW + 1_000, cancellation,
+            resourceBudget = ResourceBudget(maxBytes = value.policy.limits.maxResponseBytes)), cancellation)
+        val descriptor = ProviderDescriptor(target.providerId, target.providerVersion)
+        val limits = DiscoveryLimits(maxResponseBytes = value.policy.limits.maxResponseBytes,
+            maxCandidatesPerResponse = value.policy.limits.pageSize)
+        val clock = EpochClock { check(); NOW }
+        fun binding(vector: ProviderRuleSelfTestVector): RuleHttpBinding? = when (plan) {
+            is DeclarativeJsonRule -> null
+            is BoundedHttpRule -> {
+                val input = vector.httpRequest ?: throw DiscoveryFailure(DiscoveryError.SOURCE_CONFIGURATION)
+                val endpoint = target.httpEndpoint ?: throw DiscoveryFailure(DiscoveryError.SOURCE_CONFIGURATION)
+                plan.bind(endpoint, input.query, input.locale, input.cursor, ::check).also {
+                    if (it.encodedPathAndQuery != input.expectedEncodedPathAndQuery)
+                        throw DiscoveryFailure(DiscoveryError.INVALID_RESULT)
+                }
+            }
+        }
+        try {
+            for (vector in target.selfTestVectors) {
+                check()
+                val bytes = vector.responseBytes
+                if (bytes.size > value.policy.limits.maxResponseBytes) return false
+                val page = projectCandidateRule(plan, bytes, binding(vector), descriptor, target.sourceName,
+                    limits, clock, operation) {}
+                if (page.results.isNotEmpty() || page.candidates != vector.expectedCandidates ||
+                    page.nextCursor != vector.expectedNextCursor || page.exhausted != vector.expectedExhausted) return false
+            }
+            val invalid = mutableListOf(byteArrayOf(0xc3.toByte(), 0x28))
+            if (plan is DeclarativeJsonRule || target.httpEndpoint?.format == RuleResponseFormat.JSON)
+                invalid += "{\"duplicate\":1,\"duplicate\":2}".toByteArray()
+            val negativeBinding = binding(target.selfTestVectors.first())
+            for (bytes in invalid) {
+                check()
+                try {
+                    projectCandidateRule(plan, bytes, negativeBinding, descriptor, target.sourceName,
+                        limits, clock, operation) {}
+                    return false
+                } catch (failure: DiscoveryFailure) {
+                    if (failure.code != DiscoveryError.INVALID_RESULT) throw failure
+                }
+            }
+        } catch (failure: DiscoveryFailure) {
+            if (failure.code in setOf(DiscoveryError.CANCELLED, DiscoveryError.DEADLINE_EXCEEDED)) throw failure
+            return false
+        }
+        checkCancelled()
+        return true
+    }
 
     fun run(policy: ProviderPolicy, checkCancelled: () -> Unit): Boolean {
         checkCancelled()

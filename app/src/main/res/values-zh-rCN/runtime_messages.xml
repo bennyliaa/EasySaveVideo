@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="runtime_message_main_persistence_incomplete">设置或标签地址保存未完成，下次启动可能仍为旧状态。请检查存储空间。</string>
+    <string name="runtime_message_main_recorded_result_changed">录制结果已变化，请重新选择已保存视频。</string>
+    <string name="runtime_message_main_recorded_version_unavailable">已保存视频的准确版本暂不可用于编辑，请在媒体库重新选择。</string>
+    <string name="runtime_message_main_editor_busy">编辑器仍在处理或等待恢复，请稍后从媒体库打开已保存视频。</string>
+    <string name="runtime_message_main_editor_draft_rejected">编辑器草稿未能添加此视频，请先在媒体库打开编辑器调整现有片段。</string>
+    <string name="runtime_message_main_display_geometry_unavailable">当前默认显示屏几何不可用，请返回前台后重新选择。</string>
+    <string name="runtime_message_main_recording_recovery_not_ready">高级录制存储与恢复检查尚未就绪。</string>
+    <string name="runtime_message_main_tabs_recovery_incomplete">标签恢复未完成，已暂停标签地址写入并保留原始数据。仍可浏览；在设置关闭保存标签地址可明确重置。</string>
+    <string name="runtime_message_main_settings_recovery_incomplete">部分设置恢复未完成，地址栏可继续使用。</string>
+    <string name="runtime_message_main_file_picker_unavailable">系统文件选择器不可用。</string>
+    <string name="runtime_message_main_system_browser_unavailable">未找到可打开该网页的系统浏览器。</string>
+    <string name="runtime_message_editor_interrupted_recovery">上次编辑被中断，原件保留。未验证的新文件不会自动入库；待清理项 %1$d 个。</string>
+    <string name="runtime_message_editor_recovery_incomplete">编辑恢复检查未完成。原件保留，编辑暂不可用。</string>
+    <string name="runtime_message_editor_wait_media_tasks">请等待预览、缩略图或其他媒体任务退出，再调整选择或提交。原件保留。</string>
+    <string name="runtime_message_editor_probe_release_unconfirmed">媒体资源退出尚未确认，请完全退出应用后重试。</string>
+    <string name="runtime_message_editor_invalid_parameters">编辑参数无效。</string>
+    <string name="runtime_message_editor_wait_source_check">请先等待来源格式检查完成，再提交编辑。</string>
+    <string name="runtime_message_editor_unchanged_parameters">参数未改变时间、画面或压缩方式，可直接预览原件，无需重复转码。</string>
+    <string name="runtime_message_editor_wait_existing_resources">请等待现有保存、录制或预览资源实际退出后再提交。</string>
+    <string name="runtime_message_editor_media_busy">媒体资源忙，请关闭预览并稍后重试。</string>
+    <string name="runtime_message_editor_published">新视频已独立验证并入库。原件保留；压缩后的大小可能大于原件。</string>
+    <string name="runtime_message_editor_stop_requested">已请求安全停止，等待媒体资源实际退出；原件保留。</string>
+    <string name="runtime_message_editor_entitlement_required">此编辑需要 Video Tools Pro 对应能力。开发版可使用设置中的现有 Fake Entitlement；正式版未接入购买。</string>
+    <string name="runtime_message_editor_queue_full">编辑队列已满，请稍后重试。</string>
+    <string name="runtime_message_editor_release_unconfirmed">媒体资源退出或提交状态尚未确认，已停止新编辑且保留相关文件。请完全退出应用后重新打开进行恢复检查。</string>
+    <string name="runtime_message_editor_publication_checking">最终入库提交已开始，不能再确认取消。正在核对提交结果；原件保留。</string>
+    <string name="runtime_message_editor_error_unsupported_profile">此来源不在 M6-A 支持范围：8 位 SDR、方形像素、整数恒定帧率 AVC，静音或一致的 AAC-LC 音轨。原件保留。</string>
+    <string name="runtime_message_editor_error_incompatible_segments">片段的裁后宽高比、帧率或音轨配置不一致，当前无法合并。原件保留。</string>
+    <string name="runtime_message_editor_error_source_unavailable">来源已变化或不可读取，请返回媒体库重新选择。</string>
+    <string name="runtime_message_editor_error_insufficient_space">空间不足，未覆盖原件。请释放空间后重试。</string>
+    <string name="runtime_message_editor_error_cancelled">编辑已安全停止，原件保留。</string>
+    <string name="runtime_message_editor_error_release_unconfirmed">媒体资源尚未确认退出，请完全退出应用后重新打开。</string>
+    <string name="runtime_message_editor_error_timeout">处理超过当前预算，已请求安全停止。原件保留。</string>
+    <string name="runtime_message_editor_error_verification_failed">新视频未通过独立验证，未作为成功视频入库。原件保留。</string>
+    <string name="runtime_message_editor_error_limit">来源或输出超出 M6-A 的数量、时长、尺寸或大小限制。原件保留。</string>
+    <string name="runtime_message_editor_error_incomplete">此次编辑未完成，请检查来源与可用空间后重试。原件保留。</string>
+</resources>

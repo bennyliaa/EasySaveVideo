@@ -21,6 +21,9 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
+import com.easysavevideo.app.ui.RuntimeMessageCopy
+import com.easysavevideo.app.ui.RuntimeMessageText
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import android.view.ViewGroup
@@ -235,6 +238,11 @@ class MainActivity : ComponentActivity() {
     private var libraryResumeSequence by mutableLongStateOf(0L)
     private var hasFocusedWindow by mutableStateOf(false)
     private var settings by mutableStateOf(AppSettings())
+    // Callbacks resolve the latest settings/configuration, not a composition-era Resources snapshot.
+    private val runtimeText = RuntimeMessageText { key, arguments ->
+        esvLocalizedContext(this, resources.configuration, settings.appearance.language)
+            .getString(key.resource, *arguments)
+    }
     private var filePrompt by mutableStateOf<SystemBrowserHost.FileChoice?>(null)
     private var choosing: SystemBrowserHost.FileChoice? = null
     private var settingsChanged = false
@@ -297,7 +305,7 @@ class MainActivity : ComponentActivity() {
             }, requiresDefaultDisplay = saves::requiresDefaultDisplayRecording)
         persistence = BrowserPersistence(applicationContext, errorSink) {
             settingsWriteFailed = true
-            if (::browser.isInitialized) browser.showNotice("设置或标签地址保存未完成，下次启动可能仍为旧状态。请检查存储空间。")
+            if (::browser.isInitialized) browser.showNotice(runtimeText.get(RuntimeMessageCopy.MAIN_PERSISTENCE_INCOMPLETE))
         }
         val entitlements = EntitlementManager(BuildEntitlements.source)
         val gate = FeatureGate()
@@ -515,7 +523,7 @@ class MainActivity : ComponentActivity() {
                     }
                     if (recordedOutputReference != reference) {
                         pendingRecordedEditorReference = null
-                        recordedEditorNotice = "录制结果已变化，请重新选择已保存视频。"
+                        recordedEditorNotice = runtimeText.get(RuntimeMessageCopy.MAIN_RECORDED_RESULT_CHANGED)
                         return@LaunchedEffect
                     }
                     // Resolve the published identity off the UI thread. Never manufacture a catalog item
@@ -526,18 +534,18 @@ class MainActivity : ComponentActivity() {
                     if (pendingRecordedEditorReference != reference || !isForeground || !showingRecording) return@LaunchedEffect
                     pendingRecordedEditorReference = null
                     if (saves.segmentRecording?.completedReference != reference) {
-                        recordedEditorNotice = "录制结果已变化，请重新选择已保存视频。"
+                        recordedEditorNotice = runtimeText.get(RuntimeMessageCopy.MAIN_RECORDED_RESULT_CHANGED)
                         return@LaunchedEffect
                     }
                     if (item == null || item.lifecycle != MediaLifecycle.READY || item.readRef() != reference) {
-                        recordedEditorNotice = "已保存视频的准确版本暂不可用于编辑，请在媒体库重新选择。"
+                        recordedEditorNotice = runtimeText.get(RuntimeMessageCopy.MAIN_RECORDED_VERSION_UNAVAILABLE)
                     } else if (editor.state.busy || editor.state.phase == com.easysavevideo.app.editor.ui.EditorPhase.BLOCKED) {
-                        recordedEditorNotice = "编辑器仍在处理或等待恢复，请稍后从媒体库打开已保存视频。"
+                        recordedEditorNotice = runtimeText.get(RuntimeMessageCopy.MAIN_EDITOR_BUSY)
                     } else {
                         val available = listOf(item) + (library?.state?.items ?: emptyList()).filter { it.itemId != item.itemId }
                         editor.open(item, available, settings.editor)
                         if (editor.state.draft.segments.none { it.reference == reference }) {
-                            recordedEditorNotice = "编辑器草稿未能添加此视频，请先在媒体库打开编辑器调整现有片段。"
+                            recordedEditorNotice = runtimeText.get(RuntimeMessageCopy.MAIN_EDITOR_DRAFT_REJECTED)
                             return@LaunchedEffect
                         }
                         recordedEditorNotice = null
@@ -732,8 +740,8 @@ class MainActivity : ComponentActivity() {
                     }, notice = recordedEditorNotice ?: saves.notice?.let { saveRuntimeNoticeText(it) },
                     regionSetup = RecordingRegionSetup(regionGeometry, DefaultDisplayCaptureGeometry.scopeEvidence(),
                         canStart = !privateMode && saves.ready && saves.segmentRecording?.ready == true && saves.canRegionRecording() && saves.currentRecordingId == null,
-                        unavailableReason = if (regionGeometry == null) "当前默认显示屏几何不可用，请返回前台后重新选择。"
-                            else if (saves.segmentRecording?.ready != true) "高级录制存储与恢复检查尚未就绪。" else null),
+                        unavailableReason = if (regionGeometry == null) stringResource(RuntimeMessageCopy.MAIN_DISPLAY_GEOMETRY_UNAVAILABLE.resource)
+                            else if (saves.segmentRecording?.ready != true) stringResource(RuntimeMessageCopy.MAIN_RECORDING_RECOVERY_NOT_READY.resource) else null),
                     onStartRegion = { choice, recipe ->
                         recordedEditorNotice = null
                         saves.destinations?.select(isCurrent = { !browser.isPrivateMode && isForeground && showingRecording && !isDestroyed && !isFinishing &&
@@ -1017,8 +1025,8 @@ class MainActivity : ComponentActivity() {
             if (settings.browser.restoreTabs) browser.restore(checkpoint)
             if (browser.hasUserInteracted) browser.persistCurrentSession()
             if (failed) browser.showNotice(if (persistence.sessionWritesPaused)
-                "标签恢复未完成，已暂停标签地址写入并保留原始数据。仍可浏览；在设置关闭保存标签地址可明确重置。"
-                else "部分设置恢复未完成，地址栏可继续使用。")
+                runtimeText.get(RuntimeMessageCopy.MAIN_TABS_RECOVERY_INCOMPLETE)
+                else runtimeText.get(RuntimeMessageCopy.MAIN_SETTINGS_RECOVERY_INCOMPLETE))
         }
     }
     @Suppress("DEPRECATION")
@@ -1048,14 +1056,14 @@ class MainActivity : ComponentActivity() {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         try { picker.launch(intent) } catch (_: ActivityNotFoundException) {
-            choosing = null; browser.finishFiles(choice, null); browser.showNotice("系统文件选择器不可用。")
+            choosing = null; browser.finishFiles(choice, null); browser.showNotice(runtimeText.get(RuntimeMessageCopy.MAIN_FILE_PICKER_UNAVAILABLE))
         }
     }
     private fun openSystemBrowser() {
         val address = browser.state.selectedTab?.address ?: return
         if (!protectBeforePresentationMove()) return
         try { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(address.value)).addCategory(Intent.CATEGORY_BROWSABLE)) }
-        catch (_: ActivityNotFoundException) { browser.showNotice("未找到可打开该网页的系统浏览器。") }
+        catch (_: ActivityNotFoundException) { browser.showNotice(runtimeText.get(RuntimeMessageCopy.MAIN_SYSTEM_BROWSER_UNAVAILABLE)) }
     }
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("esv_destination", activeDestination.route)

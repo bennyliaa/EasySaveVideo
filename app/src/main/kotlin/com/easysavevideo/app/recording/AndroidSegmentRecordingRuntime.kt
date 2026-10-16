@@ -1,6 +1,7 @@
 package com.easysavevideo.app.recording
 
 import android.content.Context
+import com.easysavevideo.app.ui.RuntimeMessageText
 import com.easysavevideo.library.destination.OrdinaryDestinationAdmission
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
@@ -41,6 +42,7 @@ class AndroidSegmentRecordingRuntime internal constructor(
     private val otherMediaIdle: () -> Boolean,
     private val released: (String) -> Unit,
     private val published: () -> Unit,
+    private val runtimeText: RuntimeMessageText,
     private val activityChanged: () -> Unit = {},
 ) {
     private val application = context.applicationContext
@@ -611,7 +613,7 @@ class AndroidSegmentRecordingRuntime internal constructor(
                 }
                 is EditRunResult.Stopped -> if (snapshot != null) showSnapshot(snapshot,
                     if (result.requiresRecovery) RecordingSegmentsPhase.RECOVERY_REQUIRED else RecordingSegmentsPhase.FAILED,
-                    errorText(EditFailure(result.error)))
+                    errorText(EditFailure(result.error), runtimeText))
                 else setPhase(job, RecordingSegmentsPhase.RECOVERY_REQUIRED,
                     "处理已停止，但片段清单和提交状态暂不可读取。文件保留，请重新打开应用恢复核对。")
             }

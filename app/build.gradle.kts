@@ -94,11 +94,14 @@ val contractResourceInputs = fileTree("src/main/res") {
             "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "bookmark_panel.xml", "history_panel.xml", "browser_permission_notice.xml", "browser_cookie_clear.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
             "discovery_presentation.xml", "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
             "library_batch_export.xml", "export_recovery.xml", "save_recovery.xml", "library_multi.xml", "library_display.xml", "provider_copy.xml",
-            "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "final_*.xml"
+            "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "runtime_messages.xml", "final_*.xml"
         )) include("$locale/$resource")
     }
 }
 val contractSourceInputs = files(
+    "build.gradle.kts",
+    "src/main/kotlin/com/easysavevideo/app/ui/RuntimeMessageCopy.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/RuntimeMessageResources.kt",
     "src/main/kotlin/com/easysavevideo/app/discovery/CommonsSourceRegistration.kt",
     "src/main/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailReader.kt",
     "src/main/kotlin/com/easysavevideo/app/discovery/thumbnail/AndroidDiscoveryThumbnails.kt",

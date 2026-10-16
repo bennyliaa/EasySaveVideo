@@ -137,15 +137,19 @@ class ProviderUpdateRuntime(
                 check()
                 val bytes = call.execute().use { body ->
                     check()
+                    val maximumBytes = when (kind) {
+                        ProviderUpdateKind.PACKAGE -> repository.maximumPackageBytes
+                        ProviderUpdateKind.REPOSITORY_POLICY -> repository.maximumPolicyBytes
+                    }
                     val output = ByteArrayOutputStream()
                     val buffer = ByteArray(1024)
                     while (true) {
                         check()
-                        val count = body.read(buffer, 0, minOf(buffer.size, ProviderRepository.MAX_PACKAGE_BYTES - output.size() + 1))
+                        val count = body.read(buffer, 0, minOf(buffer.size, maximumBytes - output.size() + 1))
                         check()
                         if (count < 0) break
                         if (count == 0) throw Abort(ProviderUpdateError.INVALID_RESPONSE)
-                        if (count > buffer.size || output.size() + count > ProviderRepository.MAX_PACKAGE_BYTES)
+                        if (count > buffer.size || output.size() + count > maximumBytes)
                             throw Abort(ProviderUpdateError.RESPONSE_TOO_LARGE)
                         output.write(buffer, 0, count)
                     }

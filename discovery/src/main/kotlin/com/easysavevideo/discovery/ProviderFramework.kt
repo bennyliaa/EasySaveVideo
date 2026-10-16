@@ -59,7 +59,8 @@ class DiscoveryCancellation : CancellationToken {
     private fun safely(action: () -> Unit) { try { action() } catch (_: Exception) { } catch (_: LinkageError) { } }
 }
 
-data class SearchRequest(val stamp: SessionStamp, val profile: SearchProfile, val progress: ProviderProgress?) {
+data class SearchRequest(val stamp: SessionStamp, val profile: SearchProfile, val progress: ProviderProgress?,
+    val expectedDescriptor: ProviderDescriptor? = null) {
     override fun toString(): String = "SearchRequest([redacted])"
 }
 data class DiscoveryOperation(val context: OperationContext, val cancellation: DiscoveryCancellation) {
@@ -79,6 +80,27 @@ data class ProviderPage(
     val responseBytes: Long = 0,
 ) { override fun toString(): String = "ProviderPage([redacted])" }
 
+/** Read-only view of the original owner's authority, independent of request-resource lifetime.
+ * Implementations take only their short authority gate. Callers sample time before entering it.
+ * The publication callback must contain only bounded in-memory updates under the coordinator lock;
+ * it must never acquire another lock, perform I/O, or call providers, clocks or cancellation hooks.
+ */
+interface ProviderAuthorityView {
+    val descriptor: ProviderDescriptor
+    fun isCurrent(nowMillis: Long): Boolean
+    fun publishIfCurrent(nowMillis: Long, operation: DiscoveryOperation?, publish: () -> Unit): Boolean
+}
+
+/** A single acquire binds the immutable plan, request and publication authority together. */
+interface ProviderRequestLease : AutoCloseable {
+    val authority: ProviderAuthorityView
+    fun search(request: SearchRequest, operation: DiscoveryOperation): ProviderPage
+    override fun close()
+}
+
+internal fun ProviderDescriptor.detachedDescriptor(): ProviderDescriptor =
+    copy(compatibleCursorVersions = compatibleCursorVersions.toSet())
+
 /**
  * No production implementation is registered by default. Implementations must enforce TLS, declared hosts,
  * every redirect and resolved address, 5s connect timeout and the supplied body/deadline/cancel budget.
@@ -86,6 +108,13 @@ data class ProviderPage(
  */
 interface VideoSearchProvider {
     val descriptor: ProviderDescriptor
+    val requiresAuthority: Boolean get() = false
+    fun acquire(request: SearchRequest, operation: DiscoveryOperation): ProviderRequestLease? = null
+    /** Read-only owner view for guarded durable progress. No request lease, observation, I/O or
+     * clock callback is permitted. The coordinator calls this outside its store transaction.
+     * Implementations must match the complete expected descriptor against the original owner.
+     */
+    fun progressAuthority(expected: ProviderDescriptor, nowMillis: Long): ProviderAuthorityView? = null
     /** A deterministic, no-I/O capability refusal. It never changes the requested filters. */
     fun refusal(profile: SearchProfile): DiscoveryError? = null
     fun search(request: SearchRequest, operation: DiscoveryOperation): ProviderPage
@@ -115,7 +144,7 @@ class JvmDiscoveryTimer : DiscoveryTimer, AutoCloseable {
 }
 
 sealed class ProviderOutcome {
-    data class Success(val page: ValidatedProviderPage) : ProviderOutcome()
+    data class Success(val page: ValidatedProviderPage, val authority: ProviderAuthorityView? = null) : ProviderOutcome()
     data class Failure(val code: DiscoveryError, val retryable: Boolean = false, val retryAtEpochMillis: Long? = null) : ProviderOutcome()
 }
 interface ProviderRuntime {
@@ -140,14 +169,31 @@ class IsolatedProviderRuntime(
     override fun execute(provider: VideoSearchProvider, request: SearchRequest, operation: DiscoveryOperation,
                          callback: (ProviderOutcome) -> Unit): CancellationHandle {
         if (closed.get()) { callback(ProviderOutcome.Failure(DiscoveryError.CANCELLED)); return CancellationHandle {} }
+        val actual = provider.descriptor.detachedDescriptor()
+        val expected = (request.expectedDescriptor ?: actual).detachedDescriptor()
+        if (expected.id != actual.id) {
+            callback(ProviderOutcome.Failure(DiscoveryError.SOURCE_CONFIGURATION)); return CancellationHandle {}
+        }
+        val boundRequest = request.copy(expectedDescriptor = expected)
+        val id = expected.id
         val terminal = AtomicReference<ProviderOutcome?>()
         val delivered = AtomicBoolean(false)
+        val lease = AtomicReference<ProviderRequestLease?>()
+        val leaseClosed = AtomicBoolean(false)
         var deadline: CancellationHandle? = null
         var signal: CancellationHandle? = null
         lateinit var job: Running
+        fun closeFinishedLease() {
+            // Cancellation may deliver before acquire/search returns. Never close a live worker's
+            // resources, and never let a callback throw or a late terminal leak a completed lease.
+            if (job.workerFinished.get() && job.callbackFinished.get() && leaseClosed.compareAndSet(false, true)) {
+                try { lease.get()?.close() } catch (_: Exception) { } catch (_: LinkageError) { }
+            }
+        }
         fun releaseCancelledSlot() {
             if (job.workerFinished.get() && job.callbackFinished.get() && operation.cancellation.isDrained)
-                running.remove(provider.descriptor.id, job)
+                running.remove(id, job)
+            closeFinishedLease()
         }
         fun deliver(outcome: ProviderOutcome) {
             if (delivered.compareAndSet(false, true)) {
@@ -157,9 +203,18 @@ class IsolatedProviderRuntime(
         val thread = Thread({
             val outcome = try {
                 operation.check(clock.nowMillis())
-                val raw = provider.search(request, operation)
+                val acquired = provider.acquire(boundRequest, operation)
+                lease.set(acquired)
+                if (provider.requiresAuthority && acquired == null) throw DiscoveryFailure(DiscoveryError.SOURCE_CONFIGURATION)
+                val authority = acquired?.authority
+                if (authority != null && (authority.descriptor != expected || !authority.isCurrent(clock.nowMillis())))
+                    throw DiscoveryFailure(DiscoveryError.CANCELLED)
+                val raw = acquired?.search(boundRequest, operation) ?: provider.search(boundRequest, operation)
                 operation.check(clock.nowMillis())
-                ProviderOutcome.Success(pipeline.validate(provider.descriptor.id, raw, request.profile.filters, operation))
+                val page = pipeline.validate(id, raw, boundRequest.profile.filters, operation)
+                if (authority != null && !authority.publishIfCurrent(clock.nowMillis(), operation) {})
+                    throw DiscoveryFailure(DiscoveryError.CANCELLED)
+                ProviderOutcome.Success(page, authority)
             } catch (failure: DiscoveryFailure) { ProviderOutcome.Failure(failure.code, failure.retryable, failure.retryAtEpochMillis)
             } catch (_: InterruptedException) { ProviderOutcome.Failure(DiscoveryError.CANCELLED)
             } catch (_: Exception) { ProviderOutcome.Failure(DiscoveryError.PROVIDER_FAILURE)
@@ -167,14 +222,15 @@ class IsolatedProviderRuntime(
             } finally {
                 val completedBeforeCancellation = operation.cancellation.releaseCompletedAttempt()
                 job.workerFinished.set(true)
-                if (completedBeforeCancellation) running.remove(provider.descriptor.id, job) else releaseCancelledSlot()
+                if (completedBeforeCancellation) running.remove(id, job) else releaseCancelledSlot()
+                closeFinishedLease()
             }
             signal?.cancel(); deadline?.cancel()
             terminal.compareAndSet(null, outcome)
             deliver(terminal.get()!!)
-        }, "esv-provider-${provider.descriptor.id}").apply { isDaemon = true }
+        }, "esv-provider-$id").apply { isDaemon = true }
         job = Running(operation, thread)
-        if (synchronized(running) { running.size >= minOf(3, operation.context.resourceBudget.maxConcurrentWork) || running.putIfAbsent(provider.descriptor.id, job) != null }) {
+        if (synchronized(running) { running.size >= minOf(3, operation.context.resourceBudget.maxConcurrentWork) || running.putIfAbsent(id, job) != null }) {
             callback(ProviderOutcome.Failure(DiscoveryError.BUSY, retryable = true)); return CancellationHandle {}
         }
         operation.cancellation.drained = { releaseCancelledSlot() }

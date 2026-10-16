@@ -2,6 +2,13 @@ package com.easysavevideo.commons.maintenance
 
 import com.easysavevideo.commons.CommonsLimits
 import com.easysavevideo.core.model.EpochClock
+import com.easysavevideo.commons.rules.RepositoryRuleExecutionLease
+import com.easysavevideo.discovery.DiscoveryError
+import com.easysavevideo.discovery.DiscoveryFailure
+import com.easysavevideo.discovery.DiscoveryOperation
+import com.easysavevideo.discovery.ProviderAuthorityView
+import com.easysavevideo.discovery.ProviderDescriptor
+import com.easysavevideo.discovery.ProviderProgressScope
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
@@ -21,6 +28,7 @@ import java.nio.file.StandardOpenOption.CREATE_NEW
 import java.nio.file.StandardOpenOption.READ
 import java.nio.file.StandardOpenOption.WRITE
 import java.security.MessageDigest
+import java.security.SecureRandom
 import java.util.concurrent.atomic.AtomicLong
 import java.util.Collections
 
@@ -63,7 +71,7 @@ sealed class ProviderRepositoryResult {
 internal enum class ProviderWriteStage { AFTER_INTENT_SYNC, AFTER_DATA_SYNC, AFTER_ATOMIC_MOVE, AFTER_DIRECTORY_SYNC, AFTER_COMMIT_SYNC }
 
 /**
- * Single built-in Commons repository. Package and independent repository-policy version anchors
+ * One fixed host target per repository. Package and independent repository-policy version anchors
  * are retained atomically. Every activation, health promotion and fallback passes the same gate.
  * A signed security policy is never rolled back with a package. Floors/revocations only accumulate.
  * An older package requires the current signed exact-target rollback authorization; bundled is
@@ -88,6 +96,14 @@ class ProviderRepository internal constructor(
     private val writeFault: (ProviderWriteStage) -> Unit,
     private val selfTest: (ProviderPolicy, () -> Unit) -> Boolean = ProviderFixedSelfTest::run,
 ) : AutoCloseable {
+    val target: ProviderTarget = verifier.target
+    val maximumPackageBytes: Int get() = target.maxPackageBytes
+    val maximumPolicyBytes: Int get() = target.maxPolicyBytes
+    private val maximumLegacyLayoutBytes: Int get() = maximumPackageBytes * 5 + maximumPolicyBytes +
+        ProviderHealthLimits.MAX_QUARANTINED_VERSIONS * 82 + 512
+    private val maximumRecordBytes: Int get() = maximumLegacyLayoutBytes +
+        if (target.kind.isCandidateRuleKind()) INCARNATION_BYTES else 0
+
     constructor(
         directory: File,
         verifier: ProviderPackageVerifier = ProviderPackageVerifier(),
@@ -95,6 +111,15 @@ class ProviderRepository internal constructor(
         bundledPolicy: ProviderPolicy = ProviderPolicy(0, 0, Long.MAX_VALUE, true, CommonsLimits()),
         policyVerifier: RepositoryPolicyVerifier = RepositoryPolicyVerifier(),
     ) : this(directory, verifier, clock, bundledPolicy, policyVerifier, {})
+
+    /** A host-admitted target starts disabled until a signed plan passes this same repository. */
+    constructor(directory: File, target: ProviderTarget,
+        verifier: ProviderPackageVerifier = ProviderPackageVerifier(target = target),
+        clock: EpochClock = EpochClock(System::currentTimeMillis),
+        policyVerifier: RepositoryPolicyVerifier = RepositoryPolicyVerifier(target = target),
+    ) : this(directory, verifier, clock,
+        ProviderPolicy(0, 0, Long.MAX_VALUE, target.kind == ProviderPackageKind.COMMONS_PARAMETERS_V1,
+            target.localLimits, target), policyVerifier, {})
 
     internal constructor(directory: File, verifier: ProviderPackageVerifier, clock: EpochClock,
         bundledPolicy: ProviderPolicy, writeFault: (ProviderWriteStage) -> Unit) :
@@ -113,6 +138,8 @@ class ProviderRepository internal constructor(
         val observedAtEpochMillis: Long = 0,
         val health: ProviderHealthRecord? = null,
         val quarantined: List<ProviderQuarantinedVersion> = emptyList(),
+        // Local non-secret stable repository identity; encoded only for rule record format 4.
+        val incarnation: String? = null,
     )
     private data class Observation(
         val token: ProviderHealthObservation,
@@ -125,10 +152,26 @@ class ProviderRepository internal constructor(
     // Exactly one outstanding observation per repository, not one per caller/runtime.
     private var observation: Observation? = null
     private val mutex = Any()
+    // Short publication gate only: R/U may enter A; A never enters R/U/store/coordinator or I/O.
+    private val authorityGate = Any()
+    private data class RuleAuthority(
+        val descriptor: ProviderDescriptor,
+        val packageValue: SignedProviderPackage,
+        val generation: Long,
+        val packageDigest: String,
+        val policyDigest: String?,
+        val incarnation: String,
+        val notBefore: Long,
+        val expiresAt: Long,
+    )
+    @Volatile private var ruleAuthority: RuleAuthority? = null
     // JVM monitors are reentrant: caller callbacks must not nest transactions in this owner.
     private var mutating = false
     private val observedClock = AtomicLong(0)
     private val clockMutex = Any()
+    // Only genuine owner samples update clock validity. A later sample may catch up and recover;
+    // caller-supplied older samples alone may simply have raced another legitimate reader.
+    @Volatile private var ruleClockFailure: ProviderRepositoryError? = null
     private val directory = directory.toPath()
     private val stateFile = this.directory.resolve("provider-state.bin")
     private val intentFile = this.directory.resolve("provider-state.intent")
@@ -149,6 +192,7 @@ class ProviderRepository internal constructor(
 
     init {
         require(bundledPolicy.packageVersion == 0L) { "INVALID_BUNDLED_POLICY" }
+        require(policyVerifier.target === target && bundledPolicy.target === target) { "TARGET_MISMATCH" }
         try {
             Files.createDirectories(this.directory)
             require(Files.isDirectory(this.directory, NOFOLLOW_LINKS))
@@ -161,9 +205,104 @@ class ProviderRepository internal constructor(
         } catch (_: Exception) {
             failure = ProviderRepositoryError.CORRUPT_STATE
         }
+        replaceRecord(record, recoveryRequired)
     }
 
     fun snapshot(): ProviderRepositorySnapshot = snapshotLocked()
+
+    /** Descriptor identity is a hash of complete framed identities, never a truncated digest. */
+    fun ruleDescriptor(): ProviderDescriptor {
+        val now = sampleTime()
+        val admitted = ruleAuthority
+        if (admitted != null && now.error == null && authorityCurrent(admitted, now.now)) return admitted.descriptor
+        return ProviderDescriptor(target.providerId, "unavailable", progressScope = ProviderProgressScope.DURABLE)
+    }
+
+    /** One immutable signed plan and its publication view are acquired under the original owner. */
+    internal fun acquireRuleExecution(expected: ProviderDescriptor, operation: DiscoveryOperation): RepositoryRuleExecutionLease = synchronized(mutex) {
+        if (mutating) throw DiscoveryFailure(DiscoveryError.BUSY)
+        val now = checkedNow()
+        operation.check(now)
+        val admitted = ruleAuthority ?: throw DiscoveryFailure(DiscoveryError.SOURCE_CONFIGURATION)
+        if (!target.kind.isCandidateRuleKind() || admitted.descriptor != expected ||
+            !authorityCurrent(admitted, now)) throw DiscoveryFailure(DiscoveryError.SOURCE_CONFIGURATION)
+        val executionClock = EpochClock { sampleTime().let { if (it.error == null) it.now else -1L } }
+        RepositoryRuleExecutionLease(this, admitted.packageValue, authorityView(admitted), operation, executionClock, beginObservation())
+    }
+
+    /** No R lock, I/O, clock callback, observation or request resources: only the original A gate. */
+    internal fun currentRuleAuthority(expected: ProviderDescriptor, nowMillis: Long): ProviderAuthorityView? = synchronized(authorityGate) {
+        val admitted = ruleAuthority ?: return@synchronized null
+        if (admitted.descriptor != expected || !authorityCurrentLocked(admitted, nowMillis)) return@synchronized null
+        authorityView(admitted)
+    }
+
+    private fun authorityView(admitted: RuleAuthority): ProviderAuthorityView = object : ProviderAuthorityView {
+        override val descriptor = admitted.descriptor
+        override fun isCurrent(nowMillis: Long): Boolean = authorityCurrent(admitted, nowMillis)
+        override fun publishIfCurrent(nowMillis: Long, operation: DiscoveryOperation?, publish: () -> Unit): Boolean =
+            synchronized(authorityGate) {
+                if (!authorityCurrentLocked(admitted, nowMillis)) return@synchronized false
+                operation?.check(maxOf(nowMillis, observedClock.get()))
+                // Only the coordinator's already-locked, bounded memory publication is admitted.
+                publish()
+                true
+            }
+        override fun toString(): String = "ProviderAuthorityView([redacted])"
+    }
+
+    internal fun ruleAuthorityExpiry(view: ProviderAuthorityView): Long = synchronized(authorityGate) {
+        ruleAuthority?.takeIf { it.descriptor == view.descriptor }?.expiresAt ?: 0L
+    }
+
+    private fun authorityCurrent(admitted: RuleAuthority, now: Long): Boolean = synchronized(authorityGate) {
+        authorityCurrentLocked(admitted, now)
+    }
+    private fun authorityCurrentLocked(admitted: RuleAuthority, now: Long): Boolean {
+        val current = ruleAuthority ?: return false
+        val effectiveNow = maxOf(now, observedClock.get())
+        return !closed && failure == null && ruleClockFailure == null && !recoveryRequired && now >= 0 &&
+            current.descriptor == admitted.descriptor && current.generation == admitted.generation &&
+            current.packageDigest == admitted.packageDigest && current.policyDigest == admitted.policyDigest &&
+            current.incarnation == admitted.incarnation &&
+            effectiveNow >= current.notBefore && effectiveNow < current.expiresAt
+    }
+
+    /** Compute outside A; publishing the owner record and exact view reference is atomic under A. */
+    private fun replaceRecord(next: Record, recovering: Boolean) {
+        if (target.kind == ProviderPackageKind.COMMONS_PARAMETERS_V1) {
+            synchronized(authorityGate) { record = next; recoveryRequired = recovering; ruleAuthority = null }
+            return
+        }
+        val now = sampleTime()
+        val value = next.current
+        val eligible = value != null && value.kind.isCandidateRuleKind() && value.kind == target.kind &&
+            value.candidatePlan != null && value.ruleDigest != null && value.policy.enabled && next.incarnation != null &&
+            !closed && failure == null && !recovering && now.error == null &&
+            securityError(value, next, now = now.now) == null && timeError(value.policy, now.now) == null &&
+            healthError(next, now.now) == null
+        val nextAuthority = if (eligible) {
+            val pack = value!!
+            val packageDigest = digest(pack.encodedBytes())
+            val policyDigest = next.repositoryPolicy?.let { digest(it.encodedBytes()) }
+            val ruleDigest = pack.ruleDigest!!.joinToString("") { "%02x".format(it.toInt() and 255) }
+            val identity = ruleAuthorityDescriptorToken(target.providerId, target.providerVersion,
+                packageDigest.hexBytes(), ruleDigest.hexBytes(), policyDigest?.hexBytes(), next.generation,
+                next.incarnation!!.incarnationBytes(), target.kind)
+            val security = next.repositoryPolicy?.policy
+            RuleAuthority(ProviderDescriptor(target.providerId, identity, progressScope = ProviderProgressScope.DURABLE),
+                pack, next.generation, packageDigest, policyDigest, next.incarnation!!,
+                maxOf(0L, pack.policy.issuedAtEpochMillis - ProviderPackageProtocol.MAX_CLOCK_SKEW_MILLIS,
+                    (security?.issuedAtEpochMillis ?: 0) - ProviderPackageProtocol.MAX_CLOCK_SKEW_MILLIS),
+                minOf(pack.policy.expiresAtEpochMillis, security?.expiresAtEpochMillis ?: Long.MAX_VALUE,
+                    next.health?.deadlineEpochMillis ?: Long.MAX_VALUE))
+        } else null
+        synchronized(authorityGate) {
+            record = next
+            recoveryRequired = recovering
+            ruleAuthority = nextAuthority
+        }
+    }
 
     /** Bounded, coalesced notifications run on one daemon, never while holding the repository lock. */
     fun observeChanges(listener: () -> Unit): AutoCloseable {
@@ -208,7 +347,9 @@ class ProviderRepository internal constructor(
             if (record.quarantined.size >= ProviderHealthLimits.MAX_QUARANTINED_VERSIONS)
                 return@mutate rejected(ProviderRepositoryError.QUARANTINE_CAPACITY_REACHED)
             checkpoint(checkCancelled)
-            val passed = selfTest(candidate.policy) { checkpoint(checkCancelled) }
+            val passed = if (candidate.kind == ProviderPackageKind.COMMONS_PARAMETERS_V1)
+                selfTest(candidate.policy) { checkpoint(checkCancelled) }
+            else ProviderFixedSelfTest.run(candidate) { checkpoint(checkCancelled) }
             checkpoint(checkCancelled)
             if (!passed) {
                 val next = record.copy(generation = nextGeneration(), quarantined = quarantine(candidate,
@@ -350,9 +491,12 @@ class ProviderRepository internal constructor(
     override fun close() {
         synchronized(mutex) {
             if (closed) return
-            closed = true
             observation = null
-            record = record.copy(generation = safeGeneration())
+            synchronized(authorityGate) {
+                closed = true
+                ruleAuthority = null
+                record = record.copy(generation = safeGeneration())
+            }
             // Keep ownership until an in-progress transaction has fenced publication and left
             // its recovery marker. A new owner must not read an unpublished committed image.
             if (!mutating) releaseOwnership()
@@ -399,14 +543,18 @@ class ProviderRepository internal constructor(
 
     /** Every safety decision records its sole time sample under this short sampling lock. */
     private fun sampleTime(): ClockSample = synchronized(clockMutex) {
+        val rules = target.kind.isCandidateRuleKind()
         val now = try { clock.nowMillis() } catch (_: Exception) {
-            return@synchronized ClockSample(0, ProviderRepositoryError.INVALID_TIME)
+            if (rules) ruleClockFailure = ProviderRepositoryError.INVALID_TIME
+            return@synchronized ClockSample(0, if (rules) ruleClockFailure else ProviderRepositoryError.INVALID_TIME)
         }
-        when {
-            now < 0 -> ClockSample(now, ProviderRepositoryError.INVALID_TIME)
-            now < observedClock.get() -> ClockSample(now, ProviderRepositoryError.CLOCK_ROLLBACK)
-            else -> { observedClock.set(now); ClockSample(now, null) }
+        val error = when {
+            now < 0 -> ProviderRepositoryError.INVALID_TIME
+            now < observedClock.get() -> ProviderRepositoryError.CLOCK_ROLLBACK
+            else -> { observedClock.set(now); null }
         }
+        if (rules) ruleClockFailure = error
+        ClockSample(now, error)
     }
     private fun clockError(): ProviderRepositoryError? = sampleTime().error
     private fun checkedNow(): Long = sampleTime().let { it.error?.let { error -> throw ClockFailure(error) }; it.now }
@@ -540,9 +688,12 @@ class ProviderRepository internal constructor(
     }
     private fun safeGeneration(): Long = if (record.generation == Long.MAX_VALUE) Long.MAX_VALUE else record.generation + 1
     private fun poison(code: ProviderRepositoryError): ProviderRepositoryResult.Failure {
-        failure = code
         observation = null
-        record = record.copy(generation = safeGeneration())
+        synchronized(authorityGate) {
+            failure = code
+            ruleAuthority = null
+            record = record.copy(generation = safeGeneration())
+        }
         return rejected(code)
     }
     private fun rejected(code: ProviderRepositoryError) = ProviderRepositoryResult.Failure(code)
@@ -559,12 +710,31 @@ class ProviderRepository internal constructor(
         }
         val initialized = exists(initializedFile)
         val hasState = exists(stateFile)
-        if (!initialized && !hasState) return
+        if (!initialized && !hasState) {
+            if (target.kind.isCandidateRuleKind())
+                record = record.copy(incarnation = newIncarnation())
+            return
+        }
         check(initialized && hasState)
         check(readBounded(initializedFile, INITIALIZED_BYTES.size).contentEquals(INITIALIZED_BYTES))
-        record = decode(readBounded(stateFile, MAX_RECORD_BYTES))
+        record = decode(readBounded(stateFile, maximumRecordBytes))
         observedClock.set(record.observedAtEpochMillis)
         recoveryRequired = record.pending
+        if (target.kind == ProviderPackageKind.DECLARATIVE_JSON_CANDIDATES_V1 && record.incarnation == null) {
+            // decode already authenticated every old format-3 anchor. Migration uses the same
+            // intent/atomic replacement/publication transaction while the instance is unexported.
+            // Pending recovery remains pending; a failed transaction never issues a view.
+            val migration = persist(record.copy(incarnation = newIncarnation()))
+            if (migration is ProviderRepositoryResult.Failure && failure == null) poison(migration.code)
+        }
+    }
+
+    private fun newIncarnation(): String = ByteArray(INCARNATION_BYTES).also { SecureRandom().nextBytes(it) }
+        .joinToString("") { "%02x".format(it.toInt() and 255) }
+
+    private fun String.incarnationBytes(): ByteArray {
+        check(length == INCARNATION_BYTES * 2 && all { it in '0'..'9' || it in 'a'..'f' })
+        return ByteArray(INCARNATION_BYTES) { substring(it * 2, it * 2 + 2).toInt(16).toByte() }
     }
 
     private class PublicationRejected(val code: ProviderRepositoryError) : RuntimeException(code.name, null, false, false)
@@ -617,8 +787,7 @@ class ProviderRepository internal constructor(
                 if (closed) throw PublicationRejected(ProviderRepositoryError.CLOSED)
                 if (record !== sourceRecord) throw PublicationRejected(ProviderRepositoryError.STALE_OBSERVATION)
                 if (record.generation != durableNext.generation) observation = null
-                record = durableNext
-                recoveryRequired = recoveryRequired && durableNext.pending
+                replaceRecord(durableNext, recoveryRequired && durableNext.pending)
                 ProviderRepositoryResult.Success(snapshotLocked())
             }
         } catch (error: Exception) {
@@ -639,7 +808,7 @@ class ProviderRepository internal constructor(
         }
     }
     private fun writeNew(path: java.nio.file.Path, bytes: ByteArray) {
-        check(bytes.size <= MAX_RECORD_BYTES)
+        check(bytes.size <= maximumRecordBytes)
         FileChannel.open(path, CREATE_NEW, WRITE, NOFOLLOW_LINKS).use { file ->
             val data = ByteBuffer.wrap(bytes)
             while (data.hasRemaining()) check(file.write(data) > 0)
@@ -667,7 +836,9 @@ class ProviderRepository internal constructor(
     private fun encode(value: Record): ByteArray {
         val bytes = ByteArrayOutputStream()
         DataOutputStream(bytes).use { out ->
-            out.writeInt(MAGIC); out.writeInt(FORMAT); out.writeLong(value.generation)
+            val rules = target.kind.isCandidateRuleKind()
+            out.writeInt(MAGIC); out.writeInt(if (rules) RULE_FORMAT else FORMAT); out.writeLong(value.generation)
+            if (rules) out.write(checkNotNull(value.incarnation).incarnationBytes()) else check(value.incarnation == null)
             out.writeBoolean(value.pending); out.writeBoolean(value.hasPrevious)
             out.writeLong(value.observedAtEpochMillis)
             val security = value.repositoryPolicy?.encodedBytes()
@@ -697,17 +868,27 @@ class ProviderRepository internal constructor(
         return payload + MessageDigest.getInstance("SHA-256").digest(payload)
     }
     private fun decode(bytes: ByteArray): Record {
-        check(bytes.size in MIN_RECORD_BYTES..MAX_RECORD_BYTES)
+        check(bytes.size in MIN_RECORD_BYTES..maximumRecordBytes)
         val payload = bytes.copyOfRange(0, bytes.size - DIGEST_BYTES)
         check(MessageDigest.isEqual(bytes.copyOfRange(payload.size, bytes.size), MessageDigest.getInstance("SHA-256").digest(payload)))
         val input = DataInputStream(ByteArrayInputStream(payload))
-        check(input.readInt() == MAGIC && input.readInt() == FORMAT)
+        check(input.readInt() == MAGIC)
+        val format = input.readInt()
+        check(when (target.kind) {
+            ProviderPackageKind.COMMONS_PARAMETERS_V1 -> format == FORMAT
+            ProviderPackageKind.DECLARATIVE_JSON_CANDIDATES_V1 -> format == FORMAT || format == RULE_FORMAT
+            ProviderPackageKind.BOUNDED_HTTP_CANDIDATES_V1 -> format == RULE_FORMAT
+        })
+        check(bytes.size in (MIN_RECORD_BYTES + if (format == RULE_FORMAT) INCARNATION_BYTES else 0)..
+            (maximumLegacyLayoutBytes + if (format == RULE_FORMAT) INCARNATION_BYTES else 0))
         val generation = input.readLong(); check(generation > 0)
+        val incarnation = if (format == RULE_FORMAT) ByteArray(INCARNATION_BYTES).also(input::readFully)
+            .joinToString("") { "%02x".format(it.toInt() and 255) } else null
         fun flag(): Boolean = when (input.readUnsignedByte()) { 0 -> false; 1 -> true; else -> error("CORRUPT_STATE") }
         val pending = flag(); val hasPrevious = flag()
         val observedAt = input.readLong(); check(observedAt >= 0)
         val policySize = input.readInt()
-        check(policySize in 0..MAX_POLICY_BYTES && policySize <= input.available())
+        check(policySize in 0..maximumPolicyBytes && policySize <= input.available())
         val security = if (policySize == 0) null else {
             val encoded = ByteArray(policySize); input.readFully(encoded)
             (policyVerifier.verifyAuthenticity(encoded) as? RepositoryPolicyResult.Verified)?.policyValue
@@ -747,7 +928,7 @@ class ProviderRepository internal constructor(
         fun pack(): SignedProviderPackage? {
             val size = input.readInt()
             if (size == 0) return null
-            check(size in 1..MAX_PACKAGE_BYTES && size <= input.available())
+            check(size in 1..maximumPackageBytes && size <= input.available())
             val encoded = ByteArray(size); input.readFully(encoded)
             return (verifier.verifyAuthenticity(encoded) as? ProviderPackageResult.Verified)?.packageValue ?: error("CORRUPT_STATE")
         }
@@ -769,7 +950,7 @@ class ProviderRepository internal constructor(
         check(listOfNotNull(current, lastGood, previous, highWater).none {
             !it.policy.enabled && it.policy.packageVersion > (barrier?.policy?.packageVersion ?: 0L)
         })
-        return Record(generation, current, lastGood, previous, highWater, pending, hasPrevious, security, barrier, observedAt, health, quarantined)
+        return Record(generation, current, lastGood, previous, highWater, pending, hasPrevious, security, barrier, observedAt, health, quarantined, incarnation)
     }
     private fun String.hexBytes(): ByteArray {
         check(length == DIGEST_BYTES * 2)
@@ -788,6 +969,8 @@ class ProviderRepository internal constructor(
         private const val MIN_RECORD_BYTES = 82
         private const val MAGIC = 0x45535652
         private const val FORMAT = 3
+        private const val RULE_FORMAT = 4
+        private const val INCARNATION_BYTES = 16
         private const val DIGEST_BYTES = 32
         private const val MAX_LISTENERS = 32
         private val INITIALIZED_BYTES = byteArrayOf(69, 83, 86, 73, 1)
@@ -805,4 +988,38 @@ class ProviderRepository internal constructor(
             else -> ProviderRepositoryError.INVALID_PACKAGE
         }
     }
+}
+
+/** Canonical identity frame v2; no executable authority is created by this pure encoding helper. */
+internal fun ruleAuthorityDescriptorToken(targetId: String, implementationVersion: String,
+    packageDigest: ByteArray, ruleDigest: ByteArray, policyDigest: ByteArray?, generation: Long, incarnation: ByteArray,
+    kind: ProviderPackageKind = ProviderPackageKind.DECLARATIVE_JSON_CANDIDATES_V1): String {
+    require(packageDigest.size == 32 && ruleDigest.size == 32 && (policyDigest == null || policyDigest.size == 32))
+    require(generation >= 0 && incarnation.size == 16)
+    val bytes = ByteArrayOutputStream().also { buffer ->
+        DataOutputStream(buffer).use { output ->
+            fun text(value: String) { val encoded = value.toByteArray(Charsets.UTF_8); output.writeInt(encoded.size); output.write(encoded) }
+            text(when (kind) {
+                ProviderPackageKind.DECLARATIVE_JSON_CANDIDATES_V1 -> "esv-signed-json-authority"
+                ProviderPackageKind.BOUNDED_HTTP_CANDIDATES_V1 -> "esv-signed-http-authority"
+                ProviderPackageKind.COMMONS_PARAMETERS_V1 -> error("NOT_A_CANDIDATE_RULE")
+            })
+            output.writeInt(2)
+            output.write(incarnation)
+            text(targetId)
+            text(implementationVersion)
+            output.write(packageDigest)
+            output.write(ruleDigest)
+            output.writeBoolean(policyDigest != null)
+            if (policyDigest != null) output.write(policyDigest)
+            output.writeLong(generation)
+        }
+    }.toByteArray()
+    return MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it.toInt() and 255) }
+}
+
+/** New kinds require deliberate admission; an unknown future kind never inherits rule authority. */
+private fun ProviderPackageKind.isCandidateRuleKind(): Boolean = when (this) {
+    ProviderPackageKind.COMMONS_PARAMETERS_V1 -> false
+    ProviderPackageKind.DECLARATIVE_JSON_CANDIDATES_V1, ProviderPackageKind.BOUNDED_HTTP_CANDIDATES_V1 -> true
 }
