@@ -1,0 +1,201 @@
+{
+  "status": "VERIFIED_DYNAMIC_SEARXNG_INSTANCE_CONFIGURATION_NOT_LOST_CHECKPOINT_RESTORATION",
+  "verified_at_utc": "2026-10-18T01:08:34.246112+00:00",
+  "baseline_commit": "6d2edfa5680d0163038fde1faa58f693513d0ab8",
+  "source_manifest_sha256": "4d6c9b505aa2dd7e8bd316165d9fcc63fdd201c5336414c55705d0d82e9fa20f",
+  "source_files": 2828,
+  "source_bytes_and_modes_unchanged": true,
+  "verification_mode": "offline strict dependency verification, max-workers=1, in-process Kotlin, all requested tasks rerun",
+  "test_suites": 615,
+  "totals": {
+    "tests": 6824,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "passed": 6822,
+  "modules": {
+    "core-model": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 10,
+      "suites": 4
+    },
+    "core-domain": {
+      "tests": 120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 120,
+      "suites": 13
+    },
+    "ui-theme": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 17,
+      "suites": 2
+    },
+    "discovery": {
+      "tests": 361,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 361,
+      "suites": 27
+    },
+    "commons-provider": {
+      "tests": 416,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 416,
+      "suites": 26
+    },
+    "searxng-provider": {
+      "tests": 77,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 77,
+      "suites": 5
+    },
+    "verification-client": {
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 44,
+      "suites": 2
+    },
+    "verification-local": {
+      "tests": 63,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "passed": 61,
+      "suites": 10
+    },
+    "save": {
+      "tests": 467,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 467,
+      "suites": 27
+    },
+    "recording": {
+      "tests": 127,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 127,
+      "suites": 6
+    },
+    "library": {
+      "tests": 300,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 300,
+      "suites": 25
+    },
+    "hls": {
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 40,
+      "suites": 1
+    },
+    "app": {
+      "tests": 4782,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 4782,
+      "suites": 467
+    }
+  },
+  "skips": [
+    {
+      "class": "com.easysavevideo.verification.local.FrozenCorpusHostTest",
+      "test": "same100FrozenBodiesActualStaticB"
+    },
+    {
+      "class": "com.easysavevideo.verification.local.FrozenRecoveryComponentTest",
+      "test": "authored80MutationsActualJsoupComponent"
+    }
+  ],
+  "lint": {
+    "debug": {
+      "severity": {
+        "Fatal": 0,
+        "Error": 0,
+        "Warning": 87,
+        "Information": 0
+      },
+      "sha256": "169ce7c0e832b6c277e79ae94ba7179eb04a90064380a85a40c0905b0ef008fd",
+      "path": "app/build/reports/lint-results-debug.xml"
+    },
+    "release": {
+      "severity": {
+        "Fatal": 0,
+        "Error": 0,
+        "Warning": 87,
+        "Information": 0
+      },
+      "sha256": "169ce7c0e832b6c277e79ae94ba7179eb04a90064380a85a40c0905b0ef008fd",
+      "path": "app/build/reports/lint-results-release.xml"
+    }
+  },
+  "runtime": {
+    "debug": {
+      "artifacts_including_project_modules": 108,
+      "raw_report_sha256": "882edd75726f798d0d953730483e4bf693476b20673f66e20f9a73c2c860c021",
+      "sanitized_report_sha256": "7119c953e6a66f09b864758084f961ade1ce50ae92c73b045a9b72caefc73b13",
+      "reviewed_external_runtime_count": 95
+    },
+    "release": {
+      "artifacts_including_project_modules": 108,
+      "raw_report_sha256": "882edd75726f798d0d953730483e4bf693476b20673f66e20f9a73c2c860c021",
+      "sanitized_report_sha256": "7119c953e6a66f09b864758084f961ade1ce50ae92c73b045a9b72caefc73b13",
+      "reviewed_external_runtime_count": 95
+    }
+  },
+  "compile": [
+    "debug Kotlin",
+    "release Kotlin",
+    "release Java"
+  ],
+  "full_log_sha256": "abf455ed4ab44e8b30c092419492d4cbb538e960998806c034f18db311f28fc0",
+  "focused_receipt": {
+    "discovery": {
+      "tests": 361,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 27
+    },
+    "searxng-provider": {
+      "tests": 77,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 5
+    }
+  },
+  "replay": {
+    "source_files": 2828,
+    "target_manifest_sha256": "4d6c9b505aa2dd7e8bd316165d9fcc63fdd201c5336414c55705d0d82e9fa20f",
+    "byte_and_mode_verification": "PASS",
+    "build_executed": false
+  },
+  "no_apk": true,
+  "no_device_or_live_search_test": true,
+  "live_qualification": "BLOCKED: twelve public examples examined at recorded times, robots429 or disallow; no searches attempted",
+  "historical_lost_increment_restoration": false
+}
