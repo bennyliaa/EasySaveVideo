@@ -1,0 +1,51 @@
+{
+  "apk_sha256": "38f09f2dc752fc69cef9b2108c704c3e44e3b21d43134ee602f8b6e773c71988",
+  "checks": [
+    {
+      "tool": "apksigner",
+      "tool_sha256": "b47549e373b895ce6ca620d0c7887e674d9615ffa837a86ac601dcfd04adb0f0",
+      "arguments": [
+        "verify",
+        "--verbose",
+        "--print-certs",
+        "<candidate APK>"
+      ],
+      "exit_code": 0,
+      "apk_sha256_before_and_after": "38f09f2dc752fc69cef9b2108c704c3e44e3b21d43134ee602f8b6e773c71988",
+      "stdout_file": "APK_SIGNER_VERIFICATION.txt",
+      "stdout_sha256": "89c0428392084755194dfbc1c8782b4b421976ceb74cccc44c9328ae6cc2b76c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "tool": "aapt2",
+      "tool_sha256": "1a6a396b9cd071f7040071fdd108718cb98c3c9f4960044f373b288993d19eb7",
+      "arguments": [
+        "dump",
+        "badging",
+        "<candidate APK>"
+      ],
+      "exit_code": 0,
+      "apk_sha256_before_and_after": "38f09f2dc752fc69cef9b2108c704c3e44e3b21d43134ee602f8b6e773c71988",
+      "stdout_file": "APK_BADGING.txt",
+      "stdout_sha256": "2d335507a83da54f43ee8fb634392c7ce0104d13cff10552bc743cd7cc5ff9f8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "tool": "zipalign",
+      "tool_sha256": "c5f559e946de5a9e7d58792181db20383b228877812136bc469d97ae00a43b0a",
+      "arguments": [
+        "-c",
+        "-P",
+        "16",
+        "-v",
+        "4",
+        "<candidate APK>"
+      ],
+      "exit_code": 0,
+      "apk_sha256_before_and_after": "38f09f2dc752fc69cef9b2108c704c3e44e3b21d43134ee602f8b6e773c71988",
+      "stdout_file": "APK_ZIPALIGN.txt",
+      "stdout_sha256": "4da3a76b11d1a50bd2f1bbb700e0be85c6acf0ad5ff818e9d98e794e71842807",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

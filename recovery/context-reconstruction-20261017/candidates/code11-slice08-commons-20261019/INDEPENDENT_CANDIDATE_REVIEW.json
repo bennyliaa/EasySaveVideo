@@ -1,0 +1,96 @@
+{
+  "status": "PASS_PREASSEMBLY_NO_REMAINING_BLOCKER",
+  "reviewed_at_utc": "2026-10-19T02:38:47.907393+00:00",
+  "scope": "Independent source/configuration/API/signing-guard and actual verification-evidence review. Reviewer performed no builds, signing, key reads, upload, installation or device operations.",
+  "candidate_source_files": 2876,
+  "baseline_manifest_sha256": "b76fe7d9ce43da5e0400fd30a068ccc3171092b5495bed4be6f7008c7990b871",
+  "candidate_manifest_sha256": "8c875841f8bee0aa4262a84ad1c801ef28303293db9de04d6389a4e0ad1d02f3",
+  "changed_files": {
+    "app/build.gradle.kts": "b7e1cc8525dcee6fc24d146619c6f4f352afa9157140841aa93d7f2cced2b17d",
+    "gradle/verification-metadata.xml": "5a94b42c6d27955fd4386dc30f1ee5a8966e0f0e14d5d7c3328f9ca51d6888af"
+  },
+  "source_checks": [
+    "No added or removed source files, no source symlinks, all source file modes match baseline",
+    "Exact four reviewed metadata checksum additions; no removed entries; actual cached bytes match each SHA",
+    "Debug only: code11, Commons enabled, existing approved public contact",
+    "Release/default preserved: code9, Commons disabled, empty contact",
+    "safeSearch, user-confirmation gates, SearXNG defaults, runtime dependencies and permissions unchanged"
+  ],
+  "api_and_signing_checks": [
+    "Cached AGP9.4.0 confirms application VariantOutput.versionCode Property<Integer> API",
+    "Inspected AGP ValidateSigningTask bytecode: distinct esvVerifiedExistingDebug signing-config name excludes default-key creation branch",
+    "Existing signer precheck and configure-time/validateSigningDebug guards fail closed; Release signer unchanged",
+    "Missing-key test receipt binds exact current init guard and reports no key creation/Gradle invocation",
+    "Shared build lock, offline/strict dependency verification, fixed task allowlist, existing toolchain and manifest/four-runner assembly receipt pins intact"
+  ],
+  "verification": {
+    "status": "Actual XML testcase elements, suite counts and report hashes independently recomputed",
+    "totals": {
+      "tests": 7046,
+      "passed": 7044,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "suites": 630
+    },
+    "modules": 13,
+    "existing_skipped_cases": [
+      "com.easysavevideo.verification.local.FrozenCorpusHostTest.same100FrozenBodiesActualStaticB",
+      "com.easysavevideo.verification.local.FrozenRecoveryComponentTest.authored80MutationsActualJsoupComponent"
+    ],
+    "lint": {
+      "debug": {
+        "counts": {
+          "Warning": 87,
+          "Hint": 10
+        },
+        "sha256": "d26ffe4b3f0b9c9726615a843cff058aa2bd6f8d49ebd91c80267db281995cb1"
+      },
+      "release": {
+        "counts": {
+          "Warning": 97,
+          "Hint": 10
+        },
+        "sha256": "9bc7a99971f684d15d4f62c5c30acabdae164f5ef6f8af3de399cd3ad4c3eaea"
+      }
+    },
+    "runtime_inventory": {
+      "debug": {
+        "rows": 108,
+        "reviewed_external_artifacts": 95,
+        "exact_bytes_equal_to_frozen_admission": true,
+        "sha256": "98694a4a7e2eb628a27e2d5837923983aae73610e53fec999df7fd5608fabac3"
+      },
+      "release": {
+        "rows": 108,
+        "reviewed_external_artifacts": 95,
+        "exact_bytes_equal_to_frozen_admission": true,
+        "sha256": "98694a4a7e2eb628a27e2d5837923983aae73610e53fec999df7fd5608fabac3"
+      }
+    },
+    "runtime_live_bytes": "All108 artifact file hashes independently recomputed for each variant;95 external entries equal frozen admission",
+    "generated_buildconfig_sha256": {
+      "debug": "19b27425cc0d6ea1d78e813f6f080f1eed2f2e549b21c0c84d8c21665754096d",
+      "release": "e15fae23ad715d57b6d29be30f638574a71ef25aa444cd6fcda0548c533ac607"
+    },
+    "task_completion": "Verify exit0; BUILD SUCCESSFUL14m7s;113 executed tasks; Debug/Release and AndroidTest compile plus lint/runtime gates verified",
+    "receipt_sha256": "38acfc3c9ec685206092c416d1cf0ff7ea3a8ca6d7631764b56a1e3399fa17c2",
+    "test_suite_manifest_sha256": "d29fab60906433bee25786fc4f853b50ef8d950d3833e7aa7d50ad0092affed9",
+    "log_sha256": "aac5cd003b843461da49cc8ecc18e8233152267ebce6cbf43032b55e3d55f0e9"
+  },
+  "runner_sha256": {
+    "run-candidate.sh": "b5a6f0c9e9924665c0fa40c3cdd4c55838b0d9262337540efe16922e9eb2d949",
+    "candidate-guard.init.gradle": "c79a24a2e268a5c5d069ceaeb98ef50a9aef9c65f741261bf5d6aa9eff2eefd1",
+    "verify-existing-signer.py": "cd315c3fca2bba4c8b98321a95442053d8dbe880e2fb3304ad4acb0060423cc9",
+    "verify-candidate-inputs.py": "b553220307e0e15bc674718a694af45b68f6c13fbcb0a442a68e5ef8395f24db"
+  },
+  "postassembly_verifier_sha256": "5f16ae18ace159057120851c670e3c209e1433f6a791ccebb1b68dfc8eb4e98d",
+  "resolved_review_finding": "APK verifier now directly invokes apksigner/aapt2/zipalign, requires exit0 and stable pre/post APK SHA, rewrites sidecars and records tool/output hashes. Stale sidecar binding gap resolved.",
+  "clearance": "No review blocker to the already authorized existing-key Debug-only assembly through the reviewed runner. This review grants no additional authority.",
+  "limits": [
+    "APK was absent at preassembly review; actual APK signing/ZIP/DEX verification still required after assembly",
+    "No device/UI/network behavior, live-provider latency or search-quality acceptance",
+    "Warm-cache cloud verification does not establish cold-cache Windows reproducibility",
+    "No new key, key export/migration, installation, upload or publication authorized by this review"
+  ]
+}

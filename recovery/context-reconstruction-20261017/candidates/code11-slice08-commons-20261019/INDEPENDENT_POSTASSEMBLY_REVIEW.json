@@ -1,0 +1,62 @@
+{
+  "status": "PASS_POSTASSEMBLY_STATIC_ARTIFACT_REVIEW",
+  "reviewed_at_utc": "2026-10-19T02:41:14.428203+00:00",
+  "scope": "Independent read-only inspection of produced APK, direct-public-tool execution receipts and final evidence. Reviewer did not build, sign, read private keys, transfer, install or operate devices.",
+  "apk": {
+    "path": "source/app/build/outputs/apk/debug/app-debug.apk",
+    "bytes": 53333410,
+    "sha256": "38f09f2dc752fc69cef9b2108c704c3e44e3b21d43134ee602f8b6e773c71988",
+    "application_id": "com.easysavevideo.app",
+    "version_code": 11,
+    "version_name": "0.9.0-ui-dev",
+    "min_sdk": 31,
+    "target_sdk": 36,
+    "debuggable": true,
+    "signature_v2_verified": true,
+    "signer_certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+    "matches_reported_phone_code10_certificate": true,
+    "zip_crc_verified": true,
+    "zipalign_4byte_and_16KiB_native_page_check": true,
+    "entries": 175,
+    "dex_files": 30
+  },
+  "checks": [
+    "Recomputed exact APK byte size and SHA-256; stable through review",
+    "All three public-tool receipt commands are verification-only, exit zero and bind the same pre/post APK SHA",
+    "Tool executable hashes and stdout/stderr hashes recomputed against existing files",
+    "apksigner v2 verification output contains one signer with the expected existing public certificate",
+    "aapt2 output confirms application ID, code11, version name, minSdk31, targetSdk36 and debuggable manifest",
+    "zipalign output confirms successful 4-byte and 16 KiB native-page alignment checks",
+    "All 175 ZIP entry hashes and CRCs independently checked; no duplicate entry paths",
+    "All 30 DEX files inspected; 12 target actual class definitions independently located",
+    "Parsed APK DEX BuildConfig encoded static constants: code11, Commons enabled, approved public contact, unconfigured distribution",
+    "Candidate 2,876 source file hashes, four runner hashes, verification receipt and reviewed APK-verifier hash remain unchanged",
+    "Assemble exit 0 and successful 49-second log verified with final report hash"
+  ],
+  "apk_buildconfig_constants": {
+    "application_id": "com.easysavevideo.app",
+    "build_type": "debug",
+    "version_code": 11,
+    "version_name": "0.9.0-ui-dev",
+    "commons_enabled": true,
+    "commons_contact": "exact user-approved public contact independently verified in APK DEX",
+    "distribution_channel": "unconfigured"
+  },
+  "evidence_sha256": {
+    "INDEPENDENT_CANDIDATE_REVIEW.json": "9fad0696e36be0145e12fffb766ebc069f7f0654453c6ded3c385a5fb4208639",
+    "FINAL_APK_VERIFICATION.json": "accd19707d09219ca78aa14fe7a8576ebcd46955bf8d88668b7df3bbd629397f",
+    "APK_TOOL_EXECUTION_RECEIPT.json": "54fb1ba71a2136fcffba0acb366ccfab19f4e78b2f322014232d44694154ecb7",
+    "APK_ENTRY_MANIFEST.json": "a092898b2948fb0846aaf1f42618ac3807880f6bd886f52cba8ea63e4c95a309",
+    "VERIFY_PASSED.json": "38acfc3c9ec685206092c416d1cf0ff7ea3a8ca6d7631764b56a1e3399fa17c2",
+    "assemble-debug01.log": "231e6cdc6316b36ec7deeb9cae73fcaa2365954fce2d1ec5bb13f7b021884504"
+  },
+  "postassembly_verifier_sha256": "5f16ae18ace159057120851c670e3c209e1433f6a791ccebb1b68dfc8eb4e98d",
+  "conclusion": "Produced exact code11 Debug APK passes the reviewed static artifact checks. Existing signing identity, candidate source and approved Debug-only Commons configuration are consistent.",
+  "limits": [
+    "No installation or code11 device/UI/network/real save/record acceptance",
+    "Actual search retains source toggle, maintenance, user-confirmation and safeSearch capability gates",
+    "Reported code10 certificate match is not a fresh device inspection",
+    "Cold-cache Windows reproducibility and live-provider latency/search quality remain unverified",
+    "No upload, transfer, publication or additional authority implied"
+  ]
+}

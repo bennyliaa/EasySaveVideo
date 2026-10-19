@@ -1,0 +1,80 @@
+{
+  "status": "VERIFIED_SIGNED_DEBUG_CODE11_STATIC_CANDIDATE",
+  "verified_at_utc": "2026-10-19T02:39:27.145457+00:00",
+  "apk": {
+    "path": "source/app/build/outputs/apk/debug/app-debug.apk",
+    "bytes": 53333410,
+    "sha256": "38f09f2dc752fc69cef9b2108c704c3e44e3b21d43134ee602f8b6e773c71988",
+    "application_id": "com.easysavevideo.app",
+    "version_code": 11,
+    "version_name": "0.9.0-ui-dev",
+    "min_sdk": 31,
+    "target_sdk": 36,
+    "debuggable": true,
+    "signature_v2_verified": true,
+    "signer_certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+    "matches_reported_phone_code10_certificate": true,
+    "zip_crc_verified": true,
+    "zipalign_4byte_and_16KiB_native_page_check": true,
+    "entries": 175,
+    "dex_files": 30
+  },
+  "source": {
+    "frozen_slice08_unchanged": true,
+    "candidate_files": 2876,
+    "baseline_manifest_sha256": "b76fe7d9ce43da5e0400fd30a068ccc3171092b5495bed4be6f7008c7990b871",
+    "candidate_manifest_sha256": "8c875841f8bee0aa4262a84ad1c801ef28303293db9de04d6389a4e0ad1d02f3",
+    "source_modes_match_frozen": true,
+    "changed_files": [
+      "app/build.gradle.kts",
+      "gradle/verification-metadata.xml"
+    ],
+    "changes": [
+      "Debug-only code11 and approved existing Commons contact/enable overrides",
+      "Exactly four audited metadata checksum additions"
+    ],
+    "release_code_unchanged": 9
+  },
+  "configuration": {
+    "commons_debug_contact": "exact user-approved public contact; generated BuildConfig verified",
+    "commons_debug_enabled": true,
+    "commons_release_contact": "empty",
+    "commons_release_enabled": false,
+    "distribution_channel": "unconfigured",
+    "searxng_default_instances_added": false,
+    "safe_search_default_and_confirmations": "unchanged frozen source",
+    "production_gates": "unchanged frozen source",
+    "signer": "pre-existing original cloud identity; distinct Debug-only config; no key generated/exported/moved"
+  },
+  "public_apk_check_execution": "APK_TOOL_EXECUTION_RECEIPT.json",
+  "debug_feature_class_definitions": {
+    "Lcom/easysavevideo/app/discovery/CommonsSourceRegistration;": "classes15.dex",
+    "Lcom/easysavevideo/app/save/AndroidEvaluationReportExport;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/DebugSaveEvaluationOwner;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/RecordingSaveEvaluationBinding;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/RecordingSaveEvaluationTaskLinks;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/SaveEvaluationTaskBinding;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/SealedEvaluationExport;": "classes16.dex",
+    "Lcom/easysavevideo/app/ui/SaveEvaluationPanelKt;": "classes16.dex",
+    "Lcom/easysavevideo/discovery/ProviderCallbackLatencyRecorder;": "classes4.dex",
+    "Lcom/easysavevideo/discovery/SaveEvaluationSessionReport;": "classes4.dex",
+    "Lcom/easysavevideo/commons/CommonsMetadataProvider;": "classes6.dex",
+    "Lcom/easysavevideo/commons/CommonsVideoSearchProvider;": "classes6.dex"
+  },
+  "tests_receipt": "VERIFY_PASSED.json",
+  "verification_log_sha256": "aac5cd003b843461da49cc8ecc18e8233152267ebce6cbf43032b55e3d55f0e9",
+  "assemble_log_sha256": "231e6cdc6316b36ec7deeb9cae73fcaa2365954fce2d1ec5bb13f7b021884504",
+  "key_file_check": {
+    "known_key_filename_extensions_found": false,
+    "scope": "APK entry filename check; not an exhaustive secret-content scan",
+    "signing_key_exported_or_attached": false
+  },
+  "limits": [
+    "Static/Dex inclusion and offline tests only; code11 runtime UI and real save/record/network tests unexecuted",
+    "Commons configured in Debug only; actual search still requires the existing source toggle, maintenance/user-confirmation gates and explicit unsupported safeSearch choice",
+    "No APK upload, transfer, installation or device operation performed",
+    "Signature/version prerequisites match reported installed code10; actual code11 installation not verified",
+    "Cold-metadata Windows reproducibility is not established by this warm-cache cloud build",
+    "Candidate includes slice08 callback timing; no live-provider latency or search quality measured"
+  ]
+}
