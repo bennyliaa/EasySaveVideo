@@ -1,0 +1,81 @@
+{
+  "format_version": 1,
+  "purpose": "One verified ESV slice07 signed Debug code10 candidate; offline/settings acceptance only",
+  "apk": {
+    "name": "esv-slice07-code10-debug.apk",
+    "bytes": 53300642,
+    "sha256": "e21952c29f8f5481611511d6b9fb47ec5db84bf7368db59c01b77313596fc262"
+  },
+  "compression": {
+    "format": "gzip",
+    "bytes": 18800732,
+    "sha256": "89174b1903440e27b2be2938f97c89427ecf14dd23311aa3d5aad009ff32899e"
+  },
+  "parts_in_order": [
+    "esv-slice07-code10-debug.apk.gz.part01",
+    "esv-slice07-code10-debug.apk.gz.part02",
+    "esv-slice07-code10-debug.apk.gz.part03"
+  ],
+  "files": [
+    {
+      "name": "APK_SIGNER_VERIFICATION.txt",
+      "bytes": 955,
+      "sha256": "89c0428392084755194dfbc1c8782b4b421976ceb74cccc44c9328ae6cc2b76c",
+      "git_blob_sha": "4978ecf6a3205fdce340f9ff7f6a5ea706f00b63"
+    },
+    {
+      "name": "CANDIDATE_PATCH.diff",
+      "bytes": 443,
+      "sha256": "5819ecc11d602bba165624a485e966032aff2e17801e4cb1b14de4078ceb5480",
+      "git_blob_sha": "865b22a45e61970ea8711a2dbf2e486de612289c"
+    },
+    {
+      "name": "FINAL_APK_VERIFICATION.json",
+      "bytes": 3074,
+      "sha256": "429cab541f21b67a172dc591f1fd32de96c844115c7b04135af5997e01c4b7d9",
+      "git_blob_sha": "cbe2272fc211fb2d5559f691f71db2f9cfdef070"
+    },
+    {
+      "name": "INDEPENDENT_CANDIDATE_REVIEW.json",
+      "bytes": 1320,
+      "sha256": "ff0b877b498fff1369f7a8c7684ce7e25ee9016ffa3586dc44ece658a8d13b6e",
+      "git_blob_sha": "36b79ccb1971774d90d40212ac68f4a5d7fb1612"
+    },
+    {
+      "name": "README.md",
+      "bytes": 3623,
+      "sha256": "695247905d66a1a674cc0a159488f2015e891ce7e354d88a2825fc9b9e367745",
+      "git_blob_sha": "9b5122a06083420435292da7bf5c373712659ade"
+    },
+    {
+      "name": "VERIFY_PASSED.json",
+      "bytes": 4652,
+      "sha256": "41c593af399ce109b139fdd1735153d823549e4fe7f287bbbd16989e3073285f",
+      "git_blob_sha": "877ad196996fd30c7135a9c5e11a0b4b512bed03"
+    },
+    {
+      "name": "esv-slice07-code10-debug.apk.gz.part01",
+      "bytes": 8388608,
+      "sha256": "33950a4c7c88a5f57a42b4d204d1a1339516f172690f78129a63ec41fbc8b729",
+      "git_blob_sha": "f54748c261e603568c401bc41c0663d99a92c985"
+    },
+    {
+      "name": "esv-slice07-code10-debug.apk.gz.part02",
+      "bytes": 8388608,
+      "sha256": "d72b4293ac6533dd6f9094facf22fcc8536ea8da5d7515d049582e28f4f5aaca",
+      "git_blob_sha": "442b23309d2f4945980ccd066c5c3b219867a2d2"
+    },
+    {
+      "name": "esv-slice07-code10-debug.apk.gz.part03",
+      "bytes": 2023516,
+      "sha256": "545dc430cbe9eab0925725b0cf321010c5dae4bac34ad3055179847b18b7adc9",
+      "git_blob_sha": "5fd23a04298c6771218aee2462fc4728e369e51d"
+    },
+    {
+      "name": "verify_and_extract.py",
+      "bytes": 5596,
+      "sha256": "9fd640f38668e689430723e57266ce948630b74c24bbf2b794147ca40be5dd5c",
+      "git_blob_sha": "e4658c094c5531dc8f4c961e63c16ab6ace30f91"
+    }
+  ]
+}
