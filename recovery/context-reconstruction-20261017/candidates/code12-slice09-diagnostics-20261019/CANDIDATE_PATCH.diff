@@ -1,0 +1,21 @@
+--- a/app/build.gradle.kts
++++ b/app/build.gradle.kts
+@@ -393,7 +393,7 @@
+ }
+ 
+ 
+-// Isolated user-authorized code11 test candidate. Release/default values are unchanged.
++// Isolated user-authorized code12 diagnostic candidate. Release/default values are unchanged.
+ android {
+     buildTypes {
+         getByName("debug") {
+@@ -404,6 +404,6 @@
+ }
+ androidComponents {
+     onVariants(selector().withBuildType("debug")) { variant ->
+-        variant.outputs.forEach { output -> output.versionCode.set(11) }
+-    }
+-}
++        variant.outputs.forEach { output -> output.versionCode.set(12) }
++    }
++}

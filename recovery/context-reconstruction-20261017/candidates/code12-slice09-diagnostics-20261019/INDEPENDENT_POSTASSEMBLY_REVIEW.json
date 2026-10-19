@@ -1,0 +1,77 @@
+{
+  "status": "PASS_INDEPENDENT_POSTASSEMBLY_REVIEW",
+  "reviewed_at_utc": "2026-10-19T04:13:47.548165+00:00",
+  "apk_sha256": "b41ff7c237218922ab367d2743e2ae131e9185a7fa3ca54913dc60a49466fc02",
+  "apk_bytes": 53408774,
+  "application_id": "com.easysavevideo.app",
+  "version_code": 12,
+  "min_sdk": 31,
+  "target_sdk": 36,
+  "debuggable": true,
+  "signer_certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+  "reviewer_direct_public_apk_tool_rechecks": [
+    {
+      "tool": "apksigner",
+      "exit_code": 0,
+      "stdout_matches_original_sha256": true,
+      "apk_sha256": "b41ff7c237218922ab367d2743e2ae131e9185a7fa3ca54913dc60a49466fc02"
+    },
+    {
+      "tool": "aapt2",
+      "exit_code": 0,
+      "stdout_matches_original_sha256": true,
+      "apk_sha256": "b41ff7c237218922ab367d2743e2ae131e9185a7fa3ca54913dc60a49466fc02"
+    },
+    {
+      "tool": "zipalign",
+      "exit_code": 0,
+      "stdout_matches_original_sha256": true,
+      "apk_sha256": "b41ff7c237218922ab367d2743e2ae131e9185a7fa3ca54913dc60a49466fc02"
+    }
+  ],
+  "apk_entry_count": 175,
+  "zip_crc_and_all_entry_hashes_independently_rechecked": true,
+  "dex_count": 30,
+  "actual_target_class_definitions_reparsed": {
+    "Lcom/easysavevideo/app/discovery/CommonsSourceRegistration;": "classes15.dex",
+    "Lcom/easysavevideo/app/discovery/CommonsStageDiagnosticsPresentation;": "classes15.dex",
+    "Lcom/easysavevideo/app/discovery/DebugCommonsStageDiagnosticsOwner;": "classes15.dex",
+    "Lcom/easysavevideo/app/save/AndroidEvaluationReportExport;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/DebugSaveEvaluationOwner;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/RecordingSaveEvaluationBinding;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/RecordingSaveEvaluationTaskLinks;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/SaveEvaluationTaskBinding;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/SealedEvaluationExport;": "classes16.dex",
+    "Lcom/easysavevideo/app/ui/CommonsStageDiagnosticsPanelKt;": "classes16.dex",
+    "Lcom/easysavevideo/app/ui/SaveEvaluationPanelKt;": "classes16.dex",
+    "Lcom/easysavevideo/discovery/CommonsStageCapture;": "classes4.dex",
+    "Lcom/easysavevideo/discovery/CommonsStageDiagnosticsRecorder;": "classes4.dex",
+    "Lcom/easysavevideo/discovery/ProviderCallbackLatencyRecorder;": "classes4.dex",
+    "Lcom/easysavevideo/discovery/SaveEvaluationSessionReport;": "classes4.dex",
+    "Lcom/easysavevideo/commons/CommonsMetadataProvider;": "classes6.dex",
+    "Lcom/easysavevideo/commons/CommonsStageFailureMappingKt;": "classes6.dex",
+    "Lcom/easysavevideo/commons/CommonsVideoSearchProvider;": "classes6.dex"
+  },
+  "actual_buildconfig_dex": {
+    "application_id": "com.easysavevideo.app",
+    "build_type": "debug",
+    "version_code": 12,
+    "commons_enabled": true,
+    "commons_contact": "matches unchanged approved public contact, exact value checked in DEX",
+    "distribution_channel": "unconfigured",
+    "debug_clinit": "true string -> Boolean.parseBoolean -> DEBUG assignment verified"
+  },
+  "source_and_runner_still_match_preassembly_review": true,
+  "preassembly_review_sha256": "a091b2eefe334f9ccc3cb15a358c6a8f8f30c9d696051e284366a0f262a42acb",
+  "final_apk_verification_sha256": "2a6b317852ff13316b4325bdb3e3f9330dac80a5ec9137a07fa9acc862099f79",
+  "apk_tool_execution_receipt_sha256": "5450c95cb432847da7158a60e46a0cac0ab1877c70d9777605b72d9ba2dd08c5",
+  "assemble_log_sha256": "2d06e143274fcbe16ba63c2d0bff7c8b239a5d22aebc0af0900b8c157c8dcfae",
+  "apk_filename_key_extension_scan": "No known key filename extensions; not an exhaustive secret-content scan.",
+  "result": "No independent static/offline packaging blocker found for exact signed Debug code12 candidate.",
+  "limits": [
+    "Code12 installation, emulator UI/diagnostic lifecycle acceptance, real Commons request stages and network root cause remain unexecuted.",
+    "DEX class inclusion and successful offline tests do not establish runtime behavior.",
+    "Release guard evidence is compiled-code/resource inspection; no Release APK was assembled.",
+    "No key access/export, device/network operation or publication performed by reviewer."
+  ]
+}

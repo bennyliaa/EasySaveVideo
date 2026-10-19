@@ -1,0 +1,29 @@
+{
+  "code10": {
+    "source_files": 2872,
+    "source_bytes_unchanged": true,
+    "manifest_sha256": "3a4605ea154c51670e11fa008d7af9c3e2fa13acd283ea24450d7440cef336c6"
+  },
+  "code11": {
+    "source_files": 2876,
+    "source_bytes_unchanged": true,
+    "manifest_sha256": "8c875841f8bee0aa4262a84ad1c801ef28303293db9de04d6389a4e0ad1d02f3"
+  },
+  "slice09": {
+    "source_files": 2892,
+    "source_bytes_unchanged": true,
+    "manifest_sha256": "44708ef8843e13b840840f3ec704dbe6d739b1cdbfd2d1c9f31205ee27ef946a"
+  },
+  "code10_apk": {
+    "bytes": 53300642,
+    "sha256": "e21952c29f8f5481611511d6b9fb47ec5db84bf7368db59c01b77313596fc262"
+  },
+  "code11_apk": {
+    "bytes": 53333410,
+    "sha256": "38f09f2dc752fc69cef9b2108c704c3e44e3b21d43134ee602f8b6e773c71988"
+  },
+  "slice09_archive": {
+    "bytes": 888546,
+    "sha256": "d3013dd6f299b52e4094dd3cb366b7f718db6044c82e2440a1f8ce353d60cb20"
+  }
+}
