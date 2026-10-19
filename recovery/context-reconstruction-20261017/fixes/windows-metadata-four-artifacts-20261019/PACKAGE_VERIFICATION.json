@@ -1,0 +1,10 @@
+{
+  "file": "windows-metadata-four-artifact-fix-20261019.tar.gz",
+  "bytes": 73899,
+  "sha256": "bae3d14a6323a885f26bfc6dba2f7591a30fa68447c4eea66b3c1b7fbaf000c9",
+  "members_regular_safe": 24,
+  "status": "reviewed proposal not applied; no amended Gradle run",
+  "patch_sha256": "1d89a3334d5eca58067996e4cf8bf8399e05140a8ca950137e99bd5fb8bd49ea",
+  "secret_pattern_scan_hits": [],
+  "scan_limit": "bounded known-secret patterns and inspected metadata/license/patch inventory, not exhaustive secret-content proof; no user/device data or key/cache payload included"
+}
