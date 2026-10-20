@@ -1,0 +1,20 @@
+test_pinned_baseline_and_production_constants_preserved (test_receiver.BaselineIdentityTests.test_pinned_baseline_and_production_constants_preserved) ... ok
+test_cleanup_error_does_not_mask_original_error (test_receiver.PublicationTests.test_cleanup_error_does_not_mask_original_error) ... ok
+test_copy_interruption_retains_unverified_partial_file (test_receiver.PublicationTests.test_copy_interruption_retains_unverified_partial_file) ... ok
+test_corrupt_final_output_is_rejected_and_retained (test_receiver.PublicationTests.test_corrupt_final_output_is_rejected_and_retained) ... ok
+test_existing_output_is_untouched (test_receiver.PublicationTests.test_existing_output_is_untouched) ... ok
+test_late_replacement_after_hash_is_rejected_and_preserved (test_receiver.PublicationTests.test_late_replacement_after_hash_is_rejected_and_preserved) ... ok
+test_missing_output_cleanup_does_not_mask_original_error (test_receiver.PublicationTests.test_missing_output_cleanup_does_not_mask_original_error) ... ok
+test_multiblock_publication (test_receiver.PublicationTests.test_multiblock_publication) ... ok
+test_oversized_final_output_rejected_and_retained (test_receiver.PublicationTests.test_oversized_final_output_rejected_and_retained) ... ok
+test_regular_replacement_during_publish_is_rejected_preserved (test_receiver.PublicationTests.test_regular_replacement_during_publish_is_rejected_preserved) ... ok
+test_replacement_then_interruption_preserves_replacement (test_receiver.PublicationTests.test_replacement_then_interruption_preserves_replacement) ... ok
+test_short_final_output_rejected_and_retained (test_receiver.PublicationTests.test_short_final_output_rejected_and_retained) ... ok
+test_success_preserves_base_and_publishes_regular_file (test_receiver.PublicationTests.test_success_preserves_base_and_publishes_regular_file) ... ok
+test_symlink_replacement_during_publish_is_rejected_preserved (test_receiver.PublicationTests.test_symlink_replacement_during_publish_is_rejected_preserved) ... ok
+test_zero_identity_fails_closed_without_unlink (test_receiver.PublicationTests.test_zero_identity_fails_closed_without_unlink) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.023s
+
+OK

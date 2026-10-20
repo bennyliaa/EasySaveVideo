@@ -1,0 +1,58 @@
+--- esv-offline-20261020/receiver-tests/baseline/verify_and_restore.py	2026-10-19 22:21:21.712936643 -0700
++++ esv-offline-20261020/receiver-tests/candidate/verify_and_restore.py	2026-10-19 22:24:15.766885193 -0700
+@@ -151,6 +151,13 @@
+     return validate_recipe(recipe, values["literal.bin"]), values["literal.bin"]
+ 
+ 
++def require_published_identity(output, created):
++    current = output.lstat()
++    require(stat.S_ISREG(current.st_mode) and
++            (current.st_dev, current.st_ino) == (created.st_dev, created.st_ino),
++            "Changed publication identity")
++
++
+ def restore(base_apk, directory):
+     output = directory / OUTPUT_NAME
+     require(not output.exists() and not output.is_symlink(), "Output exists; use a fresh directory")
+@@ -174,18 +181,29 @@
+         require(rebuilt.stat().st_size == TARGET_SIZE and digest(rebuilt) == TARGET_SHA, "Restored APK SHA mismatch")
+         require(base_apk.stat().st_size == BASE_SIZE and digest(base_apk) == BASE_SHA, "Base APK changed during restoration")
+         # Exclusive output creation works on Windows without hardlinks or xattrs.
+-        created = None
+-        try:
+-            with rebuilt.open("rb") as source, output.open("xb") as target:
+-                created = os.fstat(target.fileno())
+-                shutil.copyfileobj(source, target, 1024 * 1024)
+-            require(output.stat().st_size == TARGET_SIZE and digest(output) == TARGET_SHA, "Final output verification failed")
+-        except BaseException:
+-            if created is not None and not output.is_symlink() and output.exists():
+-                current = output.stat()
+-                if (current.st_dev, current.st_ino) == (created.st_dev, created.st_ino):
+-                    output.unlink()
+-            raise
++        # Never unlink the published pathname on failure: portable Python has
++        # no atomic "delete only if still this file" operation. Retain uncertain
++        # output for inspection and require a fresh directory for a retry.
++        with rebuilt.open("rb") as source, output.open("x+b") as target:
++            created = os.fstat(target.fileno())
++            # Keep this handle open through verification so its identity cannot
++            # be recycled after a concurrent pathname replacement.
++            require(created.st_ino != 0, "Unavailable publication identity")
++            shutil.copyfileobj(source, target, 1024 * 1024)
++            target.flush()
++            require_published_identity(output, created)
++            target.seek(0)
++            final_hash = hashlib.sha256()
++            remaining = TARGET_SIZE
++            while remaining:
++                block = target.read(min(1024 * 1024, remaining))
++                require(bool(block), "Final output verification failed")
++                final_hash.update(block)
++                remaining -= len(block)
++            require(not target.read(1) and os.fstat(target.fileno()).st_size == TARGET_SIZE and
++                    final_hash.hexdigest() == TARGET_SHA, "Final output verification failed")
++            require_published_identity(output, created)
++
+     return output
+ 
+ 
