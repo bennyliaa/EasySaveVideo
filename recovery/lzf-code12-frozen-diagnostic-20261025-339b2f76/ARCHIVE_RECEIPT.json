@@ -1,0 +1,15 @@
+{
+  "archive": "ESV-code12-frozen-diagnostic-recovery-20261025.tar.gz",
+  "bytes": 30715370,
+  "sha256": "339b2f76342399445b93ffd2cc263bf00f78b611b934b73f3b50264d6363ae0e",
+  "payload_files": 2908,
+  "frozen_source_files": 2892,
+  "evidence_and_patch_files": 16,
+  "total_archive_files": 2911,
+  "payload_manifest_sha256": "65b8f2e5d280bd9e103b2be1bd4c6d4fb7f7a7e4c649301bdbcce07899d43588",
+  "every_payload_rehashed_after_archive": true,
+  "links_or_special_members": 0,
+  "excluded": "Signing keys/credential files, runtime tokens, .git, caches, APK/build outputs, device/personal data and raw host-path logs.",
+  "upload_performed": false,
+  "cloud_execution_performed": false
+}
