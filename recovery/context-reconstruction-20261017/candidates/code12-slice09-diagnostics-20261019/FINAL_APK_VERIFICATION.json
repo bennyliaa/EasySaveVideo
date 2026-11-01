@@ -1,0 +1,85 @@
+{
+  "status": "VERIFIED_SIGNED_DEBUG_CODE12_STATIC_CANDIDATE",
+  "verified_at_utc": "2026-10-19T04:12:03.917407+00:00",
+  "apk": {
+    "path": "source/app/build/outputs/apk/debug/app-debug.apk",
+    "bytes": 53408774,
+    "sha256": "b41ff7c237218922ab367d2743e2ae131e9185a7fa3ca54913dc60a49466fc02",
+    "application_id": "com.easysavevideo.app",
+    "version_code": 12,
+    "version_name": "0.9.0-ui-dev",
+    "min_sdk": 31,
+    "target_sdk": 36,
+    "debuggable": true,
+    "signature_v2_verified": true,
+    "signer_certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+    "matches_reported_phone_original_certificate": true,
+    "zip_crc_verified": true,
+    "zipalign_4byte_and_16KiB_native_page_check": true,
+    "entries": 175,
+    "dex_files": 30
+  },
+  "source": {
+    "frozen_slice09_unchanged": true,
+    "candidate_files": 2892,
+    "baseline_manifest_sha256": "44708ef8843e13b840840f3ec704dbe6d739b1cdbfd2d1c9f31205ee27ef946a",
+    "candidate_manifest_sha256": "76f33eadb01902dfe0024f1bb21501f66b48429037dff2650e87edcab69c6b32",
+    "source_modes_match_frozen": true,
+    "changed_files": [
+      "app/build.gradle.kts"
+    ],
+    "changes": [
+      "Debug-only code11 to code12 version override and adjacent explanatory comment; approved Commons/metadata configuration inherited unchanged"
+    ],
+    "release_code_unchanged": 9
+  },
+  "configuration": {
+    "commons_debug_contact": "exact user-approved public contact; generated BuildConfig verified",
+    "commons_debug_enabled": true,
+    "commons_release_contact": "empty",
+    "commons_release_enabled": false,
+    "distribution_channel": "unconfigured",
+    "searxng_default_instances_added": false,
+    "safe_search_default_and_confirmations": "unchanged frozen source",
+    "stage_diagnostics": "default off; explicit Start only arms one next explicit Search; bounded memory-only preview; lifecycle revocation; not device-tested",
+    "production_gates": "unchanged frozen source",
+    "signer": "pre-existing original cloud identity; distinct Debug-only config; no key generated/exported/moved"
+  },
+  "public_apk_check_execution": "APK_TOOL_EXECUTION_RECEIPT.json",
+  "debug_feature_class_definitions": {
+    "Lcom/easysavevideo/app/discovery/CommonsSourceRegistration;": "classes15.dex",
+    "Lcom/easysavevideo/app/discovery/CommonsStageDiagnosticsPresentation;": "classes15.dex",
+    "Lcom/easysavevideo/app/discovery/DebugCommonsStageDiagnosticsOwner;": "classes15.dex",
+    "Lcom/easysavevideo/app/save/AndroidEvaluationReportExport;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/DebugSaveEvaluationOwner;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/RecordingSaveEvaluationBinding;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/RecordingSaveEvaluationTaskLinks;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/SaveEvaluationTaskBinding;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/SealedEvaluationExport;": "classes16.dex",
+    "Lcom/easysavevideo/app/ui/CommonsStageDiagnosticsPanelKt;": "classes16.dex",
+    "Lcom/easysavevideo/app/ui/SaveEvaluationPanelKt;": "classes16.dex",
+    "Lcom/easysavevideo/discovery/CommonsStageCapture;": "classes4.dex",
+    "Lcom/easysavevideo/discovery/CommonsStageDiagnosticsRecorder;": "classes4.dex",
+    "Lcom/easysavevideo/discovery/ProviderCallbackLatencyRecorder;": "classes4.dex",
+    "Lcom/easysavevideo/discovery/SaveEvaluationSessionReport;": "classes4.dex",
+    "Lcom/easysavevideo/commons/CommonsMetadataProvider;": "classes6.dex",
+    "Lcom/easysavevideo/commons/CommonsStageFailureMappingKt;": "classes6.dex",
+    "Lcom/easysavevideo/commons/CommonsVideoSearchProvider;": "classes6.dex"
+  },
+  "tests_receipt": "VERIFY_PASSED.json",
+  "verification_log_sha256": "d9cee5f2ab0bf4f64922cc64c9ff3af8105d90104d11dfeeffa67cb23878418e",
+  "assemble_log_sha256": "2d06e143274fcbe16ba63c2d0bff7c8b239a5d22aebc0af0900b8c157c8dcfae",
+  "key_file_check": {
+    "known_key_filename_extensions_found": false,
+    "scope": "APK entry filename check; not an exhaustive secret-content scan",
+    "signing_key_exported_or_attached": false
+  },
+  "limits": [
+    "Static/Dex inclusion and offline tests only; code12 runtime UI and real save/record/network tests unexecuted",
+    "Commons configured in Debug only; actual search still requires the existing source toggle, maintenance/user-confirmation gates and explicit unsupported safeSearch choice",
+    "No APK upload, transfer, installation or device operation performed",
+    "Signature/version prerequisites match reported existing phone identity; actual code12 installation not verified",
+    "Cold-metadata Windows reproducibility is not established by this warm-cache cloud build",
+    "Candidate includes slice09 opt-in request stage diagnostics and prior slice08 callback timing; no live-provider latency or search quality measured"
+  ]
+}

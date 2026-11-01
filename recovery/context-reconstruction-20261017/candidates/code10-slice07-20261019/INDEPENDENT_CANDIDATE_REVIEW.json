@@ -1,0 +1,23 @@
+{
+  "reviewer": "independent candidate guard review",
+  "status": "PASS_STATIC_NO_REMAINING_BLOCKER",
+  "source_delta": "exactly app/build.gradle.kts Debug code10 output override",
+  "signing": "distinct Debug-only clone; original matching key retained; AGP default-key-generation branch excluded",
+  "guards": [
+    "exact existing signer path and public certificate",
+    "missing key refuses before Gradle and signing validation",
+    "Release unchanged",
+    "offline strict admitted dependencies and existing wrapper distribution marker",
+    "shared build lock",
+    "exact 2872 source inventory and hashes",
+    "assembly receipt exact four runner files and matching live hashes"
+  ],
+  "missing_key_test": "MISSING_KEY_GUARD_TEST.json",
+  "reviewed_runner_sha256": {
+    "run-candidate.sh": "b5a6f0c9e9924665c0fa40c3cdd4c55838b0d9262337540efe16922e9eb2d949",
+    "candidate-guard.init.gradle": "c5b27e45c5f6e3d6f11880c8c43cad1f96ff27413996a8c478d5cc77850b8571",
+    "verify-existing-signer.py": "cd315c3fca2bba4c8b98321a95442053d8dbe880e2fb3304ad4acb0060423cc9",
+    "verify-candidate-inputs.py": "b527ddd72dac2311b636d887c72e10803d797c841ac34e9936bc4b5c7bc530db"
+  },
+  "review_scope": "Read-only static source/runner review and existing AGP bytecode. Reviewer did not build or inspect private key material."
+}

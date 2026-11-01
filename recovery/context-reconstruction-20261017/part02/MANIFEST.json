@@ -1,0 +1,327 @@
+{
+  "schema": 1,
+  "status": "context-reconstructed/unverified",
+  "created_utc": "2026-10-17T22:50:24.067346+00:00",
+  "previous_backup_commit": "9452256995155db8dd7898dd4fecf6097700e266",
+  "complete_latest_source": false,
+  "project_tests_claimed": false,
+  "bundle_checks": [
+    {
+      "bundle": "commons-diagnostics",
+      "verified_recorded_entries": 8
+    },
+    {
+      "bundle": "upstream-parsing",
+      "verified_recorded_entries": 10
+    },
+    {
+      "bundle": "internal-b-seam",
+      "verified_recorded_entries": 12
+    },
+    {
+      "bundle": "searxng-broad-modes",
+      "verified_recorded_entries": 14
+    },
+    {
+      "bundle": "early-functional-increments/status-feedback-author",
+      "verified_recorded_entries": 9
+    }
+  ],
+  "files": [
+    {
+      "path": "commons-diagnostics/README.md",
+      "bytes": 5132,
+      "sha256": "d842082ee356b61b67977fd681f7e4d7a9771ef56358e71306ebea9dacb51d83"
+    },
+    {
+      "path": "commons-diagnostics/RECOVERY_CHECKS.txt",
+      "bytes": 1025,
+      "sha256": "1cf78481a4467c6796212b58e851b949ec7135d6b96dfa8f56fc8980dee13234"
+    },
+    {
+      "path": "commons-diagnostics/RECOVERY_INVENTORY.json",
+      "bytes": 4088,
+      "sha256": "53446f766e6b9c88ad02ab6e653cbe4235eeeb4891b815d1e4082fad1641a551"
+    },
+    {
+      "path": "commons-diagnostics/SHA256SUMS",
+      "bytes": 948,
+      "sha256": "038b78ea244c5fdd7118d8c0522f50cb93058fb8509567878b2919a86408f4e4"
+    },
+    {
+      "path": "commons-diagnostics/new-files/app/src/main/kotlin/com/easysavevideo/app/discovery/network/CommonsTransportDiagnostics.kt",
+      "bytes": 4685,
+      "sha256": "036d830bccfa4d19ea9b6ec2e1b5aea11b66dcf95070f97eaf8e6011976d7fcc"
+    },
+    {
+      "path": "commons-diagnostics/new-files/app/src/test/kotlin/com/easysavevideo/app/discovery/network/CommonsTransportDiagnosticsTest.kt",
+      "bytes": 6482,
+      "sha256": "cd297ac0574affd24b489db2161eb1af87d09f120f61146f46ab8fcbaa23714d"
+    },
+    {
+      "path": "commons-diagnostics/patch-inputs/01-production-edit-statements.py.txt",
+      "bytes": 9397,
+      "sha256": "c1820a8a6c909c584b4dea878082753898144a734f825b4d4ea27f443303c86e"
+    },
+    {
+      "path": "commons-diagnostics/patch-inputs/02-transport-tests-edit-statements.py.txt",
+      "bytes": 11091,
+      "sha256": "46f1788420a5968385da53efbb910981c2ae98a6aeddd2cc487d05be2bc63543"
+    },
+    {
+      "path": "commons-diagnostics/patch-inputs/03-test-correction-edit-statements.py.txt",
+      "bytes": 1154,
+      "sha256": "6e5da00a74f4313fb6516cd6c88ee969408ebc3b6184e1e454fb6490a8c1eecb"
+    },
+    {
+      "path": "upstream-parsing/MANIFEST.json",
+      "bytes": 4466,
+      "sha256": "c83e896c56a980c2802b9ee71cad84383fc239e4b0e2f3e9bf09820059c8e0c1"
+    },
+    {
+      "path": "upstream-parsing/README.md",
+      "bytes": 5524,
+      "sha256": "9556bc8b81cae7dacc1870c9177993415c7b00f9c7f0a33b1837eccfec082ef0"
+    },
+    {
+      "path": "upstream-parsing/SHA256SUMS",
+      "bytes": 1272,
+      "sha256": "9c969dfec9aec0811118cb689904a4abf9185a88359dbc71bfadc09326977801"
+    },
+    {
+      "path": "upstream-parsing/new-files/discovery/src/main/kotlin/com/easysavevideo/discovery/ReportedSearchContributors.kt",
+      "bytes": 6167,
+      "sha256": "43777e48139a17342792084ad315be499f153e671c7962e744355a8f2a0d8074"
+    },
+    {
+      "path": "upstream-parsing/new-files/discovery/src/test/kotlin/com/easysavevideo/discovery/ReportedSearchContributorsPipelineTest.kt",
+      "bytes": 9349,
+      "sha256": "6e22b519548a3e5109d5e64d8a898a5a95ace14e2054e27eb6611d2d69aaf5be"
+    },
+    {
+      "path": "upstream-parsing/new-files/discovery/src/test/kotlin/com/easysavevideo/discovery/ReportedSearchContributorsTest.kt",
+      "bytes": 5980,
+      "sha256": "84fb918ad1824e3ac691a057cc956de093db27dcffdcb174bd1a7181851ad6af"
+    },
+    {
+      "path": "upstream-parsing/new-files/searxng-provider/src/test/kotlin/com/easysavevideo/searxng/SearxngReportedContributorsTest.kt",
+      "bytes": 11625,
+      "sha256": "c22c885feeffcbcd692ab3641d902f7f24bc50c81186b656e1fe6fc119ccae55"
+    },
+    {
+      "path": "upstream-parsing/patch-inputs/01_discovery_models_and_pipeline.py.txt",
+      "bytes": 3064,
+      "sha256": "e9204eaf2a020e3774d9a72258a5970746507bc3aa66f57199a77b2d98e36586"
+    },
+    {
+      "path": "upstream-parsing/patch-inputs/02_searxng_parser.py.txt",
+      "bytes": 3429,
+      "sha256": "2344e18826a45c539c2f4ebac8ca3adf52eddda84e1648d42a3178ea2659d029"
+    },
+    {
+      "path": "upstream-parsing/patch-inputs/03_pipeline_test_field_fix.sh.txt",
+      "bytes": 199,
+      "sha256": "ed6c0317daab2a20e819891a226ca66233de81f9975f03081cfecf48e5a0b074"
+    },
+    {
+      "path": "upstream-parsing/patch-inputs/04_parser_semantics_javadoc.py.txt",
+      "bytes": 706,
+      "sha256": "bbc30ba78ca83dd468d33ffb1806f0dc1a78a78f4f00f7044146162209905e3a"
+    },
+    {
+      "path": "internal-b-seam/ARTIFACT_INVENTORY.json",
+      "bytes": 3197,
+      "sha256": "3b8c77acc0c257dd596f4b8a47b5a20684b948b62049d13b533de37f9350f75f"
+    },
+    {
+      "path": "internal-b-seam/HISTORICAL_HASHES.json",
+      "bytes": 1725,
+      "sha256": "c93959499fcda4384a1be86014bffc1b3b8bd86f0c68026efcffeed509e9f786"
+    },
+    {
+      "path": "internal-b-seam/README.md",
+      "bytes": 7418,
+      "sha256": "dfd21ef10e2e8468fe2cfcd7995a1893a0c62061e79623ee35646810c8f56871"
+    },
+    {
+      "path": "internal-b-seam/RECOVERY_VALIDATION.json",
+      "bytes": 1151,
+      "sha256": "154c1d9f4c0ce272371cae7cbdbead1f27c009b9bb27c9a038a4941ba3f9d6fb"
+    },
+    {
+      "path": "internal-b-seam/SHA256SUMS",
+      "bytes": 1331,
+      "sha256": "9555fd1e14f20792773a3158e61d3a0cff78942c5db00966331618c8e58b010b"
+    },
+    {
+      "path": "internal-b-seam/historical/LocalVerificationEngineTransportSeamTest.before-reflection-fix.kt",
+      "bytes": 17794,
+      "sha256": "6c86fd27b86bacfcd91761cb1c4c08ce81f80d2f4a6e6cf23886d38d0b5416db"
+    },
+    {
+      "path": "internal-b-seam/patch-inputs/01-engine-internal-call-seam.apply_patch.txt",
+      "bytes": 2883,
+      "sha256": "302293d5e71a4b9b1b7e50f1c111cbf0d0c82e4e4e69993cb091414f6deeeca6"
+    },
+    {
+      "path": "internal-b-seam/patch-inputs/02-engine-timeout-ownership.apply_patch.txt",
+      "bytes": 760,
+      "sha256": "6346090b8d5bd4bc1d149c34247389c6d0b875c1217f6f8d407453ee48cbb4a8"
+    },
+    {
+      "path": "internal-b-seam/patch-inputs/03-add-focused-test-file.apply_patch.txt",
+      "bytes": 17462,
+      "sha256": "798d8e450d49350f77c1e8d6ff92630a46e0d9506de5a8ad8b4076c1a1fa85d7"
+    },
+    {
+      "path": "internal-b-seam/patch-inputs/04-test-foreign-null-callback.apply_patch.txt",
+      "bytes": 1285,
+      "sha256": "438bae0048d214dc710a00ca8574566a02c5ad325110530a9b1da5b3dae9a70f"
+    },
+    {
+      "path": "internal-b-seam/patch-inputs/05-test-private-lambda-reflection-fix.apply_patch.txt",
+      "bytes": 1084,
+      "sha256": "2e6c949ec24b0089db58e988a9cc1424d43b32ed0ecf38ddb014177ea8b4f0d9"
+    },
+    {
+      "path": "internal-b-seam/reconstructed/LocalVerificationEngineTransportSeamTest.kt",
+      "bytes": 18150,
+      "sha256": "46d484161bfff25566e354cd45770b9eade96159e2b79cef8e74ae9b66a480e8"
+    },
+    {
+      "path": "internal-b-seam/validate_reconstruction.py",
+      "bytes": 2842,
+      "sha256": "f5508e0cf869d2bf8d6ef31a7dafc0eb7c2f3f5cb1198b335a962a2b01e51657"
+    },
+    {
+      "path": "searxng-broad-modes/MANIFEST.json",
+      "bytes": 4353,
+      "sha256": "b027f5f72c669c8757af9fc593c1af0cd995afd489f96a57b64a92d1c7bb7bd5"
+    },
+    {
+      "path": "searxng-broad-modes/MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "34949a0c9fc38a61d7fc398ec6b170a3023e8e013c96bc7604a68be8e30a3a6e"
+    },
+    {
+      "path": "searxng-broad-modes/README.md",
+      "bytes": 5223,
+      "sha256": "cf0c2a9fe66f8598a3fbd3818aeaeabe85e0291d37d34258f01a5acbd4d82e5b"
+    },
+    {
+      "path": "searxng-broad-modes/evidence/historical-evidence.json",
+      "bytes": 3252,
+      "sha256": "e81ca74a97f9f161606ade4c24c4605b0b9850e73fb8d61e2119636195d785db"
+    },
+    {
+      "path": "searxng-broad-modes/full-files/docs/searxng-discovery/SEARCH_MODES_20261017.md",
+      "bytes": 5120,
+      "sha256": "0ca8194858ce6614b72d9bcc20ca6386701b77f6def9b35b58ec5020d5b29946"
+    },
+    {
+      "path": "searxng-broad-modes/full-files/searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngCursor.kt",
+      "bytes": 6090,
+      "sha256": "af9ff5f4b093dfd9140a4728dabb44508e27ecc6ca816e87f54590ccd39e8723"
+    },
+    {
+      "path": "searxng-broad-modes/full-files/searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngResponseParser.kt",
+      "bytes": 4966,
+      "sha256": "0b8128ed6f2011c070b0cdb10833d832a5ad8a824393d0a35860732b90ffecbf"
+    },
+    {
+      "path": "searxng-broad-modes/full-files/searxng-provider/src/test/kotlin/com/easysavevideo/searxng/SearxngSearchModesTest.kt",
+      "bytes": 12660,
+      "sha256": "8c9296224e584048f3b571a5df559502289fe60fe89180f35d52cfa24c2ed517"
+    },
+    {
+      "path": "searxng-broad-modes/patch-inputs/01-model-config-controller-registration-codec.py.txt",
+      "bytes": 5187,
+      "sha256": "6b0fa0dd3f440bae3bf9315023bf7154fea19b65681f9bbbc8cde8c102acd2c7"
+    },
+    {
+      "path": "searxng-broad-modes/patch-inputs/02-settings-ui-initial.py.txt",
+      "bytes": 2451,
+      "sha256": "6693d3071cae0c297ef6d7a4fcf896b066ff8c44f387e1340d8b145d9d181b65"
+    },
+    {
+      "path": "searxng-broad-modes/patch-inputs/03-provider-modes-initial.py.txt",
+      "bytes": 2667,
+      "sha256": "b6075385026d7288376747a494497271353feaccfb48d3a1565cc0583af3c415"
+    },
+    {
+      "path": "searxng-broad-modes/patch-inputs/04-provider-category-spi.py.txt",
+      "bytes": 840,
+      "sha256": "bee5eea7db0a622838ac558a18fbb3b9194f1d9cb8f6a1d6833f92b2e756550d"
+    },
+    {
+      "path": "searxng-broad-modes/patch-inputs/05-provider-category-observation.py.txt",
+      "bytes": 798,
+      "sha256": "20e91a06f71dd3e5c5445c8f8ee0639858c06cc8f3c88ee1a5b41c9e24440a6d"
+    },
+    {
+      "path": "searxng-broad-modes/patch-inputs/06-settings-ui-radio-options.py.txt",
+      "bytes": 1241,
+      "sha256": "33cf732236a3c296f550413039588e9ca18108309c45941b7136dcd8f6b4ddc6"
+    },
+    {
+      "path": "searxng-broad-modes/patch-inputs/07-application-test-additions.py.txt",
+      "bytes": 8430,
+      "sha256": "3df06fd82780d56246a6dfffe5845a99127b6282cfba72a27a13b9be4dc42d81"
+    },
+    {
+      "path": "searxng-broad-modes/patch-inputs/08-source-settings-entry-contract.diff",
+      "bytes": 2062,
+      "sha256": "91c896126b7d2cee0a00f022f337ee3d002e811c213cc079512e0ed5fbefe561"
+    },
+    {
+      "path": "early-functional-increments/status-feedback-author/PREREQUISITE_NOTES.md",
+      "bytes": 1603,
+      "sha256": "c69ef9c27591551f23b5006c1b7c876652acb282ad97aceb1ff4f87447a2a816"
+    },
+    {
+      "path": "early-functional-increments/status-feedback-author/README.md",
+      "bytes": 2020,
+      "sha256": "7321843a88fead15c72b4f3088cc9c111a779f83a7591c4264e289a52c90844d"
+    },
+    {
+      "path": "early-functional-increments/status-feedback-author/RECOVERY_INVENTORY.json",
+      "bytes": 4221,
+      "sha256": "52e931d1de0e29ebfd256701e6cdded8de1a501877eec09d6245a8ae845c9101"
+    },
+    {
+      "path": "early-functional-increments/status-feedback-author/new-files/app/src/main/kotlin/com/easysavevideo/app/discovery/DiscoveryStatusFeedback.kt",
+      "bytes": 3468,
+      "sha256": "ef9c3fbbb9fd16fecdefef9c9c79d2a08acd8fc452e5061a0a7e387b29761b4c"
+    },
+    {
+      "path": "early-functional-increments/status-feedback-author/new-files/app/src/main/res/values/discovery_status_feedback.xml",
+      "bytes": 1993,
+      "sha256": "3219f31a39565ea11503b5e3385b0ff61782131cad9589d8e76c1c9765bd65f3"
+    },
+    {
+      "path": "early-functional-increments/status-feedback-author/new-files/app/src/main/res/values-zh-rCN/discovery_status_feedback.xml",
+      "bytes": 1880,
+      "sha256": "b1077db5a3eb913a15e8064c390dd49991535ba0bc5f7b15b1a00972c2a45895"
+    },
+    {
+      "path": "early-functional-increments/status-feedback-author/new-files/app/src/test/kotlin/com/easysavevideo/app/discovery/DiscoveryStatusFeedbackTest.kt",
+      "bytes": 17087,
+      "sha256": "7a2891594c0d0b1ed453e49a3c288a1ad7bc0a26fbeba7425d9e1bfb2d40279b"
+    },
+    {
+      "path": "early-functional-increments/status-feedback-author/new-files/discovery/src/test/kotlin/com/easysavevideo/discovery/DiscoverySessionSourceErrorTest.kt",
+      "bytes": 9441,
+      "sha256": "fa6f54efe6886a92e4d2d013f4b46e289f97e5cdf8c36ee3ab26d93629c6b98a"
+    },
+    {
+      "path": "early-functional-increments/status-feedback-author/patch-inputs/RECONSTRUCTED_LITERAL_OPERATIONS.json",
+      "bytes": 15378,
+      "sha256": "fe59c892a7ccad9e7e27d2d60ad4233e5989625bf969404873f4ec25de1e1a2a"
+    },
+    {
+      "path": "early-functional-increments/status-feedback-author/patch-inputs/replay_visible_replacements.py",
+      "bytes": 14822,
+      "sha256": "65890c27ada7487eb239481083e5147ab96aedf42323a9f0ebe60a86f120d9fc"
+    }
+  ]
+}

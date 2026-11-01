@@ -1,0 +1,63 @@
+{
+  "status": "VERIFIED_SIGNED_DEBUG_CODE10_STATIC_CANDIDATE",
+  "verified_at_utc": "2026-10-19T01:30:23.330915+00:00",
+  "apk": {
+    "path": "source/app/build/outputs/apk/debug/app-debug.apk",
+    "bytes": 53300642,
+    "sha256": "e21952c29f8f5481611511d6b9fb47ec5db84bf7368db59c01b77313596fc262",
+    "application_id": "com.easysavevideo.app",
+    "version_code": 10,
+    "version_name": "0.9.0-ui-dev",
+    "min_sdk": 31,
+    "target_sdk": 36,
+    "debuggable": true,
+    "signature_v2_verified": true,
+    "signer_certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+    "matches_reported_phone_code9_certificate": true,
+    "zip_crc_verified": true,
+    "zipalign_4byte_and_16KiB_native_page_check": true,
+    "entries": 175,
+    "dex_files": 30
+  },
+  "source": {
+    "frozen_T0647_unchanged": true,
+    "candidate_files": 2872,
+    "candidate_manifest_sha256": "3a4605ea154c51670e11fa008d7af9c3e2fa13acd283ea24450d7440cef336c6",
+    "source_modes_match_frozen": true,
+    "sole_source_difference": "app/build.gradle.kts Debug output versionCode 10 override",
+    "release_code_unchanged": 9
+  },
+  "configuration": {
+    "commons_contact": "empty",
+    "commons_enabled": false,
+    "distribution_channel": "unconfigured",
+    "searxng_default_instances_added": false,
+    "production_gates": "unchanged frozen source",
+    "signer": "pre-existing original cloud identity; distinct Debug-only config; no key generated/exported/moved"
+  },
+  "debug_evaluation_class_definitions": {
+    "Lcom/easysavevideo/app/save/AndroidEvaluationReportExport;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/DebugSaveEvaluationOwner;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/RecordingSaveEvaluationBinding;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/RecordingSaveEvaluationTaskLinks;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/SaveEvaluationTaskBinding;": "classes16.dex",
+    "Lcom/easysavevideo/app/save/SealedEvaluationExport;": "classes16.dex",
+    "Lcom/easysavevideo/app/ui/SaveEvaluationPanelKt;": "classes16.dex",
+    "Lcom/easysavevideo/discovery/SaveEvaluationSessionReport;": "classes4.dex"
+  },
+  "tests_receipt": "VERIFY_PASSED.json",
+  "verification_log_sha256": "f1cbafaf647eddb47c4e790311b7a8e88c6f8cd77341451e41657c9ed88fb732",
+  "assemble_log_sha256": "3381150c5709bd24df2c4de32cf087951a0dabc1d115760c5812a18620263747",
+  "key_file_check": {
+    "known_key_filename_extensions_found": false,
+    "scope": "APK entry filename check; not an exhaustive secret-content scan",
+    "signing_key_exported_or_attached": false
+  },
+  "limits": [
+    "Static/Dex inclusion and offline tests only; runtime UI behavior and real save/record/network tests unexecuted",
+    "Commons remains disabled in this candidate and cannot be enabled solely through its app settings",
+    "No APK installation or device operation performed",
+    "Signature/version prerequisites match reported code9; actual installation not yet verified",
+    "Candidate is based on frozen slice07, not later slice08 development"
+  ]
+}

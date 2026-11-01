@@ -1,0 +1,19 @@
+{
+  "purpose": "Exact one-file candidate overlay on frozen slice09; not a full restored development tree",
+  "baseline_manifest_sha256": "44708ef8843e13b840840f3ec704dbe6d739b1cdbfd2d1c9f31205ee27ef946a",
+  "candidate_manifest_sha256": "76f33eadb01902dfe0024f1bb21501f66b48429037dff2650e87edcab69c6b32",
+  "files": [
+    {
+      "path": "app/build.gradle.kts",
+      "before_sha256": "c54d1b6ba9ee286514ad347882148631da9d752bd1a913d95fcf165839fe37ad",
+      "after_sha256": "a4ecf2862296d92b9168206e8aa9a08ca5eac576459cf05f2cd955b98298fa0b",
+      "mode": "0o644"
+    }
+  ],
+  "archive": {
+    "name": "code12-source-delta-on-slice09.tar.gz",
+    "bytes": 290570,
+    "sha256": "fdc6d6530c997eb7fa07f4e1ce92663dbcecf391e40d660660c8a5ae0d8aec2b",
+    "git_blob_sha": "1bd94b110ff659868c6ee4ff2adc35ca4d1e0483"
+  }
+}

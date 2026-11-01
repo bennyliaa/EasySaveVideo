@@ -1,0 +1,494 @@
+{
+  "status": "VERIFIED_DYNAMIC_SEARXNG_INSTANCE_CONFIGURATION_NOT_LOST_CHECKPOINT_RESTORATION",
+  "baseline_commit": "6d2edfa5680d0163038fde1faa58f693513d0ab8",
+  "baseline_manifest_sha256": "33f1a7e29154d4847380cf1bd0782fb29df2cb2a7123d94d0ecaab2ea1f0ffac",
+  "source_files": 2828,
+  "changes": [
+    {
+      "path": "app/build.gradle.kts",
+      "bytes": 27183,
+      "sha256": "6d98fea14545d86355147ed2b8c383a985f575adb6c76631707860893f91bdbb",
+      "executable": false,
+      "old_sha256": "f40272ca561294f2bf3bddd5053a4d7007eddfc87bfc52d785c222aebb58c98c",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/AndroidDiscoveryController.kt",
+      "bytes": 48285,
+      "sha256": "a3ebbfb9486b26568baba60968db1fcea8139675c8e1e79fe711ddc7d7fe85b1",
+      "executable": false,
+      "old_sha256": "5af9fa30eadd157fa170268cb7698fce4530e3e1712f756b38afd154d0b35160",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationController.kt",
+      "bytes": 12201,
+      "sha256": "9f7c24b8b25983e3fe2cde25836304b9ef9369fe7e91411d1b7c39db054ce431",
+      "executable": false,
+      "old_sha256": "6dd3a923660f5c04d72fe4947e65bef3dc6870d191153e312e7dbdb8c5f2027e",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/SearxngSourceConfiguration.kt",
+      "bytes": 8258,
+      "sha256": "11bedfff80b8f81257777ad59f67072bc97ce18c13a435067a4d9f900f51f3fc",
+      "executable": false,
+      "old_sha256": "fc7ab47697815231cc054b32e93c0543c0759cb6c19e6fabdf3a3c84768f9fcc",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/SearxngSourceRegistration.kt",
+      "bytes": 3121,
+      "sha256": "119cb793b2fcf354c2fc35f1b7d7bc1b3b3da2e6d09d8a37ce15f8f8ecffb59f",
+      "executable": false,
+      "old_sha256": "12e0fbb390f4412f42fa0c7f3b1c502e8c28fcdfa9e125140da6226175eb4f78",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/VerificationEngineRegistration.kt",
+      "bytes": 2531,
+      "sha256": "780c80960d458d5c97c4ecda793a70e3e33eae77228cd4ee5df3ebeb622d3652",
+      "executable": false,
+      "old_sha256": "32fc4c52360289879e96666d8834ea192087f0ff018fe3e118d30c56bdbf55bf",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/network/SearxngOriginAdmission.kt",
+      "bytes": 1652,
+      "sha256": "578c5b36166a622f6a40b8cd1d2e49d84eba262c3f0ddad9c66b6cd28578cb30",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/network/SystemSearxngTransport.kt",
+      "bytes": 16539,
+      "sha256": "4856b61f30526a097486b4baf08f6410e572bfe413ff88753f606ab7a1323881",
+      "executable": false,
+      "old_sha256": "da93e15b28b2fb8240561fac2e5cd398a89d95302892fd9cd733b31c7ac75919",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/storage/SearxngConfigurationCodec.kt",
+      "bytes": 4428,
+      "sha256": "bbb75ff26e5163cd939b6b12b5d52a72ee681b6af0a68f2ceab202d5dd969146",
+      "executable": false,
+      "old_sha256": "651ee37d10d89de4bb36650eb912d7801567b2a98fdf3a05f2b32ee8d6d6975f",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/storage/SearxngConfigurationStore.kt",
+      "bytes": 6489,
+      "sha256": "d3c97b6da0f176d9b9ebb28134b228c36ee342ffc643109a7adaaf94bcc999b6",
+      "executable": false,
+      "old_sha256": "1f70af46b65d519b58398dbffaef0ab223711c05d5074b0262441cc48b77587d",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/ui/SearxngSourceSettings.kt",
+      "bytes": 19295,
+      "sha256": "b4eea07bf44d2b665bc6db3271f512278adb7f4e9eb70a1459d71fc29feb904e",
+      "executable": false,
+      "old_sha256": "6c819126424143382258e4449db749f1b1e12f949376c9c37729d475694f51cc",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/ui/VerificationServiceSettings.kt",
+      "bytes": 8453,
+      "sha256": "5047a9da992ab373449ac68c0fc33dd8f963179c396db3b4160b4fe9e41ee58b",
+      "executable": false,
+      "old_sha256": "21104d441fe71301ae0b62f124a83260cb29db294cf7ae3e8e4d823207aedbff",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/main/res/values-zh-rCN/searxng_settings.xml",
+      "bytes": 5913,
+      "sha256": "2e4d6e64effd67e1e6ee092dbdb0eb0e776e1750dd72570fdde563630b5e37c6",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "app/src/main/res/values-zh-rCN/verification_candidate_scope.xml",
+      "bytes": 1764,
+      "sha256": "a3793dee55e07e8fc742db7f3422a0de00ca6ff45701b8bf45c815236ef37eb6",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "app/src/main/res/values/searxng_settings.xml",
+      "bytes": 6341,
+      "sha256": "31cb57a2c3cceda76ab8739d30d4522b70d7ae695b8fc0d08c4acb3645e04949",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "app/src/main/res/values/verification_candidate_scope.xml",
+      "bytes": 2073,
+      "sha256": "a1b0815d5be7e624906ac05eb9f9fefdfe0e10aeb395f523c97dd3ff98d08c6a",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationControllerTest.kt",
+      "bytes": 13483,
+      "sha256": "9786996d326e54d027d61f7f0aff5fdec168221c1758a95786aefee2aa05b257",
+      "executable": false,
+      "old_sha256": "d4c9d2d18fd90d8ec5c7c3f2569838afd497d740b820def3bcc7871224a44269",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationHubTest.kt",
+      "bytes": 12170,
+      "sha256": "212c71892c59a487d6016016b0d531d4727abf4a6a47730296b13a943d9022ea",
+      "executable": false,
+      "old_sha256": "70f2ce9d64c708977dbf01f8d36a385812c6c9a414247bd1d43ae31bd6565362",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/SearxngConfigurationPolicyTest.kt",
+      "bytes": 11676,
+      "sha256": "9d3dae3a07c2d93f6171992eda046c22da2ed904dd4724cd1c77d411370deb6f",
+      "executable": false,
+      "old_sha256": "bd422f34783184ed3779ac4b5ab8859badd60516957d25c4211f805cece59607",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/network/SearxngDynamicTransportOwnershipTest.kt",
+      "bytes": 16594,
+      "sha256": "56874765c87742a90a593096293212f4c7abe758c9582933a4af27c488f27130",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/network/SearxngOriginAdmissionTest.kt",
+      "bytes": 7790,
+      "sha256": "d483c407ae9769359837ebaf39b7c6a781c4c806a92473115647017d86d40c4b",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/thumbnail/CommonsThumbnailProductWiringTest.kt",
+      "bytes": 11486,
+      "sha256": "4f11c7fae5575e1dddfd7bbcf918e7ae4a0531d29fd3be447d51571348d37a38",
+      "executable": false,
+      "old_sha256": "2f01b8b70a9921d9ea412e3b532f993a63d00bb6c65768f1df0ee0e2e03f5a76",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/storage/LegacySearxngConfigurationFixture.kt",
+      "bytes": 1251,
+      "sha256": "8fbc4d2fad642ece697843bb2dfba9627e0526a80b40692bd4752cb722053050",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/storage/SearxngConfigurationCodecTest.kt",
+      "bytes": 7856,
+      "sha256": "fc067e1e877444644601838b4fe37ec3b81d5ffdc862eafd91da244a24565bdf",
+      "executable": false,
+      "old_sha256": "ec8880a994e0fc7587112f2440d82dece5d617dd365a2329f0accd97ebcaf943",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/storage/SearxngConfigurationStoreTest.kt",
+      "bytes": 9281,
+      "sha256": "ebef113702f8221b705d1e005d60522a48584c3213ef6612b12c1dd959df8517",
+      "executable": false,
+      "old_sha256": "9cf80168a19c743e31073c481a7a11e0ec34811e3949e33313af76ec9f0801bd",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/ui/SearxngHtmlSettingsContractTest.kt",
+      "bytes": 11099,
+      "sha256": "bd1b6416d6adecc8c39e51e64332383b5e1ead6852642f4b38acf7bc6da70003",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/ui/SourceSettingsEntryContractTest.kt",
+      "bytes": 9812,
+      "sha256": "9826af1c5b5b1b07478ee61c9d95b074803a087d59715bcea9c4423e5b959adc",
+      "executable": false,
+      "old_sha256": "fa8209f2616170f7e9033f8f15af7118fa7edeb251f19beac97357342f402a45",
+      "change": "modified"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/ui/VerificationCandidateScopeContractTest.kt",
+      "bytes": 3774,
+      "sha256": "0b5c13772480250e114512daaae529770b56e444b0393efbe6275df9d9dbb861",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/ProviderFramework.kt",
+      "bytes": 15109,
+      "sha256": "c78c0547d415545bb571c109b87c19272804f23bdbd94d9dfb2229289bc5faf0",
+      "executable": false,
+      "old_sha256": "11c697d6a3320d6366b58baf98e7a5f5dcb9520702dd1e578970a3c663e905e3",
+      "change": "modified"
+    },
+    {
+      "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/SessionCandidateAdmission.kt",
+      "bytes": 15824,
+      "sha256": "f9169a7acfcb4cd84a22ead34435972ff324c676fd39344490efacd8b4caef2f",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/ValidationPipeline.kt",
+      "bytes": 10529,
+      "sha256": "40e017719a03f4b12a13220f2c7ee0a4f6c851b6e54e60b23cba130d5344308e",
+      "executable": false,
+      "old_sha256": "55ffbd6d3bb64e636de06726ad06de05177b186d67a6498dc907417fb87d27d8",
+      "change": "modified"
+    },
+    {
+      "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/VerificationEngines.kt",
+      "bytes": 14532,
+      "sha256": "2f0532047a31486a4d0ba817851a194748f84a25c3cf297091d63087020fa672",
+      "executable": false,
+      "old_sha256": "1df9f610f66cd621359e7b6b6963eea1f51f10c94821c1e8bdab84121a953cf2",
+      "change": "modified"
+    },
+    {
+      "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/VerificationSourceAdmission.kt",
+      "bytes": 5290,
+      "sha256": "4b0c16b93ed6ab3dde45781d11943941264eaf9b7f08acadd233306407a0d1a8",
+      "executable": false,
+      "old_sha256": "b8a8d998854609babd8ebe05f0eea1644cdc7f813263c3f129cf76a66a96ff9a",
+      "change": "modified"
+    },
+    {
+      "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/VideoDiscoveryCoordinator.kt",
+      "bytes": 59012,
+      "sha256": "b246026c31d7b22a85149e0dd0f033eb33b850f8f8ade4fccd064c691ee3cbce",
+      "executable": false,
+      "old_sha256": "697c09380e18cbdfc2eed06d15219da5adbeb3919831f4eb6cd2683f1f97f5c9",
+      "change": "modified"
+    },
+    {
+      "path": "discovery/src/test/kotlin/com/easysavevideo/discovery/DynamicSourceSessionBudgetTest.kt",
+      "bytes": 7725,
+      "sha256": "84bc270ec6e570f0415721f37f921edd5a282252dd87aefc831ad1bbef088939",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "discovery/src/test/kotlin/com/easysavevideo/discovery/SessionCandidateAdmissionTest.kt",
+      "bytes": 21304,
+      "sha256": "2300b0ac5137c035f3a859a44d0e21e2ea5f7b5a31c93b1ddd21b2d91aaa440e",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "docs/discovery/PUBLIC_SEARXNG_HTML_20261017.md",
+      "bytes": 5783,
+      "sha256": "593b26ec5af0abe1b23963834afe8ac5025ef293462e1de845a01644abd33d1d",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "docs/discovery/SEARXNG_INSTANCE_LIST_20261018.md",
+      "bytes": 5609,
+      "sha256": "15278cb22df0149523ff60ae1cc0c1f1d6d515ccaf6079bf393ffef728aa669e",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "searxng-provider/build.gradle.kts",
+      "bytes": 365,
+      "sha256": "0efa06f6c1846ab9e1ed5434dae131104cf7a6b6b763c84cbb5a8f5bb98b4287",
+      "executable": false,
+      "old_sha256": "a6be965676d412b7f0ba2912999d9f1d06880868c149a78b9a029e7a435a1ff8",
+      "change": "modified"
+    },
+    {
+      "path": "searxng-provider/gradle.lockfile",
+      "bytes": 3076,
+      "sha256": "85ca4878542c6d6149b0259aed0280dcc407d16da2464ac298fe2df0578282b9",
+      "executable": false,
+      "old_sha256": "45ee8f928b13c81781f5d1f95e00b71f4993058d79ee7e4da7292984b50b5818",
+      "change": "modified"
+    },
+    {
+      "path": "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngHtmlResponseParser.kt",
+      "bytes": 17398,
+      "sha256": "e296c19315c96792baf9ddcf3e71f0b5077c6da9ab9e4f48bfa1c5e9c9641b6e",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngHtmlSearchProvider.kt",
+      "bytes": 12367,
+      "sha256": "5d5feab9eb13603842d5ed4b89b87b71347ad15a32e94e04dfe758d34fac940b",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngModels.kt",
+      "bytes": 2602,
+      "sha256": "247724fcaf3453279839e886f217f948d90902af906c7453f33e08845afcff94",
+      "executable": false,
+      "old_sha256": "2e9f58cc0e414a7656369c10b1d89c252c2e2f326d6e5b3ee8bd775d79f4bade",
+      "change": "modified"
+    },
+    {
+      "path": "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngRobotsPolicy.kt",
+      "bytes": 9005,
+      "sha256": "1319c2027ba0954934a4ae44025ab3f3b31b3a06d2bb9aa0b5ed4b130c4a8614",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngTransport.kt",
+      "bytes": 7170,
+      "sha256": "4fb8fb3afc0d7d51509d34c7b2f62be096824cdf394916150a05d28d9e3138d2",
+      "executable": false,
+      "old_sha256": "60df74557661e38a931100ffd314d630b91e114ccb52168c88dcda2d3a047cc7",
+      "change": "modified"
+    },
+    {
+      "path": "searxng-provider/src/main/kotlin/com/easysavevideo/searxng/SearxngVideoSearchProvider.kt",
+      "bytes": 12232,
+      "sha256": "a2475543ad6c61ce5ef17e903f670431d6e0377e3b063b55aa2ff759f8ca7a15",
+      "executable": false,
+      "old_sha256": "f2cb04c1cb7827252309ffcf088646d5067a93c7558e38422ac22edcdd39fdf4",
+      "change": "modified"
+    },
+    {
+      "path": "searxng-provider/src/test/kotlin/com/easysavevideo/searxng/SearxngHtmlResponseParserTest.kt",
+      "bytes": 16685,
+      "sha256": "d8688b96644f2be60ef1e1dcb3ddfe368123601aac4674e2f968feefa16615d6",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "searxng-provider/src/test/kotlin/com/easysavevideo/searxng/SearxngHtmlSearchProviderTest.kt",
+      "bytes": 21047,
+      "sha256": "1c692871c864de0874f63066e07e163c4e391b987e947182a7acf75a22bbbbde",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "searxng-provider/src/test/kotlin/com/easysavevideo/searxng/SearxngProtocolTest.kt",
+      "bytes": 11707,
+      "sha256": "35775d5a4d1c361472998bb0517505e221fa793db6e26675ae80ec61e6976830",
+      "executable": false,
+      "old_sha256": "56fe8ae26a7030819abdaf2bbf50275853306176f0e3eaa1255f5c6ba561e90b",
+      "change": "modified"
+    },
+    {
+      "path": "searxng-provider/src/test/kotlin/com/easysavevideo/searxng/SearxngRobotsPolicyTest.kt",
+      "bytes": 8856,
+      "sha256": "ce0f66a3ee9bdcde02a75251c0c81f8dfd044a0556f83ad87b6516187074a050",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "searxng-provider/src/test/kotlin/com/easysavevideo/searxng/SearxngVideoSearchProviderTest.kt",
+      "bytes": 13638,
+      "sha256": "b6ca6753e158e6937e9d50d4a2d42ca2b3232748ea273f2e2650ed1ffe34167c",
+      "executable": false,
+      "old_sha256": "36e1f809a4d28bbaac426a81639de98d98e596d0f5b09b7b2d01fda179734e9e",
+      "change": "modified"
+    },
+    {
+      "path": "verification-local/build.gradle.kts",
+      "bytes": 633,
+      "sha256": "eef75a709e186c19ca6e4497d8abb5f346495ddb662526cbce0be641f154ab67",
+      "executable": false,
+      "old_sha256": "ac404c16be5c37133bc70f42f2607689aa891d27302033452e3d1476ec98ad08",
+      "change": "modified"
+    },
+    {
+      "path": "verification-local/gradle.lockfile",
+      "bytes": 3551,
+      "sha256": "1315d0ecedf2bf7659d379ec27031cdacae78a10f5a903075146ef5411cd8b0f",
+      "executable": false,
+      "old_sha256": "bd40d4f88fe59deda6eb2f15e7a1ff8541d979c346e1712ff0dd79e7f81bd8f7",
+      "change": "modified"
+    },
+    {
+      "path": "verification-local/src/main/kotlin/com/easysavevideo/verification/local/LocalPublicDns.kt",
+      "bytes": 1321,
+      "sha256": "953bc1fdf629125e05a6e6eb2e70b8b47f9606b66cc0da99dac1ff6bafcad94e",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "verification-local/src/main/kotlin/com/easysavevideo/verification/local/LocalRobotsPolicy.kt",
+      "bytes": 8141,
+      "sha256": "bcfb727075d838f827ace9c402083f5669c33514886e014b77ea8603e4c9211a",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "verification-local/src/main/kotlin/com/easysavevideo/verification/local/LocalVerificationEngine.kt",
+      "bytes": 19200,
+      "sha256": "28f1ccefbe245bd80aa8801d6279899e9247b05cb80ade6e14cf5c65b4c9d1b0",
+      "executable": false,
+      "old_sha256": "08aba3247863d01cd40fcc5dbfc55cd43c06cf72529bd3855a3b503b78b8d5e8",
+      "change": "modified"
+    },
+    {
+      "path": "verification-local/src/test/kotlin/com/easysavevideo/verification/local/LocalPublicDnsTest.kt",
+      "bytes": 2485,
+      "sha256": "1dff6eca19eccd4360a859ae6bcdd6daf4211951a291631015fc90e0bb57b27b",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "verification-local/src/test/kotlin/com/easysavevideo/verification/local/LocalRobotsPolicyTest.kt",
+      "bytes": 4824,
+      "sha256": "c7eaa72a4fda908e89737815e200435ebb200fae57869392baf87daa4e4f57da",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "verification-local/src/test/kotlin/com/easysavevideo/verification/local/LocalVerificationEngineTransportSeamTest.kt",
+      "bytes": 25169,
+      "sha256": "f119a092813fd4a1c0aa3381ee636115a2684f7b099ca1e19ac0976dfd7aae6a",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    },
+    {
+      "path": "verification-local/src/test/kotlin/com/easysavevideo/verification/local/SearxngHtmlLocalCompositeTest.kt",
+      "bytes": 8816,
+      "sha256": "f67856a389f0509af47ca426cced50fc4ff1b5ef6a0343ec1d61e95ac8214f25",
+      "executable": false,
+      "old_sha256": null,
+      "change": "added"
+    }
+  ],
+  "baseline_replay_manifest_sha256": "57bcf45659092962891727603c0cf0b38cf06624ce17e731cf4a91bca9e7b8a5",
+  "target_manifest_sha256": "4d6c9b505aa2dd7e8bd316165d9fcc63fdd201c5336414c55705d0d82e9fa20f",
+  "parent_verified_source_manifest_sha256": "888e8c0ab63ccffdc80603f7d2d1e69556cf6580a8d57a818d96fc998c3869d1",
+  "parent_verified_commit": "e6c0257a6eb979eb0957787f729acd51a49672e4",
+  "validation_receipt_sha256": "93d0119f46027d5db6da03ccc89a75cbccf490ccf5b6b6cb50c1d9494924e25d",
+  "prior_unverified_snapshot_commit": "bb9737d3a5d86a97b132ad1bce06015093569353"
+}

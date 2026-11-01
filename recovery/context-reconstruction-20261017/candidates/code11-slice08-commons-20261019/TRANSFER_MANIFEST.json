@@ -1,0 +1,111 @@
+{
+  "format_version": 1,
+  "purpose": "One signed ESV code11 Commons candidate and exact source overlay; no runtime success claim",
+  "apk": {
+    "name": "esv-slice08-code11-commons-debug.apk",
+    "bytes": 53333410,
+    "sha256": "38f09f2dc752fc69cef9b2108c704c3e44e3b21d43134ee602f8b6e773c71988"
+  },
+  "compression": {
+    "format": "gzip",
+    "bytes": 18807092,
+    "sha256": "9fb63b1d6940f45f3ae304ba52814bbaf88eb7bd45ee627b67af5a5d6da6dcbf"
+  },
+  "parts_in_order": [
+    "esv-slice08-code11-commons-debug.apk.gz.part01",
+    "esv-slice08-code11-commons-debug.apk.gz.part02",
+    "esv-slice08-code11-commons-debug.apk.gz.part03"
+  ],
+  "files": [
+    {
+      "name": "APK_SIGNER_VERIFICATION.txt",
+      "bytes": 955,
+      "sha256": "89c0428392084755194dfbc1c8782b4b421976ceb74cccc44c9328ae6cc2b76c",
+      "git_blob_sha": "4978ecf6a3205fdce340f9ff7f6a5ea706f00b63"
+    },
+    {
+      "name": "APK_TOOL_EXECUTION_RECEIPT.json",
+      "bytes": 1880,
+      "sha256": "54fb1ba71a2136fcffba0acb366ccfab19f4e78b2f322014232d44694154ecb7",
+      "git_blob_sha": "ba2f84e70f989997087b7f682b89a37aa02c2325"
+    },
+    {
+      "name": "CANDIDATE_PATCH.diff",
+      "bytes": 3638,
+      "sha256": "ce7c705bc7a66b35eda815b022db8502b5a55a3e9d6afb632eaf3636ceda7b2f",
+      "git_blob_sha": "f70d3c2d8f1afef00c32af8ac088b37a6e5cd187"
+    },
+    {
+      "name": "FINAL_APK_VERIFICATION.json",
+      "bytes": 4184,
+      "sha256": "accd19707d09219ca78aa14fe7a8576ebcd46955bf8d88668b7df3bbd629397f",
+      "git_blob_sha": "2fc0a305953ca132308d0f0bf0a56f15c217d33b"
+    },
+    {
+      "name": "FROZEN_PREDECESSORS_UNCHANGED.json",
+      "bytes": 537,
+      "sha256": "177e582f2e23d1e1bc0218c623ab1f9dc778d47e0b4e65c5f0ee8c05b568e300",
+      "git_blob_sha": "c2de012b90bc7cce368cdd7846ef969b7602f3b9"
+    },
+    {
+      "name": "INDEPENDENT_CANDIDATE_REVIEW.json",
+      "bytes": 5473,
+      "sha256": "9fad0696e36be0145e12fffb766ebc069f7f0654453c6ded3c385a5fb4208639",
+      "git_blob_sha": "8e8280c2cd9faba14a0e34d1637f89998b25d3e5"
+    },
+    {
+      "name": "INDEPENDENT_POSTASSEMBLY_REVIEW.json",
+      "bytes": 3863,
+      "sha256": "8f6755d21af3f1090ef34238b4558fa70ed72a1955024dca72decd77754eb041",
+      "git_blob_sha": "97f0b262bed43ed1450c7e44df469a675159171d"
+    },
+    {
+      "name": "README.md",
+      "bytes": 5090,
+      "sha256": "85a6b9fd52adbe4326ad9382215180e303eda76917f7f93cf417cdd66d6c7169",
+      "git_blob_sha": "ce72cf89ddacae0aae5c43827e947210c692f88a"
+    },
+    {
+      "name": "SOURCE_DELTA.json",
+      "bytes": 1081,
+      "sha256": "f5163a5024758994130463625b0450ebb71ec0b6ca621d8c2b6a5c14eaef7ea1",
+      "git_blob_sha": "225aef3b88617f5a76c4cce82af287948258bff7"
+    },
+    {
+      "name": "VERIFY_PASSED.json",
+      "bytes": 4631,
+      "sha256": "38acfc3c9ec685206092c416d1cf0ff7ea3a8ca6d7631764b56a1e3399fa17c2",
+      "git_blob_sha": "5890c6e0e2b418d47d6475e0ea5e46ff505e3149"
+    },
+    {
+      "name": "code11-source-delta-on-slice08.tar.gz",
+      "bytes": 331351,
+      "sha256": "475f1e65353858fee5d5d58b68b93a922cfaf95120d6122d6e938c8caf7391f0",
+      "git_blob_sha": "a22d6c76b6142afd2f1d5824512c205ef64c927d"
+    },
+    {
+      "name": "esv-slice08-code11-commons-debug.apk.gz.part01",
+      "bytes": 8388608,
+      "sha256": "7c044662ccfb7ce5061c0d60036e64ab4c6cb5606490074841a32e9d2bf6023e",
+      "git_blob_sha": "a2e47ea1c3574e8d61263daed8c86ed94fe6c205"
+    },
+    {
+      "name": "esv-slice08-code11-commons-debug.apk.gz.part02",
+      "bytes": 8388608,
+      "sha256": "3a72b3f9af41efda686ea3454d468bc1719541469846f849b66fc20f59d03b79",
+      "git_blob_sha": "884bf2a9cb5de9285b2d61d35f2163b41566f562"
+    },
+    {
+      "name": "esv-slice08-code11-commons-debug.apk.gz.part03",
+      "bytes": 2029876,
+      "sha256": "475a605d7b0bed93aea9157b555b82b1e90c3471389fe8fee65363d80c04909e",
+      "git_blob_sha": "ed88b4a61d0228a67684e561b973d7b3d50f4481"
+    },
+    {
+      "name": "verify_and_extract.py",
+      "bytes": 5828,
+      "sha256": "3b0f46d01b1995e180348f78e678bc850b198617101d3b38d0aaf91269e63ce8",
+      "git_blob_sha": "c2f12bb958fa24465d9e6acf6a26c135618ddd68"
+    }
+  ]
+}

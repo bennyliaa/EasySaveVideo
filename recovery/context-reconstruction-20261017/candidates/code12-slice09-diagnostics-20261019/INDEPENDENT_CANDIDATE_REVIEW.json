@@ -1,0 +1,68 @@
+{
+  "status": "PASS_INDEPENDENT_PREASSEMBLY_REVIEW",
+  "reviewed_at_utc": "2026-10-19T04:10:54.815227+00:00",
+  "candidate_manifest_sha256": "76f33eadb01902dfe0024f1bb21501f66b48429037dff2650e87edcab69c6b32",
+  "source_files": 2892,
+  "frozen_slice09_unchanged": true,
+  "candidate_exact_changes": [
+    "Debug output code11 to code12 and adjacent comment in app/build.gradle.kts"
+  ],
+  "verify_receipt_sha256": "444799dab3f1eb0ac8a3a507d933fffa1206f0f0130fc2cdd60b70b78bf01783",
+  "verification_log_sha256": "d9cee5f2ab0bf4f64922cc64c9ff3af8105d90104d11dfeeffa67cb23878418e",
+  "test_manifest_sha256": "15dd757aa163f3c224fef5a37c1c9a6a19599e61a24cbaed5a2ebe5123908e62",
+  "verification_exit_code": 0,
+  "aggregate": {
+    "suites": 636,
+    "tests": 7095,
+    "cases": 7095,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "passed": 7093
+  },
+  "original_skipped_cases": [
+    "com.easysavevideo.verification.local.FrozenCorpusHostTest.same100FrozenBodiesActualStaticB",
+    "com.easysavevideo.verification.local.FrozenRecoveryComponentTest.authored80MutationsActualJsoupComponent"
+  ],
+  "all_xml_inventory_and_hashes_rechecked": true,
+  "dual_kotlin_java_compile_and_android_test_compile_confirmed": true,
+  "lint": {
+    "debug": {
+      "Warning": 87,
+      "Hint": 10
+    },
+    "release": {
+      "Warning": 97,
+      "Hint": 10
+    }
+  },
+  "runtime_inventories": {
+    "debug": {
+      "total_rows": 108,
+      "external_artifacts": 95,
+      "exact_admission_bytes": true
+    },
+    "release": {
+      "total_rows": 108,
+      "external_artifacts": 95,
+      "exact_admission_bytes": true
+    }
+  },
+  "compiled_release_guard_receipt_sha256": "a7e858813e67616cfd9f9ac82bccc578fc9d2d2103856e5ee75ee85dde9a5291",
+  "source_runner_review_receipt_sha256": "56889a7b9f0058bda10a5074387b3f5dddfe0fdc2f09cec20d097e77b421914e",
+  "candidate_runner_sha256": {
+    "run-candidate.sh": "b5a6f0c9e9924665c0fa40c3cdd4c55838b0d9262337540efe16922e9eb2d949",
+    "candidate-guard.init.gradle": "c79a24a2e268a5c5d069ceaeb98ef50a9aef9c65f741261bf5d6aa9eff2eefd1",
+    "verify-existing-signer.py": "cd315c3fca2bba4c8b98321a95442053d8dbe880e2fb3304ad4acb0060423cc9",
+    "verify-candidate-inputs.py": "71a665c6e4d9e38d095919b62eba46fa1610dc41237773ae8d1832845a13d02c"
+  },
+  "recommendation": "No review blocker to the already-authorized guarded Debug-only assemble for this exact source and runner. Review actual APK bytes afterward.",
+  "limits": [
+    "No APK has been reviewed at this stage.",
+    "No device installation, real-network search, live-stage timing or runtime UI acceptance is established.",
+    "The two pre-existing verification-local frozen-corpus cases remain skipped.",
+    "Lint warnings/hints remain: Debug 87/10; Release 97/10.",
+    "Warm-cache cloud verification does not establish clean-cache Windows reproducibility."
+  ],
+  "reviewer_actions": "Independent read-only source/evidence/compiled-class inspection, XML/hash recalculation and javap; no Gradle/key/device/network/publication; only small evidence receipts written."
+}
