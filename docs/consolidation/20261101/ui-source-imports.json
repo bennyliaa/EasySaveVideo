@@ -1,0 +1,210 @@
+[
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\build.mjs",
+    "relative": "build.mjs"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\finalize.mjs",
+    "relative": "finalize.mjs"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\inspect.mjs",
+    "relative": "inspect.mjs"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\check-ui-docs.py",
+    "relative": "check-ui-docs.py"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\slide-index.json",
+    "relative": "slide-index.json"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\validation.json",
+    "relative": "validation.json"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\validation-final.json",
+    "relative": "validation-final.json"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\01.png",
+    "relative": "reference/01.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\02.png",
+    "relative": "reference/02.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\03.png",
+    "relative": "reference/03.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\04.png",
+    "relative": "reference/04.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\05.png",
+    "relative": "reference/05.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\06.png",
+    "relative": "reference/06.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\07.png",
+    "relative": "reference/07.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\08.png",
+    "relative": "reference/08.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\09.png",
+    "relative": "reference/09.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\10.png",
+    "relative": "reference/10.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\11.png",
+    "relative": "reference/11.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\12.png",
+    "relative": "reference/12.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\13.png",
+    "relative": "reference/13.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\14.png",
+    "relative": "reference/14.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\15.png",
+    "relative": "reference/15.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\16.png",
+    "relative": "reference/16.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\17.png",
+    "relative": "reference/17.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\18.png",
+    "relative": "reference/18.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\19.png",
+    "relative": "reference/19.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\20.png",
+    "relative": "reference/20.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\21.png",
+    "relative": "reference/21.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\22.png",
+    "relative": "reference/22.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\23.png",
+    "relative": "reference/23.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\24.png",
+    "relative": "reference/24.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\25.png",
+    "relative": "reference/25.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\26.png",
+    "relative": "reference/26.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\27.png",
+    "relative": "reference/27.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\28.png",
+    "relative": "reference/28.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\29.png",
+    "relative": "reference/29.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\30.png",
+    "relative": "reference/30.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\31.png",
+    "relative": "reference/31.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\32.png",
+    "relative": "reference/32.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\33.png",
+    "relative": "reference/33.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\34.png",
+    "relative": "reference/34.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\35.png",
+    "relative": "reference/35.png"
+  },
+  {
+    "src": "D:\\CodexProjects\\EasySaveVideo\\.ui-ppt-build\\reference\\36.png",
+    "relative": "reference/36.png"
+  },
+  {
+    "src": "C:\\Users\\benny\\.codex\\generated_images\\01a12aa3-a0e4-75d3-bbc7-f1bfb098f914\\exec-83844dd0-6118-417b-972c-7be619823ef0.png",
+    "relative": "generated/exec-83844dd0-6118-417b-972c-7be619823ef0.png"
+  },
+  {
+    "src": "C:\\Users\\benny\\.codex\\generated_images\\01a12aa3-a0e4-75d3-bbc7-f1bfb098f914\\exec-c3683d56-ee92-4919-874a-a6d120476af1.png",
+    "relative": "generated/exec-c3683d56-ee92-4919-874a-a6d120476af1.png"
+  },
+  {
+    "src": "C:\\Users\\benny\\.codex\\generated_images\\01a12aa3-a0e4-75d3-bbc7-f1bfb098f914\\exec-fd4bccd2-4eb2-4169-830f-21bac46078d0.png",
+    "relative": "generated/exec-fd4bccd2-4eb2-4169-830f-21bac46078d0.png"
+  },
+  {
+    "src": "C:\\Users\\benny\\.codex\\generated_images\\01a12aa3-a0e4-75d3-bbc7-f1bfb098f914\\exec-d096c988-607f-4b3c-934e-c73be3765d1f.png",
+    "relative": "generated/exec-d096c988-607f-4b3c-934e-c73be3765d1f.png"
+  },
+  {
+    "src": "C:\\Users\\benny\\.codex\\generated_images\\01a12aa3-a0e4-75d3-bbc7-f1bfb098f914\\exec-e2226f19-7782-4dbb-9576-fcec7780eb55.png",
+    "relative": "generated/exec-e2226f19-7782-4dbb-9576-fcec7780eb55.png"
+  },
+  {
+    "src": "C:\\Users\\benny\\.codex\\generated_images\\01a12aa3-a0e4-75d3-bbc7-f1bfb098f914\\exec-723667cb-9406-4452-aceb-bfedc4755547.png",
+    "relative": "generated/exec-723667cb-9406-4452-aceb-bfedc4755547.png"
+  },
+  {
+    "src": "C:\\Users\\benny\\.codex\\generated_images\\01a12aa3-a0e4-75d3-bbc7-f1bfb098f914\\exec-c9987262-69e0-472a-b0d4-57a1080ccaaa.png",
+    "relative": "generated/exec-c9987262-69e0-472a-b0d4-57a1080ccaaa.png"
+  },
+  {
+    "src": "C:\\Users\\benny\\.codex\\generated_images\\01a12aa3-a0e4-75d3-bbc7-f1bfb098f914\\exec-8a04cd3c-6732-419a-aef1-8ef87b03f7e5.png",
+    "relative": "generated/exec-8a04cd3c-6732-419a-aef1-8ef87b03f7e5.png"
+  },
+  {
+    "src": "C:\\Users\\benny\\.codex\\generated_images\\01a12aa3-a0e4-75d3-bbc7-f1bfb098f914\\exec-c55883bf-7aea-43b0-99a8-656875eb2b07.png",
+    "relative": "generated/exec-c55883bf-7aea-43b0-99a8-656875eb2b07.png"
+  }
+]

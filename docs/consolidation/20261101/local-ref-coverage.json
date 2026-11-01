@@ -1,0 +1,482 @@
+[
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\ab-validation-20261008",
+    "ref": "refs/heads/master",
+    "sha": "d48b59b8245f412fa7e9dc22ece2235f6bcb2e02",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code4-transfer-worktree",
+    "ref": "refs/heads/backup/cloud-handoff-20261013",
+    "sha": "20fddc9c33b399ab75f8b8eee0f21e41e6f5b06f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code4-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code4-unsigned-d9bdf34",
+    "sha": "f549a7a6b7b9857d3f2f7f82badc173765e1bbab",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code4-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code6-unsigned-afca2ab",
+    "sha": "d112c1390ef96f3bc0ffd7de42b2613cdd9566fc",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code4-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code7-debug-input-9efc346",
+    "sha": "fc5821c3a1a0968d9da4e12bc35b2379d28b35f3",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code4-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code8-debug-input-c09c5db",
+    "sha": "9bca5289acaad8d6400f7b7d228b180a4d2fcf5f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code4-transfer-worktree",
+    "ref": "refs/heads/master",
+    "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code4-transfer-worktree",
+    "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+    "sha": "fb2c2dbbc077bbd4b7b849be7d9952188834610c",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code4-transfer-worktree",
+    "ref": "refs/remotes/esv/main",
+    "sha": "ea87963dee631a498774f648c9a1dabd9f665b90",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code5-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code5-unsigned-c18cb37",
+    "sha": "b2a4ecc3cd7f083c8bcef56ca73387c489ead30c",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code5-transfer-worktree",
+    "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+    "sha": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code5-transfer-worktree",
+    "ref": "refs/remotes/origin/HEAD",
+    "sha": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code5-transfer-worktree",
+    "ref": "refs/remotes/origin/delivery/ui-code4-unsigned-d9bdf34",
+    "sha": "f549a7a6b7b9857d3f2f7f82badc173765e1bbab",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code5-transfer-worktree",
+    "ref": "refs/remotes/origin/master",
+    "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code5-transfer-worktree",
+    "ref": "refs/remotes/origin/ui/skinkit-1.0-integration-20261011",
+    "sha": "c18cb37a22a51f3af962ebaf0fd9eefcb33e4534",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code6-transfer-worktree",
+    "ref": "refs/heads/backup/cloud-handoff-20261013",
+    "sha": "20fddc9c33b399ab75f8b8eee0f21e41e6f5b06f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code6-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code4-unsigned-d9bdf34",
+    "sha": "f549a7a6b7b9857d3f2f7f82badc173765e1bbab",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code6-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code6-unsigned-afca2ab",
+    "sha": "d112c1390ef96f3bc0ffd7de42b2613cdd9566fc",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code6-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code7-debug-input-9efc346",
+    "sha": "fc5821c3a1a0968d9da4e12bc35b2379d28b35f3",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code6-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code8-debug-input-c09c5db",
+    "sha": "9bca5289acaad8d6400f7b7d228b180a4d2fcf5f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code6-transfer-worktree",
+    "ref": "refs/heads/master",
+    "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code6-transfer-worktree",
+    "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+    "sha": "fb2c2dbbc077bbd4b7b849be7d9952188834610c",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code6-transfer-worktree",
+    "ref": "refs/remotes/esv/main",
+    "sha": "ea87963dee631a498774f648c9a1dabd9f665b90",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code7-transfer-worktree",
+    "ref": "refs/heads/backup/cloud-handoff-20261013",
+    "sha": "20fddc9c33b399ab75f8b8eee0f21e41e6f5b06f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code7-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code4-unsigned-d9bdf34",
+    "sha": "f549a7a6b7b9857d3f2f7f82badc173765e1bbab",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code7-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code6-unsigned-afca2ab",
+    "sha": "d112c1390ef96f3bc0ffd7de42b2613cdd9566fc",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code7-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code7-debug-input-9efc346",
+    "sha": "fc5821c3a1a0968d9da4e12bc35b2379d28b35f3",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code7-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code8-debug-input-c09c5db",
+    "sha": "9bca5289acaad8d6400f7b7d228b180a4d2fcf5f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code7-transfer-worktree",
+    "ref": "refs/heads/master",
+    "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code7-transfer-worktree",
+    "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+    "sha": "fb2c2dbbc077bbd4b7b849be7d9952188834610c",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code7-transfer-worktree",
+    "ref": "refs/remotes/esv/main",
+    "sha": "ea87963dee631a498774f648c9a1dabd9f665b90",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code8-transfer-worktree",
+    "ref": "refs/heads/backup/cloud-handoff-20261013",
+    "sha": "20fddc9c33b399ab75f8b8eee0f21e41e6f5b06f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code8-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code4-unsigned-d9bdf34",
+    "sha": "f549a7a6b7b9857d3f2f7f82badc173765e1bbab",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code8-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code6-unsigned-afca2ab",
+    "sha": "d112c1390ef96f3bc0ffd7de42b2613cdd9566fc",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code8-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code7-debug-input-9efc346",
+    "sha": "fc5821c3a1a0968d9da4e12bc35b2379d28b35f3",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code8-transfer-worktree",
+    "ref": "refs/heads/delivery/ui-code8-debug-input-c09c5db",
+    "sha": "9bca5289acaad8d6400f7b7d228b180a4d2fcf5f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code8-transfer-worktree",
+    "ref": "refs/heads/master",
+    "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code8-transfer-worktree",
+    "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+    "sha": "fb2c2dbbc077bbd4b7b849be7d9952188834610c",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\code8-transfer-worktree",
+    "ref": "refs/remotes/esv/main",
+    "sha": "ea87963dee631a498774f648c9a1dabd9f665b90",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\cold-restore",
+    "ref": "refs/heads/master",
+    "sha": "dc69c7305ecddfdc02032a6fc360e212389cc3ee",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\cold-restore",
+    "ref": "refs/remotes/origin/HEAD",
+    "sha": "dc69c7305ecddfdc02032a6fc360e212389cc3ee",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\cold-restore",
+    "ref": "refs/remotes/origin/master",
+    "sha": "dc69c7305ecddfdc02032a6fc360e212389cc3ee",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-transfer-git-20261011",
+    "ref": "refs/heads/main",
+    "sha": "94ea001cb32f2db40ae0858134646169e2fe869b",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-transfer-git-20261011",
+    "ref": "refs/heads/verification/esv-code3-b714a87",
+    "sha": "d75caba186c1630549a930c9ee965333f887a699",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-transfer-git-20261011",
+    "ref": "refs/heads/verification/esv-code3-library-local-20261011",
+    "sha": "6a82dd76cc2de1f2515efcb5b8b57c70102bdfdc",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-transfer-git-20261011",
+    "ref": "refs/heads/verification/esv-code3-pc-acceptance-local-20261011",
+    "sha": "fa4a133c500df4c29d47dbace7b80ce8e6c6163e",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-transfer-git-20261011",
+    "ref": "refs/remotes/origin/HEAD",
+    "sha": "94ea001cb32f2db40ae0858134646169e2fe869b",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-transfer-git-20261011",
+    "ref": "refs/remotes/origin/main",
+    "sha": "94ea001cb32f2db40ae0858134646169e2fe869b",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-transfer-remote-readback-20261011",
+    "ref": "refs/heads/verification/esv-code3-b714a87",
+    "sha": "d75caba186c1630549a930c9ee965333f887a699",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-transfer-remote-readback-20261011",
+    "ref": "refs/remotes/origin/verification/esv-code3-b714a87",
+    "sha": "d75caba186c1630549a930c9ee965333f887a699",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-b63a879-20261011\\remote-main-readback",
+    "ref": "refs/heads/main",
+    "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-b63a879-20261011\\remote-main-readback",
+    "ref": "refs/remotes/origin/HEAD",
+    "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-b63a879-20261011\\remote-main-readback",
+    "ref": "refs/remotes/origin/main",
+    "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-skinkit-22f11c8-20261011\\remote-main-readback",
+    "ref": "refs/heads/main",
+    "sha": "22f11c8f0f4e30bd5652f1792ca407f268ff17af",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-skinkit-22f11c8-20261011\\remote-main-readback",
+    "ref": "refs/remotes/origin/HEAD",
+    "sha": "22f11c8f0f4e30bd5652f1792ca407f268ff17af",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-skinkit-22f11c8-20261011\\remote-main-readback",
+    "ref": "refs/remotes/origin/main",
+    "sha": "22f11c8f0f4e30bd5652f1792ca407f268ff17af",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-ui-c4e4c86-20261011\\remote-main-readback",
+    "ref": "refs/heads/main",
+    "sha": "c4e4c86c2060833fcced047ef1e4fe9892fc99d4",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-ui-c4e4c86-20261011\\remote-main-readback",
+    "ref": "refs/remotes/origin/HEAD",
+    "sha": "c4e4c86c2060833fcced047ef1e4fe9892fc99d4",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-ui-c4e4c86-20261011\\remote-main-readback",
+    "ref": "refs/remotes/origin/main",
+    "sha": "c4e4c86c2060833fcced047ef1e4fe9892fc99d4",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\private-unsigned-transfer-5a237d5-20261011\\remote-readback",
+    "ref": "refs/heads/delivery/ui-code4-unsigned-d9bdf34",
+    "sha": "5a237d53337700c6d857e704580f6c6154e8bcdc",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\private-unsigned-transfer-5a237d5-20261011\\remote-readback",
+    "ref": "refs/remotes/origin/delivery/ui-code4-unsigned-d9bdf34",
+    "sha": "5a237d53337700c6d857e704580f6c6154e8bcdc",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\esv-source-12f97d43-20261009",
+    "ref": "refs/heads/backup/cloud-handoff-20261013",
+    "sha": "20fddc9c33b399ab75f8b8eee0f21e41e6f5b06f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\esv-source-12f97d43-20261009",
+    "ref": "refs/heads/delivery/ui-code4-unsigned-d9bdf34",
+    "sha": "f549a7a6b7b9857d3f2f7f82badc173765e1bbab",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\esv-source-12f97d43-20261009",
+    "ref": "refs/heads/delivery/ui-code6-unsigned-afca2ab",
+    "sha": "d112c1390ef96f3bc0ffd7de42b2613cdd9566fc",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\esv-source-12f97d43-20261009",
+    "ref": "refs/heads/delivery/ui-code7-debug-input-9efc346",
+    "sha": "fc5821c3a1a0968d9da4e12bc35b2379d28b35f3",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\esv-source-12f97d43-20261009",
+    "ref": "refs/heads/delivery/ui-code8-debug-input-c09c5db",
+    "sha": "9bca5289acaad8d6400f7b7d228b180a4d2fcf5f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\esv-source-12f97d43-20261009",
+    "ref": "refs/heads/master",
+    "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\esv-source-12f97d43-20261009",
+    "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+    "sha": "fb2c2dbbc077bbd4b7b849be7d9952188834610c",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\esv-source-12f97d43-20261009",
+    "ref": "refs/remotes/esv/main",
+    "sha": "ea87963dee631a498774f648c9a1dabd9f665b90",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\2026-10-22\\task\\ESV-private-recovery-upload-339b2f76",
+    "ref": "refs/heads/recovery/lzf-code12-diagnostic-20261025-339b2f76",
+    "sha": "538110ab2e323e66516e992eb2d933ae1c7ba6ed",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\2026-10-22\\task\\ESV-private-recovery-upload-339b2f76",
+    "ref": "refs/remotes/origin/recovery/lzf-code12-diagnostic-20261025-339b2f76",
+    "sha": "538110ab2e323e66516e992eb2d933ae1c7ba6ed",
+    "ancestor": true
+  },
+  {
+    "root": "D:/CodexProjects/2026-10-22/task/ESV-private-recovery-readback-339b2f76.git",
+    "ref": "refs/heads/verified-recovery",
+    "sha": "538110ab2e323e66516e992eb2d933ae1c7ba6ed",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\code6-remote-readback-20261012",
+    "ref": "refs/heads/delivery/ui-code6-unsigned-afca2ab",
+    "sha": "d112c1390ef96f3bc0ffd7de42b2613cdd9566fc",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\code6-remote-readback-20261012",
+    "ref": "refs/heads/main",
+    "sha": "e26f6c0b71f60f0e33d196713cfda7128de7f268",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\code7-remote-readback-20261012",
+    "ref": "refs/heads/delivery/ui-code7-debug-input-9efc346",
+    "sha": "fc5821c3a1a0968d9da4e12bc35b2379d28b35f3",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\code7-remote-readback-20261012",
+    "ref": "refs/remotes/verify/main",
+    "sha": "928b2636c265ceb155822c6f5e5df3fe951443ac",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\code8-remote-readback-20261012",
+    "ref": "refs/heads/delivery/ui-code8-debug-input-c09c5db",
+    "sha": "9bca5289acaad8d6400f7b7d228b180a4d2fcf5f",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\code8-remote-readback-20261012",
+    "ref": "refs/remotes/verify/main",
+    "sha": "ea87963dee631a498774f648c9a1dabd9f665b90",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\folder-picker-group-remote-readback-20261012",
+    "ref": "refs/heads/main",
+    "sha": "4c180deefff1f90957c62ce2d313737ed9173c4a",
+    "ancestor": true
+  },
+  {
+    "root": "D:\\CodexProjects\\2026-10-22\\task\\ESV-private-recovery-readback-339b2f76.git",
+    "ref": "refs/heads/verified-recovery",
+    "sha": "538110ab2e323e66516e992eb2d933ae1c7ba6ed",
+    "ancestor": true
+  }
+]

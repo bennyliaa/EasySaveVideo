@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "status": "EXACT_CODE13_SOURCE_DELTA_ON_VERIFIED_CODE12",
+  "baseline_manifest_sha256": "76f33eadb01902dfe0024f1bb21501f66b48429037dff2650e87edcab69c6b32",
+  "target_manifest_sha256": "c5670131a7334e4910f07cd92dae2496b3e7e2a83b032170b1443f0850df8ffc",
+  "baseline_files": 2892,
+  "target_files": 2893,
+  "changed_or_added": [
+    {
+      "path": "app/build.gradle.kts",
+      "before_sha256": "a4ecf2862296d92b9168206e8aa9a08ca5eac576459cf05f2cd955b98298fa0b",
+      "after_sha256": "ee20e0a0b6c001530e9e93c0cec9f8aec19a014b33989e56426402e99216c023",
+      "bytes": 29219,
+      "mode": "0644"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/discovery/network/SystemCommonsTransport.kt",
+      "before_sha256": "3d953216e40626942d3a979bea5b08b2e81fe3d0b006671cfd231700fef43e15",
+      "after_sha256": "434c6486421364d89ae0d1e67da02cfe475e3e5c71ff934bd0dc9c7cddb05c64",
+      "bytes": 21224,
+      "mode": "0644"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/discovery/network/SystemCommonsTransportTest.kt",
+      "before_sha256": "087e54d0d01a19f921383306bc21f8bfdc7a8440b2a0b4e9371700fe419b3abc",
+      "after_sha256": "f972c5627b56a93a56a7b0ae015e4495f59c18ddf2a55093ddf504b3e3c8c835",
+      "bytes": 61702,
+      "mode": "0644"
+    },
+    {
+      "path": "discovery/src/main/kotlin/com/easysavevideo/discovery/CommonsStageDiagnosticsRecorder.kt",
+      "before_sha256": "78990befee3df658c6f0f8cf206402d42efb6314282c80dc2a82037b74851631",
+      "after_sha256": "804dd4489b90a946698128ae489883f736e4574b5ca77f5fb6f97e2ba3f97ba0",
+      "bytes": 14857,
+      "mode": "0644"
+    },
+    {
+      "path": "discovery/src/test/kotlin/com/easysavevideo/discovery/CommonsStageDiagnosticsRecorderTest.kt",
+      "before_sha256": "2ccdafcddad2ca77a92c6c5446cb6595a9fd9bf0befe9e8730a468af41a79b96",
+      "after_sha256": "353d2ad38607a4b81c6c673230470eba8a7351a95b1b5f4c135b3ccca103705a",
+      "bytes": 16128,
+      "mode": "0644"
+    },
+    {
+      "path": "docs/discovery/COMMONS_CONNECT_BUDGET_DIAGNOSIS_20261019.md",
+      "before_sha256": null,
+      "after_sha256": "a83c65b1c5e0139d222659a06499b9490b9b1041b65d16d3e289ba5569021766",
+      "bytes": 5910,
+      "mode": "0644"
+    }
+  ],
+  "deletions": [],
+  "instructions": "Apply only to an independently copied exact code12 source after checking every baseline hash. Copy bytes without line-ending conversion, then verify every target manifest hash and mode. Not an executable installer."
+}

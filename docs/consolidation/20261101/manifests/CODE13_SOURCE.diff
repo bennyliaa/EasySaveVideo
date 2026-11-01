@@ -1,0 +1,687 @@
+--- code12/app/build.gradle.kts
++++ code13/app/build.gradle.kts
+@@ -393,7 +393,7 @@
+ }
+ 
+ 
+-// Isolated user-authorized code12 diagnostic candidate. Release/default values are unchanged.
++// Isolated user-authorized code13 diagnostic candidate. Release/default values are unchanged.
+ android {
+     buildTypes {
+         getByName("debug") {
+@@ -404,6 +404,6 @@
+ }
+ androidComponents {
+     onVariants(selector().withBuildType("debug")) { variant ->
+-        variant.outputs.forEach { output -> output.versionCode.set(12) }
+-    }
+-}
++        variant.outputs.forEach { output -> output.versionCode.set(13) }
++    }
++}
+--- code12/app/src/main/kotlin/com/easysavevideo/app/discovery/network/SystemCommonsTransport.kt
++++ code13/app/src/main/kotlin/com/easysavevideo/app/discovery/network/SystemCommonsTransport.kt
+@@ -86,6 +86,9 @@
+         private val workerDone = AtomicBoolean(false)
+         private val cleanupDone = AtomicBoolean(false)
+         private val cleanupStarted = AtomicBoolean(false)
++        // Only bounded state/diagnostic work holds this gate; socket close remains asynchronous.
++        private val termination = Any()
++        private var connectBudgetActive = false
+         private val resources = Any()
+         private var raw: Socket? = null
+         private var tls: SSLSocket? = null
+@@ -135,14 +138,17 @@
+         private fun runExchange() {
+             workerResult = try { Result.success(exchange()) }
+             catch (problem: CommonsFailure) {
++                endConnectBudget()
+                 request.stageTrace?.event(CommonsStage.PROVIDER_FAILURE, problem.code.stageFailure())
+                 Result.failure(problem)
+             }
+             catch (problem: Exception) {
++                endConnectBudget()
+                 request.stageTrace?.event(CommonsStage.PROVIDER_FAILURE, diagnosticFailure(problem))
+                 Result.failure(CommonsFailure(failure.get() ?: CommonsError.SERVICE_ERROR))
+             }
+             catch (_: LinkageError) {
++                endConnectBudget()
+                 request.stageTrace?.event(CommonsStage.PROVIDER_FAILURE, CommonsStageFailure.OTHER)
+                 Result.failure(CommonsFailure(CommonsError.SERVICE_ERROR))
+             }
+@@ -162,7 +168,8 @@
+             val address = answers.first()
+             val connectDuration = minOf(request.connectTimeoutMillis.toLong(), remainingMillis())
+             val connectEnd = clock.nanoTime() + TimeUnit.MILLISECONDS.toNanos(connectDuration)
+-            connectTimer = timer.schedule(connectDuration) { stop(CommonsError.SERVICE_ERROR) }
++            synchronized(termination) { connectBudgetActive = true }
++            connectTimer = timer.schedule(connectDuration) { stop(CommonsError.SERVICE_ERROR, connectBudgetExpired = true) }
+             check()
+             val socket = sockets.open()
+             register(socket, secure = false)
+@@ -184,9 +191,10 @@
+             secure.soTimeout = phaseRemaining(connectEnd)
+             observed(CommonsStage.TLS_HANDSHAKE) { secure.startHandshake() }
+             check()
+-            if (clock.nanoTime() - connectEnd >= 0) fail(CommonsError.SERVICE_ERROR)
++            if (clock.nanoTime() - connectEnd >= 0) expireConnectBudget()
+             if (secure.applicationProtocol !in listOf(null, "", "http/1.1")) fail(CommonsError.INVALID_RESPONSE)
+             requirePeer(secure, address)
++            endConnectBudget()
+             connectTimer?.close()
+             secure.soTimeout = remainingMillis().coerceAtLeast(1).toInt()
+             observed(CommonsStage.REQUEST_WRITE) {
+@@ -221,13 +229,17 @@
+             val span = request.stageTrace?.begin(stage)
+             try { return action().also { span?.complete() } }
+             catch (problem: CommonsFailure) {
++                endConnectBudget()
+                 if (problem.code == CommonsError.DEADLINE_EXCEEDED)
+                     request.stageTrace?.event(CommonsStage.DEADLINE_SIGNAL, CommonsStageFailure.DEADLINE_EXCEEDED)
+                 span?.failed(problem.code.stageFailure()); throw problem
+             } catch (problem: Exception) {
++                endConnectBudget()
+                 val failure = diagnosticFailure(problem)
+                 span?.failed(failure); throw problem
+-            } catch (problem: LinkageError) { span?.failed(CommonsStageFailure.OTHER); throw problem }
++            } catch (problem: LinkageError) {
++                endConnectBudget(); span?.failed(CommonsStageFailure.OTHER); throw problem
++            }
+         }
+ 
+         private fun diagnosticFailure(problem: Exception): CommonsStageFailure = when (problem) {
+@@ -244,8 +256,22 @@
+         private fun phaseRemaining(end: Long): Int {
+             check()
+             val nanos = end - clock.nanoTime()
+-            if (nanos <= 0) fail(CommonsError.SERVICE_ERROR)
++            if (nanos <= 0) expireConnectBudget()
+             return minOf(remainingMillis(), (nanos / 1_000_000L).coerceAtLeast(1)).coerceAtLeast(1).toInt()
++        }
++        private fun endConnectBudget() { synchronized(termination) { connectBudgetActive = false } }
++        private fun expireConnectBudget() {
++            val expired = synchronized(termination) {
++                failure.get()?.let(::fail)
++                if (!connectBudgetActive) false else {
++                    connectBudgetActive = false
++                    request.stageTrace?.event(CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStageFailure.CONNECT_BUDGET_EXCEEDED)
++                    true
++                }
++            }
++            // Preserve the original synchronous path: its worker and physical cleanup finish before
++            // publication, unless an independent cancellation/absolute watchdog stops the call.
++            if (expired) fail(CommonsError.SERVICE_ERROR)
+         }
+         private fun requirePeer(socket: Socket, expected: InetAddress) {
+             if (!socket.isConnected || socket.port != 443 || socket.inetAddress != expected ||
+@@ -277,20 +303,32 @@
+             failure.get()?.let(::fail)
+             if (remainingEpoch() <= 0 || clock.nanoTime() - monotonicDeadline >= 0) fail(CommonsError.DEADLINE_EXCEEDED)
+         }
+-        private fun stop(code: CommonsError) {
++        private fun stop(code: CommonsError, connectBudgetExpired: Boolean = false) {
+             // cancel() also closes an already successful metadata call in finally. It is resource
+             // cleanup, not evidence of user cancellation. The metadata owner records real signals.
+-            if (code == CommonsError.DEADLINE_EXCEEDED && result.get() == null)
+-                request.stageTrace?.event(CommonsStage.DEADLINE_SIGNAL, CommonsStageFailure.DEADLINE_EXCEEDED)
+-            failure.compareAndSet(null, code)
+-            publish(Result.failure(CommonsFailure(failure.get()!!)))
++            synchronized(termination) {
++                if (connectBudgetExpired && !connectBudgetActive) return
++                if (!failure.compareAndSet(null, code)) return
++                connectBudgetActive = false
++                if (result.get() == null) {
++                    if (connectBudgetExpired)
++                        request.stageTrace?.event(CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStageFailure.CONNECT_BUDGET_EXCEEDED)
++                    else if (code == CommonsError.DEADLINE_EXCEEDED)
++                        request.stageTrace?.event(CommonsStage.DEADLINE_SIGNAL, CommonsStageFailure.DEADLINE_EXCEEDED)
++                }
++                // Reconcile the observation with the owner's cancellation flag before publication.
++                publish(Result.failure(CommonsFailure(code)))
++            }
+             cleanup()
+         }
+         private fun cleanup() {
+-            if (!cleanupStarted.compareAndSet(false, true)) return
+-            val pair = synchronized(resources) {
+-                closing = true
+-                Pair(raw.also { raw = null }, tls.also { tls = null })
++            val pair = synchronized(termination) {
++                if (!cleanupStarted.compareAndSet(false, true)) return
++                connectBudgetActive = false
++                synchronized(resources) {
++                    closing = true
++                    Pair(raw.also { raw = null }, tls.also { tls = null })
++                }
+             }
+             // Closing the raw socket first prevents TLS close_notify from blocking on network I/O.
+             // Even an anomalously stuck close cannot release the physical admission slot.
+@@ -313,7 +351,11 @@
+             workerResult?.let { publish(it) }
+         }
+         private fun publish(value: Result<CommonsHttpResponse>, definitiveHeaders: Boolean = false) {
+-            if (result.compareAndSet(null, Outcome(value, definitiveHeaders))) {
++            val accepted = synchronized(termination) {
++                result.compareAndSet(null, Outcome(value, definitiveHeaders))
++            }
++            if (accepted) {
++                // Timer handles are injectable external work and must not hold the terminal gate.
+                 if (definitiveHeaders) absoluteTimer?.close()
+                 terminal.countDown()
+             }
+--- code12/app/src/test/kotlin/com/easysavevideo/app/discovery/network/SystemCommonsTransportTest.kt
++++ code13/app/src/test/kotlin/com/easysavevideo/app/discovery/network/SystemCommonsTransportTest.kt
+@@ -562,6 +562,246 @@
+         }
+     }
+ 
++    @Test fun stageDiagnosticsSharedConnectBudgetFencesTlsCleanupBeforeAndAfterRuntimeFinish() {
++        for (finishBeforeClose in listOf(false, true)) {
++            val capture = StageCapture(); val wire = Fixture(stage = Stage.TLS); val timer = ManualTimer()
++            val releaseClose = CountDownLatch(1); wire.raw.closeRelease = releaseClose
++            val transport = wire.transport(timer = timer)
++            val call = transport.create(request(trace = capture.trace)); val result = Async(call)
++            try {
++                await(wire.blocked)
++                assertEquals(15_000L, timer.entries[0].delay)
++                assertEquals(5_000L, timer.entries[1].delay)
++                assertEquals(CommonsStage.TLS_HANDSHAKE, capture.recorder.snapshot().activeStages.single().stage)
++                wire.clock.epoch += 5_000
++                wire.clock.nanos += TimeUnit.MILLISECONDS.toNanos(5_000)
++                timer.fire(1) // The shared TCP/TLS budget expires before the absolute deadline.
++                result.failure(CommonsError.SERVICE_ERROR)
++                await(wire.raw.closeEntered)
++                // Keep physical close blocked so logical failure cannot race the final worker evidence.
++                assertEquals(1L, wire.raw.closed.count)
++                assertTrue(capture.recorder.snapshot().activeStages.isEmpty())
++                if (finishBeforeClose) capture.finishFailure()
++                timer.entries[0].action(); call.cancel(); call.cancel()
++                expect(CommonsError.BUSY) { transport.create(request()).execute() }
++                releaseClose.countDown()
++                awaitReleased(transport)
++
++                val snapshot = capture.recorder.snapshot()
++                val samples = snapshot.samples
++                assertEquals(listOf(CommonsStage.DNS, CommonsStage.TCP_CONNECT,
++                    CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStage.TLS_HANDSHAKE) +
++                    (if (finishBeforeClose) listOf(CommonsStage.OPERATION) else emptyList()), samples.map { it.stage })
++                val budget = samples.single { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL }
++                assertEquals(CommonsStageOutcome.OBSERVED, budget.outcome)
++                assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, budget.failure)
++                assertEquals(CommonsStageTiming.NOT_MEASURED, budget.timing)
++                assertNull(budget.elapsedNanos)
++                val handshake = samples.single { it.stage == CommonsStage.TLS_HANDSHAKE }
++                assertEquals(CommonsStageOutcome.INCOMPLETE, handshake.outcome)
++                assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, handshake.failure)
++                assertEquals(CommonsStageTiming.NOT_MEASURED, handshake.timing)
++                assertNull(handshake.elapsedNanos)
++                assertFalse(samples.any { it.stage == CommonsStage.PROVIDER_FAILURE })
++                if (finishBeforeClose) {
++                    val operation = samples.single { it.stage == CommonsStage.OPERATION }
++                    assertEquals(CommonsStageOutcome.FAILURE, operation.outcome)
++                    assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, operation.failure)
++                }
++                assertTrue(snapshot.activeStages.isEmpty())
++                assertFalse(samples.any { it.stage == CommonsStage.DEADLINE_SIGNAL || it.stage == CommonsStage.CANCEL_SIGNAL })
++                assertEquals(0, wire.output.size())
++                assertEquals(1, wire.dnsCalls.get()); assertEquals(1, wire.openCalls.get())
++                assertTrue(wire.tls.closed)
++                assertTrue(timer.entries.all { it.cancelled })
++            } finally { releaseClose.countDown() }
++        }
++    }
++
++    @Test fun stageDiagnosticsSharedBudgetDuringTcpDoesNotInventTls() {
++        val capture = StageCapture(); val wire = Fixture(stage = Stage.CONNECT); val timer = ManualTimer()
++        val transport = wire.transport(timer = timer)
++        val result = Async(transport.create(request(trace = capture.trace)))
++        await(wire.blocked)
++        timer.fire(1); result.failure(CommonsError.SERVICE_ERROR)
++        awaitReleased(transport)
++        val samples = capture.recorder.snapshot().samples
++        assertEquals(listOf(CommonsStage.DNS, CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStage.TCP_CONNECT), samples.map { it.stage })
++        assertEquals(CommonsStageOutcome.INCOMPLETE, samples.single { it.stage == CommonsStage.TCP_CONNECT }.outcome)
++        assertNull(samples.single { it.stage == CommonsStage.TCP_CONNECT }.elapsedNanos)
++        assertEquals(0, wire.secureCalls.get()); assertEquals(0, wire.output.size())
++    }
++
++    @Test fun stageDiagnosticsSynchronousBudgetBoundariesPreserveOnlyActuallyCompletedPhases() {
++        for (afterHandshake in listOf(false, true)) {
++            val capture = StageCapture(); val wire = Fixture()
++            val expire = { wire.clock.epoch += 5_000; wire.clock.nanos += TimeUnit.MILLISECONDS.toNanos(5_000) }
++            if (afterHandshake) wire.afterHandshake = expire else wire.afterConnect = expire
++            val transport = wire.transport()
++            expect(CommonsError.SERVICE_ERROR) { transport.create(request(trace = capture.trace)).execute() }
++            awaitReleased(transport)
++            val samples = capture.recorder.snapshot().samples
++            assertEquals(listOf(CommonsStage.DNS, CommonsStage.TCP_CONNECT) +
++                (if (afterHandshake) listOf(CommonsStage.TLS_HANDSHAKE) else emptyList()) +
++                CommonsStage.CONNECT_BUDGET_SIGNAL, samples.map { it.stage })
++            assertTrue(samples.filter { it.stage != CommonsStage.CONNECT_BUDGET_SIGNAL }.all {
++                it.outcome == CommonsStageOutcome.SUCCESS && it.timing == CommonsStageTiming.MEASURED })
++            assertNull(samples.last().elapsedNanos)
++            assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, samples.last().failure)
++            assertEquals(0, wire.output.size())
++        }
++    }
++
++    @Test fun synchronousBudgetFailureStillWaitsForCloseAndAbsoluteDeadlineCanFinishFirst() {
++        for (afterHandshake in listOf(false, true)) {
++            for (deadlineDuringClose in listOf(false, true)) {
++                val capture = StageCapture(); val wire = Fixture(); val timer = ManualTimer()
++                val expire = { wire.clock.epoch += 5_000; wire.clock.nanos += TimeUnit.MILLISECONDS.toNanos(5_000) }
++                if (afterHandshake) wire.afterHandshake = expire else wire.afterConnect = expire
++                val releaseClose = CountDownLatch(1); wire.raw.closeRelease = releaseClose
++                val transport = wire.transport(timer = timer)
++                val result = Async(transport.create(request(trace = capture.trace)))
++                try {
++                    await(wire.raw.closeEntered)
++                    assertEquals(1L, result.finished.count)
++                    timer.entries[1].action() // The ended shared budget must not publish early either.
++                    assertEquals(1L, result.finished.count)
++                    expect(CommonsError.BUSY) { transport.create(request()).execute() }
++                    assertEquals(1, capture.recorder.snapshot().samples.count { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
++                    if (deadlineDuringClose) {
++                        timer.fire(0)
++                        result.failure(CommonsError.DEADLINE_EXCEEDED)
++                        capture.finishFailure(DiscoveryError.DEADLINE_EXCEEDED)
++                        val samples = capture.recorder.snapshot().samples
++                        assertEquals(1, samples.count { it.stage == CommonsStage.DEADLINE_SIGNAL })
++                        val operation = samples.single { it.stage == CommonsStage.OPERATION }
++                        assertEquals(CommonsStageOutcome.DEADLINE, operation.outcome)
++                        assertEquals(CommonsStageFailure.DEADLINE_EXCEEDED, operation.failure)
++                        assertEquals(1L, wire.raw.closed.count)
++                    }
++                    releaseClose.countDown(); awaitReleased(transport)
++                    result.failure(if (deadlineDuringClose) CommonsError.DEADLINE_EXCEEDED else CommonsError.SERVICE_ERROR)
++                    assertEquals(0, wire.output.size()); assertTrue(wire.tls.closed)
++                } finally { releaseClose.countDown() }
++            }
++        }
++    }
++
++    @Test fun earlierCancellationOrAbsoluteDeadlineCannotBecomeConnectBudgetFailure() {
++        for (deadline in listOf(false, true)) {
++            val capture = StageCapture(); val wire = Fixture(stage = Stage.TLS); val timer = ManualTimer()
++            val releaseClose = CountDownLatch(1); wire.raw.closeRelease = releaseClose
++            val transport = wire.transport(timer = timer)
++            val call = transport.create(request(trace = capture.trace)); val result = Async(call)
++            try {
++                await(wire.blocked)
++                if (deadline) timer.fire(0) else call.cancel()
++                result.failure(if (deadline) CommonsError.DEADLINE_EXCEEDED else CommonsError.CANCELLED)
++                timer.entries[1].action() // A callback already racing its cancellation.
++                releaseClose.countDown(); awaitReleased(transport)
++                assertFalse(capture.recorder.snapshot().samples.any { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
++            } finally { releaseClose.countDown() }
++        }
++    }
++
++    @Test fun endedConnectBudgetIgnoresLateWatchdogDuringBodyAndAfterOrdinaryTlsFailure() {
++        for (tlsFailure in listOf(false, true)) {
++            val capture = StageCapture(); val wire = Fixture(stage = if (tlsFailure) null else Stage.BODY)
++            val timer = ManualTimer(); val releaseClose = CountDownLatch(1); wire.raw.closeRelease = releaseClose
++            if (tlsFailure) wire.tls.handshakeFailure = SSLHandshakeException("private-cert-detail")
++            val transport = wire.transport(timer = timer)
++            val call = transport.create(request(trace = capture.trace)); val result = Async(call)
++            try {
++                if (tlsFailure) await(wire.raw.closeEntered) else await(wire.blocked)
++                timer.entries[1].action()
++                assertEquals(1L, result.finished.count)
++                assertFalse(capture.recorder.snapshot().samples.any { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
++                if (!tlsFailure) {
++                    assertEquals(1L, wire.raw.closeEntered.count)
++                    call.cancel()
++                }
++                releaseClose.countDown(); awaitReleased(transport)
++                result.failure(if (tlsFailure) CommonsError.SERVICE_ERROR else CommonsError.CANCELLED)
++                val handshake = capture.recorder.snapshot().samples.single { it.stage == CommonsStage.TLS_HANDSHAKE }
++                assertEquals(if (tlsFailure) CommonsStageFailure.TLS_FAILURE else null, handshake.failure)
++            } finally { releaseClose.countDown() }
++        }
++    }
++
++    @Test fun claimedConnectBudgetRecordsObservationBeforeCompetingTransportStopCanPublishOrClose() {
++        val capture = StageCapture(); val wire = Fixture(stage = Stage.TLS); val timer = ManualTimer()
++        val transport = wire.transport(timer = timer)
++        val call = transport.create(request(trace = capture.trace)); val result = Async(call)
++        await(wire.blocked)
++        val timerDone = CountDownLatch(1); val cancelDone = CountDownLatch(1)
++        synchronized(capture.recorder) {
++            Thread({ try { timer.fire(1) } finally { timerDone.countDown() } }).apply { isDaemon = true; start() }
++            val field = call.javaClass.getDeclaredField("failure").apply { isAccessible = true }
++            @Suppress("UNCHECKED_CAST") val failure = field.get(call) as AtomicReference<CommonsError?>
++            val until = System.nanoTime() + TimeUnit.SECONDS.toNanos(3)
++            while (failure.get() == null && System.nanoTime() < until) Thread.yield()
++            assertEquals(CommonsError.SERVICE_ERROR, failure.get())
++            val cancel = Thread({ try { call.cancel() } finally { cancelDone.countDown() } }).apply { isDaemon = true; start() }
++            val cancelUntil = System.nanoTime() + TimeUnit.SECONDS.toNanos(3)
++            while (cancel.state != Thread.State.BLOCKED && System.nanoTime() < cancelUntil) Thread.yield()
++            assertEquals(Thread.State.BLOCKED, cancel.state)
++            assertEquals(1L, result.finished.count)
++            assertEquals(1L, wire.raw.closeEntered.count)
++        }
++        await(timerDone); await(cancelDone)
++        result.failure(CommonsError.SERVICE_ERROR); awaitReleased(transport)
++        assertEquals(1, capture.recorder.snapshot().samples.count { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
++        assertFalse(capture.recorder.snapshot().samples.any { it.stage == CommonsStage.CANCEL_SIGNAL })
++    }
++
++    @Test fun realOwnerCancellationFlagCanPrecedeObservationAfterTransportBudgetClaim() {
++        val capture = StageCapture(); val wire = Fixture(stage = Stage.TLS); val timer = ManualTimer()
++        val transport = wire.transport(timer = timer)
++        val call = transport.create(request(trace = capture.trace)); val result = Async(call)
++        await(wire.blocked)
++        val timerDone = CountDownLatch(1)
++        synchronized(capture.recorder) {
++            Thread({ try { timer.fire(1) } finally { timerDone.countDown() } }).apply { isDaemon = true; start() }
++            val field = call.javaClass.getDeclaredField("failure").apply { isAccessible = true }
++            @Suppress("UNCHECKED_CAST") val failure = field.get(call) as AtomicReference<CommonsError?>
++            val until = System.nanoTime() + TimeUnit.SECONDS.toNanos(3)
++            while (failure.get() == null && System.nanoTime() < until) Thread.yield()
++            assertEquals(CommonsError.SERVICE_ERROR, failure.get())
++            // The transport CAS and the owner's shared flag are independent. Observation must
++            // honor the real flag rather than claim that the transport won a global cause race.
++            capture.operation.cancellation.cancel()
++            assertTrue(capture.operation.cancellation.isCancelled)
++            assertEquals(1L, result.finished.count)
++            assertEquals(1L, wire.raw.closeEntered.count)
++        }
++        await(timerDone); result.failure(CommonsError.SERVICE_ERROR); awaitReleased(transport)
++        capture.finishFailure()
++        val samples = capture.recorder.snapshot().samples
++        assertFalse(samples.any { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
++        assertEquals(1, samples.count { it.stage == CommonsStage.CANCEL_SIGNAL })
++        val tls = samples.single { it.stage == CommonsStage.TLS_HANDSHAKE }
++        assertEquals(CommonsStageOutcome.INCOMPLETE, tls.outcome)
++        assertEquals(CommonsStageFailure.CANCELLED, tls.failure)
++        assertNull(tls.elapsedNanos)
++        assertEquals(CommonsStageOutcome.CANCELLED, samples.single { it.stage == CommonsStage.OPERATION }.outcome)
++    }
++
++    @Test fun successfulResponseFinallyCancellationAndLateBudgetCallbackRemainOnlyCleanup() {
++        val capture = StageCapture(); val wire = Fixture(); val timer = ManualTimer()
++        val transport = wire.transport(timer = timer)
++        val call = transport.create(request(trace = capture.trace))
++        call.execute().close()
++        call.cancel(); call.cancel()
++        timer.entries[1].action()
++        awaitReleased(transport)
++        val samples = capture.recorder.snapshot().samples
++        assertFalse(samples.any { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL ||
++            it.stage == CommonsStage.CANCEL_SIGNAL || it.stage == CommonsStage.DEADLINE_SIGNAL })
++        assertEquals(CommonsStageOutcome.SUCCESS, samples.single { it.stage == CommonsStage.TLS_HANDSHAKE }.outcome)
++        assertEquals(0L, wire.raw.closed.count); assertTrue(wire.tls.closed)
++        assertTrue(timer.entries.all { it.cancelled })
++    }
++
+     @Test fun stageDiagnosticsKeepActualHttpStatusEvenWhenHeadersOrBodyFail() {
+         for (wireText in listOf("HTTP/1.1 302 Found\r\nLocation: https://private.invalid/\r\n\r\n",
+             "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\n{}")) {
+@@ -629,14 +869,16 @@
+     private class StageCapture {
+         val recorder = CommonsStageDiagnosticsRecorder()
+         lateinit var operation: DiscoveryOperation
++        private lateinit var runtimeCallback: (ProviderOutcome) -> Unit
+         val trace get() = operation.commonsStageTrace!!
++        fun finishFailure(error: DiscoveryError = DiscoveryError.PROVIDER_FAILURE) { runtimeCallback(ProviderOutcome.Failure(error)) }
+         private val coordinator = VideoDiscoveryCoordinator(ProviderRegistry(listOf(object : VideoSearchProvider {
+             override val descriptor = ProviderDescriptor("wikimedia-commons", "1")
+             override fun search(request: SearchRequest, operation: DiscoveryOperation) = ProviderPage()
+         })), object : ProviderRuntime {
+             override fun execute(provider: VideoSearchProvider, request: SearchRequest, operation: DiscoveryOperation,
+                 callback: (ProviderOutcome) -> Unit): CancellationHandle {
+-                this@StageCapture.operation = operation; return CancellationHandle { }
++                this@StageCapture.operation = operation; runtimeCallback = callback; return CancellationHandle { }
+             }
+         }, InMemoryDiscoveryStore(), object : DiscoveryTimer {
+             override fun schedule(delayMillis: Long, action: () -> Unit) = CancellationHandle { }
+@@ -681,6 +923,8 @@
+         val output = ByteArrayOutputStream()
+         val raw = RawSocket(this)
+         val tls = SecureSocket(this)
++        var afterConnect: (() -> Unit)? = null
++        var afterHandshake: (() -> Unit)? = null
+         var secureHost: String? = null
+         var input: InputStream = if (stage == Stage.HEADERS || stage == Stage.BODY) object : InputStream() {
+             val prefix = ByteArrayInputStream(if (stage == Stage.BODY) "HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\n".toByteArray() else byteArrayOf())
+@@ -710,6 +954,7 @@
+             if (fixture.stage == Stage.CONNECT) {
+                 fixture.blocked.countDown(); closed.await(); throw IOException("closed")
+             }
++            fixture.afterConnect?.invoke()
+         }
+         override fun isConnected() = destination != null
+         override fun getInetAddress() = reportedPeer
+@@ -740,6 +985,7 @@
+             if (fixture.stage == Stage.TLS) {
+                 fixture.blocked.countDown(); fixture.raw.closed.await(); throw IOException("closed")
+             }
++            fixture.afterHandshake?.invoke()
+         }
+         override fun close() { closed = true }
+         override fun setUseClientMode(mode: Boolean) { clientMode = mode }
+--- code12/discovery/src/main/kotlin/com/easysavevideo/discovery/CommonsStageDiagnosticsRecorder.kt
++++ code13/discovery/src/main/kotlin/com/easysavevideo/discovery/CommonsStageDiagnosticsRecorder.kt
+@@ -12,6 +12,7 @@
+     DNS, TCP_CONNECT, TLS_HANDSHAKE, REQUEST_WRITE, HTTP_EXCHANGE, HTTP_STATUS, JSON_PARSE,
+     CACHE_HIT, METADATA_COOLDOWN, TRANSPORT_COOLDOWN, SERVER_COOLDOWN,
+     CANCEL_SIGNAL, DEADLINE_SIGNAL, PROVIDER_FAILURE, OPERATION,
++    CONNECT_BUDGET_SIGNAL,
+ }
+ enum class CommonsStageOutcome { IN_PROGRESS, SUCCESS, FAILURE, OBSERVED, CANCELLED, DEADLINE, INCOMPLETE }
+ enum class CommonsStageTiming { MEASURED, NOT_MEASURED, CLOCK_BACKWARDS, CLOCK_OVERFLOW }
+@@ -21,6 +22,7 @@
+     INVALID_RESPONSE, RESPONSE_TOO_LARGE, UNSAFE_ADDRESS, REDIRECT_REJECTED, SERVICE_DENIED,
+     RATE_LIMITED, BUSY, CANCELLED, DEADLINE_EXCEEDED, CONFIGURATION, INVALID_REQUEST,
+     UNSUPPORTED_FILTER, SERVICE_FAILURE, OTHER,
++    CONNECT_BUDGET_EXCEEDED,
+ }
+ data class CommonsStageSample(
+     val sessionAlias: Long,
+@@ -134,7 +136,8 @@
+             stage == CommonsStage.DEADLINE_SIGNAL) ?: return
+         if (!pending.seen.add(stage)) { current.ignored = increment(current.ignored); return }
+         append(current, pending, stage, CommonsStageOutcome.OBSERVED, null, CommonsStageTiming.NOT_MEASURED, failure)
+-        if (stage == CommonsStage.CANCEL_SIGNAL || stage == CommonsStage.DEADLINE_SIGNAL) {
++        if (stage == CommonsStage.CANCEL_SIGNAL || stage == CommonsStage.DEADLINE_SIGNAL ||
++            stage == CommonsStage.CONNECT_BUDGET_SIGNAL) {
+             pending.active.keys.forEach { append(current, pending, it, CommonsStageOutcome.INCOMPLETE,
+                 null, CommonsStageTiming.NOT_MEASURED, failure) }
+             pending.active.clear()
+@@ -149,12 +152,20 @@
+     }
+     @Synchronized internal fun finish(trace: CommonsStageTrace, outcome: CommonsStageOutcome, failure: CommonsStageFailure?) {
+         val (current, pending) = current(trace, allowCancelled = true) ?: return
++        val budgetObserved = CommonsStage.CONNECT_BUDGET_SIGNAL in pending.seen
+         val terminal = when {
+             outcome == CommonsStageOutcome.DEADLINE || CommonsStage.DEADLINE_SIGNAL in pending.seen -> CommonsStageOutcome.DEADLINE
+-            trace.cancellationSignal.get() || CommonsStage.CANCEL_SIGNAL in pending.seen -> CommonsStageOutcome.CANCELLED
++            outcome == CommonsStageOutcome.CANCELLED || trace.cancellationSignal.get() ||
++                CommonsStage.CANCEL_SIGNAL in pending.seen -> CommonsStageOutcome.CANCELLED
++            budgetObserved -> CommonsStageOutcome.FAILURE
+             else -> outcome
+         }
+-        finishPending(current, pending, terminal, failure)
++        val terminalFailure = if (!budgetObserved) failure else when (terminal) {
++            CommonsStageOutcome.DEADLINE -> CommonsStageFailure.DEADLINE_EXCEEDED
++            CommonsStageOutcome.CANCELLED -> CommonsStageFailure.CANCELLED
++            else -> CommonsStageFailure.CONNECT_BUDGET_EXCEEDED
++        }
++        finishPending(current, pending, terminal, terminalFailure)
+         current.pending.remove(trace)
+     }
+     @Synchronized fun snapshot(): CommonsStageDiagnosticsSnapshot {
+@@ -183,10 +194,13 @@
+         }
+         return current to pending
+     }
+-    /** Only reads the shared atomic flag; never calls a token implementation or cancellation hook. */
++    /** Reads only local signal state and the shared atomic flag; never calls a token or cancellation hook. */
+     private fun reconcileCancellation(current: State, pending: Pending): Boolean {
++        // Budget observations fence ordinary cleanup noise, never a real owner cancellation or
++        // explicit deadline. The shared flag is authoritative even if a transport CAS happened first.
++        val budget = CommonsStage.CONNECT_BUDGET_SIGNAL in pending.seen
+         val deadline = CommonsStage.DEADLINE_SIGNAL in pending.seen
+-        if (!pending.trace.cancellationSignal.get() && !deadline && CommonsStage.CANCEL_SIGNAL !in pending.seen) return false
++        if (!pending.trace.cancellationSignal.get() && !deadline && CommonsStage.CANCEL_SIGNAL !in pending.seen) return budget
+         val failure = if (deadline) CommonsStageFailure.DEADLINE_EXCEEDED else CommonsStageFailure.CANCELLED
+         if (!deadline && pending.seen.add(CommonsStage.CANCEL_SIGNAL))
+             append(current, pending, CommonsStage.CANCEL_SIGNAL, CommonsStageOutcome.OBSERVED,
+--- code12/discovery/src/test/kotlin/com/easysavevideo/discovery/CommonsStageDiagnosticsRecorderTest.kt
++++ code13/discovery/src/test/kotlin/com/easysavevideo/discovery/CommonsStageDiagnosticsRecorderTest.kt
+@@ -159,4 +159,118 @@
+         }
+     }
+ 
++    @Test fun connectBudgetSignalFencesCleanupAndRetainsItsCauseThroughRuntimeFinish() {
++        val recorder = CommonsStageDiagnosticsRecorder(true)
++        val cancellation = DiscoveryCancellation()
++        val trace = recorder.started(session(recorder), 0, cancellation)!!
++        val dns = recorder.begin(trace, CommonsStage.DNS, 10)!!
++        recorder.end(dns, CommonsStageOutcome.SUCCESS, null, 20)
++        val tls = recorder.begin(trace, CommonsStage.TLS_HANDSHAKE, 30)!!
++        trace.event(CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStageFailure.CONNECT_BUDGET_EXCEEDED)
++        recorder.end(tls, CommonsStageOutcome.FAILURE, CommonsStageFailure.IO_FAILURE, 40)
++        trace.event(CommonsStage.PROVIDER_FAILURE, CommonsStageFailure.IO_FAILURE)
++        assertNull(trace.begin(CommonsStage.REQUEST_WRITE))
++        trace.httpStatus(200)
++        trace.finish(CommonsStageOutcome.SUCCESS, CommonsStageFailure.SERVICE_FAILURE)
++        val snapshot = recorder.snapshot()
++        assertEquals(listOf(CommonsStage.DNS, CommonsStage.CONNECT_BUDGET_SIGNAL,
++            CommonsStage.TLS_HANDSHAKE, CommonsStage.OPERATION), snapshot.samples.map { it.stage })
++        val budget = snapshot.samples[1]
++        assertEquals(CommonsStageOutcome.OBSERVED, budget.outcome)
++        assertEquals(CommonsStageTiming.NOT_MEASURED, budget.timing); assertNull(budget.elapsedNanos)
++        val incomplete = snapshot.samples[2]
++        assertEquals(CommonsStageOutcome.INCOMPLETE, incomplete.outcome)
++        assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, incomplete.failure)
++        assertNull(incomplete.elapsedNanos)
++        assertEquals(CommonsStageOutcome.FAILURE, snapshot.samples.last().outcome)
++        assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, snapshot.samples.last().failure)
++        assertEquals(0, snapshot.pendingOperations); assertTrue(snapshot.activeStages.isEmpty())
++    }
++
++    @Test fun laterRealCancellationOrDeadlineRetainsPriorityWithoutErasingEarlierBudgetEvidence() {
++        for (terminal in listOf("flag", "cancel", "deadline", "cancel-outcome", "deadline-outcome")) {
++            val recorder = CommonsStageDiagnosticsRecorder(true)
++            val cancellation = DiscoveryCancellation()
++            val trace = recorder.started(session(recorder), 0, cancellation)!!
++            trace.begin(CommonsStage.TLS_HANDSHAKE)
++            trace.event(CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStageFailure.CONNECT_BUDGET_EXCEEDED)
++            when (terminal) {
++                "flag" -> cancellation.cancel()
++                "cancel" -> trace.event(CommonsStage.CANCEL_SIGNAL, CommonsStageFailure.CANCELLED)
++                "deadline" -> trace.event(CommonsStage.DEADLINE_SIGNAL, CommonsStageFailure.DEADLINE_EXCEEDED)
++                else -> Unit
++            }
++            trace.event(CommonsStage.PROVIDER_FAILURE, CommonsStageFailure.IO_FAILURE)
++            trace.finish(when (terminal) {
++                "cancel-outcome" -> CommonsStageOutcome.CANCELLED
++                "deadline-outcome" -> CommonsStageOutcome.DEADLINE
++                else -> CommonsStageOutcome.FAILURE
++            }, CommonsStageFailure.SERVICE_FAILURE)
++            val samples = recorder.snapshot().samples
++            assertEquals(1, samples.count { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
++            val tls = samples.single { it.stage == CommonsStage.TLS_HANDSHAKE }
++            assertEquals(CommonsStageOutcome.INCOMPLETE, tls.outcome)
++            assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, tls.failure)
++            assertNull(tls.elapsedNanos)
++            val operation = samples.single { it.stage == CommonsStage.OPERATION }
++            val deadline = terminal.startsWith("deadline")
++            assertEquals(if (deadline) CommonsStageOutcome.DEADLINE else CommonsStageOutcome.CANCELLED, operation.outcome)
++            assertEquals(if (deadline) CommonsStageFailure.DEADLINE_EXCEEDED else CommonsStageFailure.CANCELLED, operation.failure)
++            assertFalse(samples.any { it.stage == CommonsStage.PROVIDER_FAILURE })
++        }
++    }
++
++    @Test fun earlierCancelFlagOrTerminalSignalRejectsLateConnectBudgetObservation() {
++        for (first in listOf("flag", "cancel", "deadline")) {
++            val recorder = CommonsStageDiagnosticsRecorder(true)
++            val cancellation = DiscoveryCancellation()
++            val trace = recorder.started(session(recorder), 0, cancellation)!!
++            val tls = trace.begin(CommonsStage.TLS_HANDSHAKE)!!
++            when (first) {
++                "flag" -> cancellation.cancel()
++                "cancel" -> trace.event(CommonsStage.CANCEL_SIGNAL, CommonsStageFailure.CANCELLED)
++                else -> trace.event(CommonsStage.DEADLINE_SIGNAL, CommonsStageFailure.DEADLINE_EXCEEDED)
++            }
++            trace.event(CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStageFailure.CONNECT_BUDGET_EXCEEDED)
++            tls.failed(CommonsStageFailure.IO_FAILURE)
++            trace.finish(CommonsStageOutcome.FAILURE)
++            val samples = recorder.snapshot().samples
++            assertFalse(samples.any { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
++            assertEquals(if (first == "deadline") CommonsStageOutcome.DEADLINE else CommonsStageOutcome.CANCELLED,
++                samples.single { it.stage == CommonsStage.OPERATION }.outcome)
++        }
++    }
++
++    @Test fun connectBudgetDoesNotReplaceCompletedPhasesOrInventUnstartedPhases() {
++        for (completedTls in listOf(false, true)) {
++            val recorder = CommonsStageDiagnosticsRecorder(true)
++            val trace = recorder.started(session(recorder), 0)!!
++            if (completedTls) {
++                val tls = recorder.begin(trace, CommonsStage.TLS_HANDSHAKE, 10)!!
++                recorder.end(tls, CommonsStageOutcome.SUCCESS, null, 25)
++            }
++            trace.event(CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStageFailure.CONNECT_BUDGET_EXCEEDED)
++            trace.finish(CommonsStageOutcome.FAILURE)
++            val tls = recorder.snapshot().samples.filter { it.stage == CommonsStage.TLS_HANDSHAKE }
++            if (completedTls) {
++                assertEquals(CommonsStageOutcome.SUCCESS, tls.single().outcome)
++                assertEquals(15L, tls.single().elapsedNanos)
++            } else assertTrue(tls.isEmpty())
++        }
++    }
++
++    @Test fun disabledAndReplacedCapturesRejectConnectBudgetEventsWithoutMutatingEvidence() {
++        val recorder = CommonsStageDiagnosticsRecorder(true)
++        val trace = recorder.started(session(recorder), 0)!!
++        recorder.stop()
++        val stopped = recorder.snapshot()
++        trace.event(CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStageFailure.CONNECT_BUDGET_EXCEEDED)
++        assertEquals(stopped, recorder.snapshot())
++        val next = recorder.beginSession(recorder.setEnabled(true))
++        recorder.started(next, 0)
++        val replacement = recorder.snapshot()
++        trace.event(CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStageFailure.CONNECT_BUDGET_EXCEEDED)
++        assertEquals(replacement, recorder.snapshot())
++    }
++
+ }
+--- code12/docs/discovery/COMMONS_CONNECT_BUDGET_DIAGNOSIS_20261019.md
++++ code13/docs/discovery/COMMONS_CONNECT_BUDGET_DIAGNOSIS_20261019.md
+@@ -0,0 +1,33 @@
++# Code12 request-stage audit
++
++Device evidence supplied by task owner: three attempts; no request write, HTTP or JSON stage. Attempt 1 DNS 2.48 ms, TCP 3172.84 ms, TLS 1827.55 ms IO_FAILURE. Attempt 2 DNS 4.64 ms, TCP 1166.47 ms, TLS incomplete SERVICE_FAILURE. Attempt 3 DNS 4.49 ms, TCP incomplete DEADLINE_EXCEEDED. 14 records, not truncated, incomplete=true, ignored=10. No raw traffic or exception was supplied.
++
++## Confirmed implementation
++
++SystemCommonsTransport:163–165 starts a shared TCP+TLS budget after DNS; at most 5000 ms and limited by remaining overall time. TLS receives the remainder (:183–187). Thus attempt 1's TCP+TLS sum 5000.39 ms is consistent with the local watchdog boundary. This correlation does not establish the remote cause or prove the timer won that particular race.
++
++TLS setup: layered socket is created with exact commons.wikimedia.org host; HTTPS endpoint identification, exact SNI, client mode and HTTP/1.1 ALPN are set before handshake (:173–188). Instance-owned TLS SSLContext uses platform trust and no client keys (:345–353). Default enabled TLS protocol/cipher configuration is not explicitly weakened. Connected peer and public-address policy are checked repeatedly. These source checks and fake-socket tests do not validate the device trust store, negotiated protocol, SNI wire bytes or certificate chain.
++
++DNS returns an address array; all answers must be public and only answers.first() is attempted (:157–162). There is no address-family fallback/Happy Eyeballs inside an exchange. We cannot identify the selected family/address from the deliberately redacted trace and should not infer it. Changing address selection would be a separate transport behavior change.
++
++## Proven observation gap
++
++The shared connection timer calls stop(SERVICE_ERROR), without a distinct budget observation. It closes the raw socket. A subsequent handshake IOException can be reported as TLS IO_FAILURE; if operation retirement wins first, TLS is sealed INCOMPLETE and the late exception is rejected. Existing trace cannot distinguish an observed local budget expiration from generic SERVICE_FAILURE. Proposed correction is diagnostic attribution only, preserving existing timer lengths, business error/retry mapping and all TLS/security checks.
++
++## ignored / incomplete interpretation
++
++CommonsStageDiagnosticsRecorder increments ignored for duplicate stage begin/event/status, completion whose span is no longer active, and same-session callbacks after operation removal or a cancellation/deadline fence. Old-generation callbacks do not mutate even these counters (:171–182). These rejected callbacks are intentionally excluded from current evidence. A count of 10 alone cannot identify which reasons occurred or prove all were harmless cleanup; it is not the droppedSamples counter. incomplete=true follows incomplete stage outcomes or pending operations/capacity/clock anomalies (:49–51); with known incomplete TLS/TCP it does not imply truncation. Absence of HTTP/JSON observations is consistent with no completed handshake in the retained evidence and does not establish an HTTP status or response.
++
++No production TLS fix is established. Device network cause remains unknown. No network, APK or device action is part of this audit.
++
++## Offline characterization before correction
++
++The complete SystemCommonsTransportTest class passed 34 tests, zero failures/errors/skips, in characterization-02. The new stageDiagnosticsCharacterizeSharedConnectBudgetAsTlsIoFailureWithoutBudgetSignal holds fake raw-socket closure, fires the existing shared connection watchdog, verifies the unchanged SERVICE_ERROR result, then releases closure and observes TLS IO_FAILURE and provider IO_FAILURE without a budget-specific signal. This establishes a diagnostic attribution gap under controlled local scheduling. It does not establish which event won on the physical device.
++
++## Bounded correction scope
++
++An explicit closed-vocabulary CONNECT_BUDGET_SIGNAL / CONNECT_BUDGET_EXCEEDED is emitted for actual timer or synchronous connection-budget exhaustion, only when that termination wins. It carries no fabricated elapsed duration. Active phases become INCOMPLETE rather than attributing cleanup-induced I/O to a remote TLS failure; earlier successful phases remain intact. A late cancelled timer, prior cancellation/overall deadline or earlier terminal result must not produce a false budget cause. Existing timeout values, HTTP/retry policy, first-address selection, TLS trust/hostname/SNI and peer checks remain unchanged. No network trial, APK assembly, install or upload is performed.
++
++The change also rejects an already-cancelled connection watchdog callback after the connect phase has ended; it cannot convert a completed handshake/body exchange into a new connection-budget failure. A short terminal-state gate orders the winning reason and safe trace before logical publication or cleanup admission. Physical socket close and timer-handle close remain outside that gate. The existing business outcome remains SERVICE_ERROR and existing retry policy is unchanged. The diagnostic signal establishes only a local connection budget boundary, never the remote reason for slow progress.
++
++The transport terminal gate orders its own competing stops; it does not establish an absolute first cause across the whole system. A genuine outer operation cancellation flag or observed deadline can take precedence before the budget signal is admitted. A later explicit cancellation/deadline remains the OPERATION outcome, while an already recorded budget observation remains historical evidence. Ordinary cleanup callbacks cannot rewrite it as remote TLS I/O failure. Synchronous budget checks preserve their original worker-and-cleanup completion wait; they do not use the watchdog early-return path. A real subsequent cancellation/deadline may still release that logical wait as before.

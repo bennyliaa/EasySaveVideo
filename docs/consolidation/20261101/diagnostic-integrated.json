@@ -1,0 +1,12 @@
+{
+  "source": "D:\\CodexProjects\\2026-10-22\\task\\esv-code12-diagnostic-build",
+  "files": [
+    "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/save/SaveRuntimeFailureDiagnostics.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+    "app/src/main/kotlin/com/easysavevideo/app/save/storage/SaveStorageInitializationProbe.kt",
+    "app/src/test/kotlin/com/easysavevideo/app/save/SaveInitializationBoundaryTest.kt",
+    "app/src/test/kotlin/com/easysavevideo/app/save/SaveRuntimeFailureDiagnosticsJUnitTest.kt",
+    "gradle/verification-metadata.xml"
+  ]
+}

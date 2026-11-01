@@ -1,0 +1,120 @@
+{
+  "date": "2026-11-01T13:10:36.276Z",
+  "files": 70755,
+  "uniqueBlobs": 12743,
+  "git": [
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\ab-validation-20261008",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\code4-transfer-worktree",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\code5-transfer-worktree",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\code6-transfer-worktree",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\code7-transfer-worktree",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\code8-transfer-worktree",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\cold-restore",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-transfer-git-20261011",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-transfer-remote-readback-20261011",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-b63a879-20261011\\remote-main-readback",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-skinkit-22f11c8-20261011\\remote-main-readback",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\main-sync-ui-c4e4c86-20261011\\remote-main-readback",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\private-unsigned-transfer-5a237d5-20261011\\remote-readback",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\discovery-live-20261017\\oppo-code9-test\\github-transfer",
+      "create": 128,
+      "verify": null,
+      "note": "No Git refs: raw metadata and untracked files preserved; no commit bundle possible."
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\esv-source-12f97d43-20261009",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\2026-10-22\\task\\ESV-private-recovery-upload-339b2f76",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:/CodexProjects/2026-10-22/task/ESV-private-recovery-readback-339b2f76.git",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\code6-remote-readback-20261012",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\code7-remote-readback-20261012",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\code8-remote-readback-20261012",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\folder-picker-group-remote-readback-20261012",
+      "create": 0,
+      "verify": 0
+    },
+    {
+      "root": "D:\\CodexProjects\\2026-10-22\\task\\ESV-private-recovery-readback-339b2f76.git",
+      "create": 0,
+      "verify": 0
+    }
+  ],
+  "restore": "Use backup-files.json: copy blobs/<sha256> to original path, or a safe alternate root. Git raw state in git/<n>; bundles contain refs/history. No credentials uploaded.",
+  "supplementalUiFilesVerified": 52
+}

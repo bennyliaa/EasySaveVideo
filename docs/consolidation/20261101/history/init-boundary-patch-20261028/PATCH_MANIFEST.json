@@ -1,0 +1,33 @@
+{
+  "source_root": "D:\\CodexProjects\\2026-10-22\\task\\esv-code12-diagnostic-build",
+  "production_base": "existing isolated diagnostic code12; not asserted latest code13",
+  "no_adb": true,
+  "files": [
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt",
+      "before": "B9B117193DBB81EFF1CCDE5D5D9CCD7D80314121C5E52262158BAAB18CF82DDD",
+      "after": "625B47F01D9FCA6FF2D5048AF7312ACBADFAE968522444344B1137917FEDDC29"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/SaveRuntimeFailureDiagnostics.kt",
+      "before": "5F99A063DF003CA8B852E74F0247726B95A49B684CFCFEBA0312AF9FC88D0CC8",
+      "after": "A08774AF56D1B3F7F62DA1229F3F8F833536E022E13D1CAB6A7FC3BDE4679D06"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+      "before": "D71EF49B7532AABABEE10973034B603C3C55AE4DFBBDE4D87EB057DAA1EC288B",
+      "after": "78DF52AE325980AC4B9909C6222C83F42F59639A96B3E7D65C9B9F0DE6B42D3F"
+    },
+    {
+      "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/SaveStorageInitializationProbe.kt",
+      "before": null,
+      "after": "F14A1F1EFE0962DE922F7A9B563F691C975780D43195F4481738F9828C723361"
+    },
+    {
+      "path": "app/src/test/kotlin/com/easysavevideo/app/save/SaveInitializationBoundaryTest.kt",
+      "before": null,
+      "after": "C6A070313270D1B64E83AD56E0E287F342254DFEBD09FB707B0F1D49903D00F4"
+    }
+  ],
+  "no_upload": true
+}

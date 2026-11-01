@@ -1,0 +1,775 @@
+[
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\ab-validation-20261008.bundle",
+    "sha256": "9b83279a69e6487e6ac76f9ef5383059fb4f2b1991b811b9cad00fee153dc5fc",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "d48b59b8245f412fa7e9dc22ece2235f6bcb2e02",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "d48b59b8245f412fa7e9dc22ece2235f6bcb2e02",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-aapt2-windows-admission-a929408-20261010.bundle",
+    "sha256": "d4bb8f669f3b7862b1c8d2f5fd60d452f2cc7da88a1638fc3bfcab97e4f28a34",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "a92940823124068b87c57a5c5f8cbc85d60543eb",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "a92940823124068b87c57a5c5f8cbc85d60543eb",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-android-five-task-b714a87-20261011.bundle",
+    "sha256": "c2e05e8c6eebe53f9ae1e143688a8057f899c542a3eb71f2034cc3010fab3ed7",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "b714a87601d0725385c11f4587704f78587938b5",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "b714a87601d0725385c11f4587704f78587938b5",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-batch-move-source-073d80d-20261012.bundle",
+    "sha256": "7dbc2caa07402289a50f0441217adaa9953b870449218f7f9776e0cfc9a25eea",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "073d80d99256f14b04d9e056f9eb3c2245742b1d",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-batch-share-code6-source-e26f6c0-20261012.bundle",
+    "sha256": "e9a44c42a44f001dde502e82e3fe293536a4cd7d6fd771a9a5c3136ca110b930",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "e26f6c0b71f60f0e33d196713cfda7128de7f268",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-emulator-evidence-20261011.bundle",
+    "sha256": "66b050df9b430d54bc9c02f2a5157904949a0b6c4e953c4567b09224deb98778",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "1725e98e995125339df492f358a14b6199b17635",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code3-library-full-20261011.bundle",
+    "sha256": "e529ee81be300b09958dab54291ea1d7b8243a9b1da2067aabe6d5a2165401e2",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code6-aggregate-plan-source-20261012.bundle",
+    "sha256": "d6fe6398bf51cd89eca031859caf43a004b99a5ff2e526ea4bfcda290daf7054",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "15010236d3df30292a3ca452cd6a182b4d97b07e",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code7-debug-source-928b263-20261012.bundle",
+    "sha256": "a38a172edec44b86c26202fa9dbc4a21252219ed8d4d42a7774fc749a361a8d7",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "928b2636c265ceb155822c6f5e5df3fe951443ac",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code7-device-defects-20261012.bundle",
+    "sha256": "57f8bc64adb8cf20fab62d3b810a0d3be6bfb3f1917b639b2f93dd909d4c8c8c",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "f3bf2153aeec68b652cc01d7cf6add5b19c44aad",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-code8-debug-source-ea87963-20261012.bundle",
+    "sha256": "e96cd1e38f0ab34b330aef24936be5e1da94b19fc073b0d1d5229593f72f4c10",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "ea87963dee631a498774f648c9a1dabd9f665b90",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-commons-static-offline-20261010.bundle",
+    "sha256": "e5463fc20b368bef49bc7c747957e4ee4df8caabcce20667b900cb7ba05d331c",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "1c5e06cd2d1a1a31240629b3d001910ce65037a6",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "1c5e06cd2d1a1a31240629b3d001910ce65037a6",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-dc69-verified-manual-upload-20261010\\esv-windows-platform-fixes-20261010.bundle",
+    "sha256": "213859e5417b6408935f4d83a7bfdbae07ea3c8e7650a67aa4661b4697dd4d39",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "dc69c7305ecddfdc02032a6fc360e212389cc3ee",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "dc69c7305ecddfdc02032a6fc360e212389cc3ee",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-directory-batch-completion-20261012.bundle",
+    "sha256": "f7c98a4364b1b4f26172490656f5f917c8c4b9660c2b913dd94cadf086e8c4dd",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "38a6fc131e52bb23754e41572e2d1ed367ad0a4a",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-discovery-b9d978f-local-complete.bundle",
+    "sha256": "f1ee0a6cd2ee90caf419d63a896320a4256ab4f5026e9ffaccab0ff4240bfe84",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "b9d978f233638d508de63387b8a0609842b14848",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "b9d978f233638d508de63387b8a0609842b14848",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-explicit-candidate-61b4f8e-local-unvalidated.bundle",
+    "sha256": "a425ff9f234e5c8a211aad7e58fddb0f4ae1bd6f0457ce397a4fdf2eb4c9f35f",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "61b4f8ec444c1a2d8b55805c0a42c898c69d8854",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-explicit-candidate-9d1020a-local-jvm258.bundle",
+    "sha256": "4cbe1aea779aeab39659fc2dff9bf6211163e7e127bd876778cc34e06a3c76d1",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "9d1020a35d742a5bc1264f8fd8bdff24e42a2597",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "9d1020a35d742a5bc1264f8fd8bdff24e42a2597",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-finite-i18n-d4ec8be-20261012.bundle",
+    "sha256": "c13edc9a3dd364bfcdb165fd8e8e1fd22df6b54fead67c7c4df0a50d13230249",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "d4ec8beea17723c8d98b4c929115a97b9abf959e",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-folder-picker-async-20261012.bundle",
+    "sha256": "56e88ae4661172279b0deb8f514f3c8be64baff5d6201fcf1c924f21cd6a7d54",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "02bfec36685062ded705871fddfdb8350b52cb7e",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-folder-picker-result-correlation-20261012.bundle",
+    "sha256": "364c7de22130cd73e08eccad66eb40cdb371f40dde0ad35a7e7d2bc65c23fd28",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "4c180deefff1f90957c62ce2d313737ed9173c4a",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-identity-scope-correction-d9a56e7-20261011.bundle",
+    "sha256": "492f6bee0d020a44dfeac323d2eb0d3234a9f12c3e67b40d9d43f7958d7e8e1a",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "d9a56e743b01707a6caa536cea1e5b9283ae5100",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "d9a56e743b01707a6caa536cea1e5b9283ae5100",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-library-multi-complete-20261012.bundle",
+    "sha256": "0713360e12a7c0e475ed4d70398d5cc29f012e4862a7d0cac76f20ca31b38081",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "4d1c72af78433d74ea7203c2a476105676da8538",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-library-multi-wip-20261012.bundle",
+    "sha256": "7bad28c2e2205f558ef306f4573c3c5876c8ffbc06ab5b9bacb70817bc1aac0b",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "fb87af58431f189776cd3724972a8c5a0ec2d449",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-local-source-admission-20261010.bundle",
+    "sha256": "a5f4c0f57a97bc8494a90405e31e04e71fe3bbc755de65b832ab99b613644054",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "67230066558bfd9f08e87169ce50c269b82238fc",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "67230066558bfd9f08e87169ce50c269b82238fc",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-media-identity-audit-b3dae62-20261011.bundle",
+    "sha256": "c8c0d4bfed4db847edbdb0db22f778e2aad4e6a54ff6640acf082cbc0bdc6688",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "b3dae6252df43b8cb9833f3c04d5766fb908cdf8",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "b3dae6252df43b8cb9833f3c04d5766fb908cdf8",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-nav-carrier-v2-source-730d520-20261012.bundle",
+    "sha256": "77729fcd306bccb8f183cf9d82b70a829c12bda0ac7fc4da6d82837fe26ad780",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "730d520027f7be1dce5361605efc20e230072a7c",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-p2-nav-carrier-source-65574fa-20261012.bundle",
+    "sha256": "5106fe66078df44123357b3a365c211e2d4b47b4fa00ef555df88cb19abbb770",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "65574fa306f6a0b785b85ffd7ba637de93c56142",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-pending-confirmed-identity-0de400e-20261011.bundle",
+    "sha256": "5f7a6c7409717f607a5ec5926433fda20b148e7a75db53e8217ec637baa2e82e",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "0de400e14d08489971227c83618b751684399a25",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "0de400e14d08489971227c83618b751684399a25",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-root-navigation-v3-source-bb83a53-20261012.bundle",
+    "sha256": "8030e003e277f4e1390b162558e1fc2e6b81d5b584d509a3b4b79708b74598a5",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "bb83a530a0904953b92223c39feb77dab6298306",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-settings-category-detail-20261012.bundle",
+    "sha256": "a5a195488c683a8ed00782c245967c314627cb484a83870cc8247eb396e89ff7",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "73807af86f4f38675769641b42f0a6ace32a2327",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-settings-offline-notices-20261012.bundle",
+    "sha256": "a64c4df2ea78911b1c989787653167e4a19a981646ac7fb12feed8b54291d252",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "fb2c2dbbc077bbd4b7b849be7d9952188834610c",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-skinkit-100-22f11c8-full.bundle",
+    "sha256": "1fbdf1b6e87951583f87fddec8109af9c9ce9a9542dbecce436bfe2c4a745989",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "22f11c8f0f4e30bd5652f1792ca407f268ff17af",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-05c01d9-20261012.bundle",
+    "sha256": "03dd91b9bcca62c7a78d60cb4b78e0afda9dea52e397583e8da9b5704bf26df2",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "05c01d95283c086aa6701cc9f04b6bbb76e0cfe6",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-08ec37b-20261012.bundle",
+    "sha256": "3cc382359ab7beea194fd4e6d34ae6150d78911697845489245dec40897feb9a",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "08ec37b5fbf759a78f4e2198cad6f54b33469d42",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-43ef4ef-20261012.bundle",
+    "sha256": "fac024879b5989b84e2990277aa39ec6ad562ba0d469d6e3ac7213b9edb5849b",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "43ef4ef57fadf3f61115424a10e4255cd78a5a9e",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-46f5979-20261012.bundle",
+    "sha256": "3b3e3432807b9fc9b3fb5710b448892751126ce19656f5bde66931666d259f12",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "46f59796e770c3974d93cffa5aeae05eac587003",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-6279da1-20261012.bundle",
+    "sha256": "486f1808177f9eb2e65d1e2cc6d4095beae63151a4d35ec078c209db6e197ba3",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "6279da19f6dc361f81cbd75140556a06332ab0c8",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-6b2c7c1-20261012.bundle",
+    "sha256": "4e1dd565a4a76a334bcf1caed8f361fd7620145d09944356cac20166bda8cbba",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "6b2c7c17890b9aadc728e7c8a72ee362bced5cd9",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-766789f-20261012.bundle",
+    "sha256": "509a9bc760ba6cd4702f2a645220bc48715a174fe466ac81cdd3c5ce796454ee",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "766789ff93ea60bb2dd6164903f45a9a2f2cbe98",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-7f8bd6b-20261012.bundle",
+    "sha256": "b900cd3e1f34a42b522722608154c3b68a9f49bced4f6f98388049f9450a80d6",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "7f8bd6b11c77e9b253570438dfccc411bbb01bc5",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-920668f-20261012.bundle",
+    "sha256": "6653bc46bc7ebe872e75f3cf8e9046b21b4a97cf8def1d3ae68a8395e72b39a4",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "920668f107ec089a9a54da62e6821d982af95d5d",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-c0920b7-20261012.bundle",
+    "sha256": "82127a64ef032c56ac132e891017512b3da63112683b275dc7c4eaeef1d1e2cc",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "c0920b78d2ec16246b28e1fdb89370f77a5ec277",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-cd01c72-20261012.bundle",
+    "sha256": "6d861c4af57344e89a546d468a86f4a9e060458bc1a27c8b6e46b52739114a80",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "cd01c726a7bf290f6cd2bfd518d050f76bfe5955",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-source-fbbb0b2-20261012.bundle",
+    "sha256": "a89783828663a0f486a38767ec56f47efab5498d27b3924c5f1f0d2b88fd325a",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "fbbb0b2aacf5e1967584bdaa858250e73f6df605",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-ui-code4-d9bdf34-source-and-unsigned.bundle",
+    "sha256": "2791eea14b53fdaa0c5bed17d8caf327a216fb5fd0e68af0826b2fcc9e88dce6",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "5a237d53337700c6d857e704580f6c6154e8bcdc",
+        "ref": "refs/heads/delivery/ui-code4-unsigned-d9bdf34",
+        "ancestor": true
+      },
+      {
+        "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "d9bdf34567bf2d138e796a50560419d359385cf4",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      },
+      {
+        "sha": "d9bdf34567bf2d138e796a50560419d359385cf4",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-ui-shell-c4e4c86-full.bundle",
+    "sha256": "52c9dc4b0c2586b7893543c549c2eff136e7db3134e7ba0e3d9ef577f4819abc",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "b63a879f06131fbca905eb87c523d040c5cc8503",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "c4e4c86c2060833fcced047ef1e4fe9892fc99d4",
+        "ref": "refs/heads/ui/skinkit-1.0-integration-20261011",
+        "ancestor": true
+      },
+      {
+        "sha": "c4e4c86c2060833fcced047ef1e4fe9892fc99d4",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\delivery-dc69-20261010\\esv-verification-boundary-p1-20261010.bundle",
+    "sha256": "0e15fd80cd2aa58cb97c00572dd241ddf170171b45ad705cc6a626e7b2328c6c",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "e841456ee74684cb6f52b6ae2d611bfd477f6212",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "e841456ee74684cb6f52b6ae2d611bfd477f6212",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\esv-emulator-5556-preflight-final-20261010.bundle",
+    "sha256": "3c57db1a8b14b59970526fb20899e75ecdc9dd2b11de79698f7d7be900dd94bd",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "2036f82ef8afada3571680465f7c42927e867992",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "2036f82ef8afada3571680465f7c42927e867992",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\esv-emulator-5556-signature-blocked-20261010.bundle",
+    "sha256": "af3548e4913eb92618377edd70e5eccebb58250c8398f1236d3bcd3c50827408",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "aac7dd6b9ec1871c18d062e7f4918523d9470043",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "aac7dd6b9ec1871c18d062e7f4918523d9470043",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\esv-source-12f97d43-windows-checkpoint-20261009.bundle",
+    "sha256": "7a2f29bbefe5830846231eb4738e269e8ee46d91823c17757dda276f6e53bbed",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "6b29c1d1abbf9bfcb77bec0e940ca160ed9134e3",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "6b29c1d1abbf9bfcb77bec0e940ca160ed9134e3",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\esv-windows-ab-diagnosed-20261009.bundle",
+    "sha256": "5c5c7a0e55817fc44d92c5b1dd8c867198318cc13e801f8e9cab59d7de2f352c",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "d1d23f4e2313daf83251d76125cec70ca69461eb",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "d1d23f4e2313daf83251d76125cec70ca69461eb",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\esv-windows-ab-final-20261009.bundle",
+    "sha256": "c0ba096a6346a05b66bfa648deaccea52ef9a29e05467339d1cc1b9848149aed",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "ff59ed40f5f4bedf7442fecac9587ffe07758144",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "ff59ed40f5f4bedf7442fecac9587ffe07758144",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\esv-windows-ab-implemented-20261009.bundle",
+    "sha256": "4669a499dfe05d59b6ffaf633059beaeeae5ee49d0b36b4cbde78d8507f70527",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "f9256373016c283e66193e4e80fc413e8ebfc81c",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "f9256373016c283e66193e4e80fc413e8ebfc81c",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  },
+  {
+    "path": "D:\\CodexProjects\\EasySaveVideo\\esv-windows-ab-ordinary-dom-20261010.bundle",
+    "sha256": "95ca17f1bc32452771213695829a749b280c8a52bc8a126ce7f4e6d4badb81cb",
+    "listExit": 0,
+    "refs": [
+      {
+        "sha": "11433acdb88937a7cb0b52c5fa4ef172d7f5748f",
+        "ref": "refs/heads/master",
+        "ancestor": true
+      },
+      {
+        "sha": "11433acdb88937a7cb0b52c5fa4ef172d7f5748f",
+        "ref": "HEAD",
+        "ancestor": true
+      }
+    ]
+  }
+]

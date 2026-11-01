@@ -1,0 +1,277 @@
+[
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\EasySaveVideo_Spec_v0.3_CN\\01_Product_Requirements.md",
+    "target": "docs/EasySaveVideo_Spec_v0.3_CN/01_Product_Requirements.md",
+    "sha256": "2fcc9419be3ee6bc650df12f68ab7009d78a12f4724ec87b175a61a14f6b6e77"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\EasySaveVideo_Spec_v0.3_CN\\02_Architecture_and_Data_Model.md",
+    "target": "docs/EasySaveVideo_Spec_v0.3_CN/02_Architecture_and_Data_Model.md",
+    "sha256": "e5f906ef6c5dddabddec49df05481ef290072360d990e54fc74578d746288834"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\EasySaveVideo_Spec_v0.3_CN\\02_Architecture_and_Data_Model_update_1.md",
+    "target": "docs/EasySaveVideo_Spec_v0.3_CN/02_Architecture_and_Data_Model_update_1.md",
+    "sha256": "21d984a47b4453d87eb55d0e7173a40085c699c927c29f9b88eb0401ca9b745a"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\EasySaveVideo_Spec_v0.3_CN\\03_Development_Milestones.md",
+    "target": "docs/EasySaveVideo_Spec_v0.3_CN/03_Development_Milestones.md",
+    "sha256": "e92fd176954ea2a05c9b79c257b48d6eb4638dba7a02e098cee4e778b222659d"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\EasySaveVideo_Spec_v0.3_CN\\03_Development_Milestones_update1.md",
+    "target": "docs/EasySaveVideo_Spec_v0.3_CN/03_Development_Milestones_update1.md",
+    "sha256": "32d35f5508407f42d9741beaa072a9d2798e639fb6d410f053221cfabc18b78f"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\EasySaveVideo_Spec_v0.3_CN\\04_Technical_Requirements.md",
+    "target": "docs/EasySaveVideo_Spec_v0.3_CN/04_Technical_Requirements.md",
+    "sha256": "a0d525292d875e7215313218ccbfb314bdd40a270b6c3dcbf3ce60c0f8a6e063"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\EasySaveVideo_Spec_v0.3_CN\\05_Test_and_Acceptance_Strategy.md",
+    "target": "docs/EasySaveVideo_Spec_v0.3_CN/05_Test_and_Acceptance_Strategy.md",
+    "sha256": "541ff19ab3fe1a8b2ca4e5fb428c13bd02486c8787ba888f3c83da670c923e2e"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\EasySaveVideo_Spec_v0.3_CN\\06_Decision_Log.md",
+    "target": "docs/EasySaveVideo_Spec_v0.3_CN/06_Decision_Log.md",
+    "sha256": "11718dc565cbb96de63f50b24a60f578eb9796cc7403c1949a0c557ebc8516c1"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\skinkit\\第三方适配 Kit\\README.md",
+    "target": "docs/skinkit/第三方适配 Kit/README.md",
+    "sha256": "012ab71a718eeccdf154e24d42eeb0249a90ce5a29a2a3f947e8fb2f1db03761"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\skinkit\\第三方适配 Kit\\SkinKit Default Theme UI Design Specification V1.0.md",
+    "target": "docs/skinkit/第三方适配 Kit/SkinKit Default Theme UI Design Specification V1.0.md",
+    "sha256": "fbd98c002b62c6fb09ac06c28b1401a6bea590cd2c9d8ba69dff4578174f678b"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\skinkit\\第三方适配 Kit\\SkinKit Ready 开发规范 V1.0.md",
+    "target": "docs/skinkit/第三方适配 Kit/SkinKit Ready 开发规范 V1.0.md",
+    "sha256": "9c838db54f371990453003e1e8e53003c9120912f7c855b9aaff7e37d8cf32e2"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\skinkit\\第三方适配 Kit\\SkinKit-Closed-SDK-0.3.0-recovery-r1.zip",
+    "target": "docs/skinkit/第三方适配 Kit/SkinKit-Closed-SDK-0.3.0-recovery-r1.zip",
+    "sha256": "d2351f90527351c736baeefa51ac17aed8ac3fa88b19e9cebf24847099ef23f7"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\00_ESV_UI_DOCUMENT_INDEX.md",
+    "target": "docs/consolidation/20261101/history/original-root-docs/ui/00_ESV_UI_DOCUMENT_INDEX.md",
+    "sha256": "6721f638db6817985a892655d98b26885f40a9f695f68998ff6a23b8fe856b01"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\01_ESV_UI_FRAMEWORK_DESIGN.md",
+    "target": "docs/consolidation/20261101/history/original-root-docs/ui/01_ESV_UI_FRAMEWORK_DESIGN.md",
+    "sha256": "7c211bd69ee1058030bd259e4de1474bd5db510f30ffa9129728d4aee89e2757"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\02_ESV_UI_MILESTONE_PLAN.md",
+    "target": "docs/consolidation/20261101/history/original-root-docs/ui/02_ESV_UI_MILESTONE_PLAN.md",
+    "sha256": "33d3cfa226debde22678cd2785bd5302af1379c85e76d63f4eb86c9f37bd7a06"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\03_ESV_UI_CODER_TECHNICAL_REQUIREMENTS.md",
+    "target": "docs/consolidation/20261101/history/original-root-docs/ui/03_ESV_UI_CODER_TECHNICAL_REQUIREMENTS.md",
+    "sha256": "e42bc2c4261dc41f5427dbc531715c1c8456b1ae237dbf564a6503c05ea37c15"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\04_ESV_UI_TESTER_TEST_REQUIREMENTS.md",
+    "target": "docs/consolidation/20261101/history/original-root-docs/ui/04_ESV_UI_TESTER_TEST_REQUIREMENTS.md",
+    "sha256": "c106133f7ca525108428966517b7092bb4d6d5edef9a1d02515e331d5dcd660d"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\05_ESV_UI_DATA_AND_INTERFACE_CONTRACT.md",
+    "target": "docs/consolidation/20261101/history/original-root-docs/ui/05_ESV_UI_DATA_AND_INTERFACE_CONTRACT.md",
+    "sha256": "79b6d680d84ab07fff46135c9e3ba2b4646cd021ddb40c3a07dcbcb63fdb2f81"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\06_ESV_UI_HANDOFF_AND_ACCEPTANCE.md",
+    "target": "docs/consolidation/20261101/history/original-root-docs/ui/06_ESV_UI_HANDOFF_AND_ACCEPTANCE.md",
+    "sha256": "aed5170b9fe41af935b2038517ef21c918a457aa0f9a35d5a4e2d6445c0959d3"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\07_ESV_UI_PPT_TRACEABILITY_MATRIX.md",
+    "target": "docs/consolidation/20261101/history/original-root-docs/ui/07_ESV_UI_PPT_TRACEABILITY_MATRIX.md",
+    "sha256": "cd0fdc1f8a694d2b23c8d97996a967ae257dfca9bd2de804f7bbec3bb91573f1"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\08_ESV_UI_additional_technical_framework_policy_2026-10-11.md",
+    "target": "docs/consolidation/20261101/history/original-root-docs/ui/08_ESV_UI_additional_technical_framework_policy_2026-10-11.md",
+    "sha256": "1521cfc93a74d5d131fc4695b9799835b4689ae88e08eaecb6e1e78b5879504e"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\EasySaveVideo_UI_Concept_v0.1.zip",
+    "target": "docs/ui/EasySaveVideo_UI_Concept_v0.1.zip",
+    "sha256": "1507abba5d584ecf9d49b1809461bf8b8fddeaa0c05f4688e5d7654d7e9255bf"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\docs\\ui\\EasySaveVideo_UI_Effect_Design_V1.0_2026-10-11.pptx",
+    "target": "docs/ui/EasySaveVideo_UI_Effect_Design_V1.0_2026-10-11.pptx",
+    "sha256": "eac0a1882a0ae367bcfd06111d8eaa025d69e1d17eff4ee457436a2ec03144b9"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-approved-POM-lint-recovery-handoff-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-approved-POM-lint-recovery-handoff-20261025.md",
+    "sha256": "a9a98757e9a9335642d3d0c6bed8fe994814a631065b360b21b20f98d6a5a115"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-cloud-signing-and-BOM-handoff-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-cloud-signing-and-BOM-handoff-20261025.md",
+    "sha256": "23230fbd6b70f3d697798cc0ec44409763c8bf6b832fd7063d4cb164d0fd2ad0"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-code12-baseline-diagnostic-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-code12-baseline-diagnostic-20261025.md",
+    "sha256": "550a63c49b0b46b16a9334609ee3ca6fbad299e4ad491d8b7217cb00a53a5514"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-code12-Windows-build-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-code12-Windows-build-20261025.md",
+    "sha256": "b4dbedf2a69ae76e020f9a7ca593479dd8aa81efc9226a1d9d1c9aff850ba20f"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-file-identity-diagnostic-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-file-identity-diagnostic-20261025.md",
+    "sha256": "92d97ef182ecc33ef6daf7eafc1ea8b7df44a5ee641cd043d4f04d1400242986"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-PDYM20-preparation-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-PDYM20-preparation-20261025.md",
+    "sha256": "55b6d91b649ef4a2d54a5778f4fdd5357a14d6890f61372bebb0ae90e8422372"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-PDYM20-public-fixture-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-PDYM20-public-fixture-20261025.md",
+    "sha256": "73ccc22d8264e6341d11a905737bf1bcac95e3a85452cc74c39920db2cef1a33"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-PDYM20-storage-notice-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-PDYM20-storage-notice-20261025.md",
+    "sha256": "f0d7a1741a3419fac74349d37344eb08ee69ceaf08b611cea58dfcd56ab2e3af"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-private-recovery-sync-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-private-recovery-sync-20261025.md",
+    "sha256": "5fe0d4789b7efe53f60aadecb3409eba5ff1440e7a629a060211637c7a4e7cab"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-readonly-blocker-classification-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-readonly-blocker-classification-20261025.md",
+    "sha256": "891a5172cd659d65b8b648b121f7d81baab4f4bddfb11e36f010d9071b12d485"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\ESV-Windows-build-terminal-20261025.md",
+    "target": "docs/consolidation/20261101/history/recovery-20261025/ESV-Windows-build-terminal-20261025.md",
+    "sha256": "eda661f05454fb0de95296ef487b76f22f217bae88202eedd9244b24e171fcc9"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\init-boundary-patch-20261028\\changes.diff",
+    "target": "docs/consolidation/20261101/history/init-boundary-patch-20261028/changes.diff",
+    "sha256": "9a477f1515a8e2f7b1fb40b4427db8640cc53490f2593ffa718a025cf9bc21a7"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\init-boundary-patch-20261028\\COMPATIBILITY_REVIEW.md",
+    "target": "docs/consolidation/20261101/history/init-boundary-patch-20261028/COMPATIBILITY_REVIEW.md",
+    "sha256": "3526fa09c559b3887a670435a015b179dc29c23100ddf22ca7042a3e9028b6f8"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\init-boundary-patch-20261028\\FINAL_RESULT.json",
+    "target": "docs/consolidation/20261101/history/init-boundary-patch-20261028/FINAL_RESULT.json",
+    "sha256": "dffe8d916751b32994c6425ca770f01a68e0208ab3985038cda1945d149be7f0"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\init-boundary-patch-20261028\\PATCH_MANIFEST.json",
+    "target": "docs/consolidation/20261101/history/init-boundary-patch-20261028/PATCH_MANIFEST.json",
+    "sha256": "d6e3cddf02c08cad9beea9196cc29694b8af91b849f1fd6617c9e87a234beca0"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\init-boundary-patch-20261028\\REPORT.md",
+    "target": "docs/consolidation/20261101/history/init-boundary-patch-20261028/REPORT.md",
+    "sha256": "02428d5e1ccdad6bbcc47ef2b889afa5888fe20b5fb7653caf5181806f763cfd"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\init-boundary-patch-20261028\\TEST_RESULT.json",
+    "target": "docs/consolidation/20261101/history/init-boundary-patch-20261028/TEST_RESULT.json",
+    "sha256": "482ce9f17fbe9f1f41ecec9c7dd2132ceb816c5518c772d7dde3cf659f185fd1"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\init-boundary-review-20261028\\REVIEW.md",
+    "target": "docs/consolidation/20261101/history/init-boundary-review-20261028/REVIEW.md",
+    "sha256": "759cfcf9d557832196a1d5f4b78ccd50d7937c7457bbe0ab32cd6ab4b08c4fb6"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\init-boundary-review-20261028\\SOURCE_CHECK.json",
+    "target": "docs/consolidation/20261101/history/init-boundary-review-20261028/SOURCE_CHECK.json",
+    "sha256": "ef9201140aee45c9bec1833172e04fffee49d18ea8832603f957e82656539acb"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\init-boundary-review-20261028\\TEST_RUN.json",
+    "target": "docs/consolidation/20261101/history/init-boundary-review-20261028/TEST_RUN.json",
+    "sha256": "53d6cd75320d4a858dac1c282a5e0684d6e39b9c98a8c6e32448be960e6f9b2f"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\groovy-bom-exact-admission\\ADMISSION.json",
+    "target": "docs/consolidation/20261101/history/groovy-bom-exact-admission/ADMISSION.json",
+    "sha256": "b9c3596b944e7096106bbc5a4d8ee508a3531b011037c6de0754423af75c79ad"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\groovy-bom-exact-admission\\LINT_RESULT.json",
+    "target": "docs/consolidation/20261101/history/groovy-bom-exact-admission/LINT_RESULT.json",
+    "sha256": "2b87af0486e5d783ab995a7abdf55494fea95bea4f498ba67da15e80d666e18e"
+  },
+  {
+    "source": "D:\\CodexProjects\\2026-10-22\\task\\groovy-bom-exact-admission\\verification-metadata.patch",
+    "target": "docs/consolidation/20261101/history/groovy-bom-exact-admission/verification-metadata.patch",
+    "sha256": "04cdc498ea19422adcb216c7d7582e0c654e26968c8053eaf946e2119f4e7ca4"
+  },
+  {
+    "source": "C:/Users/benny/AppData/Local/Temp/ESV-consolidation-20261101/code13-delta/BASELINE_SOURCE_MANIFEST.json",
+    "target": "docs/consolidation/20261101/manifests/BASELINE_SOURCE_MANIFEST.json",
+    "sha256": "76f33eadb01902dfe0024f1bb21501f66b48429037dff2650e87edcab69c6b32"
+  },
+  {
+    "source": "C:/Users/benny/AppData/Local/Temp/ESV-consolidation-20261101/code13-delta/FINAL_SOURCE_MANIFEST.json",
+    "target": "docs/consolidation/20261101/manifests/FINAL_SOURCE_MANIFEST.json",
+    "sha256": "c5670131a7334e4910f07cd92dae2496b3e7e2a83b032170b1443f0850df8ffc"
+  },
+  {
+    "source": "C:/Users/benny/AppData/Local/Temp/ESV-consolidation-20261101/code13-delta/SOURCE_DELTA.json",
+    "target": "docs/consolidation/20261101/manifests/SOURCE_DELTA.json",
+    "sha256": "75a9d1d02fee57fba3b83b1ce571fb179e4ad48ddf9fd2b6dae804cc43d4fb92"
+  },
+  {
+    "source": "C:/Users/benny/AppData/Local/Temp/ESV-consolidation-20261101/code13-delta/CODE13_SOURCE.diff",
+    "target": "docs/consolidation/20261101/manifests/CODE13_SOURCE.diff",
+    "sha256": "f1ae7d2541f481ddbf4d41e34039f1ee546d1814956c939637c143503a300878"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\discovery-live-20261017\\source-overlay\\core-model\\src\\main\\kotlin\\com\\easysavevideo\\core\\model\\Settings.kt",
+    "target": "docs/consolidation/20261101/candidates/pre-T0647-fragments/core-model/src/main/kotlin/com/easysavevideo/core/model/Settings.kt",
+    "sha256": "b74b8386258c540b1f31193f6bf0821f9478edfd8d737456bf1920d21da6e573"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\discovery-live-20261017\\source-overlay\\core-model\\src\\main\\kotlin\\com\\easysavevideo\\core\\model\\VaultRecoveryContract.kt",
+    "target": "docs/consolidation/20261101/candidates/pre-T0647-fragments/core-model/src/main/kotlin/com/easysavevideo/core/model/VaultRecoveryContract.kt",
+    "sha256": "56504f2ab17bd73ede17abc2e9bcfa55be987688a645d1983d0f7db5ef09c40d"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\discovery-live-20261017\\source-overlay\\core-model\\src\\main\\kotlin\\com\\easysavevideo\\core\\model\\VaultSessionContract.kt",
+    "target": "docs/consolidation/20261101/candidates/pre-T0647-fragments/core-model/src/main/kotlin/com/easysavevideo/core/model/VaultSessionContract.kt",
+    "sha256": "0008f9611a76c36f416ab404f1ead8773b74717170c94726659cf9cf4189d7d8"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\discovery-live-20261017\\source-overlay\\discovery\\src\\main\\kotlin\\com\\easysavevideo\\discovery\\ProviderFramework.kt",
+    "target": "docs/consolidation/20261101/candidates/pre-T0647-fragments/discovery/src/main/kotlin/com/easysavevideo/discovery/ProviderFramework.kt",
+    "sha256": "ab7a4cd02cf0a60d07219af77ea11a66ffec5483ca0d3b4c91aa96b366cf7926"
+  },
+  {
+    "source": "D:\\CodexProjects\\EasySaveVideo\\discovery-live-20261017\\source-overlay\\discovery\\src\\main\\kotlin\\com\\easysavevideo\\discovery\\ValidationPipeline.kt",
+    "target": "docs/consolidation/20261101/candidates/pre-T0647-fragments/discovery/src/main/kotlin/com/easysavevideo/discovery/ValidationPipeline.kt",
+    "sha256": "90fdaa980723b69295bc7f3ec81a52af551b23d034c16c9fd5092ee0838c40c4"
+  }
+]

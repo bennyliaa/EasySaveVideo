@@ -1,0 +1,17 @@
+{
+  "exit": 1,
+  "debugCompilePassed": true,
+  "releaseCompilePassed": true,
+  "runtimeAdmission": 95,
+  "runtimeInventoryPassed": true,
+  "tests": {
+    "tests": 7122,
+    "skipped": 2,
+    "failures": 229,
+    "errors": 0,
+    "passed": 6891
+  },
+  "noNewFailureIds": true,
+  "apkBuilt": false,
+  "adbStarted": false
+}

@@ -1,0 +1,52 @@
+{
+  "constructor_context_abi_restored": true,
+  "new_tests": 8,
+  "junit_passed": 17,
+  "reverse_patch_check_exit": 0,
+  "task": ":app:compileDebugKotlin",
+  "device_tested": false,
+  "result": "BUILD SUCCESSFUL in 52s",
+  "files": [
+    {
+      "path": "PATCH_MANIFEST.json",
+      "sha256": "D6E3CDDF02C08CAD9BEEA9196CC29694B8AF91B849F1FD6617C9E87A234BECA0"
+    },
+    {
+      "path": "changes.diff",
+      "sha256": "9A477F1515A8E2F7B1FB40B4427DB8640CC53490F2593FFA718A025CF9BC21A7"
+    },
+    {
+      "path": "TEST_RESULT.json",
+      "sha256": "482CE9F17FBE9F1F41ECEC9C7DD2132CEB816C5518C772D7DDE3CF659F185FD1"
+    },
+    {
+      "path": "android-compile-compatibility.log",
+      "sha256": "BE32F2AB8E9D28D11F59500920570B4FB66C265DD305A17488B1025E3671FAF8"
+    },
+    {
+      "path": "junit-current.log",
+      "sha256": "621BA35DEABDC592E6BC6C54BE8FA41794BB606687362E8FEBB6528154A6B324"
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "02428D5E1CCDAD6BBCC47EF2B889AFA5888FE20B5FB7653CAF5181806F763CFD"
+    },
+    {
+      "path": "COMPATIBILITY_REVIEW.md",
+      "sha256": "3526FA09C559B3887A670435A015B179DC29C23100DDF22CA7042A3E9028B6F8"
+    },
+    {
+      "path": "constructor-before.txt",
+      "sha256": "FFBD5AE1764FB959E80DE1CC803E9B80B3BAD3965375145EF877EF2701E8D0E9"
+    },
+    {
+      "path": "constructor-after.txt",
+      "sha256": "637703FB0898EDFA62E88317C347FCED4EB4868F53BA0A1D1A7ED4C7285F8BB1"
+    }
+  ],
+  "offline": true,
+  "android_compile_exit": 0,
+  "upload": false,
+  "adb_invoked": false,
+  "stopped_after_review": true
+}

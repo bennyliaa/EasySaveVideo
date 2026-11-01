@@ -1,5 +1,7 @@
 # EasySaveVideo
 
+正式开发目录：D:/CodexProjects/EasySaveVideo，本地仅使用 main。本次来源、实际合并、备份、验证与历史缺口见 [本机整理报告](docs/consolidation/20261101/REPORT.md)。
+
 Private Android 12+ (API31) phone/tablet project. Kotlin + Compose Foundation + SystemWebView; unconfigured builds have zero search Providers; an explicitly configured Wikimedia Commons metadata source is available. SkinKit Contract/Default 0.0.1 supplies every visual category.
 
 ## Project folders

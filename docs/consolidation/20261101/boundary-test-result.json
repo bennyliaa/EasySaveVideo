@@ -1,0 +1,73 @@
+{
+  "jars": [
+    {
+      "path": "C:\\Users\\benny\\.gradle\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-compiler-embeddable\\2.2.10\\6882d39ef03b18879c1a5d2a83c2212361bed5fe\\kotlin-compiler-embeddable-2.2.10.jar",
+      "sha256": "79628FD5D64B4692A62F98962BAAB00E9076A37E2CFFD6ACE33CD0B7BE7D1CDF"
+    },
+    {
+      "path": "C:\\Users\\benny\\.gradle\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib\\2.2.10\\30de6faa127a4a012db8e71bf1b9c0a99b1402b2\\kotlin-stdlib-2.2.10.jar",
+      "sha256": "9C67CC79EFD6B9215B49D2A4308F5F3433537376C7C88E89BDD6729BD096E61A"
+    },
+    {
+      "path": "C:\\Users\\benny\\.gradle\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-script-runtime\\2.2.10\\712f9bc08f378c13a4a00f0bbb28c76e59183e83\\kotlin-script-runtime-2.2.10.jar",
+      "sha256": "C304A67DBA6A61DDE560E6310920BED746307C3854F6675C29AC29114731B6B0"
+    },
+    {
+      "path": "C:\\Users\\benny\\.gradle\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-reflect\\1.6.10\\1cbe9c92c12a94eea200d23c2bbaedaf3daf5132\\kotlin-reflect-1.6.10.jar",
+      "sha256": "3277AC102AE17AAD10A55ABEC75FF5696C8D109790396434B496E75087854203"
+    },
+    {
+      "path": "C:\\Users\\benny\\.gradle\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-daemon-embeddable\\2.2.10\\212fd3c2c6e4e5d0f4db3c4191233e2b622380cc\\kotlin-daemon-embeddable-2.2.10.jar",
+      "sha256": "B31573D418961FA080760FEDCFC90D68AD67A85EAFA245C73FE3D551476777BA"
+    },
+    {
+      "path": "C:\\Users\\benny\\.gradle\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-coroutines-core-jvm\\1.8.0\\ac1dc37a30a93150b704022f8d895ee1bd3a36b3\\kotlinx-coroutines-core-jvm-1.8.0.jar",
+      "sha256": "9860906A1937490BF5F3B06D2F0E10EF451E65B95B269F22DAF68A3D1F5065C5"
+    },
+    {
+      "path": "C:\\Users\\benny\\.gradle\\caches\\modules-2\\files-2.1\\org.jetbrains\\annotations\\13.0\\919f0dfe192fb4e063e7dacadee7f8bb9a2672a9\\annotations-13.0.jar",
+      "sha256": "ACE2A10DC8E2D5FD34925ECAC03E4988B2C0F851650C94B8CEF49BA1BD111478"
+    },
+    {
+      "path": "C:\\Users\\benny\\.gradle\\caches\\modules-2\\files-2.1\\junit\\junit\\4.13.2\\8ac9e16d933b6fb43bc7f576336b8f4d7eb5ba12\\junit-4.13.2.jar",
+      "sha256": "8E495B634469D64FB8ACFA3495A065CBACC8A0FFF55CE1E31007BE4C16DC57D3"
+    },
+    {
+      "path": "C:\\Users\\benny\\.gradle\\caches\\modules-2\\files-2.1\\org.hamcrest\\hamcrest-core\\1.3\\42a25dc3219429f0e5d060061f71acb49bf010a0\\hamcrest-core-1.3.jar",
+      "sha256": "66FDEF91E9739348DF7A096AA384A5685F4E875584CCE89386A7A47251C4D8E9"
+    }
+  ],
+  "scope": "Fresh standalone source compilation; no Android integration or ADB",
+  "test_exit": 0,
+  "sources": [
+    {
+      "path": "C:\\Users\\benny\\AppData\\Local\\Temp\\ESV-consolidation-20261101\\main-staging\\app\\src/main/kotlin/com/easysavevideo/app/save/MediaTaskActivity.kt",
+      "sha256": "719C04B1505C116FF12C5A287817C4945B592243062D8199F5D3E81537D3A863"
+    },
+    {
+      "path": "C:\\Users\\benny\\AppData\\Local\\Temp\\ESV-consolidation-20261101\\main-staging\\app\\src/test/kotlin/com/easysavevideo/app/save/MediaTaskActivityHandoffTest.kt",
+      "sha256": "96892079A46AE44A5D12DBB7978FF969EF8221A3AA8CE8195801BA431EC06F10"
+    },
+    {
+      "path": "C:\\Users\\benny\\AppData\\Local\\Temp\\ESV-consolidation-20261101\\main-staging\\app\\src/main/kotlin/com/easysavevideo/app/save/SaveRuntimeFailureDiagnostics.kt",
+      "sha256": "A08774AF56D1B3F7F62DA1229F3F8F833536E022E13D1CAB6A7FC3BDE4679D06"
+    },
+    {
+      "path": "C:\\Users\\benny\\AppData\\Local\\Temp\\ESV-consolidation-20261101\\main-staging\\app\\src/main/kotlin/com/easysavevideo/app/save/MediaTaskActivityHandoff.kt",
+      "sha256": "F5E57A4FA78E16B2175BD7B098562CC99B02D89321C87038CDEA0EB2612C35D4"
+    },
+    {
+      "path": "C:\\Users\\benny\\AppData\\Local\\Temp\\ESV-consolidation-20261101\\main-staging\\app\\src/main/kotlin/com/easysavevideo/app/save/storage/SaveStorageInitializationProbe.kt",
+      "sha256": "F14A1F1EFE0962DE922F7A9B563F691C975780D43195F4481738F9828C723361"
+    },
+    {
+      "path": "C:\\Users\\benny\\AppData\\Local\\Temp\\ESV-consolidation-20261101\\main-staging\\app\\src/test/kotlin/com/easysavevideo/app/save/SaveRuntimeFailureDiagnosticsJUnitTest.kt",
+      "sha256": "8C54BA357FDFF0EAB73ADD55A9834D858CE6621890CC0C172D270DAEF799F0F0"
+    },
+    {
+      "path": "C:\\Users\\benny\\AppData\\Local\\Temp\\ESV-consolidation-20261101\\main-staging\\app\\src/test/kotlin/com/easysavevideo/app/save/SaveInitializationBoundaryTest.kt",
+      "sha256": "C6A070313270D1B64E83AD56E0E287F342254DFEBD09FB707B0F1D49903D00F4"
+    }
+  ],
+  "compiler_exit": 0
+}

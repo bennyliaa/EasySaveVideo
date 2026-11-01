@@ -1,0 +1,266 @@
+diff --git a/app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt b/app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt
+index 5c52ff0..d6627f6 100644
+--- a/app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt
++++ b/app/src/main/kotlin/com/easysavevideo/app/save/AndroidSaveRuntime.kt
+@@ -349,7 +349,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
+         val application = context.applicationContext
+         command(mediaWork = true, onRejected = initializationActivity::preparationFailed) {
+             try {
+-                storage = AndroidSaveStorage(application)
++                storage = AndroidSaveStorage(application) { stage -> failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.valueOf(stage.name) }
+                 val staging = object : NetworkStagingAccess {
+                     override fun length(artifact: StagingArtifact) = storage.stagingLength(artifact)
+                     override fun availableBytes(artifact: StagingArtifact) = storage.availableBytes(artifact)
+@@ -419,10 +419,12 @@ class AndroidSaveRuntime private constructor(context: Context) {
+                 }
+                 failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.INSTALL
+                 initializationActivity.enqueue({ install -> main.post(install) }) {
++                    failureDiagnostics.install({ ready }, { android.util.Log.e("ESVSave", it) }) {
+                     editor = editInitialization.value; editorInitializationStatus = editInitialization.status; editorInitializationDiagnostic = editInitialization.diagnostic; segmentRecording = segmentRuntime; segmentRuntime?.setForeground(foreground)
+                     records = initial; activeTaskCount = initialActiveCount; mediaDispositions = dispositions
+                     libraryExports = exports; destinations = destinationRuntime; ready = true
+                     failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.READY
++                    }
+                 }
+             } finally {
+                 // Failure before posting has no continuing owner. A posted installation owns
+diff --git a/app/src/main/kotlin/com/easysavevideo/app/save/SaveRuntimeFailureDiagnostics.kt b/app/src/main/kotlin/com/easysavevideo/app/save/SaveRuntimeFailureDiagnostics.kt
+index 7eac7b1..172542e 100644
+--- a/app/src/main/kotlin/com/easysavevideo/app/save/SaveRuntimeFailureDiagnostics.kt
++++ b/app/src/main/kotlin/com/easysavevideo/app/save/SaveRuntimeFailureDiagnostics.kt
+@@ -7,23 +7,34 @@ import java.util.concurrent.atomic.AtomicInteger
+ /** Error-only, process-owner budget. Never reads Throwable message/cause/stack/toString. */
+ internal class SaveRuntimeFailureDiagnostics {
+     enum class Stage {
+-        STORAGE, DIRECT_TRANSPORT, HLS_TRANSPORT, RECORD_PORT, DIRECT_COMPONENTS,
++        STORAGE, STORAGE_DIRECTORY, STORAGE_OWNER_FENCE, STORAGE_LEASE, STORAGE_HELPER,
++        STORAGE_PROTOCOL, STORAGE_LIBRARY, STORAGE_PENDING_DELETES, STORAGE_SNAPSHOT, STORAGE_DATABASE,
++        DIRECT_TRANSPORT, HLS_TRANSPORT, RECORD_PORT, DIRECT_COMPONENTS,
+         COORDINATOR, RECOVERY, TERMINAL_CLEANUP, SNAPSHOT, DESTINATIONS, EDITOR, INSTALL, READY
+     }
+     enum class Category { DATABASE, SAVE_FAILURE, SECURITY, IO, ARGUMENT, STATE, REJECTED, OTHER }
+     @Volatile var stage = Stage.STORAGE
+     private val emitted = AtomicInteger()
+ 
+-    fun failure(error: Exception, ready: Boolean): String? {
++    fun failure(error: Exception, ready: Boolean, fixedStage: Stage? = null): String? {
+         while (true) {
+             val count = emitted.get()
+             if (count >= 8) return null
+             if (emitted.compareAndSet(count, count + 1)) break
+         }
+-        val phase = if (ready) "CONTROL" else stage.name
++        val phase = fixedStage?.name ?: if (ready) "CONTROL" else stage.name
+         return "save_error phase=$phase category=${category(error).name} ready=$ready"
+     }
+ 
++    fun install(ready: () -> Boolean, emit: (String) -> Unit, action: () -> Unit) {
++        try { action() }
++        catch (original: Exception) {
++            try { failure(original, ready(), Stage.INSTALL)?.let(emit) }
++            catch (_: Throwable) { /* Diagnostics never replace the installation failure. */ }
++            throw original
++        }
++    }
++
+     private fun category(error: Exception): Category {
+         // Exact allowlisted superclass identities only; no arbitrary class names enter output.
+         var type: Class<*>? = error.javaClass
+diff --git a/app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt b/app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt
+index 122f39f..b94ba07 100644
+--- a/app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt
++++ b/app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt
+@@ -57,10 +57,11 @@ import java.nio.file.StandardCopyOption
+  * Private Android storage. Nothing here uses public MediaStore, M2 databases, external names or backups.
+  * One instance is owned by the app composition root and closed only after active Save work has stopped.
+  */
+-class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMediaStore, AutoCloseable {
++class AndroidSaveStorage @JvmOverloads constructor(context: Context, initializationStage: (SaveStorageInitializationStage) -> Unit = {}) : ControlledDirectJournal, PrivateMediaStore, AutoCloseable {
++    private val initialization = SaveStorageInitializationProbe(initializationStage)
+     private val applicationContext = context.applicationContext
+     private val directTransformer by lazy { com.easysavevideo.app.media.transform.TransformerEngine(applicationContext) }
+-    private val directory = File(context.applicationContext.noBackupFilesDir, "save_m3_v1")
++    private val directory = initialization.at(SaveStorageInitializationStage.STORAGE_DIRECTORY) { File(context.applicationContext.noBackupFilesDir, "save_m3_v1") }
+     private val helper: Database
+     private val catalog: Catalog
+     private val protocol: PrivateCommitProtocol
+@@ -119,29 +120,33 @@ class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMed
+     private var normalizedCommitter: NormalizedCommitProtocol? = null
+     @Volatile private var closed = false
+     init {
++        initialization.at(SaveStorageInitializationStage.STORAGE_DIRECTORY) {
+         if (Files.isSymbolicLink(directory.toPath()) || (!directory.isDirectory && !directory.mkdirs()))
+             throw SaveFailure(SaveError.STORAGE_FAILURE)
+-        synchronized(failedOwnerLock) {
++        }
++        initialization.at(SaveStorageInitializationStage.STORAGE_OWNER_FENCE) { synchronized(failedOwnerLock) {
+             if (failedStorageOwner != null) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
+         }
+-        ownerLease = PrivateDirectoryLease(directory)
++        }
++        ownerLease = initialization.at(SaveStorageInitializationStage.STORAGE_LEASE) { PrivateDirectoryLease(directory) }
+         val firstProcessLifetime = synchronized(failedOwnerLock) { seenDirectoryLifetimes.add(directory.absolutePath) }
+         var initializingHelper: Database? = null
+         try {
+-            helper = Database(context.applicationContext, File(directory, "save_m3_v1.db")).also { initializingHelper = it }
+-            catalog = Catalog()
+-            protocol = PrivateCommitProtocol(directory, catalog, AndroidFileOps)
+-            libraryStorage = AndroidLibraryRepository({ helper.writableDatabase }, fileLock,
+-                OrdinaryMediaFiles(File(directory, "media"), AndroidFileOps::syncDirectory), { closed })
++            helper = initialization.at(SaveStorageInitializationStage.STORAGE_HELPER) { Database(context.applicationContext, File(directory, "save_m3_v1.db")).also { initializingHelper = it } }
++            catalog = initialization.at(SaveStorageInitializationStage.STORAGE_PROTOCOL) { Catalog() }
++            protocol = initialization.at(SaveStorageInitializationStage.STORAGE_PROTOCOL) { PrivateCommitProtocol(directory, catalog, AndroidFileOps) }
++            libraryStorage = initialization.at(SaveStorageInitializationStage.STORAGE_LIBRARY) { AndroidLibraryRepository({ initialization.at(SaveStorageInitializationStage.STORAGE_DATABASE) { helper.writableDatabase } }, fileLock,
++                OrdinaryMediaFiles(File(directory, "media"), AndroidFileOps::syncDirectory), { closed }) }
+             // Bounded, durable-only recovery. Failed unlink remains a visible pending operation.
+-            libraryStorage.processPendingDeletes(100)
++            initialization.at(SaveStorageInitializationStage.STORAGE_PENDING_DELETES) { libraryStorage.processPendingDeletes(100) }
+             // Snapshot BEFORE Coordinator recovery/Resume can alter control revisions or phases.
+             // Reopening a directory in the same process never constitutes a process restart.
+-            startupRawRecords = if (firstProcessLifetime) synchronized(fileLock) {
++            startupRawRecords = initialization.at(SaveStorageInitializationStage.STORAGE_SNAPSHOT) { if (firstProcessLifetime) synchronized(fileLock) {
+                 records("state NOT IN ('SUCCEEDED','FAILED','CANCELLED')", 1000)
+                     .filter { it.transfer != null && it.artifact != null }
+                     .associateBy { it.task.taskId }
+-            } else emptyMap()
++            } else emptyMap() }
++            initialization.complete()
+         } catch (failure: Exception) {
+             releaseStorageOwner(initializingHelper)
+             throw failure
+@@ -504,7 +509,7 @@ class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMed
+         put("commit_id", record.commitId); put("record", SaveRecordCodec.encode(record))
+     }
+     private inline fun <T> transaction(block: (SQLiteDatabase) -> T): T {
+-        val db = helper.writableDatabase
++        val db = initialization.at(SaveStorageInitializationStage.STORAGE_DATABASE) { helper.writableDatabase }
+         db.beginTransaction()
+         try { val result = block(db); db.setTransactionSuccessful(); return result } finally { db.endTransaction() }
+     }
+diff --git a/app/src/main/kotlin/com/easysavevideo/app/save/storage/SaveStorageInitializationProbe.kt b/app/src/main/kotlin/com/easysavevideo/app/save/storage/SaveStorageInitializationProbe.kt
+new file mode 100644
+index 0000000..f6b0139
+--- /dev/null
++++ b/app/src/main/kotlin/com/easysavevideo/app/save/storage/SaveStorageInitializationProbe.kt
+@@ -0,0 +1,31 @@
++package com.easysavevideo.app.save.storage
++
++/** Fixed constructor-only steps. No exception text, file identity or database values. */
++enum class SaveStorageInitializationStage {
++    STORAGE_DIRECTORY, STORAGE_OWNER_FENCE, STORAGE_LEASE, STORAGE_HELPER,
++    STORAGE_PROTOCOL, STORAGE_LIBRARY, STORAGE_PENDING_DELETES, STORAGE_SNAPSHOT, STORAGE_DATABASE
++}
++
++internal class SaveStorageInitializationProbe(private val changed: (SaveStorageInitializationStage) -> Unit) {
++    private var active = true
++    private var current: SaveStorageInitializationStage? = null
++    private var failed = false
++    private fun report(stage: SaveStorageInitializationStage) {
++        try { changed(stage) } catch (_: Throwable) { /* Observation only. */ }
++    }
++    fun complete() { active = false }
++    fun <T> at(stage: SaveStorageInitializationStage, action: () -> T): T {
++        if (!active || failed) return action()
++        val parent = current
++        current = stage
++        report(stage)
++        try {
++            val value = action()
++            if (!failed && parent != null) report(parent)
++            return value
++        } catch (original: Exception) {
++            failed = true
++            throw original
++        } finally { current = parent }
++    }
++}
+diff --git a/app/src/test/kotlin/com/easysavevideo/app/save/SaveInitializationBoundaryTest.kt b/app/src/test/kotlin/com/easysavevideo/app/save/SaveInitializationBoundaryTest.kt
+new file mode 100644
+index 0000000..eba21b1
+--- /dev/null
++++ b/app/src/test/kotlin/com/easysavevideo/app/save/SaveInitializationBoundaryTest.kt
+@@ -0,0 +1,84 @@
++package com.easysavevideo.app.save
++
++import com.easysavevideo.app.save.storage.SaveStorageInitializationProbe
++import com.easysavevideo.app.save.storage.SaveStorageInitializationStage as S
++import org.junit.Test
++
++class SaveInitializationBoundaryTest {
++    @Test fun asynchronousInstallPreservesFailureOwnerAndFixedPhase() {
++        val d = SaveRuntimeFailureDiagnostics()
++        var callbacks = 0
++        val owner = MediaTaskActivityHandoff { callbacks++ }
++        var queued: (() -> Unit)? = null
++        var ready = false
++        val original = IllegalStateException("secret path token")
++        val lines = mutableListOf<String>()
++        check(owner.enqueue({ queued = it; true }) {
++            d.install({ ready }, lines::add) { throw original }
++        })
++        owner.preparationFailed()
++        check(owner.active && lines.isEmpty())
++        d.stage = SaveRuntimeFailureDiagnostics.Stage.READY
++        try { queued!!(); error("expected failure") } catch (actual: IllegalStateException) { check(actual === original) }
++        check(!owner.active && callbacks == 1 && !ready)
++        check(lines == listOf("save_error phase=INSTALL category=STATE ready=false"))
++    }
++    @Test fun rejectedPostStillDoesNotInstallOrLogOrRetry() {
++        val d = SaveRuntimeFailureDiagnostics()
++        val owner = MediaTaskActivityHandoff {}
++        var attempts = 0; var installed = false
++        val lines = mutableListOf<String>()
++        check(!owner.enqueue({ attempts++; false }) { d.install({ false }, lines::add) { installed = true } })
++        check(attempts == 1 && !installed && !owner.active && lines.isEmpty())
++    }
++    @Test fun failingSinkPreservesOriginalEvenAfterReadyPublication() {
++        val d = SaveRuntimeFailureDiagnostics()
++        val original = java.io.IOException("secret")
++        var line = ""
++        try { d.install({ true }, { line = it; throw IllegalArgumentException() }) { throw original } }
++        catch (actual: java.io.IOException) { check(actual === original) }
++        check(line == "save_error phase=INSTALL category=IO ready=true")
++    }
++    @Test fun installAndWorkerShareEightEventBudget() {
++        val d = SaveRuntimeFailureDiagnostics()
++        repeat(7) { check(d.failure(Exception(), false) != null) }
++        val lines = mutableListOf<String>()
++        repeat(3) { try { d.install({ false }, lines::add) { throw Exception() } } catch (_: Exception) {} }
++        check(lines.size == 1 && d.failure(Exception(), true) == null)
++    }
++    @Test fun diagnosticErrorAlsoCannotReplaceOriginal() {
++        val d = SaveRuntimeFailureDiagnostics()
++        val original = IllegalArgumentException("private")
++        try { d.install({ false }, { throw AssertionError("sink") }) { throw original } }
++        catch (actual: IllegalArgumentException) { check(actual === original) }
++        val probe = SaveStorageInitializationProbe { throw AssertionError("observer") }
++        check(probe.at(S.STORAGE_HELPER) { 42 } == 42)
++    }
++    @Test fun nestedDatabaseFailureKeepsInnermostStepAndOriginal() {
++        val stages = mutableListOf<S>()
++        val probe = SaveStorageInitializationProbe(stages::add)
++        val original = java.io.IOException("private database")
++        var opens = 0
++        try { probe.at(S.STORAGE_PENDING_DELETES) {
++            probe.at(S.STORAGE_DATABASE) { opens++; throw original }
++        } } catch (actual: java.io.IOException) { check(actual === original) }
++        probe.at(S.STORAGE_HELPER) { /* Cleanup cannot overwrite the original failing stage. */ }
++        check(stages == listOf(S.STORAGE_PENDING_DELETES, S.STORAGE_DATABASE) && opens == 1)
++    }
++    @Test fun successfulDatabaseStepRestoresParentAndCompletionDisablesObservation() {
++        val stages = mutableListOf<S>()
++        val probe = SaveStorageInitializationProbe(stages::add)
++        var calls = 0
++        probe.at(S.STORAGE_PENDING_DELETES) { probe.at(S.STORAGE_DATABASE) { calls++ } }
++        check(stages == listOf(S.STORAGE_PENDING_DELETES, S.STORAGE_DATABASE, S.STORAGE_PENDING_DELETES))
++        probe.complete()
++        probe.at(S.STORAGE_DATABASE) { calls++ }
++        check(calls == 2 && stages.size == 3)
++    }
++    @Test fun stageObserverFailureCannotReplaceStorageFailure() {
++        val probe = SaveStorageInitializationProbe { throw IllegalStateException("sink") }
++        val original = SecurityException("private")
++        try { probe.at(S.STORAGE_LEASE) { throw original } }
++        catch (actual: SecurityException) { check(actual === original) }
++    }
++}

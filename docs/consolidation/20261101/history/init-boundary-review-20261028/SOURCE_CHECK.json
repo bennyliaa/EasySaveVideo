@@ -1,0 +1,22 @@
+[
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/MediaTaskActivityHandoff.kt",
+    "sha256": "f5e57a4fa78e16b2175bd7b098562cc99b02d89321c87038cdea0eb2612c35d4",
+    "matches_frozen": true
+  },
+  {
+    "path": "app/src/test/kotlin/com/easysavevideo/app/save/MediaTaskActivityHandoffTest.kt",
+    "sha256": "96892079a46ae44a5d12dbb7978ff969ef8221a3aa8ce8195801ba431ec06f10",
+    "matches_frozen": true
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/save/storage/AndroidSaveStorage.kt",
+    "sha256": "d71ef49b7532aababee10973034b603c3c55ae4dfbbde4d87eb057daa1ec288b",
+    "matches_frozen": true
+  },
+  {
+    "path": "app/src/main/kotlin/com/easysavevideo/app/editor/EditorInitialization.kt",
+    "sha256": "47ecb5033013b019b3c88e414b8c217a8dd73f6487ab077f49f2e044d8bae0d4",
+    "matches_frozen": true
+  }
+]
