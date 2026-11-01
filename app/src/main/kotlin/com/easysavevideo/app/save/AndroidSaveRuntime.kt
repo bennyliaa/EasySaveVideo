@@ -202,6 +202,34 @@ class AndroidSaveRuntime private constructor(context: Context) {
     private val authenticationOrigins = AuthenticationTaskOrigins()
     private var streamAuthenticationOrigin: AuthenticationOriginCapture? = null
     var discoverySaveOutcomes by mutableStateOf<Map<String, DiscoveryOriginSaveOutcome>>(emptyMap()); private set
+    // Empty unless a future explicit test controller arms an exact destination admission.
+    private val evaluationSaveLinks = SaveEvaluationTaskLinks()
+    private val recordingEvaluationLinks = RecordingSaveEvaluationTaskLinks()
+    private var pendingRecordingEvaluation: Pair<CaptureDescriptor, RecordingSaveEvaluationBinding>? = null
+    internal fun armRecordingEvaluation(admission: OrdinaryDestinationAdmission,
+        lease: DebugSaveEvaluationOwner.EvaluationPageLease): RecordingSaveEvaluationBinding? {
+        requireMain()
+        if (!com.easysavevideo.app.BuildConfig.DEBUG || !lease.current() || !canStartSave(TaskMethod.RECORD)) return null
+        return recordingEvaluationLinks.arm(admission, lease.session, lease.pageId, lease::current)
+    }
+    internal fun abandonRecordingEvaluation(binding: RecordingSaveEvaluationBinding) { recordingEvaluationLinks.abandon(binding) }
+    private fun abandonPendingRecordingEvaluation(id: String) {
+        val pending = pendingRecordingEvaluation?.takeIf { it.first.sessionId == id } ?: return
+        pendingRecordingEvaluation = null
+        recordingEvaluationLinks.abandon(pending.second)
+    }
+    internal fun armSaveEvaluation(admission: OrdinaryDestinationAdmission, method: TaskMethod,
+        session: com.easysavevideo.discovery.DiscoverySaveEvaluationSession, pageId: String, sourceCurrent: () -> Boolean = { true }): SaveEvaluationTaskBinding? {
+        requireMain()
+        if (!com.easysavevideo.app.BuildConfig.DEBUG) return null
+        return evaluationSaveLinks.arm(admission, method, session, pageId, sourceCurrent)
+    }
+    internal fun abandonSaveEvaluation(binding: SaveEvaluationTaskBinding) { evaluationSaveLinks.abandon(binding) }
+    internal fun finishSaveEvaluation(session: com.easysavevideo.discovery.DiscoverySaveEvaluationSession): com.easysavevideo.discovery.SaveEvaluationSessionReport {
+        evaluationSaveLinks.close(session)
+        recordingEvaluationLinks.close(session)
+        return session.finish()
+    }
     private val discoverySaveLinks = MediaTaskActivitySaveLinks<DiscoverySaveOriginHandle>(
         bind = { origin, taskId -> origin.bindTask(taskId) },
         complete = { origin, taskId, committed ->
@@ -315,11 +343,13 @@ class AndroidSaveRuntime private constructor(context: Context) {
             if (foreground) { refresh(); main.postDelayed(this, 1_000) }
         }
     }
+    private val failureDiagnostics = SaveRuntimeFailureDiagnostics()
+
     init {
         val application = context.applicationContext
         command(mediaWork = true, onRejected = initializationActivity::preparationFailed) {
             try {
-                storage = AndroidSaveStorage(application)
+                storage = AndroidSaveStorage(application) { stage -> failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.valueOf(stage.name) }
                 val staging = object : NetworkStagingAccess {
                     override fun length(artifact: StagingArtifact) = storage.stagingLength(artifact)
                     override fun availableBytes(artifact: StagingArtifact) = storage.availableBytes(artifact)
@@ -327,10 +357,13 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     override fun rewind(artifact: StagingArtifact, length: Long) = storage.truncateStaging(artifact, length)
                     override fun sync(artifact: StagingArtifact) = storage.syncStaging(artifact)
                 }
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.DIRECT_TRANSPORT
                 transport = FixedDirectTransferPool(
                     SystemHttpsDirectTransfer(staging, leases, networkPolicy = networkPolicy, movAdmissionEnabled = movAdmissionEnabled),
                     SystemHttpsDirectTransfer(staging, leases, networkPolicy = networkPolicy, movAdmissionEnabled = movAdmissionEnabled))
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.HLS_TRANSPORT
                 stream = AndroidHlsStreamPort(application, storage, leases, limits, clock, networkPolicy)
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.RECORD_PORT
                 recorder = AndroidRecordSavePort(application, storage, { canSave(TaskMethod.RECORD) }, ::canPauseRecording) { next ->
                     main.post {
                         if (recordingSnapshot?.revision?.let { it > next.revision } != true) recordingSnapshot = next
@@ -342,6 +375,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                         }
                     }
                 }
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.DIRECT_COMPONENTS
                 val executionBridge = AndroidDirectExecutionBridge(executionAdmission, directLocalGate) {
                     directBatchOwner?.let(OrdinaryMediaNativeResources::ownership)
                 }
@@ -349,19 +383,24 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 controlledDirectStorage = direct.storage
                 val actualVerifier = AndroidLocalMp4Verifier(storage::verificationFile,
                     limits.verificationTimeoutMillis, direct.normalizedOwner, direct.storage::onLegacyReadIssued)
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.COORDINATOR
                 coordinator = SaveCoordinator(storage, transport,
                     SerialArtifactVerifier(actualVerifier, clock),
                     storage, clock, limits, stream = stream, recording = recorder,
                     networkGate = SaveNetworkGate { networkPolicy.checkAdmission() }, admission = executionAdmission,
                     controlledDirect = ControlledDirectPipeline(directLocalGate, direct.storage, movAdmissionEnabled, conversionExecutionEnabled = false),
                     privateSourceDetachmentObserver = PrivateSourceDetachmentObserver(privateSources::sourceDetached))
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.RECOVERY
                 coordinator.recover(operation(2_000))
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.TERMINAL_CLEANUP
                 coordinator.sweepTerminalCleanup(operation(2_000))
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.SNAPSHOT
                 val (initial, initialActiveCount) = readTaskSnapshot()
                 val dispositions = readMediaDispositions(initial)
                 // Export initialization is independent of original-media publication. Unavailable export
                 // support never turns an existing ordinary save into a false failure or removes it.
                 val exports = try { AndroidExportRuntime(application, storage) } catch (_: Exception) { null }
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.DESTINATIONS
                 val destinationRuntime = AndroidOrdinaryDestinationRuntime(application, storage, exports)
                 // Display-only adapter reads the existing main-thread language mirror on each notice.
                 val runtimeText = androidRuntimeMessageText(application) { notificationLanguage.current }
@@ -370,16 +409,22 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     released = { id ->
                         if (currentRecordingId == id) { currentRecordingId = null; pendingRecording = null; setExecuting(false) }
                         command { publishRecords() }
-                    }, published = { command { publishRecords() } }, runtimeText = runtimeText, activityChanged = ::publishMediaTaskActivity) } catch (_: Exception) { null }
+                    }, published = { command { publishRecords() } }, runtimeText = runtimeText, activityChanged = ::publishMediaTaskActivity,
+                    newRecordingAllowed = { saveSettingsOwner.isMethodEnabled(TaskMethod.RECORD) }) } catch (_: Exception) { null }
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.EDITOR
                 val editorProbe = InitializationProbe()
                 val editInitialization = initializeEditor(editorProbe, storageProbe = { storage.initializeEditStorage(editorProbe); Unit }) {
                     AndroidEditRuntime(application, storage, destinationRuntime, runtimeText) { ready && !executionBusy() &&
                         pendingRecording == null && currentRecordingId == null && !resourcesDraining() }
                 }
+                failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.INSTALL
                 initializationActivity.enqueue({ install -> main.post(install) }) {
+                    failureDiagnostics.install({ ready }, { android.util.Log.e("ESVSave", it) }) {
                     editor = editInitialization.value; editorInitializationStatus = editInitialization.status; editorInitializationDiagnostic = editInitialization.diagnostic; segmentRecording = segmentRuntime; segmentRuntime?.setForeground(foreground)
                     records = initial; activeTaskCount = initialActiveCount; mediaDispositions = dispositions
                     libraryExports = exports; destinations = destinationRuntime; ready = true
+                    failureDiagnostics.stage = SaveRuntimeFailureDiagnostics.Stage.READY
+                    }
                 }
             } finally {
                 // Failure before posting has no continuing owner. A posted installation owns
@@ -511,12 +556,14 @@ class AndroidSaveRuntime private constructor(context: Context) {
             notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.OPEN_LOADED_PAGE); return
         }
         val pageUrl = captured.pageUrl ?: return
+        val evaluationLease = browser.beginEvaluationPage()
         fun isCurrent(): Boolean = captured.matches(inspectionPage(browser), foreground)
         scanning = true; selection = null; notice = null
         detector.inspectFromUserClick(view, captured.context, captured.epoch, pageUrl, ::isCurrent) { result ->
             scanning = false
             when (result) {
                 is PageSaveDetection.Found -> {
+                    if (evaluationLease?.current() == true && isCurrent()) result.selection.evaluationLease = evaluationLease
                     when (resolveAlternativeInspection(alternativeSelection, alternativeInspection,
                         result.selection, clock.nowMillis(), result.selection.isCurrent())) {
                         SaveAlternativeInspectionDelivery.REJECTED -> {
@@ -566,6 +613,13 @@ class AndroidSaveRuntime private constructor(context: Context) {
         // Active requests observe this immediately through their per-request binding/watchdog.
         // Do not cancel the shared operation: recording, remux, verify and commit are local work.
     }
+    internal fun acceptedSaveMethodSettings(): SaveSettings? = saveSettingsOwner.acceptedMethodSettings()
+    internal fun updateSaveMethodEnabled(method: TaskMethod, enabled: Boolean): SaveSettings? {
+        requireMain()
+        return saveSettingsOwner.updateMethodEnabled(method, enabled)
+    }
+    fun isSaveMethodDisabled(method: TaskMethod): Boolean = saveSettingsOwner.acceptedMethodSettings()?.isMethodEnabled(method) == false
+    fun canStartSave(method: TaskMethod): Boolean = saveSettingsOwner.isMethodEnabled(method) && canSave(method)
     fun updateDirectConcurrency(value: Int): SaveSettings? {
         requireMain()
         val updated = saveSettingsOwner.updateConcurrency(value) ?: return null
@@ -585,11 +639,18 @@ class AndroidSaveRuntime private constructor(context: Context) {
         val captured = selection ?: return
         if (!captured.isCurrent() || captured.candidates.none { it === candidate }) { selection = null; notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.CANDIDATE_EXPIRED); return }
         if (candidate.protected || !candidate.supported) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.CANDIDATE_PROTECTED_OR_UNSUPPORTED); return }
+        if (isSaveMethodDisabled(candidate.method)) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.METHOD_DISABLED); return }
         if (!canSave(candidate.method)) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_ENTITLEMENT_REQUIRED); return }
+        if (!canStartSave(candidate.method)) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SAVE_UNAVAILABLE); return }
         if (candidate.method == TaskMethod.STREAM) { prepareStream(candidate, captured, browser); return }
         clearAlternativeSelection()
         destinations?.select(isCurrent = { foreground && selection === captured && captured.isCurrent() },
             accepted = { admission -> chooseDirect(candidate, captured, browser, admission) })
+    }
+    private fun armSelectionEvaluation(captured: PageSaveSelection, admission: OrdinaryDestinationAdmission, method: TaskMethod): SaveEvaluationTaskBinding? {
+        val lease = captured.evaluationLease ?: return null
+        return if (com.easysavevideo.app.BuildConfig.DEBUG && captured.isCurrent() && lease.current())
+            armSaveEvaluation(admission, method, lease.session, lease.pageId, lease::current) else null
     }
     private fun chooseDirect(candidate: PageSaveCandidate, captured: PageSaveSelection, browser: SystemBrowserHost,
         admission: OrdinaryDestinationAdmission) {
@@ -621,7 +682,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
             if (claim == null) { main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SAVE_OPERATION_BUSY) }; return@command }
             publishMediaTaskActivity()
             if (!main.post {
-                if (!foreground || executionForegroundGeneration != generation || !captured.isCurrent() || !allowed() || !networkSaveAllowed()) {
+                if (!foreground || executionForegroundGeneration != generation || !captured.isCurrent() || !canStartSave(TaskMethod.DIRECT) || !networkSaveAllowed()) {
                     releaseExecution(claim)
                 } else continueDirectAdmission(candidate, captured, browser, admission, claim, generation)
             }) releaseExecution(claim)
@@ -646,22 +707,26 @@ class AndroidSaveRuntime private constructor(context: Context) {
             privateSource = capturedSource.privateSource?.binding))
         val saveOrigin = if (capturedSource.privateSource == null) try { browser.captureSaveOrigin() } catch (_: Exception) { null } else null
         val authenticationOrigin = if (capturedSource.privateSource == null) captureAuthenticationOrigin(captured, browser, candidate.url.value) else null
+        val evaluationArm = try { armSelectionEvaluation(captured, admission, TaskMethod.DIRECT) } catch (_: Exception) { null }
         command(mediaWork = true, onRejected = {
+            evaluationArm?.let(::abandonSaveEvaluation)
             leases.revoke(lease); discoverySaveLinks.discard(saveOrigin); authenticationOrigins.discard(authenticationOrigin)
             releaseExecution(claim)
         }) {
             var acceptedTaskId: String? = null
+            var evaluationBinding: SaveEvaluationTaskBinding? = null
             var launched = false
             try {
-                if (!foreground || executionForegroundGeneration != generation || !allowed()) return@command
+                if (!foreground || executionForegroundGeneration != generation || !canStartSave(TaskMethod.DIRECT)) return@command
                 when (val result = coordinator.submit(request, context, claim)) {
                     is SaveSubmission.Accepted -> {
+                        evaluationBinding = try { evaluationSaveLinks.accepted(admission, result.record, result.existing) } catch (_: Exception) { null }
                         // An idempotent existing row is not a fresh execution and cannot inherit this claim.
                         if (!result.existing) {
                             acceptedTaskId = result.record.task.taskId
                             discoverySaveLinks.accepted(result.record.task.taskId, saveOrigin, false)
                             bindAuthenticationOrigin(result.record.task.taskId, authenticationOrigin, false, candidate.url.value)
-                            launched = launchExecution(result.record.task.taskId, lease, claim)
+                            launched = launchExecution(result.record.task.taskId, lease, claim, evaluationBinding)
                         }
                         if (launched || result.existing) main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.DIRECT_TASK_ACCEPTED) }
                     }
@@ -671,6 +736,8 @@ class AndroidSaveRuntime private constructor(context: Context) {
             } finally {
                 if (!launched) {
                     acceptedTaskId?.let(discoverySaveLinks::cancel)
+                    acceptedTaskId?.let { try { evaluationSaveLinks.notLaunched(evaluationBinding, it) } catch (_: Exception) { } }
+                    evaluationArm?.let(::abandonSaveEvaluation)
                     discoverySaveLinks.discard(saveOrigin); leases.revoke(lease)
                     acceptedTaskId?.let(authenticationOrigins::cancel)
                     authenticationOrigins.discard(authenticationOrigin)
@@ -685,7 +752,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         if (selectionAlternativeExpected && alternative == null) {
             dismissSelection(); alternativeFeedback = SaveAlternativeFeedback.UNAVAILABLE; return
         }
-        if (!foreground || !ready || !canSave(TaskMethod.STREAM) || resourcesDraining() || !reserveExecution()) {
+        if (!foreground || !ready || !canStartSave(TaskMethod.STREAM) || resourcesDraining() || !reserveExecution()) {
             notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_UNAVAILABLE); return
         }
         val execution = requireNotNull(exclusiveExecution)
@@ -714,7 +781,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         try { worker.execute {
             var proposed: StreamAlternativeProposal? = null
             try {
-                if (!foreground || !canSave(TaskMethod.STREAM)) throw SaveFailure(SaveError.INVALID_REQUEST)
+                if (!foreground || !canStartSave(TaskMethod.STREAM)) throw SaveFailure(SaveError.INVALID_REQUEST)
                 networkPolicy.checkAdmission()
                 val prepared = stream.prepare(source, operation)
                 privateSource?.attachPreparation(prepared)
@@ -729,7 +796,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 main.post {
                     val alternativeCurrent = alternative == null || alternativeSelection.association(captured,
                         clock.nowMillis(), captured.isCurrent())?.generation == alternative.generation
-                    if (token == preparationGeneration && foreground && captured.isCurrent() && canSave(TaskMethod.STREAM) && networkSaveAllowed() && alternativeCurrent) {
+                    if (token == preparationGeneration && foreground && captured.isCurrent() && canStartSave(TaskMethod.STREAM) && networkSaveAllowed() && alternativeCurrent) {
                         hlsPreparation = prepared
                         streamAlternative = preparedProposal; streamAlternativeGeneration = alternative?.generation
                         alternativePrepared = preparedProposal != null
@@ -779,7 +846,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         requireMain()
         val prepared = hlsPreparation ?: return
         val captured = streamSelectionContext ?: return
-        if (!foreground || !captured.isCurrent() || !canSave(TaskMethod.STREAM) || preparingStream || preparationExecution?.let(executionAdmission::owns) != true || resourcesDraining()) {
+        if (!foreground || !captured.isCurrent() || !canStartSave(TaskMethod.STREAM) || preparingStream || preparationExecution?.let(executionAdmission::owns) != true || resourcesDraining()) {
             dismissSelection(); notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_CONTEXT_CHANGED); return
         }
         if (!SaveTaskCapacity.hasRoom(activeTaskCount, limits.maxJournalEntries)) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.TASK_CAPACITY_FULL); return }
@@ -790,7 +857,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         admission: OrdinaryDestinationAdmission) {
         requireMain()
         if (!foreground || hlsPreparation !== prepared || streamSelectionContext !== captured || !captured.isCurrent() ||
-            !canSave(TaskMethod.STREAM) || resourcesDraining()) { dismissSelection(); return }
+            !canStartSave(TaskMethod.STREAM) || resourcesDraining()) { dismissSelection(); return }
         if (!networkSaveAllowed()) return
         if (streamAlternativeRequired && streamAlternative == null) {
             dismissSelection(); alternativeFeedback = SaveAlternativeFeedback.UNAVAILABLE; return
@@ -825,7 +892,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
         preparationExecution = null
         hlsPreparation = null; streamSelectionContext = null; preparationCancellation = null
         preparingStream = false; preparationGeneration++
+        val evaluationArm = try { armSelectionEvaluation(captured, admission, TaskMethod.STREAM) } catch (_: Exception) { null }
         command(mediaWork = true, onRejected = {
+            evaluationArm?.let(::abandonSaveEvaluation)
             alternative?.revoke()
             discoverySaveLinks.discard(saveOrigin)
             authenticationOrigins.discard(authenticationOrigin)
@@ -833,8 +902,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
         }) {
             var launched = false
             var acceptedTaskId: String? = null
+            var evaluationBinding: SaveEvaluationTaskBinding? = null
             try {
-                if (!foreground || generation != executionForegroundGeneration || !canSave(TaskMethod.STREAM)) {
+                if (!foreground || generation != executionForegroundGeneration || !canStartSave(TaskMethod.STREAM)) {
                     stream.discard(prepared); resource.requestContextRef?.let(leases::revoke); return@command
                 }
                 val submission = if (alternative == null) coordinator.submit(request, operation, execution, prepared.bytesTransferred)
@@ -856,11 +926,12 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 }
                 when (val result = submission) {
                     is SaveSubmission.Accepted -> {
+                        evaluationBinding = try { evaluationSaveLinks.accepted(admission, result.record, result.existing) } catch (_: Exception) { null }
                         if (result.existing) return@command
                         acceptedTaskId = result.record.task.taskId
                         discoverySaveLinks.accepted(result.record.task.taskId, saveOrigin, result.existing)
                         bindAuthenticationOrigin(result.record.task.taskId, authenticationOrigin, result.existing, resource.url.value)
-                        launched = launchExecution(result.record.task.taskId, resource.requestContextRef, execution)
+                        launched = launchExecution(result.record.task.taskId, resource.requestContextRef, execution, evaluationBinding)
                         if (launched) main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.STREAM_TASK_ACCEPTED) }
                     }
                     is SaveSubmission.Rejected -> {
@@ -872,6 +943,8 @@ class AndroidSaveRuntime private constructor(context: Context) {
             } finally {
                 if (!launched) {
                     acceptedTaskId?.let(discoverySaveLinks::cancel)
+                    acceptedTaskId?.let { try { evaluationSaveLinks.notLaunched(evaluationBinding, it) } catch (_: Exception) { } }
+                    evaluationArm?.let(::abandonSaveEvaluation)
                     discoverySaveLinks.discard(saveOrigin)
                     acceptedTaskId?.let(authenticationOrigins::cancel)
                     authenticationOrigins.discard(authenticationOrigin)
@@ -1022,7 +1095,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         if (taskCommands.release(attempt)) pendingCommands = taskCommands.pendingTaskIds()
     }
 
-    private fun launchExecution(taskId: String, lease: RequestContextRef?, claim: SaveExecutionAdmission.Claim): Boolean {
+    private fun launchExecution(taskId: String, lease: RequestContextRef?, claim: SaveExecutionAdmission.Claim, evaluationBinding: SaveEvaluationTaskBinding? = null): Boolean {
         if (!foreground) {
             discoverySaveLinks.cancel(taskId)
             lease?.let(leases::revoke); deferUnstartedExecution(taskId); return false
@@ -1032,7 +1105,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
             lease?.let(leases::revoke); coordinator.deferForNetwork(taskId); return false
         }
         val accepted = SaveWorkerHandoff().launch({ worker.execute(it) }) {
-            runSaveExecution(taskId, lease, claim) { releaseExecution(claim) }
+            runSaveExecution(taskId, lease, claim, evaluationBinding) { releaseExecution(claim) }
         }
         if (!accepted) {
             discoverySaveLinks.cancel(taskId)
@@ -1048,7 +1121,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         resumeHandoff.launch(record, operation, attempt,
             foreground = { foreground }, networkAllowed = { networkSaveAllowed() },
             submit = { job -> worker.execute(job) },
-            work = { runSaveExecution(record.task.taskId, lease, claim, execution::release) },
+            work = { runSaveExecution(record.task.taskId, lease, claim, releaseExecution = execution::release) },
             releaseUnaccepted = {
                 discoverySaveLinks.cancel(record.task.taskId)
                 execution.release(); lease?.let(leases::revoke)
@@ -1056,7 +1129,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         )
 
     /** Shared accepted-worker path. Its first-read failures are outside unadmitted recovery. */
-    private fun runSaveExecution(taskId: String, lease: RequestContextRef?, claim: SaveExecutionAdmission.Claim, releaseExecution: () -> Unit) {
+    private fun runSaveExecution(taskId: String, lease: RequestContextRef?, claim: SaveExecutionAdmission.Claim, evaluationBinding: SaveEvaluationTaskBinding? = null, releaseExecution: () -> Unit) {
         var executed = false
         try {
             // Covers a submit racing the immediate background-memory fence.
@@ -1065,6 +1138,8 @@ class AndroidSaveRuntime private constructor(context: Context) {
             executed = true
         } catch (_: Exception) { main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.TASK_STATE_READ_FAILED) } }
         finally {
+            // Optional evaluation cannot retry Save or alter the committed result/resource lifecycle.
+            try { evaluationSaveLinks.afterExecution(evaluationBinding, taskId) { if (executed) coordinator.record(taskId) else null } } catch (_: Exception) { }
             // Discovery cannot retry Save or alter an already committed media result.
             if (executed) discoverySaveLinks.afterExecution(taskId) { coordinator.record(taskId) }
             else discoverySaveLinks.cancel(taskId)
@@ -1129,7 +1204,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         admission: OrdinaryDestinationAdmission, createBinding: ((CaptureDescriptor) -> PrivateRecordingNativeBinding?)?,
         serviceReady: ((PrivateRecordingNativeBinding, Any) -> Unit)?): String? {
         requireMain()
-        if (!ready || !foreground || !canSave(TaskMethod.RECORD) || resourcesDraining() ||
+        if (!ready || !foreground || !canStartSave(TaskMethod.RECORD) || resourcesDraining() ||
             VerifiedMediaPreviewResources.isOccupied || pendingRecording != null || currentRecordingId != null || recordingService != null || !reserveExecution()) {
             notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_UNAVAILABLE); return null
         }
@@ -1155,7 +1230,10 @@ class AndroidSaveRuntime private constructor(context: Context) {
             } else null
             privateRecordingBinding = binding; privateRecordingReady = serviceReady; privateRecordingSubmitted = false
             continuousRecordingOwner = ContinuousRecordingOwner(descriptor, binding?.ownerIdentity ?: Any())
-            if (!recorder.prepare(descriptor, audioAllowed, binding)) {
+            val evaluation = if (binding == null) recordingEvaluationLinks.prepared(admission, descriptor) else null
+            pendingRecordingEvaluation = evaluation?.let { descriptor to it }
+            if (!recorder.prepare(descriptor, audioAllowed, binding, evaluation)) {
+                abandonPendingRecordingEvaluation(id)
                 binding?.closeNeverQueued()
                 privateRecordingBinding = null; privateRecordingReady = null
                 pendingRecording = null; currentRecordingId = null
@@ -1165,22 +1243,24 @@ class AndroidSaveRuntime private constructor(context: Context) {
             main.postDelayed({ if (pendingRecording?.sessionId == id && recordingService == null) abandonRecordingRequest(id) }, 120_000)
             return id
         } catch (_: RuntimeException) {
+            abandonPendingRecordingEvaluation(admission.creationId)
             privateRecordingBinding?.let { it.requestStop(PrivateCaptureDisposition.KEEP_VALID_OUTPUT); it.closeNeverQueued() }
             privateRecordingBinding = null; privateRecordingReady = null
             pendingRecording = null; currentRecordingId = null
             setExecuting(false); notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_CONFIGURATION_INVALID); return null
         }
     }
-    fun isRecordingRequestAllowed(id: String): Boolean = if (segmentRecording?.owns(id) == true)
-        segmentRecording?.allowsConsent(id) == true else pendingRecording?.sessionId == id && canSave(TaskMethod.RECORD) && !resourcesDraining() &&
+    fun isRecordingRequestAllowed(id: String): Boolean = if (!canStartSave(TaskMethod.RECORD)) false else if (segmentRecording?.owns(id) == true)
+        segmentRecording?.allowsConsent(id) == true else pendingRecording?.sessionId == id && canStartSave(TaskMethod.RECORD) && !resourcesDraining() &&
             privateRecordingBinding?.isStopRequested != true
     fun requiresDefaultDisplayRecording(id: String): Boolean = segmentRecording?.owns(id) == true
     private fun recordingFeatureAllowed(feature: Feature): Boolean = gate.evaluate(FeatureRequest(feature), entitlements.snapshot(),
         PlatformCapabilities(setOf(Feature.RECORD_SAVE, Feature.SEGMENT_RECORDING, Feature.REGION_RECORDING)),
         BuildFeaturePolicy(), clock.nowMillis()).allowed
-    fun canRegionRecording(): Boolean = recordingFeatureAllowed(Feature.REGION_RECORDING)
+    fun canRegionRecording(): Boolean = canStartSave(TaskMethod.RECORD) && recordingFeatureAllowed(Feature.REGION_RECORDING)
     fun prepareRegionRecording(choice: RecordingAudioChoice, recipe: RegionCaptureRecipe, admission: OrdinaryDestinationAdmission): String? {
         requireMain()
+        if (!canStartSave(TaskMethod.RECORD)) return null
         val id = segmentRecording?.prepare(choice, recipe, admission)
         if (id == null) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.REGION_RECORDING_UNAVAILABLE); return null }
         setExecuting(true); currentRecordingId = id; recordingSnapshot = null; notice = null
@@ -1188,6 +1268,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
     }
     fun preparePreviewRecording(choice: RecordingAudioChoice, admission: OrdinaryDestinationAdmission): String? {
         requireMain()
+        if (!canStartSave(TaskMethod.RECORD)) return null
         val id = segmentRecording?.preparePreview(choice, admission)
         if (id == null) { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.PREVIEW_RECORDING_UNAVAILABLE); return null }
         setExecuting(true); currentRecordingId = id; recordingSnapshot = null; notice = null
@@ -1231,6 +1312,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         }
         if (segmentRecording?.owns(id) == true) { segmentRecording?.deny(id); return }
         if (pendingRecording?.sessionId != id || recordingService != null) return
+        abandonPendingRecordingEvaluation(id)
         pendingRecording = null; ProjectionGrantHandoff.discard(id); recorder.denied(id)
         currentRecordingId = null; setExecuting(false)
     }
@@ -1242,6 +1324,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
         }
         if (segmentRecording?.owns(id) == true) { segmentRecording?.deny(id); return }
         if (pendingRecording?.sessionId != id && currentRecordingId != id) return
+        abandonPendingRecordingEvaluation(id)
         pendingRecording = null; ProjectionGrantHandoff.discard(id)
         recorder.denied(id, RecordingError.FGS_START_REJECTED)
         currentRecordingId = null; setExecuting(false)
@@ -1334,7 +1417,10 @@ class AndroidSaveRuntime private constructor(context: Context) {
     }
     private fun submitRecordingOwner(service: RecordingForegroundService, id: String, descriptor: CaptureDescriptor,
         execution: SaveExecutionAdmission.Claim, privateBinding: PrivateRecordingNativeBinding?) {
+        val evaluation = pendingRecordingEvaluation?.takeIf { it.first === descriptor }?.second
+        if (evaluation != null) pendingRecordingEvaluation = null
         command(mediaWork = true, onRejected = {
+            evaluation?.let { recordingEvaluationLinks.notLaunched(it, descriptor) }
             // RejectedExecutionException is positive evidence that this exact command never entered.
             // Only this path may undo submitted; accepted commands retain original-worker retirement.
             if (privateBinding != null && privateRecordingBinding === privateBinding &&
@@ -1350,7 +1436,9 @@ class AndroidSaveRuntime private constructor(context: Context) {
             service.finishSession(id)
         }) {
             var launched = false
+            var acceptedEvaluation: RecordingSaveEvaluationBinding? = null
             try {
+                if (!canStartSave(TaskMethod.RECORD)) throw SaveFailure(SaveError.CAPTURE_UNAVAILABLE)
                 val continuous = continuousRecordingOwner?.takeIf { it.descriptor == descriptor }
                     ?: throw SaveFailure(SaveError.CAPTURE_UNAVAILABLE)
                 if (continuous.discardRequested) throw SaveFailure(SaveError.CANCELLED)
@@ -1361,6 +1449,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 val context = operation(2L * 60 * 60 * 1000 + limits.verificationTimeoutMillis + 30_000).copy(retryBudget = 0)
                 val result = coordinator.submit(SaveRequest(id, id, SaveInput.Capture(descriptor), TaskMethod.RECORD), context, execution)
                 if (result !is SaveSubmission.Accepted) throw SaveFailure((result as SaveSubmission.Rejected).error)
+                acceptedEvaluation = evaluation?.let { recordingEvaluationLinks.accepted(it, descriptor, result.record, result.existing) }
                 if (result.existing) return@command
                 // A Discard arriving before submit registered its runtime must survive that gap.
                 if (continuous.discardRequested) {
@@ -1372,6 +1461,8 @@ class AndroidSaveRuntime private constructor(context: Context) {
                     try { coordinator.execute(id, execution) }
                     catch (_: Exception) { main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.RECORDING_EXECUTION_FAILED) } }
                     finally {
+                        try { acceptedEvaluation?.let { recordingEvaluationLinks.afterExecution(it, descriptor) { storage.read(id) } } }
+                        catch (_: Exception) { /* Evaluation cannot own production cleanup. */ }
                         releaseExecution(execution)
                         command { publishRecords() }
                         main.post {
@@ -1396,6 +1487,7 @@ class AndroidSaveRuntime private constructor(context: Context) {
                 }
                 main.post { notice = saveRuntimeFailureNotice(SaveErrors.classify(failure)) }
             } finally {
+                if (!launched) evaluation?.let { recordingEvaluationLinks.notLaunched(it, descriptor) }
                 if (!launched && privateBinding != null) {
                     privateBinding.requestStop(PrivateCaptureDisposition.KEEP_VALID_OUTPUT)
                     privateBinding.closeNeverQueued()
@@ -1662,7 +1754,13 @@ class AndroidSaveRuntime private constructor(context: Context) {
         try {
             controls.execute {
                 try { action() }
-                catch (_: Exception) { main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SAVE_STORAGE_UNAVAILABLE) } }
+                catch (failure: Exception) {
+                    // Diagnostics cannot alter command/notice semantics, even if the log sink fails.
+                    try {
+                        failureDiagnostics.failure(failure, ready)?.let { android.util.Log.e("ESVSave", it) }
+                    } catch (_: Exception) { /* No exception payload or fallback log. */ }
+                    main.post { notice = SaveRuntimeNotice.Fixed(SaveRuntimeFixedNotice.SAVE_STORAGE_UNAVAILABLE) }
+                }
                 finally { released() }
             }
         } catch (_: java.util.concurrent.RejectedExecutionException) {

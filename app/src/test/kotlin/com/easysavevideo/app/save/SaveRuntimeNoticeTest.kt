@@ -42,9 +42,9 @@ class SaveRuntimeNoticeTest {
     }
 
     @Test fun fixedAndDetectionInventoriesAreExhaustiveAndStructurallyStable() {
-        assertEquals(36, SaveRuntimeFixedNotice.entries.size)
+        assertEquals(37, SaveRuntimeFixedNotice.entries.size)
         assertEquals(SaveRuntimeFixedNotice.entries.toSet(), fixtures.fixed.keys)
-        assertEquals(36, fixtures.fixed.values.map { it.chinese }.toSet().size)
+        assertEquals(37, fixtures.fixed.values.map { it.chinese }.toSet().size)
         assertEquals(6, PageSaveDetection.Reason.entries.size)
         assertEquals(PageSaveDetection.Reason.entries.toSet(), fixtures.detection.keys)
         for (kind in SaveRuntimeFixedNotice.entries) {

@@ -432,6 +432,29 @@ class SystemBrowserHost(
     private var fullscreenCallback: WebChromeClient.CustomViewCallback? = null
     private var fileChoice: FileChoice? = null
     internal val hasPendingFileChoice: Boolean get() = fileChoice != null
+    internal var evaluationOwner: com.easysavevideo.app.save.DebugSaveEvaluationOwner? = null
+    internal fun beginEvaluationPage(): com.easysavevideo.app.save.DebugSaveEvaluationOwner.EvaluationPageLease? {
+        if (!com.easysavevideo.app.BuildConfig.DEBUG) return null
+        val page = saveInspectionPage()?.takeIf { it.isUsable() } ?: return null
+        val entry = entries[page.context.tabId] ?: return null
+        if (entry.session != null) return null
+        return evaluationOwner?.beginPage(current(entry) ?: return null, entry.view, page.documentRevision)
+    }
+    internal fun openEvaluationCandidate(candidate: com.easysavevideo.discovery.PendingVideoCandidate,
+        fixture: Boolean, sourceCurrent: () -> Boolean): Boolean {
+        requireMain()
+        val evaluation = evaluationOwner ?: return false
+        if (!com.easysavevideo.app.BuildConfig.DEBUG || !evaluation.active() || !sourceCurrent() ||
+            !canAct() || !foreground || privateMode || controller !== ordinaryController) return false
+        val tab = state.selectedTab?.takeIf { !it.incognito } ?: return false
+        val address = BrowserInputPolicy.address(candidate.canonicalPageUrl) ?: return false
+        if (!touched() || !sourceCurrent()) return false
+        val revision = interactionRevision
+        val request = ordinaryController.beginNavigation(tab.context.tabId, address, operation())
+        return loadOwned(request, continuation = {
+            sourceCurrent() && interactionRevision == revision && ordinaryController.isCurrent(request)
+        }, evaluationAdmission = { view -> evaluation.opened(candidate, fixture, request, view) })
+    }
     private var interactionRevision by mutableLongStateOf(0L)
     private val discoveryOrigins = DiscoveryOriginTracker()
     private var discoveryOrigin: DiscoveryOriginToken? = null
@@ -637,6 +660,7 @@ class SystemBrowserHost(
     /** Recording③ binds the exact target directly; it does not require a detected media candidate. */
 
     private fun invalidateDocumentAuthority(entry: Entry) {
+        evaluationOwner?.documentInvalidated(entry.view)
         if (entry.session != null && isSelected(entry)) revokePrivatePresentationInput()
         else if (entry.session != null) privateRuntime.revokeViewInput(entry.view)
         entry.captureDocumentIdentity = Any()
@@ -740,6 +764,7 @@ class SystemBrowserHost(
             if (closed) return
             discoveryOrigins.pruneExpired()
             val now = System.currentTimeMillis()
+            evaluationOwner?.prune()
             val expired = ordinaryController.expireOperations(now) + privateController.expireOperations(now)
             expired.forEach(::stop)
             if (expired.isNotEmpty()) publish()
@@ -884,7 +909,7 @@ class SystemBrowserHost(
     }
     override fun load(request: BrowserRequest) { loadOwned(request) }
     private fun loadOwned(request: BrowserRequest, historyPosition: Int? = null,
-        continuation: (() -> Boolean)? = null): Boolean {
+        continuation: (() -> Boolean)? = null, evaluationAdmission: ((Any) -> Boolean)? = null): Boolean {
         requireMain()
         val owner = ownerOf(request.context) ?: return false
         var capturedEntry: Entry? = null
@@ -900,7 +925,7 @@ class SystemBrowserHost(
             if (privateRequest && displayed && !preparePrivateNavigation()) return false
             if (displayed && !dismissTransientUi() || !owner.isCurrent(request)) return false
             if (continuation != null && !continuing()) return false
-            if (displayed) invalidateDiscoveryOrigin()
+            if (displayed) { invalidateDiscoveryOrigin(); evaluationOwner?.invalidate() }
             if (!browserCommandAllowed()) { fail(request, ErrorCode.POLICY_BLOCKED, owner = owner); return false }
             val entry = recreateEntry(request.context) ?: run { fail(request, ErrorCode.WEBVIEW_UNAVAILABLE, owner = owner); return false }
             capturedEntry = entry
@@ -909,6 +934,7 @@ class SystemBrowserHost(
             val address = request.address ?: return false
             entry.request = request; entry.suppressed = false; entry.admission = NavigationAdmission(address.value)
             entry.historyPosition = historyPosition
+            if (evaluationAdmission != null && !evaluationAdmission(entry.view)) return false
             try {
                 entry.view.stopLoading()
                 if (current(entry) !== request) return false
@@ -1089,6 +1115,7 @@ class SystemBrowserHost(
         resumeSelectedView(); syncVideoPresence()
     }
     fun pause() {
+        evaluationOwner?.invalidate()
         requireMain(); if (closed || closing) return
         if (privateSession != null) revokePrivatePresentationInput()
         foreground = false; cancelPrivateOpening(); authenticationDocuments.clear()
@@ -1196,7 +1223,7 @@ class SystemBrowserHost(
     private fun interactionChanged() {
         if (privateSession != null) revokePrivatePresentationInput()
         entries.values.firstOrNull { isSelected(it) && it.session != null }?.captureDocumentIdentity = Any()
-        interactionRevision++; invalidateDiscoveryOrigin()
+        interactionRevision++; invalidateDiscoveryOrigin(); evaluationOwner?.invalidate()
     }
     private fun touched(): Boolean {
         if (!canAct() || privateMode && !preparePrivateNavigation()) return false
@@ -1341,6 +1368,7 @@ class SystemBrowserHost(
         return released || entry.session == null
     }
     private fun releaseView(view: WebView, rendererDead: Boolean = false): Boolean {
+        evaluationOwner?.viewRemoved(view)
         released[view]?.let { return it == ReleaseState.RELEASED }
         released[view] = ReleaseState.RELEASING
         val session = privateViews[view]
@@ -1427,7 +1455,7 @@ class SystemBrowserHost(
             if (isSelected(entry) && !dismissTransientUi()) return true
             else jsDialogs.cancel(view)
             if (!entryLive(entry)) return true
-            if (request.isRedirect) discoveryOrigins.invalidate(entry.context)
+            if (request.isRedirect) { discoveryOrigins.invalidate(entry.context); evaluationOwner?.viewRemoved(view) }
             if (!request.hasGesture() && current(entry) != null && entry.admission?.expects(address.value) == true) return false
             if (request.isRedirect && current(entry) != null) {
                 entry.admission?.allowRedirect(address.value); return false
@@ -1445,6 +1473,7 @@ class SystemBrowserHost(
             val address = BrowserInputPolicy.address(url ?: return) ?: return
             if (entry.session != null && !prepareEntryNavigation(entry)) return
             if (!entryLive(entry)) return
+            evaluationOwner?.documentStarted(current(entry), view)
             invalidateDocumentAuthority(entry)
             entry.jsDocument++; entry.presenceBudget = BrowserVideoPresenceBudget()
             if (isSelected(entry)) videoPresenceController.update(null)
@@ -1492,6 +1521,8 @@ class SystemBrowserHost(
                     currentEntry = current(entry) === request && !entry.suppressed, acceptedFinish = true,
                     active = entryLive(entry) && isSelected(entry) && foreground && browserSurfaceAllowed(), nowMillis = nowMillis)
                 entry.inspectionDocument.finished(address.value, view.url)
+                if (entryLive(entry) && isSelected(entry) && entry.session == null && foreground)
+                    evaluationOwner?.documentFinished(request, view, entry.inspectionDocument.revision)
                 entry.bookmarkAddress = address.value; entry.presenceNavigationRevision++
                 if (isSelected(entry)) { bookmarkNavigationRevision++; discoveryNavigation?.onFinished() }
                 publish()
@@ -1499,6 +1530,7 @@ class SystemBrowserHost(
         }
         override fun doUpdateVisitedHistory(view: WebView, url: String?, isReload: Boolean) {
             if (view !== entry.view || !entryLive(entry)) return
+            if (entry.inspectionDocument.address != null) evaluationOwner?.documentInvalidated(view)
             if (entry.session != null && !prepareEntryNavigation(entry)) return
             if (!entryLive(entry)) return
             entry.captureDocumentIdentity = Any(); authenticationDocuments.invalidate(entry)
@@ -1651,6 +1683,7 @@ class SystemBrowserHost(
         }
     }
     override fun close() {
+        evaluationOwner?.invalidate()
         requireMain(); if (closed || closing) return
         closing = true // Fence immediately, even if Activity disposal reenters an integration hook.
         revokePrivatePresentationInput()

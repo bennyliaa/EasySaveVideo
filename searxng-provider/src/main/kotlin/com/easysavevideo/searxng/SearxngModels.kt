@@ -4,14 +4,19 @@ import java.net.URI
 import java.security.MessageDigest
 
 /** One user-configured anonymous metadata endpoint; never an authority to fetch result links. */
-class SearxngEndpoint(val id: String, val searchUrl: String) {
+enum class SearxngResultFormat { JSON_VIDEOS, HTML_WEB }
+
+class SearxngEndpoint(val id: String, val searchUrl: String, val format: SearxngResultFormat = SearxngResultFormat.JSON_VIDEOS) {
     val uri: URI = try { URI(searchUrl) } catch (_: Exception) { throw IllegalArgumentException("Invalid endpoint") }
     init {
-        require(id.matches(Regex("searxng-[1-3]")))
+        require(id.length in 9..27 && id.startsWith("searxng-") &&
+            id.substring(8).matches(Regex("[1-9][0-9]{0,18}")) &&
+            id.substring(8).toLongOrNull() != null)
         require(SearxngUrlPolicy.isEndpoint(uri)) { "Invalid endpoint" }
     }
     /** Exact URL changes invalidate persisted progress, even when a slot ID is reused. */
-    val version: String = "1-" + sha256(searchUrl)
+    val version: String = if (format == SearxngResultFormat.JSON_VIDEOS) "1-" + sha256(searchUrl)
+        else "2-html-" + sha256(searchUrl)
     override fun toString(): String = "SearxngEndpoint(id=$id, endpoint=[redacted])"
 }
 

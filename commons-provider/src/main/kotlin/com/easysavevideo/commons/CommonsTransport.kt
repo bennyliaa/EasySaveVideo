@@ -29,6 +29,7 @@ class CommonsHttpRequest(
     val deadlineEpochMillis: Long,
     val connectTimeoutMillis: Int,
     val maxBodyBytes: Long,
+    val stageTrace: com.easysavevideo.discovery.CommonsStageTrace? = null,
 ) {
     init { CommonsUrlPolicy.requireApi(url) }
     override fun toString(): String = "CommonsHttpRequest([redacted])"

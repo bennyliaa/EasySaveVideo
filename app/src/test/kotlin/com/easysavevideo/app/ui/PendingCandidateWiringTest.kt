@@ -43,7 +43,7 @@ class PendingCandidateWiringTest {
         assertEquals(1, Regex(Regex.escape("onVerify(candidate)")).findAll(cards).count())
         assertEquals(1, Regex(Regex.escape("onOpen(candidate)")).findAll(cards).count())
         val screen = compact(source("DiscoveryScreen"))
-        assertTrue(screen.contains("PendingCandidateCards(state.pendingCandidates, columns, admission = state.pendingAdmission, onVerify = { candidate -> controller.verifyCandidate(state.controlTarget, candidate) }) { candidate -> controller.candidateUrl(state.controlTarget, candidate)?.let(onLink) }"))
+        assertTrue(screen.contains("PendingCandidateCards(state.pendingCandidates, columns, admission = state.pendingAdmission, onEvaluate = onEvaluateCandidate?.let { action -> { candidate -> action(state.controlTarget, candidate, cardNavigationLifecycle) } }, onVerify = { candidate -> controller.verifyCandidate(state.controlTarget, candidate) }) { candidate -> controller.candidateUrl(state.controlTarget, candidate)?.let(onLink) }"))
     }
 
     @Test fun mainSummaryLocalizesAllThreeArgumentsAndKeepsCurrentNoticeAndAddressGates() {

@@ -1,0 +1,13 @@
+<resources>
+    <string name="evaluation_open">Open as an evaluation page</string>
+    <string name="evaluation_notice">Debug evaluation only. Start a run, then use Open as an evaluation page. Explicitly choosing Save or Record from that page begins its test. Ordinary page opens are not included.</string>
+    <string name="evaluation_begin">Begin joint ①②③ evaluation</string>
+    <string name="evaluation_preview">Refresh local preview</string>
+    <string name="evaluation_end">End run (may remain partial)</string>
+    <string name="evaluation_unavailable">Provider counts overlap and cannot be added. Preview shows only the first 32 providers; the sealed export includes all.</string>
+    <string name="evaluation_export">Export sealed JSON report</string>
+    <string name="evaluation_export_notice">Choose a new empty local document. Provider sync is outside this app; failures or cancellation may leave an empty or partial file. Provider source mapping stays in this preview.</string>
+    <string name="evaluation_export_refused">Export unavailable: end the current run and refresh its preview first.</string>
+    <string name="evaluation_begin_record">Start independent ③ recording evaluation</string>
+    <string name="evaluation_record_scope">③ evaluation supports BASIC recording only. Segment recording is untested. Open an evaluation candidate, then explicitly choose Record. Only verified committed output counts as success.</string>
+</resources>

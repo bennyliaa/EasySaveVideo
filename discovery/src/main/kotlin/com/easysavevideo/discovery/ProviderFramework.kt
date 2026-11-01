@@ -19,8 +19,9 @@ class DiscoveryCancellation : CancellationToken {
     @Volatile internal var isDrained = false
         private set
     @Volatile internal var drained: (() -> Unit)? = null
-    @Volatile override var isCancelled: Boolean = false
-        private set
+    // Shared flag carries no callbacks/context; optional diagnostics may retain only this signal.
+    internal val cancellationSignal = AtomicBoolean(false)
+    override val isCancelled: Boolean get() = cancellationSignal.get()
     fun onCancel(callback: () -> Unit): CancellationHandle {
         val immediately = synchronized(lock) {
             if (isCancelled) true else {
@@ -43,7 +44,7 @@ class DiscoveryCancellation : CancellationToken {
     fun cancel() {
         val (pendingSignals, pending) = synchronized(lock) {
             if (isCancelled) return
-            isCancelled = true
+            cancellationSignal.set(true)
             (signals.toList() to callbacks.toList()).also { signals.clear(); callbacks.clear() }
         }
         pendingSignals.forEach { it() }
@@ -64,6 +65,9 @@ data class SearchRequest(val stamp: SessionStamp, val profile: SearchProfile, va
     override fun toString(): String = "SearchRequest([redacted])"
 }
 data class DiscoveryOperation(val context: OperationContext, val cancellation: DiscoveryCancellation) {
+    /** Not a constructor property: copy/retry must acquire a fresh exact-attempt capability. */
+    @Volatile var commonsStageTrace: CommonsStageTrace? = null
+        internal set
     init { require(context.cancelToken === cancellation) }
     fun check(nowMillis: Long) {
         if (cancellation.isCancelled) throw DiscoveryFailure(DiscoveryError.CANCELLED)
@@ -106,8 +110,14 @@ internal fun ProviderDescriptor.detachedDescriptor(): ProviderDescriptor =
  * every redirect and resolved address, 5s connect timeout and the supplied body/deadline/cancel budget.
  * Provider data never carries command, filesystem, playback or SaveEngine authority.
  */
+/** Hard envelope enforced by the provider across every request in one search call. */
+data class SourceSearchBudget(val maxRequests: Int, val maxBytes: Long) {
+    init { require(maxRequests in 1..4 && maxBytes in 1..2_097_152) }
+}
+
 interface VideoSearchProvider {
     val descriptor: ProviderDescriptor
+    val searchBudget: SourceSearchBudget? get() = null
     val requiresAuthority: Boolean get() = false
     fun acquire(request: SearchRequest, operation: DiscoveryOperation): ProviderRequestLease? = null
     /** Read-only owner view for guarded durable progress. No request lease, observation, I/O or
@@ -209,9 +219,10 @@ class IsolatedProviderRuntime(
                 val authority = acquired?.authority
                 if (authority != null && (authority.descriptor != expected || !authority.isCurrent(clock.nowMillis())))
                     throw DiscoveryFailure(DiscoveryError.CANCELLED)
+                pipeline.reserveTrustedSource(provider, boundRequest, authority, operation)
                 val raw = acquired?.search(boundRequest, operation) ?: provider.search(boundRequest, operation)
                 operation.check(clock.nowMillis())
-                val page = pipeline.validate(id, raw, boundRequest.profile.filters, operation)
+                val page = pipeline.validateTrusted(provider, boundRequest, authority, raw, operation)
                 if (authority != null && !authority.publishIfCurrent(clock.nowMillis(), operation) {})
                     throw DiscoveryFailure(DiscoveryError.CANCELLED)
                 ProviderOutcome.Success(page, authority)
@@ -220,6 +231,7 @@ class IsolatedProviderRuntime(
             } catch (_: Exception) { ProviderOutcome.Failure(DiscoveryError.PROVIDER_FAILURE)
             } catch (_: LinkageError) { ProviderOutcome.Failure(DiscoveryError.PROVIDER_FAILURE)
             } finally {
+                pipeline.endTrustedSource(operation)
                 val completedBeforeCancellation = operation.cancellation.releaseCompletedAttempt()
                 job.workerFinished.set(true)
                 if (completedBeforeCancellation) running.remove(id, job) else releaseCancelledSlot()
@@ -244,6 +256,9 @@ class IsolatedProviderRuntime(
         }
         fun stop(code: DiscoveryError) {
             if (terminal.compareAndSet(null, ProviderOutcome.Failure(code))) {
+                operation.commonsStageTrace?.event(if (code == DiscoveryError.DEADLINE_EXCEEDED)
+                    CommonsStage.DEADLINE_SIGNAL else CommonsStage.CANCEL_SIGNAL,
+                    if (code == DiscoveryError.DEADLINE_EXCEEDED) CommonsStageFailure.DEADLINE_EXCEEDED else CommonsStageFailure.CANCELLED)
                 operation.cancellation.cancel(); thread.interrupt()
             }
         }

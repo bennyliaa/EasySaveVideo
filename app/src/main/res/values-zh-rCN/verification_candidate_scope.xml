@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="verification_candidate_title">网页候选验证 · 可选远程服务</string>
+    <string name="verification_candidate_remote_disabled">远程服务已关闭；未配置默认远程端点。</string>
+    <string name="verification_candidate_remote_enabled">远程服务在本次应用会话已启用；应用进程重启后关闭。</string>
+    <string name="verification_candidate_bounded_search">主动查找时，可在搜索会话的共享预算内临时准入有限数量的公共 HTTPS 候选供本地验证。仍须遵守 robots 规则以及登录、DRM 和 SSRF 防护限制；未检查或证据不足的候选仍保持未验证。</string>
+    <string name="verification_candidate_evidence_limits">验证成功不作保证。网页证据不代表可播放、可下载或有保存权限，缺失时长保持未知。没有默认远程服务或公开站点验收承诺；服务不可达不影响浏览、下载或录制。</string>
+    <string name="verification_candidate_catalog_status">可选应用内来源目录：%1$s</string>
+    <string name="verification_candidate_separate_policies">远程服务独立遵循本次会话同意与服务来源规则。应用内来源目录是单独的可选策略，不替代主动搜索的临时候选准入边界。</string>
+    <string name="verification_candidate_catalog_policy">来源目录只接受应用内已编译批准的策略。主动搜索另可按临时会话规则准入公共 HTTPS 候选；跳转目标仍须校验，验证结果不作保证。</string>
+    <string name="verification_candidate_empty_catalog">应用内可选来源目录为空；这不表示主动搜索的本地候选验证不可用。</string>
+</resources>

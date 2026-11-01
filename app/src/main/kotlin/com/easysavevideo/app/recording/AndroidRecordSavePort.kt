@@ -5,6 +5,7 @@ import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.SystemClock
 import com.easysavevideo.app.browser.privacy.PrivateCaptureDisposition
+import com.easysavevideo.app.save.RecordingSaveEvaluationBinding
 import com.easysavevideo.app.save.storage.AndroidSaveStorage
 import com.easysavevideo.core.model.OperationContext
 import com.easysavevideo.recording.*
@@ -33,6 +34,7 @@ internal class AndroidRecordSavePort(
     @Volatile private var request: RecordingRequest? = null
     @Volatile private var serviceRequestId: String? = null
     @Volatile private var privateBinding: PrivateRecordingNativeBinding? = null
+    @Volatile private var evaluationBinding: RecordingSaveEvaluationBinding? = null
     val isDraining: Boolean get() = lease.releaseUnconfirmed
     val nativeOccupied: Boolean get() = lease.occupied
     override fun availability() = SaveMethodAvailability(true, null)
@@ -42,7 +44,8 @@ internal class AndroidRecordSavePort(
     private fun publish() = controller.snapshot().also(changed)
 
     @Synchronized fun prepare(descriptor: CaptureDescriptor, audioPermissionGranted: Boolean,
-        privateBinding: PrivateRecordingNativeBinding? = null): Boolean {
+        privateBinding: PrivateRecordingNativeBinding? = null,
+        evaluationBinding: RecordingSaveEvaluationBinding? = null): Boolean {
         if (lease.occupied || this.privateBinding?.hasUndrainedOwner == true || (privateBinding != null &&
                 (privateBinding.descriptor != descriptor || !privateBinding.isReservationOpen))) return false
         // Controller duplicates cannot replace an already-frozen private/ordinary owner binding.
@@ -53,6 +56,7 @@ internal class AndroidRecordSavePort(
         if (!result.accepted) return false
         request = next
         this.privateBinding = privateBinding
+        this.evaluationBinding = evaluationBinding?.takeIf { privateBinding == null && it.isPreparedFor(descriptor) }
         control { controller.userConfirmed(descriptor.session, now(), audioPermissionGranted) }
         publish()
         return true
@@ -135,6 +139,8 @@ internal class AndroidRecordSavePort(
             ?: throw SaveFailure(SaveError.INVALID_REQUEST)
         if (serviceRequestId != requestId || !canRecord()) { denied(requestId, RecordingError.CAPTURE_UNAVAILABLE); throw SaveFailure(SaveError.CAPTURE_UNAVAILABLE) }
         val privateCapture = privateBinding
+        // Freeze this optional identity before crossing the native lane. No context allocates nothing.
+        val evaluation = evaluationBinding?.takeIf { privateCapture == null && it.isPreparedFor(owned.descriptor) }
         if (privateCapture != null && privateCapture.descriptor != descriptor) throw SaveFailure(SaveError.INVALID_REQUEST)
         val acquired = if (privateCapture == null) lease.tryAcquire() else privateCapture.registerQueued(lease)
         if (!acquired) {
@@ -185,6 +191,7 @@ internal class AndroidRecordSavePort(
                         },
                         onProgress = { progress ->
                             if (!resultFence.isAbandoned) {
+                                if (progress.state == RecordingState.RECORDING) evaluation?.nativeStarted(owned.descriptor)
                                 control { controller.progress(descriptor.session, now(), progress.state, progress.audioStatus,
                                     progress.effectiveDurationUs, progress.actualProfile, progress.stopReason, progress.error, progress.effectiveResumeCount) }
                                 publish()
@@ -241,6 +248,7 @@ internal class AndroidRecordSavePort(
                     throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
                 }
                 control { controller.releaseConfirmed(descriptor.session, now()) }
+                evaluation?.nativeReleased(owned.descriptor)
                 return when (outcome) {
                     is RecordingOutcome.Completed -> {
                         val bytes = storage.stagingFile(artifact).length()
@@ -249,6 +257,7 @@ internal class AndroidRecordSavePort(
                         publish()
                         if (context.cancelToken.isCancelled || !controller.snapshot().publicationAllowed)
                             throw SaveFailure(SaveError.CANCELLED)
+                        evaluation?.nativeCompleted(owned.descriptor, outcome.expectation)
                         TransferResult(artifact.artifactId, bytes, "video/mp4", expectedTotalBytes = bytes,
                             recordingExpectation = outcome.expectation)
                     }
@@ -259,20 +268,29 @@ internal class AndroidRecordSavePort(
         } catch (failure: SaveFailure) {
             if (failure.code != SaveError.RESOURCE_RELEASE_UNCONFIRMED) {
                 control { controller.failed(descriptor.session, now(), RecordingError.FINALIZATION_FAILED) }
-                if (!lease.occupied) control { controller.releaseConfirmed(descriptor.session, now()) }
+                if (!lease.occupied) {
+                    control { controller.releaseConfirmed(descriptor.session, now()) }
+                    evaluation?.nativeReleased(owned.descriptor)
+                }
                 publish()
             }
             throw failure
         } catch (failure: ExecutionException) {
             val code = (failure.cause as? RecordingFailure)?.code ?: RecordingError.CAPTURE_UNAVAILABLE
             if (lease.occupied) control { controller.releaseUnconfirmed(descriptor.session, now()) }
-            else { control { controller.failed(descriptor.session, now(), code) }; control { controller.releaseConfirmed(descriptor.session, now()) } }
+            else {
+                control { controller.failed(descriptor.session, now(), code) }; control { controller.releaseConfirmed(descriptor.session, now()) }
+                evaluation?.nativeReleased(owned.descriptor)
+            }
             publish()
             throw SaveFailure(if (lease.occupied) SaveError.RESOURCE_RELEASE_UNCONFIRMED else mapError(code))
         } catch (_: InterruptedException) {
             Thread.currentThread().interrupt(); resultFence.abandon { session?.cancel() }
             throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
-        } finally { serviceRequestId = null; ProjectionGrantHandoff.discard(requestId) }
+        } finally {
+            if (evaluationBinding === evaluation) evaluationBinding = null
+            serviceRequestId = null; ProjectionGrantHandoff.discard(requestId)
+        }
     }
     private fun mapError(error: RecordingError): SaveError = SaveErrors.classify(RecordingFailure(error))
 }

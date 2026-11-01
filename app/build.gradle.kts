@@ -92,13 +92,32 @@ val contractResourceInputs = fileTree("src/main/res") {
             "private_recording.xml", "editor_back.xml", "settings_discovery.xml", "settings_privacy.xml", "settings_entitlements.xml", "settings_destination.xml", "settings_browser.xml", "save_concurrency.xml", "save_normalization.xml",
             "recording_notification.xml", "save_authentication_origin.xml", "save_runtime_notice.xml", "save_authentication_navigation.xml", "save_display.xml", "discovery_body.xml", "discovery_recovery.xml", "discovery_address.xml", "discovery_pending.xml", "input_clear.xml",
             "ordinary_destination.xml", "ordinary_destination_display.xml", "browser_copy.xml", "bookmark_panel.xml", "history_panel.xml", "browser_permission_notice.xml", "browser_cookie_clear.xml", "save_wifi.xml", "editor_defaults.xml", "video_presence.xml", "browser_js_dialog.xml", "new_tab_search.xml", "directory_batch.xml", "discovery_copy.xml", "discovery_layout.xml",
-            "discovery_presentation.xml", "discovery_power.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
-            "library_batch_export.xml", "export_recovery.xml", "save_recovery.xml", "library_multi.xml", "library_display.xml", "provider_copy.xml",
+            "discovery_presentation.xml", "discovery_power.xml", "searxng_settings.xml", "verification_candidate_scope.xml", "filter_copy.xml", "finite_i18n.xml", "save_failure_guidance.xml",
+            "library_batch_export.xml", "export_recovery.xml", "save_recovery.xml", "save_evaluation.xml", "save_method_settings.xml", "library_multi.xml", "library_display.xml", "provider_copy.xml",
             "provider_dialog.xml", "region_validation.xml", "responsive_panes.xml", "runtime_messages.xml", "vault_runtime.xml", "vault_playback.xml", "vault_auto_lock_settings.xml", "vault_thumbnails.xml", "final_*.xml"
         )) include("$locale/$resource")
     }
 }
 val contractSourceInputs = files(
+    "src/main/kotlin/com/easysavevideo/app/ui/shell/SaveMethodSettingsDetail.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/shell/SaveMethodSettingsActions.kt",
+    "src/main/kotlin/com/easysavevideo/app/storage/SaveMethodPreferenceBoundary.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/RecordingSaveEvaluationTaskBinding.kt",
+    fileTree("src/androidTest") { include("**/*.kt", "**/*.java", "AndroidManifest.xml") },
+    "../docs/discovery/EVALUATION_EXPORT_DEVICE_ACCEPTANCE_20261018.md",
+    "src/main/kotlin/com/easysavevideo/app/save/SealedEvaluationExport.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/AndroidEvaluationReportExport.kt",
+    "src/debug/kotlin/com/easysavevideo/app/ui/CommonsStageDiagnosticsPanel.kt",
+    "src/release/kotlin/com/easysavevideo/app/ui/CommonsStageDiagnosticsPanel.kt",
+    "src/main/kotlin/com/easysavevideo/app/discovery/DebugCommonsStageDiagnosticsOwner.kt",
+    "src/main/kotlin/com/easysavevideo/app/discovery/CommonsStageDiagnosticsPresentation.kt",
+    "src/debug/res/values/commons_stage_diagnostics.xml",
+    "src/debug/res/values-zh-rCN/commons_stage_diagnostics.xml",
+    "../docs/discovery/COMMONS_STAGE_DEBUG_UI_20261019.md",
+    "src/debug/kotlin/com/easysavevideo/app/ui/SaveEvaluationPanel.kt",
+    "src/release/kotlin/com/easysavevideo/app/ui/SaveEvaluationPanel.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/DebugSaveEvaluationOwner.kt",
+    "src/main/kotlin/com/easysavevideo/app/save/SaveEvaluationTaskBinding.kt",
     fileTree("src/main/kotlin/com/easysavevideo/app/vault") { include("**/*.kt") },
     "src/main/AndroidManifest.xml",
     "build.gradle.kts",
@@ -259,6 +278,7 @@ val contractSourceInputs = files(
     "src/main/kotlin/com/easysavevideo/app/recording/ui/RecordingSegmentsCard.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/ProviderManagementScreen.kt",
     "src/main/kotlin/com/easysavevideo/app/ui/SearxngSourceSettings.kt",
+    "src/main/kotlin/com/easysavevideo/app/ui/VerificationServiceSettings.kt",
     "src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationUi.kt",
     "src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationResources.kt",
     "src/main/kotlin/com/easysavevideo/app/library/destination/OrdinaryDestinationPresentation.kt",
@@ -370,4 +390,20 @@ val verifyRuntimeAdmission by tasks.registering {
 }
 tasks.configureEach {
     if (name == "preBuild") dependsOn(verifyRuntimeAdmission)
+}
+
+
+// Isolated user-authorized code13 diagnostic candidate. Release/default values are unchanged.
+android {
+    buildTypes {
+        getByName("debug") {
+            buildConfigField("String", "COMMONS_CONTACT", "\"bennyliaa@gmail.com\"")
+            buildConfigField("boolean", "COMMONS_ENABLED", "true")
+        }
+    }
+}
+androidComponents {
+    onVariants(selector().withBuildType("debug")) { variant ->
+        variant.outputs.forEach { output -> output.versionCode.set(13) }
+    }
 }

@@ -16,23 +16,61 @@ class SearxngProtocolTest {
         }
     }
 
-    @Test fun endpointsHaveFixedSlotIdsAndExactUrlVersions() {
+    @Test fun endpointsHaveStableCanonicalInstanceIdsAndExactUrlVersions() {
         val first = endpoint()
         assertEquals(first.version, endpoint().version)
         assertNotEquals(first.version, endpoint("https://other.example.org/search").version)
         assertEquals("/search", first.uri.path)
         assertEquals("searxng-1", first.id)
-        for (id in listOf("searxng-0", "searxng-4", "search", "searxng-01")) invalidEndpoint { endpoint(id = id) }
+        for (id in listOf("searxng-1", "searxng-2", "searxng-3", "searxng-4", "searxng-1000", "searxng-${Long.MAX_VALUE}"))
+            assertEquals(id, endpoint(id = id).id)
+        for (id in listOf("searxng-0", "searxng-01", "searxng-", "searxng-+1", "searxng--1", "searxng-١",
+            "searxng-1 ", "searxng-1\n", "searxng- 1", "searxng-1.0", "searxng-1e1", "search", "SEARXNG-1",
+            "searxng-9223372036854775808", "searxng-99999999999999999999")) invalidEndpoint { endpoint(id = id) }
     }
     @Test fun endpointRejectsCredentialsPortsPrivateNamesAndAmbiguousPaths() {
         for (url in listOf("http://search.example.org/search", "https://u:p@search.example.org/search",
             "https://search.example.org:443/search", "https://search.example.org/search?q=x",
-            "https://search.example.org/search#fragment", "https://search.example.org/", "https://search.example.org/prefix/search",
+            "https://search.example.org/search#fragment", "https://search.example.org/", "https://search.example.org/prefix/",
             "https://search.example.org/a/../search", "https://search.example.org/%73earch", "https://localhost/search",
             "https://localhost.example.org/search", "https://foo.local/search", "https://foo.internal/search",
             "https://foo.onion/search", "https://foo.example/search", "https://127.0.0.1/search", "https://[::1]/search", "https://2130706433/search",
             "https://0x7f.0.0.1/search", "https://search.example.org./search", "https://search.example.org/search\n"))
             invalidEndpoint { endpoint(url) }
+    }
+    @Test fun explicitDeploymentPrefixesArePreservedWithoutPathDiscoveryOrNormalization() {
+        for (path in listOf("/search", "/searxng/search", "/tenant-1/meta_search/v1.2/~private/search")) {
+            val configured = endpoint("https://search.example.org$path")
+            assertEquals(path, configured.uri.rawPath)
+            assertEquals("https://search.example.org$path", configured.searchUrl)
+            assertTrue(SearxngUrlPolicy.isEndpoint(configured.uri))
+        }
+        assertNotEquals(endpoint().version, endpoint("https://search.example.org/searxng/search").version)
+        assertNotEquals(endpoint("https://search.example.org/searxng/search").version,
+            endpoint("https://search.example.org/Searxng/search").version)
+    }
+    @Test fun encodedReservedOrAmbiguousDeploymentPathsAreNotEndpoints() {
+        for (path in listOf("/prefix", "/prefix/search/", "/prefix/Search", "//search", "/prefix//search",
+            "/./search", "/../search", "/prefix/./search", "/prefix/../search", "/%2e/search", "/%2E%2E/search",
+            "/prefix%2fextra/search", "/prefix%2Fextra/search", "/prefix%252fextra/search", "/prefix%5c/search",
+            "/%255c/search", "/prefix%00/search", "/prefix%0D/search", "/prefix%7f/search", "/prefix%257f/search",
+            "/prefix/%73earch", "/pre%66ix/search", "/prefix;parameter/search", "/prefix@other/search",
+            "/prefix:other/search", "/prefix+other/search", "/搜索/search", "/%E6%90%9C%E7%B4%A2/search"))
+            invalidEndpoint { endpoint("https://search.example.org$path") }
+        invalidEndpoint { endpoint("https://search.example.org/prefix\\other/search") }
+    }
+    @Test fun longBoundedPrefixesDoNotCauseRecursivePathValidation() {
+        val url = "https://search.example.org/" + "a/".repeat(5000) + "search"
+        assertEquals(url, endpoint(url).searchUrl)
+        invalidEndpoint { endpoint("https://search.example.org/" + "a/".repeat(8200) + "search") }
+    }
+    @Test fun prefixedRequestsCannotEscapeToRootSiblingOrEncodedEquivalent() {
+        val configured = endpoint("https://search.example.org/one/search")
+        SearxngUrlPolicy.requireRequest(configured, URI(configured.searchUrl + "?q=preserved%2Fquery"), SearxngRequestKind.JSON_SEARCH)
+        for (path in listOf("/search", "/two/search", "/one/elsewhere", "/one/search/", "/%6fne/search", "/one//search"))
+            protocolFails(SearxngError.UNSAFE_URL) {
+                SearxngUrlPolicy.requireRequest(configured, URI("https://search.example.org$path?q=x"), SearxngRequestKind.JSON_SEARCH)
+            }
     }
     @Test fun networkApiIsTiedToSelectedAuthorityAndPath() {
         val endpoint = endpoint()
@@ -99,7 +137,9 @@ class SearxngProtocolTest {
         val token = SearxngCursor.encode(2, key(), 301_000)
         assertEquals(2, SearxngCursor.decode(token, key(), 1000, 20) {})
         for (key in listOf(key(query = "film"), key(language = "fr"), key(profile = "other"),
-            key(versionEndpoint = endpoint("https://other.example.org/search"))))
+            key(versionEndpoint = endpoint("https://other.example.org/search")),
+            key(versionEndpoint = endpoint("https://search.example.org/prefix/search")),
+            key(versionEndpoint = endpoint(id = "searxng-4")), key(versionEndpoint = endpoint(id = "searxng-${Long.MAX_VALUE}"))))
             protocolFails(SearxngError.INVALID_CURSOR) { SearxngCursor.decode(token, key, 1000, 20) {} }
         protocolFails(SearxngError.INVALID_CURSOR) { SearxngCursor.decode(token, key(), 301_000, 20) {} }
         protocolFails(SearxngError.INVALID_CURSOR) { SearxngCursor.decode(token, key(), 0, 20) {} }

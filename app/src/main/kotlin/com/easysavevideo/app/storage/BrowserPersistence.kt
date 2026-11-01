@@ -12,11 +12,12 @@ import java.util.concurrent.atomic.AtomicReference
 
 /** Bounded startup IO; one coalesced write job rather than one queued job per callback. */
 class BrowserPersistence(context: Context, private val errors: ErrorSink,
-    acceptedVaultPolicy: () -> VaultAutoLockPolicy? = { null }, private val onWriteFailure: () -> Unit) : AutoCloseable {
+    acceptedVaultPolicy: () -> VaultAutoLockPolicy? = { null },
+    acceptedSaveMethodSettings: (() -> SaveSettings?)? = null, private val onWriteFailure: () -> Unit) : AutoCloseable {
     constructor(context: Context, errors: ErrorSink, onWriteFailure: () -> Unit) :
-        this(context, errors, { null }, onWriteFailure)
+        this(context, errors, { null }, null, onWriteFailure)
 
-    private val settingsStore = AndroidSettingsStore(context, acceptedVaultPolicy)
+    private val settingsStore = AndroidSettingsStore(context, acceptedVaultPolicy, acceptedSaveMethodSettings)
     private val sessionStore = AndroidBrowserSessionStore(context)
     private val io = Executors.newSingleThreadExecutor()
     private val main = Handler(Looper.getMainLooper())

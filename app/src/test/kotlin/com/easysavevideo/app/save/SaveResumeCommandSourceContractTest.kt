@@ -74,7 +74,7 @@ class SaveResumeCommandSourceContractTest {
         val launch = section("private fun launchExecution(", "/** Scheduling deferral")
         assertTrue(launch.contains("claim: SaveExecutionAdmission.Claim"))
         assertFalse(launch.contains("setExecuting(false)"))
-        assertTrue(launch.contains("runSaveExecution(taskId, lease, claim) { releaseExecution(claim) }"))
+        assertTrue(launch.contains("runSaveExecution(taskId, lease, claim, evaluationBinding) { releaseExecution(claim) }"))
         assertTrue(launch.contains("SaveWorkerHandoff().launch({ worker.execute(it) })"))
         assertTrue(launch.contains("finally { releaseExecution(); command { publishRecords() } }"))
         assertTrue(launch.contains("execution.release(); lease?.let(leases::revoke)"))

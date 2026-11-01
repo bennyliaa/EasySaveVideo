@@ -58,7 +58,28 @@ enum class EditorCompressionMode(val key: String) {
 }
 data class EditorSettings(val defaultCompression: EditorCompressionMode = EditorCompressionMode.ORIGINAL_QUALITY)
 
-/** Download preferences. The concurrency limit applies only to Direct transfers. */
-data class SaveSettings(val wifiOnly: Boolean = false, val maxConcurrentDirectTasks: Int = 1) {
+/** Additive save preferences. Method switches admit new tasks only, never control accepted work. */
+data class SaveSettings(
+    val wifiOnly: Boolean = false,
+    val maxConcurrentDirectTasks: Int = 1,
+    val directEnabled: Boolean = true,
+    val streamEnabled: Boolean = true,
+    val recordEnabled: Boolean = true,
+) {
     init { require(maxConcurrentDirectTasks in 1..2) }
+
+    /** Browsing and editing remain available even when every save method is disabled. */
+    fun isMethodEnabled(method: TaskMethod): Boolean = when (method) {
+        TaskMethod.DIRECT -> directEnabled
+        TaskMethod.STREAM -> streamEnabled
+        TaskMethod.RECORD -> recordEnabled
+        TaskMethod.BROWSER, TaskMethod.EDIT -> true
+    }
+
+    fun withMethodEnabled(method: TaskMethod, enabled: Boolean): SaveSettings = when (method) {
+        TaskMethod.DIRECT -> copy(directEnabled = enabled)
+        TaskMethod.STREAM -> copy(streamEnabled = enabled)
+        TaskMethod.RECORD -> copy(recordEnabled = enabled)
+        TaskMethod.BROWSER, TaskMethod.EDIT -> throw IllegalArgumentException("not a save method")
+    }
 }

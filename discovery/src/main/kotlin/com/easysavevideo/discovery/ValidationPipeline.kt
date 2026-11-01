@@ -46,9 +46,27 @@ class ValidationPipeline(
     /** Optional remote validation is best-effort; its unavailable/rejected candidates remain explicit. */
     private val retainFailedValidationCandidates: Boolean = false,
     private val maxValidationsPerPage: Int = 100,
+    private val sessionAdmission: SessionCandidateAdmission? = null,
 ) {
     init { require(maxValidationsPerPage in 0..100) }
-    fun validate(providerId: String, page: ProviderPage, filters: SearchFilters, operation: DiscoveryOperation): ValidatedProviderPage {
+    private data class TrustedSource(val provider: VideoSearchProvider, val request: SearchRequest, val authority: ProviderAuthorityView?)
+    fun validate(providerId: String, page: ProviderPage, filters: SearchFilters, operation: DiscoveryOperation): ValidatedProviderPage =
+        validatePage(providerId, page, filters, operation, null)
+
+    internal fun reserveTrustedSource(provider: VideoSearchProvider, request: SearchRequest, authority: ProviderAuthorityView?,
+        operation: DiscoveryOperation) {
+        sessionAdmission?.reserveSource(provider, request, authority, operation)?.let { throw DiscoveryFailure(it) }
+    }
+
+    internal fun endTrustedSource(operation: DiscoveryOperation) { sessionAdmission?.endSourceOperation(operation) }
+
+    /** Only the runtime can bind a returned page to its original registered source and operation. */
+    internal fun validateTrusted(provider: VideoSearchProvider, request: SearchRequest, authority: ProviderAuthorityView?,
+        page: ProviderPage, operation: DiscoveryOperation): ValidatedProviderPage =
+        validatePage(request.expectedDescriptor!!.id, page, request.profile.filters, operation, TrustedSource(provider, request, authority))
+
+    private fun validatePage(providerId: String, page: ProviderPage, filters: SearchFilters, operation: DiscoveryOperation,
+        trusted: TrustedSource?): ValidatedProviderPage {
         operation.check(clock.nowMillis())
         if (page.responseBytes < 0 || page.responseBytes > limits.maxResponseBytes) throw DiscoveryFailure(DiscoveryError.RESPONSE_TOO_LARGE)
         if (page.results.size.toLong() + page.candidates.size > limits.maxCandidatesPerResponse) throw DiscoveryFailure(DiscoveryError.TOO_MANY_CANDIDATES)
@@ -68,12 +86,21 @@ class ValidationPipeline(
             while (true) {
                 operation.check(clock.nowMillis())
                 val candidate = pool.take() ?: break
-                if (validator == null || attempts >= maxValidationsPerPage) {
+                val managed = trusted != null && trusted.provider.searchBudget != null && sessionAdmission?.tracks(trusted.request.stamp) == true
+                val accepted = if (managed) {
+                    // Reject malformed source metadata before minting any authority.
+                    if (PendingCandidatePolicy.normalize(candidate, providerId, filters.copy(includeUnknownDuration = true)) == null) continue
+                    sessionAdmission!!.accept(trusted!!.provider, trusted.request, trusted.authority, candidate, operation,
+                        allowValidation = validator != null && attempts < maxValidationsPerPage)
+                } else null
+                val duplicate = managed && accepted?.first == false
+                if (validator == null || managed && accepted == null || duplicate && accepted?.validation == null ||
+                    !duplicate && attempts >= maxValidationsPerPage) {
                     PendingCandidatePolicy.normalize(candidate, providerId, filters)?.let(pending::add)
                     continue
                 }
-                attempts++
-                val validation = try { validator.validateEvidence(candidate, operation) }
+                if (!duplicate) attempts++
+                val validation = try { accepted?.validation ?: validator.validateEvidence(candidate, operation) }
                 catch (failure: Exception) {
                     if (failure is InterruptedException) {
                         Thread.currentThread().interrupt()
@@ -85,6 +112,7 @@ class ValidationPipeline(
                     CandidateValidation(null)
                 }
                 operation.check(clock.nowMillis())
+                if (managed && !duplicate) sessionAdmission?.complete(candidate, operation, validation)
                 val raw = validation.raw
                 validation.summary?.let { summary ->
                     val id = digest(framed("candidate-url-v1", candidate.pageUrl))
@@ -99,7 +127,10 @@ class ValidationPipeline(
             }
         } finally { pool.clear() }
         operation.check(clock.nowMillis())
-        return ValidatedProviderPage(results.toList(), page.nextCursor, page.cursorExpiresAtEpochMillis, page.exhausted, pending.toList(), reports.toList())
+        val provenance = trusted?.let { sessionAdmission?.provenance(it.request.stamp) }.orEmpty()
+        return ValidatedProviderPage(results.map { it.copy(provenance = it.provenance + provenance[it.canonicalPageUrl].orEmpty()) },
+            page.nextCursor, page.cursorExpiresAtEpochMillis, page.exhausted,
+            pending.map { it.copy(provenance = it.provenance + provenance[it.canonicalPageUrl].orEmpty()) }, reports.toList())
     }
 }
 

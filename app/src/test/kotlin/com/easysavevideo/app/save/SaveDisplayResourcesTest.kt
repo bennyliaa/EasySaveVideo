@@ -97,7 +97,7 @@ class SaveDisplayResourcesTest {
         assertTrue(text.contains("val admission = LocalPrivateInputAdmission.current"))
         assertTrue(text.contains("fun ownsSelection() = admission() && runtime.selection === selection &&\n        runtime.currentSelectionPresentationIdentity === selection"))
         assertTrue(text.contains("onClick = { if (ownsSelection() && selection.isCurrent()) runtime.choose(candidate, browser) }"))
-        assertTrue(text.contains("enabled = candidate.supported && !candidate.protected && runtime.canSave(candidate.method) && ownsSelection() && selection.isCurrent()"))
+        assertTrue(text.contains("enabled = candidate.supported && !candidate.protected && runtime.canStartSave(candidate.method) && ownsSelection() && selection.isCurrent()"))
         assertTrue(text.contains("runtime.resume(record.task.taskId, browser)"))
         assertTrue(text.contains("runtime.cancel(record.task.taskId)"))
         assertTrue(text.contains("metadata.bandwidth / 1000"))

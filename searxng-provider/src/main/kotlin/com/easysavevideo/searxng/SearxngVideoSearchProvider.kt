@@ -21,6 +21,8 @@ class SearxngVideoSearchProvider(
     private val clock: EpochClock = EpochClock(System::currentTimeMillis),
     private val timer: DiscoveryTimer = SharedSearxngTimer,
 ) : VideoSearchProvider {
+    init { require(endpoint.format == SearxngResultFormat.JSON_VIDEOS) }
+    override val searchBudget = SourceSearchBudget(1, limits.maxResponseBytes)
     override val descriptor = ProviderDescriptor(endpoint.id, endpoint.version, progressScope = ProviderProgressScope.SESSION)
     private val inFlight = AtomicBoolean(false)
     private val retryNotBefore = AtomicLong(0)
@@ -70,6 +72,7 @@ class SearxngVideoSearchProvider(
             if (clock.nowMillis() < cooldown) throw SearxngFailure(SearxngError.RATE_LIMITED, cooldown)
             val parameters = linkedMapOf("q" to request.profile.query, "format" to "json", "categories" to "videos",
                 "pageno" to page.toString(), "language" to language, "safesearch" to "0")
+            // Append only locally selected parameters; retain the configured deployment path verbatim.
             val uri = URI(endpoint.searchUrl + "?" + parameters.entries.joinToString("&") {
                 URLEncoder.encode(it.key, "UTF-8") + "=" + URLEncoder.encode(it.value, "UTF-8")
             })
@@ -188,7 +191,7 @@ class SearxngVideoSearchProvider(
     }
 }
 
-private fun SearxngFailure.discoveryFailure(): DiscoveryFailure = DiscoveryFailure(when (code) {
+internal fun SearxngFailure.discoveryFailure(): DiscoveryFailure = DiscoveryFailure(when (code) {
     SearxngError.UNSUPPORTED_FILTER -> DiscoveryError.UNSUPPORTED_FILTER
     SearxngError.INVALID_REQUEST -> DiscoveryError.INVALID_QUERY
     SearxngError.CANCELLED -> DiscoveryError.CANCELLED

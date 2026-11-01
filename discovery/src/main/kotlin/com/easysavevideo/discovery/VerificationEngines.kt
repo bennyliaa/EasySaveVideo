@@ -9,10 +9,15 @@ enum class EngineEvidence { NONE, HTML_VIDEO, DYNAMIC_VIDEO }
 enum class EngineVerdict { VIDEO, NON_VIDEO, UNKNOWN }
 /** Target access still requires an admitted source policy; this does not grant one. */
 class EngineNetworkConstraints(allowedOrigins: Set<String> = emptySet(), val requireTls: Boolean = true,
-    val maxRedirects: Int = 0, val maxHeaderBytes: Int = 16384, val sourceAdmissionRequired: Boolean = false) {
+    val maxRedirects: Int = 0, val maxHeaderBytes: Int = 16384, val sourceAdmissionRequired: Boolean = false,
+    val requiresRobotsCheck: Boolean = false, internal val candidateGrant: SessionCandidateGrant? = null) {
     val allowedOrigins: Set<String> = java.util.Collections.unmodifiableSet(LinkedHashSet(allowedOrigins))
     val downloadsAllowed: Boolean get() = false
     val cookiesAllowed: Boolean get() = false
+    /** Adapters must recheck before each exchange, DNS lookup and evidence publication. */
+    fun isCurrent(candidate: CandidateUrl, operation: DiscoveryOperation): Boolean =
+        !operation.cancellation.isCancelled && (requiresRobotsCheck == (candidateGrant != null)) &&
+            (candidateGrant?.isCurrent(candidate, operation) ?: true)
     init {require(allowedOrigins.size<=16 && maxRedirects in 0..2 && maxHeaderBytes in 1..16384)}
     override fun toString()="EngineNetworkConstraints([redacted])"
 }
@@ -71,22 +76,45 @@ class VerificationEngineScheduler(private val monotonicMillis: () -> Long = { Sy
     private fun idle(engine: VerificationEngine): Boolean = try { engine.isPhysicallyIdle() } catch (_: Exception) { false }
     fun verify(request: EngineRequest, operation: DiscoveryOperation, engines: List<VerificationEngine>,
         selection: EngineSelection = EngineSelection(), isCurrent: () -> Boolean = { true }): EngineResult {
-        require(request.maxRequests in 0..4 && request.maxBytes in 0..2_097_152)
+        // Acquire physical ownership before spending an ephemeral admission or any shared quota.
+        if (!active.compareAndSet(false, true)) return EngineResult(request.requestId, request.generation,
+            "scheduler", EngineOutcome.UNAVAILABLE)
+        return try { verifyBounded(request, operation, engines, selection, isCurrent) }
+        finally { request.network.candidateGrant?.finish(request.candidate, operation); active.set(false) }
+    }
+
+    private fun verifyBounded(inputRequest: EngineRequest, operation: DiscoveryOperation, engines: List<VerificationEngine>,
+        selection: EngineSelection, isCurrent: () -> Boolean): EngineResult {
+        require(inputRequest.maxRequests in 0..4 && inputRequest.maxBytes in 0..2_097_152)
+        draining?.let { prior ->
+            if (!idle(prior)) return EngineResult(inputRequest.requestId, inputRequest.generation,
+                "scheduler", EngineOutcome.UNAVAILABLE)
+            draining = null
+        }
+        val grant = inputRequest.network.candidateGrant
+        val budget = if (grant != null) {
+            val origin = VerificationOriginPolicy.origin(inputRequest.candidate.pageUrl)
+            if (origin == null || inputRequest.network.allowedOrigins != setOf(origin) ||
+                !inputRequest.network.requireTls || !inputRequest.network.requiresRobotsCheck ||
+                !inputRequest.network.sourceAdmissionRequired || inputRequest.network.maxRedirects != 0)
+                return EngineResult(inputRequest.requestId, inputRequest.generation, "scheduler", EngineOutcome.DENIED)
+            grant.consume(inputRequest.candidate, operation, inputRequest.maxRequests, inputRequest.maxBytes)
+                ?: return EngineResult(inputRequest.requestId, inputRequest.generation, "scheduler", EngineOutcome.DENIED)
+        } else null
+        val request = if (budget == null) inputRequest else inputRequest.copy(
+            maxRequests = budget.requests, maxBytes = budget.bytes,
+            deadlineMonotonicMillis = minOf(inputRequest.deadlineMonotonicMillis, monotonicMillis() + budget.remainingMillis))
         fun terminal(outcome: EngineOutcome) = EngineResult(request.requestId, request.generation,
             "scheduler", outcome, consumptionKnown = false)
         fun fence(): EngineOutcome? = when {
-            operation.cancellation.isCancelled || Thread.currentThread().isInterrupted || !isCurrent() -> EngineOutcome.CANCELLED
+            operation.cancellation.isCancelled || Thread.currentThread().isInterrupted || !isCurrent() ||
+                !request.network.isCurrent(request.candidate, operation) -> EngineOutcome.CANCELLED
             monotonicMillis() >= request.deadlineMonotonicMillis -> EngineOutcome.TIMEOUT
             else -> null
         }
         fence()?.let { return terminal(it) }
-        if (!active.compareAndSet(false, true)) return terminal(EngineOutcome.UNAVAILABLE)
         var executing: VerificationEngine? = null
         try {
-            draining?.let { prior ->
-                if (!idle(prior)) return terminal(EngineOutcome.UNAVAILABLE)
-                draining = null
-            }
             var requestsLeft = request.maxRequests
             var bytesLeft = request.maxBytes
             var last: EngineResult? = null
@@ -140,14 +168,20 @@ class VerificationEngineScheduler(private val monotonicMillis: () -> Long = { Sy
             return last ?: terminal(EngineOutcome.UNAVAILABLE)
         } finally {
             executing?.let { if (!idle(it)) draining = it }
-            active.set(false)
         }
     }
+
+    fun validator(engines: List<VerificationEngine>, generation: String, remoteConsent: Boolean,
+        dynamicAllowed: Boolean, selection: EngineSelection, isCurrent: () -> Boolean, epochMillis: () -> Long,
+        admittedNetwork: (CandidateUrl) -> EngineNetworkConstraints): CandidateValidator =
+        validator(engines, generation, remoteConsent, dynamicAllowed, selection, isCurrent, epochMillis,
+            sessionAdmission = null, admittedNetwork = admittedNetwork)
 
     /** Discovery depends only on this contract; the application composition root registers engines. */
     fun validator(engines: List<VerificationEngine>, generation: String, remoteConsent: Boolean,
         dynamicAllowed: Boolean, selection: EngineSelection = EngineSelection(),
         isCurrent: () -> Boolean = { true }, epochMillis: () -> Long = System::currentTimeMillis,
+        sessionAdmission: SessionCandidateAdmission? = null,
         admittedNetwork: (CandidateUrl) -> EngineNetworkConstraints = { EngineNetworkConstraints() }): CandidateValidator =
         object : CandidateValidator {
         override fun validate(candidate: CandidateUrl, operation: DiscoveryOperation): RawVideoResult? =
@@ -157,8 +191,9 @@ class VerificationEngineScheduler(private val monotonicMillis: () -> Long = { Sy
             val availableMillis = (operation.context.deadlineEpochMillis - epochMillis() - 1000).coerceAtLeast(0)
             return if (availableMillis == 0L) CandidateValidation(null, VerificationSummary("scheduler", EngineOutcome.TIMEOUT, EngineEvidence.NONE)) else {
                 val request = EngineRequest(UUID.randomUUID().toString().replace("-",""), generation, candidate,
-                    monotonicMillis() + minOf(3000L,availableMillis), 3, 2_097_152, dynamicAllowed, remoteConsent,
-                    admittedNetwork(candidate))
+                    monotonicMillis() + minOf(3000L,availableMillis), 3,
+                    minOf(2_097_152, operation.context.resourceBudget.maxBytes ?: 2_097_152), dynamicAllowed, remoteConsent,
+                    sessionAdmission?.network(candidate, operation) ?: admittedNetwork(candidate))
                 val result = verify(request,operation,engines,selection,isCurrent)
                 operation.check(epochMillis())
                 if (!isCurrent()) throw DiscoveryFailure(DiscoveryError.CANCELLED)

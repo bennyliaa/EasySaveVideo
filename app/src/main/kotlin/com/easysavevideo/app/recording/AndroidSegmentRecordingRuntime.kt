@@ -44,6 +44,7 @@ class AndroidSegmentRecordingRuntime internal constructor(
     private val published: () -> Unit,
     private val runtimeText: RuntimeMessageText,
     private val activityChanged: () -> Unit = {},
+    private val newRecordingAllowed: () -> Boolean = { true },
 ) {
     private val application = context.applicationContext
     private val main = Handler(Looper.getMainLooper())
@@ -248,14 +249,14 @@ class AndroidSegmentRecordingRuntime internal constructor(
     fun owns(id: String): Boolean = active?.descriptor?.sessionId == id
     fun allowsConsent(id: String): Boolean = active?.let {
         it.descriptor.sessionId == id && !it.submitted && (!it.preview || it.previewConsentReady) && !it.fence.isRevoked && !it.cancellation.isCancelled &&
-            featureAllowed(Feature.REGION_RECORDING) && !lease.occupied
+            featureAllowed(Feature.REGION_RECORDING) && newRecordingAllowed() && !lease.occupied
     } == true
 
     fun prepare(choice: RecordingAudioChoice, recipe: RegionCaptureRecipe, admission: OrdinaryDestinationAdmission): String? = prepareInternal(choice, recipe, false, admission)
 
     private fun prepareInternal(choice: RecordingAudioChoice, recipe: RegionCaptureRecipe, preview: Boolean, admission: OrdinaryDestinationAdmission): String? {
         requireMain()
-        if (!ready || !foreground || active != null || !otherMediaIdle() || !featureAllowed(Feature.REGION_RECORDING)) return null
+        if (!ready || !foreground || active != null || !otherMediaIdle() || !newRecordingAllowed() || !featureAllowed(Feature.REGION_RECORDING)) return null
         if (recipe.source != DefaultDisplayCaptureGeometry.read(application) || recipe.scopeEvidence != DefaultDisplayCaptureGeometry.scopeEvidence() ||
             (!preview && (recipe.encodedWidth > EditLimits.MAX_DIMENSION || recipe.encodedHeight > EditLimits.MAX_DIMENSION ||
             recipe.encodedWidth.toLong() * recipe.encodedHeight > EditLimits.MAX_PIXELS))) return null
@@ -460,6 +461,7 @@ class AndroidSegmentRecordingRuntime internal constructor(
         var delegated = false
         var outcome: RecordingOutcome? = null
         try {
+            if (!newRecordingAllowed()) throw RecordingFailure(RecordingError.CAPTURE_UNAVAILABLE)
             if (!job.fence.startNative(descriptor.session) || job.cancellation.isCancelled) return
             if (!featureAllowed(Feature.REGION_RECORDING)) throw RecordingFailure(RecordingError.ENTITLEMENT_REQUIRED)
             val recipe = requireNotNull(descriptor.regionCaptureRecipe)

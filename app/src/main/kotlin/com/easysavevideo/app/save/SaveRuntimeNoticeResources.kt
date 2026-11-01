@@ -23,6 +23,7 @@ internal fun saveRuntimeFixedNoticeResource(kind: SaveRuntimeFixedNotice): Int =
     SaveRuntimeFixedNotice.OPEN_LOADED_PAGE -> R.string.save_runtime_notice_open_loaded_page
     SaveRuntimeFixedNotice.CANDIDATE_EXPIRED -> R.string.save_runtime_notice_candidate_expired
     SaveRuntimeFixedNotice.CANDIDATE_PROTECTED_OR_UNSUPPORTED -> R.string.save_runtime_notice_candidate_protected_or_unsupported
+    SaveRuntimeFixedNotice.METHOD_DISABLED -> R.string.save_runtime_notice_method_disabled
     SaveRuntimeFixedNotice.STREAM_ENTITLEMENT_REQUIRED -> R.string.save_runtime_notice_stream_entitlement_required
     SaveRuntimeFixedNotice.MEDIA_RESOURCES_EXITING -> R.string.save_runtime_notice_media_resources_exiting
     SaveRuntimeFixedNotice.DIRECT_REQUEST_SESSION_UNAVAILABLE -> R.string.save_runtime_notice_direct_request_session_unavailable

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="verification_candidate_title">Web candidate verification · optional remote service</string>
+    <string name="verification_candidate_remote_disabled">Remote service is off; no default remote endpoint is configured.</string>
+    <string name="verification_candidate_remote_enabled">Remote service is enabled for this app session and turns off when the app process restarts.</string>
+    <string name="verification_candidate_bounded_search">An explicit search may temporarily admit a bounded number of public HTTPS candidates for local verification within the shared search-session budget. Robots rules and login, DRM and SSRF safeguards still apply. Unchecked or insufficiently verified candidates remain unverified.</string>
+    <string name="verification_candidate_evidence_limits">Verification is not guaranteed. Page evidence does not establish playback, download or saving rights; missing duration remains unknown. No default remote service or public-site acceptance is claimed. An unavailable service does not prevent browsing, downloading or recording.</string>
+    <string name="verification_candidate_catalog_status">Optional compiled-source catalogue: %1$s</string>
+    <string name="verification_candidate_separate_policies">The remote service requires its own session consent and service-side source rules. The compiled-source catalogue is a separate optional policy; it does not replace the temporary candidate-admission boundary of an explicit search.</string>
+    <string name="verification_candidate_catalog_policy">The catalogue only accepts approved policies compiled into the app. An explicit search may separately admit public HTTPS candidates under temporary session rules. Redirect targets still require validation, and no verification outcome is guaranteed.</string>
+    <string name="verification_candidate_empty_catalog">The optional compiled-source catalogue is empty. This does not mean local candidate verification for an explicit search is unavailable.</string>
+</resources>

@@ -1,0 +1,18 @@
+<resources>
+    <string name="commons_stage_title">Commons 请求阶段诊断（Debug）</string>
+    <string name="commons_stage_notice">仅限本机内存。开始后只记录下一次有效的显式搜索，包括筛选面板的搜索按钮；不会自行发出或重启请求。预览不会读取文件或访问网络。停止、离开发现页、转入后台或更改来源都会封存记录。</string>
+    <string name="commons_stage_start">开始：记录下一次显式搜索</string>
+    <string name="commons_stage_stop">停止并保留本地预览</string>
+    <string name="commons_stage_preview">刷新阶段预览</string>
+    <string name="commons_stage_idle">默认关闭，未纳入任何搜索。</string>
+    <string name="commons_stage_armed">已准备，等待下一次有效的显式搜索。</string>
+    <string name="commons_stage_collecting">已观察搜索会话；刷新可读取最新的有限条目。</string>
+    <string name="commons_stage_sealed">会话已封存，迟到回调不能添加记录。</string>
+    <string name="commons_stage_counts">保留=%1$d/%2$d；活动阶段=%3$d；显示=%4$d；已截断=%5$s；不完整=%6$s；进行中=%7$d</string>
+    <string name="commons_stage_dropped">丢弃操作=%1$d；丢弃条目=%2$d；忽略事件=%3$d；时钟异常=%4$d</string>
+    <string name="commons_stage_not_observed">%1$s：NOT_OBSERVED（当前保留记录中未观察到）</string>
+    <string name="commons_stage_not_measured">NOT_MEASURED（未测量）</string>
+    <string name="commons_stage_elapsed">%1$d ns</string>
+    <string name="commons_stage_row">会话-%1$d / 操作-%2$d / 尝试=%3$d / %4$s / %5$s / 耗时=%6$s / 计时=%7$s / 错误=%8$s / HTTP=%9$s</string>
+    <string name="commons_stage_scope">最多显示 32 条，活动阶段列在已完成样本之后。NOT_OBSERVED 表示保留记录中没有样本，不能视为零耗时成功或网络故障证据。丢弃样本可能造成阶段缺失；整段记录出现某个阶段不代表每次尝试都经过该阶段。HTTP_EXCHANGE 在读取正文时包括有限正文处理；拒绝或限流响应可能只读响应头，不是首字节时间。OPERATION 表示运行时回调结果，不代表候选已入池或显示。取消信号不能证明资源清理已完成。不导出、不保存报告、不上传。</string>
+</resources>

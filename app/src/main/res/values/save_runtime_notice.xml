@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Fixed runtime notices -->
+    <string name="save_runtime_notice_method_disabled">This save method is turned off in Settings. Enable it to start new tasks. Existing tasks are unchanged.</string>
     <string name="save_runtime_notice_save_unavailable">Saving is temporarily unavailable. Please try again later.</string>
     <string name="save_runtime_notice_open_loaded_page">Open a webpage and wait for it to finish loading before saving.</string>
     <string name="save_runtime_notice_candidate_expired">The candidate has expired. Detect media on the current page again.</string>

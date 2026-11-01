@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Fixed runtime notices -->
+    <string name="save_runtime_notice_method_disabled">此保存方式已在设置中关闭。启用后可开始新任务，已有任务不受影响。</string>
     <string name="save_runtime_notice_save_unavailable">保存暂时不可用，请稍后重试。</string>
     <string name="save_runtime_notice_open_loaded_page">请先打开网页，等待页面加载完成后再保存。</string>
     <string name="save_runtime_notice_candidate_expired">候选已过期，请重新检测当前页面。</string>

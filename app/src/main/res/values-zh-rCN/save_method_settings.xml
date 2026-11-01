@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_methods_title">保存方式</string>
+    <string name="save_methods_waiting">设置加载完成且当前页面处于前台后可修改。</string>
+    <string name="save_methods_direct">直接下载（DIRECT）</string>
+    <string name="save_methods_stream">流媒体保存（STREAM）</string>
+    <string name="save_methods_record">录制（RECORD）</string>
+    <string name="save_methods_new_tasks">各开关仅影响新任务。关闭某种方式不会中断已接受的任务，停止和丢弃操作始终保留。</string>
+    <string name="save_methods_safety">启用后仍须通过原有的权限、权益和安全检查。</string>
+    <string name="save_methods_all_off">所有保存方式均已关闭，浏览和搜索仍可使用。</string>
+</resources>

@@ -85,6 +85,10 @@ sealed interface SettingsEdit {
         init { require(count in 1..2) }
         override fun applyTo(current: AppSettings) = current.copy(save = current.save.copy(maxConcurrentDirectTasks = count))
     }
+    data class SaveMethodEnabled(val method: TaskMethod, val enabled: Boolean) : SettingsEdit {
+        init { require(method == TaskMethod.DIRECT || method == TaskMethod.STREAM || method == TaskMethod.RECORD) }
+        override fun applyTo(current: AppSettings) = current.copy(save = current.save.withMethodEnabled(method, enabled))
+    }
     data class WifiOnly(val enabled: Boolean) : SettingsEdit {
         override fun applyTo(current: AppSettings) = settingsWithWifiOnly(current, enabled)
     }

@@ -2,6 +2,7 @@ package com.easysavevideo.app.discovery
 
 import com.easysavevideo.app.discovery.network.SystemVerificationTransport
 import com.easysavevideo.discovery.CandidateValidator
+import com.easysavevideo.discovery.SessionCandidateAdmission
 import com.easysavevideo.discovery.DiscoveryTimer
 import com.easysavevideo.discovery.EngineAccessBoundary
 import com.easysavevideo.discovery.VerificationEngineRegistry
@@ -21,6 +22,7 @@ object VerificationEngineRegistration {
         AndroidLocalVerificationRenderer(context)).also {local=it}
     fun validator(configuration: VerificationConfiguration, timer: DiscoveryTimer,
         localEngines: List<VerificationEngine> = emptyList(),
+        sessionAdmission: SessionCandidateAdmission? = null,
         isCurrent: (String) -> Boolean): CandidateValidator {
         val registry = VerificationEngineRegistry()
         configuration.endpoint?.let { endpoint -> registry.register(RemoteVerificationEngine({ budget, dynamicAllowed ->
@@ -31,6 +33,6 @@ object VerificationEngineRegistration {
         localEngines.forEach { registry.register(it, EngineAccessBoundary.LOCAL_TARGET) }
         return scheduler.validator(registry.all(), configuration.generation, remoteConsent = configuration.endpoint != null,
             dynamicAllowed = configuration.dynamicAllowed, isCurrent = { isCurrent(configuration.generation) },
-            admittedNetwork = configuration.localSources::network)
+            admittedNetwork = configuration.localSources::network, sessionAdmission = sessionAdmission)
     }
 }

@@ -37,7 +37,7 @@ class DirectConcurrencyRuntimeContractTest {
     @Test fun newWorkerUsesOneShotHandoffAndExactClaimUntilFinally() {
         val s=runtime.substringAfter("private fun launchExecution(").substringBefore("/** Only the exact newly resumed operation")
         assertTrue(s.contains("SaveWorkerHandoff().launch({ worker.execute(it) })"))
-        assertTrue(s.contains("runSaveExecution(taskId, lease, claim) { releaseExecution(claim) }"))
+        assertTrue(s.contains("runSaveExecution(taskId, lease, claim, evaluationBinding) { releaseExecution(claim) }"))
         val body=runtime.substringAfter("private fun runSaveExecution(").substringBefore("/** Scheduling deferral")
         assertTrue(body.contains("coordinator.execute(taskId, claim)"))
         assertTrue(body.contains("finally { releaseExecution(); command { publishRecords() } }"))
@@ -50,8 +50,8 @@ class DirectConcurrencyRuntimeContractTest {
         assertTrue(s.contains("val execution = preparationExecution?.takeIf(executionAdmission::owns)"))
         assertTrue(s.contains("coordinator.submit(request, operation, execution, prepared.bytesTransferred)"))
         assertTrue(s.contains("val generation = executionForegroundGeneration"))
-        assertTrue(s.contains("!foreground || generation != executionForegroundGeneration || !canSave(TaskMethod.STREAM)"))
-        assertTrue(s.contains("launchExecution(result.record.task.taskId, resource.requestContextRef, execution)"))
+        assertTrue(s.contains("!foreground || generation != executionForegroundGeneration || !canStartSave(TaskMethod.STREAM)"))
+        assertTrue(s.contains("launchExecution(result.record.task.taskId, resource.requestContextRef, execution, evaluationBinding)"))
     }
     @Test fun exactNativeBatchIsClaimedAndReleasedThroughEvidenceRetirement() {
         val s=runtime

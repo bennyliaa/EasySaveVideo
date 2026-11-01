@@ -1,6 +1,8 @@
 package com.easysavevideo.commons
 
 import com.easysavevideo.core.model.EpochClock
+import com.easysavevideo.discovery.CommonsStage
+import com.easysavevideo.discovery.CommonsStageFailure
 import com.easysavevideo.discovery.CancellationHandle
 import com.easysavevideo.discovery.DiscoveryCancellation
 import com.easysavevideo.discovery.DiscoveryOperation
@@ -56,6 +58,7 @@ class CommonsMetadataProvider(
                 checkCompletion()
                 return result
             } catch (failure: CommonsFailure) {
+                operation.commonsStageTrace?.event(CommonsStage.PROVIDER_FAILURE, failure.code.stageFailure())
                 if (freshExchangeStarted && failure.code in OBSERVABLE_FAILURES && !operation.cancellation.isCancelled &&
                     !Thread.currentThread().isInterrupted && clock.nowMillis() < deadline) {
                     // A failed health write or cancellation cannot turn a failed request into success.
@@ -89,15 +92,19 @@ class CommonsMetadataProvider(
             val cacheKey = (lease?.cacheNamespace ?: "bundled") + ":" + key + ":" + (request.cursor ?: "")
             cached(cacheKey, clock.nowMillis())?.let {
                 if (it.page.responseBytes > maximumBytes) throw CommonsFailure(CommonsError.RESPONSE_TOO_LARGE)
-                check(); return it.page.detached().copy(responseBytes = 0, fromCache = true)
+                check(); operation.commonsStageTrace?.event(CommonsStage.CACHE_HIT)
+                return it.page.detached().copy(responseBytes = 0, fromCache = true)
             }
-            if (clock.nowMillis() < retryNotBefore) throw CommonsFailure(CommonsError.RATE_LIMITED, retryNotBefore)
+            if (clock.nowMillis() < retryNotBefore) {
+                operation.commonsStageTrace?.event(CommonsStage.METADATA_COOLDOWN, CommonsStageFailure.RATE_LIMITED)
+                throw CommonsFailure(CommonsError.RATE_LIMITED, retryNotBefore)
+            }
             val parameters = parameters(request, limits).apply { putAll(continuation) }
             val query = parameters.entries.joinToString("&") { (k, v) -> encode(k) + "=" + encode(v) }
             val uri = URI(CommonsIdentity.API + "?" + query)
             CommonsUrlPolicy.requireApi(uri)
             val http = CommonsHttpRequest(uri, mapOf("User-Agent" to userAgent, "Accept" to "application/json",
-                "Accept-Encoding" to "identity", "Host" to "commons.wikimedia.org", "Connection" to "close"), deadline, minOf(5_000L, deadline - clock.nowMillis()).coerceAtLeast(1).toInt(), maximumBytes)
+                "Accept-Encoding" to "identity", "Host" to "commons.wikimedia.org", "Connection" to "close"), deadline, minOf(5_000L, deadline - clock.nowMillis()).coerceAtLeast(1).toInt(), maximumBytes, operation.commonsStageTrace)
             val call = try { actualTransport.create(http) } // No I/O until cancellation is attached.
                 catch (_: Exception) { check(); throw CommonsFailure(CommonsError.SERVICE_ERROR) }
             val localCancellation = DiscoveryCancellation()
@@ -108,8 +115,12 @@ class CommonsMetadataProvider(
             var userCancellation: CancellationHandle? = null
             var deadlineHandle: CancellationHandle? = null
             try {
-                userCancellation = operation.cancellation.onCancel { localCancellation.cancel() }
+                userCancellation = operation.cancellation.onCancel {
+                    operation.commonsStageTrace?.event(CommonsStage.CANCEL_SIGNAL, CommonsStageFailure.CANCELLED)
+                    localCancellation.cancel()
+                }
                 deadlineHandle = timer.schedule((deadline - clock.nowMillis()).coerceAtLeast(0)) {
+                    operation.commonsStageTrace?.event(CommonsStage.DEADLINE_SIGNAL, CommonsStageFailure.DEADLINE_EXCEEDED)
                     timedOut.set(true); localCancellation.cancel()
                 }
                 check()
@@ -121,7 +132,10 @@ class CommonsMetadataProvider(
                     if (response.url != uri) throw CommonsFailure(CommonsError.REDIRECT_REJECTED)
                     val headers = headers(response)
                     if (response.status in 300..399) throw CommonsFailure(CommonsError.REDIRECT_REJECTED)
-                    if (response.status == 429 || response.status == 503) rateLimit(headers["retry-after"], clock.nowMillis())
+                    if (response.status == 429 || response.status == 503) {
+                        operation.commonsStageTrace?.event(CommonsStage.SERVER_COOLDOWN, CommonsStageFailure.RATE_LIMITED)
+                        rateLimit(headers["retry-after"], clock.nowMillis())
+                    }
                     if (response.status == 401 || response.status == 403) throw CommonsFailure(CommonsError.SERVICE_DENIED)
                     if (response.status != 200) throw CommonsFailure(CommonsError.SERVICE_ERROR)
                     val contentType = headers["content-type"]?.lowercase()?.split(';')?.map { it.trim() }
@@ -146,14 +160,26 @@ class CommonsMetadataProvider(
                     }
                     if (declared != null && declared != bytes.size().toLong()) invalidResponse()
                     val now = clock.nowMillis()
+                    val parseSpan = operation.commonsStageTrace?.begin(CommonsStage.JSON_PARSE)
                     val page = try {
                         CommonsResponseParser(limits.pageSize).parse(bytes.toByteArray(), key, now, plus(now, 5 * 60_000L), ::check)
+                            .also { parseSpan?.complete() }
                     } catch (failure: CommonsFailure) {
-                        if (failure.code == CommonsError.RATE_LIMITED) rateLimit(headers["retry-after"], now)
+                        parseSpan?.failed(failure.code.stageFailure())
+                        if (failure.code == CommonsError.RATE_LIMITED) {
+                            operation.commonsStageTrace?.event(CommonsStage.SERVER_COOLDOWN, CommonsStageFailure.RATE_LIMITED)
+                            rateLimit(headers["retry-after"], now)
+                        }
+                        throw failure
+                    } catch (failure: Exception) {
+                        parseSpan?.failed(CommonsStageFailure.OTHER)
                         throw failure
                     }
                     check()
-                    headers["retry-after"]?.let { retryNotBefore = maxOf(retryNotBefore, CommonsRetryAfter.retryAt(it, now)) }
+                    headers["retry-after"]?.let {
+                        operation.commonsStageTrace?.event(CommonsStage.SERVER_COOLDOWN, CommonsStageFailure.RATE_LIMITED)
+                        retryNotBefore = maxOf(retryNotBefore, CommonsRetryAfter.retryAt(it, now))
+                    }
                     store(cacheKey, page, cacheExpiry(headers, now, limits), limits)
                     return page.detached()
                 }

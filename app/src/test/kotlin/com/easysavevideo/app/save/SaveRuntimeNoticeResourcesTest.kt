@@ -62,23 +62,23 @@ class SaveRuntimeNoticeResourcesTest {
         }
     }
 
-    @Test fun exactBilingualKeySetHasSeventyFiveStringsAndOneCapacityPlural() {
+    @Test fun exactBilingualKeySetHasSeventySixStringsAndOneCapacityPlural() {
         val expected = knownStrings.values.map { it.key }.filter { it.startsWith("save_runtime_notice_") }.toSet()
-        assertEquals(75, expected.size)
+        assertEquals(76, expected.size)
         assertEquals(expected, en.keys.filter { '/' !in it }.toSet())
         assertEquals(expected, zh.keys.filter { '/' !in it }.toSet())
         assertEquals(setOf("$capacityKey/one", "$capacityKey/other"), en.keys.filter { '/' in it }.toSet())
         assertEquals(setOf("$capacityKey/other"), zh.keys.filter { '/' in it }.toSet())
-        assertEquals(77, en.size)
-        assertEquals(76, zh.size)
-        assertEquals(77, knownStrings.size)
+        assertEquals(78, en.size)
+        assertEquals(77, zh.size)
+        assertEquals(78, knownStrings.size)
         for ((key, text) in en.entries + zh.entries) {
             assertTrue(key, text.isNotBlank())
             assertFalse(key, text.contains('\uFFFD'))
         }
     }
 
-    @Test fun everyMapperRetainsItsExactResourceAndAllSeventyEightChineseGroups() {
+    @Test fun everyMapperRetainsItsExactResourceAndAllSeventyNineChineseGroups() {
         for ((kind, text) in fixtures.fixed) {
             assertEquals(kind.name, text.resource, saveRuntimeFixedNoticeResource(kind))
             assertEquals(kind.name, text.chinese, resolvedFixture(text.resource, Locale.SIMPLIFIED_CHINESE))
@@ -92,8 +92,8 @@ class SaveRuntimeNoticeResourcesTest {
             assertEquals(code.name, text.chinese, resolvedFixture(text.resource, Locale.SIMPLIFIED_CHINESE))
         }
         assertEquals(fixtures.capacityChinese, zh.getValue("$capacityKey/other"))
-        assertEquals(78, (knownStrings.values.map { it.chinese } + fixtures.capacityChinese).toSet().size)
-        assertEquals(36, SaveRuntimeFixedNotice.entries.map(::saveRuntimeFixedNoticeResource).toSet().size)
+        assertEquals(79, (knownStrings.values.map { it.chinese } + fixtures.capacityChinese).toSet().size)
+        assertEquals(37, SaveRuntimeFixedNotice.entries.map(::saveRuntimeFixedNoticeResource).toSet().size)
         assertEquals(6, PageSaveDetection.Reason.entries.map(::saveRuntimeDetectionNoticeResource).toSet().size)
         assertEquals(35, SaveRuntimeFailureCode.entries.map(::saveRuntimeFailureNoticeResource).toSet().size)
     }
@@ -157,7 +157,7 @@ class SaveRuntimeNoticeResourcesTest {
             PageSaveDetection.Reason.entries.map { SaveRuntimeNotice.DetectionUnavailable(it) } +
             SaveRuntimeFailureCode.entries.map { SaveRuntimeNotice.Failure(it) } +
             listOf(1, 100, 1000).map { SaveRuntimeNotice.TaskCapacityReached(it) }
-        assertEquals(80, notices.size)
+        assertEquals(81, notices.size)
         for (notice in notices) {
             val held = notice
             val before = notice.toString()
@@ -175,6 +175,7 @@ class SaveRuntimeNoticeResourcesTest {
 
     @Test fun englishRetainsManualRecoveryPrivacyAndMediaTruthClauses() {
         val requiredClauses = mapOf(
+            "save_runtime_notice_method_disabled" to listOf("turned off in Settings", "new tasks", "Existing tasks are unchanged"),
             "save_runtime_notice_stream_entitlement_required" to listOf("valid entitlement", "development version", "no real purchase"),
             "save_runtime_notice_direct_task_accepted" to listOf("accepted", "progress"),
             "save_runtime_notice_stream_task_accepted" to listOf("selected quality fixed", "only after", "standalone MP4", "verification"),

@@ -18,7 +18,6 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
 import javax.net.ssl.KeyManager
 import javax.net.ssl.SNIHostName
@@ -36,23 +35,23 @@ import javax.net.ssl.SSLSocket
  * Socket closure never runs on the caller, UI, cancellation, or timer thread. The small bounded
  * successful body is collected before publishing it. Denial/slowdown headers finish logically
  * before cleanup, preserving Retry-After even if close stalls; no live socket escapes the adapter.
- * App ownership is endpoint-scoped: create a separate transport instance for each endpoint/provider.
- * The retained server cooldown belongs to that instance and survives physical exchange cleanup.
+ * Process ownership includes the exact HTTPS origin across all slots and protocol choices.
+ * Cooldown survives slot edits and physical cleanup; the bounded registry never evicts live cooldowns.
  */
 class SystemSearxngTransport internal constructor(
     private val resolver: SearxngDnsResolver,
     private val sockets: SearxngSockets,
     private val clock: SearxngTransportClock = SystemSearxngClock,
     private val timer: SearxngTransportTimer = SystemSearxngTimer,
+    private val originAdmission: SearxngOriginAdmission = SearxngOriginAdmission(),
 ) : SearxngTransport {
-    constructor() : this(SystemSearxngDns, SystemSearxngSockets())
+    constructor() : this(SystemSearxngDns, SystemSearxngSockets(), originAdmission = ProcessSearxngOriginAdmission.shared)
 
     private class Outcome(val value: Result<SearxngHttpResponse>, val definitiveHeaders: Boolean = false)
     private val active = AtomicReference<Call?>()
-    private val retryNotBefore = AtomicLong(0)
 
     override fun create(request: SearxngHttpRequest): SearxngHttpCall {
-        SearxngUrlPolicy.requireApi(request.endpoint, request.url)
+        SearxngUrlPolicy.requireRequest(request.endpoint, request.url, request.kind)
         if (request.url.host != request.endpoint.uri.host || request.url.toASCIIString().length > 16_384 ||
             request.connectTimeoutMillis !in 1..5_000 || request.maxBodyBytes !in 1..MAX_BODY) fail(SearxngError.INVALID_REQUEST)
         val headers = LinkedHashMap(request.headers)
@@ -60,10 +59,10 @@ class SystemSearxngTransport internal constructor(
             headers.keys.any { !it.matches(Regex("[A-Za-z-]{1,32}")) } ||
             headers.values.any { it.length !in 1..512 || it.any { c -> c.code !in 32..126 } }) fail(SearxngError.INVALID_REQUEST)
         val values = headers.mapKeys { it.key.lowercase(Locale.ROOT) }
-        if (values["host"] != request.endpoint.uri.host || values["connection"] != "close" || values["accept"] != "application/json" ||
+        if (values["host"] != request.endpoint.uri.host || values["connection"] != "close" || values["accept"] != request.kind.accept ||
             values["accept-encoding"] != "identity" || values["user-agent"] != USER_AGENT)
             fail(SearxngError.INVALID_REQUEST)
-        val target = request.url.rawPath + "?" + request.url.rawQuery
+        val target = request.url.rawPath + (request.url.rawQuery?.let { "?" + it } ?: "")
         if (target.any { it.code !in 33..126 }) fail(SearxngError.INVALID_REQUEST)
         val bytes = buildString {
             append("GET ").append(target).append(" HTTP/1.1\r\n")
@@ -75,6 +74,7 @@ class SystemSearxngTransport internal constructor(
 
     private inner class Call(private val request: SearxngHttpRequest, private val requestBytes: ByteArray) : SearxngHttpCall {
         private val host = request.endpoint.uri.host
+        private var originLease: SearxngOriginAdmission.Lease? = null
         private val started = AtomicBoolean(false)
         private val result = AtomicReference<Outcome?>()
         private val terminal = CountDownLatch(1)
@@ -98,11 +98,9 @@ class SystemSearxngTransport internal constructor(
             if (duration <= 0) fail(SearxngError.DEADLINE_EXCEEDED)
             monotonicDeadline = clock.nanoTime() + TimeUnit.MILLISECONDS.toNanos(duration)
             if (!active.compareAndSet(null, this)) fail(SearxngError.BUSY)
-            val notBefore = retryNotBefore.get()
-            if (clock.epochMillis() < notBefore) {
-                active.compareAndSet(this, null)
-                throw SearxngFailure(SearxngError.RATE_LIMITED, notBefore)
-            }
+            try {
+                originLease = originAdmission.acquire(host, clock.epochMillis())
+            } catch (failure: SearxngFailure) { active.compareAndSet(this, null); throw failure }
             try {
                 absoluteTimer = timer.schedule(duration) { stop(SearxngError.DEADLINE_EXCEEDED) }
                 Thread({ runExchange() }, "esv-searxng-http").apply { isDaemon = true; start() }
@@ -181,7 +179,7 @@ class SystemSearxngTransport internal constructor(
                 // Record at the transport boundary even when the caller has already stopped
                 // awaiting this response. Releasing a stuck close can never bypass server cooldown.
                 val notBefore = SearxngRetryAfter.retryAt(parsed.headers["retry-after"]?.singleOrNull(), clock.epochMillis())
-                retryNotBefore.accumulateAndGet(notBefore) { old, observed -> maxOf(old, observed) }
+                originLease?.slowdown(notBefore)
             }
             val definitiveHeaders = parsed.status in setOf(401, 403, 429, 503)
             if (!definitiveHeaders) check()
@@ -261,6 +259,7 @@ class SystemSearxngTransport internal constructor(
         private fun finishIfReleased() {
             if (!workerDone.get() || !cleanupDone.get()) return
             absoluteTimer?.close()
+            originLease?.release()
             active.compareAndSet(this, null)
             workerResult?.let { publish(it) }
         }

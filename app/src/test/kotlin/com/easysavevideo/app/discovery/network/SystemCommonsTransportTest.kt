@@ -10,6 +10,7 @@ import com.easysavevideo.discovery.CancellationHandle
 import com.easysavevideo.discovery.DiscoveryCancellation
 import com.easysavevideo.discovery.DiscoveryOperation
 import com.easysavevideo.discovery.DiscoveryTimer
+import com.easysavevideo.discovery.*
 import com.easysavevideo.commons.CommonsError
 import com.easysavevideo.commons.CommonsFailure
 import com.easysavevideo.commons.CommonsHttpCall
@@ -512,6 +513,383 @@ class SystemCommonsTransportTest {
         assertTrue(wire.tls.closed)
     }
 
+    @Test fun stageDiagnosticsObserveActualSocketPhasesAndNeverInterpretCleanupAsCancellation() {
+        val capture = StageCapture(); val wire = Fixture()
+        val response = wire.transport().create(request(trace = capture.trace)).execute()
+        response.close()
+        val samples = capture.recorder.snapshot().samples
+        assertEquals(listOf(CommonsStage.DNS, CommonsStage.TCP_CONNECT, CommonsStage.TLS_HANDSHAKE,
+            CommonsStage.REQUEST_WRITE, CommonsStage.HTTP_STATUS, CommonsStage.HTTP_EXCHANGE), samples.map { it.stage })
+        assertEquals(200, samples.single { it.stage == CommonsStage.HTTP_STATUS }.httpStatus)
+        assertTrue(samples.filter { it.stage != CommonsStage.HTTP_STATUS }.all {
+            it.outcome == CommonsStageOutcome.SUCCESS && it.elapsedNanos?.let { elapsed -> elapsed >= 0 } == true })
+        assertFalse(samples.toString().contains(HOST))
+        assertFalse(samples.toString().contains("example.org"))
+        assertEquals(1, wire.dnsCalls.get()); assertEquals(1, wire.openCalls.get())
+    }
+
+    @Test fun stageDiagnosticsAlsoCoverActualMetadataParserOnFakeSocketStack() {
+        val body = "{\"batchcomplete\":true,\"query\":{\"pages\":[]}}"
+        val wire = Fixture("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: ${body.length}\r\n\r\n$body")
+        val capture = StageCapture()
+        val provider = CommonsMetadataProvider(CommonsClientConfig(true, "0.1", "https://example.org/contact"),
+            wire.transport(), clock = EpochClock { 1_000 }, timer = object : DiscoveryTimer {
+                override fun schedule(delayMillis: Long, action: () -> Unit) = CancellationHandle { }
+            })
+        assertTrue(provider.search(CommonsSearchRequest("private query", safeSearchRequired = false), capture.operation).exhausted)
+        val samples = capture.recorder.snapshot().samples
+        assertEquals(CommonsStage.JSON_PARSE, samples.last().stage)
+        assertEquals(CommonsStageOutcome.SUCCESS, samples.last().outcome)
+        assertFalse(samples.any { it.stage == CommonsStage.CANCEL_SIGNAL })
+        assertEquals(1, wire.dnsCalls.get()); assertEquals(1, wire.openCalls.get())
+    }
+
+    @Test fun stageDiagnosticsPreserveKnownDnsConnectAndTlsExceptionCategoriesOnly() {
+        for ((phase, expected) in listOf(CommonsStage.DNS to CommonsStageFailure.DNS_FAILURE,
+            CommonsStage.TCP_CONNECT to CommonsStageFailure.CONNECT_FAILURE,
+            CommonsStage.TLS_HANDSHAKE to CommonsStageFailure.TLS_FAILURE)) {
+            val capture = StageCapture(); val wire = Fixture()
+            if (phase == CommonsStage.TCP_CONNECT) wire.raw.connectFailure = ConnectException("private-host-path")
+            if (phase == CommonsStage.TLS_HANDSHAKE) wire.tls.handshakeFailure = SSLHandshakeException("private-cert-detail")
+            val transport = wire.transport(dns = if (phase == CommonsStage.DNS)
+                CommonsDnsResolver { throw UnknownHostException("private-host") } else null)
+            expect(CommonsError.SERVICE_ERROR) { transport.create(request(trace = capture.trace)).execute() }
+            val samples = capture.recorder.snapshot().samples
+            assertEquals(expected, samples.single { it.stage == phase }.failure)
+            assertEquals(CommonsStageOutcome.FAILURE, samples.single { it.stage == phase }.outcome)
+            assertFalse(samples.toString().contains("private-")); assertFalse(samples.toString().contains("Exception"))
+            assertFalse(samples.any { it.stage == CommonsStage.HTTP_STATUS })
+        }
+    }
+
+    @Test fun stageDiagnosticsSharedConnectBudgetFencesTlsCleanupBeforeAndAfterRuntimeFinish() {
+        for (finishBeforeClose in listOf(false, true)) {
+            val capture = StageCapture(); val wire = Fixture(stage = Stage.TLS); val timer = ManualTimer()
+            val releaseClose = CountDownLatch(1); wire.raw.closeRelease = releaseClose
+            val transport = wire.transport(timer = timer)
+            val call = transport.create(request(trace = capture.trace)); val result = Async(call)
+            try {
+                await(wire.blocked)
+                assertEquals(15_000L, timer.entries[0].delay)
+                assertEquals(5_000L, timer.entries[1].delay)
+                assertEquals(CommonsStage.TLS_HANDSHAKE, capture.recorder.snapshot().activeStages.single().stage)
+                wire.clock.epoch += 5_000
+                wire.clock.nanos += TimeUnit.MILLISECONDS.toNanos(5_000)
+                timer.fire(1) // The shared TCP/TLS budget expires before the absolute deadline.
+                result.failure(CommonsError.SERVICE_ERROR)
+                await(wire.raw.closeEntered)
+                // Keep physical close blocked so logical failure cannot race the final worker evidence.
+                assertEquals(1L, wire.raw.closed.count)
+                assertTrue(capture.recorder.snapshot().activeStages.isEmpty())
+                if (finishBeforeClose) capture.finishFailure()
+                timer.entries[0].action(); call.cancel(); call.cancel()
+                expect(CommonsError.BUSY) { transport.create(request()).execute() }
+                releaseClose.countDown()
+                awaitReleased(transport)
+
+                val snapshot = capture.recorder.snapshot()
+                val samples = snapshot.samples
+                assertEquals(listOf(CommonsStage.DNS, CommonsStage.TCP_CONNECT,
+                    CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStage.TLS_HANDSHAKE) +
+                    (if (finishBeforeClose) listOf(CommonsStage.OPERATION) else emptyList()), samples.map { it.stage })
+                val budget = samples.single { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL }
+                assertEquals(CommonsStageOutcome.OBSERVED, budget.outcome)
+                assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, budget.failure)
+                assertEquals(CommonsStageTiming.NOT_MEASURED, budget.timing)
+                assertNull(budget.elapsedNanos)
+                val handshake = samples.single { it.stage == CommonsStage.TLS_HANDSHAKE }
+                assertEquals(CommonsStageOutcome.INCOMPLETE, handshake.outcome)
+                assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, handshake.failure)
+                assertEquals(CommonsStageTiming.NOT_MEASURED, handshake.timing)
+                assertNull(handshake.elapsedNanos)
+                assertFalse(samples.any { it.stage == CommonsStage.PROVIDER_FAILURE })
+                if (finishBeforeClose) {
+                    val operation = samples.single { it.stage == CommonsStage.OPERATION }
+                    assertEquals(CommonsStageOutcome.FAILURE, operation.outcome)
+                    assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, operation.failure)
+                }
+                assertTrue(snapshot.activeStages.isEmpty())
+                assertFalse(samples.any { it.stage == CommonsStage.DEADLINE_SIGNAL || it.stage == CommonsStage.CANCEL_SIGNAL })
+                assertEquals(0, wire.output.size())
+                assertEquals(1, wire.dnsCalls.get()); assertEquals(1, wire.openCalls.get())
+                assertTrue(wire.tls.closed)
+                assertTrue(timer.entries.all { it.cancelled })
+            } finally { releaseClose.countDown() }
+        }
+    }
+
+    @Test fun stageDiagnosticsSharedBudgetDuringTcpDoesNotInventTls() {
+        val capture = StageCapture(); val wire = Fixture(stage = Stage.CONNECT); val timer = ManualTimer()
+        val transport = wire.transport(timer = timer)
+        val result = Async(transport.create(request(trace = capture.trace)))
+        await(wire.blocked)
+        timer.fire(1); result.failure(CommonsError.SERVICE_ERROR)
+        awaitReleased(transport)
+        val samples = capture.recorder.snapshot().samples
+        assertEquals(listOf(CommonsStage.DNS, CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStage.TCP_CONNECT), samples.map { it.stage })
+        assertEquals(CommonsStageOutcome.INCOMPLETE, samples.single { it.stage == CommonsStage.TCP_CONNECT }.outcome)
+        assertNull(samples.single { it.stage == CommonsStage.TCP_CONNECT }.elapsedNanos)
+        assertEquals(0, wire.secureCalls.get()); assertEquals(0, wire.output.size())
+    }
+
+    @Test fun stageDiagnosticsSynchronousBudgetBoundariesPreserveOnlyActuallyCompletedPhases() {
+        for (afterHandshake in listOf(false, true)) {
+            val capture = StageCapture(); val wire = Fixture()
+            val expire = { wire.clock.epoch += 5_000; wire.clock.nanos += TimeUnit.MILLISECONDS.toNanos(5_000) }
+            if (afterHandshake) wire.afterHandshake = expire else wire.afterConnect = expire
+            val transport = wire.transport()
+            expect(CommonsError.SERVICE_ERROR) { transport.create(request(trace = capture.trace)).execute() }
+            awaitReleased(transport)
+            val samples = capture.recorder.snapshot().samples
+            assertEquals(listOf(CommonsStage.DNS, CommonsStage.TCP_CONNECT) +
+                (if (afterHandshake) listOf(CommonsStage.TLS_HANDSHAKE) else emptyList()) +
+                CommonsStage.CONNECT_BUDGET_SIGNAL, samples.map { it.stage })
+            assertTrue(samples.filter { it.stage != CommonsStage.CONNECT_BUDGET_SIGNAL }.all {
+                it.outcome == CommonsStageOutcome.SUCCESS && it.timing == CommonsStageTiming.MEASURED })
+            assertNull(samples.last().elapsedNanos)
+            assertEquals(CommonsStageFailure.CONNECT_BUDGET_EXCEEDED, samples.last().failure)
+            assertEquals(0, wire.output.size())
+        }
+    }
+
+    @Test fun synchronousBudgetFailureStillWaitsForCloseAndAbsoluteDeadlineCanFinishFirst() {
+        for (afterHandshake in listOf(false, true)) {
+            for (deadlineDuringClose in listOf(false, true)) {
+                val capture = StageCapture(); val wire = Fixture(); val timer = ManualTimer()
+                val expire = { wire.clock.epoch += 5_000; wire.clock.nanos += TimeUnit.MILLISECONDS.toNanos(5_000) }
+                if (afterHandshake) wire.afterHandshake = expire else wire.afterConnect = expire
+                val releaseClose = CountDownLatch(1); wire.raw.closeRelease = releaseClose
+                val transport = wire.transport(timer = timer)
+                val result = Async(transport.create(request(trace = capture.trace)))
+                try {
+                    await(wire.raw.closeEntered)
+                    assertEquals(1L, result.finished.count)
+                    timer.entries[1].action() // The ended shared budget must not publish early either.
+                    assertEquals(1L, result.finished.count)
+                    expect(CommonsError.BUSY) { transport.create(request()).execute() }
+                    assertEquals(1, capture.recorder.snapshot().samples.count { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
+                    if (deadlineDuringClose) {
+                        timer.fire(0)
+                        result.failure(CommonsError.DEADLINE_EXCEEDED)
+                        capture.finishFailure(DiscoveryError.DEADLINE_EXCEEDED)
+                        val samples = capture.recorder.snapshot().samples
+                        assertEquals(1, samples.count { it.stage == CommonsStage.DEADLINE_SIGNAL })
+                        val operation = samples.single { it.stage == CommonsStage.OPERATION }
+                        assertEquals(CommonsStageOutcome.DEADLINE, operation.outcome)
+                        assertEquals(CommonsStageFailure.DEADLINE_EXCEEDED, operation.failure)
+                        assertEquals(1L, wire.raw.closed.count)
+                    }
+                    releaseClose.countDown(); awaitReleased(transport)
+                    result.failure(if (deadlineDuringClose) CommonsError.DEADLINE_EXCEEDED else CommonsError.SERVICE_ERROR)
+                    assertEquals(0, wire.output.size()); assertTrue(wire.tls.closed)
+                } finally { releaseClose.countDown() }
+            }
+        }
+    }
+
+    @Test fun earlierCancellationOrAbsoluteDeadlineCannotBecomeConnectBudgetFailure() {
+        for (deadline in listOf(false, true)) {
+            val capture = StageCapture(); val wire = Fixture(stage = Stage.TLS); val timer = ManualTimer()
+            val releaseClose = CountDownLatch(1); wire.raw.closeRelease = releaseClose
+            val transport = wire.transport(timer = timer)
+            val call = transport.create(request(trace = capture.trace)); val result = Async(call)
+            try {
+                await(wire.blocked)
+                if (deadline) timer.fire(0) else call.cancel()
+                result.failure(if (deadline) CommonsError.DEADLINE_EXCEEDED else CommonsError.CANCELLED)
+                timer.entries[1].action() // A callback already racing its cancellation.
+                releaseClose.countDown(); awaitReleased(transport)
+                assertFalse(capture.recorder.snapshot().samples.any { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
+            } finally { releaseClose.countDown() }
+        }
+    }
+
+    @Test fun endedConnectBudgetIgnoresLateWatchdogDuringBodyAndAfterOrdinaryTlsFailure() {
+        for (tlsFailure in listOf(false, true)) {
+            val capture = StageCapture(); val wire = Fixture(stage = if (tlsFailure) null else Stage.BODY)
+            val timer = ManualTimer(); val releaseClose = CountDownLatch(1); wire.raw.closeRelease = releaseClose
+            if (tlsFailure) wire.tls.handshakeFailure = SSLHandshakeException("private-cert-detail")
+            val transport = wire.transport(timer = timer)
+            val call = transport.create(request(trace = capture.trace)); val result = Async(call)
+            try {
+                if (tlsFailure) await(wire.raw.closeEntered) else await(wire.blocked)
+                timer.entries[1].action()
+                assertEquals(1L, result.finished.count)
+                assertFalse(capture.recorder.snapshot().samples.any { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
+                if (!tlsFailure) {
+                    assertEquals(1L, wire.raw.closeEntered.count)
+                    call.cancel()
+                }
+                releaseClose.countDown(); awaitReleased(transport)
+                result.failure(if (tlsFailure) CommonsError.SERVICE_ERROR else CommonsError.CANCELLED)
+                val handshake = capture.recorder.snapshot().samples.single { it.stage == CommonsStage.TLS_HANDSHAKE }
+                assertEquals(if (tlsFailure) CommonsStageFailure.TLS_FAILURE else null, handshake.failure)
+            } finally { releaseClose.countDown() }
+        }
+    }
+
+    @Test fun claimedConnectBudgetRecordsObservationBeforeCompetingTransportStopCanPublishOrClose() {
+        val capture = StageCapture(); val wire = Fixture(stage = Stage.TLS); val timer = ManualTimer()
+        val transport = wire.transport(timer = timer)
+        val call = transport.create(request(trace = capture.trace)); val result = Async(call)
+        await(wire.blocked)
+        val timerDone = CountDownLatch(1); val cancelDone = CountDownLatch(1)
+        synchronized(capture.recorder) {
+            Thread({ try { timer.fire(1) } finally { timerDone.countDown() } }).apply { isDaemon = true; start() }
+            val field = call.javaClass.getDeclaredField("failure").apply { isAccessible = true }
+            @Suppress("UNCHECKED_CAST") val failure = field.get(call) as AtomicReference<CommonsError?>
+            val until = System.nanoTime() + TimeUnit.SECONDS.toNanos(3)
+            while (failure.get() == null && System.nanoTime() < until) Thread.yield()
+            assertEquals(CommonsError.SERVICE_ERROR, failure.get())
+            val cancel = Thread({ try { call.cancel() } finally { cancelDone.countDown() } }).apply { isDaemon = true; start() }
+            val cancelUntil = System.nanoTime() + TimeUnit.SECONDS.toNanos(3)
+            while (cancel.state != Thread.State.BLOCKED && System.nanoTime() < cancelUntil) Thread.yield()
+            assertEquals(Thread.State.BLOCKED, cancel.state)
+            assertEquals(1L, result.finished.count)
+            assertEquals(1L, wire.raw.closeEntered.count)
+        }
+        await(timerDone); await(cancelDone)
+        result.failure(CommonsError.SERVICE_ERROR); awaitReleased(transport)
+        assertEquals(1, capture.recorder.snapshot().samples.count { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
+        assertFalse(capture.recorder.snapshot().samples.any { it.stage == CommonsStage.CANCEL_SIGNAL })
+    }
+
+    @Test fun realOwnerCancellationFlagCanPrecedeObservationAfterTransportBudgetClaim() {
+        val capture = StageCapture(); val wire = Fixture(stage = Stage.TLS); val timer = ManualTimer()
+        val transport = wire.transport(timer = timer)
+        val call = transport.create(request(trace = capture.trace)); val result = Async(call)
+        await(wire.blocked)
+        val timerDone = CountDownLatch(1)
+        synchronized(capture.recorder) {
+            Thread({ try { timer.fire(1) } finally { timerDone.countDown() } }).apply { isDaemon = true; start() }
+            val field = call.javaClass.getDeclaredField("failure").apply { isAccessible = true }
+            @Suppress("UNCHECKED_CAST") val failure = field.get(call) as AtomicReference<CommonsError?>
+            val until = System.nanoTime() + TimeUnit.SECONDS.toNanos(3)
+            while (failure.get() == null && System.nanoTime() < until) Thread.yield()
+            assertEquals(CommonsError.SERVICE_ERROR, failure.get())
+            // The transport CAS and the owner's shared flag are independent. Observation must
+            // honor the real flag rather than claim that the transport won a global cause race.
+            capture.operation.cancellation.cancel()
+            assertTrue(capture.operation.cancellation.isCancelled)
+            assertEquals(1L, result.finished.count)
+            assertEquals(1L, wire.raw.closeEntered.count)
+        }
+        await(timerDone); result.failure(CommonsError.SERVICE_ERROR); awaitReleased(transport)
+        capture.finishFailure()
+        val samples = capture.recorder.snapshot().samples
+        assertFalse(samples.any { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL })
+        assertEquals(1, samples.count { it.stage == CommonsStage.CANCEL_SIGNAL })
+        val tls = samples.single { it.stage == CommonsStage.TLS_HANDSHAKE }
+        assertEquals(CommonsStageOutcome.INCOMPLETE, tls.outcome)
+        assertEquals(CommonsStageFailure.CANCELLED, tls.failure)
+        assertNull(tls.elapsedNanos)
+        assertEquals(CommonsStageOutcome.CANCELLED, samples.single { it.stage == CommonsStage.OPERATION }.outcome)
+    }
+
+    @Test fun successfulResponseFinallyCancellationAndLateBudgetCallbackRemainOnlyCleanup() {
+        val capture = StageCapture(); val wire = Fixture(); val timer = ManualTimer()
+        val transport = wire.transport(timer = timer)
+        val call = transport.create(request(trace = capture.trace))
+        call.execute().close()
+        call.cancel(); call.cancel()
+        timer.entries[1].action()
+        awaitReleased(transport)
+        val samples = capture.recorder.snapshot().samples
+        assertFalse(samples.any { it.stage == CommonsStage.CONNECT_BUDGET_SIGNAL ||
+            it.stage == CommonsStage.CANCEL_SIGNAL || it.stage == CommonsStage.DEADLINE_SIGNAL })
+        assertEquals(CommonsStageOutcome.SUCCESS, samples.single { it.stage == CommonsStage.TLS_HANDSHAKE }.outcome)
+        assertEquals(0L, wire.raw.closed.count); assertTrue(wire.tls.closed)
+        assertTrue(timer.entries.all { it.cancelled })
+    }
+
+    @Test fun stageDiagnosticsKeepActualHttpStatusEvenWhenHeadersOrBodyFail() {
+        for (wireText in listOf("HTTP/1.1 302 Found\r\nLocation: https://private.invalid/\r\n\r\n",
+            "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\n{}")) {
+            val capture = StageCapture(); val wire = Fixture(wireText)
+            expect(if (wireText.contains("302")) CommonsError.REDIRECT_REJECTED else CommonsError.INVALID_RESPONSE) {
+                wire.transport().create(request(trace = capture.trace)).execute()
+            }
+            val samples = capture.recorder.snapshot().samples
+            assertEquals(if (wireText.contains("302")) 302 else 200, samples.single { it.stage == CommonsStage.HTTP_STATUS }.httpStatus)
+            assertEquals(CommonsStageOutcome.FAILURE, samples.single { it.stage == CommonsStage.HTTP_EXCHANGE }.outcome)
+            assertFalse(samples.toString().contains("private.invalid"))
+        }
+    }
+
+    @Test fun stageDiagnosticsReportTransportCooldownWithoutSyntheticWaitOrDns() {
+        val wire = Fixture("HTTP/1.1 429 Slow Down\r\nRetry-After: 60\r\n\r\n")
+        val transport = wire.transport()
+        val first = StageCapture()
+        assertEquals(429, transport.create(request(trace = first.trace)).execute().use { it.status })
+        awaitReleased(transport)
+        assertTrue(first.recorder.snapshot().samples.any { it.stage == CommonsStage.SERVER_COOLDOWN })
+        val next = StageCapture()
+        expect(CommonsError.RATE_LIMITED) { transport.create(request(trace = next.trace)).execute() }
+        val samples = next.recorder.snapshot().samples
+        assertEquals(listOf(CommonsStage.TRANSPORT_COOLDOWN), samples.map { it.stage })
+        assertNull(samples.single().elapsedNanos)
+        assertEquals(1, wire.dnsCalls.get()); assertEquals(1, wire.openCalls.get())
+    }
+
+    @Test fun stageDiagnosticsExposeActiveDnsThenDeadlineAndRejectLateCompletion() {
+        val capture = StageCapture(); val wire = Fixture(); val timer = ManualTimer()
+        val entered = CountDownLatch(1); val release = CountDownLatch(1)
+        val transport = wire.transport(dns = CommonsDnsResolver {
+            entered.countDown(); release.await(3, TimeUnit.SECONDS); arrayOf(PUBLIC)
+        }, timer = timer)
+        val result = Async(transport.create(request(trace = capture.trace)))
+        try {
+            await(entered)
+            val active = capture.recorder.snapshot().activeStages.single()
+            assertEquals(CommonsStage.DNS, active.stage)
+            assertEquals(CommonsStageOutcome.IN_PROGRESS, active.outcome); assertNull(active.elapsedNanos)
+            timer.fire(0); result.failure(CommonsError.DEADLINE_EXCEEDED)
+            val samples = capture.recorder.snapshot().samples
+            assertEquals(CommonsStageOutcome.INCOMPLETE, samples.single { it.stage == CommonsStage.DNS }.outcome)
+            assertNull(samples.single { it.stage == CommonsStage.DNS }.elapsedNanos)
+            release.countDown(); awaitReleased(transport)
+            assertEquals(1, capture.recorder.snapshot().samples.count { it.stage == CommonsStage.DNS })
+            assertEquals(0, wire.openCalls.get())
+            assertFalse(capture.recorder.snapshot().samples.any { it.stage == CommonsStage.CANCEL_SIGNAL })
+        } finally { release.countDown() }
+    }
+
+    @Test fun stageDiagnosticsMapOutOfPhaseSocketConstructionFailureWithoutInventingPhase() {
+        val capture = StageCapture(); val wire = Fixture()
+        val transport = SystemCommonsTransport(CommonsDnsResolver { arrayOf(PUBLIC) }, object : CommonsSockets {
+            override fun open(): Socket = throw IOException("private-open-detail")
+            override fun secure(raw: Socket, host: String, port: Int): SSLSocket = error("Not reached")
+        }, wire.clock, ManualTimer())
+        expect(CommonsError.SERVICE_ERROR) { transport.create(request(trace = capture.trace)).execute() }
+        assertEquals(CommonsStageFailure.IO_FAILURE,
+            capture.recorder.snapshot().samples.single { it.stage == CommonsStage.PROVIDER_FAILURE }.failure)
+        assertFalse(capture.recorder.snapshot().samples.any { it.stage == CommonsStage.TCP_CONNECT })
+    }
+
+    private class StageCapture {
+        val recorder = CommonsStageDiagnosticsRecorder()
+        lateinit var operation: DiscoveryOperation
+        private lateinit var runtimeCallback: (ProviderOutcome) -> Unit
+        val trace get() = operation.commonsStageTrace!!
+        fun finishFailure(error: DiscoveryError = DiscoveryError.PROVIDER_FAILURE) { runtimeCallback(ProviderOutcome.Failure(error)) }
+        private val coordinator = VideoDiscoveryCoordinator(ProviderRegistry(listOf(object : VideoSearchProvider {
+            override val descriptor = ProviderDescriptor("wikimedia-commons", "1")
+            override fun search(request: SearchRequest, operation: DiscoveryOperation) = ProviderPage()
+        })), object : ProviderRuntime {
+            override fun execute(provider: VideoSearchProvider, request: SearchRequest, operation: DiscoveryOperation,
+                callback: (ProviderOutcome) -> Unit): CancellationHandle {
+                this@StageCapture.operation = operation; runtimeCallback = callback; return CancellationHandle { }
+            }
+        }, InMemoryDiscoveryStore(), object : DiscoveryTimer {
+            override fun schedule(delayMillis: Long, action: () -> Unit) = CancellationHandle { }
+        }, EpochClock { 1_000 }, commonsStageDiagnostics = recorder)
+        init {
+            coordinator.setVisibility(true, true)
+            coordinator.start("private-session", SearchProfile("private-profile", "private query"),
+                diagnosticsCapture = recorder.setEnabled(true))
+        }
+    }
+
     /** Each admitted exchange receives distinct fake sockets; failed sockets are never reused. */
     private fun sequenceTransport(timer: CommonsTransportTimer, vararg wires: Fixture): SystemCommonsTransport {
         val next = AtomicInteger()
@@ -545,6 +923,8 @@ class SystemCommonsTransportTest {
         val output = ByteArrayOutputStream()
         val raw = RawSocket(this)
         val tls = SecureSocket(this)
+        var afterConnect: (() -> Unit)? = null
+        var afterHandshake: (() -> Unit)? = null
         var secureHost: String? = null
         var input: InputStream = if (stage == Stage.HEADERS || stage == Stage.BODY) object : InputStream() {
             val prefix = ByteArrayInputStream(if (stage == Stage.BODY) "HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\n".toByteArray() else byteArrayOf())
@@ -574,6 +954,7 @@ class SystemCommonsTransportTest {
             if (fixture.stage == Stage.CONNECT) {
                 fixture.blocked.countDown(); closed.await(); throw IOException("closed")
             }
+            fixture.afterConnect?.invoke()
         }
         override fun isConnected() = destination != null
         override fun getInetAddress() = reportedPeer
@@ -604,6 +985,7 @@ class SystemCommonsTransportTest {
             if (fixture.stage == Stage.TLS) {
                 fixture.blocked.countDown(); fixture.raw.closed.await(); throw IOException("closed")
             }
+            fixture.afterHandshake?.invoke()
         }
         override fun close() { closed = true }
         override fun setUseClientMode(mode: Boolean) { clientMode = mode }
@@ -641,8 +1023,8 @@ class SystemCommonsTransportTest {
         private fun headers() = linkedMapOf("User-Agent" to "EasySaveVideo/0.1 (https://example.org/contact)",
             "Accept" to "application/json", "Accept-Encoding" to "identity", "Host" to HOST, "Connection" to "close")
         private fun request(url: URI = URI("https://$HOST/w/api.php?action=query"), headers: Map<String, String> = headers(),
-                            deadline: Long = 16_000, connect: Int = 5_000, maximum: Long = 2_097_152) =
-            CommonsHttpRequest(url, headers, deadline, connect, maximum)
+                            deadline: Long = 16_000, connect: Int = 5_000, maximum: Long = 2_097_152, trace: CommonsStageTrace? = null) =
+            CommonsHttpRequest(url, headers, deadline, connect, maximum, trace)
         private fun expect(code: CommonsError, action: () -> Unit) {
             try { action(); fail("Expected $code") } catch (failure: CommonsFailure) { assertEquals(code, failure.code) }
         }

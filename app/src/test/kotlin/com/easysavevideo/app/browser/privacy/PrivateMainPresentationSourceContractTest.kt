@@ -132,7 +132,10 @@ class PrivateMainPresentationSourceContractTest {
         assertFalse(activity.contains("privateRecording = recordingUi"))
         assertTrue(activity.contains("if (recordingUi != null) RecordingSessionControls(recordingUi)"))
         assertTrue(activity.contains("consent = recordingConsent, canStart = !privateMode && saves.ready"))
-        assertEquals(3, Regex("select\\(isCurrent = \\{ !browser\\.isPrivateMode && isForeground && showingRecording").findAll(activity).count())
+        assertEquals(2, Regex("select\\(isCurrent = \\{ !browser\\.isPrivateMode && isForeground && showingRecording").findAll(activity).count())
+        val basic = activity.substringAfter("onStart = { choice ->").substringBefore("onPause =")
+        assertTrue(basic.contains("select(isCurrent = { controller.currentBackStackEntry === startEntry && routeOwnsPresentation()"))
+        assertTrue(basic.contains("!browser.isPrivateMode && isForeground && showingRecording && !isDestroyed && !isFinishing &&"))
         assertTrue(activity.contains("canStart = !privateMode && saves.ready && saves.segmentRecording?.ready"))
     }
     @Test fun navigationBackPopAndOverrideChangesProtectBeforePublishingContent() {

@@ -22,6 +22,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.easysavevideo.app.R
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -45,15 +47,15 @@ fun VerificationServiceSettings(controller: VerificationConfigurationController)
     var edit by remember(controller) { mutableStateOf<VerificationConfigurationClaim?>(null) }
     LaunchedEffect(state.generation) { if (edit?.let(controller::isCurrent) == false) edit = null }
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-        EsvText("可选网页验证服务 · 开发接口", style = v.titleTextStyle)
-        EsvText(if (state.endpoint == null) "已关闭；未配置默认服务。" else "本次应用会话已启用；应用进程重启后关闭。", style = v.captionTextStyle)
-        EsvText("搜索来源只给出候选。启用后，主动查找每批最多尝试验证一个候选；其余及验证不足的候选仍显示为未验证。服务不可达不影响浏览、下载或录制。", style = v.captionTextStyle)
-        EsvText("当前仅完成隔离开发接口；没有已部署或通过公开站点验收的服务。网页证据不代表可播放、可下载或有保存权限，缺失时长保持未知。", style = v.captionTextStyle, color = v.colors.error)
-        EsvText("本地验证来源准入：${state.localSources.status}", style = v.captionTextStyle)
-        EsvText("远程服务独立遵循本次会话同意与服务来源规则；本地准入约束本地访问及后备验证。", style = v.captionTextStyle)
-        EsvText("只能选择应用内已批准的来源策略；不接受任意域名，不自动接纳搜索结果或跳转目标。默认没有来源准入，后备成功不作保证。", style = v.captionTextStyle)
+        EsvText(stringResource(R.string.verification_candidate_title), style = v.titleTextStyle)
+        EsvText(if (state.endpoint == null) stringResource(R.string.verification_candidate_remote_disabled) else stringResource(R.string.verification_candidate_remote_enabled), style = v.captionTextStyle)
+        EsvText(stringResource(R.string.verification_candidate_bounded_search), style = v.captionTextStyle)
+        EsvText(stringResource(R.string.verification_candidate_evidence_limits), style = v.captionTextStyle, color = v.colors.error)
+        EsvText(stringResource(R.string.verification_candidate_catalog_status, state.localSources.status.toString()), style = v.captionTextStyle)
+        EsvText(stringResource(R.string.verification_candidate_separate_policies), style = v.captionTextStyle)
+        EsvText(stringResource(R.string.verification_candidate_catalog_policy), style = v.captionTextStyle)
         if (controller.availableLocalSourceIds.isEmpty()) {
-            EsvText("尚无已批准的本地验证来源；需要先确定具体来源及访问授权。", style = v.captionTextStyle)
+            EsvText(stringResource(R.string.verification_candidate_empty_catalog), style = v.captionTextStyle)
         }
         controller.availableLocalSourceIds.sorted().forEach { id ->
             VerificationCheckbox("已批准来源：$id", id in localIds, !controller.busy) { checked ->

@@ -18,6 +18,7 @@ internal fun readDirectConcurrencyPreference(read: () -> Int): Int = try {
 /** Primitive settings only. All calls are made on the bounded single IO executor. */
 class AndroidSettingsStore(context: Context,
     private val acceptedVaultPolicy: () -> VaultAutoLockPolicy? = { null },
+    private val acceptedSaveMethodSettings: (() -> SaveSettings?)? = null,
 ) : SettingsStore {
     private val application = context.applicationContext
     private val prefs = context.getSharedPreferences("browser_settings_v1", Context.MODE_PRIVATE)
@@ -37,6 +38,9 @@ class AndroidSettingsStore(context: Context,
     ), save = SaveSettings(
         wifiOnly = prefs.getBoolean("save_wifi_only", false),
         maxConcurrentDirectTasks = readDirectConcurrencyPreference { prefs.getInt("save_direct_concurrency", 1) },
+        directEnabled = readSaveMethodPreference { prefs.getBoolean("save_direct_enabled", true) },
+        streamEnabled = readSaveMethodPreference { prefs.getBoolean("save_stream_enabled", true) },
+        recordEnabled = readSaveMethodPreference { prefs.getBoolean("save_record_enabled", true) },
     ), vaultAutoLockPolicy = readVaultAutoLockPreference { prefs.getString("vault_auto_lock_policy", null) },
     editor = EditorSettings(EditorCompressionMode.fromKey(prefs.getString("editor_default_compression", null))),
     appearance = AppearanceSettings(
@@ -57,6 +61,15 @@ class AndroidSettingsStore(context: Context,
             prefs.edit().putBoolean("restore_tabs", settings.browser.restoreTabs)
             .apply { if (includeSaveNetworkPreference) putBoolean("save_wifi_only", settings.save.wifiOnly) }
             .apply { if (includeSaveConcurrencyPreference) putInt("save_direct_concurrency", settings.save.maxConcurrentDirectTasks) }
+            .apply {
+                // Methods share concurrency's successful-load admission, but resolve their live owner here.
+                saveMethodPreferencesForWrite(includeSaveConcurrencyPreference, loadedSuccessfully,
+                    settings.save, acceptedSaveMethodSettings)?.let { liveMethods ->
+                    putBoolean("save_direct_enabled", liveMethods.directEnabled)
+                    putBoolean("save_stream_enabled", liveMethods.streamEnabled)
+                    putBoolean("save_record_enabled", liveMethods.recordEnabled)
+                }
+            }
             .apply { if (livePolicy != null) putString("vault_auto_lock_policy", livePolicy.key) }
             .putInt("active_views", settings.browser.maxActiveWebViews)
             .putBoolean("javascript", settings.browser.javaScriptEnabled)

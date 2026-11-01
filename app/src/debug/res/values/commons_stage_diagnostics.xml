@@ -1,0 +1,18 @@
+<resources>
+    <string name="commons_stage_title">Commons stage diagnostics (Debug)</string>
+    <string name="commons_stage_notice">Local memory only. Start arms the next valid explicit Search, including the filter panel Search button. It does not send or restart any request. Preview does not read files or access the network. Stop, leaving Discovery, backgrounding or changing sources seals the trace.</string>
+    <string name="commons_stage_start">Start: record the next explicit Search</string>
+    <string name="commons_stage_stop">Stop and keep local preview</string>
+    <string name="commons_stage_preview">Refresh stage preview</string>
+    <string name="commons_stage_idle">Disabled; no search is enrolled.</string>
+    <string name="commons_stage_armed">Armed; waiting for the next valid explicit Search.</string>
+    <string name="commons_stage_collecting">Observed session; refresh to read its latest bounded samples.</string>
+    <string name="commons_stage_sealed">Sealed session; late callbacks cannot add observations.</string>
+    <string name="commons_stage_counts">Retained=%1$d/%2$d; active stages=%3$d; shown=%4$d; truncated=%5$s; partial=%6$s; pending=%7$d</string>
+    <string name="commons_stage_dropped">Dropped operations=%1$d; dropped samples=%2$d; ignored events=%3$d; clock anomalies=%4$d</string>
+    <string name="commons_stage_not_observed">%1$s: NOT_OBSERVED in the retained trace</string>
+    <string name="commons_stage_not_measured">NOT_MEASURED</string>
+    <string name="commons_stage_elapsed">%1$d ns</string>
+    <string name="commons_stage_row">session-%1$d / operation-%2$d / attempt=%3$d / %4$s / %5$s / elapsed=%6$s / timing=%7$s / error=%8$s / HTTP=%9$s</string>
+    <string name="commons_stage_scope">At most 32 rows are shown; active stages are shown after completed samples. NOT_OBSERVED means no sample in the retained trace, never a zero-duration success or proof of a network fault. Dropped samples can hide a phase; phase presence across this trace does not describe every attempt. HTTP_EXCHANGE includes bounded body processing when read; denial or slowdown may stop at headers. It is not time to first byte. OPERATION is the runtime callback outcome; it does not prove candidates were accepted into the pool or shown. Cancellation signals do not prove resource cleanup finished. No export, saved report or upload.</string>
+</resources>

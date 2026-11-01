@@ -9,13 +9,16 @@ import com.easysavevideo.app.storage.SearxngConfigurationRead
 import com.easysavevideo.app.storage.SearxngConfigurationStore
 import com.easysavevideo.app.storage.SearxngConfigurationWrite
 import com.easysavevideo.app.storage.readableConfiguration
+import com.easysavevideo.searxng.SearxngResultFormat
 import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-/** UI claims cannot move between controller instances, slots, reloads, or committed generations. */
+enum class SearxngConfigurationAction { ADD, EDIT, DELETE, RESET }
+
+/** UI claims cannot move between controller instances, actions, slots, reloads, or committed generations. */
 class SearxngConfigurationClaim internal constructor(internal val owner: Any, internal val epoch: Long,
-    val generation: String, val slotId: String?) {
+    val generation: String, val slotId: String?, val kind: SearxngConfigurationAction) {
     override fun toString() = "SearxngConfigurationClaim([redacted])"
 }
 
@@ -59,13 +62,19 @@ class SearxngConfigurationController(
     var state by mutableStateOf(SearxngConfigurationState())
         private set
 
+    @Synchronized fun beginAdd(): SearxngConfigurationClaim? =
+        if (state.config?.let { it.slots.size < SearxngConfigurationPolicy.MAX_INSTANCES &&
+            it.nextInstanceOrdinal < Long.MAX_VALUE } == true) claim(null, SearxngConfigurationAction.ADD) else null
     @Synchronized fun beginEdit(slotId: String): SearxngConfigurationClaim? =
-        if (slotId in SearxngConfigurationPolicy.SLOT_IDS) claim(slotId) else null
-    @Synchronized fun beginReset(): SearxngConfigurationClaim? = claim(null)
-    private fun claim(slotId: String?): SearxngConfigurationClaim? =
-        if (closed || !state.editable) null else SearxngConfigurationClaim(owner, claimEpoch, state.config!!.generation, slotId)
+        if (state.config?.slots?.any { it.id == slotId } == true) claim(slotId, SearxngConfigurationAction.EDIT) else null
+    @Synchronized fun beginDelete(slotId: String): SearxngConfigurationClaim? =
+        if (state.config?.slots?.any { it.id == slotId } == true) claim(slotId, SearxngConfigurationAction.DELETE) else null
+    @Synchronized fun beginReset(): SearxngConfigurationClaim? = claim(null, SearxngConfigurationAction.RESET)
+    private fun claim(slotId: String?, kind: SearxngConfigurationAction): SearxngConfigurationClaim? =
+        if (closed || !state.editable) null else SearxngConfigurationClaim(owner, claimEpoch, state.config!!.generation, slotId, kind)
     @Synchronized fun isCurrent(claim: SearxngConfigurationClaim): Boolean = !closed && state.editable &&
-        claim.owner === owner && claim.epoch == claimEpoch && claim.generation == state.config?.generation
+        claim.owner === owner && claim.epoch == claimEpoch && claim.generation == state.config?.generation &&
+        (claim.slotId == null || state.config?.slots?.any { it.id == claim.slotId } == true)
 
     /** Retire editor claims only. A queued write/read and its terminal publication still own epoch. */
     @Synchronized fun invalidateClaims() { claimEpoch++ }
@@ -87,13 +96,23 @@ class SearxngConfigurationController(
         }, started = false)
     }
 
+    @Synchronized fun add(claim: SearxngConfigurationClaim, searchUrl: String, enabled: Boolean = false,
+        acknowledged: Boolean, format: SearxngResultFormat = SearxngResultFormat.JSON_VIDEOS): Boolean {
+        if (!isCurrent(claim) || claim.kind != SearxngConfigurationAction.ADD || claim.slotId != null) return rejectStale()
+        return apply(claim, SearxngConfigurationPolicy.add(state.config!!, searchUrl, enabled, acknowledged, format))
+    }
+    @Synchronized fun remove(claim: SearxngConfigurationClaim): Boolean {
+        if (!isCurrent(claim) || claim.kind != SearxngConfigurationAction.DELETE || claim.slotId == null) return rejectStale()
+        return apply(claim, SearxngConfigurationPolicy.remove(state.config!!, claim.slotId))
+    }
     @Synchronized fun replace(claim: SearxngConfigurationClaim, searchUrl: String, enabled: Boolean,
-        acknowledged: Boolean): Boolean {
-        if (!isCurrent(claim) || claim.slotId == null) return rejectStale()
-        return apply(claim, SearxngConfigurationPolicy.replace(state.config!!, claim.slotId, searchUrl, enabled, acknowledged))
+        acknowledged: Boolean, format: SearxngResultFormat = state.config?.slots?.firstOrNull { it.id == claim.slotId }?.format
+            ?: SearxngResultFormat.JSON_VIDEOS): Boolean {
+        if (!isCurrent(claim) || claim.kind != SearxngConfigurationAction.EDIT || claim.slotId == null) return rejectStale()
+        return apply(claim, SearxngConfigurationPolicy.replace(state.config!!, claim.slotId, searchUrl, enabled, acknowledged, format))
     }
     @Synchronized fun reset(claim: SearxngConfigurationClaim): Boolean {
-        if (!isCurrent(claim) || claim.slotId != null) return rejectStale()
+        if (!isCurrent(claim) || claim.kind != SearxngConfigurationAction.RESET || claim.slotId != null) return rejectStale()
         return apply(claim, SearxngConfigurationPolicy.reset(state.config!!))
     }
 
@@ -170,10 +189,13 @@ class SearxngConfigurationController(
                 SearxngConfigurationRead.Unavailable -> SearxngConfigurationStatus.UNAVAILABLE
             }, value.readableConfiguration())
         fun issueText(issue: SearxngConfigurationIssue): String = when (issue) {
-            SearxngConfigurationIssue.INVALID_ENDPOINT -> "请输入公共域名的 HTTPS /search 地址；不可含账号、密码、查询参数、片段、端口、IP 或本地地址。"
+            SearxngConfigurationIssue.INVALID_ENDPOINT -> "请输入公共域名的 HTTPS 搜索地址，以 /search 结尾，可含路径前缀；不可含账号、密码、查询参数、片段、端口、IP 或本地地址。"
+            SearxngConfigurationIssue.DUPLICATE_ORIGIN -> "此服务已在另一个实例配置；同一服务不能重复配置为 JSON 与 HTML 来源。"
             SearxngConfigurationIssue.ACKNOWLEDGEMENT_REQUIRED -> "请先勾选查询数据发送说明。"
             SearxngConfigurationIssue.REVISION_EXHAUSTED -> "配置版本已达上限；原始资料已保留。"
-            SearxngConfigurationIssue.UNKNOWN_SLOT -> "来源位置无效。"
+            SearxngConfigurationIssue.UNKNOWN_SLOT -> "来源实例不存在或已删除。"
+            SearxngConfigurationIssue.INSTANCE_LIMIT -> "最多配置 ${SearxngConfigurationPolicy.MAX_INSTANCES} 个实例；请先删除不需要的实例。"
+            SearxngConfigurationIssue.ID_EXHAUSTED -> "实例标识已达上限；原始资料已保留。"
         }
     }
 }

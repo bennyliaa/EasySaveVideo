@@ -44,7 +44,7 @@ class SaveMethodAlternativeContractTest {
         assertTrue(body.contains("val request = SaveRequest(id, id, resource, TaskMethod.STREAM)"))
         assertTrue(body.indexOf("val request =") < body.indexOf("coordinator.confirmStreamAlternative("))
         assertTrue(body.contains("requireNotNull(alternativeGeneration), request, operation, execution, prepared.bytesTransferred"))
-        assertTrue(body.contains("generation != executionForegroundGeneration || !canSave(TaskMethod.STREAM)"))
+        assertTrue(body.contains("generation != executionForegroundGeneration || !canStartSave(TaskMethod.STREAM)"))
         assertTrue(body.contains("streamAlternativeRequired && streamAlternative == null"))
         assertFalse(body.contains("tryAcquireExclusive(")); assertFalse(body.contains("tryAcquireDirect("))
     }

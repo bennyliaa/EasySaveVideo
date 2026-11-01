@@ -1,0 +1,23 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- Test APK only. Empty roots never offer these fixtures in the user's picker. -->
+        <provider
+            android:name="com.easysavevideo.app.validation.OwnedEvaluationDocumentsProvider"
+            android:authorities="com.easysavevideo.app.test.evaluation.documents"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:permission="android.permission.MANAGE_DOCUMENTS"
+            android:process=":evaluationOwned">
+            <intent-filter>
+                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
+            </intent-filter>
+        </provider>
+        <!-- Only the verified target/test UID may call the bounded fixture control API. -->
+        <provider
+            android:name="com.easysavevideo.app.validation.OwnedEvaluationControlProvider"
+            android:authorities="com.easysavevideo.app.test.evaluation.control"
+            android:exported="true"
+            android:grantUriPermissions="false"
+            android:process=":evaluationOwned" />
+    </application>
+</manifest>

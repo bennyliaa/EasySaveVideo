@@ -3,11 +3,12 @@ package com.easysavevideo.app.save
 import com.easysavevideo.app.R
 import com.easysavevideo.save.SaveError
 
-/** Verbatim pre-migration Chinese copy and old same-text error groups, frozen from production b0c5647. */
+/** Original Chinese copy/error groups from b0c5647, plus explicitly additive fixed notices. */
 internal object SaveRuntimeNoticeFixtures {
     data class Text(val resource: Int, val key: String, val chinese: String)
 
     val fixed = linkedMapOf(
+        SaveRuntimeFixedNotice.METHOD_DISABLED to Text(R.string.save_runtime_notice_method_disabled, "save_runtime_notice_method_disabled", "此保存方式已在设置中关闭。启用后可开始新任务，已有任务不受影响。"),
         SaveRuntimeFixedNotice.SAVE_UNAVAILABLE to Text(R.string.save_runtime_notice_save_unavailable, "save_runtime_notice_save_unavailable", "保存暂时不可用，请稍后重试。"),
         SaveRuntimeFixedNotice.OPEN_LOADED_PAGE to Text(R.string.save_runtime_notice_open_loaded_page, "save_runtime_notice_open_loaded_page", "请先打开网页，等待页面加载完成后再保存。"),
         SaveRuntimeFixedNotice.CANDIDATE_EXPIRED to Text(R.string.save_runtime_notice_candidate_expired, "save_runtime_notice_candidate_expired", "候选已过期，请重新检测当前页面。"),

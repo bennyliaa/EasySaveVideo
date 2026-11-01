@@ -51,6 +51,33 @@ class SearxngVideoSearchProviderTest {
         assertEquals(16000L, http.deadlineEpochMillis)
         assertEquals(ONE.toByteArray().size.toLong(), page.responseBytes)
     }
+    @Test fun deploymentPrefixAndExactQuerySurviveJsonRequestsAndPagination() {
+        val configured = endpoint("https://search.example.org/tenant/Searxng-1/search")
+        val query = "Café / film? + q=untouched & 中文"
+        val firstTransport = TestTransport(Reply())
+        val first = provider(firstTransport, configured).search(request(query, endpoint = configured), operation())
+        val firstRequest = firstTransport.requests.single()
+        assertEquals("/tenant/Searxng-1/search", firstRequest.url.rawPath)
+        assertEquals(query, params(firstRequest.url)["q"])
+        assertEquals("json", params(firstRequest.url)["format"])
+        assertEquals(SearxngRequestKind.JSON_SEARCH, firstRequest.kind)
+        assertTrue(first.results.isEmpty())
+        assertEquals(CandidateMetadataLevel.SOURCE_REPORTED, first.candidates.single().sourceReported!!.metadataLevel)
+        val nextTransport = TestTransport(Reply("{\"results\":[]}"))
+        val second = provider(nextTransport, configured).search(request(query, cursor = first.nextCursor, endpoint = configured), operation())
+        assertEquals("/tenant/Searxng-1/search", nextTransport.requests.single().url.rawPath)
+        assertEquals(query, params(nextTransport.requests.single().url)["q"])
+        assertEquals("2", params(nextTransport.requests.single().url)["pageno"])
+        assertTrue(second.exhausted)
+        for (other in listOf(endpoint(), endpoint("https://search.example.org/other/search"))) {
+            val transport = TestTransport()
+            fails(DiscoveryError.PROVIDER_FAILURE) {
+                provider(transport, other).search(request(query, cursor = first.nextCursor, endpoint = other), operation())
+            }
+            assertTrue(transport.requests.isEmpty())
+        }
+    }
+
     @Test fun sourceNamespaceExclusionRequiresNoRequest() {
         val transport = TestTransport()
         val request = request().let { it.copy(profile = it.profile.copy(filters = SearchFilters(sourceNamespaces = setOf("other"), safeSearch = false))) }

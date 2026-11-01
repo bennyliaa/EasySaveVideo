@@ -130,7 +130,7 @@ class OwnedDirectTechnicalDiagnosticsTest {
     @Test fun existingBrowserBodiesAreByteIdenticalAndMediaDispatchPrecedesServer() {
         val source = File("src/androidTest/kotlin/com/easysavevideo/app/validation/OwnedVerificationInstrumentation.kt").readText()
         assertTrue(source.contains("phase=args?.getString(\"phase\")?:\"b\""))
-        assertTrue(source.contains("setOf(\"b\",\"ab\",\"opus-technical\")"))
+        assertTrue(source.contains("setOf(\"b\",\"ab\",\"opus-technical\",\"evaluation-export\")"))
         val dispatch = found(source, "if (phase == \"opus-technical\") { OpusTechnicalValidation.run(this); return }")
         assertTrue(dispatch < found(source, "val server=ServerSocket"))
         val unchanged = source.substring(found(source, "        val report=JSONObject();"))

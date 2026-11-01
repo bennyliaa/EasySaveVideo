@@ -57,10 +57,11 @@ import java.nio.file.StandardCopyOption
  * Private Android storage. Nothing here uses public MediaStore, M2 databases, external names or backups.
  * One instance is owned by the app composition root and closed only after active Save work has stopped.
  */
-class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMediaStore, AutoCloseable {
+class AndroidSaveStorage @JvmOverloads constructor(context: Context, initializationStage: (SaveStorageInitializationStage) -> Unit = {}) : ControlledDirectJournal, PrivateMediaStore, AutoCloseable {
+    private val initialization = SaveStorageInitializationProbe(initializationStage)
     private val applicationContext = context.applicationContext
     private val directTransformer by lazy { com.easysavevideo.app.media.transform.TransformerEngine(applicationContext) }
-    private val directory = File(context.applicationContext.noBackupFilesDir, "save_m3_v1")
+    private val directory = initialization.at(SaveStorageInitializationStage.STORAGE_DIRECTORY) { File(context.applicationContext.noBackupFilesDir, "save_m3_v1") }
     private val helper: Database
     private val catalog: Catalog
     private val protocol: PrivateCommitProtocol
@@ -119,29 +120,33 @@ class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMed
     private var normalizedCommitter: NormalizedCommitProtocol? = null
     @Volatile private var closed = false
     init {
+        initialization.at(SaveStorageInitializationStage.STORAGE_DIRECTORY) {
         if (Files.isSymbolicLink(directory.toPath()) || (!directory.isDirectory && !directory.mkdirs()))
             throw SaveFailure(SaveError.STORAGE_FAILURE)
-        synchronized(failedOwnerLock) {
+        }
+        initialization.at(SaveStorageInitializationStage.STORAGE_OWNER_FENCE) { synchronized(failedOwnerLock) {
             if (failedStorageOwner != null) throw SaveFailure(SaveError.RESOURCE_RELEASE_UNCONFIRMED)
         }
-        ownerLease = PrivateDirectoryLease(directory)
+        }
+        ownerLease = initialization.at(SaveStorageInitializationStage.STORAGE_LEASE) { PrivateDirectoryLease(directory) }
         val firstProcessLifetime = synchronized(failedOwnerLock) { seenDirectoryLifetimes.add(directory.absolutePath) }
         var initializingHelper: Database? = null
         try {
-            helper = Database(context.applicationContext, File(directory, "save_m3_v1.db")).also { initializingHelper = it }
-            catalog = Catalog()
-            protocol = PrivateCommitProtocol(directory, catalog, AndroidFileOps)
-            libraryStorage = AndroidLibraryRepository({ helper.writableDatabase }, fileLock,
-                OrdinaryMediaFiles(File(directory, "media"), AndroidFileOps::syncDirectory), { closed })
+            helper = initialization.at(SaveStorageInitializationStage.STORAGE_HELPER) { Database(context.applicationContext, File(directory, "save_m3_v1.db")).also { initializingHelper = it } }
+            catalog = initialization.at(SaveStorageInitializationStage.STORAGE_PROTOCOL) { Catalog() }
+            protocol = initialization.at(SaveStorageInitializationStage.STORAGE_PROTOCOL) { PrivateCommitProtocol(directory, catalog, AndroidFileOps) }
+            libraryStorage = initialization.at(SaveStorageInitializationStage.STORAGE_LIBRARY) { AndroidLibraryRepository({ initialization.at(SaveStorageInitializationStage.STORAGE_DATABASE) { helper.writableDatabase } }, fileLock,
+                OrdinaryMediaFiles(File(directory, "media"), AndroidFileOps::syncDirectory), { closed }) }
             // Bounded, durable-only recovery. Failed unlink remains a visible pending operation.
-            libraryStorage.processPendingDeletes(100)
+            initialization.at(SaveStorageInitializationStage.STORAGE_PENDING_DELETES) { libraryStorage.processPendingDeletes(100) }
             // Snapshot BEFORE Coordinator recovery/Resume can alter control revisions or phases.
             // Reopening a directory in the same process never constitutes a process restart.
-            startupRawRecords = if (firstProcessLifetime) synchronized(fileLock) {
+            startupRawRecords = initialization.at(SaveStorageInitializationStage.STORAGE_SNAPSHOT) { if (firstProcessLifetime) synchronized(fileLock) {
                 records("state NOT IN ('SUCCEEDED','FAILED','CANCELLED')", 1000)
                     .filter { it.transfer != null && it.artifact != null }
                     .associateBy { it.task.taskId }
-            } else emptyMap()
+            } else emptyMap() }
+            initialization.complete()
         } catch (failure: Exception) {
             releaseStorageOwner(initializingHelper)
             throw failure
@@ -504,7 +509,7 @@ class AndroidSaveStorage(context: Context) : ControlledDirectJournal, PrivateMed
         put("commit_id", record.commitId); put("record", SaveRecordCodec.encode(record))
     }
     private inline fun <T> transaction(block: (SQLiteDatabase) -> T): T {
-        val db = helper.writableDatabase
+        val db = initialization.at(SaveStorageInitializationStage.STORAGE_DATABASE) { helper.writableDatabase }
         db.beginTransaction()
         try { val result = block(db); db.setTransactionSuccessful(); return result } finally { db.endTransaction() }
     }

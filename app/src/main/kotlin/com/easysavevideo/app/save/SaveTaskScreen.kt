@@ -264,12 +264,14 @@ fun SaveSelectionPanel(runtime: AndroidSaveRuntime, browser: SystemBrowserHost, 
                 EsvButton(when {
                     candidate.protected -> stringResource(R.string.final_copy_57)
                     !candidate.supported -> stringResource(R.string.final_copy_58)
+                    runtime.isSaveMethodDisabled(candidate.method) -> stringResource(R.string.save_runtime_notice_method_disabled)
                     !runtime.canSave(candidate.method) -> stringResource(R.string.final_copy_59)
+                    !runtime.canStartSave(candidate.method) -> stringResource(R.string.save_runtime_notice_save_unavailable)
                     candidate.method == TaskMethod.STREAM -> stringResource(R.string.final_copy_60)
                     else -> stringResource(R.string.final_copy_61)
                 },
                     onClick = { if (ownsSelection() && selection.isCurrent()) runtime.choose(candidate, browser) },
-                    enabled = candidate.supported && !candidate.protected && runtime.canSave(candidate.method) && ownsSelection() && selection.isCurrent())
+                    enabled = candidate.supported && !candidate.protected && runtime.canStartSave(candidate.method) && ownsSelection() && selection.isCurrent())
             }
         }
         EsvButton(stringResource(R.string.flow_savetaskscreen_32), onClick = { if (ownsSelection()) runtime.dismissSelection() })
@@ -292,7 +294,7 @@ private fun HlsSelectionDialog(runtime: AndroidSaveRuntime, request: Any) {
                 if (runtime.alternativePrepared) EsvText(stringResource(R.string.save_alternative_ready), style = v.captionTextStyle)
                 EsvText(stringResource(R.string.save_display_hls_budget, saveSizeText(prepared.bytesTransferred)), style = v.captionTextStyle)
                 if (prepared.directMedia) EsvButton(stringResource(R.string.flow_savetaskscreen_30), onClick = { if (ownsPreparation()) runtime.chooseHlsVariant(null) },
-                    enabled = ownsPreparation() && runtime.canSave(TaskMethod.STREAM))
+                    enabled = ownsPreparation() && runtime.canStartSave(TaskMethod.STREAM))
                 prepared.variants.forEach { variant ->
                     val metadata = variant.metadata
                     val width = metadata.width
@@ -302,7 +304,7 @@ private fun HlsSelectionDialog(runtime: AndroidSaveRuntime, request: Any) {
                     EsvButton(stringResource(R.string.save_display_hls_variant,
                         saveIntegerText(variant.index.toLong() + 1), size, saveIntegerText(metadata.bandwidth / 1000)),
                         onClick = { if (ownsPreparation()) runtime.chooseHlsVariant(variant.identity) },
-                        enabled = ownsPreparation() && runtime.canSave(TaskMethod.STREAM))
+                        enabled = ownsPreparation() && runtime.canStartSave(TaskMethod.STREAM))
                 }
             }
             EsvButton(stringResource(R.string.flow_savetaskscreen_32), onClick = { if (ownsPreparation()) runtime.dismissSelection() })

@@ -22,8 +22,28 @@ class VideoDiscoveryCoordinator(
     private val clock: EpochClock = EpochClock(System::currentTimeMillis),
     private var limits: DiscoveryLimits = DiscoveryLimits(),
     private val sourceConfigurationKey: String? = null,
+    private val sessionAdmission: SessionCandidateAdmission? = null,
+    private val providerCallbackLatency: ProviderCallbackLatencyRecorder? = null,
+    private val commonsStageDiagnostics: CommonsStageDiagnosticsRecorder? = null,
     private val retryDelayMillis: (Int) -> Long = { attempt -> (if (attempt == 1) 1000L else 3000L) + ThreadLocalRandom.current().nextLong(251) },
 ) : AutoCloseable {
+    /** Preserve the old fully positional constructor as well as trailing retry lambdas. */
+    constructor(registry: ProviderRegistry, runtime: ProviderRuntime, durableStore: DiscoveryStore,
+        timer: DiscoveryTimer, clock: EpochClock, limits: DiscoveryLimits, sourceConfigurationKey: String?,
+        retryDelayMillis: (Int) -> Long) : this(registry, runtime, durableStore, timer, clock, limits,
+            sourceConfigurationKey, null, null, null, retryDelayMillis)
+
+    constructor(registry: ProviderRegistry, runtime: ProviderRuntime, durableStore: DiscoveryStore,
+        timer: DiscoveryTimer, clock: EpochClock, limits: DiscoveryLimits, sourceConfigurationKey: String?,
+        sessionAdmission: SessionCandidateAdmission?, retryDelayMillis: (Int) -> Long) : this(registry,
+            runtime, durableStore, timer, clock, limits, sourceConfigurationKey, sessionAdmission, null, null, retryDelayMillis)
+
+    constructor(registry: ProviderRegistry, runtime: ProviderRuntime, durableStore: DiscoveryStore,
+        timer: DiscoveryTimer, clock: EpochClock, limits: DiscoveryLimits, sourceConfigurationKey: String?,
+        sessionAdmission: SessionCandidateAdmission?, providerCallbackLatency: ProviderCallbackLatencyRecorder?,
+        retryDelayMillis: (Int) -> Long) : this(registry, runtime, durableStore, timer, clock, limits,
+            sourceConfigurationKey, sessionAdmission, providerCallbackLatency, null, retryDelayMillis)
+
     private data class ActiveRequest(
         val provider: VideoSearchProvider,
         val descriptor: ProviderDescriptor,
@@ -38,6 +58,8 @@ class VideoDiscoveryCoordinator(
         val authority: ProviderAuthorityView? = null,
     )
     private val summaryFence = VerificationSummaryFence()
+    private var latencySession: ProviderCallbackLatencyRecorder.Session? = null
+    private var commonsStageSession: CommonsStageDiagnosticsRecorder.Session? = null
     private val lock = Any()
     private var store: DiscoveryStore = durableStore
     private var incognitoStore: InMemoryDiscoveryStore? = null
@@ -76,9 +98,14 @@ class VideoDiscoveryCoordinator(
     private var lastError: DiscoveryError? = null
     private var closed = false
 
-    fun start(sessionId: String, profile: SearchProfile, incognito: Boolean = false): SessionStamp = synchronized(lock) {
+    fun start(sessionId: String, profile: SearchProfile, incognito: Boolean = false,
+        allowSessionCandidateVerification: Boolean = false, diagnosticsCapture: CommonsStageCapture? = null): SessionStamp = synchronized(lock) {
         check(!closed)
+        sessionAdmission?.revoke()
         cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); clearAuthorityState()
+        latencySession = providerCallbackLatency?.beginSession()
+        commonsStageDiagnostics?.endSession(commonsStageSession)
+        commonsStageSession = commonsStageDiagnostics?.beginSession(diagnosticsCapture)
         incognitoStore?.clear()
         incognitoStore = if (incognito) InMemoryDiscoveryStore() else null
         store = incognitoStore ?: durableStore
@@ -91,13 +118,19 @@ class VideoDiscoveryCoordinator(
         try { store.transaction { putCheckpoint(checkpoint) }; current = checkpoint; terminalState = null; lastError = null
         } catch (failure: Exception) { current = null; failStoreOperation(failure) }
         noNewPages.clear()
-        if (current != null) { beginRound(); pump() }
+        if (current != null) {
+            if (allowSessionCandidateVerification && profile.query.isNotBlank()) sessionAdmission?.beginUserSearch(stamp, profile.queryKey)
+            beginRound(); pump()
+        }
         stamp
     }
 
     /** Resume only a complete committed checkpoint. In-flight operations are never restored. */
     fun restore(sessionId: String, requireExplicitSearch: Boolean = false): Boolean = synchronized(lock) {
-        check(!closed); cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); clearAuthorityState(); current = null; incognitoStore?.clear(); incognitoStore = null; store = durableStore
+        check(!closed); sessionAdmission?.revoke(); cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); clearAuthorityState(); current = null; incognitoStore?.clear(); incognitoStore = null; store = durableStore
+        latencySession = providerCallbackLatency?.beginSession()
+        commonsStageDiagnostics?.endSession(commonsStageSession)
+        commonsStageSession = null
         try {
             val previous = store.transaction { checkpoint(sessionId) } ?: return false
             epoch = maxOf(epoch, previous.stamp.epoch) + 1
@@ -119,6 +152,7 @@ class VideoDiscoveryCoordinator(
     fun currentSuspensionGeneration(): Long = lifecycleSuspensionGeneration.get()
 
     fun suspendImmediately(): Long {
+        sessionAdmission?.revoke()
         summaryFence.invalidate()
         val generation = lifecycleSuspensionGeneration.incrementAndGet()
         active.values.forEach { it.operation.cancellation.cancel() }
@@ -130,6 +164,7 @@ class VideoDiscoveryCoordinator(
      * This latch is separate from lifecycle and cannot reopen foreground/visibility/Save/Record gates.
      */
     fun suspendPowerImmediately(): Long {
+        sessionAdmission?.revoke()
         summaryFence.invalidate()
         val generation = powerSuspensionGeneration.incrementAndGet()
         active.values.forEach { it.operation.cancellation.cancel() }
@@ -146,6 +181,7 @@ class VideoDiscoveryCoordinator(
         val fenced = suspensionGeneration != appliedPowerSuspensionGeneration.get()
         if (scheduler.powerSignals == signals && !fenced) return
         scheduler.powerSignals(signals)
+        sessionAdmission?.revoke()
         cancelAll()
         appliedPowerSuspensionGeneration.set(suspensionGeneration)
     }
@@ -172,6 +208,7 @@ class VideoDiscoveryCoordinator(
         val source = registry.all().find { it.descriptor.id in candidate.provenance && !active.containsKey(it.descriptor.id) && it.refusal(checkpoint.profile) == null } ?: return false
         if (!scheduler.roundActive) scheduler.beginRound(availableCount())
         if (!scheduler.canLaunch(source.descriptor.id, availableCount())) return false
+        if (source.searchBudget != null && sessionAdmission != null && !sessionAdmission.permitsSource(checkpoint.stamp)) return false
         val descriptor = source.descriptor.detachedDescriptor()
         val authority = sourceAuthorities[descriptor.id]
         if (source.requiresAuthority && (authority == null || authority.descriptor != descriptor || !authority.isCurrent(clock.nowMillis()))) return false
@@ -195,8 +232,9 @@ class VideoDiscoveryCoordinator(
             }
         }
         val cancellation = DiscoveryCancellation()
+        val deadline = clock.nowMillis() + minOf(4000L, limits.requestDeadlineMillis)
         val operation = DiscoveryOperation(OperationContext("discovery-${++operationSequence}",
-            clock.nowMillis() + minOf(4000L, limits.requestDeadlineMillis), cancellation, 0,
+            if (source.searchBudget != null) sessionAdmission?.boundDeadline(checkpoint.stamp, deadline) ?: deadline else deadline, cancellation, 0,
             resourceBudget = ResourceBudget(1, limits.maxResponseBytes)), cancellation)
         val request = ActiveRequest(provider, provider.descriptor, SearchRequest(checkpoint.stamp, checkpoint.profile, null, descriptor),
             checkpoint.pool.viewRevision, operation, explicitCandidateId = candidateId, summaryGeneration = summaryFence.generation, authority = authority)
@@ -209,6 +247,7 @@ class VideoDiscoveryCoordinator(
     }
     /** Irreversible for this coordinator: lifecycle/power callbacks cannot reopen an edited source set. */
     fun suspendSourcesImmediately() {
+        sessionAdmission?.revoke()
         summaryFence.invalidate()
         sourceConfigurationSuspended.set(true)
         active.values.forEach { it.operation.cancellation.cancel() }
@@ -222,7 +261,7 @@ class VideoDiscoveryCoordinator(
         val wasOpen = gateOpen
         scheduler.visibility(foreground, discoveryVisible)
         appliedLifecycleSuspensionGeneration.set(suspensionGeneration)
-        if (!gateOpen) cancelAll(endRound = false)
+        if (!gateOpen) { sessionAdmission?.revoke(); cancelAll(endRound = false) }
         else if (!wasOpen && !closed) {
             // Immediate suspension may precede a coalesced UI resume. Retire the cancelled
             // operation/accounting before reopening; its late failure is not source health.
@@ -234,7 +273,7 @@ class VideoDiscoveryCoordinator(
     fun setPriority(saveActive: Boolean, recordingActive: Boolean) = synchronized(lock) {
         val wasOpen = gateOpen
         scheduler.priority(saveActive, recordingActive)
-        if (!gateOpen) cancelAll(endRound = false)
+        if (!gateOpen) { sessionAdmission?.revoke(); cancelAll(endRound = false) }
         else if (!wasOpen && !closed) {
             // Immediate suspension may precede a coalesced UI resume. Retire the cancelled
             // operation/accounting before reopening; its late failure is not source health.
@@ -468,6 +507,7 @@ class VideoDiscoveryCoordinator(
             if (old != null && old != descriptor) invalid += descriptor.id
         }
         if (invalid.isNotEmpty()) {
+            sessionAdmission?.revoke()
             invalid.forEach { id ->
                 pendingPool.removeProvider(id); sourceAuthorities.remove(id); sessionProgress.remove(id)
                 health.remove(id); noNewPages.remove(id); retiredAuthoritySources += id
@@ -561,6 +601,7 @@ class VideoDiscoveryCoordinator(
                         continue
                     }
                     val checkpoint = current ?: break
+                    if (provider.searchBudget != null && sessionAdmission != null && !sessionAdmission.permitsSource(checkpoint.stamp)) continue
                     val sourceHealth = relevantHealth(descriptor)
                     if (provider.descriptor.id in retiredAuthoritySources || active.containsKey(provider.descriptor.id) || (sourceHealth?.cooldownUntilEpochMillis ?: 0) > clock.nowMillis() ||
                         sourceHealth?.blockedQueryKey == checkpoint.profile.queryKey) continue
@@ -591,8 +632,9 @@ class VideoDiscoveryCoordinator(
                 val (provider, descriptor, progress) = chosen
                 val checkpoint = current ?: break
                 val cancellation = DiscoveryCancellation()
+                val deadline = clock.nowMillis() + limits.requestDeadlineMillis
                 val operation = DiscoveryOperation(OperationContext("discovery-${++operationSequence}",
-                    clock.nowMillis() + limits.requestDeadlineMillis, cancellation, limits.maxRetries,
+                    if (provider.searchBudget != null) sessionAdmission?.boundDeadline(checkpoint.stamp, deadline) ?: deadline else deadline, cancellation, limits.maxRetries,
                     resourceBudget = ResourceBudget(scheduler.powerPolicy.concurrency, limits.maxResponseBytes)), cancellation)
                 val request = ActiveRequest(provider, descriptor, SearchRequest(checkpoint.stamp, checkpoint.profile, progress, descriptor), checkpoint.pool.viewRevision, operation, summaryGeneration = summaryFence.generation)
                 active[descriptor.id] = request
@@ -624,9 +666,38 @@ class VideoDiscoveryCoordinator(
         // absolute deadline. A late duplicate callback from an older attempt has no authority over
         // the newer attempt, including its slot accounting, retry timer, health or committed cursor.
         val launchedOperation = request.operation
+        launchedOperation.commonsStageTrace = if (request.descriptor.id == "wikimedia-commons")
+            commonsStageDiagnostics?.started(commonsStageSession, launchedOperation.context.attempt, launchedOperation.cancellation) else null
+        if (!launchedOperation.cancellation.isCancelled)
+            providerCallbackLatency?.started(latencySession, launchedOperation, id, launchedOperation.context.attempt)
         val handle = try { runtime.execute(request.provider, request.request, launchedOperation) { outcome ->
+            // Observe the callback before waiting for C; this is not page publication or worker release.
+            // Only fixed technical classifications enter the optional, bounded local recorder.
+            if (lifecycleUpdatePending || powerPolicyUpdatePending || sourceConfigurationSuspended.get())
+                providerCallbackLatency?.cancelled(launchedOperation)
+            else providerCallbackLatency?.callback(launchedOperation, when (outcome) {
+                is ProviderOutcome.Success -> ProviderCallbackTerminal.SUCCESS_REPORTED
+                is ProviderOutcome.Failure -> when (outcome.code) {
+                    DiscoveryError.CANCELLED -> ProviderCallbackTerminal.CANCELLED_REPORTED
+                    DiscoveryError.DEADLINE_EXCEEDED -> ProviderCallbackTerminal.DEADLINE_REPORTED
+                    DiscoveryError.BUSY -> ProviderCallbackTerminal.BUSY_REPORTED
+                    else -> ProviderCallbackTerminal.FAILURE_REPORTED
+                }
+            })
+            launchedOperation.commonsStageTrace?.finish(when (outcome) {
+                is ProviderOutcome.Success -> CommonsStageOutcome.SUCCESS
+                is ProviderOutcome.Failure -> when (outcome.code) {
+                    DiscoveryError.CANCELLED -> CommonsStageOutcome.CANCELLED
+                    DiscoveryError.DEADLINE_EXCEEDED -> CommonsStageOutcome.DEADLINE
+                    else -> CommonsStageOutcome.FAILURE
+                }
+            })
             synchronized(lock) { completed(request, launchedOperation, outcome) }
-        } } catch (_: Exception) { completed(request, launchedOperation, ProviderOutcome.Failure(DiscoveryError.PROVIDER_FAILURE)); CancellationHandle {} }
+        } } catch (_: Exception) {
+            launchedOperation.commonsStageTrace?.finish(CommonsStageOutcome.FAILURE, CommonsStageFailure.OTHER)
+            providerCallbackLatency?.executeFailed(launchedOperation)
+            completed(request, launchedOperation, ProviderOutcome.Failure(DiscoveryError.PROVIDER_FAILURE)); CancellationHandle {}
+        }
         if (active[id] === request && request.operation === launchedOperation && request.inFlight && gateOpen && !request.operation.cancellation.isCancelled) request.handle = handle
         else if (request.operation.cancellation.isCancelled || current?.stamp != request.request.stamp || !gateOpen) handle.cancel()
     }
@@ -694,6 +765,9 @@ class VideoDiscoveryCoordinator(
         val id = request.descriptor.id
         val checkpoint = current ?: return
         try {
+            // Snapshot before the store transaction: no authority/provider callbacks under S.
+            val provenance = sessionAdmission?.provenance(checkpoint.stamp).orEmpty()
+            val enrichedResults = page.results.map { it.copy(provenance = it.provenance + provenance[it.canonicalPageUrl].orEmpty()) }
             val accepted = store.transaction {
                 beforeCommit {
                     if (!gateOpen || request.operation.cancellation.isCancelled) throw DiscoveryFailure(DiscoveryError.CANCELLED)
@@ -707,7 +781,10 @@ class VideoDiscoveryCoordinator(
                 val persisted = checkpoint(checkpoint.stamp.sessionId) ?: return@transaction null
                 if (persisted.stamp != request.request.stamp || persisted.pool.viewRevision != request.viewRevision ||
                     !gateOpen || request.operation.cancellation.isCancelled) return@transaction null
-                val admitted = pool.admit(persisted.pool, page.results, clock.nowMillis())
+                val enrichedPool = persisted.pool.copy(entries = persisted.pool.entries.map { entry ->
+                    entry.copy(result = entry.result.copy(provenance = entry.result.provenance + provenance[entry.result.canonicalPageUrl].orEmpty()))
+                })
+                val admitted = pool.admit(enrichedPool, enrichedResults, clock.nowMillis())
                 val incomingAliases = page.results.flatMap { it.identityAliases }.toSet()
                 for (entry in admitted.state.entries.filter { it.result.identityAliases.any(incomingAliases::contains) }) {
                     val result = entry.result
@@ -832,6 +909,9 @@ class VideoDiscoveryCoordinator(
         // Remove identities before invoking cancellation: callbacks may be synchronous.
         cancelled.forEach {
             active.remove(it.descriptor.id, it); scheduler.release(it.descriptor.id)
+            it.operation.commonsStageTrace?.event(CommonsStage.CANCEL_SIGNAL, CommonsStageFailure.CANCELLED)
+            it.operation.commonsStageTrace?.finish(CommonsStageOutcome.CANCELLED, CommonsStageFailure.CANCELLED)
+            providerCallbackLatency?.cancelled(it.operation)
             it.explicitCandidateId?.let { id -> pendingPool.mark(id, false, VerificationSummary("scheduler", EngineOutcome.CANCELLED, EngineEvidence.NONE)) }
         }
         cancelled.forEach { it.operation.cancellation.cancel(); it.retry?.cancel(); it.handle?.cancel() }
@@ -843,6 +923,9 @@ class VideoDiscoveryCoordinator(
         if (endRound) scheduler.suspend() else scheduler.pause()
         val cancelled = active.values.toList(); active.clear()
         cancelled.forEach { request ->
+            request.operation.commonsStageTrace?.event(CommonsStage.CANCEL_SIGNAL, CommonsStageFailure.CANCELLED)
+            request.operation.commonsStageTrace?.finish(CommonsStageOutcome.CANCELLED, CommonsStageFailure.CANCELLED)
+            providerCallbackLatency?.cancelled(request.operation)
             request.explicitCandidateId?.let { pendingPool.mark(it, false, VerificationSummary("scheduler", EngineOutcome.CANCELLED, EngineEvidence.NONE)) }
         }
         cancelled.forEach { it.operation.cancellation.cancel(); it.retry?.cancel(); it.handle?.cancel() }
@@ -854,6 +937,7 @@ class VideoDiscoveryCoordinator(
     }
     private fun failStorage() { terminalState = DiscoveryState.FAILED; lastError = DiscoveryError.STORAGE_UNAVAILABLE; cancelAll() }
     override fun close() = synchronized(lock) {
-        closed = true; cancelAll(); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); clearAuthorityState(); incognitoStore?.clear(); incognitoStore = null; current = null
+        sessionAdmission?.revoke()
+        closed = true; cancelAll(); providerCallbackLatency?.endSession(latencySession); commonsStageDiagnostics?.endSession(commonsStageSession); pendingPool.clear(); explicitlyAttempted.clear(); sessionProgress.clear(); clearAuthorityState(); incognitoStore?.clear(); incognitoStore = null; current = null
     }
 }

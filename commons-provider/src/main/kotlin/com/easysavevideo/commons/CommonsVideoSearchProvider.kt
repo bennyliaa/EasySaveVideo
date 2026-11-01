@@ -24,7 +24,10 @@ class CommonsVideoSearchProvider(private val metadata: CommonsMetadataProvider) 
             val query = canonicalQuery(request.profile.query)
             metadata.search(CommonsSearchRequest(query, language, request.progress?.cursor,
                 request.profile.filters.safeSearch, request.profile.queryKey), operation)
-        } catch (failure: CommonsFailure) { throw failure.discoveryFailure() }
+        } catch (failure: CommonsFailure) {
+            operation.commonsStageTrace?.event(CommonsStage.PROVIDER_FAILURE, failure.code.stageFailure())
+            throw failure.discoveryFailure()
+        }
         return ProviderPage(page.results.map(::toDiscoveryResult), nextCursor = page.nextCursor,
             cursorExpiresAtEpochMillis = page.cursorExpiresAtEpochMillis, exhausted = page.exhausted,
             responseBytes = page.responseBytes)

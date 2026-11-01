@@ -36,8 +36,16 @@ object VerificationOriginPolicy {
             4 -> n(0) !in setOf(0, 10, 127) && n(0) < 224 &&
                 !(n(0) == 169 && n(1) == 254) && !(n(0) == 172 && n(1) in 16..31) &&
                 !(n(0) == 192 && n(1) == 168) && !(n(0) == 100 && n(1) in 64..127) &&
-                !(n(0) == 198 && n(1) in 18..19)
-            16 -> (n(0) and 0xe0) == 0x20 // globally routed unicast only; rejects mapped/ULA/link/multicast
+                !(n(0) == 198 && n(1) in 18..19) &&
+                !(n(0) == 192 && n(1) == 0 && n(2) in setOf(0, 2)) &&
+                !(n(0) == 192 && n(1) == 88 && n(2) == 99) &&
+                !(n(0) == 198 && n(1) == 51 && n(2) == 100) &&
+                !(n(0) == 203 && n(1) == 0 && n(2) == 113)
+            16 -> (n(0) and 0xe0) == 0x20 && // Conservative global-unicast subset.
+                !(n(0) == 0x20 && n(1) == 1 && n(2) < 2) && // Special protocols /23.
+                !(n(0) == 0x20 && n(1) == 1 && n(2) == 0x0d && n(3) == 0xb8) &&
+                !(n(0) == 0x20 && n(1) == 2) && // 6to4 may embed nonpublic IPv4.
+                !(n(0) == 0x3f && n(1) == 0xff && (n(2) and 0xf0) == 0) // Documentation /20.
             else -> false
         }
     }

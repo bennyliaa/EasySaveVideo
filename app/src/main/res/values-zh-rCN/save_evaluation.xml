@@ -1,0 +1,13 @@
+<resources>
+    <string name="evaluation_open">作为评估页面打开</string>
+    <string name="evaluation_notice">仅调试评估。先开始本轮，再点击“作为评估页面打开”。在该页主动点击保存或录制才开始页面测试；普通打开不计入。</string>
+    <string name="evaluation_begin">开始联合①②③测试会话</string>
+    <string name="evaluation_preview">刷新本地预览</string>
+    <string name="evaluation_end">结束本轮（可能仍不完整）</string>
+    <string name="evaluation_unavailable">多来源计数重叠，不可相加。预览仅显示前32个来源，最终导出包含全部来源。</string>
+    <string name="evaluation_export">导出已结束报告JSON</string>
+    <string name="evaluation_export_notice">请选择新建的空本地文档。存储提供者可能自行同步；失败或取消可能留下空文件或部分文件。来源编号对照只保留在本地预览中。</string>
+    <string name="evaluation_export_refused">无法导出：请先结束当前会话并刷新预览。</string>
+    <string name="evaluation_begin_record">开始独立③录制测试</string>
+    <string name="evaluation_record_scope">③测试仅支持基础录制，分段录制未测。请打开评估候选页面后明确点击录制；仅验证通过并最终提交的输出计成功。</string>
+</resources>

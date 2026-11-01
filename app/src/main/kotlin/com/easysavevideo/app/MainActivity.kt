@@ -212,6 +212,10 @@ class MainActivity : ComponentActivity() {
         if (!protectBeforePresentationMove()) return
         if (navController?.popBackStack() != true) navigate(destination)
     }
+    private var evaluationExport: com.easysavevideo.app.save.AndroidEvaluationReportExport? = null
+    private var evaluationExportState by mutableStateOf(DiagnosticExportState())
+    private var evaluationRecordingPage: com.easysavevideo.app.save.DebugSaveEvaluationOwner.EvaluationPageLease? = null
+    private val saveEvaluation = com.easysavevideo.app.save.DebugSaveEvaluationOwner(BuildConfig.DEBUG)
     private lateinit var browser: SystemBrowserHost
     private lateinit var bookmarks: AndroidBookmarkRuntime
     private lateinit var ordinaryHistory: AndroidHistoryRuntime
@@ -304,6 +308,7 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         errorSink = AndroidErrorSink(applicationContext)
         diagnostics = AndroidDiagnosticExportRuntime(this) { diagnosticState = it }
+        if (BuildConfig.DEBUG) evaluationExport = com.easysavevideo.app.save.AndroidEvaluationReportExport(this, saveEvaluation::snapshot) { evaluationExportState = it }
         bookmarks = AndroidBookmarkRuntime.get(applicationContext)
         ordinaryHistory = AndroidHistoryRuntime.get(applicationContext)
         discovery = AndroidDiscoveryController(applicationContext, errorSink)
@@ -332,7 +337,8 @@ class MainActivity : ComponentActivity() {
                 if (::privateRecording.isInitialized) privateRecording.requestAbandoned(id)
             }, requiresDefaultDisplay = saves::requiresDefaultDisplayRecording)
         persistence = BrowserPersistence(applicationContext, errorSink,
-            acceptedVaultPolicy = { AndroidVaultRuntimeEntry.currentBinding()?.runtime?.acceptedAutoLockPolicy() }) {
+            acceptedVaultPolicy = { AndroidVaultRuntimeEntry.currentBinding()?.runtime?.acceptedAutoLockPolicy() },
+            acceptedSaveMethodSettings = { saves.acceptedSaveMethodSettings() }) {
             settingsWriteFailed = true
             if (::browser.isInitialized) browser.showNotice(runtimeText.get(RuntimeMessageCopy.MAIN_PERSISTENCE_INCOMPLETE))
         }
@@ -347,6 +353,7 @@ class MainActivity : ComponentActivity() {
                 if (protectBeforePresentationMove()) filePrompt = choice else browser.finishFiles(choice, null)
             },
             onDiscoverySaveCompleted = discovery::completeOriginSave, ordinaryHistory = ordinaryHistory)
+        browser.evaluationOwner = saveEvaluation
         val privateContentRoot = PrivateContentRoot(this)
         appComposeView = ComposeView(this).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
@@ -645,6 +652,7 @@ class MainActivity : ComponentActivity() {
                     showingLibrary, showingEditor, libraryPreviewReference) {
                     library?.setForeground(isForeground && showingLibrary && !showingEditor && libraryPreviewReference == null)
                 }
+                LaunchedEffect(showingRecording) { if (!showingRecording) evaluationRecordingPage = null }
                 LaunchedEffect(saves.ready, showingSaveTasks, showingLibrary) {
                     if (showingSaveTasks && !showingLibrary) saves.refreshLibraryDisposition()
                 }
@@ -804,17 +812,26 @@ class MainActivity : ComponentActivity() {
                     onSelectionModeChange = { recordingSelectionMode = it },
                     onCreationSelectionChanged = { saves.destinations?.cancelSelection() },
                     effectiveDurationUs = saves.recordingSnapshot?.effectiveDurationUs,
-                    consent = recordingConsent, canStart = !privateMode && saves.ready && saves.canSave(TaskMethod.RECORD) && saves.currentRecordingId == null,
+                    consent = recordingConsent, canStart = !privateMode && saves.ready && saves.canStartSave(TaskMethod.RECORD) && saves.currentRecordingId == null,
                     canPauseResume = saves.canPauseRecording(),
                     onStart = { choice ->
                         recordedEditorNotice = null
+                        val evaluationPage = evaluationRecordingPage
+                        val startEntry = routeEntry
                         val bounds = windowManager.maximumWindowMetrics.bounds
                         val density = resources.configuration.densityDpi
-                        saves.destinations?.select(isCurrent = { !browser.isPrivateMode && isForeground && showingRecording && !isDestroyed && !isFinishing &&
+                        saves.destinations?.select(isCurrent = { controller.currentBackStackEntry === startEntry && routeOwnsPresentation() &&
+                            evaluationRecordingPage === evaluationPage && (evaluationPage == null || evaluationPage.current()) &&
+                            !browser.isPrivateMode && isForeground && showingRecording && !isDestroyed && !isFinishing &&
                             recordingSelectionMode == RecordingSelectionMode.BASIC && saves.currentRecordingId == null &&
                             windowManager.maximumWindowMetrics.bounds == bounds && resources.configuration.densityDpi == density }) { admission ->
-                            saves.prepareRecording(choice, bounds.width(), bounds.height(), density, admission)?.let {
-                                recordingConsent.begin(it, choice == com.easysavevideo.recording.RecordingAudioChoice.INTERNAL)
+                            if (controller.currentBackStackEntry === startEntry && routeOwnsPresentation() &&
+                                evaluationRecordingPage === evaluationPage && (evaluationPage == null || evaluationPage.current())) {
+                                val evaluation = evaluationPage?.let { saves.armRecordingEvaluation(admission, it) }
+                                if (evaluationRecordingPage === evaluationPage) evaluationRecordingPage = null
+                                val id = saves.prepareRecording(choice, bounds.width(), bounds.height(), density, admission)
+                                if (id != null) recordingConsent.begin(id, choice == com.easysavevideo.recording.RecordingAudioChoice.INTERNAL)
+                                else evaluation?.let(saves::abandonRecordingEvaluation)
                             }
                         }
                         null
@@ -955,6 +972,20 @@ class MainActivity : ComponentActivity() {
                             saves.segmentRecording?.previewActive != true && previewReceipt == null && libraryPreviewReference == null
                     }
                     DiscoveryScreen(discovery, settings.discovery, isForeground,
+                    evaluationControls = { com.easysavevideo.app.ui.SaveEvaluationPanel(saveEvaluation, discovery.state.demo,
+                        finish = { saveEvaluation.finish(saves::finishSaveEvaluation) }, exportState = evaluationExportState,
+                        onExport = { report -> evaluationExport?.begin(report) == true },
+                        onCancelExport = { evaluationExport?.export?.reportChanged() })
+                        if (BuildConfig.DEBUG) com.easysavevideo.app.ui.CommonsStageDiagnosticsPanel(discovery)
+                    },
+                    onEvaluateCandidate = if (!BuildConfig.DEBUG) null else { target, candidate, lifecycle ->
+                        val sourceCurrent = { isForeground && activeDestination == EsvDestination.DISCOVER && !isDestroyed && !isFinishing &&
+                            !saves.scanning && saves.selection == null && !saves.preparingStream && saves.hlsPreparation == null &&
+                            saves.destinations?.asking != true && saves.segmentRecording?.previewActive != true &&
+                            previewReceipt == null && libraryPreviewReference == null && lifecycle == discovery.cardNavigationLifecycle && discovery.candidateUrl(target, candidate) != null }
+                        if (sourceCurrent() && browser.openEvaluationCandidate(candidate, discovery.state.demo, sourceCurrent) && sourceCurrent())
+                            navigate(EsvDestination.BROWSER)
+                    },
                     addressVisit = addressVisit, addressAction = addressAction, canOpenAddress = addressPresentationCurrent,
                     canEditAddress = { canClearBrowserDraft(addressTab, browser.state.selectedTab, addressRevision,
                         browser.saveInspectionRevision, addressPresentationCurrent()) },
@@ -1012,6 +1043,11 @@ class MainActivity : ComponentActivity() {
                             else if (edit is SettingsEdit.BrowserEdit)
                                 applyBrowserSettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded, isForeground, !isDestroyed && !isFinishing,
                                     activeDestination, EsvDestination.SETTINGS)
+                            else if (edit is SettingsEdit.SaveMethodEnabled)
+                                applySaveMethodSettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded,
+                                    isForeground, !isDestroyed && !isFinishing, activeDestination)?.let { allowed ->
+                                    saves.updateSaveMethodEnabled(edit.method, edit.enabled)?.let { accepted -> allowed.copy(save = accepted) }
+                                }
                             else if (edit is SettingsEdit.DirectConcurrency)
                                 applyDirectConcurrencySettingsEdit(settings, edit, settingsReady && persistence.settingsLoaded,
                                     isForeground, !isDestroyed && !isFinishing, activeDestination)?.let { allowed ->
@@ -1033,6 +1069,8 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     },
+                    saveMethodsEditable = settingsReady && persistence.settingsLoaded && isForeground &&
+                        activeDestination == EsvDestination.SETTINGS && !isDestroyed && !isFinishing,
                     saveConcurrencyEditable = settingsReady && persistence.settingsLoaded && isForeground &&
                         activeDestination == EsvDestination.SETTINGS && !isDestroyed && !isFinishing,
                     browserEditable = settingsReady && persistence.settingsLoaded && isForeground && activeDestination == EsvDestination.SETTINGS,
@@ -1123,6 +1161,7 @@ class MainActivity : ComponentActivity() {
                     onManageProviders = ::openProviderManagement,
                     onSave = { saves.inspectFromUserClick(browser) },
                     onRecording = {
+                        evaluationRecordingPage = if (BuildConfig.DEBUG && !browser.isPrivateMode && saves.canStartSave(TaskMethod.RECORD)) browser.beginEvaluationPage() else null
                         if (browser.isPrivateMode) privateRecording.configure() else navigate(EsvDestination.RECORD)
                     },
                     onSaveTasks = { navigate(EsvDestination.TASKS) },
@@ -1254,6 +1293,7 @@ class MainActivity : ComponentActivity() {
     override fun onPostResume() {
         super.onPostResume()
         if (::diagnostics.isInitialized) diagnostics.onPostResume()
+        evaluationExport?.onPostResume()
         if (::privateRecording.isInitialized) privateRecording.refreshPresentation()
         if (::privatePresentationOwner.isInitialized && !privateRecordingSurface.ownsCapturePresentation) privatePresentationOwner.retryPresentation()
     }
@@ -1263,8 +1303,10 @@ class MainActivity : ComponentActivity() {
         if (::privateRecording.isInitialized && (browser.isPrivateMode || privateRecording.hasPresentationOwner))
             privateRecording.protectForLifecycle()
         filePrompt = null // Host.pause retires only non-picker choices; picker identity stays in choosing.
-        newTabInputGeneration++; if (::diagnostics.isInitialized) diagnostics.onPause(); if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
+        newTabInputGeneration++; evaluationExport?.onPause(); if (::diagnostics.isInitialized) diagnostics.onPause(); if (::providerManagement.isInitialized) providerManagement.setActive(false); if (::saves.isInitialized) { saves.editor?.setForeground(false); saves.libraryExports?.cancelBatchForBackground() }; libraryExportReference = null; libraryBatchExportSelection=null; isForeground = false; if (::saves.isInitialized) saves.setForeground(false); if (::discovery.isInitialized) discovery.setVisibility(false, showingDiscovery); if (::browser.isInitialized) browser.pause(); super.onPause() }
     override fun onDestroy() {
+        evaluationExport?.close(); evaluationExport = null
+        if (::saves.isInitialized) saveEvaluation.finish(saves::finishSaveEvaluation)
         vaultLockObserver?.let { unregisterReceiver(it) }; vaultLockObserver = null
         vaultHost?.detach() // Only the Activity host; the app-scoped runtime remains owned.
         continuousRecordingSubscription?.close(); continuousRecordingSubscription = null

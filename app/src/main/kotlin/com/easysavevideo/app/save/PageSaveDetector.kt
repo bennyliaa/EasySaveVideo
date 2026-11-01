@@ -33,6 +33,7 @@ class PageSaveSelection(
     val expiresAtMillis: Long,
     private val stillCurrent: () -> Boolean,
 ) {
+    internal var evaluationLease: DebugSaveEvaluationOwner.EvaluationPageLease? = null
     fun isCurrent() = System.currentTimeMillis() < expiresAtMillis && stillCurrent()
     override fun toString() = "PageSaveSelection([redacted])"
 }

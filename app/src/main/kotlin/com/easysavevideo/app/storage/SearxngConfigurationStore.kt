@@ -52,8 +52,8 @@ class FileSearxngConfigurationStore(private val file: File) : SearxngConfigurati
         synchronized(processLock) {
             val loaded = loadLocked()
             val old = loaded.readableConfiguration()
-            if (old == null || old.generation != expectedGeneration || old.revision == Long.MAX_VALUE ||
-                replacement.revision != old.revision + 1) return@synchronized SearxngConfigurationWrite.Conflict(loaded)
+            if (old == null || old.generation != expectedGeneration ||
+                !SearxngConfigurationPolicy.isNextRevision(old, replacement)) return@synchronized SearxngConfigurationWrite.Conflict(loaded)
             val bytes = try { SearxngConfigurationCodec.encode(replacement) }
             catch (_: Exception) { return@synchronized SearxngConfigurationWrite.Unavailable }
             var temporary: File? = null

@@ -49,7 +49,7 @@ class SearxngConfigurationHubTest {
         fun attach(observer: Observer) = hub.subscribe(observer::fence, observer::receive)
         fun complete() { io.next(); main.next() }
     }
-    private fun enabled() = (SearxngConfigurationPolicy.replace(SearxngConfigurationPolicy.empty(), "searxng-1",
+    private fun enabled() = (SearxngConfigurationPolicy.add(SearxngConfigurationPolicy.empty(),
         "https://search.example.org/search", true, true) as SearxngConfigurationEdit.Accepted).config
     private fun disable(h: Harness) = h.hub.controller.replace(h.hub.controller.beginEdit("searxng-1")!!,
         "https://search.example.org/search", false, false)
@@ -171,4 +171,27 @@ class SearxngConfigurationHubTest {
         }
         assertEquals(0, calls)
     }
+    @Test fun dynamicAddDeleteAndResetFenceEveryOwnerBeforeIoAndSurviveInitiatorDetach() {
+        for (action in listOf("add", "delete", "reset")) {
+            val h = Harness(enabled()); val first = Observer(); val second = Observer()
+            val firstSubscription = h.attach(first); h.complete(); h.attach(second)
+            val firstFences = first.fences; val secondFences = second.fences
+            val controller = h.hub.controller
+            val accepted = when (action) {
+                "add" -> controller.add(controller.beginAdd()!!, "https://other.example.org/search", acknowledged = true)
+                "delete" -> controller.remove(controller.beginDelete("searxng-1")!!)
+                else -> controller.reset(controller.beginReset()!!)
+            }
+            assertTrue(action, accepted)
+            assertEquals(firstFences + 1, first.fences); assertEquals(secondFences + 1, second.fences)
+            assertNull(first.active); assertNull(second.active); assertEquals(0, h.store.writes)
+            firstSubscription.close(); val replacement = Observer(); h.attach(replacement)
+            assertNull(replacement.active); assertTrue(replacement.states.last().busy)
+            h.complete()
+            assertEquals(1, h.store.writes); assertEquals(second.active, replacement.active)
+            assertEquals(if (action == "add") 2 else 0, replacement.active!!.slots.size)
+            assertTrue(h.io.tasks.isEmpty())
+        }
+    }
+
 }

@@ -72,6 +72,8 @@ import androidx.compose.material3.Text
 internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: DiscoverySettings, active: Boolean,
     onSettings: (SettingsEdit.DiscoveryEdit) -> Unit, onBrowser: () -> Unit, onOpen: (DiscoveryCardOpenRequest) -> Boolean,
     onLink: (String) -> Unit, onLibrary: () -> Unit, onManageProviders: () -> Unit,
+    evaluationControls: @Composable () -> Unit = {},
+    onEvaluateCandidate: ((com.easysavevideo.app.discovery.DiscoveryControlTarget?, com.easysavevideo.discovery.PendingVideoCandidate, Long) -> Unit)? = null,
     canClearQuery: () -> Boolean = { false }, settingsEditable: Boolean = true,
     addressVisit: Any, addressAction: Any, canOpenAddress: () -> Boolean, canEditAddress: () -> Boolean,
     onOpenAddress: (String, () -> Boolean) -> Boolean) {
@@ -357,6 +359,7 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
             Column(Modifier.fillMaxWidth().heightIn(max = paneLayout.headerMaxHeightDp.dp).verticalScroll(headerScroll),
                 verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
 
+            evaluationControls()
             // Always present, including zero-Provider/startup/error and pending-search bodies.
             BoxWithConstraints(Modifier.fillMaxWidth()) {
                 val addressLayout = discoveryResponsiveLayout(maxWidth.value, LocalDensity.current.fontScale, settings.columns, v.spacingSmall.value)
@@ -465,7 +468,8 @@ internal fun DiscoveryScreen(controller: AndroidDiscoveryController, settings: D
                 Column(Modifier.fillMaxSize()) {
                 if (columns < settings.columns) EsvText(stringResource(R.string.discovery_grid_adapted, settings.columns, columns), style = v.captionTextStyle, color = v.colors.muted)
                 if (bodyState == DiscoveryBodyState.PENDING_CANDIDATES) {
-                    PendingCandidateCards(state.pendingCandidates, columns, admission = state.pendingAdmission, onVerify = { candidate ->
+                    PendingCandidateCards(state.pendingCandidates, columns, admission = state.pendingAdmission,
+                        onEvaluate = onEvaluateCandidate?.let { action -> { candidate -> action(state.controlTarget, candidate, cardNavigationLifecycle) } }, onVerify = { candidate ->
                         controller.verifyCandidate(state.controlTarget, candidate) }) { candidate ->
                         controller.candidateUrl(state.controlTarget, candidate)?.let(onLink)
                     }

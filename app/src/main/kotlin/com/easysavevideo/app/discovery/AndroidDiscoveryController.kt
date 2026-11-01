@@ -7,6 +7,7 @@ import android.os.SystemClock
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.easysavevideo.app.BuildConfig
 import com.easysavevideo.app.storage.AndroidDiscoveryStore
 import com.easysavevideo.core.model.*
 import com.easysavevideo.discovery.*
@@ -68,6 +69,9 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     // Independent handler: close() removes ordinary snapshot callbacks, never control receipts.
     private val localControlMain = Handler(Looper.getMainLooper())
     private val closed = AtomicBoolean(false)
+    private val commonsStageDiagnosticsOwner = DebugCommonsStageDiagnosticsOwner(BuildConfig.DEBUG)
+    internal var commonsStageDiagnosticsPreview by mutableStateOf(commonsStageDiagnosticsOwner.preview())
+        private set
     @Volatile private var coordinator: VideoDiscoveryCoordinator? = null
     private var timer: JvmDiscoveryTimer? = null
     private var runtime: IsolatedProviderRuntime? = null
@@ -169,6 +173,43 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     val filterControlsBusy: Boolean get() = filterSearchPending || filterSourceChangePending || sourceSettings.state.busy ||
         state.sourceRevision != CommonsSourceRegistration.managementRevision ||
         state.configurationIntent != sourceIntent.get()
+    /** Only current, visible Debug controls can arm the next explicit Search. No work is enqueued. */
+    internal fun startCommonsStageDiagnostics(expectedRevision: Long, target: DiscoveryControlTarget?, lifecycle: Long): Boolean {
+        if (!BuildConfig.DEBUG || closed.get() || !foreground || !visible || lifecycle != pageLifecycle.get() ||
+            target == null || target != state.controlTarget || !state.ready || state.storageUnavailable || filterControlsBusy) return false
+        val value = commonsStageDiagnosticsOwner.start(expectedRevision) ?: return false
+        publishCommonsStageDiagnosticsPreview(value)
+        return true
+    }
+    internal fun stopCommonsStageDiagnostics(expectedRevision: Long): Boolean {
+        if (!BuildConfig.DEBUG || closed.get()) return false
+        val value = commonsStageDiagnosticsOwner.stop(expectedRevision) ?: return false
+        publishCommonsStageDiagnosticsPreview(value)
+        return true
+    }
+    /** Read only bounded memory. In particular this does not call refresh(), submit(), storage or a source. */
+    internal fun previewCommonsStageDiagnostics(expectedRevision: Long): Boolean {
+        if (!BuildConfig.DEBUG || closed.get() || expectedRevision != commonsStageDiagnosticsPreview.revision) return false
+        val value = commonsStageDiagnosticsOwner.preview()
+        if (expectedRevision != value.revision) return false
+        publishCommonsStageDiagnosticsPreview(value)
+        return true
+    }
+    private fun captureCommonsStageDiagnosticsAuthorization(): CommonsStageCapture? =
+        if (BuildConfig.DEBUG && !closed.get() && foreground && visible && state.ready && !state.storageUnavailable &&
+            !filterControlsBusy && state.controlTarget != null) commonsStageDiagnosticsOwner.captureAuthorization() else null
+    private fun revokeCommonsStageDiagnostics() {
+        publishCommonsStageDiagnosticsPreview(commonsStageDiagnosticsOwner.revoke())
+    }
+    /** Replacement can run on IO. Monotonic main delivery cannot resurrect an older arm in the UI. */
+    private fun publishCommonsStageDiagnosticsPreview(value: DebugCommonsStageDiagnosticsOwner.Preview) {
+        val publish: () -> Unit = {
+            if (!closed.get() && value.revision >= commonsStageDiagnosticsPreview.revision)
+                commonsStageDiagnosticsPreview = value
+        }
+        if (Looper.myLooper() == Looper.getMainLooper()) publish() else main.post(publish)
+    }
+
     /** Main-thread compare-and-set prevents callbacks captured before recomposition erasing newer edits. */
     fun updateFilterDraft(expected: DiscoveryFilterDraft?, value: DiscoveryFilterDraft): Boolean {
         if (closed.get() || filterControlsBusy || filterDraft != expected ||
@@ -210,6 +251,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             !DiscoveryFilterPresentationPolicy.canSubmit(expected)) return false
         val filters = DiscoveryFilterPresentationPolicy.validate(expected).filters ?: return false
         val intentGeneration = filterIntentGeneration
+        val diagnosticsCapture = captureCommonsStageDiagnosticsAuthorization()
         pendingBrowserQuery = null
         filterSearchPending = true
         thumbnails.withdraw()
@@ -222,7 +264,8 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
                 if (!initialized || unavailable || intentGeneration != filterIntentGeneration ||
                     managementRevision != CommonsSourceRegistration.managementRevision || target != currentControlTarget(c) || demo != expected.demo) return@submit
                 pageIndex = 0; pageDemandPending = true; notice = null
-                c.start(SESSION, profile(DiscoveryPresentationPolicy.boundedQuery(expected.query.trim()), filters))
+                c.start(SESSION, profile(DiscoveryPresentationPolicy.boundedQuery(expected.query.trim()), filters),
+                    allowSessionCandidateVerification = !demo, diagnosticsCapture = diagnosticsCapture)
                 applyLifecycle(c)
                 applied = c.currentCheckpoint()?.profile
                 refresh()
@@ -255,6 +298,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         val verification = verificationConfiguration
         if (!configurationCurrent(claim, verification)) { pageDemandPending = false; return }
         val recoveringUnavailable = unavailable || appliedSourceIntent != expectedIntent
+        revokeCommonsStageDiagnostics()
         controllerGeneration++
         nextPageDemand.cancel()
         pageDemandPending = true; historyStatistics = null; historyStatisticsUnavailable = false
@@ -267,16 +311,20 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
         savedViewport = null
         timer = JvmDiscoveryTimer()
         val limits = DiscoveryLimits(pageSize = settings.pageSize)
+        registry = BuildDiscovery.registry(demo, commonsEnabled == true, expectedConfiguration)
+        val sessionAdmission = if (demo) null else SessionCandidateAdmission(registry)
         val validator = if (demo) null else VerificationEngineRegistration.validator(verification, timer!!,
-            localEngines=listOf(VerificationEngineRegistration.localEngine(appContext))) { generation ->
+            localEngines=listOf(VerificationEngineRegistration.localEngine(appContext)), sessionAdmission = sessionAdmission) { generation ->
             !closed.get() && !verificationSettings.busy && sourceIntent.get() == expectedIntent &&
                 verificationSettings.current.generation == generation && verificationConfiguration.generation == generation
         }
         runtime = IsolatedProviderRuntime(ValidationPipeline(validator, limits = limits,
             retainUnvalidatedCandidates = true, retainFailedValidationCandidates = true,
-            maxValidationsPerPage = 1), timer!!)
-        registry = BuildDiscovery.registry(demo, commonsEnabled == true, expectedConfiguration)
-        coordinator = VideoDiscoveryCoordinator(registry, runtime!!, if (demo) InMemoryDiscoveryStore() else store, timer!!, limits = limits,
+            maxValidationsPerPage = if (expectedConfiguration?.enabledEndpoints?.any {
+                it.format == com.easysavevideo.searxng.SearxngResultFormat.HTML_WEB } == true) 8 else 1,
+            sessionAdmission = sessionAdmission), timer!!)
+        coordinator = VideoDiscoveryCoordinator(registry, runtime!!, if (demo) InMemoryDiscoveryStore() else store, timer!!, limits = limits, sessionAdmission = sessionAdmission,
+            commonsStageDiagnostics = commonsStageDiagnosticsOwner.recorder,
             sourceConfigurationKey = if (demo) null else VerificationConfigurationPolicy.configurationKey(
                 SearxngSourceRegistration.configurationKey(expectedConfiguration,
                     commonsEnabled == true, registry.all().map { it.descriptor }), verification))
@@ -314,6 +362,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     /** The write intent fences old callbacks before storage or registry work is queued. */
     private fun fenceSourceConfiguration() {
         if (closed.get()) return
+        revokeCommonsStageDiagnostics()
         sourceIntent.incrementAndGet(); filterIntentGeneration++; filterSourceChangePending = true
         thumbnails.withdraw()
         coordinator?.suspendSourcesImmediately()
@@ -370,6 +419,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     }
     fun setVisibility(isForeground: Boolean, discoveryVisible: Boolean) {
         if (!isForeground || !discoveryVisible) {
+            revokeCommonsStageDiagnostics()
             thumbnails.withdraw()
             pendingBrowserQuery = null
             pageLifecycle.incrementAndGet() // Retire intent now, before any queued refresh can resume.
@@ -454,6 +504,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             submit { notice = DiscoveryNotice.INVALID_QUERY; refresh(readOnly = true) }
             return // Invalid local text cannot cancel or suspend the current valid search.
         }
+        val diagnosticsCapture = captureCommonsStageDiagnosticsAuthorization()
         val thumbnailIntent = beginThumbnailIntent()
         coordinator?.suspendImmediately()
         state = state.copy(verificationSummary = null)
@@ -461,7 +512,8 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
             try {
                 if (!initialized || unavailable) return@submit
                 pageIndex = 0; pageDemandPending = true; notice = null
-                coordinator?.start(SESSION, profile(bounded, filters))
+                coordinator?.start(SESSION, profile(bounded, filters), allowSessionCandidateVerification = !demo,
+                    diagnosticsCapture = diagnosticsCapture)
                 coordinator?.let(::applyLifecycle); refresh()
             } finally { thumbnailAppliedIntent.set(thumbnailIntent) }
         }
@@ -755,6 +807,7 @@ class AndroidDiscoveryController(context: Context, private val errors: ErrorSink
     }
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
+        revokeCommonsStageDiagnostics()
         localControlOwner.close()
         thumbnailMaintenanceSubscription.close(); thumbnails.close()
         pendingBrowserQuery = null

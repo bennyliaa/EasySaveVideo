@@ -6,6 +6,8 @@ import java.util.concurrent.Executor
 
 /** A one-request capability. Implementations must not restore or persist picker grants. */
 internal fun interface DiagnosticExportPort { fun open(): OutputStream }
+/** Content failed final validation, but descriptor close positively completed. */
+internal class ExportContentChangedAfterClose : Exception()
 internal enum class DiagnosticExportPhase { IDLE, PREPARING, CHOOSING, WRITING, CANCELLING, EMPTY, SUCCEEDED, FAILED, CANCELLED, TIMED_OUT, BLOCKED }
 internal data class DiagnosticExportState(
     val phase: DiagnosticExportPhase = DiagnosticExportPhase.IDLE,
@@ -33,6 +35,7 @@ internal class DiagnosticExportController(
     private val fence: DiagnosticWorkFence = DiagnosticWorkFence(),
     private val monotonicMillis: () -> Long = { System.nanoTime() / 1_000_000 },
     private val schedule: (Long, () -> Unit) -> AutoCloseable = { _, _ -> AutoCloseable {} },
+    private val stillCurrent: () -> Boolean = { true },
 ) : AutoCloseable {
     private val lock = Any()
     private var request: String? = null
@@ -71,14 +74,15 @@ internal class DiagnosticExportController(
         if (id != null) { dismiss(id); if (!running) fence.release(id) }
         update(DiagnosticExportPhase.TIMED_OUT, running)
     }
-    fun begin() = synchronized(lock) {
-        if (closed || running || current.busy) return@synchronized
+    fun begin() { tryBegin() }
+    fun tryBegin(): Boolean = synchronized(lock) {
+        if (closed || running || current.busy) return@synchronized false
         val id = UUID.randomUUID().toString()
-        if (!fence.acquire(id)) { update(DiagnosticExportPhase.BLOCKED); return@synchronized }
+        if (!fence.acquire(id)) { update(DiagnosticExportPhase.BLOCKED); return@synchronized false }
         request = id; snapshot = null; running = true
         update(DiagnosticExportPhase.PREPARING); arm(IO_TIMEOUT_MILLIS)
         try { worker.execute {
-            val result = try { read() } catch (_: Exception) { DiagnosticSnapshotResult.Failed }
+            val result = try { if (stillCurrent()) read() else DiagnosticSnapshotResult.Failed } catch (_: Exception) { DiagnosticSnapshotResult.Failed }
             synchronized(lock) {
                 running = false
                 if (request != id || closed) { drained(id, true); return@synchronized }
@@ -91,7 +95,7 @@ internal class DiagnosticExportController(
                             synchronized(lock) {
                                 checkDeadline()
                                 if (!closed && request == id && current.phase == DiagnosticExportPhase.CHOOSING) {
-                                    try { choose(id) } catch (_: Exception) { selectionFailed(id) }
+                                    try { check(stillCurrent()); choose(id) } catch (_: Exception) { selectionFailed(id) }
                                 }
                             }
                         }
@@ -100,7 +104,8 @@ internal class DiagnosticExportController(
                     DiagnosticSnapshotResult.Failed -> terminal(id, DiagnosticExportPhase.FAILED)
                 }
             }
-        } } catch (_: Exception) { running = false; terminal(id, DiagnosticExportPhase.FAILED) }
+        } } catch (_: Exception) { running = false; terminal(id, DiagnosticExportPhase.FAILED); return@synchronized false }
+        true
     }
     private fun terminal(id: String, phase: DiagnosticExportPhase, released: Boolean = true) {
         request = null; snapshot = null; disarm()
@@ -135,11 +140,12 @@ internal class DiagnosticExportController(
             } catch (_: Exception) { /* Technical status only; never expose exception text. */ }
             finally {
                 // Cleanup is always allowed, even after cancellation. No forced concurrent close.
-                try { output?.close() } catch (_: Exception) { released = false; successful = false }
+                try { output?.close() } catch (failure: Exception) { released = failure is ExportContentChangedAfterClose; successful = false }
                 bytes.fill(0)
                 synchronized(lock) {
                     if (request == id && monotonicMillis() >= deadline) expire()
                     running = false
+                    successful = successful && (try { stillCurrent() } catch (_: Exception) { false })
                     if (request != id || closed) drained(id, released)
                     else terminal(id, if (successful) DiagnosticExportPhase.SUCCEEDED else DiagnosticExportPhase.FAILED, released)
                 }
@@ -155,7 +161,7 @@ internal class DiagnosticExportController(
     private fun <T> admitted(id: String, call: () -> T): T {
         synchronized(lock) {
             checkDeadline()
-            check(!closed && request == id)
+            check(!closed && request == id && stillCurrent())
         }
         return call()
     }

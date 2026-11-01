@@ -9,4 +9,5 @@ dependencies {
         exclude(group = "org.jetbrains.kotlin")
     }
     testImplementation("junit:junit:4.13.2")
+    testImplementation(project(":searxng-provider"))
 }

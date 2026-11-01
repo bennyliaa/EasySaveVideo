@@ -19,6 +19,7 @@ import com.easysavevideo.discovery.SourceAdmissionStatus
 @Composable
 fun PendingCandidateCards(candidates: List<PendingVideoCandidate>, columns: Int,
     admission: Map<String, SourceAdmissionStatus> = emptyMap(),
+    onEvaluate: ((PendingVideoCandidate) -> Unit)? = null,
     onVerify: (PendingVideoCandidate) -> Unit, onOpen: (PendingVideoCandidate) -> Unit) {
     val v = LocalEsvVisuals.current
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
@@ -46,6 +47,8 @@ fun PendingCandidateCards(candidates: List<PendingVideoCandidate>, columns: Int,
                     }
                     EsvButton(stringResource(pendingVerificationActionLabel(candidate.verificationActive, candidate.verification != null)),
                         onClick = { onVerify(candidate) }, enabled = !candidate.verificationActive && candidate.verification == null, modifier = Modifier.fillMaxWidth())
+                    if (com.easysavevideo.app.BuildConfig.DEBUG && onEvaluate != null)
+                        EsvButton(stringResource(R.string.evaluation_open), onClick = { onEvaluate(candidate) }, modifier = Modifier.fillMaxWidth())
                     EsvButton(stringResource(R.string.discovery_pending_open), onClick = { onOpen(candidate) }, modifier = Modifier.fillMaxWidth())
                 }
             }

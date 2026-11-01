@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -31,6 +34,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.easysavevideo.app.R
+import com.easysavevideo.searxng.SearxngResultFormat
+import com.easysavevideo.app.discovery.SearxngConfigurationAction
 import com.easysavevideo.app.discovery.SearxngConfigurationClaim
 import com.easysavevideo.app.discovery.SearxngConfigurationController
 import com.easysavevideo.app.discovery.SearxngConfigurationEdit
@@ -51,61 +57,103 @@ fun SearxngSourceSettings(controller: SearxngConfigurationController, modifier: 
     DisposableEffect(actions) { onDispose { actions.close(); onDialogChanged(false) } }
     var edit by remember(actions) { mutableStateOf<SearxngConfigurationClaim?>(null) }
     var reset by remember(actions) { mutableStateOf<SearxngConfigurationClaim?>(null) }
-    fun idle() = actions.isCurrent() && canStart() && edit == null && reset == null
-    fun editCurrent(claim: SearxngConfigurationClaim) = actions.isCurrent() && edit === claim && controller.isCurrent(claim)
-    fun resetCurrent(claim: SearxngConfigurationClaim) = actions.isCurrent() && reset === claim && controller.isCurrent(claim)
+    var deletion by remember(actions) { mutableStateOf<SearxngConfigurationClaim?>(null) }
+    var deletionHost by remember(actions) { mutableStateOf("") }
+    fun idle() = actions.isCurrent() && canStart() && edit == null && reset == null && deletion == null
+    fun editCurrent(claim: SearxngConfigurationClaim) = actions.isCurrent() && edit === claim && controller.isCurrent(claim) &&
+        claim.kind in setOf(SearxngConfigurationAction.ADD, SearxngConfigurationAction.EDIT)
+    fun resetCurrent(claim: SearxngConfigurationClaim) = actions.isCurrent() && reset === claim && controller.isCurrent(claim) &&
+        claim.kind == SearxngConfigurationAction.RESET
+    fun deletionCurrent(claim: SearxngConfigurationClaim) = actions.isCurrent() && deletion === claim && controller.isCurrent(claim) &&
+        claim.kind == SearxngConfigurationAction.DELETE
     fun dismissEdit(claim: SearxngConfigurationClaim) {
         if (edit === claim) { edit = null; onDialogChanged(false) }
     }
     fun dismissReset(claim: SearxngConfigurationClaim) {
         if (reset === claim) { reset = null; onDialogChanged(false) }
     }
+    fun dismissDeletion(claim: SearxngConfigurationClaim) {
+        if (deletion === claim) { deletion = null; deletionHost = ""; onDialogChanged(false) }
+    }
     LaunchedEffect(actions, state.config?.generation, state.busy, state.status) {
         edit?.takeIf { !editCurrent(it) }?.let(::dismissEdit)
         reset?.takeIf { !resetCurrent(it) }?.let(::dismissReset)
+        deletion?.takeIf { !deletionCurrent(it) }?.let(::dismissDeletion)
     }
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-        EsvText("SearXNG 搜索来源", style = v.titleTextStyle)
-        EsvText("最多配置 3 个公共 HTTPS /search 端点；默认没有端点。服务是否开放 JSON 搜索需由服务运营方确认。", style = v.captionTextStyle)
-        EsvText("主动查找时，输入的查询会发送给已启用的端点及其上游搜索引擎。请只配置你信任且有权使用的服务。", style = v.captionTextStyle)
-        EsvText("这些来源的安全搜索能力未知。安全搜索开启的请求会被拒绝，不会发送查询；这里不会改变已请求的安全搜索设置。", style = v.captionTextStyle, color = v.colors.error)
-        EsvText("配置编辑、启停和清空都不会自动查找。已生成候选及来源进度将失效；之后需主动点击查找。", style = v.captionTextStyle)
+        EsvText(stringResource(R.string.searxng_settings_title), style = v.titleTextStyle)
+        EsvText(stringResource(R.string.searxng_settings_overview, SearxngConfigurationPolicy.MAX_INSTANCES), style = v.captionTextStyle)
+        EsvText(stringResource(R.string.searxng_settings_verification_notice), style = v.captionTextStyle)
+        EsvText(stringResource(R.string.searxng_settings_privacy), style = v.captionTextStyle)
+        EsvText(stringResource(R.string.searxng_settings_safe_search), style = v.captionTextStyle, color = v.colors.error)
+        EsvText(stringResource(R.string.searxng_settings_no_automatic_search), style = v.captionTextStyle)
+        EsvText(stringResource(R.string.searxng_settings_budget_notice), style = v.captionTextStyle)
         when (state.status) {
-            SearxngConfigurationStatus.NOT_LOADED -> EsvText(if (state.busy) "正在读取本地来源配置。" else "尚未读取本地来源配置。", style = v.captionTextStyle)
-            SearxngConfigurationStatus.MALFORMED -> EsvText("本地来源配置损坏或版本不可识别；原始文件已保留，所有 SearXNG 来源停用。", style = v.captionTextStyle, color = v.colors.error)
-            SearxngConfigurationStatus.UNAVAILABLE -> EsvText("无法可靠读取或写入来源配置；原始资料已保留，所有 SearXNG 来源停用。", style = v.captionTextStyle, color = v.colors.error)
-            SearxngConfigurationStatus.CLOSED -> EsvText("来源配置已关闭。", style = v.captionTextStyle)
-            else -> if (state.busy) EsvText("正在保存本地来源配置。", style = v.captionTextStyle)
+            SearxngConfigurationStatus.NOT_LOADED -> EsvText(if (state.busy) stringResource(R.string.searxng_settings_loading) else stringResource(R.string.searxng_settings_not_loaded), style = v.captionTextStyle)
+            SearxngConfigurationStatus.MALFORMED -> EsvText(stringResource(R.string.searxng_settings_malformed), style = v.captionTextStyle, color = v.colors.error)
+            SearxngConfigurationStatus.UNAVAILABLE -> EsvText(stringResource(R.string.searxng_settings_unavailable), style = v.captionTextStyle, color = v.colors.error)
+            SearxngConfigurationStatus.CLOSED -> EsvText(stringResource(R.string.searxng_settings_closed), style = v.captionTextStyle)
+            else -> if (state.busy) EsvText(stringResource(R.string.searxng_settings_saving), style = v.captionTextStyle)
         }
         state.notice?.let { EsvText(it, style = v.captionTextStyle) }
-        state.config?.slots?.forEachIndexed { index, slot ->
-            Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.corner))
-                .padding(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvText("来源 ${index + 1} · ${slot.id}", style = v.bodyTextStyle)
-                EsvText(slot.hostname?.let { "$it · ${if (slot.enabled) "已启用" else "已关闭"}" } ?: "未配置", style = v.captionTextStyle)
-                EsvButton(if (slot.searchUrl == null) "配置来源" else "编辑、启停或移除", enabled = state.editable && idle(),
-                    onClick = { if (idle()) controller.beginEdit(slot.id)?.let { claim ->
-                        edit = claim; onDialogChanged(true)
-                    } })
+        state.config?.let { config ->
+            EsvText(stringResource(R.string.searxng_settings_count, config.slots.size, SearxngConfigurationPolicy.MAX_INSTANCES), style = v.bodyTextStyle)
+            if (config.slots.isEmpty()) EsvText(stringResource(R.string.searxng_settings_empty), style = v.captionTextStyle)
+            config.slots.forEachIndexed { index, slot ->
+                Column(Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.corner))
+                    .padding(v.spacingSmall), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                    EsvText(stringResource(R.string.searxng_settings_slot, index + 1), style = v.bodyTextStyle)
+                    val enabledLabel = stringResource(if (slot.enabled) R.string.searxng_settings_enabled else R.string.searxng_settings_disabled)
+                    EsvText("${slot.hostname.orEmpty()} · $enabledLabel", style = v.captionTextStyle)
+                    EsvText(stringResource(formatLabel(slot.format)), style = v.captionTextStyle)
+                    EsvButton(stringResource(R.string.searxng_settings_edit), enabled = state.editable && idle(),
+                        onClick = { if (idle()) controller.beginEdit(slot.id)?.let { claim ->
+                            edit = claim; onDialogChanged(true)
+                        } })
+                    EsvButton(stringResource(R.string.searxng_settings_remove), enabled = state.editable && idle(),
+                        onClick = { if (idle()) controller.beginDelete(slot.id)?.let { claim ->
+                            deletionHost = slot.hostname.orEmpty(); deletion = claim; onDialogChanged(true)
+                        } })
+                }
             }
+            if (config.slots.size >= SearxngConfigurationPolicy.MAX_INSTANCES)
+                EsvText(stringResource(R.string.searxng_settings_capacity, SearxngConfigurationPolicy.MAX_INSTANCES), style = v.captionTextStyle)
         }
-        EsvButton("重新读取配置", onClick = { if (idle()) controller.reload() }, enabled = idle() && !state.busy && state.status != SearxngConfigurationStatus.CLOSED)
-        EsvButton("清空 SearXNG 来源配置", onClick = { if (idle()) controller.beginReset()?.let { claim ->
+        val hasCapacity = state.config?.slots?.size?.let { it < SearxngConfigurationPolicy.MAX_INSTANCES } == true
+        EsvButton(stringResource(R.string.searxng_settings_add), enabled = state.editable && idle() && hasCapacity,
+            onClick = { if (idle()) controller.beginAdd()?.let { claim ->
+                edit = claim; onDialogChanged(true)
+            } })
+        EsvButton(stringResource(R.string.searxng_settings_reload), onClick = { if (idle()) controller.reload() }, enabled = idle() && !state.busy && state.status != SearxngConfigurationStatus.CLOSED)
+        EsvButton(stringResource(R.string.searxng_settings_clear), onClick = { if (idle()) controller.beginReset()?.let { claim ->
             reset = claim; onDialogChanged(true)
-        } }, enabled = state.editable && idle())
+        } }, enabled = state.editable && idle() && state.config?.slots?.isNotEmpty() == true)
     }
     edit?.let { claim ->
         SearxngEndpointEditor(controller, claim, canAct = { editCurrent(claim) },
             onDismiss = { dismissEdit(claim) })
     }
+    deletion?.let { claim ->
+        Dialog(onDismissRequest = { dismissDeletion(claim) }) {
+            Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
+                .padding(v.spacingLarge).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                EsvText(stringResource(R.string.searxng_settings_remove_title), style = v.titleTextStyle)
+                EsvText(stringResource(R.string.searxng_settings_remove_description, deletionHost), style = v.bodyTextStyle)
+                EsvButton(stringResource(R.string.searxng_settings_cancel), onClick = { dismissDeletion(claim) })
+                EsvButton(stringResource(R.string.searxng_settings_remove_confirm), enabled = deletionCurrent(claim), onClick = {
+                    if (deletionCurrent(claim) && controller.remove(claim)) dismissDeletion(claim)
+                })
+            }
+        }
+    }
     reset?.let { claim ->
         Dialog(onDismissRequest = { dismissReset(claim) }) {
-            Column(Modifier.fillMaxWidth().background(v.colors.surface, RoundedCornerShape(v.corner)).padding(v.spacingLarge),
-                verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-                EsvText("清空全部 SearXNG 来源？", style = v.titleTextStyle)
-                EsvText("会移除三个端点并停用它们，使旧候选和来源进度失效。不会自动查找。", style = v.bodyTextStyle)
-                EsvButton("取消", onClick = { dismissReset(claim) })
-                EsvButton("确认清空", enabled = resetCurrent(claim), onClick = {
+            Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
+                .padding(v.spacingLarge).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+                EsvText(stringResource(R.string.searxng_settings_clear_title), style = v.titleTextStyle)
+                EsvText(stringResource(R.string.searxng_settings_clear_description), style = v.bodyTextStyle)
+                EsvButton(stringResource(R.string.searxng_settings_cancel), onClick = { dismissReset(claim) })
+                EsvButton(stringResource(R.string.searxng_settings_clear_confirm), enabled = resetCurrent(claim), onClick = {
                     if (resetCurrent(claim) && controller.reset(claim)) dismissReset(claim)
                 })
             }
@@ -118,19 +166,28 @@ private fun SearxngEndpointEditor(controller: SearxngConfigurationController, cl
     canAct: () -> Boolean, onDismiss: () -> Unit) {
     val v = LocalEsvVisuals.current
     val config = controller.state.config ?: return
-    val original = config.slots.firstOrNull { it.id == claim.slotId } ?: return
-    var url by remember(claim) { mutableStateOf(original.searchUrl.orEmpty()) }
-    var enabled by remember(claim) { mutableStateOf(original.enabled) }
+    val adding = claim.kind == SearxngConfigurationAction.ADD
+    val original = config.slots.firstOrNull { it.id == claim.slotId }
+    if (!adding && (claim.kind != SearxngConfigurationAction.EDIT || original == null)) return
+    var url by remember(claim) { mutableStateOf(original?.searchUrl.orEmpty()) }
+    var enabled by remember(claim) { mutableStateOf(original?.enabled ?: false) }
+    var format by remember(claim) { mutableStateOf(original?.format ?: SearxngResultFormat.JSON_VIDEOS) }
+    // A new row has no selected radio option until the user explicitly chooses one.
+    var formatChosen by remember(claim) { mutableStateOf(!adding) }
     var acknowledged by remember(claim) { mutableStateOf(false) }
-    val validation = SearxngConfigurationPolicy.replace(config, original.id, url, enabled, acknowledged)
+    val validation = if (adding) SearxngConfigurationPolicy.add(config, url, enabled, acknowledged, format)
+        else original?.let { SearxngConfigurationPolicy.replace(config, it.id, url, enabled, acknowledged, format) } ?: return
     fun isCurrent() = canAct() && controller.isCurrent(claim)
     val current = isCurrent()
-    val needsAcknowledgement = SearxngConfigurationPolicy.acknowledgementRequired(original, url, enabled)
+    val endpointDescription = stringResource(R.string.searxng_settings_endpoint_description)
+    val needsAcknowledgement = adding || (original != null &&
+        SearxngConfigurationPolicy.acknowledgementRequired(original, url, enabled, format))
     Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.fillMaxWidth().heightIn(max = 680.dp).background(v.colors.surface, RoundedCornerShape(v.corner))
             .padding(v.spacingLarge).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
-            EsvText("配置 ${original.id}", style = v.titleTextStyle)
-            EsvText("输入完整的公共 HTTPS /search 地址。仅允许公共域名，不允许账号、密码、查询参数、片段、端口、IP 或本地地址。", style = v.captionTextStyle)
+            EsvText(if (adding) stringResource(R.string.searxng_settings_add_title)
+                else stringResource(R.string.searxng_settings_editor_title, original?.hostname.orEmpty()), style = v.titleTextStyle)
+            EsvText(stringResource(R.string.searxng_settings_endpoint_hint), style = v.captionTextStyle)
             BasicTextField(url, onValueChange = { text ->
                 if (isCurrent() && text.length <= SearxngConfigurationPolicy.MAX_URL_BYTES &&
                     text.toByteArray(Charsets.UTF_8).size <= SearxngConfigurationPolicy.MAX_URL_BYTES) {
@@ -141,22 +198,40 @@ private fun SearxngEndpointEditor(controller: SearxngConfigurationController, cl
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, autoCorrectEnabled = false),
                 textStyle = v.bodyTextStyle.copy(color = v.colors.text), cursorBrush = SolidColor(v.colors.accent),
                 modifier = Modifier.fillMaxWidth().border(v.borderWidth, v.colors.border, RoundedCornerShape(v.corner))
-                    .padding(v.spacingMedium).semantics { contentDescription = "SearXNG HTTPS 搜索端点" },
-                decorationBox = { input -> Column { if (url.isEmpty()) EsvText("端点地址；留空可移除", color = v.colors.muted); input() } })
-            SourceCheckbox("启用这个来源", enabled, current && url.isNotEmpty()) { if (isCurrent()) { enabled = it; acknowledged = false } }
-            EsvText("主动查找时，输入的查询会发送给这个端点及其上游搜索引擎。端点地址只作为本地功能配置保存。", style = v.captionTextStyle)
-            SourceCheckbox("我理解并同意向此端点及其上游搜索引擎发送查询", acknowledged,
-                current && url.isNotEmpty()) { if (isCurrent()) acknowledged = it }
-            EsvText("安全搜索能力未知；安全搜索开启的请求会被拒绝。保存不会修改安全搜索，也不会发送或重新发送查询。", style = v.captionTextStyle, color = v.colors.error)
+                    .padding(v.spacingMedium).semantics { contentDescription = endpointDescription },
+                decorationBox = { input -> Column { if (url.isEmpty()) EsvText(stringResource(R.string.searxng_settings_endpoint_placeholder), color = v.colors.muted); input() } })
+            EsvText(stringResource(R.string.searxng_settings_format_title), style = v.bodyTextStyle)
+            Column(Modifier.selectableGroup()) {
+                SearxngResultFormat.entries.forEach { choice ->
+                    SourceFormatOption(stringResource(formatLabel(choice)), formatChosen && format == choice, current) {
+                        if (isCurrent() && (!formatChosen || format != choice)) {
+                            format = choice; formatChosen = true; acknowledged = false
+                        }
+                    }
+                }
+            }
+            if (!formatChosen) EsvText(stringResource(R.string.searxng_settings_choose_format), style = v.captionTextStyle)
+            EsvText(stringResource(R.string.searxng_settings_format_notice), style = v.captionTextStyle)
+            SourceCheckbox(stringResource(R.string.searxng_settings_enable_source), enabled, current && url.isNotEmpty()) { if (isCurrent()) { enabled = it; acknowledged = false } }
+            EsvText(stringResource(R.string.searxng_settings_editor_privacy), style = v.captionTextStyle)
+            SourceCheckbox(stringResource(R.string.searxng_settings_acknowledge), acknowledged,
+                current && url.isNotEmpty() && formatChosen) { if (isCurrent()) acknowledged = it }
+            EsvText(stringResource(R.string.searxng_settings_verification_notice), style = v.captionTextStyle)
+            EsvText(stringResource(R.string.searxng_settings_editor_safe_search), style = v.captionTextStyle, color = v.colors.error)
             if (validation is SearxngConfigurationEdit.Rejected &&
                 (!needsAcknowledgement || validation.issue != com.easysavevideo.app.discovery.SearxngConfigurationIssue.ACKNOWLEDGEMENT_REQUIRED))
-                EsvText(SearxngConfigurationController.issueText(validation.issue), style = v.captionTextStyle, color = v.colors.error)
-            if (!current) EsvText("配置已改变，请关闭后重新打开。", style = v.captionTextStyle, color = v.colors.error)
-            EsvButton("取消", onClick = onDismiss)
-            EsvButton("保存本地配置", enabled = current && validation is SearxngConfigurationEdit.Accepted,
-                onClick = { if (isCurrent() && controller.replace(claim, url, enabled, acknowledged)) onDismiss() })
-            if (original.searchUrl != null) EsvButton("移除此端点", enabled = current,
-                onClick = { if (isCurrent() && controller.replace(claim, "", enabled = false, acknowledged = false)) onDismiss() })
+                EsvText(if (validation.issue == com.easysavevideo.app.discovery.SearxngConfigurationIssue.DUPLICATE_ORIGIN)
+                    stringResource(R.string.searxng_settings_duplicate_origin) else SearxngConfigurationController.issueText(validation.issue), style = v.captionTextStyle, color = v.colors.error)
+            if (!current) EsvText(stringResource(R.string.searxng_settings_stale), style = v.captionTextStyle, color = v.colors.error)
+            EsvButton(stringResource(R.string.searxng_settings_cancel), onClick = onDismiss)
+            EsvButton(stringResource(R.string.searxng_settings_save), enabled = current && formatChosen && validation is SearxngConfigurationEdit.Accepted,
+                onClick = {
+                    if (isCurrent() && formatChosen && validation is SearxngConfigurationEdit.Accepted) {
+                        if (adding) {
+                            if (controller.add(claim, url, enabled, acknowledged, format)) onDismiss()
+                        } else if (isCurrent() && controller.replace(claim, url, enabled, acknowledged, format)) onDismiss()
+                    }
+                })
         }
     }
 }
@@ -169,6 +244,23 @@ private fun SourceCheckbox(label: String, checked: Boolean, enabled: Boolean, on
         role = Role.Checkbox, onValueChange = onChecked).padding(v.spacingSmall),
         horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalAlignment = Alignment.CenterVertically) {
         EsvText(if (checked) "☑" else "☐", color = if (enabled) v.colors.accent else v.colors.muted)
+        EsvText(label, modifier = Modifier.weight(1f), color = if (enabled) v.colors.text else v.colors.muted)
+    }
+}
+
+private fun formatLabel(format: SearxngResultFormat): Int = when (format) {
+    SearxngResultFormat.JSON_VIDEOS -> R.string.searxng_settings_format_json
+    SearxngResultFormat.HTML_WEB -> R.string.searxng_settings_format_html
+}
+
+/** Exclusive format choice, using active SkinKit styling and native radio-button semantics. */
+@Composable
+private fun SourceFormatOption(label: String, selected: Boolean, enabled: Boolean, onSelect: () -> Unit) {
+    val v = LocalEsvVisuals.current
+    Row(Modifier.fillMaxWidth().sizeIn(minHeight = 48.dp).selectable(selected = selected, enabled = enabled,
+        role = Role.RadioButton, onClick = onSelect).padding(v.spacingSmall),
+        horizontalArrangement = Arrangement.spacedBy(v.spacingSmall), verticalAlignment = Alignment.CenterVertically) {
+        EsvText(if (selected) "◉" else "○", color = if (enabled) v.colors.accent else v.colors.muted)
         EsvText(label, modifier = Modifier.weight(1f), color = if (enabled) v.colors.text else v.colors.muted)
     }
 }

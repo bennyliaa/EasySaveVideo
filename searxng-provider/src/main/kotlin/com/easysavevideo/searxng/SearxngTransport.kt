@@ -18,6 +18,10 @@ interface SearxngHttpCall {
     fun execute(): SearxngHttpResponse
     fun cancel()
 }
+enum class SearxngRequestKind(val accept: String) {
+    JSON_SEARCH("application/json"), HTML_SEARCH("text/html"), ROBOTS("text/plain")
+}
+
 class SearxngHttpRequest(
     val endpoint: SearxngEndpoint,
     val url: URI,
@@ -25,8 +29,9 @@ class SearxngHttpRequest(
     val deadlineEpochMillis: Long,
     val connectTimeoutMillis: Int,
     val maxBodyBytes: Long,
+    val kind: SearxngRequestKind = SearxngRequestKind.JSON_SEARCH,
 ) {
-    init { SearxngUrlPolicy.requireApi(endpoint, url) }
+    init { SearxngUrlPolicy.requireRequest(endpoint, url, kind) }
     override fun toString(): String = "SearxngHttpRequest([redacted])"
 }
 class SearxngHttpResponse(
@@ -40,13 +45,48 @@ class SearxngHttpResponse(
 }
 
 object SearxngUrlPolicy {
-    /** Deliberately support only /search; no implicit path-prefix discovery or redirects. */
-    fun isEndpoint(uri: URI): Boolean = safeBase(uri) && uri.rawPath == "/search" && uri.rawQuery == null
+    /**
+     * One exact /search endpoint, optionally below an explicit deployment prefix. No base-URL
+     * discovery, decoding or normalization: unreserved ASCII segments keep the wire path exact.
+     * Escapes (including nested escapes), separators, empty segments and dot segments are refused.
+     */
+    fun isEndpoint(uri: URI): Boolean {
+        if (!safeBase(uri) || uri.rawQuery != null) return false
+        val path = uri.rawPath
+        if (!path.startsWith('/') || path.substringAfterLast('/') != "search") return false
+        // A bounded linear scan avoids a repeating-regex stack growing with prefix depth.
+        return path.substring(1).split('/').all { segment ->
+            segment.isNotEmpty() && segment != "." && segment != ".." &&
+                segment.all { it in 'A'..'Z' || it in 'a'..'z' || it in '0'..'9' || it in "-._~" }
+        }
+    }
+
+    /** Finite same-endpoint form actions; returned actions are validated, never dispatched. */
+    internal fun isContinuationAction(endpoint: SearxngEndpoint, action: String): Boolean =
+        endpoint.format == SearxngResultFormat.HTML_WEB &&
+            (action.isEmpty() || action == "search" || action == endpoint.uri.rawPath || action == endpoint.searchUrl)
 
     fun requireApi(endpoint: SearxngEndpoint, uri: URI) {
         if (!safeBase(uri) || uri.rawAuthority != endpoint.uri.rawAuthority ||
             uri.rawPath != endpoint.uri.rawPath || uri.rawQuery.isNullOrEmpty())
             throw SearxngFailure(SearxngError.UNSAFE_URL)
+    }
+
+    /** Typed finite routes only; result URLs can never be passed to this transport. */
+    fun requireRequest(endpoint: SearxngEndpoint, uri: URI, kind: SearxngRequestKind) {
+        when (kind) {
+            SearxngRequestKind.JSON_SEARCH -> {
+                if (endpoint.format != SearxngResultFormat.JSON_VIDEOS) throw SearxngFailure(SearxngError.UNSAFE_URL)
+                requireApi(endpoint, uri)
+            }
+            SearxngRequestKind.HTML_SEARCH -> {
+                if (endpoint.format != SearxngResultFormat.HTML_WEB) throw SearxngFailure(SearxngError.UNSAFE_URL)
+                requireApi(endpoint, uri)
+            }
+            SearxngRequestKind.ROBOTS -> if (endpoint.format != SearxngResultFormat.HTML_WEB || !safeBase(uri) ||
+                uri.rawAuthority != endpoint.uri.rawAuthority || uri.rawPath != "/robots.txt" || uri.rawQuery != null)
+                throw SearxngFailure(SearxngError.UNSAFE_URL)
+        }
     }
 
     /** Display/validation candidates only. This function never resolves or fetches a result URL. */

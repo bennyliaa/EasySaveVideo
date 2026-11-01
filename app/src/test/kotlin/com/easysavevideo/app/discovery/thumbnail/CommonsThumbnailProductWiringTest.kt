@@ -82,13 +82,15 @@ class CommonsThumbnailProductWiringTest {
         assertTrue(invalidSearch.contains("if (!DiscoveryPresentationPolicy.validQuery(bounded))"))
         assertTrue(invalidSearch.contains("submit { notice = DiscoveryNotice.INVALID_QUERY; refresh(readOnly = true) }"))
         assertFalse(invalidSearch.contains("beginThumbnailIntent()"))
+        assertFalse(invalidSearch.contains("allowSessionCandidateVerification"))
         val validSearch = search.substringAfter("val thumbnailIntent = ")
         assertBefore(validSearch, "beginThumbnailIntent()", "submit {")
         val searchCommand = validSearch.substringAfter("submit {")
         for (required in listOf("if (!initialized || unavailable) return@submit",
-            "coordinator?.start(SESSION, profile(bounded, filters))", "coordinator?.let(::applyLifecycle); refresh()"))
+            "coordinator?.start(SESSION, profile(bounded, filters), allowSessionCandidateVerification = !demo,\n                    diagnosticsCapture = diagnosticsCapture)", "coordinator?.let(::applyLifecycle); refresh()"))
             assertTrue(required, searchCommand.contains(required))
         val settingsCommand = settings.substringAfter("submit {")
+        assertFalse(settingsCommand.contains("allowSessionCandidateVerification"))
         for (required in listOf("val old = settings; settings = value", "coordinator?.setMode(value.mode)",
             "coordinator?.reviseView(value.repeatPolicy, value.pageSize, pageIndex)", "refresh()"))
             assertTrue(required, settingsCommand.contains(required))

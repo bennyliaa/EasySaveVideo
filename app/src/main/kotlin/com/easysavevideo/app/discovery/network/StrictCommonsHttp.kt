@@ -2,6 +2,7 @@ package com.easysavevideo.app.discovery.network
 
 import com.easysavevideo.commons.CommonsError
 import com.easysavevideo.commons.CommonsFailure
+import com.easysavevideo.discovery.CommonsStageTrace
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.util.Locale
@@ -10,9 +11,10 @@ import java.util.Locale
 internal object StrictCommonsHttp {
     internal data class Response(val status: Int, val headers: Map<String, List<String>>, val body: ByteArray)
 
-    fun read(input: InputStream, maximum: Long, check: () -> Unit): Response = Reader(input, maximum, check).response()
+    fun read(input: InputStream, maximum: Long, check: () -> Unit): Response = read(input, maximum, null, check)
+    fun read(input: InputStream, maximum: Long, trace: CommonsStageTrace?, check: () -> Unit): Response = Reader(input, maximum, trace, check).response()
 
-    private class Reader(private val input: InputStream, private val maximum: Long, private val check: () -> Unit) {
+    private class Reader(private val input: InputStream, private val maximum: Long, private val trace: CommonsStageTrace?, private val check: () -> Unit) {
         private var wireBytes = 0L
         private var headerBytes = 0
         private var headerFields = 0
@@ -23,6 +25,7 @@ internal object StrictCommonsHttp {
             if (!statusLine.matches(Regex("HTTP/1\\.[01] [1-5][0-9]{2} [\\x20-\\x7e]*"))) invalid()
             val status = statusLine.substring(9, 12).toInt()
             if (status < 200) invalid()
+            trace?.httpStatus(status)
             readHeaders(trailers = false)
             if (status in 300..399) throw CommonsFailure(CommonsError.REDIRECT_REJECTED)
             // A slowdown/denial is authoritative once bounded headers arrive. Never allow its

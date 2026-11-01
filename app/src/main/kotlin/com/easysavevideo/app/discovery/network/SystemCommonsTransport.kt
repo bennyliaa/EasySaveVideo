@@ -8,6 +8,14 @@ import com.easysavevideo.commons.CommonsHttpResponse
 import com.easysavevideo.commons.CommonsRetryAfter
 import com.easysavevideo.commons.CommonsTransport
 import com.easysavevideo.commons.CommonsUrlPolicy
+import com.easysavevideo.commons.stageFailure
+import com.easysavevideo.discovery.CommonsStage
+import com.easysavevideo.discovery.CommonsStageFailure
+import java.io.IOException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+import javax.net.ssl.SSLException
 import java.io.ByteArrayInputStream
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -78,6 +86,9 @@ class SystemCommonsTransport internal constructor(
         private val workerDone = AtomicBoolean(false)
         private val cleanupDone = AtomicBoolean(false)
         private val cleanupStarted = AtomicBoolean(false)
+        // Only bounded state/diagnostic work holds this gate; socket close remains asynchronous.
+        private val termination = Any()
+        private var connectBudgetActive = false
         private val resources = Any()
         private var raw: Socket? = null
         private var tls: SSLSocket? = null
@@ -96,6 +107,7 @@ class SystemCommonsTransport internal constructor(
             if (!active.compareAndSet(null, this)) fail(CommonsError.BUSY)
             val notBefore = retryNotBefore.get()
             if (clock.epochMillis() < notBefore) {
+                request.stageTrace?.event(CommonsStage.TRANSPORT_COOLDOWN, CommonsStageFailure.RATE_LIMITED)
                 active.compareAndSet(this, null)
                 throw CommonsFailure(CommonsError.RATE_LIMITED, notBefore)
             }
@@ -125,9 +137,21 @@ class SystemCommonsTransport internal constructor(
 
         private fun runExchange() {
             workerResult = try { Result.success(exchange()) }
-            catch (problem: CommonsFailure) { Result.failure(problem) }
-            catch (_: Exception) { Result.failure(CommonsFailure(failure.get() ?: CommonsError.SERVICE_ERROR)) }
-            catch (_: LinkageError) { Result.failure(CommonsFailure(CommonsError.SERVICE_ERROR)) }
+            catch (problem: CommonsFailure) {
+                endConnectBudget()
+                request.stageTrace?.event(CommonsStage.PROVIDER_FAILURE, problem.code.stageFailure())
+                Result.failure(problem)
+            }
+            catch (problem: Exception) {
+                endConnectBudget()
+                request.stageTrace?.event(CommonsStage.PROVIDER_FAILURE, diagnosticFailure(problem))
+                Result.failure(CommonsFailure(failure.get() ?: CommonsError.SERVICE_ERROR))
+            }
+            catch (_: LinkageError) {
+                endConnectBudget()
+                request.stageTrace?.event(CommonsStage.PROVIDER_FAILURE, CommonsStageFailure.OTHER)
+                Result.failure(CommonsFailure(CommonsError.SERVICE_ERROR))
+            }
             finally {
                 connectTimer?.close()
                 cleanup()
@@ -138,18 +162,21 @@ class SystemCommonsTransport internal constructor(
 
         private fun exchange(): CommonsHttpResponse {
             check()
-            val answers = resolver.resolve(HOST).toList()
+            val answers = observed(CommonsStage.DNS) { resolver.resolve(HOST).toList() }
             check()
             if (answers.isEmpty() || answers.any { !CommonsUrlPolicy.isPublicAddress(it) }) fail(CommonsError.UNSAFE_URL)
             val address = answers.first()
             val connectDuration = minOf(request.connectTimeoutMillis.toLong(), remainingMillis())
             val connectEnd = clock.nanoTime() + TimeUnit.MILLISECONDS.toNanos(connectDuration)
-            connectTimer = timer.schedule(connectDuration) { stop(CommonsError.SERVICE_ERROR) }
+            synchronized(termination) { connectBudgetActive = true }
+            connectTimer = timer.schedule(connectDuration) { stop(CommonsError.SERVICE_ERROR, connectBudgetExpired = true) }
             check()
             val socket = sockets.open()
             register(socket, secure = false)
             socket.soLingerDisabled()
-            socket.connect(InetSocketAddress(address, 443), connectDuration.coerceAtLeast(1).toInt())
+            observed(CommonsStage.TCP_CONNECT) {
+                socket.connect(InetSocketAddress(address, 443), connectDuration.coerceAtLeast(1).toInt())
+            }
             check()
             requirePeer(socket, address)
             val secure = sockets.secure(socket, HOST, 443)
@@ -162,18 +189,24 @@ class SystemCommonsTransport internal constructor(
             secure.sslParameters = parameters
             secure.useClientMode = true
             secure.soTimeout = phaseRemaining(connectEnd)
-            secure.startHandshake()
+            observed(CommonsStage.TLS_HANDSHAKE) { secure.startHandshake() }
             check()
-            if (clock.nanoTime() - connectEnd >= 0) fail(CommonsError.SERVICE_ERROR)
+            if (clock.nanoTime() - connectEnd >= 0) expireConnectBudget()
             if (secure.applicationProtocol !in listOf(null, "", "http/1.1")) fail(CommonsError.INVALID_RESPONSE)
             requirePeer(secure, address)
+            endConnectBudget()
             connectTimer?.close()
             secure.soTimeout = remainingMillis().coerceAtLeast(1).toInt()
-            secure.outputStream.write(requestBytes)
-            secure.outputStream.flush()
+            observed(CommonsStage.REQUEST_WRITE) {
+                secure.outputStream.write(requestBytes)
+                secure.outputStream.flush()
+            }
             check()
-            val parsed = StrictCommonsHttp.read(secure.inputStream, request.maxBodyBytes, ::check)
+            val parsed = observed(CommonsStage.HTTP_EXCHANGE) {
+                StrictCommonsHttp.read(secure.inputStream, request.maxBodyBytes, request.stageTrace, ::check)
+            }
             if (parsed.status == 429 || parsed.status == 503) {
+                request.stageTrace?.event(CommonsStage.SERVER_COOLDOWN, CommonsStageFailure.RATE_LIMITED)
                 // Record at the transport boundary even when the caller has already stopped
                 // awaiting this response. Releasing a stuck close can never bypass server cooldown.
                 val notBefore = CommonsRetryAfter.retryAt(parsed.headers["retry-after"]?.singleOrNull(), clock.epochMillis())
@@ -192,12 +225,53 @@ class SystemCommonsTransport internal constructor(
             return response
         }
 
+        private inline fun <T> observed(stage: CommonsStage, action: () -> T): T {
+            val span = request.stageTrace?.begin(stage)
+            try { return action().also { span?.complete() } }
+            catch (problem: CommonsFailure) {
+                endConnectBudget()
+                if (problem.code == CommonsError.DEADLINE_EXCEEDED)
+                    request.stageTrace?.event(CommonsStage.DEADLINE_SIGNAL, CommonsStageFailure.DEADLINE_EXCEEDED)
+                span?.failed(problem.code.stageFailure()); throw problem
+            } catch (problem: Exception) {
+                endConnectBudget()
+                val failure = diagnosticFailure(problem)
+                span?.failed(failure); throw problem
+            } catch (problem: LinkageError) {
+                endConnectBudget(); span?.failed(CommonsStageFailure.OTHER); throw problem
+            }
+        }
+
+        private fun diagnosticFailure(problem: Exception): CommonsStageFailure = when (problem) {
+            is UnknownHostException -> CommonsStageFailure.DNS_FAILURE
+            is ConnectException -> CommonsStageFailure.CONNECT_FAILURE
+            is SSLException -> CommonsStageFailure.TLS_FAILURE
+            is SocketTimeoutException -> CommonsStageFailure.IO_TIMEOUT
+            is InterruptedException -> CommonsStageFailure.INTERRUPTED
+            is IOException -> CommonsStageFailure.IO_FAILURE
+            else -> CommonsStageFailure.OTHER
+        }
+
         private fun Socket.soLingerDisabled() { setSoLinger(false, 0) }
         private fun phaseRemaining(end: Long): Int {
             check()
             val nanos = end - clock.nanoTime()
-            if (nanos <= 0) fail(CommonsError.SERVICE_ERROR)
+            if (nanos <= 0) expireConnectBudget()
             return minOf(remainingMillis(), (nanos / 1_000_000L).coerceAtLeast(1)).coerceAtLeast(1).toInt()
+        }
+        private fun endConnectBudget() { synchronized(termination) { connectBudgetActive = false } }
+        private fun expireConnectBudget() {
+            val expired = synchronized(termination) {
+                failure.get()?.let(::fail)
+                if (!connectBudgetActive) false else {
+                    connectBudgetActive = false
+                    request.stageTrace?.event(CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStageFailure.CONNECT_BUDGET_EXCEEDED)
+                    true
+                }
+            }
+            // Preserve the original synchronous path: its worker and physical cleanup finish before
+            // publication, unless an independent cancellation/absolute watchdog stops the call.
+            if (expired) fail(CommonsError.SERVICE_ERROR)
         }
         private fun requirePeer(socket: Socket, expected: InetAddress) {
             if (!socket.isConnected || socket.port != 443 || socket.inetAddress != expected ||
@@ -229,16 +303,32 @@ class SystemCommonsTransport internal constructor(
             failure.get()?.let(::fail)
             if (remainingEpoch() <= 0 || clock.nanoTime() - monotonicDeadline >= 0) fail(CommonsError.DEADLINE_EXCEEDED)
         }
-        private fun stop(code: CommonsError) {
-            failure.compareAndSet(null, code)
-            publish(Result.failure(CommonsFailure(failure.get()!!)))
+        private fun stop(code: CommonsError, connectBudgetExpired: Boolean = false) {
+            // cancel() also closes an already successful metadata call in finally. It is resource
+            // cleanup, not evidence of user cancellation. The metadata owner records real signals.
+            synchronized(termination) {
+                if (connectBudgetExpired && !connectBudgetActive) return
+                if (!failure.compareAndSet(null, code)) return
+                connectBudgetActive = false
+                if (result.get() == null) {
+                    if (connectBudgetExpired)
+                        request.stageTrace?.event(CommonsStage.CONNECT_BUDGET_SIGNAL, CommonsStageFailure.CONNECT_BUDGET_EXCEEDED)
+                    else if (code == CommonsError.DEADLINE_EXCEEDED)
+                        request.stageTrace?.event(CommonsStage.DEADLINE_SIGNAL, CommonsStageFailure.DEADLINE_EXCEEDED)
+                }
+                // Reconcile the observation with the owner's cancellation flag before publication.
+                publish(Result.failure(CommonsFailure(code)))
+            }
             cleanup()
         }
         private fun cleanup() {
-            if (!cleanupStarted.compareAndSet(false, true)) return
-            val pair = synchronized(resources) {
-                closing = true
-                Pair(raw.also { raw = null }, tls.also { tls = null })
+            val pair = synchronized(termination) {
+                if (!cleanupStarted.compareAndSet(false, true)) return
+                connectBudgetActive = false
+                synchronized(resources) {
+                    closing = true
+                    Pair(raw.also { raw = null }, tls.also { tls = null })
+                }
             }
             // Closing the raw socket first prevents TLS close_notify from blocking on network I/O.
             // Even an anomalously stuck close cannot release the physical admission slot.
@@ -261,7 +351,11 @@ class SystemCommonsTransport internal constructor(
             workerResult?.let { publish(it) }
         }
         private fun publish(value: Result<CommonsHttpResponse>, definitiveHeaders: Boolean = false) {
-            if (result.compareAndSet(null, Outcome(value, definitiveHeaders))) {
+            val accepted = synchronized(termination) {
+                result.compareAndSet(null, Outcome(value, definitiveHeaders))
+            }
+            if (accepted) {
+                // Timer handles are injectable external work and must not hold the terminal gate.
                 if (definitiveHeaders) absoluteTimer?.close()
                 terminal.countDown()
             }

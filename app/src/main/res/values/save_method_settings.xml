@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_methods_title">Save methods</string>
+    <string name="save_methods_waiting">Available after settings load while this screen is active.</string>
+    <string name="save_methods_direct">Direct download (DIRECT)</string>
+    <string name="save_methods_stream">Stream saving (STREAM)</string>
+    <string name="save_methods_record">Recording (RECORD)</string>
+    <string name="save_methods_new_tasks">Each switch affects new tasks only. Turning a method off does not interrupt accepted tasks. Stop and discard remain available.</string>
+    <string name="save_methods_safety">Enabling a method still requires its existing permissions, entitlement and safety checks.</string>
+    <string name="save_methods_all_off">All save methods are off. Browsing and search remain available.</string>
+</resources>

@@ -13,10 +13,11 @@ import java.nio.file.Path
 import java.nio.file.StandardOpenOption.READ
 import java.nio.file.attribute.BasicFileAttributes
 
-/** A detached, immutable, content-free export. It never references a live log file. */
-class DiagnosticSnapshot internal constructor(val text: String) {
+/** Detached immutable ASCII payload. Diagnostic readers retain their default 256 KiB bound; explicit internal report exports may select a bounded limit up to 1 MiB. */
+class DiagnosticSnapshot internal constructor(val text: String, maximumAsciiBytes: Int = DiagnosticSnapshotReader.MAX_BYTES) {
     init {
-        require(text.isNotEmpty() && text.length <= DiagnosticSnapshotReader.MAX_BYTES)
+        require(maximumAsciiBytes in 1..1_048_576)
+        require(text.isNotEmpty() && text.length <= maximumAsciiBytes)
         require(text.all { it.code in 0..127 }) // The closed output grammar is ASCII.
     }
 }
