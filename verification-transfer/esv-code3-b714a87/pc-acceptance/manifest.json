@@ -1,0 +1,62 @@
+{
+  "schema": "esv-pc-acceptance-evidence-v1",
+  "source_evidence_git_commit": "1725e98e995125339df492f358a14b6199b17635",
+  "apk_source_git_commit": "b714a87601d0725385c11f4587704f78587938b5",
+  "signed_return_git_commit": "0ef80ea13e6b5b01aab98000e87186838d598401",
+  "repository": "bennyliaa/EasySaveVideo",
+  "branch": "verification/esv-code3-b714a87",
+  "device": "emulator-5556",
+  "installed_version_code": 3,
+  "min_sdk": 31,
+  "privacy": "Sanitized results and public tool logs only. No raw UI, media, private keys, database contents or saved query/address/task values.",
+  "files": [
+    {
+      "file": "device-package-after-install.txt",
+      "bytes": 81,
+      "sha256": "d36d0125916adc0af45ba06ebf45b575eb97d048779a40e521cba99dd8a11c91",
+      "git_blob_sha1": "3a4abcf74112f04167a640305780908dbfff4714"
+    },
+    {
+      "file": "install-replace.txt",
+      "bytes": 38,
+      "sha256": "c4aa470acafcf8576c15b0f0b5ae7e852d1ec5413372d0e6a9272e788e1306d3",
+      "git_blob_sha1": "b7cb995bb958211b5cd9bb21bc90a0f2d9c63f22"
+    },
+    {
+      "file": "pc-apksigner-api31-36.txt",
+      "bytes": 972,
+      "sha256": "66fdc4d5fcb3eeaf6e45e9886ec2ba7a744e427daf531c358983d7bcf3d63314",
+      "git_blob_sha1": "91d358f6fe0f5970ddc25e9ec02d9aa8093f67e0"
+    },
+    {
+      "file": "pc-apksigner-api31.txt",
+      "bytes": 972,
+      "sha256": "66fdc4d5fcb3eeaf6e45e9886ec2ba7a744e427daf531c358983d7bcf3d63314",
+      "git_blob_sha1": "91d358f6fe0f5970ddc25e9ec02d9aa8093f67e0"
+    },
+    {
+      "file": "pc-package.txt",
+      "bytes": 241,
+      "sha256": "aeb18759083ebf43fb9d4aa32a7f3e89fc919b92a2f72f0ae66bdd9455676c1f",
+      "git_blob_sha1": "63b7c5cb7409b6deb31451a0568cfaf79efe54aa"
+    },
+    {
+      "file": "pc-zipalign-16kb.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "file": "report.md",
+      "bytes": 4286,
+      "sha256": "9e21cfff1e071e9a928e92650e13c31b2d23a3f2a65efd4ce5b49591672bdb6f",
+      "git_blob_sha1": "8562b976a8620f9c98c94b610e5247abe2c96c05"
+    },
+    {
+      "file": "test-receipt.json",
+      "bytes": 8338,
+      "sha256": "a5473620e2a3fd710618749c052473a0e5b94fa807aa0842d43e538a24bda6d9",
+      "git_blob_sha1": "41e83198dda7c0200fe437f771f7a0461633bea5"
+    }
+  ]
+}
