@@ -1,0 +1,84 @@
+{
+  "schema": "esv-apk-signing-verification-v1",
+  "source_commit": "afca2ab8d2d7748550c009d50eb3e4d0e6cb6a70",
+  "unsigned_transport_commit": "d112c1390ef96f3bc0ffd7de42b2613cdd9566fc",
+  "unsigned_manifest_sha256": "f43fd6eb1fa874e8b5f30bb0ea383284aa85407a2c8f807aa1557147bea170a3",
+  "unsigned": {
+    "bytes": 35399390,
+    "sha256": "4447879b3785211c02cc1884165fe92250562e263a55728f4fafe5af8d4f9079",
+    "all_91_parts_bytes_sha256_git_blob_verified": true,
+    "strict_canonical_base64": true
+  },
+  "signed": {
+    "file": "esv-ui-code6-afca2ab-test-signed.apk",
+    "bytes": 35407026,
+    "sha256": "658465feff82880183d5701ec68719263a7862c5f9ef084076104709eb002cdb",
+    "certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5"
+  },
+  "metadata": {
+    "package": "com.easysavevideo.app",
+    "versionCode": 6,
+    "versionName": "0.6.0-ui-dev",
+    "minSdk": 31,
+    "targetSdk": 36,
+    "official_aapt2_before_after_identical": true
+  },
+  "official_signatures": {
+    "v2_independent_verified": true,
+    "v2_verifier_override_range": [
+      24,
+      27
+    ],
+    "v3_api31_through_36_verified": true,
+    "api31_verified": true,
+    "api31_v3_verified": true,
+    "certificate_sha256": "18e3ef657615957445677de9b7f2bc18444fa1b990cf9189bcd423f9066ab1a5",
+    "warning_counts": [
+      0,
+      0,
+      0
+    ],
+    "lower_android_install_compatibility_claimed": false
+  },
+  "signing_implementation": "Existing official Google ApkSigner and ApkVerifier 9.4.0 APIs; only existing matching test identity; no new credentials",
+  "signing_schemes": {
+    "v1_enabled": false,
+    "v2_enabled": true,
+    "v3_enabled": true,
+    "v4_enabled": false
+  },
+  "tool_fingerprints": [
+    {
+      "name": "apksig-9.4.0.jar",
+      "sha256": "7ae2e5980c77d853e3513074ee7c822bbdcdcde1668889d17faa7fe8bc8aa821"
+    },
+    {
+      "name": "builder-9.4.0.jar",
+      "sha256": "dcc7126ce9077ab8113bc29518e68e42b05ab1c9ed053b9f97f46e257396485f"
+    },
+    {
+      "name": "builder-model-9.4.0.jar",
+      "sha256": "9ec37d9d6188c84af3b4a78134b5a42e7c9aee1cde0169d13e155e1d6ee81542"
+    },
+    {
+      "name": "aapt2",
+      "sha256": "7f0587c898f8401986b9c32385fb25d1ecea1e9007907376215f30f99c4894a9"
+    }
+  ],
+  "payload": {
+    "identical": true,
+    "entry_count": 183,
+    "comparison": "All entry names, decompressed bytes SHA256 and compression methods identical; unsigned input preserved"
+  },
+  "alignment": {
+    "passed": true,
+    "method": "Independent ZIP local-header data-offset audit",
+    "stored_entries_checked": 117,
+    "native_so_libraries_checked": 4,
+    "stored_entry_alignment": 4,
+    "native_so_alignment": 16384,
+    "official_zipalign_cli_run": false,
+    "pc_required_check": "zipalign -c -P 16 4 <signed.apk>"
+  },
+  "device_acceptance": "NOT_RUN; verify installed certificate before preserved-data update on emulator-5556; stop on mismatch; do not clear data or uninstall"
+}

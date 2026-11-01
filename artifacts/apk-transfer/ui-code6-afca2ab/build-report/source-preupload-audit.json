@@ -1,0 +1,11 @@
+{
+  "base": "65574fa306f6a0b785b85ffd7ba637de93c56142",
+  "head": "e26f6c0b71f60f0e33d196713cfda7128de7f268",
+  "fast_forward": true,
+  "introduced_blob_versions_scanned": 90,
+  "findings": [],
+  "commons_contact_empty": true,
+  "scope": "ALL_NEW_GIT_BLOB_VERSIONS_AND_GENERATED_RELEASE_CONFIG",
+  "binary_static_checks": "APK_RECEIPT_ALREADY_PASS_UNSIGNED_NO_CREDENTIALS_NO_MEDIA_NO_PYTHON_RUNTIME",
+  "upload": "NOT_YET"
+}
