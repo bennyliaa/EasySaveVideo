@@ -1,0 +1,19 @@
+PASS third engine registers without enum change
+PASS remote consent excludes A and permits local B
+PASS fallback shares requests bytes and absolute deadline
+PASS capability mismatch skips engine
+PASS explicit preference selects engine
+PASS denial stops source without fallback
+PASS expired deadline never calls engine
+PASS cancelled request never calls engine
+PASS stale generation rejected
+PASS failure cannot confirm video
+PASS exception exhausts unknown ledger and does not fallback
+PASS duplicate identity rejected
+PASS budget overrun cannot fallback or confirm
+PASS deadline after engine result suppresses late confirmation
+PASS cancel after engine result suppresses stale delivery
+PASS one active engine blocks nested request and releases afterwards
+PASS disabled fallback respects user selection policy
+PASS unknown consumption prohibits fallback
+Scheduler checks: 18 passed; fake engines only; ESV integration NOT_RUN
