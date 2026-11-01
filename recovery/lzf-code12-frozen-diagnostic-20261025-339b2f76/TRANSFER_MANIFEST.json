@@ -1,0 +1,38 @@
+{
+  "archive_name": "ESV-code12-frozen-diagnostic-recovery-20261025.tar.gz",
+  "archive_bytes": 30715370,
+  "archive_sha256": "339b2f76342399445b93ffd2cc263bf00f78b611b934b73f3b50264d6363ae0e",
+  "chunk_bytes": 8388608,
+  "parts": [
+    {
+      "name": "ESV-code12-frozen-diagnostic-recovery-20261025.tar.gz.part01",
+      "bytes": 8388608,
+      "sha256": "a526c8f3041e614616b3e34a69b9bad990adfe27e6693bb9c432671f95d93b4c",
+      "git_blob_sha": "0003cfed5e62c4cc7dc7c0adffbf967c677d011d"
+    },
+    {
+      "name": "ESV-code12-frozen-diagnostic-recovery-20261025.tar.gz.part02",
+      "bytes": 8388608,
+      "sha256": "ff8ed0ec050eb24b87e879a9fc29dbaaa97a3390b9f1cb2ccd5d32bd9af6519c",
+      "git_blob_sha": "a4011297cd553bc98d69a5e7299501b2cdfb69b1"
+    },
+    {
+      "name": "ESV-code12-frozen-diagnostic-recovery-20261025.tar.gz.part03",
+      "bytes": 8388608,
+      "sha256": "0c01f1bbacdbd35421917fc150ba35b4cbc43d800bc23ae3a177146b8b232184",
+      "git_blob_sha": "a4083fc66720fbd18a0ec5a1f1d26455c4ed7845"
+    },
+    {
+      "name": "ESV-code12-frozen-diagnostic-recovery-20261025.tar.gz.part04",
+      "bytes": 5549546,
+      "sha256": "6dc9ee9bd111459fb2b7697063f0d040b816361368fdfb5ae13ece9dde3f4559",
+      "git_blob_sha": "88e4fbe5b125bec96f63ef1977fd5ffd38558e5d"
+    }
+  ],
+  "payload_manifest_sha256": "65b8f2e5d280bd9e103b2be1bd4c6d4fb7f7a7e4c649301bdbcce07899d43588",
+  "frozen_source_files": 2892,
+  "payload_files": 2908,
+  "archive_regular_files": 2911,
+  "excluded": "No signing files/private keys/runtime credentials, .git, caches, APKs, device/personal data or other projects.",
+  "scope": "Explicitly authorized private ESV source-recovery backup only."
+}
