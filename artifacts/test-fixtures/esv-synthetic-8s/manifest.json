@@ -1,0 +1,67 @@
+{
+  "filename": "esv_synthetic_8s_h264_aac.mp4",
+  "purpose": "EasySaveVideo UI/media QA fixture (thumbnail, playback, seek, duration, audio, save/export)",
+  "provenance": "Original programmatically drawn geometry/text and generated sine tone; no downloaded or private source media.",
+  "duration_seconds": 8.0,
+  "video": {
+    "codec": "H.264/AVC",
+    "profile": "Constrained Baseline",
+    "level": "3.0",
+    "pixel_format": "yuv420p",
+    "width": 640,
+    "height": 360,
+    "frame_rate": "30/1",
+    "decoded_frames": 240
+  },
+  "audio": {
+    "codec": "AAC",
+    "profile": "LC",
+    "sample_rate_hz": 48000,
+    "channels": 1,
+    "signal": "440 Hz sine tone at low amplitude"
+  },
+  "size_bytes": 191650,
+  "sha256": "74c26a41fca18c585d288b51a8362381f23e4f0a34053df117630daa8720c353",
+  "faststart": true,
+  "mp4_atoms": [
+    {
+      "type": "ftyp",
+      "offset": 0,
+      "size": 32
+    },
+    {
+      "type": "moov",
+      "offset": 32,
+      "size": 8420
+    },
+    {
+      "type": "free",
+      "offset": 8452,
+      "size": 8
+    },
+    {
+      "type": "mdat",
+      "offset": 8460,
+      "size": 183190
+    }
+  ],
+  "verification": {
+    "metadata_assertions": "PASS",
+    "full_av_decode": "PASS, zero decode errors",
+    "visual_contact_sheet": "decoded_contact_sheet.png (0/2/4/6 s)",
+    "device_playback": "NOT RUN; fixture prepared only",
+    "visual_review": "PASS: decoded 0/2/4/6 s frames visually inspected; RGB landmarks, original geometry, progress indicator and changing time/frame markers are legible and unclipped."
+  },
+  "generation_dependencies": {
+    "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "python": "3.12.14",
+    "pillow": "12.3.0",
+    "font": "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
+  },
+  "files": {
+    "generator": "generate_fixture.py",
+    "probe": "ffprobe.json",
+    "encode_log": "ffmpeg_encode.log",
+    "decode_log": "ffmpeg_decode.log"
+  }
+}
