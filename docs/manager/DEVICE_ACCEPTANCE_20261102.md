@@ -49,8 +49,26 @@
 
 另见：离开浏览器再返回时，标签页面已释放，需手动 Go 重新加载（符合“Older pages are released”设计，但测试步骤需注意）。
 
-## 3. 未执行
+## 3. ③ 基础整屏录制：开始→跨页面交互→通知 Stop & Save→验证发布 PASS；成片播放未完成
 
-- ③ 录制：需要在系统 MediaProjection 授权对话框中点“开始”，属于系统级捕获授权，待用户确认后执行。
+用户在聊天中确认后，由测试执行者在系统对话框 “Start recording or casting with EasySaveVideo?” 点了一次 “Start now”。模式：Basic recording（系统选择范围）；音频：No audio（未申请录音权限）。
+
+| 步骤 | 结果 | 截图 |
+|---|---|---|
+| 录制页 | 风险披露完整：每次系统授权、Android 12 最近任务缩略图、仅内部音频不用麦克风、受保护内容黑屏、前台服务 | 13-record |
+| 系统授权 | 系统对话框 → Start now | 14-consent |
+| 录制中切换 Discover/Record | 录制不中断；底部出现 “Screen recording” 面板 | — |
+| 停止 | **App 内 “Stop and save” 无法点击（见缺陷 1）**；改用系统通知 “③ Screen recording” 的 **Stop & Save** 动作 | 17/18-notifications |
+| 结果 | `media_projection` 无活动会话；Tasks：**Recording · Completed**，Verified MP4 in ordinary library，31.5 MiB · 876×1898 · 416 s · 0 audio tracks（时长与 06:57→07:04 实际一致） | 20-after-back |
+| 成片预览 | 预览页仅显示标题，播放控件未出现；录制面板仍打开且其关闭按钮被系统导航栏遮挡 —— **未完成** | — |
+
+### 缺陷与观察
+
+1. **（缺陷）底部录制面板被系统导航栏遮挡**：1080×2340 / 三键导航下，面板按钮（录制中为 “Stop and save” / “Discard this recording…”，结束后为 “Close recording panel”）绘制在导航栏下方，无法在 App 内点击；底部导航被推到 y≈1718。疑为 window insets 未处理。用户只能经通知停止录制。截图 20-after-back 可见按钮与导航栏重叠。
+2. **（缺陷，待确认）录制面板未关闭时预览不可用**：预览页无播放控件，且面板无法关闭，形成死路。
+3. **（观察）录制页启用截屏保护**：在录制页时 `screencap` 与模拟器主机截图均为黑/空；离开录制页后恢复。录制期间 UIAutomator 无法取得 idle 状态。属测试工具限制，可能为有意设计。
+4. 早先“按钮被挤出可见区域”的判断来自单次 UI 导出，已由截图更正为“被导航栏遮挡”。
+
+## 4. 未执行
 - 真实来源搜索、编辑、导出/分享、无痕、Vault：未开始。
 - Debug 权益已切到“部分权益”；进程重启后恢复默认（内存状态）。
