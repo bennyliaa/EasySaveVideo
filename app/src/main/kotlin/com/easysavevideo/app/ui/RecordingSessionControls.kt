@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -35,8 +36,11 @@ fun RecordingSessionControls(presentation: PrivateRecordingPresentationUi, modif
     // Back may close unsubmitted setup. Once submitted it belongs to normal app/browser navigation.
     BackHandler(enabled = ui.stage in setOf(PrivateRecordingStage.CONFIGURE,
         PrivateRecordingStage.WAITING_SYSTEM, PrivateRecordingStage.CONTINUE)) { ui.handleBack() }
-    Column(modifier.fillMaxWidth().heightIn(max = 320.dp).verticalScroll(rememberScrollState())
-        .background(v.colors.surface).padding(v.spacingMedium), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
+    // The panel sits below the app shell at the screen bottom, so it owns the navigation-bar inset;
+    // otherwise Stop and save / Discard / Close are drawn under the system navigation bar.
+    Column(modifier.fillMaxWidth().background(v.colors.surface).navigationBarsPadding()
+        .heightIn(max = 320.dp).verticalScroll(rememberScrollState())
+        .padding(v.spacingMedium), verticalArrangement = Arrangement.spacedBy(v.spacingSmall)) {
         EsvText(stringResource(R.string.private_record_title), style = v.titleTextStyle)
         EsvText(stringResource(when (ui.stage) {
             PrivateRecordingStage.CONFIGURE -> R.string.private_record_disclosure

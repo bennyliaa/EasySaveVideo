@@ -3,6 +3,9 @@ package com.easysavevideo.app
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.WindowInsets as ComposeWindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.ui.Modifier
 import com.easysavevideo.app.vault.*
 import com.easysavevideo.app.ui.RecordingSessionControls
@@ -669,7 +672,9 @@ class MainActivity : ComponentActivity() {
                 val libraryReference = libraryPreviewReference
                 val receipt = previewReceipt
                 Column(Modifier.fillMaxSize()) {
-                Box(Modifier.weight(1f)) {
+                // While the recording panel is shown it owns the bottom navigation-bar inset.
+                Box(Modifier.weight(1f).then(if (recordingUi != null)
+                    Modifier.consumeWindowInsets(ComposeWindowInsets.navigationBars) else Modifier)) {
                 EsvAppShell(controller, initialDestination, windowSize,
                     chromeVisible = !previewHost && receipt == null && libraryReference == null && !fullscreen,
                     navigationEnabled = editor?.state?.busy != true && filePrompt == null &&
