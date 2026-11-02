@@ -1,0 +1,5 @@
+# Check out exactly the committed bytes on every machine, whatever core.autocrlf says.
+# vendor/ artifacts are verified by strict Gradle dependency hashes, and license
+# texts, evidence and manifests under third_party/, docs/, artifacts/ and recovery/
+# are recorded by SHA-256. End-of-line conversion would break those checks.
+* -text
