@@ -1,133 +1,100 @@
-# EasySaveVideo
+# EasySaveVideo（ESV）
 
-正式开发目录：D:/CodexProjects/EasySaveVideo，本地仅使用 main。本次来源、实际合并、备份、验证与历史缺口见 [本机整理报告](docs/consolidation/20261101/REPORT.md)。
+视频发现、浏览、保存（① Direct / ② Stream / ③ Record）与私密管理工具。Android 先行：`com.easysavevideo.app`，Android 12 / API31 起，手机与平板，Kotlin + Compose + SystemWebView。
 
-Private Android 12+ (API31) phone/tablet project. Kotlin + Compose Foundation + SystemWebView; unconfigured builds have zero search Providers; an explicitly configured Wikimedia Commons metadata source is available. SkinKit Contract/Default 0.0.1 supplies every visual category.
+- 正式开发目录 `D:/CodexProjects/EasySaveVideo`，本地只用 `main`；远端 `github.com/bennyliaa/EasySaveVideo`（private）。
+- 执行边界以 [AGENTS.md](AGENTS.md) 为准；接手先读 [开发交接](docs/handover/ESV_开发交接_2026-11-01.md)。
+- 当前状态：[需求差距核查](docs/manager/REQUIREMENT_GAP_REVIEW_20261102.md)、[设备验收记录](docs/manager/DEVICE_ACCEPTANCE_20261102.md)、[本机整理报告](docs/consolidation/20261101/REPORT.md)。
 
-## Project folders
-- `app/`: Android composition, SystemWebView browser, settings and bounded startup recovery
-- `core-model/`, `core-domain/`: platform-independent contracts/state machines/tests
-- `discovery/`: original JVM Provider/Validation/Pool/Seen/Coordinator/Scheduler framework
-- `commons-provider/`: original anonymous Wikimedia Commons metadata client, continuation, rights, Discovery bridge and signed built-in parameter maintenance
-- `save/`: platform-neutral Direct/Stream coordinator, journal and media-verification contracts
-- `hls/`: original strict static-HLS parser and immutable fixed-selection plans
-- `recording/`: platform-neutral capture lifecycle, bounded timeline and resume policy
-- `library/`: platform-neutral ordinary catalog, naming/paging/folder rules and per-item leases
-- `ui-theme/`: app-owned complete SkinKit defaults and immutable snapshots
-- [docs/requirement and design/](docs/requirement%20and%20design/): original specifications (Architecture update_1 retains UTF-16LE original)
-- `docs/m1/`: reconstruction and foundation verification
-- `docs/m2/`: historical Discovery framework development evidence
-- `docs/m2-commons/`: first real metadata-source integration, migration, rights UI and development evidence
-- `docs/m3a/`: Direct HTTPS MP4 development slice; Stream and device acceptance remain pending
-- `docs/m3b/`: historical restricted local-only Media3 HLS checkpoint
-- `docs/m3b-eof/`: current guarded EOF compatibility, conserved samples, terminal decode contract and separate device gates
-- `docs/m4/`: bounded Record development checkpoint and explicit native/device gates
-- `docs/m5a/`: ordinary-library A1/A2 foundation checkpoint, lifecycle review and remaining features
-- `docs/m7a/`: historical signed Commons parameter maintenance baseline
-- `docs/m7b/`: current offline signed repository security policy, independent review and explicit operational/device limits
-- `third_party/`: preserved baseline plus fixed Media3 license evidence; exact current 74-artifact admission
-- `vendor/maven/`: exact internally authorized SkinKit artifacts, not a public relicensing
-- `vendor/media3-maven/`: exact reviewed Media3/transitive binaries and original metadata
-- `artifacts/`: reserved for explicitly requested future installation packages; no APK is generated now
-- `scripts/`: repeatable checks and build entry points
+## 目录结构
 
-Each milestone gets a verified commit and a clearly named development/accepted tag. Complete Git bundle and source backups are kept privately outside this checkout; build caches and SDKs are not project backups.
+### 构建入口（可改）
 
-## Verification
-`./scripts/gradle-workspace.sh --offline --dependency-verification=strict :core-model:test :core-domain:test :ui-theme:test :discovery:test :commons-provider:test :save:test :recording:test :library:test :hls:test :app:compileDebugKotlin :app:compileReleaseKotlin :app:testDebugUnitTest :app:lintDebug :app:lintRelease :app:runtimeInventory`
+| 路径 | 说明 |
+|---|---|
+| `settings.gradle.kts`、`build.gradle.kts`、`gradle.properties` | 模块清单、插件版本、精确离线仓库映射 |
+| `gradle/` | Wrapper 与 `verification-metadata.xml`（严格依赖校验，勿放宽） |
+| `gradlew`、`gradlew.bat` | Gradle Wrapper |
+| `.gitattributes` | `* -text`：任何机器检出都保持提交字节 |
+| `local.properties` | 本机 SDK 路径，Git 忽略，勿提交 |
 
-Set Android SDK and Gradle cache environment paths in another environment. This convenience script only derives its invocation's existing proxy; it never edits trust stores or disables TLS. Avoid concurrent Gradle invocations.
+### Gradle 模块（产品源码，可改）
 
-Read `docs/m1/RECONSTRUCTION.md` before interpreting this fresh Git history. Historical M0 commits are not represented as recovered. No public license is assigned to the user's app or SkinKit code.
+| 模块 | 职责 |
+|---|---|
+| `app/` | Android 组合根：SystemWebView 浏览器、UI、保存/录制/编辑/媒体库/Vault 平台适配、存储 |
+| `core-model/`、`core-domain/` | 平台无关模型、命令、权益与状态机（不得引入 Android/Store/Provider 类型） |
+| `ui-theme/` | ESV 视觉默认值与快照适配（运行时依赖已授权的 SkinKit Contract/Default 1.0.0 二进制） |
+| `discovery/` | Provider 调度、候选验证、结果池、进度与 Seen History |
+| `commons-provider/`、`searxng-provider/` | Wikimedia Commons 与 SearXNG 来源、签名维护仓库 |
+| `save/`、`hls/` | 平台无关 Direct/Stream 协调与受限静态 HLS 解析 |
+| `recording/`、`library/` | 录制生命周期/片段规则，普通媒体目录/租约 |
+| `verification-client/`、`verification-local/` | 可选验证服务客户端与本地 JVM 解析 |
+| `nav-diagnostics/` | 仅 `-Pesv.navdiagnostics=true` 时纳入的 QA 载体，非生产依赖 |
 
-## M2 boundary
+### 非 Gradle 代码
 
-Both variants may register Wikimedia Commons when the already-approved service contact is injected at build time. Without that contact, or when the source is disabled, there are zero production Providers and browser navigation remains available. Default safe search is on: Commons reports that it cannot support it and makes no query until the user explicitly confirms disabling that filter. Debug's opt-in synthetic fixture remains local-only and excluded from Release.
+| 路径 | 说明 |
+|---|---|
+| `verification-service/` | 独立 Python 验证服务（Android 不含其依赖） |
+| `verification-fixtures/` | 独立夹具与调度契约（git subtree），未接入生产 |
+| `scripts/` | 边界/准入检查与工作区脚本；先读适用范围，勿为跑通而改门禁 |
 
-The actual anonymous HTTPS adapter checks and pins public peers, keeps normal system TLS/hostname checks, rejects redirects/cookies/auth/proxies and bounds/cancels socket work. It searches only metadata for videos in file namespace 6. It does not fetch media, thumbnails or confer reuse/download permission. Cards and details retain author, license, custom credit, warnings and source provenance as inert text.
+### 依赖与许可（只按准入流程变更）
 
-The existing SQLite database has an additive v1→v2 rights migration and bounded per-row snapshots. Feature rollback disables registration while retaining the v2 reader. Old v1-only binaries are not a compatible database rollback. Full Android SQLite/device/UI/network acceptance and packages remain NOT RUN. See `docs/m2-commons/IMPLEMENTATION_AND_ACCEPTANCE.md`, including contact injection instructions, for exact limits.
+| 路径 | 说明 |
+|---|---|
+| `vendor/` | 精确离线 Maven 构件：`maven/`（SkinKit 授权构件）、`media3-maven/`、`webkit-maven/`、`coil-maven/`、`tink-maven/` |
+| `third_party/` | `admitted-runtime.tsv`（95 项运行时准入）、各依赖许可证/NOTICE 与候选审查证据 |
 
-## M3-A boundary
+### 文档（可增补）
 
-Explicit Save scans only the current main document and requires resource selection. Original system HTTPS transport streams compatible MP4 into owned private storage; local Android extraction, timestamped decoding, frame checks, and a durable file/SQLite protocol gate success. Direct remains free and independent of Providers. Stream, recording, conversion, media-library playback and export are not implemented by this slice.
+| 路径 | 说明 |
+|---|---|
+| `docs/requirement and design/` | 原始规格 01～06 与 update1（架构 update_1 为 UTF-16LE 原文） |
+| `docs/manager/` | 项目管理：差距核查、设备验收记录 |
+| `docs/handover/` | 交接文档 |
+| `docs/ui/` | UI 设计、实现切片与功能接入台账 |
+| `docs/m0` … `docs/m11a` | 各里程碑/切片的实现与验收边界（例：[m3a Direct](docs/m3a/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m3b-eof HLS](docs/m3b-eof/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m4 Record](docs/m4/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m6c 授权帧选区](docs/m6c/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m7b 签名仓库](docs/m7b/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m11a 发行阻塞](docs/m11a/RELEASE_BLOCKERS.md)） |
+| `docs/discovery/`、`docs/vault/`、`docs/verification*/` 等 | 专题状态与证据 |
+| `docs/consolidation/` | 2026-11-01 归拢报告与覆盖清单 |
 
-Development budgets are visible in the task center: one transfer, 2 GiB artifact cap, 4 GiB cumulative transfer budget, two-hour explicit execution window, 60-second validation window. These are injectable engineering limits, not final product limits or measured promises. Backgrounding checkpoints and waits for a manual foreground resume; no FGS, WorkManager or wake lock is added.
+### 冻结证据（不移动、不改写）
 
+| 路径 | 说明 |
+|---|---|
+| `artifacts/` | 历史验收与设备证据（部分被清单按路径/哈希固定） |
+| `recovery/` | 重建/恢复候选与冻结 receiver；其哈希清单依赖原路径 |
+| `verification-transfer/` | code3 传输包，被归拢覆盖清单引用 |
 
-## M3-B boundary
+模块与证据目录被数百处文档、契约测试与哈希清单按路径引用（如 `core-model/` 约 880 处、`scripts/` 约 290 处），因此保持现有平铺布局，不做物理搬迁。
 
-The latest development slice adds explicit, entitlement-gated static HLS preparation and fixed-variant selection. Guarded HTTPS downloads bounded owned segments; the pinned Media3 extractor/Transformer path receives only allowlisted local input IDs, rejects decoding/encoding and DRM requests, and produces a real independently verified MP4 before the existing commit protocol can publish it. Stream source context remains memory-only; interrupted incomplete streams require reselection. Direct remains free.
+### 仓库之外
 
-This is a deliberately narrow AVC Baseline / optional multiplexed AAC profile with strict TS and timeline boundaries, not universal HLS support. The current EOF adapter admits ordinary no-tail AUD streams, multislice pictures, inherited parameter sets and unbounded PES under that profile, with the same capability-gated reader used in inspection and export. Stream completion additionally requires full independent MP4 sample conservation and actual final-GOP decoder output EOS, with a versioned fail-closed recovery contract. Host tests execute admitted reader and MP4 muxer/extractor bytecode using synthetic entropy; actual Android HLS/Transformer/MediaExtractor/native decoder/AV-sync, package assembly and device acceptance are NOT RUN. Full M3 and distribution remain gated. Read `docs/m3b-eof/IMPLEMENTATION_AND_ACCEPTANCE.md` before interpreting the development tag or test counts.
+- 构建中间产物：各模块 `build/`、根 `.gradle/`、`.kotlin/`（Git 忽略，可随时删除）。
+- 测试日志、临时文件与中间产物：`D:/CodexProjects/EasySaveVideo test-workspace/`。
+- 永久恢复归档：`D:/CodexProjects/EasySaveVideo-Archive-20261101T132000Z`（勿清理）。
 
+## 构建与测试（Windows，串行、离线、严格校验）
 
-## M4 and M5-A boundaries
+```powershell
+$env:JAVA_HOME = 'D:\Android\Android Studio\jbr'
+$env:ANDROID_HOME = 'D:\Android\SDK'
+$gradle = 'C:\Users\benny\.gradle\wrapper\dists\gradle-9.6.0-bin\42k10rwplmzkhuboz9kdazi7s\gradle-9.6.0\bin\gradle.bat'
+& $gradle --offline --dependency-verification=strict --no-daemon --max-workers=1 --console=plain --continue `
+  '-Dorg.gradle.jvmargs=-Xmx2048m -XX:ActiveProcessorCount=2 -Dfile.encoding=UTF-8' `
+  '-Pkotlin.compiler.execution.strategy=in-process' `
+  :core-model:test :core-domain:test :ui-theme:test :discovery:test :commons-provider:test :save:test `
+  :recording:test :library:test :hls:test :searxng-provider:test :verification-client:test :verification-local:test `
+  :app:compileDebugKotlin :app:compileReleaseKotlin :app:testDebugUnitTest :app:runtimeInventory
+```
 
-M4 adds explicit per-session system-consented recording, playback-only audio capture, bounded pause/resume, finalization, independent B-policy verification and published read-only playback. First/middle/final/effective-resume GOPs are actually decoded; AAC uses sparse readability checks. The actual-resume limit remains 32. Task codec v6 preserves genuine v1–v5 records; evidence-v3 compatibility remains unchanged. These are development code and host checks, not measured device duration or permission/native acceptance.
+Windows 宿主当前有 229 项已归因的平台失败（目录 fsync、`fileKey`、POSIX 属性、symlink、打开文件重命名），回归时只比较新增/消失的失败 ID。新克隆需 `core.longpaths=true`。Linux/macOS 可用 `scripts/gradle-workspace.sh`。
 
-M5-A adds the ordinary-library foundation: one shared Save/catalog database, additive schema migration, exact current read capabilities, per-item leases, folders, local search/sort, logical rename/move, details, manual playback/seek and explicitly confirmed recoverable deletion. Active Save tasks remain reachable independently of the bounded recent history; successful/deleted history cannot exhaust the 100 unfinished-task limit or resurrect media. Library and future Vault are free.
+## 工作规则摘要
 
-M5-A3 adds user-triggered MediaStore/SAF export, bounded temporary read-only system sharing, and bounded native thumbnails. Each copy has its own result and cleanup lifecycle; the original remains intact. Public output is never a substitute for app-private saving, and chooser launch is not recipient delivery. See `docs/m5a3/IMPLEMENTATION_AND_ACCEPTANCE.md` for the current development status and exact verification limits.
-
-M5-A is not a completed ordinary library or full M5. Configurable capture/save destinations, bulk folder deletion and Vault encryption/authentication remain outside these slices. Normal library files are app-private plaintext, not a Vault. Deletion clears the ordinary catalog's display metadata and file representation after readers release; historical Save provenance remains, so this is not secure metadata erasure. Earlier A1/A2 evidence and migration context remain in `docs/m5a/IMPLEMENTATION_AND_ACCEPTANCE.md`. Android/OEM, permissions, actual provider/recipient compatibility and real-media acceptance remain NOT_RUN.
-
-## M6-A video-tools boundary
-
-The ordinary-library editor has a real pinned Media3 trim/merge/display-crop/compression path with independent full MP4/sample/decode verification, typed edit provenance, new-item atomic publication and bounded native ownership. Original media is preserved. Time cuts snap inward to observed frame boundaries; the supported integer-CFR/AVC/SDR/AAC subset and resource limits are explicit. “Original quality” is not a lossless claim, no-op duplicates are avoided, and compression never promises a smaller file. Existing development-only entitlements remain unchanged.
-
-This is an M6-A development checkpoint, not full M6 or Android release acceptance. Crop UI is a labeled schematic, native codec/GPU/OEM/visual quality acceptance remains NOT_RUN, and no APK/AAB was built. M6-B pre-record region capture and recording-segment orchestration remain separate. Vault stays disabled. See `docs/m6a/IMPLEMENTATION_AND_ACCEPTANCE.md` and its acceptance checklist before interpreting the development tag or test counts.
-
-## M6-B region/segment development boundary
-
-M6-B adds an explicitly limited ratio-diagram selector, original SurfaceTexture/EGL crop before encoding, and ordered app-private recorded segments. It does not show a captured screenshot for visual framing: chosen coordinates apply to the complete image the user subsequently authorizes in the system. A default-display request or matching callback dimensions never authenticates app/content identity. The complete authorized image can transiently enter GPU memory, but no full-screen temporary recording is written. Exact unsupported geometry or producer transforms fail closed; there is no full-screen-file fallback.
-
-API31/32/33 use an explicit default-display/latched-surface branch without waiting for API34-only callbacks. API34+ additionally requires matching actual capture-size callbacks. Pause closes independent files under one projection/VirtualDisplay; only independently verified, actual-CFR-compatible sources enter typed recorded editing. Ordinary editor inputs remain limited to eight; one recording group permits initial plus32 actual resumes,30min effective media,2h wall time and2GiB total private input. Raw segments remain private and are retained until explicit discard, including after successful final publication. Native uncertainty and partial cleanup remain visible.
-
-Final publication in ordinary editing and recorded assembly now has a shared bounded cancellation/admission point after long I/O. Cancellation before admission excludes publication; afterward UI says the commit/result is pending. Genuine historical codecs and checked database migration preserve prior records. See `docs/m6b/SCOPE_AND_SEQUENCE.md`, `IMPLEMENTATION_AND_ACCEPTANCE.md` and the device checklist for exact evidence and remaining limits. Actual-content preview framing, physical crop/native codec/GPU/OEM/AV-sync acceptance and package/device execution remain NOT_RUN or unimplemented as specifically identified. This is not full M6 or Android-release acceptance. Vault remains disabled.
-
-## M6-C authorized-frame development boundary
-
-M6-C adds a separate actual-authorized-frame selector while preserving the labelled proportional mode. It leaves ESV's current browser visible, obtains one system consent, and reads one bounded frame from that projection into memory. The secure frozen selector shows the supplied pixels for explicit region confirmation. Only after selector disposal and a fresh uncovered-browser/source frame can the same projection/VirtualDisplay begin the existing pre-encoder cropped recording pipeline. No preview file, saved-state bitmap, disk cache, export or audio capture is created before that confirmation.
-
-This closes the M6-B code-level actual-preview gap within a deliberately visible-ESV-browser route; arbitrary other-app preview is not promised. Source identity cannot be proved from a default-display request or matching dimensions, and wrong/black frames can be cancelled. Actual Android/GPU/security-window/codec/OEM/phone/tablet visual behavior remains NOT_RUN, so this is not full M6 or release acceptance. See `docs/m6c/SCOPE_AND_SEQUENCE.md` and `IMPLEMENTATION_AND_ACCEPTANCE.md`. Vault remains disabled.
-
-
-## M7-A built-in Commons parameter maintenance boundary
-
-M7-A adds a closed signed package contract for the existing compiled Commons provider, monotonic version/high-water persistence, last-known-good/explicit rollback, a bounded cancelable injected update runtime and active-request policy fencing. Declarations only disable or tighten existing request/cache budgets; they cannot supply hosts, extraction logic or code. Signed disable is stable immediately. Enabling candidates require exact-request health evidence; any unconfirmed candidate is disabled after restart while its high-water remains.
-
-Production trust roots and update endpoints are intentionally absent. This is local code/host verification, not a live remote service or full M7 extraction-rule maintenance. Existing Commons contact/user opt-in and zero-provider fallback remain. See `docs/m7a/IMPLEMENTATION_AND_ACCEPTANCE.md` and its independent/device checklists. The historical M7-A aggregate is `scripts/verify-provider-maintenance-workspace.sh` at its M7-A tag; the current checkout uses the M7-B command below. Free Library is unchanged, and Vault remains disabled and untouched.
-
-## M7-B offline signed repository-policy boundary
-
-M7-B adds independent policy signatures/version anti-replay, a nondecreasing safety floor,
-cumulative package-version/key revocations, global disable and exact version plus full-envelope
-SHA-256 rollback authorization. Every enabled downgrade/LKG path passes the current policy;
-explicit rollback requires a grant even for a disabled target. Accepted package kill switches
-remain signed barriers. Bundled defaults cannot restore authority after signed enrollment.
-
-Policy/package roots remain independently empty in production, and there is no update endpoint,
-root rotation, downloaded code or extraction interpreter. Revocations cannot be cleared; bounded
-list exhaustion needs later reviewed work. Old format-1 state fails closed without reset/migration.
-Clock protection is limited to the persisted pre-transaction bound and process-local observations;
-coherent full-directory rollback is not prevented. No device or production acceptance is implied.
-
-Run `scripts/verify-repository-policy-workspace.sh` for the current strict-offline aggregate.
-See `docs/m7b/IMPLEMENTATION_AND_ACCEPTANCE.md`, `INDEPENDENT_SOURCE_REVIEW.md` and the device
-checklist. This remains a development slice, not full M7. Free Library is unchanged; Vault is
-still disabled, untouched and excluded from this work.
-
-## Optional page-verification service development boundary
-
-`verification-client/` and the independent source-only `verification-service/` add a versioned optional
-second-layer Discovery path. Android has no default service and requires explicit, process-session-only
-consent before sending complete candidate URLs; restart disables it. At most one candidate per source
-response is attempted under a separate 3-second budget. Failed or insufficient evidence stays pending.
-A service result is page-video evidence only, never proof of playback, downloadability or rights.
-
-The service has no admitted public targets. Actual Scrapling/browser execution is confined to owned
-isolated fixtures in the separately approved private evaluation runtime, which is excluded from
-Android and backups. Deployment, public dynamic testing, binary redistribution/legal acceptance and
-device/APK acceptance remain separate gates. Read `docs/verification-service/IMPLEMENTATION_AND_ACCEPTANCE.md`
-and run `scripts/verify-verification-service-workspace.sh` only with its documented existing runtime.
+- 不强推、不改写历史、不删除远端分支；提交只暂存本任务文件。
+- 日志不得包含 URL、标题、搜索词、Cookie、Token、文件名、凭据或异常消息。
+- Vault 保持 `ENABLED = false`；Fake 权益仅 Debug；零 Provider 时浏览与保存仍可用。
+- 新依赖、APK/AAB、设备操作、发布与支付均需单独授权。
+- 用户代码与授权构件均未授予任何公开许可证。
