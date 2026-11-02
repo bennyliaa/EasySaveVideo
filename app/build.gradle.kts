@@ -352,7 +352,8 @@ tasks.withType<Test>().configureEach {
 }
 
 tasks.register("runtimeInventory") {
-    dependsOn(":core-model:jar", ":core-domain:jar", ":ui-theme:jar", ":discovery:jar", ":save:jar", ":recording:jar", ":library:jar", ":hls:jar", ":commons-provider:jar", ":searxng-provider:jar", ":verification-client:jar")
+    // Hashing reads every resolved file, so build whatever produces them (all project jars).
+    dependsOn(configurations.named("debugRuntimeClasspath"), configurations.named("releaseRuntimeClasspath"))
     doLast {
         listOf("debugRuntimeClasspath", "releaseRuntimeClasspath").forEach { name ->
             val output = layout.buildDirectory.file("reports/$name-inventory.tsv").get().asFile
