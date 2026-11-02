@@ -65,7 +65,9 @@
 |---|---|
 | `artifacts/` | 历史验收与设备证据（部分被清单按路径/哈希固定） |
 | `recovery/` | 重建/恢复候选与冻结 receiver；其哈希清单依赖原路径 |
-| `verification-transfer/` | code3 传输包，被归拢覆盖清单引用 |
+| `verification-transfer/` | code3 传输包清单，被归拢覆盖清单引用 |
+
+历史 APK、Base64 传输分块与 `.partNN` 分卷已于 2026-11-02 从工作目录移除（约 916 MB），可从历史恢复，见 [移除记录](docs/manager/REMOVED_BINARIES_20261102.md)。
 
 模块与证据目录被数百处文档、契约测试与哈希清单按路径引用（如 `core-model/` 约 880 处、`scripts/` 约 290 处），因此保持现有平铺布局，不做物理搬迁。
 
