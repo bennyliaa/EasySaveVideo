@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -146,16 +147,22 @@ private fun PublishedPreviewBody(
             }, onReleaseUnconfirmed = { releaseUnconfirmed = true; currentReleaseFailure() })
     }
     DisposableEffect(session) { onDispose { session.close() } }
-    AndroidView(factory = { context ->
-        SurfaceView(context).apply {
-            holder.addCallback(object : SurfaceHolder.Callback {
-                override fun surfaceCreated(holder: SurfaceHolder) { session.attach(holder) }
-                override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) = Unit
-                override fun surfaceDestroyed(holder: SurfaceHolder) { session.close() }
-            })
-        }
-    }, modifier = Modifier.fillMaxWidth().heightIn(max = 560.dp).aspectRatio(aspectRatio.coerceIn(0.25f, 4f))
-        .background(v.colors.surface))
+    // Fit the frame inside a bounded height: a full-width portrait recording would otherwise be taller
+    // than the screen, and the SurfaceView would cover Close preview and push the controls away.
+    val maxVideoHeight = minOf(560.dp, LocalConfiguration.current.screenHeightDp.dp * 0.55f)
+    BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        val ratio = aspectRatio.coerceIn(0.25f, 4f)
+        val videoWidth = minOf(maxWidth, maxVideoHeight * ratio)
+        AndroidView(factory = { context ->
+            SurfaceView(context).apply {
+                holder.addCallback(object : SurfaceHolder.Callback {
+                    override fun surfaceCreated(holder: SurfaceHolder) { session.attach(holder) }
+                    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) = Unit
+                    override fun surfaceDestroyed(holder: SurfaceHolder) { session.close() }
+                })
+            }
+        }, modifier = Modifier.size(videoWidth, videoWidth / ratio).background(v.colors.surface))
+    }
     EsvText(when (playback) {
         PreviewPlayback.OPENING -> "正在打开已发布成片…"
         PreviewPlayback.READY -> "已就绪，请手动播放"
