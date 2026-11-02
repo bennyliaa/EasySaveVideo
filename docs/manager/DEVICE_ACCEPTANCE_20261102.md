@@ -33,3 +33,24 @@
 1. **本地化不一致**：界面语言为英文时，“已验证成片预览”页全部、媒体库 “撤销临时分享读取并清理副本”、“位置：媒体库根目录”、“视频” 等仍为中文。
 2. **默认名称**：保存后名称为 `Video <UUID>`，不是来源标题（可能是隐私设计，需产品确认）。
 3. 模拟器音频关闭，未验证音频；样本本身报告 0 音轨。
+
+## 2. ② Stream（静态 HLS）：权益门控 PASS，保存 FAIL（POLICY_BLOCKED）
+
+样本：Mux 公开测试流 `https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8`（Big Buck Bunny，CC-BY 3.0）。主机核对：200、`audio/mpegurl`、5 个 H.264/AAC 变体（240p～1080p），变体为同域相对路径、VOD、64 个 10 s TS 分片，DNS 解析为公网 Fastly 地址。
+
+| 步骤 | 结果 | 截图 |
+|---|---|---|
+| 打开 m3u8 | “Video element found” | 10-hls-page |
+| Inspect（默认权益“来源未知”） | 候选 1280×720 · 634 s；按钮 **“Streaming entitlement required”** —— PR-19 门控正确 | 11-hls-inspect |
+| Debug 面板“开发权益测试”选“部分权益”（STREAM_SAVE+RECORD_SAVE，仅 Debug） | 按钮变为 “Inspect static HLS” —— 门控随权益解除 | — |
+| Inspect static HLS | **失败**：“The resource address or connection does not meet the safety restrictions.”（`SaveError.POLICY_BLOCKED`） | 12-hls-variants |
+
+分析：MIME `audio/mpegurl` 在 `SystemHttpsHlsFetcher.kt:419` 白名单内；地址为 HTTPS 公网同域。该类中 `POLICY_BLOCKED` 来源有：全局 `CookieHandler` 存在（:136/:178）、URL 重复访问（:135）、重定向超限（:182）、URI 编码/相对引用/路径规范化（:374–406）。生产日志按设计不含细节，设备上无法进一步定位。**待开发**：用相同清单结构做 JVM 复现，确定触发分支；若为误判则修复，若为预期限制则在 UI 给出可理解原因。
+
+另见：离开浏览器再返回时，标签页面已释放，需手动 Go 重新加载（符合“Older pages are released”设计，但测试步骤需注意）。
+
+## 3. 未执行
+
+- ③ 录制：需要在系统 MediaProjection 授权对话框中点“开始”，属于系统级捕获授权，待用户确认后执行。
+- 真实来源搜索、编辑、导出/分享、无痕、Vault：未开始。
+- Debug 权益已切到“部分权益”；进程重启后恢复默认（内存状态）。
