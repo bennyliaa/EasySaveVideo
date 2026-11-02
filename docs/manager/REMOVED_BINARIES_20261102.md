@@ -21,6 +21,16 @@
 
 保留：上述目录中的清单、收据、README、测试报告、lint 结果与补丁等文本证据；`recovery/` 中的 `code12-to-code13.apk.range-delta.zip` 与冻结 receiver 脚本；`artifacts/test-fixtures/`；设计文档。
 
+## 追加：整个 `recovery/` 目录（同日）
+
+用户确认 `recovery/` 对开发无用后，整体移除剩余 104 个文件（约 7 MB）：`context-reconstruction-20261017/`（各 code 候选清单、收据、审查结论、冻结 code13 receiver、code12→13 增量包）、`lzf-code12-frozen-diagnostic-20261025-339b2f76/`、`receiver-hardening-20261020/`。
+
+- 基准提交：`4b9a65ad0c126447d7bcd64ac1e2e7884de9cdd5`
+- 路径清单：[REMOVED_RECOVERY_20261102.txt](REMOVED_RECOVERY_20261102.txt)
+- 外置归档 `D:/CodexProjects/EasySaveVideo-Archive-20261101T132000Z/recovery/` 保留更完整的原始恢复材料。
+
+恢复：`git -C D:\CodexProjects\EasySaveVideo worktree add --detach <新目录> 4b9a65a`，或 `git show 4b9a65a:recovery/<路径>`。
+
 ## 影响
 
 - 文档、清单中指向这些文件的路径在当前 `main` 上不再存在，需按下文从历史恢复后再使用。

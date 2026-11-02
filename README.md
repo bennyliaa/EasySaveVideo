@@ -42,7 +42,7 @@
 | `services/verification-fixtures/` | 独立夹具与调度契约（git subtree，前缀已改为此路径），未接入生产 |
 | `scripts/` | 边界检查与工作区脚本；先读适用范围，勿为跑通而改门禁 |
 
-2026-11-02 起模块从根目录移入 `modules/`、服务移入 `services/`。`scripts/` 中绑定历史基准提交（`git ls-tree <BASE>`）的准入/SQLite 校验脚本按当时的旧布局核对，**未改写**；`docs/`、`artifacts/`、`recovery/` 中的历史路径同样指旧布局。
+2026-11-02 起模块从根目录移入 `modules/`、服务移入 `services/`。`scripts/` 中绑定历史基准提交（`git ls-tree <BASE>`）的准入/SQLite 校验脚本按当时的旧布局核对，**未改写**；`docs/`、`artifacts/` 中的历史路径同样指旧布局。`recovery/` 已于同日移除（见移除记录）。
 
 ### 依赖与许可（只按准入流程变更）
 
@@ -68,7 +68,6 @@
 | 路径 | 说明 |
 |---|---|
 | `artifacts/` | 历史验收与设备证据（部分被清单按路径/哈希固定） |
-| `recovery/` | 重建/恢复候选与冻结 receiver；其哈希清单依赖原路径 |
 | `verification-transfer/` | code3 传输包清单，被归拢覆盖清单引用 |
 
 历史 APK、Base64 传输分块与 `.partNN` 分卷已于 2026-11-02 从工作目录移除（约 916 MB），可从历史恢复，见 [移除记录](docs/manager/REMOVED_BINARIES_20261102.md)。
