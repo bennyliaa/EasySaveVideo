@@ -49,6 +49,16 @@
 
 另见：离开浏览器再返回时，标签页面已释放，需手动 Go 重新加载（符合“Older pages are released”设计，但测试步骤需注意）。
 
+### 2.1 POLICY_BLOCKED 根因（已确认）
+
+同一进程内对照实验（code13，emulator-5556）：先 Direct 下载同一 MP4 → Completed（任务 5c0282f1）；打开 Mux HLS 页面后再 Direct 下载同一 MP4 → **Failed**（任务 cb85ad85）。logcat（ESV 进程）：`MediaHTTPService: makeHTTPConnection: CookieManager created: java.net.CookieManager@…`。
+
+结论：WebView 用系统 `MediaPlayer` 播放 HLS 时，`MediaHTTPService` 在 ESV 进程内安装了进程级 `java.net.CookieManager`；ESV 网络策略对全局 CookieHandler 失败关闭（`SystemHttpsConnectionFactory.kt:33`、`SystemHttpsHlsFetcher.kt:136/178`），因此此后同进程所有网络保存（Direct 与 HLS）均被拦截，直到应用重启。Direct MP4 页面由 Chromium 自带管线播放，不触发该问题。
+
+附带 UX 缺陷：失败后任务页提示“不要切换方式绕过内容保护或访问限制”，与真实原因不符。
+
+修复方向（待用户决定，涉及网络安全策略）：A 改用已准入 OkHttp 4.12 且不使用任何 CookieJar，复用公网地址/TLS/网络绑定检查；B 网络保存移到独立进程；C 先给出准确原因与“重启应用”指引。
+
 ## 3. ③ 基础整屏录制：开始→跨页面交互→通知 Stop & Save→验证发布 PASS；成片播放未完成
 
 用户在聊天中确认后，由测试执行者在系统对话框 “Start recording or casting with EasySaveVideo?” 点了一次 “Start now”。模式：Basic recording（系统选择范围）；音频：No audio（未申请录音权限）。
