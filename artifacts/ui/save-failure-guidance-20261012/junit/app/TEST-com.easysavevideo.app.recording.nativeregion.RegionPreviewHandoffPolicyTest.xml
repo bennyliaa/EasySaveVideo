@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.easysavevideo.app.recording.nativeregion.RegionPreviewHandoffPolicyTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:31.721Z" hostname="cloud-jvm" time="0.004">
-  <properties/>
-  <testcase name="snapshotExpiryIsRecheckedAfterSourceWorkEvenIfGateAlreadyAdmitted" classname="com.easysavevideo.app.recording.nativeregion.RegionPreviewHandoffPolicyTest" time="0.004"/>
-  <testcase name="successfulAdmissionBeforeBlockingCallCannotRenewTheHandoffDeadline" classname="com.easysavevideo.app.recording.nativeregion.RegionPreviewHandoffPolicyTest" time="0.0"/>
-  <testcase name="clockBeforeCaptureReadinessCannotAdmitHandoff" classname="com.easysavevideo.app.recording.nativeregion.RegionPreviewHandoffPolicyTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

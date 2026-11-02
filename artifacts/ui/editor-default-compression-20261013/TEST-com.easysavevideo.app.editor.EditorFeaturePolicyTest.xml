@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.editor.EditorFeaturePolicyTest" tests="5" skipped="0" failures="0" errors="0" time="0.004">
-  <testcase name="trimUsesExistingCropCapability" classname="com.easysavevideo.app.editor.EditorFeaturePolicyTest" time="0.003" />
-  <testcase name="mixedOperationsRequireOnlyTheirExistingCapabilities" classname="com.easysavevideo.app.editor.EditorFeaturePolicyTest" time="0.0" />
-  <testcase name="compressOnlyRequiresCompress" classname="com.easysavevideo.app.editor.EditorFeaturePolicyTest" time="0.0" />
-  <testcase name="orderedFullMergeOnlyRequiresMerge" classname="com.easysavevideo.app.editor.EditorFeaturePolicyTest" time="0.001" />
-  <testcase name="noOpRequiresNoPaidOperation" classname="com.easysavevideo.app.editor.EditorFeaturePolicyTest" time="0.0" />
-  </testsuite>

@@ -1,6 +1,0 @@
-PASS exact archive files/directories, pinned manifest SHA-256, 203 archived output bytes/modes and original checkpoint blobs
-PASS original checkpoint: 53ee1863a5b60f44752d246e936b599ca1ca7628
-PASS approved baseline: 0c178320cd78391bfedd5f9846e3ee873f0f5fce ; 4070 files;3 allowed integration edits;9 explicit new files
-PASS candidate membership: 4317 including all203 archived outputs and preservation manifest
-PASS frozen count requirement: 2035 = 1959 +76; aggregate execution pending
-FINAL_FREEZE_NOT_WRITTEN; NO_GRADLE; NO_DEVICE_EXECUTION

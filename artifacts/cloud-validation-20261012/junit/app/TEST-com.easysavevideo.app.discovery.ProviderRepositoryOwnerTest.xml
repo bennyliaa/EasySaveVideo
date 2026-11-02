@@ -1,6 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.discovery.ProviderRepositoryOwnerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:40.226Z" time="0.006">
-  <testcase name="repeatedInspectionKeepsSameRepositoryOwnerAndSnapshot" classname="com.easysavevideo.app.discovery.ProviderRepositoryOwnerTest" time="0.001" />
-  <testcase name="busyRepositoryIsRetainedEvenAfterOtherOwnerCloses" classname="com.easysavevideo.app.discovery.ProviderRepositoryOwnerTest" time="0.001" />
-  <testcase name="constructionFailureIsAttemptedOnlyOnceAndDoesNotResetEvidence" classname="com.easysavevideo.app.discovery.ProviderRepositoryOwnerTest" time="0.004" />
-</testsuite>

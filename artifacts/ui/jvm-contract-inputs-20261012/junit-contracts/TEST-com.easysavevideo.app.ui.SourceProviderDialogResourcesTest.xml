@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:36:55.700Z" time="0.023">
-  <testcase name="languageKeysAndParametersMatchAcrossEveryNewResource" classname="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" time="0.007" />
-  <testcase name="englishOversizedRegionNoticePreservesFullScreenFallbackBoundary" classname="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" time="0.003" />
-  <testcase name="filtersKeepAdmissionAndOriginalArgumentsWhenLanguageChanges" classname="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" time="0.003" />
-  <testcase name="localizationCannotGrantRecoveryOrInventReadableState" classname="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" time="0.006" />
-  <testcase name="regionSemanticsKeepCoordinatesAndUnconfirmedCaptureCannotBeSelected" classname="com.easysavevideo.app.ui.SourceProviderDialogResourcesTest" time="0.004" />
-  </testsuite>

@@ -1,8 +1,0 @@
-androidx.concurrent:concurrent-futures:1.1.0 6 OK
-androidx.concurrent:concurrent-futures:1.2.0 6 OK
-com.google.guava:listenablefuture:1.0 1 OK
-com.google.guava:guava:33.3.1-android 1 OK
-org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3 496 OK
-org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0 484 OK
-org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3 7 OK
-org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0 7 OK

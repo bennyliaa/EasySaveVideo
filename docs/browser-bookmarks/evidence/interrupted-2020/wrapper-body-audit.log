@@ -1,6 +1,0 @@
-PASS inherited folder SQLite class bodies byte-exact: 1 classes; 26 test methods
-PASS all inherited OS source/permission/compiled-class gate bodies byte-exact after metadata-only scope prelude
-PASS four inherited source-admission bodies unchanged except default output directory
-PASS all 684 prior frozen inputs retained; all 4061 baseline files covered
-PASS all new wrapper default documentation output paths remain in current scope
-GRADLE_NOT_RUN; FINAL_CANDIDATE_NOT_FROZEN; acceptance remains pending

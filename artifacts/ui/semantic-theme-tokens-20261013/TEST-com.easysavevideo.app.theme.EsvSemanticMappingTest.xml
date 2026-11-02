@@ -1,9 +1,0 @@
-<testsuite name="com.easysavevideo.app.theme.EsvSemanticMappingTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-13T06:30:03.312Z" hostname="[redacted]" time="0.05">
-  <properties />
-  <testcase name="standardButtonKeepsItsOwnControlCornerAndExplicitStateVisuals" classname="com.easysavevideo.app.theme.EsvSemanticMappingTest" time="0.037" />
-  <testcase name="detachedDefaultsMapIntoComposeWithoutPreScalingLogicalSpOrDp" classname="com.easysavevideo.app.theme.EsvSemanticMappingTest" time="0.001" />
-  <testcase name="admittedSourceOverridesSurviveSinglePinSnapshotAndComposeMapping" classname="com.easysavevideo.app.theme.EsvSemanticMappingTest" time="0.002" />
-  <testcase name="materialSlotsUseSemanticValuesRatherThanOneUniversalShape" classname="com.easysavevideo.app.theme.EsvSemanticMappingTest" time="0.009" />
-  <system-out />
-  <system-err />
-</testsuite>

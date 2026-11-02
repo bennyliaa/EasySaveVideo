@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.editor.ui.EditorDefaultsTest" tests="5" skipped="0" failures="0" errors="0" time="0.011">
-  <testcase name="newDraftConsumesLatestPreferenceAndCompletionStartsFresh" classname="com.easysavevideo.app.editor.ui.EditorDefaultsTest" time="0.004" />
-  <testcase name="removingAllSegmentsDoesNotReplaceExplicitCompression" classname="com.easysavevideo.app.editor.ui.EditorDefaultsTest" time="0.0" />
-  <testcase name="appendingRepeatedSelectionAndChangedSettingsKeepUserChoice" classname="com.easysavevideo.app.editor.ui.EditorDefaultsTest" time="0.0" />
-  <testcase name="preferenceDoesNotGrantCompressionEntitlement" classname="com.easysavevideo.app.editor.ui.EditorDefaultsTest" time="0.004" />
-  <testcase name="restoredCheckpointKeepsItsOwnModeAgainstOppositeDefaults" classname="com.easysavevideo.app.editor.ui.EditorDefaultsTest" time="0.003" />
-  </testsuite>

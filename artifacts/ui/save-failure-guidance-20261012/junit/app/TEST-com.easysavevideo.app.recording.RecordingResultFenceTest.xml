@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.easysavevideo.app.recording.RecordingResultFenceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:31.707Z" hostname="cloud-jvm" time="0.001">
-  <properties/>
-  <testcase name="failedNativeReleaseNeverRemovesOccupancy" classname="com.easysavevideo.app.recording.RecordingResultFenceTest" time="0.001"/>
-  <testcase name="releaseBeforeAbandonStillClearsControllerOccupancy" classname="com.easysavevideo.app.recording.RecordingResultFenceTest" time="0.0"/>
-  <testcase name="abandonBeforeReleaseRetainsFenceUntilOwnerActuallyReturns" classname="com.easysavevideo.app.recording.RecordingResultFenceTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

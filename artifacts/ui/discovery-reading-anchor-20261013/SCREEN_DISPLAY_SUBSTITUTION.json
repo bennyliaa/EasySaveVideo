@@ -1,5 +1,0 @@
-{
-  "before": "    LaunchedEffect(page?.stamp, page?.revision, page?.pageIndex) { grid.scrollToItem(0) }\n",
-  "after": "    PreserveDiscoveryReadingAnchor(\n        grid = grid,\n        pageKey = com.easysavevideo.app.discovery.DiscoveryReadingAnchorPolicy.key(page, state.profile.queryKey, state.demo),\n        resultIds = state.results.map { it.resultId },\n        restoredFromStamp = state.restoredPageFromStamp,\n        visible = active && bodyState == DiscoveryBodyState.CONTENT && !showPending && !optionsIsModal &&\n            localControlConfirm == null && safeDisableConfirm == null && rightsDetails == null,\n        currentPageKey = {\n            controller.state.let { current ->\n                com.easysavevideo.app.discovery.DiscoveryReadingAnchorPolicy.key(current.page, current.profile.queryKey, current.demo)\n            }\n        },\n    )\n",
-  "exact_reverse_equal": true
-}

@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/workspace/scratch/df6c1284d5ab/EasySaveVideo/scripts/check-capture-preview-admission.py", line 33, in <module>
-    assert 'previewHostCallbackCurrent' in runtime
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError

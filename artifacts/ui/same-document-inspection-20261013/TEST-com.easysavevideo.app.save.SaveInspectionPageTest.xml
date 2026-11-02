@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.save.SaveInspectionPageTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-13T04:25:17.329Z" time="0.001">
-  <testcase name="sameLivePageMatchesOnlyInForeground" classname="com.easysavevideo.app.save.SaveInspectionPageTest" time="0.0" />
-  <testcase name="absentLoadingOrMismatchedPageCannotBeInspected" classname="com.easysavevideo.app.save.SaveInspectionPageTest" time="0.0" />
-  <testcase name="candidateExpiryAndNavigationFenceReusedSelection" classname="com.easysavevideo.app.save.SaveInspectionPageTest" time="0.0" />
-  <testcase name="snapshotsDoNotExposePageDataInDiagnosticString" classname="com.easysavevideo.app.save.SaveInspectionPageTest" time="0.0" />
-  <testcase name="viewIdentityOrPageAddressChangeRequiresNewInspection" classname="com.easysavevideo.app.save.SaveInspectionPageTest" time="0.0" />
-  <testcase name="tabSessionEpochAndSameDocumentRevisionChangesFenceOldInspection" classname="com.easysavevideo.app.save.SaveInspectionPageTest" time="0.0" />
-  </testsuite>

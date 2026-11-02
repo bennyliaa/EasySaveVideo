@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.easysavevideo.app.recording.RecordingProfileGeometryTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-08T07:31:03.681Z" hostname="05582a867b99" time="0.001">
-  <properties/>
-  <testcase name="portraitDownscalePreservesExactRatioAndAlignment" classname="com.easysavevideo.app.recording.RecordingProfileGeometryTest" time="0.001"/>
-  <testcase name="landscapeAndTabletAreNotStretchedOrUpscaled" classname="com.easysavevideo.app.recording.RecordingProfileGeometryTest" time="0.0"/>
-  <testcase name="unrepresentableRatioFailsInsteadOfRoundingIndependently" classname="com.easysavevideo.app.recording.RecordingProfileGeometryTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

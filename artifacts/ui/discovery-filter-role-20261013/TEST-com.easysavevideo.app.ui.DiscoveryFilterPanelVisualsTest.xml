@@ -1,7 +1,0 @@
-<testsuite name="com.easysavevideo.app.ui.DiscoveryFilterPanelVisualsTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-13T07:59:24.893Z" hostname="[redacted]" time="0.004">
-  <properties />
-  <testcase name="sourceOverridesReachBothActualRolesThroughOneDetachedSnapshot" classname="com.easysavevideo.app.ui.DiscoveryFilterPanelVisualsTest" time="0.002" />
-  <testcase name="actualLightAndDarkDefaultsSeparateInlineAndFloatingRoles" classname="com.easysavevideo.app.ui.DiscoveryFilterPanelVisualsTest" time="0.002" />
-  <system-out />
-  <system-err />
-</testsuite>

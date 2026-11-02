@@ -1,6 +1,0 @@
-commons-provider/src/main/kotlin/com/easysavevideo/commons/maintenance/ProviderRepository.kt:638:26: error: argument type mismatch: actual type is 'Number & Comparable<CapturedType(*)>', but 'Int' was expected.
-            out.writeInt(security?.size ?: 0)
-                         ^^^^^^^^^^^^^^^^^^^^
-commons-provider/src/main/kotlin/com/easysavevideo/commons/maintenance/ProviderRepository.kt:656:31: error: argument type mismatch: actual type is 'Number & Comparable<CapturedType(*)>', but 'Int' was expected.
-                out.writeInt(encoded?.size ?: 0)
-                              ^^^^^^^^^^^^^^^^^^

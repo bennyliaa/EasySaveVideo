@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.library.LibraryBatchSelectionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T13:45:39.598Z" time="0.079">
-  <properties />
-  <testcase name="newShareCopyLabelsRemainPairedAndDoNotPromiseDelivery" classname="com.easysavevideo.app.library.LibraryBatchSelectionTest" time="0.051" />
-  <testcase name="capturesExactNamesAndRefSnapshotWithoutRebasingConsent" classname="com.easysavevideo.app.library.LibraryBatchSelectionTest" time="0.026" />
-  <testcase name="backgroundBusyLoadingModalAndAmbiguousSourcesCannotAdmitBatch" classname="com.easysavevideo.app.library.LibraryBatchSelectionTest" time="0.002" />
-  <system-out />
-  <system-err />
-</testsuite>

@@ -1,7 +1,0 @@
-Traceback (most recent call last):
-  File "/workspace/scratch/df6c1284d5ab/EasySaveVideo/docs/searxng-discovery/evidence/check-inherited-purchase-admission.py", line 34, in <module>
-    require('beforeCommit { if (!stillCurrent()) throw DiscoveryFailure(DiscoveryError.CANCELLED) }' in coordinator,
-  File "/workspace/scratch/df6c1284d5ab/EasySaveVideo/docs/searxng-discovery/evidence/check-inherited-purchase-admission.py", line 10, in require
-    if not ok: raise RuntimeError(message)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-RuntimeError: Final correlated-event commit fence absent

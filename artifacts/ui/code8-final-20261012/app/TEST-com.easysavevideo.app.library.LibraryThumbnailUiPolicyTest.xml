@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.library.LibraryThumbnailUiPolicyTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-12T14:17:21.279Z" time="0.002">
-  <properties />
-  <testcase name="onlyActualMediaViewportKeysCanRequestImages" classname="com.easysavevideo.app.library.LibraryThumbnailUiPolicyTest" time="0.001" />
-  <testcase name="explicitRequestAndEveryAdmissionGateAreRequired" classname="com.easysavevideo.app.library.LibraryThumbnailUiPolicyTest" time="0.0" />
-  <system-out />
-  <system-err />
-</testsuite>

@@ -1,6 +1,0 @@
-{
-  "result": "PASS",
-  "artifacts_matched": 8,
-  "comparison": "basename and exact SHA-256",
-  "reference": "docs/m7c/evidence/independent-final-toolchain-sha256.txt"
-}

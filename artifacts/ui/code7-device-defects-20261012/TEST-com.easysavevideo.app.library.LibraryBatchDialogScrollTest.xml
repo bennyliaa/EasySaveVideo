@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.library.LibraryBatchDialogScrollTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T13:45:39.541Z" time="0.053">
-  <properties />
-  <testcase name="nestedVerticalScrollContentHeightReproducesReportedFoundationException" classname="com.easysavevideo.app.library.LibraryBatchDialogScrollTest" time="0.008" />
-  <testcase name="boundedDialogViewportAcceptsVerticalScrollConstraints" classname="com.easysavevideo.app.library.LibraryBatchDialogScrollTest" time="0.022" />
-  <testcase name="batchDialogHasExactlyOneBoundedScrollOwner" classname="com.easysavevideo.app.library.LibraryBatchDialogScrollTest" time="0.023" />
-  <system-out />
-  <system-err />
-</testsuite>

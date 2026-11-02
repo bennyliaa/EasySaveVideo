@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.core.domain.RecoverySettingsTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:17:46.715Z" time="0.016">
-  <testcase name="settingsDefaultsAndBoundsAreExplicit" classname="com.easysavevideo.core.domain.RecoverySettingsTest" time="0.002" />
-  <testcase name="failedDomainIsIsolatedAndOtherDomainsStillChecked" classname="com.easysavevideo.core.domain.RecoverySettingsTest" time="0.01" />
-  <testcase name="successfulRecoveryIsIdempotentWithoutRepeatedIoOrFalseIsolation" classname="com.easysavevideo.core.domain.RecoverySettingsTest" time="0.001" />
-  <testcase name="loggerFailureCannotEscapeAndContextDoesNotAcceptArbitraryText" classname="com.easysavevideo.core.domain.RecoverySettingsTest" time="0.002" />
-  <testcase name="deadlineDefersRemainingProbesAndRepeatedFailuresAreBounded" classname="com.easysavevideo.core.domain.RecoverySettingsTest" time="0.001" />
-</testsuite>

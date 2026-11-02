@@ -1,6 +1,0 @@
-PASS exact8 admitted host toolchain
-Traceback (most recent call last):
-  File "/workspace/scratch/df6c1284d5ab/EasySaveVideo/docs/searxng-discovery/evidence/verify-frozen.py", line 30, in <module>
-    assert fingerprint(name) == row, ('FROZEN_BYTES_OR_MODE_MISMATCH', name)
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: ('FROZEN_BYTES_OR_MODE_MISMATCH', 'commons-provider/src/main/kotlin/com/easysavevideo/commons/StrictJson.kt')

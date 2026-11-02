@@ -1,9 +1,0 @@
-Core contract host regression. Cached Kotlin compiler 2.2.10, JVM target 17. No Gradle.
-Save production and test sources compiled.
-App codec and tests compiled as a separate module against Save classes.
-JUnit version 4.13.2
-..........................................................................
-Time: 0.303
-
-OK (74 tests)
-

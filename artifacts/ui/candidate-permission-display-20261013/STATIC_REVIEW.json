@@ -1,6 +1,0 @@
-{
-  "candidate_detector_and_script_byte_inverse": true,
-  "candidate_screen_byte_inverse": true,
-  "browser_author_static_review": "PASS: Host reverse-normalization is byte-equivalent to baseline (only approved typed notice wrappers/state visibility and two permission display assignments differ).\nPASS: BrowserScreen differs only in notice display adapter call.\nPASS: Both new XML files parse and have exact three-key/positional placeholder parity.\nPASS: MainActivity remains byte-identical to captured baseline.\nNOT RUN: Gradle/Kotlin compilation/JVM tests/lint/Android rendering/WebView callbacks/device tests. Parent owns serial validation.\n",
-  "checks": "display substitutions reversed against before snapshots; no behavioral transformation"
-}

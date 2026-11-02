@@ -1,8 +1,0 @@
-{
-  "baseline": "1f25214f",
-  "comparison": "complete multiset of issue id/severity/message, not source locations",
-  "equal": {
-    "debug": true,
-    "release": true
-  }
-}

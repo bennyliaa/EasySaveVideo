@@ -1,6 +1,0 @@
-{
-  "path": "app/src/test/kotlin/com/easysavevideo/app/recording/RecordingNotificationWiringTest.kt",
-  "old": "        for (forbidden in listOf(\"getSharedPreferences\", \"Locale.setDefault\", \"applicationLocales =\", \"setApplicationLocales\", \"startForeground\")) {\n            assertFalse(forbidden, helper.contains(forbidden));assertFalse(forbidden, service.contains(forbidden))\n        }",
-  "new": "        for (forbidden in listOf(\"getSharedPreferences\", \"Locale.setDefault\", \"applicationLocales =\", \"setApplicationLocales\")) {\n            assertFalse(forbidden, helper.contains(forbidden));assertFalse(forbidden, service.contains(forbidden))\n        }\n        assertFalse(helper.contains(\"startForeground\"))",
-  "reason": "Ban task starts in new display/locale paths, not in the unchanged original foreground-service startup path"
-}

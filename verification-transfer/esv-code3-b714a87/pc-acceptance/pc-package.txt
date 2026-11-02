@@ -1,3 +1,0 @@
-package: name='com.easysavevideo.app' versionCode='3' versionName='0.3.2-commons-dev' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
-sdkVersion:'31'
-targetSdkVersion:'36'

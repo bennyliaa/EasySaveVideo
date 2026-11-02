@@ -1,9 +1,0 @@
-<testsuite name="com.easysavevideo.app.ui.DiscoveryFilterPanelWiringTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-13T07:59:24.898Z" hostname="[redacted]" time="0.001">
-  <properties />
-  <testcase name="actualOuterContainerUsesMappedRoleWhilePaddingScrollAndControlsStayUnchanged" classname="com.easysavevideo.app.ui.DiscoveryFilterPanelWiringTest" time="0.0" />
-  <testcase name="realSidebarAndDialogHostsPassTheirOwnExplicitRole" classname="com.easysavevideo.app.ui.DiscoveryFilterPanelWiringTest" time="0.0" />
-  <testcase name="oneMovableCompositionReceivesLatestContentAndPresentationWithoutAStateKey" classname="com.easysavevideo.app.ui.DiscoveryFilterPanelWiringTest" time="0.001" />
-  <testcase name="draftDismissalClearAndShownGatesRetainExistingOwnership" classname="com.easysavevideo.app.ui.DiscoveryFilterPanelWiringTest" time="0.0" />
-  <system-out />
-  <system-err />
-</testsuite>

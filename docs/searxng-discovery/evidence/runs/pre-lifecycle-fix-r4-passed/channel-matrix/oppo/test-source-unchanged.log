@@ -1,4 +1,0 @@
-app/src/test/kotlin/com/easysavevideo/app/entitlements/StorePurchaseBoundaryTest.kt: OK
-app/src/test/kotlin/com/easysavevideo/app/distribution/DistributionConfigurationTest.kt: OK
-docs/m10b/evidence/IndependentDistributionReviewTest.kt: OK
-docs/searxng-discovery/evidence/run-distribution-host.sh: OK

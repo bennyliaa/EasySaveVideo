@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.discovery.DiscoveryPowerResourcesTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:36:53.204Z" time="0.114">
-  <testcase name="languageSwitchReformatsSameSnapshotWithoutChangingBudgetOrSignalOrigin" classname="com.easysavevideo.app.discovery.DiscoveryPowerResourcesTest" time="0.007" />
-  <testcase name="eachUnknownOrExpiredObservationUsesConservativeFallbackInBothLanguages" classname="com.easysavevideo.app.discovery.DiscoveryPowerResourcesTest" time="0.018" />
-  <testcase name="pairedKeysAndInterpolationContractsCoverEveryPresentationKey" classname="com.easysavevideo.app.discovery.DiscoveryPowerResourcesTest" time="0.008" />
-  <testcase name="allSignalReasonsRetainPolicyResultsAndZeroBudgetForPaused" classname="com.easysavevideo.app.discovery.DiscoveryPowerResourcesTest" time="0.08" />
-  <testcase name="everyObservationAndPolicyReasonHasALocalizedBranch" classname="com.easysavevideo.app.discovery.DiscoveryPowerResourcesTest" time="0.001" />
-  </testsuite>

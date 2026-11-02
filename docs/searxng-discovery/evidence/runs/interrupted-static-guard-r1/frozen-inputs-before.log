@@ -1,9 +1,0 @@
-{
-  "status": "PASS",
-  "baseline": "9e9dea537c5f6e269adfb6791b47829eb4c440de",
-  "manifest_sha256": "ba64700cca6fa9e95bfa50ffba0ff7a80256ae3c137e491ad32b1cc2819c4694",
-  "files": 4716,
-  "expected_jvm_tests": 2162,
-  "baseline_files": 4644,
-  "historical_bytes_and_git_modes": "UNCHANGED"
-}

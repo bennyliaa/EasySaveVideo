@@ -1,6 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.discovery.SearxngSourceGenerationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:40.309Z" time="0.004">
-  <testcase name="unchangedConfigurationKeepsStableCompatibilityWithoutQueries" classname="com.easysavevideo.app.discovery.SearxngSourceGenerationTest" time="0.002" />
-  <testcase name="generationChangesEverySavedProfileCompatibilityButKeepsStableId" classname="com.easysavevideo.app.discovery.SearxngSourceGenerationTest" time="0.001" />
-  <testcase name="commonsEnableChangeAlsoRetiresOldProgressAndSourceFreeRegistryStaysEmpty" classname="com.easysavevideo.app.discovery.SearxngSourceGenerationTest" time="0.001" />
-</testsuite>

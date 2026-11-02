@@ -1,7 +1,0 @@
-JUnit version 4.13.2
-.....................................
-Time: 0.203
-
-OK (37 tests)
-
-PASS: 37 independent host tests and 23 source wiring checks; no native Android/device/UI acceptance.

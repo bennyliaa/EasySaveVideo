@@ -1,9 +1,0 @@
-{
-  "core_platform_provider_store_import_boundary": "PASS",
-  "fake_entitlements_debug_only": "PASS",
-  "synthetic_discovery_debug_only": "PASS",
-  "release_zero_admitted_search_sources": "PASS",
-  "license_recovery_original_bytes": "PASS (99 payloads + manifest)",
-  "skinkit_original_release_jar_hashes": "PASS",
-  "seven_getter_abi": "PASS"
-}

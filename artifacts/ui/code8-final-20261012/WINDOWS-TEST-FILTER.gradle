@@ -1,7 +1,0 @@
-gradle.projectsEvaluated {
-    rootProject.project(':app').tasks.named('testDebugUnitTest').configure {
-        outputs.upToDateWhen { false }
-        filter.excludeTestsMatching('com.easysavevideo.app.library.storage.OrdinaryMediaFilesTest.symbolicMediaAndDirectoryLinksAreNeverFollowed')
-    }
-    rootProject.project(':library').tasks.named('test').configure { outputs.upToDateWhen { false } }
-}

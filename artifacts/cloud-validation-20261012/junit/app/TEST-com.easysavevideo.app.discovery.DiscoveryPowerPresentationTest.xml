@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.discovery.DiscoveryPowerPresentationTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:39.940Z" time="0.011">
-  <testcase name="absentSnapshotStillHasHonestUnconnectedExplanation" classname="com.easysavevideo.app.discovery.DiscoveryPowerPresentationTest" time="0.002" />
-  <testcase name="debugScenarioValuesAreExplicitAndUnknownIdsRefused" classname="com.easysavevideo.app.discovery.DiscoveryPowerPresentationTest" time="0.002" />
-  <testcase name="unknownEnabledIsPausedAndNeverReportedAsZeroBattery" classname="com.easysavevideo.app.discovery.DiscoveryPowerPresentationTest" time="0.001" />
-  <testcase name="disconnectedIsNotRepresentedAsHealthyMonitoring" classname="com.easysavevideo.app.discovery.DiscoveryPowerPresentationTest" time="0.002" />
-  <testcase name="pendingStateExplainsImmediateFence" classname="com.easysavevideo.app.discovery.DiscoveryPowerPresentationTest" time="0.002" />
-  <testcase name="injectedSelectionDiagnosticIsRedacted" classname="com.easysavevideo.app.discovery.DiscoveryPowerPresentationTest" time="0.0" />
-</testsuite>

@@ -1,6 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.licenses.NoticeViewportContractTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:28:41.112Z" time="0.002">
-  <testcase name="shortHeightAndLargeFontModelHasReachableHeaderBackAndFinalBody" classname="com.easysavevideo.app.licenses.NoticeViewportContractTest" time="0.0" />
-  <testcase name="loadingAndFailureUseTransientStateInsteadOfClampingRetainedReadingPosition" classname="com.easysavevideo.app.licenses.NoticeViewportContractTest" time="0.0" />
-  <testcase name="titleBackAndBodyUseOneFullViewportWithoutWeightedOrNestedScroll" classname="com.easysavevideo.app.licenses.NoticeViewportContractTest" time="0.002" />
-</testsuite>

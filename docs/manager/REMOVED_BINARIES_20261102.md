@@ -31,6 +31,24 @@
 
 恢复：`git -C D:\CodexProjects\EasySaveVideo worktree add --detach <新目录> 4b9a65a`，或 `git show 4b9a65a:recovery/<路径>`。
 
+## 追加：历史运行证据、设计稿与历史脚本（同日）
+
+用户确认后整体移除 6669 个文件（约 176 MB）。删除前已核对：构建配置、全部源码、全部测试（app/modules/services）与在用脚本均不引用这些路径。
+
+- 基准提交：`e7a4e01c04ad5e73242bee82cb846586f14cea58`
+- 路径清单：[REMOVED_HISTORY_20261102.txt](REMOVED_HISTORY_20261102.txt)
+
+| 内容 | 文件数 |
+|---|---:|
+| `docs/**/evidence/`（37 个目录的历史日志、XML、过程 JSON） | 5241 |
+| `artifacts/` 中除 `local-windows-20261009/`、`test-fixtures/` 外的子目录 | 1323 |
+| `verification-transfer/` | 15 |
+| `docs/ui/source-history-20261011/`（UI PPT 生成源码与图片） | 53 |
+| `docs/ui/*.pptx`、`docs/ui/*.zip`（UI 效果图与概念包） | 2 |
+| `scripts/` 中绑定历史基准提交的准入/SQLite 校验脚本 | 32 |
+
+恢复：`git -C D:\CodexProjects\EasySaveVideo worktree add --detach <新目录> e7a4e01`，或 `git show e7a4e01:<路径>`。
+
 ## 影响
 
 - 文档、清单中指向这些文件的路径在当前 `main` 上不再存在，需按下文从历史恢复后再使用。

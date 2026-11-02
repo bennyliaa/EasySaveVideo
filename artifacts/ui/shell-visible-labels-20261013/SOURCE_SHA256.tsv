@@ -1,4 +1,0 @@
-b70e627c622a96d834d430a67fe55e43538a0735177e61aeb2954b0e802578a1	app/src/main/kotlin/com/easysavevideo/app/ui/shell/EsvAppShell.kt
-f252d7bc4208f19b6146880208e52d04d54b5ba5ab162c10452d741f59b21ebb	app/src/main/kotlin/com/easysavevideo/app/ui/shell/ShellNavigationLayout.kt
-94c31bb1b208d11d535fabef10bb917894d25bc27d559f9c6e47efa8e6b0fa69	app/src/test/kotlin/com/easysavevideo/app/ui/shell/ShellNavigationLayoutTest.kt
-57688d3f7a93a69d0e38e6bee63fdb03bcee5381774de3149e05de9337ab32e0	docs/ui/implementation/SHELL_VISIBLE_LABELS_20261013.md

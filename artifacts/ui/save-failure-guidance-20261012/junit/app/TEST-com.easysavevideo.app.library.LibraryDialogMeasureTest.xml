@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.easysavevideo.app.library.LibraryDialogMeasureTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-12T20:02:31.263Z" hostname="cloud-jvm" time="0.058">
-  <properties/>
-  <testcase name="oldNestedScrollHierarchyReproducesTheDeviceException" classname="com.easysavevideo.app.library.LibraryDialogMeasureTest" time="0.051"/>
-  <testcase name="oneScrollOwnerMeasuresAndCanReachEndForLongListsLargeFontsAndAllDestinations" classname="com.easysavevideo.app.library.LibraryDialogMeasureTest" time="0.007"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

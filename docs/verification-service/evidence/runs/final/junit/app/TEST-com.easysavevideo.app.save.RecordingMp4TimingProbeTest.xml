@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.easysavevideo.app.save.RecordingMp4TimingProbeTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-08T06:51:59.498Z" hostname="05582a867b99" time="0.005">
-  <properties/>
-  <testcase name="truncationOversizedBoxAndCancellationFailClosed" classname="com.easysavevideo.app.save.RecordingMp4TimingProbeTest" time="0.003"/>
-  <testcase name="duplicateTrackMissingVideoBadRunsAndMetadataMismatchReject" classname="com.easysavevideo.app.save.RecordingMp4TimingProbeTest" time="0.002"/>
-  <testcase name="distinctTrackTimescalesAndFinalDurationsAreReadFromStts" classname="com.easysavevideo.app.save.RecordingMp4TimingProbeTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

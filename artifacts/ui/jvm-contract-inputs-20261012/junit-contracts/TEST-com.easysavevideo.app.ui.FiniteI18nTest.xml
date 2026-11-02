@@ -1,6 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.ui.FiniteI18nTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:36:55.692Z" time="0.003">
-  <testcase name="pairedStaticTextKeysAndFormatArgumentsAreIdentical" classname="com.easysavevideo.app.ui.FiniteI18nTest" time="0.001" />
-  <testcase name="labelsKeepSimulatedAndUnmeasuredDeviceSemanticsExplicit" classname="com.easysavevideo.app.ui.FiniteI18nTest" time="0.001" />
-  <testcase name="everyAdmittedDebugScenarioHasDistinctTranslatedLabelAndDoesNotChangeSelection" classname="com.easysavevideo.app.ui.FiniteI18nTest" time="0.001" />
-  </testsuite>

@@ -42,7 +42,7 @@
 | `services/verification-fixtures/` | 独立夹具与调度契约（git subtree，前缀已改为此路径），未接入生产 |
 | `scripts/` | 边界检查与工作区脚本；先读适用范围，勿为跑通而改门禁 |
 
-2026-11-02 起模块从根目录移入 `modules/`、服务移入 `services/`。`scripts/` 中绑定历史基准提交（`git ls-tree <BASE>`）的准入/SQLite 校验脚本按当时的旧布局核对，**未改写**；`docs/`、`artifacts/` 中的历史路径同样指旧布局。`recovery/` 已于同日移除（见移除记录）。
+2026-11-02 起模块从根目录移入 `modules/`、服务移入 `services/`。`docs/` 历史报告中的源码路径指旧布局。
 
 ### 依赖与许可（只按准入流程变更）
 
@@ -60,19 +60,19 @@
 | `docs/handover/` | 交接文档 |
 | `docs/ui/` | UI 设计、实现切片与功能接入台账 |
 | `docs/m0` … `docs/m11a` | 各里程碑/切片的实现与验收边界（例：[m3a Direct](docs/m3a/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m3b-eof HLS](docs/m3b-eof/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m4 Record](docs/m4/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m6c 授权帧选区](docs/m6c/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m7b 签名仓库](docs/m7b/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m11a 发行阻塞](docs/m11a/RELEASE_BLOCKERS.md)） |
-| `docs/discovery/`、`docs/vault/`、`docs/verification*/` 等 | 专题状态与证据 |
+| `docs/discovery/`、`docs/vault/`、`docs/verification*/` 等 | 专题状态报告 |
 | `docs/consolidation/` | 2026-11-01 归拢报告与覆盖清单 |
 
-### 冻结证据（不移动、不改写）
+### 测试输入（在用，勿删）
 
 | 路径 | 说明 |
 |---|---|
-| `artifacts/` | 历史验收与设备证据（部分被清单按路径/哈希固定） |
-| `verification-transfer/` | code3 传输包清单，被归拢覆盖清单引用 |
+| `artifacts/local-windows-20261009/` | 验证服务 Windows 测试读取的浏览器准入收据与冻结表 |
+| `artifacts/test-fixtures/` | 合成测试夹具 |
 
-历史 APK、Base64 传输分块与 `.partNN` 分卷已于 2026-11-02 从工作目录移除（约 916 MB），可从历史恢复，见 [移除记录](docs/manager/REMOVED_BINARIES_20261102.md)。
+### 已移除的历史材料
 
-证据目录被数百处文档与哈希清单按路径引用，因此保持原位，不做物理搬迁。
+2026-11-02 起以下内容已从工作目录移除，均可从 Git 历史或外置归档恢复，路径清单与恢复方法见 [移除记录](docs/manager/REMOVED_BINARIES_20261102.md)：历史 APK/Base64/分卷（约 916 MB）、`recovery/`、`verification-transfer/`、`docs/**/evidence/` 历史运行日志、其余 `artifacts/` 验收记录、`docs/ui/source-history-20261011/`、UI 设计稿 PPT/ZIP、绑定历史基准提交的准入脚本。`docs/` 中 `.md` 报告若链接到这些文件，需先按移除记录恢复。
 
 ### 仓库之外
 

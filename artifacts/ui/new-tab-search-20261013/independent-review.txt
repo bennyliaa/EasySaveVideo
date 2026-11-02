@@ -1,6 +1,0 @@
-Independent static review: no remaining blocker.
-Closed stale same-tab navigation, repeated/disposed action and pause/return callback races; closed pending-handoff overwrite after newer accepted edit/reset/Search.
-Confirmed honest draft-only wording, zero-source behavior, unchanged dependencies and frozen JS-dialog code/effects.
-10/10 live/frozen/manifest SHA256 and byte counts verified (177849 bytes); TSV agrees; five-file patch exactly matches the five supplied baselines.
-Selected-mode outline uses SkinKit accent/buttonCorner with selected semantics retained.
-Reviewer did not execute Gradle, APK or device tests.

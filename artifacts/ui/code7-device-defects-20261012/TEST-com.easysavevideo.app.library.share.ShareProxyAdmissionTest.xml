@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.library.share.ShareProxyAdmissionTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-12T13:45:39.947Z" time="0.005">
-  <properties />
-  <testcase name="reservationFailureNeverCallsFramework" classname="com.easysavevideo.app.library.share.ShareProxyAdmissionTest" time="0.003" />
-  <testcase name="reservationOwnedButFrameworkOpenNeverHoldsCallbackLock" classname="com.easysavevideo.app.library.share.ShareProxyAdmissionTest" time="0.002" />
-  <system-out />
-  <system-err />
-</testsuite>

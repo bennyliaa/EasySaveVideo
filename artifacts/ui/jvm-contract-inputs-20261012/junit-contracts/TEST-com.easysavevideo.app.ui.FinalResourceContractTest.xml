@@ -1,5 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite name="com.easysavevideo.app.ui.FinalResourceContractTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-12T19:36:55.678Z" time="0.013">
-  <testcase name="cropSemanticsRetainAllFourCoordinatesAndPercentUnits" classname="com.easysavevideo.app.ui.FinalResourceContractTest" time="0.006" />
-  <testcase name="bothLanguagesHaveMatchingKeysAndFormatContracts" classname="com.easysavevideo.app.ui.FinalResourceContractTest" time="0.007" />
-  </testsuite>
