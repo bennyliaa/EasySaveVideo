@@ -8,7 +8,7 @@ evidence.mkdir(parents=True,exist_ok=True)
 results={}
 for module in ('core-model','core-domain','discovery','save','recording','library','hls','commons-provider'):
     bad=[]
-    for path in (root/module/'src/main').rglob('*.kt'):
+    for path in (root/('' if module=='app' else 'modules')/module/'src/main').rglob('*.kt'):
         for line in path.read_text().splitlines():
             if line.startswith('import ') and any(x in line for x in ('android.','androidx.','com.android.billing','newpipe','scrapling','skinkit')):
                 bad.append(str(path.relative_to(root))+':'+line)

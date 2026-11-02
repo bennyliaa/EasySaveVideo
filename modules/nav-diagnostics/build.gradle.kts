@@ -14,7 +14,7 @@ android {
 }
 // Compile the exact production finite policy, without importing the app or its business owners.
 android.sourceSets.named("main") {
-    kotlin.directories += "../app/src/main/kotlin/com/easysavevideo/app/ui/shell/navigation"
+    kotlin.directories += "../../app/src/main/kotlin/com/easysavevideo/app/ui/shell/navigation"
 }
 val admittedLines = rootProject.file("third_party/admitted-runtime.tsv").readLines().filter { it.isNotBlank() && !it.startsWith("#") }
 dependencies {

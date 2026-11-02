@@ -33,14 +33,14 @@ fgs=(path/'RecordingForegroundService.kt').read_text()
 assert 'START_NOT_STICKY' in fgs and 'stop.identifier = id' in fgs
 assert 'getMediaProjection' not in fgs.replace('// FGS promotion precedes the only getMediaProjection call in the recording port.','')
 assert 'putExtra' not in (path/'ProjectionGrantHandoff.kt').read_text()
-models=(root/'save/src/main/kotlin/com/easysavevideo/save/SaveModels.kt').read_text()
+models=(root/'modules/save/src/main/kotlin/com/easysavevideo/save/SaveModels.kt').read_text()
 assert 'sealed interface SaveInput' in models and 'data class Capture' in models
 assert 'recordingExpectation' in models
 preview=(root/'app/src/main/kotlin/com/easysavevideo/app/save/VerifiedMediaPreview.kt').read_text()
 assert 'ALLOW_CAPTURE_BY_NONE' in preview and 'input.fd' in preview
 assert 'setDataSource(input.fd' in preview and 'Uri.parse' not in preview
 for module in ['recording','save']:
-    for file in (root/module/'src/main').rglob('*.kt'):
+    for file in (root/('' if module=='app' else 'modules')/module/'src/main').rglob('*.kt'):
         for line in file.read_text().splitlines():
             if line.startswith('import '): assert not any(x in line for x in ['android.','androidx.','com.android.billing','skinkit']),line
 result={'manifest_original_capture_scope':'PASS','single_projection_and_virtual_display_source':'PASS',

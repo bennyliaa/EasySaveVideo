@@ -4,7 +4,7 @@ set -euo pipefail
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 cd "$REPO"
 ROOT=${ESV_TOOLCHAIN_ROOT:-$(dirname "$REPO")}
-OUT=${ESV_EVIDENCE_DIR:-$REPO/docs/verification-service/evidence/runs/ipc-final}
+OUT=${ESV_EVIDENCE_DIR:-$REPO/docs/services/verification-service/evidence/runs/ipc-final}
 mkdir -p "$OUT"
 OUT=$(cd "$OUT" && pwd)
 export ESV_EVIDENCE_DIR="$OUT" PYTHONDONTWRITEBYTECODE=1
@@ -14,7 +14,7 @@ export ANDROID_HOME=${ANDROID_HOME:-$ROOT/esv-toolchain-recovery/sdk}
 export ANDROID_USER_HOME=${ANDROID_USER_HOME:-$ROOT/android-build-home/android-user}
 export ESV_BUILD_HOME=${ESV_BUILD_HOME:-$ROOT/android-build-home/home}
 export HOME="$ESV_BUILD_HOME" PATH="$JAVA_HOME/bin:$PATH"
-python3 docs/verification-service/evidence/verify_inputs.py --record "$OUT/frozen-run-identity.json" > "$OUT/frozen-inputs-before.log"
+python3 docs/services/verification-service/evidence/verify_inputs.py --record "$OUT/frozen-run-identity.json" > "$OUT/frozen-inputs-before.log"
 scripts/gradle-workspace.sh --offline --dependency-verification strict --rerun-tasks -Pkotlin.incremental=false \
   :core-model:test :core-domain:test :ui-theme:test :discovery:test :commons-provider:test :searxng-provider:test :verification-client:test :verification-client:writeFixtureClasspath \
   :save:test :recording:test :library:test :hls:test :app:testDebugUnitTest \
@@ -52,14 +52,14 @@ for i in "${!values[@]}"; do
 done
 # Exact already-admitted private evaluation runtime; missing runtime is a failure, never a skip.
 export ESV_SCRAPLING_EVAL=${ESV_SCRAPLING_EVAL:?Set the already-admitted private evaluation runtime}
-"$ESV_SCRAPLING_EVAL/.venv/bin/python" docs/verification-service/evidence/run_service_tests.py > "$OUT/service-tests.log" 2>&1
+"$ESV_SCRAPLING_EVAL/.venv/bin/python" docs/services/verification-service/evidence/run_service_tests.py > "$OUT/service-tests.log" 2>&1
 python3 - "$OUT" <<'PY'
 import hashlib,json,shutil,sys,xml.etree.ElementTree as ET
 from pathlib import Path
-out=Path(sys.argv[1]); manifest=json.loads(Path('docs/verification-service/evidence/frozen-inputs.json').read_text())
+out=Path(sys.argv[1]); manifest=json.loads(Path('docs/services/verification-service/evidence/frozen-inputs.json').read_text())
 summary={};total=dict(tests=0,failures=0,errors=0,skipped=0)
 for module in ('core-model','core-domain','ui-theme','discovery','commons-provider','searxng-provider','verification-client','save','recording','library','hls','app'):
- folder=Path(module)/'build/test-results'/('testDebugUnitTest' if module=='app' else 'test')
+ folder=Path('' if module=='app' else 'modules')/module/'build/test-results'/('testDebugUnitTest' if module=='app' else 'test')
  counts=dict(tests=0,failures=0,errors=0,skipped=0)
  for file in folder.glob('TEST-*.xml'):
   root=ET.parse(file).getroot()
@@ -82,4 +82,4 @@ for variant in ('debug','release'):
 report={'scope':'OPTIONAL_VERIFICATION_SERVICE_HOST_DEVELOPMENT_ONLY','jvm':total,'lint':lint,'external_runtime_artifacts':74,'channel_matrix':'PASS_ALL_SEVEN_CHANNELS_BOTH_VARIANTS_AND_FIVE_INVALID_VALUES','unchanged_inputs':'PASS','apk_aab_device_live_endpoint':'NOT_RUN','M0_or_two_layer_acceptance':False,'service':json.loads((out/'service-summary.json').read_text())}
 (out/'summary.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 PY
-python3 docs/verification-service/evidence/verify_inputs.py > "$OUT/frozen-inputs-after.log"
+python3 docs/services/verification-service/evidence/verify_inputs.py > "$OUT/frozen-inputs-after.log"

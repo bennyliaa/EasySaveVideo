@@ -61,7 +61,7 @@ CREATE_SQL = (HISTORICAL_COMMON_SQL[0], V2_RESULTS_SQL) + HISTORICAL_COMMON_SQL[
 TABLES = tuple(re.match(r'CREATE TABLE (\w+) ', sql).group(1) for sql in CREATE_SQL)
 assert set(TABLES) == {'checkpoints', 'results', 'pages', 'progress', 'seen', 'viewport'}
 assert V2_RESULTS_SQL in TARGET_CREATE_SQL, 'Target results schema changed; reconcile retained rights contracts explicitly'
-RIGHTS_SOURCE = (ROOT / 'discovery/src/main/kotlin/com/easysavevideo/discovery/RightsAttribution.kt').read_text()
+RIGHTS_SOURCE = (ROOT / 'modules/discovery/src/main/kotlin/com/easysavevideo/discovery/RightsAttribution.kt').read_text()
 assert 'const val MAX_BYTES = 32 * 1024' in RIGHTS_SOURCE
 assert 'private const val MAGIC = 0x45535231' in RIGHTS_SOURCE
 assert 'private const val VERSION = 1' in RIGHTS_SOURCE

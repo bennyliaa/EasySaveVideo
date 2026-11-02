@@ -26,9 +26,9 @@ _spec = importlib.util.spec_from_file_location('historical_sqlite', ROOT / 'scri
 old = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(old)
 SOURCE = old.SOURCE
-PLANNER_SOURCE = (ROOT / 'discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryRetention.kt').read_text()
+PLANNER_SOURCE = (ROOT / 'modules/discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryRetention.kt').read_text()
 CODEC_SOURCE = (ROOT / 'app/src/main/kotlin/com/easysavevideo/app/storage/DiscoveryCheckpointCodec.kt').read_text()
-MODELS_SOURCE = (ROOT / 'discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryModels.kt').read_text()
+MODELS_SOURCE = (ROOT / 'modules/discovery/src/main/kotlin/com/easysavevideo/discovery/DiscoveryModels.kt').read_text()
 
 
 class CapacityFailure(RuntimeError):

@@ -37,7 +37,7 @@ mapfile -t KOTLIN < <(find "$HERE/src/test/kotlin" -name '*.kt' | sort)
 for name in CompatTsProfileProbe FinalAccessUnitGate LocalAssetReadSession LocalAvcExtractor LocalHlsCompatibility LocalHlsExtractorFactory PermitDataSourceFactory; do
   KOTLIN+=("$REPO/app/src/main/kotlin/com/easysavevideo/app/save/stream/$name.kt")
 done
-KOTLIN+=("$REPO/save/src/main/kotlin/com/easysavevideo/save/StreamConservation.kt")
+KOTLIN+=("$REPO/modules/save/src/main/kotlin/com/easysavevideo/save/StreamConservation.kt")
 java -cp "$COMPILER:$STDLIB:$SCRIPT:$REFLECT:$COROUTINES:$ANNOTATIONS" \
   org.jetbrains.kotlin.cli.jvm.K2JVMCompiler -no-stdlib -no-reflect -jvm-target 17 \
   -classpath "$OUT/classes:$CP" -d "$OUT/classes" "${KOTLIN[@]}"

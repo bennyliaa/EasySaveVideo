@@ -81,3 +81,5 @@ include(":core-model", ":core-domain", ":ui-theme", ":discovery", ":save", ":rec
 include(":verification-local")
 // Explicit local QA carrier only; never a production app dependency.
 if (providers.gradleProperty("esv.navdiagnostics").orNull == "true") include(":nav-diagnostics")
+// Library modules live under modules/; project paths (":core-model" etc.) are unchanged.
+rootProject.children.filter { it.name != "app" }.forEach { it.projectDir = file("modules/${it.name}") }

@@ -67,11 +67,11 @@ CP="$ANDROID_JAR:$STDLIB:$ANNOTATIONS:$OUT/jars/annotation-experimental-1.4.1.ja
 "$JAVA" -cp "$COMPILER:$STDLIB:$SCRIPT:$REFLECT:$COROUTINES:$ANNOTATIONS" \
   org.jetbrains.kotlin.cli.jvm.K2JVMCompiler -no-stdlib -no-reflect -jvm-target 17 \
   -classpath "$CP" -d "$OUT/classes" \
-  "$REPO/library/src/main/kotlin/com/easysavevideo/library/LibraryModels.kt" \
-  "$REPO/library/src/main/kotlin/com/easysavevideo/library/LibraryPolicies.kt" \
-  "$REPO/library/src/main/kotlin/com/easysavevideo/library/edit/"*.kt \
-  "$REPO/core-model/src/main/kotlin/com/easysavevideo/core/model/Errors.kt" \
-  "$REPO/core-model/src/main/kotlin/com/easysavevideo/core/model/Operations.kt" \
+  "$REPO/modules/library/src/main/kotlin/com/easysavevideo/library/LibraryModels.kt" \
+  "$REPO/modules/library/src/main/kotlin/com/easysavevideo/library/LibraryPolicies.kt" \
+  "$REPO/modules/library/src/main/kotlin/com/easysavevideo/library/edit/"*.kt \
+  "$REPO/modules/core-model/src/main/kotlin/com/easysavevideo/core/model/Errors.kt" \
+  "$REPO/modules/core-model/src/main/kotlin/com/easysavevideo/core/model/Operations.kt" \
   "$REPO/app/src/main/kotlin/com/easysavevideo/app/media/transform/TransformerContracts.kt" \
   "$REPO/app/src/main/kotlin/com/easysavevideo/app/media/transform/TransformerMechanismPolicy.kt" \
   "$REPO/app/src/main/kotlin/com/easysavevideo/app/media/transform/TransformerLaneOwner.kt" \

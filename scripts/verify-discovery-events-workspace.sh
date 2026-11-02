@@ -47,7 +47,7 @@ root=Path.cwd(); out=Path(os.environ['ESV_EVIDENCE_DIR'])
 counts={}; total=dict.fromkeys(('tests','failures','errors','skipped'),0)
 for module in ('core-model','core-domain','ui-theme','discovery','commons-provider','save','recording','library','hls','app'):
  c=dict.fromkeys(total,0)
- folder=root/module/'build/test-results'/('testDebugUnitTest' if module=='app' else 'test')
+ folder=root/('' if module=='app' else 'modules')/module/'build/test-results'/('testDebugUnitTest' if module=='app' else 'test')
  for path in folder.glob('TEST-*.xml'):
   node=ET.parse(path).getroot()
   for key in c: c[key]+=int(node.attrib.get(key,0))

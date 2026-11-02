@@ -18,27 +18,31 @@
 | `.gitattributes` | `* -text`：任何机器检出都保持提交字节 |
 | `local.properties` | 本机 SDK 路径，Git 忽略，勿提交 |
 
-### Gradle 模块（产品源码，可改）
+### 产品源码（可改）
 
-| 模块 | 职责 |
+`app/` 是 Android 应用；其余 Gradle 模块统一放在 `modules/`，Gradle 项目名保持 `:core-model` 等不变（`settings.gradle.kts` 映射 `projectDir`）。
+
+| 路径 | 职责 |
 |---|---|
 | `app/` | Android 组合根：SystemWebView 浏览器、UI、保存/录制/编辑/媒体库/Vault 平台适配、存储 |
-| `core-model/`、`core-domain/` | 平台无关模型、命令、权益与状态机（不得引入 Android/Store/Provider 类型） |
-| `ui-theme/` | ESV 视觉默认值与快照适配（运行时依赖已授权的 SkinKit Contract/Default 1.0.0 二进制） |
-| `discovery/` | Provider 调度、候选验证、结果池、进度与 Seen History |
-| `commons-provider/`、`searxng-provider/` | Wikimedia Commons 与 SearXNG 来源、签名维护仓库 |
-| `save/`、`hls/` | 平台无关 Direct/Stream 协调与受限静态 HLS 解析 |
-| `recording/`、`library/` | 录制生命周期/片段规则，普通媒体目录/租约 |
-| `verification-client/`、`verification-local/` | 可选验证服务客户端与本地 JVM 解析 |
-| `nav-diagnostics/` | 仅 `-Pesv.navdiagnostics=true` 时纳入的 QA 载体，非生产依赖 |
+| `modules/core-model/`、`modules/core-domain/` | 平台无关模型、命令、权益与状态机（不得引入 Android/Store/Provider 类型） |
+| `modules/ui-theme/` | ESV 视觉默认值与快照适配（运行时依赖已授权的 SkinKit Contract/Default 1.0.0 二进制） |
+| `modules/discovery/` | Provider 调度、候选验证、结果池、进度与 Seen History |
+| `modules/commons-provider/`、`modules/searxng-provider/` | Wikimedia Commons 与 SearXNG 来源、签名维护仓库 |
+| `modules/save/`、`modules/hls/` | 平台无关 Direct/Stream 协调与受限静态 HLS 解析 |
+| `modules/recording/`、`modules/library/` | 录制生命周期/片段规则，普通媒体目录/租约 |
+| `modules/verification-client/`、`modules/verification-local/` | 可选验证服务客户端与本地 JVM 解析 |
+| `modules/nav-diagnostics/` | 仅 `-Pesv.navdiagnostics=true` 时纳入的 QA 载体，非生产依赖 |
 
 ### 非 Gradle 代码
 
 | 路径 | 说明 |
 |---|---|
-| `verification-service/` | 独立 Python 验证服务（Android 不含其依赖） |
-| `verification-fixtures/` | 独立夹具与调度契约（git subtree），未接入生产 |
-| `scripts/` | 边界/准入检查与工作区脚本；先读适用范围，勿为跑通而改门禁 |
+| `services/verification-service/` | 独立 Python 验证服务（Android 不含其依赖） |
+| `services/verification-fixtures/` | 独立夹具与调度契约（git subtree，前缀已改为此路径），未接入生产 |
+| `scripts/` | 边界检查与工作区脚本；先读适用范围，勿为跑通而改门禁 |
+
+2026-11-02 起模块从根目录移入 `modules/`、服务移入 `services/`。`scripts/` 中绑定历史基准提交（`git ls-tree <BASE>`）的准入/SQLite 校验脚本按当时的旧布局核对，**未改写**；`docs/`、`artifacts/`、`recovery/` 中的历史路径同样指旧布局。
 
 ### 依赖与许可（只按准入流程变更）
 
@@ -69,11 +73,11 @@
 
 历史 APK、Base64 传输分块与 `.partNN` 分卷已于 2026-11-02 从工作目录移除（约 916 MB），可从历史恢复，见 [移除记录](docs/manager/REMOVED_BINARIES_20261102.md)。
 
-模块与证据目录被数百处文档、契约测试与哈希清单按路径引用（如 `core-model/` 约 880 处、`scripts/` 约 290 处），因此保持现有平铺布局，不做物理搬迁。
+证据目录被数百处文档与哈希清单按路径引用，因此保持原位，不做物理搬迁。
 
 ### 仓库之外
 
-- 构建中间产物：各模块 `build/`、根 `.gradle/`、`.kotlin/`（Git 忽略，可随时删除）。
+- 构建中间产物：`app/build/`、`modules/*/build/`、根 `.gradle/`、`.kotlin/`（Git 忽略，可随时删除）。
 - 测试日志、临时文件与中间产物：`D:/CodexProjects/EasySaveVideo test-workspace/`。
 - 永久恢复归档：`D:/CodexProjects/EasySaveVideo-Archive-20261101T132000Z`（勿清理）。
 

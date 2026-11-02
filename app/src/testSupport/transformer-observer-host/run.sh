@@ -42,8 +42,8 @@ mapfile -t JAVA < <(find \
  "$REPO/app/src/testSupport/transformer-observer-host/src/test/java" -name '*.java' | sort)
 "$JAVA_HOME/bin/javac" -source 17 -target 17 -cp "$CP" -d "$OUT/classes" "${JAVA[@]}"
 mapfile -t KOTLIN < <(find "$SOURCES/app/src/testSupport/transformer-observer-host/src/test/kotlin" -name '*.kt' | sort)
-KOTLIN+=("$REPO/core-model/src/main/kotlin/com/easysavevideo/core/model/Errors.kt"
- "$REPO/core-model/src/main/kotlin/com/easysavevideo/core/model/Operations.kt")
+KOTLIN+=("$REPO/modules/core-model/src/main/kotlin/com/easysavevideo/core/model/Errors.kt"
+ "$REPO/modules/core-model/src/main/kotlin/com/easysavevideo/core/model/Operations.kt")
 for name in TransformerContracts TransformerRunSpec TransformerOpusPcm TransformerSourceObserver; do
  KOTLIN+=("$SOURCES/app/src/main/kotlin/com/easysavevideo/app/media/transform/$name.kt")
 done
