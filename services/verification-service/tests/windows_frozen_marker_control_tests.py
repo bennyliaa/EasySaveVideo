@@ -28,6 +28,6 @@ class FrozenMarkerControlTests(unittest.TestCase):
                 self.assertFalse(service._windows.runners[0].poisoned)
             self.assertEqual(['PAGE_EVIDENCE','PAGE_EVIDENCE'],outcomes);self.assertEqual(list(bodies),calls)
             self.assertEqual(case['sha256'],hashlib.sha256((root/case['path'].lstrip('/')).read_bytes()).hexdigest())
-            pathlib.Path('artifacts/local-windows-20261009/ordinary-marker-control.json').write_text(json.dumps({'scope':'separate paired diagnostic controls, not part of benchmark','actual_real_scrapling_workers':2,'original_frozen_hash':case['sha256'],'original_untouched':True,'same_admission_protocol_budget':True,'outcomes':outcomes,'production_gate_changed':True},indent=2)+'\n',encoding='utf-8')
+            pathlib.Path('services/verification-service/tests/data/local-windows-20261009/ordinary-marker-control.json').write_text(json.dumps({'scope':'separate paired diagnostic controls, not part of benchmark','actual_real_scrapling_workers':2,'original_frozen_hash':case['sha256'],'original_untouched':True,'same_admission_protocol_budget':True,'outcomes':outcomes,'production_gate_changed':True},indent=2)+'\n',encoding='utf-8')
         finally:service.close();server.shutdown();server.server_close();thread.join(1)
 if __name__=='__main__':unittest.main()

@@ -24,7 +24,7 @@ server=ThreadingHTTPServer(('127.0.0.1',0),OwnedCorpusHandler);thread=threading.
 origin='http://127.0.0.1:'+str(server.server_address[1]);records=[]
 try:
     for chunk in (cases[:64],cases[64:]):
-        receipt=json.loads(pathlib.Path('artifacts/local-windows-20261009/windows-browser-admission.json').read_text(encoding='utf-8'))
+        receipt=json.loads(pathlib.Path('services/verification-service/tests/data/local-windows-20261009/windows-browser-admission.json').read_text(encoding='utf-8'))
         capability=FixtureCapability(origin,tuple(FixtureRule(c['path'],dynamic_dom=c['id'].startswith('dynamic-')) for c in chunk),receipt['executable'],receipt['sha256'],'https://fixture.example.org')
         service=VerificationService(capability,1)
         try:
@@ -36,7 +36,7 @@ try:
                 if len(records)%20==0:print('Owned A cases completed',len(records),flush=True)
         finally:service.close()
 finally:server.shutdown();server.server_close();thread.join(1)
-out=pathlib.Path('artifacts/local-windows-20261009/frozen-a-ordinary-dom-host.tsv')
+out=pathlib.Path('services/verification-service/tests/data/local-windows-20261009/frozen-a-ordinary-dom-host.tsv')
 with out.open('w',encoding='utf-8',newline='') as f:
     writer=csv.DictWriter(f,fieldnames=records[0].keys(),delimiter='\t');writer.writeheader();writer.writerows(records)
 print(json.dumps({'cases':len(records),'physical_fixture_requests':OwnedCorpusHandler.calls,'scope':'Windows real Scrapling only; exact owned DOM paths admitted; DOM evidence is not XHR identity; not Android A/B or phone performance'},indent=2))

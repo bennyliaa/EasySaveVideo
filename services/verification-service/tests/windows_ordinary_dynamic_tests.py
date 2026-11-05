@@ -22,7 +22,7 @@ class DynamicHandler(BaseHTTPRequestHandler):
 class WindowsRealDynamicTests(unittest.TestCase):
     def test_real_scrapling_chromium_sandbox_windows_job(self):
         DynamicHandler.paths=[]
-        receipt=json.loads(pathlib.Path('artifacts/local-windows-20261009/windows-browser-admission.json').read_text(encoding='utf-8'))
+        receipt=json.loads(pathlib.Path('services/verification-service/tests/data/local-windows-20261009/windows-browser-admission.json').read_text(encoding='utf-8'))
         server=ThreadingHTTPServer(('127.0.0.1',0),DynamicHandler);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
         capability=FixtureCapability('http://127.0.0.1:'+str(server.server_address[1]),(FixtureRule('/page','/api','owned'),),receipt['executable'],receipt['sha256'],'https://fixture.example.org')
         service=VerificationService(capability,1);request=Request(1,'c'*32,'d'*64,'https://fixture.example.org/page',10000,True)
@@ -37,7 +37,7 @@ class WindowsRealDynamicTests(unittest.TestCase):
 class WindowsRealDomTests(unittest.TestCase):
     def test_dom_mode_consent_timeout_cancel_and_page_only(self):
         DynamicHandler.paths=[]
-        receipt=json.loads(pathlib.Path('artifacts/local-windows-20261009/windows-browser-admission.json').read_text(encoding='utf-8'))
+        receipt=json.loads(pathlib.Path('services/verification-service/tests/data/local-windows-20261009/windows-browser-admission.json').read_text(encoding='utf-8'))
         server=ThreadingHTTPServer(('127.0.0.1',0),DynamicHandler);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
         cap=FixtureCapability('http://127.0.0.1:'+str(server.server_address[1]),(FixtureRule('/dom',dynamic_dom=True),),receipt['executable'],receipt['sha256'],'https://fixture.example.org')
         service=VerificationService(cap,1)

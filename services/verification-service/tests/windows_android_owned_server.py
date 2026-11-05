@@ -24,7 +24,7 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args):pass
 fixture=ThreadingHTTPServer(('127.0.0.1',0),Handler)
 thread=threading.Thread(target=fixture.serve_forever,daemon=True);thread.start()
-receipt=json.loads(pathlib.Path('artifacts/local-windows-20261009/windows-browser-admission.json').read_text(encoding='utf-8'))
+receipt=json.loads(pathlib.Path('services/verification-service/tests/data/local-windows-20261009/windows-browser-admission.json').read_text(encoding='utf-8'))
 origin='http://127.0.0.1:'+str(fixture.server_address[1])
 services=[]
 for chunk in (cases[:64],cases[64:]):

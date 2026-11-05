@@ -9,7 +9,7 @@ from esv_verify.capability import FixtureCapability,FixtureRule
 from esv_verify.protocol import Request
 root=pathlib.Path('../ab-validation-20261008/corpus').resolve()
 manifest=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
-rows={r['id']:r for r in csv.DictReader(pathlib.Path('artifacts/local-windows-20261009/frozen-a-host.tsv').open(encoding='utf-8'),delimiter='\t')}
+rows={r['id']:r for r in csv.DictReader(pathlib.Path('services/verification-service/tests/data/local-windows-20261009/frozen-a-host.tsv').open(encoding='utf-8'),delimiter='\t')}
 records=[]
 for start in (0,64):
  chunk=manifest['cases'][start:start+64]
@@ -35,5 +35,5 @@ for start in (0,64):
   records.append({'id':c['id'],'group':c['group'],'body_hash_verified':True,'constructor_rule_found':True,'protocol_identity_valid':True,'requested_dynamic':request.dynamicAllowed,'xhr_rule_present':rule.api_path is not None,'observed_outcome':rows[c['id']]['outcome'],'host_elapsed_ms':int(rows[c['id']]['host_elapsed_ms']),'reason':reason})
 assert len(records)==100
 result={'scope':'Offline contract diagnosis of same frozen bytes using actual Scrapling Selector; no corpus/policy changes','cases':100,'public_cases':0,'reasons':dict(collections.Counter(r['reason'] for r in records)),'outcomes':dict(collections.Counter(r['observed_outcome'] for r in records)),'timeout_busy_identity_protocol_or_unavailable_results':0,'fixture_constructor_admission_cases':100,'running_shell_default_source_admission':0,'running_shell_used_for_benchmark':False,'dynamic_corpus_contract_coverage':{'dynamic_cases':20,'xhr_rules_present':0,'chromium_execution_on_these_cases':0},'interpretation':'Adapter admission/evidence coverage limits; not general Scrapling library inability and not complete dynamic A/B acceptance','records':records}
-pathlib.Path('artifacts/local-windows-20261009/frozen-a-contract-diagnosis.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+pathlib.Path('services/verification-service/tests/data/local-windows-20261009/frozen-a-contract-diagnosis.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps({k:v for k,v in result.items() if k!='records'},indent=2))

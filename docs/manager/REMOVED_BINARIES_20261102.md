@@ -49,6 +49,15 @@
 
 恢复：`git -C D:\CodexProjects\EasySaveVideo worktree add --detach <新目录> e7a4e01`，或 `git show e7a4e01:<路径>`。
 
+## 追加：验证夹具与 artifacts/ 收尾
+
+用户确认后移除 `services/verification-fixtures/`（195 个文件，A/B 评估夹具与调度契约，未接入生产）与 `artifacts/README.txt`；路径清单 [REMOVED_FIXTURES_20261102.txt](REMOVED_FIXTURES_20261102.txt)，基准提交 `fa7dabf098baad8e40cf7749c4ac6b4da4464d4d`。同时移动（保留历史）：
+
+- `artifacts/local-windows-20261009/` → `services/verification-service/tests/data/local-windows-20261009/`（服务 Windows 测试路径已同步；其中历史日志原样保留）
+- `artifacts/test-fixtures/esv-synthetic-8s/` → `docs/test-media/esv-synthetic-8s/`
+
+根目录 `artifacts/` 至此撤销。
+
 ## 影响
 
 - 文档、清单中指向这些文件的路径在当前 `main` 上不再存在，需按下文从历史恢复后再使用。

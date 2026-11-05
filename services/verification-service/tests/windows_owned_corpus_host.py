@@ -35,7 +35,7 @@ try:
                 if len(records)%20==0:print('Owned A cases completed',len(records),flush=True)
         finally:service.close()
 finally:server.shutdown();server.server_close();thread.join(1)
-out=pathlib.Path('artifacts/local-windows-20261009/frozen-a-host.tsv')
+out=pathlib.Path('services/verification-service/tests/data/local-windows-20261009/frozen-a-host.tsv')
 with out.open('w',encoding='utf-8',newline='') as f:
     writer=csv.DictWriter(f,fieldnames=records[0].keys(),delimiter='\t');writer.writeheader();writer.writerows(records)
 print(json.dumps({'cases':len(records),'physical_fixture_requests':OwnedCorpusHandler.calls,'scope':'Windows real Scrapling only; frozen cases without XHR rules cannot exercise Chromium dynamic evidence; not Android A/B or phone performance'},indent=2))

@@ -38,8 +38,7 @@
 
 | 路径 | 说明 |
 |---|---|
-| `services/verification-service/` | 独立 Python 验证服务（Android 不含其依赖） |
-| `services/verification-fixtures/` | 独立夹具与调度契约（git subtree，前缀已改为此路径），未接入生产 |
+| `services/verification-service/` | 独立 Python 验证服务（Android 不含其依赖）；`tests/data/local-windows-20261009/` 为其 Windows 测试读取的准入收据与冻结表 |
 | `scripts/` | 边界检查与工作区脚本；先读适用范围，勿为跑通而改门禁 |
 
 2026-11-02 起模块从根目录移入 `modules/`、服务移入 `services/`。`docs/` 历史报告中的源码路径指旧布局。
@@ -62,17 +61,11 @@
 | `docs/m0` … `docs/m11a` | 各里程碑/切片的实现与验收边界（例：[m3a Direct](docs/m3a/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m3b-eof HLS](docs/m3b-eof/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m4 Record](docs/m4/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m6c 授权帧选区](docs/m6c/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m7b 签名仓库](docs/m7b/IMPLEMENTATION_AND_ACCEPTANCE.md)、[m11a 发行阻塞](docs/m11a/RELEASE_BLOCKERS.md)） |
 | `docs/discovery/`、`docs/vault/`、`docs/verification*/` 等 | 专题状态报告 |
 | `docs/consolidation/` | 2026-11-01 归拢报告与覆盖清单 |
-
-### 测试输入（在用，勿删）
-
-| 路径 | 说明 |
-|---|---|
-| `artifacts/local-windows-20261009/` | 验证服务 Windows 测试读取的浏览器准入收据与冻结表 |
-| `artifacts/test-fixtures/` | 合成测试夹具 |
+| `docs/test-media/esv-synthetic-8s/` | 自行生成的 8 秒 H.264+AAC 合成 MP4 及其生成脚本，供设备验收使用自有素材 |
 
 ### 已移除的历史材料
 
-2026-11-02 起以下内容已从工作目录移除，均可从 Git 历史或外置归档恢复，路径清单与恢复方法见 [移除记录](docs/manager/REMOVED_BINARIES_20261102.md)：历史 APK/Base64/分卷（约 916 MB）、`recovery/`、`verification-transfer/`、`docs/**/evidence/` 历史运行日志、其余 `artifacts/` 验收记录、`docs/ui/source-history-20261011/`、UI 设计稿 PPT/ZIP、绑定历史基准提交的准入脚本。`docs/` 中 `.md` 报告若链接到这些文件，需先按移除记录恢复。
+2026-11-02 起以下内容已从工作目录移除，均可从 Git 历史或外置归档恢复，路径清单与恢复方法见 [移除记录](docs/manager/REMOVED_BINARIES_20261102.md)：历史 APK/Base64/分卷（约 916 MB）、`recovery/`、`verification-transfer/`、`docs/**/evidence/` 历史运行日志、`artifacts/` 历史验收记录（整个目录已撤销）、`services/verification-fixtures/` 评估夹具、`docs/ui/source-history-20261011/`、UI 设计稿 PPT/ZIP、绑定历史基准提交的准入脚本。`docs/` 中 `.md` 报告若链接到这些文件，需先按移除记录恢复。
 
 ### 仓库之外
 
